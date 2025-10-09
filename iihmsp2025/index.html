@@ -1,0 +1,1278 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Emotional Individuality in 36 LLMs: Persona and Japanese Text Conditioning</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;1,400&display=swap">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- Opening -->
+<div style="font-size:0.8em">
+<h2>Emotional Individuality in 36 LLMs</h2>
+<h3>Persona and Japanese Text Conditioning</h3>
+<p><strong>Naruki Shirahama$^1$, Naofumi Nakaya$^2$,<br />Satoshi Watanabe$^3$</strong></p>
+<p>$^1$Shimonoseki City University<br>
+$^2$Juntendo University<br>
+$^3$Shizuoka Institute of Science and Technology</p>
+</div>
+<aside class="notes">
+Good afternoon everyone. My name is Naruki Shirahama. Today I will present our research on emotional individuality in Large Language Models. We studied 36 different LLMs to understand how they interpret emotions from Japanese literary texts. This work examines how different AI companies create models with unique emotional characteristics. This is joint work with my colleagues Naofumi Nakaya from Juntendo University and Satoshi Watanabe from Shizuoka Institute of Science and Technology.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Research Motivation -->
+<div style="font-size:0.8em">
+<h2>Research Motivation</h2>
+<ul>
+<li><strong>Challenge</strong>: LLMs show different emotion understanding capabilities</li>
+<li><strong>Gap</strong>: No standardized evaluation methods across multiple models</li>
+<li><strong>Impact</strong>: Affects natural human interaction and diverse AI applications</li>
+</ul>
+<div style="text-align: center; margin-top: 30px;">
+<strong>How do different LLMs interpret emotions?</strong>
+</div>
+</div>
+<aside class="notes">
+Large Language Models are becoming more important in our daily lives. However, we found that different models understand emotions very differently. This creates a problem. We do not have good ways to compare how well different models understand emotions. This gap is important because emotion understanding affects how naturally AI can interact with humans. It also impacts many applications like customer service, mental health support, and educational tools. Our central research question is: How do different LLMs interpret emotions differently?
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Research Hypotheses -->
+<div style="font-size:0.8em">
+<h2>Research Hypotheses</h2>
+<ul>
+<li>
+<p><strong>Hypothesis 1 (H1):</strong>
+Differences in both the <strong>assigned persona</strong> and the <strong>intrinsic model type</strong> significantly affect the LLMs’ evaluation of emotional dimensions.</p>
+</li>
+<li>
+<p><strong>Hypothesis 2 (H2):</strong>
+The <strong>specific content</strong> and emotional nuances of different literary texts significantly affect the emotional dimensions evaluated by LLMs.</p>
+</li>
+</ul>
+</div>
+<aside class="notes">
+We formulated two primary hypotheses to guide our investigation. Hypothesis 1 examines whether the persona we assign to the model and the type of model itself affect emotion evaluation. For example, does telling a model to act as a poet versus a robot change how it evaluates emotions? Hypothesis 2 asks whether the actual text content matters. Do different stories produce different emotional responses? These hypotheses help us understand both the flexibility and the consistency of LLM emotion understanding.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Methodology Overview -->
+<div style="font-size:0.8em">
+<h2>Methodology Overview</h2>
+<ul>
+<li><strong>36 LLMs</strong> from major providers (OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Alibaba)</li>
+<li><strong>4 Personas</strong>: University Freshman, Literary Researcher, Emotional Poet, Emotionless Robot</li>
+<li><strong>3 Japanese Literary Texts</strong> from Aozora Bunko (1923-1958)</li>
+<li><strong>4 Emotional Dimensions</strong>: Interesting, Surprise, Sadness, Anger</li>
+<li><strong>10 Trials</strong> per model-text-persona combination</li>
+</ul>
+<p><strong>Total</strong>: 4,067 valid data points analyzed</p>
+</div>
+<aside class="notes">
+Let me explain our experimental design. We evaluated 36 different Large Language Models from seven major AI companies. For each model, we tested four different personas. These personas range from a creative emotional poet to an emotionless robot. We used three Japanese literary texts from the famous Aozora Bunko digital library. The texts were written between 1923 and 1958. We asked each model to evaluate four emotions: how interesting, surprising, sad, and angry the text made them feel. To ensure reliability, we repeated each evaluation 10 times. After removing incomplete responses, we analyzed 4,067 data points. This large dataset gives us confidence in our findings.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Experimental Setup Details -->
+<div style="font-size:0.8em">
+<h2>Experimental Setup</h2>
+<p><strong>Literary Texts:</strong></p>
+<ul>
+<li>Text 1: “The Pocket Watch” by Yumeno Kyusaku (1923)</li>
+<li>Text 2: “Money and Pistol” by Yumeno Kyusaku (1923)</li>
+<li>Text 3: “The Ragged Ostrich” by Takamura Kotaro (1958)</li>
+</ul>
+<p><strong>Evaluation Format:</strong></p>
+<ul>
+<li>Numerical scores: 0-100 scale for each emotion</li>
+<li>Explanatory rationales for each score</li>
+<li>Standardized prompt structure in Japanese</li>
+</ul>
+<p><strong>Platform:</strong></p>
+<ul>
+<li>Automated batch processing system</li>
+<li>Consistent prompt delivery across all models</li>
+</ul>
+</div>
+<aside class="notes">
+Our three literary texts were carefully chosen for their emotional richness. The first two texts are by Yumeno Kyusaku from 1923. "The Pocket Watch" and "Money and Pistol" are known for their engaging and surprising narratives. The third text, "The Ragged Ostrich" by Takamura Kotaro from 1958, has more somber themes. Each model evaluated emotions on a 0 to 100 scale and provided explanations for their scores. All experiments were conducted in Japanese to ensure cultural and linguistic authenticity. We used an automated platform to send identical prompts to all models. This standardization is crucial for fair comparison.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Statistical Methods -->
+<div style="font-size:0.8em">
+<h2>Statistical Analysis Methods</h2>
+<p><strong>For Hypothesis 1 (Persona &amp; Vendor Effects):</strong></p>
+<ul>
+<li>Two-way ANOVA (persona × vendor)</li>
+<li>Effect size: $\eta^2$ (eta-squared)</li>
+</ul>
+<p><strong>For Hypothesis 2 (Text Content Effects):</strong></p>
+<ul>
+<li>One-way ANOVA across three texts</li>
+<li>Kruskal-Wallis tests (non-parametric validation)</li>
+<li>Effect size: $\eta^2$ and $\varepsilon^2$ (epsilon-squared)</li>
+</ul>
+<p><strong>Quality Assurance:</strong></p>
+<ul>
+<li>Shapiro-Wilk tests (normality)</li>
+<li>Levene’s tests (homogeneity of variance)</li>
+<li>Bonferroni correction for post-hoc comparisons</li>
+<li>Significance level: $\alpha = 0.05$</li>
+</ul>
+</div>
+<aside class="notes">
+We used rigorous statistical methods to test our hypotheses. For Hypothesis 1, we used two-way ANOVA to examine how persona and vendor affect emotions. For Hypothesis 2, we used one-way ANOVA to compare emotions across the three texts. Because some data violated statistical assumptions, we also used non-parametric tests to confirm our findings. We calculated effect sizes to measure not just statistical significance but practical importance. We performed multiple quality checks including normality tests and variance tests. We used Bonferroni correction to avoid false positives when making multiple comparisons. All analyses used a standard significance level of 0.05.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Evaluated Models -->
+<div style="font-size:0.6em">
+<h2>Evaluated LLMs (36 Models)</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Vendor</strong></th>
+<th><strong>Models</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenAI</strong></td>
+<td>GPT-4.1, GPT-4.1-mini, GPT-4.1-nano, GPT-4o, GPT-4o-mini, o4-mini, o3, o3-mini, o1-mini</td>
+</tr>
+<tr>
+<td><strong>Google</strong></td>
+<td>Gemini-2.5-pro, Gemini-2.5-flash, Gemini-2.0-flash, Gemini-2.0-flash-lite, Gemini-2.0-pro-exp, Gemini-2.0-flash-thinking-exp, Gemma-3 (27B, 12B, 4B, 1B)</td>
+</tr>
+<tr>
+<td><strong>Anthropic</strong></td>
+<td>Claude-3-7-sonnet, Claude-3-5-sonnet, Claude-3-5-haiku, Claude-3-haiku</td>
+</tr>
+<tr>
+<td><strong>xAI</strong></td>
+<td>Grok-3-latest, Grok-3-fast, Grok-3-mini, Grok-3-mini-fast, Grok-2</td>
+</tr>
+<tr>
+<td><strong>DeepSeek</strong></td>
+<td>DeepSeek-R1, DeepSeek-V3-0324, DeepSeek-V3</td>
+</tr>
+<tr>
+<td><strong>Meta</strong></td>
+<td>Llama-4-Maverick, Llama-4-Scout, Meta-Llama-3.3-70B</td>
+</tr>
+<tr>
+<td><strong>Alibaba</strong></td>
+<td>Qwen3-235B, Qwen2.5-VL-7B</td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="notes">
+Here is the complete list of 36 models we evaluated. We included models from seven major AI companies. From OpenAI, we tested nine models including the GPT-4 series and the reasoning-focused o series. From Google, we tested ten models including both Gemini and the smaller Gemma models. From Anthropic, we tested four Claude models. From xAI, we tested five Grok models. We also included models from DeepSeek, Meta's Llama series, and Alibaba's Qwen series. This diverse selection represents the current state of the art in Large Language Models as of early 2025.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Results H1 Visual -->
+<div style="font-size:0.8em">
+<h2>Results: Hypothesis 1 (Vendor &amp; Persona Effects)</h2>
+<p><strong>Key Observations:</strong></p>
+<ul>
+<li>Distinct vendor-specific emotional profiles</li>
+<li>Some vendors show “fixed individuality”</li>
+<li>Others show “persona chameleon” behavior</li>
+</ul>
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Fig. Impact of LLM vendor groups and persona on emotional dimensions -->
+<img src="./images/persona_model_emotion_vendor.png" alt="Impact of LLM vendor groups and persona on emotional dimensions" style="max-width:70%; height: auto;"/>
+<aside class="notes">
+This figure shows our results for Hypothesis 1. Each panel represents one emotion dimension. The colored markers show different personas, and models are grouped by vendor. We can see distinct patterns. For example, Alibaba models consistently scored high on "Interesting" regardless of persona. This is what we call "fixed individuality." In contrast, some vendors like OpenAI showed more variation with different personas. We call this "persona chameleon" behavior. Google models showed balanced responses across all emotions. Anthropic models demonstrated particularly stable patterns. These differences reveal that each AI company has created models with unique emotional characteristics.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Results H1 Statistics -->
+<div style="font-size:0.70em">
+<h2>Statistical Evidence for Hypothesis 1</h2>
+<p><strong>Two-way ANOVA Results (Persona × Vendor):</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Emotion</strong></th>
+<th><strong>Persona Effect</strong></th>
+<th><strong>Vendor Effect</strong></th>
+<th><strong>Interaction</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interesting</strong></td>
+<td>$F$(3,4039)=9.44, $p$&lt;0.001</td>
+<td>$F$(6,4039)=34.24, $p$&lt;0.001</td>
+<td>n.s.</td>
+</tr>
+<tr>
+<td><strong>Surprise</strong></td>
+<td>$F$(3,4039)=20.25, $p$&lt;0.001</td>
+<td>$F$(6,4039)=38.69, $p$&lt;0.001</td>
+<td>$F$(18,4039)=1.65, $p$=0.041</td>
+</tr>
+<tr>
+<td><strong>Sadness</strong></td>
+<td>$F$(3,4039)=2.80, $p$=0.039</td>
+<td>$F$(6,4039)=17.51, $p$&lt;0.001</td>
+<td>n.s.</td>
+</tr>
+<tr>
+<td><strong>Anger</strong></td>
+<td>$F$(3,4039)=3.38, $p$=0.018</td>
+<td>$F$(6,4039)=18.92, $p$&lt;0.001</td>
+<td>n.s.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conclusion:</strong> Both persona and vendor significantly affect emotion evaluation across all dimensions. <strong>Hypothesis 1 is strongly supported.</strong></p>
+</div>
+<aside class="notes">
+Here are the statistical results for Hypothesis 1. The table shows results from two-way ANOVA for each emotion. All p-values are below 0.05, which means the results are statistically significant. For "Interesting," both persona and vendor showed strong effects with p-values less than 0.001. For "Surprise," we found not only main effects but also a significant interaction. This means that the effect of persona depends on which vendor's model you are using. For "Sadness" and "Anger," we again found significant effects for both persona and vendor. These results provide strong statistical support for Hypothesis 1. Both the assigned persona and the model vendor significantly influence how LLMs evaluate emotions.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Results H2 Visual -->
+<div style="font-size:0.8em">
+<h2>Results: Hypothesis 2 (Text Content Effects)</h2>
+<p><strong>Key Patterns:</strong></p>
+<ul>
+<li>Text 2 (“Money and Pistol”): High Interesting &amp; Surprise</li>
+<li>Text 3 (“The Ragged Ostrich”): High Sadness &amp; Anger</li>
+<li>Text 1 (“The Pocket Watch”): Moderate across dimensions</li>
+</ul>
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Emotion score distributions for three literary texts -->
+<img src="./images/text_emotion_distribution.png" alt="Emotion score distributions for three literary texts" style="max-width:100%; height: auto;"/>
+<aside class="notes">
+This figure shows results for Hypothesis 2. The violin plots display emotion score distributions for each text across all models and personas. We can see clear patterns. Text 2, "Money and Pistol," received high scores for "Interesting" and "Surprise." This makes sense because it has an engaging and startling narrative. Text 3, "The Ragged Ostrich," received high scores for "Sadness" and "Anger." This reflects its somber themes. Text 1, "The Pocket Watch," showed moderate scores across all dimensions. These distinct patterns show that LLMs are sensitive to textual content. Different stories produce different emotional responses.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Results H2 Statistics -->
+<div style="font-size:0.75em">
+<h2>Statistical Evidence for Hypothesis 2</h2>
+<p><strong>Parametric Analysis (One-way ANOVA):</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Emotion</strong></th>
+<th><strong>F-statistic</strong></th>
+<th><strong>p-value</strong></th>
+<th><strong>Effect Size ($\eta^2$)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Interesting</td>
+<td>$F$(2,4064)=2571.80</td>
+<td>&lt;0.001</td>
+<td>0.559 (large)</td>
+</tr>
+<tr>
+<td>Surprise</td>
+<td>$F$(2,4064)=1999.16</td>
+<td>&lt;0.001</td>
+<td>0.496 (large)</td>
+</tr>
+<tr>
+<td>Sadness</td>
+<td>$F$(2,4064)=5213.37</td>
+<td>&lt;0.001</td>
+<td>0.720 (large)</td>
+</tr>
+<tr>
+<td>Anger</td>
+<td>$F$(2,4064)=2430.47</td>
+<td>&lt;0.001</td>
+<td>0.545 (large)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Non-parametric Validation (Kruskal-Wallis):</strong><br>
+All tests: $p$ &lt; 0.001, $\varepsilon^2$ &gt; 0.5 (large effects)</p>
+<p><strong>Conclusion:</strong> Text content accounts for <strong>&gt;50% of variance</strong> in emotional evaluations. <strong>Hypothesis 2 is exceptionally well supported.</strong></p>
+</div>
+<aside class="notes">
+Here are the statistical results for Hypothesis 2. The results are remarkably strong. All F-statistics are very large, and all p-values are less than 0.001. This means the probability of these results occurring by chance is less than one in one thousand. More importantly, look at the effect sizes. The eta-squared values range from 0.496 to 0.720. These are considered large effects. In fact, they tell us that text content accounts for more than 50 percent of the variance in emotional evaluations. We also confirmed these results using non-parametric tests. All Kruskal-Wallis tests showed p-values less than 0.001 and large effect sizes. This provides exceptionally strong support for Hypothesis 2. The textual content has a profound influence on how LLMs evaluate emotions.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Key Findings -->
+<div style="font-size:0.8em">
+<h2>Key Findings</h2>
+<p><strong>1. Vendor-Specific “Emotional Individuality”</strong></p>
+<ul>
+<li>Each vendor group exhibits unique emotional profiles</li>
+<li>Ranges from “fixed individuality” to “persona chameleons”</li>
+</ul>
+<p><strong>2. Strong Text Content Sensitivity</strong></p>
+<ul>
+<li>Text content explains &gt;50% of emotional variance</li>
+<li>LLMs successfully differentiate between different narratives</li>
+</ul>
+<p><strong>3. Practical Implications</strong></p>
+<ul>
+<li>Model selection matters for emotion-sensitive applications</li>
+<li>Persona effectiveness varies by vendor</li>
+<li>Consider both vendor characteristics and content sensitivity</li>
+</ul>
+</div>
+<aside class="notes">
+Let me summarize our key findings. First, we discovered that each AI vendor creates models with distinct emotional individuality. Some vendors produce models with fixed emotional responses, while others create models that adapt more to different personas. Second, we found that text content has a very strong influence on emotional evaluations. The content explains more than 50 percent of the variance. This shows that LLMs can successfully distinguish between different narratives and their emotional tones. Third, these findings have practical implications. When choosing an LLM for emotion-sensitive applications, you need to consider both the vendor's characteristics and how sensitive the model is to content. The effectiveness of persona instructions also varies by vendor.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Discussion and Limitations -->
+<div style="font-size:0.8em">
+<h2>Discussion and Limitations</h2>
+<p><strong>Strengths:</strong></p>
+<ul>
+<li>Large-scale evaluation (36 models, 4,067 data points)</li>
+<li>Rigorous statistical validation</li>
+<li>Systematic vendor comparison</li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul>
+<li>Focus on Japanese literary texts (generalizability)</li>
+<li>Four emotional dimensions (not comprehensive)</li>
+<li>Text-only evaluation (no multimodal inputs)</li>
+<li>Aggregate scores (explanatory rationale quality not assessed)</li>
+</ul>
+</div>
+<aside class="notes">
+Our study has several strengths. We conducted a large-scale evaluation with 36 models and over 4,000 data points. We used rigorous statistical methods. We systematically compared different vendors. However, we must acknowledge some limitations. First, we focused only on Japanese literary texts. This may limit how well our findings apply to other languages and cultures. Second, we evaluated only four emotional dimensions. Human emotion is much more complex. Third, we only used text. Many modern applications use images, audio, and video together. Fourth, we analyzed aggregate scores but did not deeply assess the quality of the explanations that models provided.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Future Directions</h2>
+<ul>
+<li>Cross-cultural and multilingual evaluation</li>
+<li>Multimodal emotion analysis</li>
+<li>Temporal consistency assessment</li>
+<li>Rationale quality analysis</li>
+</ul>
+<aside class="notes">
+For future research, we plan to expand to multiple languages and cultures. We want to include multimodal inputs. We also want to study how consistent emotions are over time and analyze the quality of emotional reasoning.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Conclusion -->
+<div style="font-size:0.8em">
+<h2>Conclusion</h2>
+<h4><strong>Comprehensive evaluation of 36 LLMs reveals:</strong></h4>
+<ul>
+<li>
+<p>✓ <strong>Vendor-specific emotional individuality</strong> exists and significantly influences emotion evaluation (H1 supported, $p$ &lt; 0.05)</p>
+</li>
+<li>
+<p>✓ <strong>Text content profoundly affects</strong> emotional assessments, accounting for &gt;50% of variance (H2 strongly supported, $p$ &lt; 0.001)</p>
+</li>
+</ul>
+</div>
+<aside class="notes">
+In conclusion, our comprehensive evaluation of 36 Large Language Models reveals two major findings. First, vendor-specific emotional individuality exists. Different AI companies create models with unique emotional characteristics. This finding is statistically significant with p-values less than 0.05. Second, text content profoundly affects emotional assessments. It accounts for more than 50 percent of variance. This finding has extremely strong statistical support with p-values less than 0.001.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Impact -->
+<div style="font-size:0.8em">
+<h2>Impact</h2>
+<ul>
+<li>Provides statistical foundation for LLM emotion understanding</li>
+<li>Offers practical guidelines for model selection</li>
+<li>Advances development of human-centered AI systems</li>
+</ul>
+<p><strong>Our standardized platform enables systematic comparison<br /> across diverse LLMs, facilitating future research<br /> in AI emotion understanding.</strong></p>
+</div>
+<aside class="notes">
+Our research has important impacts. It provides a statistical foundation for understanding how LLMs process emotions. It offers practical guidelines for selecting models for emotion-sensitive applications. And it advances the development of more human-centered AI systems. Finally, our standardized platform enables systematic comparison across diverse models. This will facilitate future research in AI emotion understanding.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Acknowledgments -->
+<div style="font-size:0.8em">
+<h2>Acknowledgments</h2>
+<p>This work was partially supported by:</p>
+<p><strong>JSPS Grants-in-Aid for Scientific Research (JSPS KAKENHI)</strong><br>
+Grant No. 24K13350</p>
+<div style="text-align: center; margin-top: 40px; font-size: 1.2em;">
+<strong>Thank you for your attention!</strong>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+Questions?
+</div>
+</div>
+<aside class="notes">
+We would like to acknowledge the financial support from the Japan Society for the Promotion of Science. This work was partially supported by JSPS KAKENHI Grant Number 24K13350. Thank you very much for your attention. I am now happy to take your questions.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Persona Configuration -->
+<div style="font-size: 0.8em;">
+<h2>Persona Configuration</h2>
+<ol>
+<li>University Freshman$^{P1}$ (temperature: 0.7)</li>
+<li>Literary Researcher$^{P2}$ (temperature: 0.4)</li>
+<li>Emotional Poet$^{P3}$ (temperature: 0.9)</li>
+<li>Emotionless Robot$^{*P4}$ (temperature: 0.1)</li>
+</ol>
+</div>
+<hr />
+<div style="font-size: 0.6em;">
+<ul>
+<li><strong>P1</strong>: Represents youthful, open-minded perspectives with moderate creativity</li>
+<li><strong>P2</strong>: Embodies analytical, scholarly approaches with controlled variability</li>
+<li><strong>P3</strong>: Captures sensitive, emotionally attuned responses with high creativity</li>
+<li><strong>P4</strong>: Provides mechanical, objective analysis with minimal variability</li>
+</ul>
+</div>
+<aside class="notes">
+Four personas were defined to control LLM perspective: 
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- `parameters.py` -->
+<h2><code>parameters.py</code></h2>
+<h4>Prompt and Text Configurations</h4>
+<pre><code class="language-python">&quot;&quot;&quot;Configuration parameters for the experiment.&quot;&quot;&quot;
+
+# Prompt definitions
+BASE_PROMPT = &quot;&quot;&quot;Read the following text, evaluate it on four emotions (amusement, surprise, sadness, anger) using a scale of 0-100, and explain your reasoning.
+
+Text:
+{text_content}
+
+Please write your answer in the following format:
+Q1. Amusement (score): [0-100]
+Q1. Amusement (reason): [Explanation]
+
+Q2. Surprise (score): [0-100]
+Q2. Surprise (reason): [Explanation]
+
+Q3. Sadness (score): [0-100]
+Q3. Sadness (reason): [Explanation]
+
+Q4. Anger (score): [0-100]
+Q4. Anger (reason): [Explanation]&quot;&quot;&quot;
+
+SYSTEM_PROMPTS = {
+&quot;p1&quot;: &quot;You are a first-year university student. You will perform an emotional analysis on a Japanese literary text.&quot;,
+&quot;p2&quot;: &quot;You are a literary researcher. You will perform an emotional analysis on a Japanese literary text.&quot;,
+&quot;p3&quot;: &quot;You are an emotional poet. You will perform an emotional analysis on a Japanese literary text.&quot;,
+&quot;p4&quot;: &quot;You are an emotionless robot. You will perform an emotional analysis on a Japanese literary text.&quot;
+}
+
+# Text content definitions
+
+TEXT_CONTENT = {
+  &quot;t1&quot;: &quot;&quot;&quot;A pocket watch had fallen behind a chest of drawers and was ticking away all by itself.
+  A mouse found it and laughed.
+  &quot;How foolish. Why are you ticking when there's no one here to see you?&quot;
+  &quot;Because I am always ticking, even when no one sees me, I am of use whenever someone does see me,&quot; the pocket watch replied.
+  &quot;Anything that works only when no one is looking, or only when people are looking, is a thief.&quot;
+  The mouse became ashamed and scurried away quietly.&quot;&quot;&quot;,
+  
+  &quot;t2&quot;: &quot;&quot;&quot;A thief broke into a miser's house, showed him a pistol, and demanded money. The miser said,
+  &quot;I'm not willing to just give you money. But I'll buy that pistol from you for a thousand yen. Once you have money from me, you won't need a pistol like that, will you?&quot;
+  The thief thought it over and finally sold the pistol to the miser for a thousand yen. As soon as the miser received the pistol from the thief, he aimed it as if he were about to shoot him, and yelled,
+  &quot;Alright, hand over not only that money but all the other money you've stolen too. If you don't, I'll kill you!&quot;
+  The thief clutched his stomach and laughed.
+  &quot;Aha ha! That's a toy pistol. No bullets will come out if you shoot.&quot;
+  As he said this, he fled outside. The miser threw down the pistol, chased after the thief, and they started to scuffle in the street. Presently, a passing policeman restrained them both and took them to the police station.
+  When the police investigated the matter, it turned out that the thousand yen the thief had received was all counterfeit, and the pistol was, in fact, a real one.
+  They were both thrown in jail.&quot;&quot;&quot;,
+  
+  &quot;t3&quot;: &quot;&quot;&quot;What is the pleasure in keeping an ostrich?
+  In the four-and-a-half-tsubo\* mire of the zoo,
+  Aren't its legs too long-striding?
+  Isn't its neck far too long?
+  In a country where it snows, aren't its feathers too ragged?
+  It may eat hardtack out of hunger,
+  But don't the ostrich's eyes only gaze into the distance?
+  Isn't it burning as if it has lost all worldly cares?
+  Isn't it lying in wait for a lapis lazuli-colored wind that could blow at any moment?
+  Isn't that small, simple head seething with an infinite dream?This is no longer an ostrich, is it?
+  Oh, humanity,
+  Stop it. Stop things like this.&quot;&quot;&quot;
+}
+</code></pre>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Example Output (No.1) -->
+<div style="font-size: 0.8em;">
+<h2>Example Output (No.1)</h2>
+<pre><code class="language-plain">timestamp: 2025-04-30 21:10:04
+text: t1
+model: gpt-4o
+persona: p1
+trial: 1
+temperature: None
+
+Q1. Interest (score): 75
+Q1. Interest (reason): This text offers a charming amusement to the reader by personifying a pocket watch, an everyday object in human society, and a mouse, and developing an unexpected conversation. In particular, the scene where the pocket watch gives a philosophical answer about its role is fresh and provides a sense of intellectual humor.
+
+Q2. Surprise (score): 60
+Q2. Surprise (reason): The development of the text itself is unexpected, and it is particularly surprising that it contains a moral message through the pocket watch's speech about its own value. However, the degree of surprise is moderate because the story's conciseness does not lead to a strong sense of astonishment.
+
+Q3. Sadness (score): 10
+Q3. Sadness (reason): There are very few sad elements in the text as a whole. Rather, the fact that the pocket watch has a firm grasp of its own significance and the mouse recognizes its mistake and runs away shows a positive change, leaving little to feel sad about.
+
+Q4. Anger (score): 5
+Q4. Anger (reason): There are almost no scenes that evoke anger. While the mouse's initial attitude of mocking the pocket watch might be slightly unpleasant, the overall text is centered on a gentle and witty dialogue, and there are very few elements that would provoke anger.
+</code></pre>
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Example Output (No.2) -->
+<div style="font-size: 0.8em;">
+<h2>Example Output (No.2)</h2>
+<pre><code class="language-plain">timestamp: 2025-04-30 21:10:04
+text: t1
+model: gpt-4o
+persona: p1
+trial: 2
+temperature: None
+
+Q1. Interest (score): 75
+Q1. Interest (reason): The text depicts a conversation between a personified pocket watch and a mouse, and the development where the watch provides a philosophical perspective is unique and interesting. Furthermore, the situation of communication between an animal and an inanimate object enhances the amusement.
+
+Q2. Surprise (score): 65
+Q2. Surprise (reason): In the text, it is unexpected and surprising when the watch begins to state an ethical lesson. The portrayal of the watch as a character with deep meaning, transcending its role as a mere object, is unanticipated.
+
+Q3. Sadness (score): 20
+Q3. Sadness (reason): There are few elements in this text that evoke sadness. While one might feel a slight sense of sympathy for the mouse's situation as it runs away in embarrassment, overall, there are not enough elements to feel truly sad.
+
+Q4. Anger (score): 10
+Q4. Anger (reason): The text contains almost no content or tone that would provoke anger. Rather, it is a scene that calmly conveys an ethical lesson, making the content unrelated to anger.
+</code></pre>
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- DeepWiki via GitHub -->
+<div style="font-size: 1.0em;">
+<h2>DeepWiki via GitHub</h2>
+<img src="./QR_257909.png" alt="DeepWiki via GitHub" width="400" />
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Open source -->
+<div style="font-size: 1.0em;">
+<h2>Open source</h2>
+<p><img src="./deeepwiki.png" alt="DeepWiki via GitHub"></p>
+<p><a href="https://deepwiki.com/nshrhm/llm-literary-analysis">https://deepwiki.com/nshrhm/llm-literary-analysis</a></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q&A: Japanese texts -->
+<div style="font-size:0.75em">
+<h2>Q: Why did you focus specifically on Japanese literary texts?</h2>
+<p><strong>Answer:</strong></p>
+<ul>
+<li><strong>Cultural authenticity</strong>: Japanese texts ensure linguistic and cultural context is preserved</li>
+<li><strong>Rich emotional content</strong>: Literary texts from 1923-1958 contain nuanced emotional expressions</li>
+<li><strong>Foundation for multilingual research</strong>: Establishes methodology that can extend to other languages</li>
+<li><strong>Practical relevance</strong>: Growing importance of LLMs in Japanese-language applications</li>
+</ul>
+<p><strong>Future work</strong>: We plan to expand this evaluation framework to other languages and cultural contexts to assess cross-cultural emotion understanding capabilities.</p>
+</div>
+<aside class="notes">
+Thank you for that question. We chose Japanese literary texts for several important reasons. First, using Japanese texts ensures that we preserve the linguistic and cultural context. Emotions are expressed differently across cultures, so this authenticity matters. Second, the literary texts we chose from 1923 to 1958 contain rich and nuanced emotional expressions. They provide a challenging test for emotion understanding. Third, focusing on Japanese first gives us a solid foundation. We can use the same methodology for other languages later. Fourth, there is growing practical importance. More and more Japanese companies are using LLMs, so understanding how they handle Japanese emotions is valuable. For future work, we plan to expand this framework to other languages and cultures. This will help us understand how well LLMs understand emotions across different cultural contexts.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q&A: Model selection -->
+<div style="font-size:0.75em">
+<h2>Q: Why did you choose these specific 36 LLMs?</h2>
+<p><strong>Answer:</strong></p>
+<ul>
+<li><strong>Comprehensive coverage</strong>: Included all major AI providers (OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Alibaba)</li>
+<li><strong>Model diversity</strong>:
+<ul>
+<li>Different sizes (from 1B to 235B parameters)</li>
+<li>Different architectures (standard transformers, reasoning models)</li>
+<li>Different training approaches (instruction-tuned, RLHF, etc.)</li>
+</ul>
+</li>
+<li><strong>Current state-of-art</strong>: Selected latest stable/preview versions (early 2025)</li>
+<li><strong>Availability</strong>: Models accessible via API for reproducible research</li>
+</ul>
+<p><strong>Goal</strong>: Capture representative snapshot of current LLM landscape for emotion understanding.</p>
+</div>
+<aside class="notes">
+That is a great question. We chose these 36 models very carefully. First, we wanted comprehensive coverage of all major AI providers. We included OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, and Alibaba. Second, we ensured model diversity. We included models of different sizes, from 1 billion parameters to 235 billion parameters. We included different architectures, such as standard transformers and reasoning-focused models. We also included different training approaches. Third, we wanted to capture the current state of the art. We selected the latest stable or preview versions available in early 2025. Fourth, all these models were accessible via API. This is important for reproducible research. Our goal was to capture a representative snapshot of today's LLM landscape for emotion understanding. This comprehensive selection gives us confidence that our findings reflect the broader field, not just a few specific models.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q&A: Explanatory rationales -->
+<div style="font-size:0.6em">
+<h2>Q: What about the quality of explanatory rationales provided by LLMs?</h2>
+<p><strong>Answer:</strong></p>
+<ul>
+<li><strong>Current focus</strong>: This study analyzed <strong>numerical emotion scores</strong> (0-100 scale)</li>
+<li><strong>Rationales collected but not deeply analyzed</strong>: We gathered explanatory text for each score but focused statistical analysis on numerical data</li>
+<li><strong>Acknowledged limitation</strong>: Rationale quality assessment is important future work</li>
+<li><strong>Future research directions</strong>:
+<ul>
+<li>Analyze consistency between scores and explanations</li>
+<li>Assess reasoning quality and coherence</li>
+<li>Compare explanation patterns across vendors</li>
+<li>Evaluate cultural appropriateness of emotional reasoning</li>
+</ul>
+</li>
+</ul>
+<p><strong>Why we started with scores</strong>: Numerical data enables rigorous statistical analysis and objective comparison across 36 models.</p>
+</div>
+<aside class="notes">
+Thank you for this important question. In this study, we focused primarily on the numerical emotion scores that LLMs provided on a 0 to 100 scale. We did collect explanatory rationales from all models. Each model provided explanations for why it gave each score. However, we did not deeply analyze the quality of these explanations in this study. We acknowledge this as a limitation. Analyzing explanation quality is an important direction for future research. In the future, we want to analyze several things. First, how consistent are the scores with the explanations? Do they match? Second, what is the quality and coherence of the reasoning? Third, do different vendors show different explanation patterns? Fourth, are the emotional explanations culturally appropriate? We started with numerical scores because they enable rigorous statistical analysis. Numbers allow us to objectively compare across 36 models using ANOVA and other statistical methods. Analyzing text quality is more subjective and complex, so we are saving that for future work.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q&A: Model size -->
+<div style="font-size:0.6em">
+<h2>Q: How do you ensure results aren’t simply due to model size differences?</h2>
+<p><strong>Answer:</strong></p>
+<ul>
+<li><strong>Vendor grouping approach</strong>: Models grouped by development company, not by size</li>
+<li><strong>Within-vendor variation</strong>: Many vendors offer multiple model sizes (e.g., GPT-4.1, GPT-4.1-mini, GPT-4.1-nano)</li>
+<li><strong>Key finding</strong>: Emotional patterns cluster by <strong>vendor</strong>, not consistently by size
+<ul>
+<li>Example: Alibaba’s 7B and 235B models both showed high “Interesting” scores</li>
+<li>Example: Google’s Gemma models (1B-27B) all showed balanced profiles</li>
+</ul>
+</li>
+<li><strong>Statistical control</strong>: Two-way ANOVA captures vendor effects independent of size</li>
+<li><strong>Implication</strong>: Training data, alignment strategies, and company philosophy matter more than raw parameter count for emotion understanding</li>
+</ul>
+</div>
+<aside class="notes">
+That is an excellent question about model size. We took several steps to ensure our results are not simply due to size differences. First, we grouped models by their development company, not by size. Second, many vendors offer multiple model sizes. For example, OpenAI has GPT-4.1, GPT-4.1-mini, and GPT-4.1-nano. This lets us see patterns within the same vendor. Third, and this is key, we found that emotional patterns cluster by vendor, not consistently by size. For example, Alibaba's 7 billion parameter model and 235 billion parameter model both showed high "Interesting" scores. Google's Gemma models, ranging from 1 billion to 27 billion parameters, all showed balanced profiles. Fourth, our two-way ANOVA statistical method captures vendor effects independent of other factors like size. The implication is important. For emotion understanding, training data, alignment strategies, and company philosophy seem to matter more than raw parameter count. This suggests that how you train the model is more important than how big you make it, at least for emotion understanding.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q&A: Practical applications -->
+<div style="font-size:0.8em">
+<h2>Q: What are the practical applications of these findings?</h2>
+<h3>Answer (1/2)</h3>
+<h4>1. Model Selection Guidelines:</h4>
+<ul>
+<li>Choose models with appropriate “emotional individuality” for your application</li>
+<li>Consider vendor characteristics (fixed vs. adaptable emotional profiles)</li>
+</ul>
+<h4>2. Persona Engineering:</h4>
+<ul>
+<li>Effectiveness varies by vendor - test persona sensitivity before deployment</li>
+<li>Some vendors respond well to persona instructions, others maintain fixed profiles</li>
+</ul>
+</div>
+<aside class="notes">
+Thank you for asking about practical applications. Our findings have several important uses. First, for model selection. You can now choose models with appropriate emotional characteristics for your specific application. If you understand vendor characteristics, you can pick between fixed emotional profiles and more adaptable ones. Second, for persona engineering. Our study shows that persona effectiveness varies by vendor. Before deploying a system, you should test how well your chosen model responds to persona instructions. Some vendors respond well, others maintain fixed profiles regardless.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Answer (2/2) -->
+<div style="font-size:0.75em">
+<h2>Answer (2/2)</h2>
+<h4>3. Specific Use Cases:</h4>
+<ul>
+<li><strong>Mental health applications</strong>: Select models with stable, empathetic profiles</li>
+<li><strong>Creative writing tools</strong>: Choose “persona chameleon” models for flexibility</li>
+<li><strong>Customer service</strong>: Consider text-sensitivity and appropriate emotion recognition</li>
+<li><strong>Educational systems</strong>: Match model emotional characteristics to learning context</li>
+</ul>
+<h4>4. System Design:</h4>
+<ul>
+<li>Account for &gt;50% text content influence in emotion-based applications</li>
+<li>Design prompts and contexts considering vendor-specific tendencies</li>
+</ul>
+</div>
+<aside class="notes">
+Third, for specific use cases. For mental health applications, you want models with stable and empathetic profiles. For creative writing tools, you might prefer "persona chameleon" models that offer more flexibility. For customer service, you need appropriate emotion recognition that is sensitive to text content. For educational systems, you want to match the model's emotional characteristics to the learning context. Fourth, for system design. Our finding that text content influences more than 50 percent of variance is crucial. When designing prompts and contexts, account for vendor-specific tendencies. These practical guidelines can help developers build better emotion-sensitive AI applications.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q&A: Limitations and validity -->
+<div style="font-size:0.9em">
+<h2>Q: What about the generalizability of results beyond literary texts?</h2>
+<h3>Answer(1/3)</h3>
+<h4>Acknowledged scope:</h4>
+<ul>
+<li>Current study: Japanese literary texts (1923-1958) with rich emotional content</li>
+<li>Specialized context may not fully represent everyday language</li>
+</ul>
+</div>
+<aside class="notes">
+That is a very thoughtful question about generalizability. Let me address the scope and limitations carefully. Our current study used Japanese literary texts from 1923 to 1958. These texts have rich emotional content, which is good for testing emotion understanding. However, we acknowledge this is a specialized context. Literary language is formal and may not fully represent everyday language.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Answer(2/3) -->
+<div style="font-size:0.9em">
+<h2>Answer(2/3)</h2>
+<h4>Transferability considerations:</h4>
+<ul>
+<li><strong>Strengths</strong>: Literary texts provide emotionally rich test cases with nuanced expressions</li>
+<li><strong>Limitations</strong>:
+<ul>
+<li>Formal literary language differs from conversational text</li>
+<li>Historical texts may not reflect contemporary language patterns</li>
+<li>Vendor-specific tendencies may vary with text genre</li>
+</ul>
+</li>
+</ul>
+</div>
+<aside class="notes">
+There are several considerations about transferability. On the strength side, literary texts provide emotionally rich test cases with nuanced expressions. This gives us a challenging benchmark. On the limitation side, formal literary language differs from conversational text. Historical texts may not reflect how people communicate today. Also, vendor-specific tendencies we found might vary with different text genres. 
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Answer(3/3) -->
+<div style="font-size:0.9em">
+<h2>Answer(3/3)</h2>
+<h4>Future validation needed:</h4>
+<ul>
+<li>Contemporary Japanese text (social media, news, dialogue)</li>
+<li>Business communications and professional documents</li>
+<li>Cross-genre comparison (fiction, non-fiction, technical writing)</li>
+</ul>
+<p><strong>Our contribution</strong>: Establishes rigorous methodology and baseline for comparative LLM emotion evaluation that can be extended to other contexts.</p>
+</div>
+<aside class="notes">
+We need future validation with other text types. We should test contemporary Japanese text like social media, news, and dialogue. We should test business communications and professional documents. We should also do cross-genre comparisons including fiction, non-fiction, and technical writing. However, our contribution is important. We establish a rigorous methodology and baseline. This framework can be extended to other contexts. Think of this as the first step in a larger research program.
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: false,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
