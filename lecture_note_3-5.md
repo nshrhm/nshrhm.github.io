@@ -119,8 +119,6 @@ install.packages("tidyverse")
 install.packages("proxy")
 ```
 
----
-
 ### 🤖 GitHub Copilotの準備
 
 本節では、各セクションの最後に**GitHub Copilot活用ガイド**を用意しています。
@@ -160,8 +158,6 @@ Copilotが提案したコードを**必ず理解してから**使いましょう
 このコードの3行目は何をしていますか?
 ```
 
----
-
 ### ⚠️ AI協働学習の心構え
 
 #### ✅ やるべきこと
@@ -179,8 +175,6 @@ Copilotが提案したコードを**必ず理解してから**使いましょう
 3. **無批判な受け入れ**: AIは間違うこともある
 4. **依存**: 自分で考える力が育たない
 
----
-
 ### 📚 本節の学習の流れ
 
 ```
@@ -197,8 +191,6 @@ Copilotが提案したコードを**必ず理解してから**使いましょう
 6. チェックリストで確認（3.5.7）
 ```
 
----
-
 ### 🎓 学習のポイント
 
 1. **4つの指標の違いを理解する**: それぞれの特徴と使い分け
@@ -206,11 +198,7 @@ Copilotが提案したコードを**必ず理解してから**使いましょう
 3. **数式の意味を直感的に理解する**: 完全に理解できなくても大丈夫
 4. **AIと協働する**: Copilotを学習のパートナーとして活用
 
----
-
 それでは、最初の指標「ユークリッド距離」から学んでいきましょう！
-
----
 
 ## 3.5.1 ユークリッド距離 - 最も基本的な距離の測り方
 
@@ -223,8 +211,6 @@ Copilotが提案したコードを**必ず理解してから**使いましょう
 - 地図上の2地点間の直線距離
 - 定規で測った長さ
 - 「鳥が飛ぶ距離」
-
----
 
 ### 🎯 ピタゴラスの定理を使った計算
 
@@ -247,8 +233,6 @@ $$
 $$
 
 **読み方**: 「各成分の差を2乗して、全部足して、平方根を取る」
-
----
 
 ### 💡 具体例で理解する
 
@@ -298,11 +282,9 @@ $$
 
 → ユークリッド距離で測ると、**Aに似ているのはC**です。
 
----
-
 ### 💻 サンプルプログラム1: 基本的な計算（R）
 
-**ファイル名**: `sample01_euclidean.R`
+**ファイル名**: `my3-5-01_euclidean.R`
 
 ```r
 # ユークリッド距離の基本計算
@@ -342,7 +324,7 @@ if (distance_AB < distance_AC) {
 **実行方法**:
 
 ```bash
-Rscript sample01_euclidean.R
+Rscript my3-5-01_euclidean.R
 ```
 
 **期待される出力**:
@@ -357,11 +339,9 @@ Rscript sample01_euclidean.R
 [1] "結論: Aに似ているのはC"
 ```
 
----
-
 ### 💻 サンプルプログラム2: 基本的な計算（Python）
 
-**ファイル名**: `sample01_euclidean.py`
+**ファイル名**: `my3-5-01_euclidean.py`
 
 ```python
 # ユークリッド距離の基本計算
@@ -391,7 +371,7 @@ else:
 **実行方法**:
 
 ```bash
-python sample01_euclidean.py
+python my3-5-01_euclidean.py
 ```
 
 **期待される出力**:
@@ -401,8 +381,6 @@ AとBのユークリッド距離: 24.0
 AとCのユークリッド距離: 23.0
 結論: Aに似ているのはC
 ```
-
----
 
 ### 🔍 R vs Python の比較
 
@@ -418,125 +396,9 @@ AとCのユークリッド距離: 23.0
 **Python の利点**: `scipy.spatial.distance`に便利な関数が多数ある
 **R の利点**: ベクトル演算がシンプルで直感的
 
----
-
-### 📚 参考: より実践的な書き方
-
-ここまでの基本版で十分ですが、**意欲的な学生向け**に、関数化した書き方も紹介します。
-
-**現時点では基本版で十分です。**以下は参考として眺めるだけで構いません。
-
-#### 発展版（R）
-
-**ファイル名**: `sample01_advanced.R`
-
-```r
-# ユークリッド距離を計算する関数
-euclidean_distance <- function(x, y) {
-  # 入力チェック
-  if (length(x) != length(y)) {
-    stop("xとyの要素数が異なります")
-  }
-  
-  # 距離計算
-  diff <- y - x
-  distance <- sum(diff^2)^0.5
-  
-  return(distance)
-}
-
-# データ定義
-A <- c(3,  4,  5)
-B <- c(3,  4, 29)
-C <- c(9, -18,  8)
-
-# 関数を使って計算
-distance_AB <- euclidean_distance(A, B)
-distance_AC <- euclidean_distance(A, C)
-
-# 結果表示
-cat(sprintf("AとBの距離: %.2f\n", distance_AB))
-cat(sprintf("AとCの距離: %.2f\n", distance_AC))
-
-# 比較
-if (distance_AB < distance_AC) {
-  cat("結論: Aに似ているのはB\n")
-} else {
-  cat("結論: Aに似ているのはC\n")
-}
-```
-
-#### 発展版（Python）
-
-**ファイル名**: `sample01_advanced.py`
-
-```python
-import numpy as np
-from typing import Union
-
-def euclidean_distance(x: np.ndarray, y: np.ndarray) -> float:
-    """
-    2つのベクトル間のユークリッド距離を計算
-    
-    Parameters:
-    -----------
-    x : np.ndarray
-        1次元配列
-    y : np.ndarray
-        1次元配列（xと同じ長さ）
-    
-    Returns:
-    --------
-    float
-        ユークリッド距離
-    """
-    if len(x) != len(y):
-        raise ValueError("xとyの要素数が異なります")
-    
-    diff = y - x
-    distance = np.sqrt(np.sum(diff ** 2))
-    
-    return distance
-
-def main():
-    # データ定義
-    A = np.array([3,  4,  5])
-    B = np.array([3,  4, 29])
-    C = np.array([9, -18,  8])
-    
-    # 距離計算
-    distance_AB = euclidean_distance(A, B)
-    distance_AC = euclidean_distance(A, C)
-    
-    # 結果表示
-    print(f"AとBの距離: {distance_AB:.2f}")
-    print(f"AとCの距離: {distance_AC:.2f}")
-    
-    # 比較
-    if distance_AB < distance_AC:
-        print("結論: Aに似ているのはB")
-    else:
-        print("結論: Aに似ているのはC")
-
-if __name__ == "__main__":
-    main()
-```
-
-**発展版の特徴**:
-- 関数として再利用可能
-- エラーチェック付き
-- 型ヒント（Python）やdocstring付き
-- より保守しやすいコード
-
-**学習段階**: これらは将来的に学ぶ内容です。今は基本版に集中しましょう！
-
----
-
 ### 💡 GitHub Copilot活用ガイド
 
 ユークリッド距離の計算を通して、GitHub Copilotの使い方を実践してみましょう。Copilotは、あなたのプログラミング学習をサポートする強力なパートナーです。
-
----
 
 #### 🚀 使えるプロンプト例
 
@@ -560,8 +422,6 @@ NumPyを使ってください。
 3. 実行して結果を確認: `python test_euclidean.py`
 4. リストの値を変えて再実行してみる
 
----
-
 ##### プロンプト例2: 複数のデータの比較 [★★☆]
 
 **Copilot Chatに入力**:
@@ -584,8 +444,6 @@ AとB、AとCのユークリッド距離を計算して、どちらがAに近い
 3. 実行: `Rscript test_compare.R`
 4. ベクトルの値を変えて、結果がどう変わるか実験
 
----
-
 ##### プロンプト例3: 手動計算の実装 [★★☆]
 
 **Copilot Chatに入力**:
@@ -602,11 +460,9 @@ scipyやライブラリの関数は使わず、for文と数式を使って実装
 
 **やってみよう**:
 1. プロンプトを入力して、手動実装のコードを取得
-2. `sample01_euclidean.py`の`distance.euclidean()`と比較
+2. `my3-5-01_euclidean.py`の`distance.euclidean()`と比較
 3. 両方の方法で同じ結果が得られることを確認
 4. どちらが読みやすいか、使いやすいか考えてみる
-
----
 
 #### 📚 Copilot活用のコツ
 
@@ -652,8 +508,6 @@ Copilotが提案したコードは、実行する前に必ず読んで理解し�
 - 要素の値を変える
 - 次元を増やす（4次元、5次元など）
 
----
-
 #### ⚠️ 注意事項
 
 ##### **AIは完璧ではない**
@@ -669,8 +523,6 @@ Copilotが生成したコードにもエラーがあることがあります。�
 
 ##### **自分で考える**
 困ったらすぐにCopilotに頼るのではなく、まず自分で考えてみましょう。それでもわからない時に質問するのがベストです。
-
----
 
 #### 🎓 推奨される学習の流れ
 
@@ -690,8 +542,6 @@ Copilotが生成したコードにもエラーがあることがあります。�
 
 **大切なのは「AIと協働する」姿勢です。丸投げではなく、一緒に学ぶパートナーとして活用しましょう！**
 
----
-
 ## 3.5.2 マンハッタン距離 - 碁盤目状の距離
 
 ### 🏙️ マンハッタン距離とは？
@@ -707,8 +557,6 @@ Copilotが生成したコードにもエラーがあることがあります。�
 - 都市部での実際の移動距離
 - 碁盤上での駒の移動
 - ブロックを数えて測る距離
-
----
 
 ### 📐 ユークリッド距離との違い
 
@@ -730,8 +578,6 @@ Copilotが生成したコードにもエラーがあることがあります。�
 （右に3、上に4移動）
 ```
 
----
-
 ### 🎯 数学的定義
 
 n次元の2点 $x = (x_1, x_2, \ldots, x_n)$ と $y = (y_1, y_2, \ldots, y_n)$ のマンハッタン距離は。
@@ -741,8 +587,6 @@ $$
 $$
 
 **読み方**: 「各成分の差の**絶対値**を全部足す」
-
----
 
 ### 💡 具体例で理解する
 
@@ -784,11 +628,9 @@ $$
 
 **注目**: ユークリッド距離では「Aに似ているのはC」でしたが、マンハッタン距離では**結果が逆転**しました！使う指標によって、結論が変わることがあるのです。
 
----
-
 ### 💻 サンプルプログラム3: マンハッタン距離（R）
 
-**ファイル名**: `sample02_manhattan.R`
+**ファイル名**: `my3-5-02_manhattan.R`
 
 ```r
 # マンハッタン距離の計算
@@ -830,7 +672,7 @@ print(paste("マンハッタン: AB =", distance_AB, ", AC =", distance_AC))
 **実行方法**:
 
 ```bash
-Rscript sample02_manhattan.R
+Rscript my3-5-02_manhattan.R
 ```
 
 **期待される出力**:
@@ -844,11 +686,9 @@ Rscript sample02_manhattan.R
 [1] "マンハッタン: AB = 24 , AC = 31"
 ```
 
----
-
 ### 💻 サンプルプログラム4: マンハッタン距離（Python）
 
-**ファイル名**: `sample02_manhattan.py`
+**ファイル名**: `my3-5-02_manhattan.py`
 
 ```python
 # マンハッタン距離の計算
@@ -886,7 +726,7 @@ print(f"マンハッタン: AB = {distance_AB}, AC = {distance_AC}")
 **実行方法**:
 
 ```bash
-python sample02_manhattan.py
+python my3-5-02_manhattan.py
 ```
 
 **期待される出力**:
@@ -896,12 +736,9 @@ AとBのマンハッタン距離: 24
 AとCのマンハッタン距離: 31
 結論: Aに似ているのはB
 
---- ユークリッド距離との比較 ---
-ユークリッド: AB = 24.0, AC = 23.0
+--- ユークリッド距離との比較 ユークリッド: AB = 24.0, AC = 23.0
 マンハッタン: AB = 24, AC = 31
 ```
-
----
 
 ### 🔍 2つの距離の比較
 
@@ -915,8 +752,6 @@ AとCのマンハッタン距離: 31
 | **AB距離** | 24 | 24 |
 | **AC距離** | 23 | 31 |
 | **結論** | Cが近い | Bが近い |
-
----
 
 ### 📊 どちらを使うべき？
 
@@ -933,13 +768,9 @@ AとCのマンハッタン距離: 31
 
 **どちらが正しいというわけではありません。** 問題に応じて適切な指標を選ぶことが大切です。
 
----
-
 ### 💡 GitHub Copilot活用ガイド
 
 マンハッタン距離の理解を深めるために、Copilotを活用してさまざまな実験をしてみましょう。
-
----
 
 #### 🚀 使えるプロンプト例
 
@@ -963,8 +794,6 @@ scipyは使わず、基本的な計算で実装してください。
 2. 生成されたコードを `test_manhattan.py` として保存
 3. 実行して、`scipy.spatial.distance.cityblock()` と同じ結果になるか確認
 
----
-
 ##### プロンプト例2: ユークリッド距離との比較 [★★☆]
 
 **Copilot Chatに入力**:
@@ -983,8 +812,6 @@ Rで2つのベクトルについて、ユークリッド距離とマンハッタ
 1. コードを生成して実行
 2. ベクトルBの値を変えて、どちらの距離が大きくなるか実験
 3. 両者の差が大きくなるのはどんな場合か考察
-
----
 
 ##### プロンプト例3: 可視化 [★★★]
 
@@ -1006,8 +833,6 @@ matplotlibを使って、直線経路と碁盤目経路を描画してくださ�
 1. コードを生成して実行
 2. 点Bの座標を変えて、経路の違いを観察
 3. どんな場合に2つの距離が大きく異なるか考える
-
----
 
 #### 📚 Copilot活用のコツ
 
@@ -1057,8 +882,6 @@ TypeError: unsupported operand type(s) for -: 'list' and 'list'
 具体例を挙げて説明してください。
 ```
 
----
-
 #### ⚠️ 注意事項
 
 ##### **関数名の違いに注意**
@@ -1070,8 +893,6 @@ TypeError: unsupported operand type(s) for -: 'list' and 'list'
 
 ##### **次元数を確認**
 2つのベクトルの要素数（次元）が一致していることを確認しましょう。
-
----
 
 #### 🎓 推奨される学習の流れ
 
@@ -1089,8 +910,6 @@ TypeError: unsupported operand type(s) for -: 'list' and 'list'
 
 **マンハッタン距離の特性を理解したら、次は「類似度」の指標を学びましょう！**
 
----
-
 ## 3.5.3 コサイン類似度 - ベクトルの向きの類似性
 
 ### 📐 コサイン類似度とは？
@@ -1107,8 +926,6 @@ TypeError: unsupported operand type(s) for -: 'list' and 'list'
   - 数値は違うが、**比率が同じ**（Bは全部2倍）→ 向きは同じ
 
 - 文書の類似性判定（自然言語処理でよく使われる）
-
----
 
 ### 🎯 幾何学的な意味
 
@@ -1128,8 +945,6 @@ TypeError: unsupported operand type(s) for -: 'list' and 'list'
 - -1に近いほど反対向き
 - 0は無関係（直交）
 
----
-
 ### 📊 数学的定義
 
 2つのベクトル $x = (x_1, x_2, \ldots, x_n)$ と $y = (y_1, y_2, \ldots, y_n)$ のコサイン類似度:
@@ -1144,8 +959,6 @@ $$
 - $||y||$ : ベクトルyの長さ（ノルム）
 
 **読み方**: 「内積を、それぞれの長さの積で割る」
-
----
 
 ### 💡 計算の手順
 
@@ -1174,8 +987,6 @@ $$
 $$
 
 **結果**: AとBのコサイン類似度は約**0.817**
-
----
 
 ### 🔍 具体例で理解する
 
@@ -1218,11 +1029,9 @@ $$
 
 → コサイン類似度で測ると、**Aに似ているのはB**です。
 
----
-
 ### 💻 サンプルプログラム5: コサイン類似度（R）
 
-**ファイル名**: `sample03_cosine.R`
+**ファイル名**: `my3-5-03_cosine.R`
 
 ```r
 # コサイン類似度の計算
@@ -1265,7 +1074,7 @@ if (cosine_AB > cosine_AC) {
 **実行方法**:
 
 ```bash
-Rscript sample03_cosine.R
+Rscript my3-5-03_cosine.R
 ```
 
 **期待される出力**:
@@ -1276,11 +1085,9 @@ Rscript sample03_cosine.R
 [1] "結論: Aに似ているのはB"
 ```
 
----
-
 ### 💻 サンプルプログラム6: コサイン類似度（Python）
 
-**ファイル名**: `sample03_cosine.py`
+**ファイル名**: `my3-5-03_cosine.py`
 
 ```python
 # コサイン類似度の計算
@@ -1312,7 +1119,7 @@ else:
 **実行方法**:
 
 ```bash
-python sample03_cosine.py
+python my3-5-03_cosine.py
 ```
 
 **期待される出力**:
@@ -1322,8 +1129,6 @@ AとBのコサイン類似度: 0.8170
 AとCのコサイン類似度: -0.0327
 結論: Aに似ているのはB
 ```
-
----
 
 ### ⚠️ 重要な注意: distance.cosineの挙動
 
@@ -1342,8 +1147,6 @@ cosine_sim = distance.cosine(A, B)  # これは距離
 # ✅ 正しい
 cosine_sim = 1 - distance.cosine(A, B)  # これが類似度
 ```
-
----
 
 ### 🤔 「距離」という名前だが、実は距離ではない？
 
@@ -1371,8 +1174,6 @@ print(f"三角不等式を満たす? {d_AC <= d_AB + d_BC}")
 
 **結論**: コサイン距離を**非類似度**と考えるのは問題ありませんが、厳密な意味での**距離**とは考えないほうがよいでしょう。
 
----
-
 ### 🔄 コサイン類似度の特徴
 
 #### 利点
@@ -1390,104 +1191,9 @@ print(f"三角不等式を満たす? {d_AC <= d_AB + d_BC}")
 
 2. **負の値の扱い**: 解釈が難しくなることがある
 
----
-
-### 📚 参考: より実践的な書き方
-
-**現時点では基本版で十分です。**以下は参考として眺めるだけで構いません。
-
-#### 発展版（Python）
-
-**ファイル名**: `sample03_advanced.py`
-
-```python
-import numpy as np
-from scipy.spatial import distance
-from typing import Tuple
-
-def cosine_similarity(x: np.ndarray, y: np.ndarray) -> float:
-    """
-    2つのベクトルのコサイン類似度を計算
-    
-    Parameters:
-    -----------
-    x, y : np.ndarray
-        1次元配列（同じ長さ）
-    
-    Returns:
-    --------
-    float
-        コサイン類似度 (-1 ~ 1)
-    """
-    if len(x) != len(y):
-        raise ValueError("ベクトルの長さが一致しません")
-    
-    # ゼロベクトルのチェック
-    norm_x = np.linalg.norm(x)
-    norm_y = np.linalg.norm(y)
-    
-    if norm_x == 0 or norm_y == 0:
-        raise ValueError("ゼロベクトルはコサイン類似度を計算できません")
-    
-    # 内積 / (長さの積)
-    return np.dot(x, y) / (norm_x * norm_y)
-
-def compare_similarities(data_dict: dict) -> None:
-    """
-    複数のデータの類似度を比較
-    
-    Parameters:
-    -----------
-    data_dict : dict
-        キー: データ名、値: ベクトル
-    """
-    names = list(data_dict.keys())
-    
-    print("=== コサイン類似度の比較 ===")
-    for i in range(len(names)):
-        for j in range(i+1, len(names)):
-            name1, name2 = names[i], names[j]
-            vec1, vec2 = data_dict[name1], data_dict[name2]
-            
-            sim = cosine_similarity(vec1, vec2)
-            print(f"{name1} vs {name2}: {sim:.4f}")
-
-def main():
-    # データ定義
-    data = {
-        'A': np.array([3,  4,  5]),
-        'B': np.array([3,  4, 29]),
-        'C': np.array([9, -18,  8])
-    }
-    
-    # 比較実行
-    compare_similarities(data)
-    
-    # 参考: scipyとの比較
-    print("\n=== scipy.spatial.distanceとの比較 ===")
-    for i, name1 in enumerate(data.keys()):
-        for name2 in list(data.keys())[i+1:]:
-            sim_custom = cosine_similarity(data[name1], data[name2])
-            sim_scipy = 1 - distance.cosine(data[name1], data[name2])
-            print(f"{name1} vs {name2}: custom={sim_custom:.6f}, scipy={sim_scipy:.6f}")
-
-if __name__ == "__main__":
-    main()
-```
-
-**発展版の特徴**:
-- エラーハンドリング（ゼロベクトルのチェック）
-- 複数データの一括比較機能
-- 型ヒントとdocstring
-- 保守性の高い構造
-
----
-
 ### 💡 GitHub Copilot活用ガイド
 
 コサイン類似度は概念的に少し難しいですが、Copilotと一緒に実験することで理解が深まります。
-
----
 
 #### 🚀 使えるプロンプト例
 
@@ -1512,8 +1218,6 @@ scipyは使わず、NumPyだけを使います。
 2. ベクトルの値を変えて、類似度がどう変わるか観察
 3. 片方のベクトルを2倍にしても類似度は変わらないことを確認
 
----
-
 ##### プロンプト例2: スケール不変性の実験 [★★☆]
 
 **Copilot Chatに入力**:
@@ -1535,8 +1239,6 @@ Rでコサイン類似度のスケール不変性を確認するコードを書�
 1. コードを実行して、すべての類似度が1になることを確認
 2. ユークリッド距離でも同じことをやってみる（こちらは変化する）
 3. 2つの指標の違いを考察
-
----
 
 ##### プロンプト例3: 角度の可視化 [★★★]
 
@@ -1560,8 +1262,6 @@ matplotlibで以下を描画してください:
 2. ベクトルBの値を変えて、角度と類似度の関係を観察
 3. 90度（直交）の時、類似度が0になることを確認
 
----
-
 ##### プロンプト例4: 推薦システムのシミュレーション [★★★]
 
 **Copilot Chatに入力**:
@@ -1582,8 +1282,6 @@ Pythonでコサイン類似度を使った簡単な映画推薦システムを�
 1. コードを実行して結果を確認
 2. 評価を変えて、推薦結果がどう変わるか実験
 3. 実際の推薦システムでの応用を考える
-
----
 
 #### 📚 Copilot活用のコツ
 
@@ -1631,8 +1329,6 @@ print(f"コサイン類似度: {cosine_sim}")
 # 「テキストデータをベクトル化してコサイン類似度を計算する例を教えてください」
 ```
 
----
-
 #### ⚠️ 注意事項
 
 ##### **1から引くのを忘れずに（Python）**
@@ -1646,8 +1342,6 @@ print(f"コサイン類似度: {cosine_sim}")
 - ユークリッド距離が小さい = 位置が近い
 
 この2つは別の概念です！
-
----
 
 #### 🎓 推奨される学習の流れ
 
@@ -1667,8 +1361,6 @@ print(f"コサイン類似度: {cosine_sim}")
 
 **コサイン類似度は最初は難しく感じるかもしれませんが、実験を重ねることで理解が深まります！**
 
----
-
 ## 3.5.4 相関係数 - 直線的な関係の強さ
 
 ### 📊 相関係数とは？
@@ -1676,8 +1368,6 @@ print(f"コサイン類似度: {cosine_sim}")
 **相関係数**（ピアソンの積率相関係数）は、2つのデータ間の**直線的な関係の強さ**を測る指標です。
 
 コサイン類似度に似ていますが、相関係数は**平均値からのずれ**に注目します。
-
----
 
 ### 🎯 相関の種類
 
@@ -1698,8 +1388,6 @@ print(f"コサイン類似度: {cosine_sim}")
 #### 相関なしの例
 - 身長と数学の成績（特に関係がない）
 
----
-
 ### 📐 数学的定義
 
 2つのベクトル $x = (x_1, x_2, \ldots, x_n)$ と $y = (y_1, y_2, \ldots, y_n)$ の相関係数、
@@ -1714,8 +1402,6 @@ $$
 
 **読み方**: 「平均からの偏差の積の和を、それぞれの標準偏差の積で割る」
 
----
-
 ### 🔍 コサイン類似度との違い
 
 | 項目 | コサイン類似度 | 相関係数 |
@@ -1726,8 +1412,6 @@ $$
 | **位置** | 考慮しない | 平均からの位置を考慮 |
 
 **例**: データが全体的に大きい値でも小さい値でも、相関係数は変わりません。
-
----
 
 ### 💡 具体例で理解する
 
@@ -1782,11 +1466,9 @@ $$
 
 → 相関係数で測ると、**Aに似ているのはB**です。
 
----
-
 ### 💻 サンプルプログラム7: 相関係数（R）
 
-**ファイル名**: `sample04_correlation.R`
+**ファイル名**: `my3-5-04_correlation.R`
 
 ```r
 # 相関係数の計算
@@ -1831,7 +1513,7 @@ print(paste("AとC:", interpret_correlation(correlation_AC)))
 **実行方法**:
 
 ```bash
-Rscript sample04_correlation.R
+Rscript my3-5-04_correlation.R
 ```
 
 **期待される出力**:
@@ -1846,11 +1528,9 @@ Rscript sample04_correlation.R
 [1] "AとC: 弱い相関"
 ```
 
----
-
 ### 💻 サンプルプログラム8: 相関係数（Python）
 
-**ファイル名**: `sample04_correlation.py`
+**ファイル名**: `my3-5-04_correlation.py`
 
 ```python
 # 相関係数の計算
@@ -1899,7 +1579,7 @@ print(f"AとC: {interpret_correlation(correlation_AC_2)}")
 **実行方法**:
 
 ```bash
-python sample04_correlation.py
+python my3-5-04_correlation.py
 ```
 
 **期待される出力**:
@@ -1909,12 +1589,9 @@ AとBの相関係数: 0.8825
 AとCの相関係数: -0.0327
 結論: Aに似ているのはB
 
---- 相関の強さの解釈 ---
-AとB: 強い相関
+--- 相関の強さの解釈 AとB: 強い相関
 AとC: 弱い相関
 ```
-
----
 
 ### ⚠️ 重要な注意: Pythonの2つの方法
 
@@ -1938,8 +1615,6 @@ correlation, p_value = pearsonr(A, B)
 - 単純に相関係数だけ欲しい → どちらでもOK
 - 統計的な有意性も知りたい → `pearsonr()`を推奨
 
----
-
 ### 📊 相関係数の注意点
 
 #### 1. **相関 ≠ 因果関係**
@@ -1958,13 +1633,9 @@ correlation, p_value = pearsonr(A, B)
 
 1つの極端な値が相関係数を大きく変えることがあります。
 
----
-
 ### 💡 GitHub Copilot活用ガイド
 
 相関係数は実務で非常によく使われる指標です。Copilotを活用して、さまざまなデータで実験してみましょう。
-
----
 
 #### 🚀 使えるプロンプト例
 
@@ -1990,8 +1661,6 @@ matplotlibを使って、散布図に回帰直線も描いてください。
 2. yの値を変えて、相関係数がどう変わるか観察
 3. 完全な正の相関（r=1）や負の相関（r=-1）を作ってみる
 
----
-
 ##### プロンプト例2: 相関係数の比較 [★★☆]
 
 **Copilot Chatに入力**:
@@ -2012,8 +1681,6 @@ Rで3組のデータペアの相関係数を計算して比較するコードを
 1. 生成されたコードを実行
 2. 各ペアのデータをプロットして視覚化
 3. 相関係数の値と散布図の形の関係を観察
-
----
 
 ##### プロンプト例3: 外れ値の影響を実験 [★★★]
 
@@ -2036,8 +1703,6 @@ Pythonで外れ値が相関係数に与える影響を調べるコードを書�
 2. 外れ値の位置や大きさを変えて実験
 3. どんな場合に影響が大きいか考察
 
----
-
 ##### プロンプト例4: 実データでの応用 [★★★]
 
 **Copilot Chatに入力**:
@@ -2057,8 +1722,6 @@ Pythonで架空の学生データを作成し、勉強時間と成績の相関�
 1. コードを実行して結果を観察
 2. データのパターンを変えて実験（例: 相関なし）
 3. 実際の分析でどう使えるか考える
-
----
 
 #### 📚 Copilot活用のコツ
 
@@ -2104,8 +1767,6 @@ if p_value < 0.05:
 # 「同じデータでコサイン類似度と相関係数を計算し、違いを説明してください」
 ```
 
----
-
 #### ⚠️ 注意事項
 
 ##### **相関と因果を混同しない**
@@ -2116,8 +1777,6 @@ if p_value < 0.05:
 
 ##### **標本サイズの影響**
 データ数が少ないと、偶然高い相関が出ることがあります。
-
----
 
 #### 🎓 推奨される学習の流れ
 
@@ -2137,8 +1796,6 @@ if p_value < 0.05:
 
 **相関係数は実務で最もよく使われる統計量の1つです。しっかり理解しておきましょう！**
 
----
-
 ## 3.5.5 データフレームを使う方法 - まとめて計算
 
 ### 🎯 複数データの一括比較
@@ -2150,8 +1807,6 @@ if p_value < 0.05:
 - 100人の顧客の類似度を全ペアで計算
 
 こういう時に便利なのが、**データフレーム**を使った一括計算です。
-
----
 
 ### 📊 距離行列とは？
 
@@ -2171,11 +1826,9 @@ C   23   31    0
 - 対称（AとBの距離 = BとAの距離）
 - 全ペアの関係が一目でわかる
 
----
-
 ### 💻 サンプルプログラム9: 一括計算（R）
 
-**ファイル名**: `sample05_dataframe.R`
+**ファイル名**: `my3-5-05_dataframe.R`
 
 ```r
 # データフレームを使った(非)類似度の一括計算
@@ -2227,7 +1880,7 @@ print("- 相関係数: B（0.882）")
 **実行方法**:
 
 ```bash
-Rscript sample05_dataframe.R
+Rscript my3-5-05_dataframe.R
 ```
 
 **期待される出力**:
@@ -2267,11 +1920,9 @@ C -0.0326628  0.4412413
 [1] "- 相関係数: B（0.882）"
 ```
 
----
-
 ### 💻 サンプルプログラム10: 一括計算（Python）
 
-**ファイル名**: `sample05_dataframe.py`
+**ファイル名**: `my3-5-05_dataframe.py`
 
 ```python
 # データフレームを使った(非)類似度の一括計算
@@ -2326,7 +1977,7 @@ print("- 相関係数: B（0.882）")
 **実行方法**:
 
 ```bash
-python sample05_dataframe.py
+python my3-5-05_dataframe.py
 ```
 
 **期待される出力**:
@@ -2366,8 +2017,6 @@ Aに最も似ているのは:
 - 相関係数: B（0.882）
 ```
 
----
-
 ### 🔍 R vs Python の比較
 
 | 項目 | R | Python |
@@ -2377,8 +2026,6 @@ Aに最も似ているのは:
 | **類似度計算** | `proxy::simil()` | `1 - distance.cdist()` |
 | **出力形式** | 下三角行列 | 完全な行列 |
 | **パイプ** | `%>%` 使用可 | メソッドチェーン |
-
----
 
 ### 📊 結果の読み方
 
@@ -2405,8 +2052,6 @@ C 23 31
 - 行: A, B, C / 列: A, B, C
 - (0,1)要素 = AとBの距離 = 24
 
----
-
 ### 🎯 実践的な使い方
 
 #### 最も似ているペアを見つける
@@ -2428,158 +2073,9 @@ for i in range(n):
 print(f"最も近いペア: {min_pair}, 距離: {min_dist}")
 ```
 
----
-
-### 📚 参考: より実践的な書き方
-
-**現時点では基本版で十分です。**以下は参考として眺めるだけで構いません。
-
-#### 発展版（Python）
-
-**ファイル名**: `sample05_advanced.py`
-
-```python
-import numpy as np
-import pandas as pd
-from scipy.spatial import distance
-from typing import Dict, Tuple
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-class SimilarityAnalyzer:
-    """複数データの類似度を分析するクラス"""
-    
-    def __init__(self, data: pd.DataFrame):
-        """
-        Parameters:
-        -----------
-        data : pd.DataFrame
-            行がデータ点、列が特徴量
-        """
-        self.data = data
-        self.n = len(data)
-        
-    def compute_all_metrics(self) -> Dict[str, np.ndarray]:
-        """全ての距離・類似度指標を計算"""
-        metrics = {}
-        
-        # 距離
-        metrics['euclidean'] = distance.cdist(
-            self.data, self.data, metric='euclidean')
-        metrics['manhattan'] = distance.cdist(
-            self.data, self.data, metric='cityblock')
-        
-        # 類似度（1から引く必要がある）
-        metrics['cosine'] = 1 - distance.cdist(
-            self.data, self.data, metric='cosine')
-        metrics['correlation'] = 1 - distance.cdist(
-            self.data, self.data, metric='correlation')
-        
-        return metrics
-    
-    def find_most_similar(self, metric_name: str, 
-                         is_similarity: bool = False) -> Tuple[str, str, float]:
-        """
-        最も類似したペアを見つける
-        
-        Parameters:
-        -----------
-        metric_name : str
-            指標名（'euclidean', 'cosine'など）
-        is_similarity : bool
-            類似度かどうか（Trueなら最大値、Falseなら最小値を探す）
-        """
-        metrics = self.compute_all_metrics()
-        matrix = metrics[metric_name]
-        
-        best_value = -np.inf if is_similarity else np.inf
-        best_pair = None
-        
-        for i in range(self.n):
-            for j in range(i+1, self.n):
-                value = matrix[i, j]
-                if (is_similarity and value > best_value) or \
-                   (not is_similarity and value < best_value):
-                    best_value = value
-                    best_pair = (self.data.index[i], self.data.index[j])
-        
-        return best_pair[0], best_pair[1], best_value
-    
-    def visualize_heatmap(self, metric_name: str):
-        """距離または類似度のヒートマップを描画"""
-        metrics = self.compute_all_metrics()
-        matrix = metrics[metric_name]
-        
-        plt.figure(figsize=(8, 6))
-        sns.heatmap(matrix, 
-                    xticklabels=self.data.index,
-                    yticklabels=self.data.index,
-                    annot=True, 
-                    fmt='.2f',
-                    cmap='coolwarm',
-                    center=0)
-        plt.title(f'{metric_name.capitalize()} Matrix')
-        plt.tight_layout()
-        plt.savefig(f'{metric_name}_heatmap.png')
-        print(f"ヒートマップを保存: {metric_name}_heatmap.png")
-    
-    def summarize(self):
-        """全指標の結果を要約"""
-        print("=== 類似度分析の要約 ===\n")
-        
-        distance_metrics = [
-            ('euclidean', 'ユークリッド距離', False),
-            ('manhattan', 'マンハッタン距離', False)
-        ]
-        
-        similarity_metrics = [
-            ('cosine', 'コサイン類似度', True),
-            ('correlation', '相関係数', True)
-        ]
-        
-        for metric, name, is_sim in distance_metrics + similarity_metrics:
-            pair1, pair2, value = self.find_most_similar(metric, is_sim)
-            print(f"{name}:")
-            print(f"  最も{'類似' if is_sim else '近い'}ペア: {pair1} と {pair2}")
-            print(f"  値: {value:.4f}\n")
-
-def main():
-    # データ作成
-    my_df = pd.DataFrame({
-        'x': [3,  4,  5],
-        'y': [3,  4, 29],
-        'z': [9, -18,  8]},
-        index=['A', 'B', 'C']
-    )
-    
-    # 分析実行
-    analyzer = SimilarityAnalyzer(my_df)
-    
-    # 要約表示
-    analyzer.summarize()
-    
-    # ヒートマップ作成
-    for metric in ['euclidean', 'cosine']:
-        analyzer.visualize_heatmap(metric)
-
-if __name__ == "__main__":
-    main()
-```
-
-**発展版の特徴**:
-- クラスベースの設計
-- 複数指標の一括処理
-- ヒートマップの可視化
-- エラーハンドリング
-- 再利用可能な構造
-
----
-
 ### 💡 GitHub Copilot活用ガイド
 
 データフレームを使った一括計算は、実際のデータ分析で非常によく使います。Copilotで効率的に学びましょう。
-
----
 
 #### 🚀 使えるプロンプト例
 
@@ -2601,8 +2097,6 @@ Pythonで5つのデータ点について、全ペアのユークリッド距離�
 1. コードを生成して実行
 2. データ点の数を変えて実験
 3. ヒートマップで近いペアを視覚的に特定
-
----
 
 ##### プロンプト例2: 最も類似したペアを見つける [★★☆]
 
@@ -2627,8 +2121,6 @@ D = c(3, 2, 1)
 2. データを変えて結果がどう変わるか実験
 3. 距離指標でも同様のコードを書いてみる
 
----
-
 ##### プロンプト例3: 複数指標の比較 [★★★]
 
 **Copilot Chatに入力**:
@@ -2647,8 +2139,6 @@ Pythonで同じデータに対して、4つの指標
 1. コードを実行して4つの指標を比較
 2. どの指標が似た結果を示すか観察
 3. 指標による結論の違いを考察
-
----
 
 ##### プロンプト例4: クラスタリングへの応用 [★★★]
 
@@ -2669,8 +2159,6 @@ Pythonでユークリッド距離行列を使って、
 1. コードを実行してクラスタリング結果を観察
 2. 距離指標を変えて結果がどう変わるか実験
 3. 本節の内容が次の分析にどう繋がるか理解
-
----
 
 #### 📚 Copilot活用のコツ
 
@@ -2711,8 +2199,6 @@ if len(my_df) < 2:
     print("エラー: 少なくとも2つのデータが必要です")
 ```
 
----
-
 #### ⚠️ 注意事項
 
 ##### **転置に注意（RとPythonで異なる）**
@@ -2733,8 +2219,6 @@ if len(my_df) < 2:
 
 距離・類似度行列は対称です（A→Bの距離 = B→Aの距離）。
 
----
-
 #### 🎓 推奨される学習の流れ
 
 ```
@@ -2753,8 +2237,6 @@ if len(my_df) < 2:
 
 **データフレームを使った一括計算は、実務で頻繁に使う技術です。しっかりマスターしましょう！**
 
----
-
 ## 3.5.6 統合演習 - 実データで類似度を比較
 
 ### 🎯 演習の目的
@@ -2764,8 +2246,6 @@ if len(my_df) < 2:
 1. 複数のデータについて、4つの指標を全て計算
 2. 指標によって結論がどう変わるかを観察
 3. 適切な指標の選び方を考察
-
----
 
 ### 📊 演習課題: 都市の気候データの類似性分析
 
@@ -2792,11 +2272,9 @@ if len(my_df) < 2:
 3. 指標によって結論がどう異なるかを考察
 4. 結果をヒートマップで可視化（オプション）
 
----
-
 ### 💻 演習課題ファイル: Python版
 
-**ファイル名**: `exercise01_similarity.py`
+**ファイル名**: `ex3-5-01_similarity.py`
 
 ```python
 # 演習課題: 都市の気候データの類似性分析
@@ -2902,14 +2380,12 @@ print("あなたの考察をここに追加してください。")
 **実行方法**:
 
 ```bash
-python exercise01_similarity.py
+python ex3-5-01_similarity.py
 ```
-
----
 
 ### 💻 演習課題ファイル: R版
 
-**ファイル名**: `exercise01_similarity.R`
+**ファイル名**: `ex3-5-01_similarity.R`
 
 ```r
 # 演習課題: 都市の気候データの類似性分析
@@ -3031,10 +2507,8 @@ cat("あなたの考察をここに追加してください。\n")
 **実行方法**:
 
 ```bash
-Rscript exercise01_similarity.R
+Rscript ex3-5-01_similarity.R
 ```
-
----
 
 ### 🤔 考察のポイント
 
@@ -3065,8 +2539,6 @@ Rscript exercise01_similarity.R
 - 「気温の絶対値が似ている都市を探す」→ ユークリッド距離
 - 「季節変動のパターンが似ている都市を探す」→ 相関係数
 - 「気候の特徴が似ている都市を探す」→ コサイン類似度
-
----
 
 ### 🎯 追加の演習（チャレンジ）
 
@@ -3107,15 +2579,11 @@ plt.show()
 - 降水量などの別の気候要素を分析
 - 異なるドメインのデータ（株価、スポーツ成績など）で分析
 
----
-
 ## 3.5.7 まとめと学習チェックリスト
 
 ### 📚 本節のまとめ
 
 本節では、1次元データの**類似度**と**非類似度**を測る4つの指標を学びました。
-
----
 
 ### 🎯 4つの指標の特徴まとめ
 
@@ -3125,8 +2593,6 @@ plt.show()
 | **マンハッタン距離** | 非類似度 | 0以上 | 碁盤目状の距離 | 外れ値に強い、計算が速い |
 | **コサイン類似度** | 類似度 | -1〜1 | ベクトルの向き | 文書類似度、高次元データ |
 | **相関係数** | 類似度 | -1〜1 | 直線的な関係 | 統計分析、トレンド比較 |
-
----
 
 ### 🔍 指標の選び方
 
@@ -3156,8 +2622,6 @@ plt.show()
 - トレンドの類似性
 - 散布図との組み合わせ
 
----
-
 ### 💡 重要なポイント
 
 #### 1. 指標によって結論が変わる
@@ -3179,8 +2643,6 @@ plt.show()
 #### 4. データフレームでの一括計算
 
 実務では、複数データの全ペアを一度に計算することが多いです。RやPythonの便利な関数を活用しましょう。
-
----
 
 ### 🛠️ 実装の要点
 
@@ -3225,8 +2687,6 @@ pearsonr(A, B)[0]
 distance.cdist(my_df, my_df, metric='euclidean')
 ```
 
----
-
 ### 🔗 次のステップ
 
 本節で学んだ類似度・非類似度の概念は、以下の発展的なトピックの基礎となります。
@@ -3237,13 +2697,9 @@ distance.cdist(my_df, my_df, metric='euclidean')
 4. **次元削減**: 高次元データの可視化
 5. **機械学習**: k近傍法など、距離ベースのアルゴリズム
 
----
-
 ### ✅ 自己チェックリスト
 
 本節の学習内容を確認しましょう。できた項目にチェック☑️を入れてください。
-
----
 
 #### A. 環境構築と基本操作 (8項目)
 
@@ -3255,8 +2711,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] Rのtidyverseとproxyパッケージがインストールされている
 - [ ] VS Codeでプログラムを編集できる
 - [ ] ターミナルで実行結果を確認できる
-
----
 
 #### B. 基本概念の理解 (12項目)
 
@@ -3273,8 +2727,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] 相関と因果の違いを理解している
 - [ ] 三角不等式の概念を知っている
 
----
-
 #### C. ユークリッド距離 (8項目)
 
 - [ ] ユークリッド距離の定義を説明できる
@@ -3286,8 +2738,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] どんな場面で使うべきか説明できる
 - [ ] サンプルプログラムを実行して結果を確認した
 
----
-
 #### D. マンハッタン距離 (8項目)
 
 - [ ] マンハッタン距離の定義を説明できる
@@ -3298,8 +2748,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] 碁盤目状の移動のイメージを持っている
 - [ ] どんな場面で使うべきか説明できる
 - [ ] サンプルプログラムを実行して結果を確認した
-
----
 
 #### E. コサイン類似度 (10項目)
 
@@ -3314,8 +2762,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] コサイン距離が厳密な距離でないことを知っている
 - [ ] サンプルプログラムを実行して結果を確認した
 
----
-
 #### F. 相関係数 (10項目)
 
 - [ ] 相関係数の定義を説明できる
@@ -3329,8 +2775,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] 外れ値の影響を受けることを知っている
 - [ ] サンプルプログラムを実行して結果を確認した
 
----
-
 #### G. データフレームでの一括計算 (10項目)
 
 - [ ] データフレームの構造を理解している
@@ -3343,8 +2787,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] 複数データの全ペアを一括計算できる
 - [ ] 最も類似したペアを見つけることができる
 - [ ] サンプルプログラムを実行して結果を確認した
-
----
 
 #### H. プログラミングスキル (12項目)
 
@@ -3361,8 +2803,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] プログラムを段階的にデバッグできる
 - [ ] 他人が読みやすいコードを書ける
 
----
-
 #### I. AI協働スキル (10項目)
 
 - [ ] GitHub Copilot Chatを起動できる
@@ -3376,8 +2816,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] AIに丸投げせず、自分で考えることを忘れない
 - [ ] AI協働学習の適切なバランスを理解している
 
----
-
 #### J. 統合演習 (8項目)
 
 - [ ] 演習課題を最後まで実行した
@@ -3389,8 +2827,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] 自分のデータで実験した（オプション）
 - [ ] クラスタリングを試した（オプション）
 
----
-
 #### K. 応用と発展 (6項目)
 
 - [ ] 実データで類似度分析ができる
@@ -3399,8 +2835,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - [ ] 結果を解釈して説明できる
 - [ ] 次の学習ステップ（クラスタリングなど）を知っている
 - [ ] 類似度の概念を他の分野に応用できる
-
----
 
 ### 📊 達成度評価
 
@@ -3413,8 +2847,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 | **40-59** | 🌟 合格 | 基本は押さえています。復習で理解を深めましょう |
 | **20-39** | △ 要復習 | もう一度サンプルプログラムを実行しましょう |
 | **0-19** | ✗ 未達 | 基礎から丁寧に学び直しましょう |
-
----
 
 ### 🎯 復習のポイント
 
@@ -3445,8 +2877,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
 - 追加のチャレンジ課題に取り組む
 - 自分のデータで実験
 
----
-
 ### 📖 さらに学びたい人へ
 
 #### 推奨される参考資料
@@ -3464,8 +2894,6 @@ distance.cdist(my_df, my_df, metric='euclidean')
    - 高次元データでの距離の性質（次元の呪い）
    - 距離学習（metric learning）
 
----
-
 ### 🎓 最後に
 
 データサイエンスにおいて、「似ている」を定量化する能力は非常に重要です。本節で学んだ4つの指標は、今後のデータ分析の基礎となります。
@@ -3477,3 +2905,5 @@ distance.cdist(my_df, my_df, metric='euclidean')
 4. **疑問を大切に**: わからないことがあれば、それが学びのチャンス
 
 本節の学習、お疲れさまでした！
+
+次の節では、これらの類似度の概念を実際のデータ分析でどう活用するかを学んでいきます。🚀

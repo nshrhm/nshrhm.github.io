@@ -134,7 +134,7 @@ Pythonが起動したら、以下を実行してライブラリを読み込み�
 
 データを**列ごとに**記述してデータフレームを作成する方法です。これは最も基本的な方法で、各列（変数）のデータをまとめて指定します。
 
-#### 📝 sample01_create_column.py
+#### 📝 my3-4-01_create_column.py
 
 ```python
 # pandasライブラリを読み込む
@@ -155,7 +155,7 @@ print(my_df)
 **実行方法：**
 
 ```bash
-(class) $ python sample01_create_column.py
+(class) $ python my3-4-01_create_column.py
 ```
 
 **期待される出力：**
@@ -168,7 +168,7 @@ print(my_df)
 3    D       90   100      f
 ```
 
-#### 📝 sample01_create_column.R
+#### 📝 my3-4-01_create_column.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -189,7 +189,7 @@ print(my_df)
 **実行方法：**
 
 ```bash
-$ Rscript sample01_create_column.R
+$ Rscript my3-4-01_create_column.R
 ```
 
 **期待される出力：**
@@ -232,7 +232,7 @@ $ Rscript sample01_create_column.R
 
 データを**行ごとに**記述してデータフレームを作成する方法です。表の見た目のとおりに入力できるので、直感的でわかりやすい方法です。
 
-#### 📝 sample02_create_row.py
+#### 📝 my3-4-02_create_row.py
 
 ```python
 # pandasライブラリを読み込む
@@ -253,7 +253,7 @@ print(my_df)
 **実行方法：**
 
 ```bash
-(class) $ python sample02_create_row.py
+(class) $ python my3-4-02_create_row.py
 ```
 
 **期待される出力：**
@@ -266,7 +266,7 @@ print(my_df)
 3    D       90   100      f
 ```
 
-#### 📝 sample02_create_row.R
+#### 📝 my3-4-02_create_row.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -288,7 +288,7 @@ print(my_df)
 **実行方法：**
 
 ```bash
-$ Rscript sample02_create_row.R
+$ Rscript my3-4-02_create_row.R
 ```
 
 **期待される出力：**
@@ -335,7 +335,7 @@ $ Rscript sample02_create_row.R
 
 作成したデータフレームのサイズ（行数と列数）を確認する方法を学びましょう。
 
-#### 📝 sample03_dataframe_size.py
+#### 📝 my3-4-03_dataframe_size.py
 
 ```python
 # pandasライブラリを読み込む
@@ -364,7 +364,7 @@ print(f"列数: {cols}")
 **実行方法：**
 
 ```bash
-(class) $ python sample03_dataframe_size.py
+(class) $ python my3-4-03_dataframe_size.py
 ```
 
 **期待される出力：**
@@ -375,7 +375,7 @@ print(f"列数: {cols}")
 列数: 4
 ```
 
-#### 📝 sample03_dataframe_size.R
+#### 📝 my3-4-03_dataframe_size.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -403,7 +403,7 @@ print(paste("列数:", ncol(my_df)))
 **実行方法：**
 
 ```bash
-$ Rscript sample03_dataframe_size.R
+$ Rscript my3-4-03_dataframe_size.R
 ```
 
 **期待される出力：**
@@ -452,7 +452,7 @@ $ Rscript sample03_dataframe_size.R
 
 この場合、組合せは (1,10), (1,100), (2,10), (2,100), (3,10), (3,100) の6通りです。
 
-#### 📝 sample04_combination.py
+#### 📝 my3-4-04_combination.py
 
 ```python
 # 必要なライブラリを読み込む
@@ -472,7 +472,7 @@ print(my_df)
 **実行方法：**
 
 ```bash
-(class) $ python sample04_combination.py
+(class) $ python my3-4-04_combination.py
 ```
 
 **期待される出力：**
@@ -487,7 +487,7 @@ print(my_df)
 5  3  100
 ```
 
-#### 📝 sample04_combination.R
+#### 📝 my3-4-04_combination.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -506,7 +506,7 @@ print(my_df)
 **実行方法：**
 
 ```bash
-$ Rscript sample04_combination.R
+$ Rscript my3-4-04_combination.R
 ```
 
 **期待される出力：**
@@ -555,7 +555,7 @@ PythonとRで、生成される組合せの順序が異なることに注意し�
 
 データフレームの列名（カラム名）と行名（インデックス）を取得・変更する方法を学びましょう。
 
-#### 📝 sample05_column_row_names.py
+#### 📝 my3-4-05_column_row_names.py
 
 ```python
 # pandasライブラリを読み込む
@@ -589,7 +589,7 @@ print(my_df)
 **実行方法：**
 
 ```bash
-(class) $ python sample05_column_row_names.py
+(class) $ python my3-4-05_column_row_names.py
 ```
 
 **期待される出力：**
@@ -620,7 +620,7 @@ e  3   10
 f  3  100
 ```
 
-#### 📝 sample05_column_row_names.R
+#### 📝 my3-4-05_column_row_names.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -654,7 +654,7 @@ print(my_df)
 **実行方法：**
 
 ```bash
-$ Rscript sample05_column_row_names.R
+$ Rscript my3-4-05_column_row_names.R
 ```
 
 **期待される出力：**
@@ -987,7 +987,7 @@ Copilotを使いながら、「なぜこのコードが生成されたのか」�
 | D | 90 | 100 | f |
 | E | 80 | 80 | m |
 
-#### 📝 sample06_add_row.py
+#### 📝 my3-4-06_add_row.py
 
 ```python
 # pandasライブラリを読み込む
@@ -1022,7 +1022,7 @@ print(my_df2)
 **実行方法：**
 
 ```bash
-(class) $ python sample06_add_row.py
+(class) $ python my3-4-06_add_row.py
 ```
 
 **期待される出力：**
@@ -1044,7 +1044,7 @@ print(my_df2)
 4    E       80    80      m
 ```
 
-#### 📝 sample06_add_row.R
+#### 📝 my3-4-06_add_row.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -1079,7 +1079,7 @@ print(my_df2)
 **実行方法：**
 
 ```bash
-$ Rscript sample06_add_row.R
+$ Rscript my3-4-06_add_row.R
 ```
 
 **期待される出力：**
@@ -1155,7 +1155,7 @@ my_df = pd.concat([my_df, new_row], ignore_index=True)
 | C | 70 | 90 | m | 3 |
 | D | 90 | 100 | f | 4 |
 
-#### 📝 sample07_add_column.py
+#### 📝 my3-4-07_add_column.py
 
 ```python
 # pandasライブラリを読み込む
@@ -1189,7 +1189,7 @@ print(my_df3)
 **実行方法：**
 
 ```bash
-(class) $ python sample07_add_column.py
+(class) $ python my3-4-07_add_column.py
 ```
 
 **期待される出力：**
@@ -1217,7 +1217,7 @@ print(my_df3)
 3    D       90   100      f   4
 ```
 
-#### 📝 sample07_add_column.R
+#### 📝 my3-4-07_add_column.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -1252,7 +1252,7 @@ print(my_df3)
 **実行方法：**
 
 ```bash
-$ Rscript sample07_add_column.R
+$ Rscript my3-4-07_add_column.R
 ```
 
 **期待される出力：**
@@ -1570,7 +1570,7 @@ Copilotに「同じ操作をRで書いてください」と依頼して、Python
 | C | 70 | 90 | m |
 | D | 90 | 100 | f |
 
-#### 📝 sample08_extract_value.py
+#### 📝 my3-4-08_extract_value.py
 
 ```python
 # pandasライブラリを読み込む
@@ -1594,7 +1594,7 @@ print(f"Aのenglishの点数: {value}")
 **実行方法：**
 
 ```bash
-(class) $ python sample08_extract_value.py
+(class) $ python my3-4-08_extract_value.py
 ```
 
 **期待される出力：**
@@ -1603,7 +1603,7 @@ print(f"Aのenglishの点数: {value}")
 Aのenglishの点数: 60
 ```
 
-#### 📝 sample08_extract_value.R
+#### 📝 my3-4-08_extract_value.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -1627,7 +1627,7 @@ print(paste("Aのenglishの点数:", value))
 **実行方法：**
 
 ```bash
-$ Rscript sample08_extract_value.R
+$ Rscript my3-4-08_extract_value.R
 ```
 
 **期待される出力：**
@@ -1676,7 +1676,7 @@ $ Rscript sample08_extract_value.R
 
 **1次元データ**: 60, 90, 70, 90
 
-#### 📝 sample09_extract_column.py
+#### 📝 my3-4-09_extract_column.py
 
 ```python
 # pandasライブラリを読み込む
@@ -1709,7 +1709,7 @@ print(col3)
 **実行方法：**
 
 ```bash
-(class) $ python sample09_extract_column.py
+(class) $ python my3-4-09_extract_column.py
 ```
 
 **期待される出力：**
@@ -1737,7 +1737,7 @@ Name: english, dtype: int64
 Name: english, dtype: int64
 ```
 
-#### 📝 sample09_extract_column.R
+#### 📝 my3-4-09_extract_column.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -1770,7 +1770,7 @@ print(col3)
 **実行方法：**
 
 ```bash
-$ Rscript sample09_extract_column.R
+$ Rscript my3-4-09_extract_column.R
 ```
 
 **期待される出力：**
@@ -1838,7 +1838,7 @@ $ Rscript sample09_extract_column.R
 | C | 90 |
 | D | 100 |
 
-#### 📝 sample10_extract_columns.py
+#### 📝 my3-4-10_extract_columns.py
 
 ```python
 # pandasライブラリを読み込む
@@ -1871,7 +1871,7 @@ print(result3)
 **実行方法：**
 
 ```bash
-(class) $ python sample10_extract_columns.py
+(class) $ python my3-4-10_extract_columns.py
 ```
 
 **期待される出力：**
@@ -1899,7 +1899,7 @@ print(result3)
 3    D   100
 ```
 
-#### 📝 sample10_extract_columns.R
+#### 📝 my3-4-10_extract_columns.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -1932,7 +1932,7 @@ print(result3)
 **実行方法：**
 
 ```bash
-$ Rscript sample10_extract_columns.R
+$ Rscript my3-4-10_extract_columns.R
 ```
 
 **期待される出力：**
@@ -2015,7 +2015,7 @@ my_df[['name', 'math']]  # データフレーム
 | A | 60 | 70 | f |
 | C | 70 | 90 | m |
 
-#### 📝 sample11_extract_rows.py
+#### 📝 my3-4-11_extract_rows.py
 
 ```python
 # pandasライブラリを読み込む
@@ -2048,7 +2048,7 @@ print(result3)
 **実行方法：**
 
 ```bash
-(class) $ python sample11_extract_rows.py
+(class) $ python my3-4-11_extract_rows.py
 ```
 
 **期待される出力：**
@@ -2070,7 +2070,7 @@ print(result3)
 2    C       70    90      m
 ```
 
-#### 📝 sample11_extract_rows.R
+#### 📝 my3-4-11_extract_rows.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -2098,7 +2098,7 @@ print(result2)
 **実行方法：**
 
 ```bash
-$ Rscript sample11_extract_rows.R
+$ Rscript my3-4-11_extract_rows.R
 ```
 
 **期待される出力：**
@@ -2164,7 +2164,7 @@ my_df[2:3, ]  # 2行目から3行目
 | B | 90 | 80 | m |
 | C | 70 | 90 | m |
 
-#### 📝 sample12_filter.py
+#### 📝 my3-4-12_filter.py
 
 ```python
 # pandasライブラリを読み込む
@@ -2203,7 +2203,7 @@ print(result4)
 **実行方法：**
 
 ```bash
-(class) $ python sample12_filter.py
+(class) $ python my3-4-12_filter.py
 ```
 
 **期待される出力：**
@@ -2229,7 +2229,7 @@ print(result4)
 3    D       90   100      f
 ```
 
-#### 📝 sample12_filter.R
+#### 📝 my3-4-12_filter.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -2267,7 +2267,7 @@ print(result4)
 **実行方法：**
 
 ```bash
-$ Rscript sample12_filter.R
+$ Rscript my3-4-12_filter.R
 ```
 
 **期待される出力：**
@@ -2368,7 +2368,7 @@ my_df[(my_df['english'] > 80) & (my_df['gender'] == 'm')]
 | B | 90 | 80 | m |
 | D | 90 | 100 | f |
 
-#### 📝 sample13_sort.py
+#### 📝 my3-4-13_sort.py
 
 ```python
 # pandasライブラリを読み込む
@@ -2402,7 +2402,7 @@ print(result3)
 **実行方法：**
 
 ```bash
-(class) $ python sample13_sort.py
+(class) $ python my3-4-13_sort.py
 ```
 
 **期待される出力：**
@@ -2430,7 +2430,7 @@ print(result3)
 0    A       60    70      f
 ```
 
-#### 📝 sample13_sort.R
+#### 📝 my3-4-13_sort.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -2463,7 +2463,7 @@ print(result3)
 **実行方法：**
 
 ```bash
-$ Rscript sample13_sort.R
+$ Rscript my3-4-13_sort.R
 ```
 
 **期待される出力：**
@@ -2767,7 +2767,7 @@ A = \begin{pmatrix}
 \end{pmatrix}
 $$
 
-#### 📝 sample14_matrix_basic.py
+#### 📝 my3-4-14_matrix_basic.py
 
 ```python
 # numpyライブラリを読み込む
@@ -2790,7 +2790,7 @@ print(f"行数: {A.shape[0]}, 列数: {A.shape[1]}")
 **実行方法：**
 
 ```bash
-(class) $ python sample14_matrix_basic.py
+(class) $ python my3-4-14_matrix_basic.py
 ```
 
 **期待される出力：**
@@ -2805,7 +2805,7 @@ print(f"行数: {A.shape[0]}, 列数: {A.shape[1]}")
 行数: 3, 列数: 4
 ```
 
-#### 📝 sample14_matrix_basic.R
+#### 📝 my3-4-14_matrix_basic.R
 
 ```r
 # 1次元データを作成
@@ -2828,7 +2828,7 @@ print(paste("行数:", nrow(A), "列数:", ncol(A)))
 **実行方法：**
 
 ```bash
-$ Rscript sample14_matrix_basic.R
+$ Rscript my3-4-14_matrix_basic.R
 ```
 
 **期待される出力：**
@@ -2879,7 +2879,7 @@ $$
 \end{pmatrix}
 $$
 
-#### 📝 sample15_df_to_matrix.py
+#### 📝 my3-4-15_df_to_matrix.py
 
 ```python
 # 必要なライブラリを読み込む
@@ -2909,7 +2909,7 @@ print(df_new)
 **実行方法：**
 
 ```bash
-(class) $ python sample15_df_to_matrix.py
+(class) $ python my3-4-15_df_to_matrix.py
 ```
 
 **期待される出力：**
@@ -2929,7 +2929,7 @@ print(df_new)
 3       90   100
 ```
 
-#### 📝 sample15_df_to_matrix.R
+#### 📝 my3-4-15_df_to_matrix.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -2959,7 +2959,7 @@ print(df_new)
 **実行方法：**
 
 ```bash
-$ Rscript sample15_df_to_matrix.R
+$ Rscript my3-4-15_df_to_matrix.R
 ```
 
 **期待される出力：**
@@ -2999,7 +2999,7 @@ A^T = \begin{pmatrix}
 \end{pmatrix}
 $$
 
-#### 📝 sample16_matrix_transpose.py
+#### 📝 my3-4-16_matrix_transpose.py
 
 ```python
 # 必要なライブラリを読み込む
@@ -3025,7 +3025,7 @@ print(A_T)
 **実行方法：**
 
 ```bash
-(class) $ python sample16_matrix_transpose.py
+(class) $ python my3-4-16_matrix_transpose.py
 ```
 
 **期待される出力：**
@@ -3042,7 +3042,7 @@ print(A_T)
  [ 70  80  90 100]]
 ```
 
-#### 📝 sample16_matrix_transpose.R
+#### 📝 my3-4-16_matrix_transpose.R
 
 ```r
 # データフレームから行列を作成
@@ -3065,7 +3065,7 @@ print(A_T)
 **実行方法：**
 
 ```bash
-$ Rscript sample16_matrix_transpose.R
+$ Rscript my3-4-16_matrix_transpose.R
 ```
 
 **期待される出力：**
@@ -3107,7 +3107,7 @@ A^T A = \begin{pmatrix}
 \end{pmatrix}
 $$
 
-#### 📝 sample17_matrix_multiply.py
+#### 📝 my3-4-17_matrix_multiply.py
 
 ```python
 # 必要なライブラリを読み込む
@@ -3138,7 +3138,7 @@ print(result)
 **実行方法：**
 
 ```bash
-(class) $ python sample17_matrix_multiply.py
+(class) $ python my3-4-17_matrix_multiply.py
 ```
 
 **期待される出力：**
@@ -3159,7 +3159,7 @@ A^T A:
  [26700 29400]]
 ```
 
-#### 📝 sample17_matrix_multiply.R
+#### 📝 my3-4-17_matrix_multiply.R
 
 ```r
 # データフレームから行列を作成
@@ -3187,7 +3187,7 @@ print(result)
 **実行方法：**
 
 ```bash
-$ Rscript sample17_matrix_multiply.R
+$ Rscript my3-4-17_matrix_multiply.R
 ```
 
 **期待される出力：**
@@ -3402,7 +3402,7 @@ Copilotに様々な変換パターンを聞いてみましょう。
 
 ### 3.4.5.1 横型から縦型への変換
 
-#### 📝 sample18_wide_to_long.py
+#### 📝 my3-4-18_wide_to_long.py
 
 ```python
 # pandasライブラリを読み込む
@@ -3430,7 +3430,7 @@ print(my_longer)
 **実行方法：**
 
 ```bash
-(class) $ python sample18_wide_to_long.py
+(class) $ python my3-4-18_wide_to_long.py
 ```
 
 **期待される出力：**
@@ -3452,7 +3452,7 @@ print(my_longer)
 5   27  max    21
 ```
 
-#### 📝 sample18_wide_to_long.R
+#### 📝 my3-4-18_wide_to_long.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -3481,7 +3481,7 @@ print(my_longer)
 **実行方法：**
 
 ```bash
-$ Rscript sample18_wide_to_long.R
+$ Rscript my3-4-18_wide_to_long.R
 ```
 
 **期待される出力：**
@@ -3508,7 +3508,7 @@ $ Rscript sample18_wide_to_long.R
 
 ### 3.4.5.2 縦型から横型への変換
 
-#### 📝 sample19_long_to_wide.py
+#### 📝 my3-4-19_long_to_wide.py
 
 ```python
 # pandasライブラリを読み込む
@@ -3538,7 +3538,7 @@ print(my_wider)
 **実行方法：**
 
 ```bash
-(class) $ python sample19_long_to_wide.py
+(class) $ python my3-4-19_long_to_wide.py
 ```
 
 **期待される出力：**
@@ -3561,7 +3561,7 @@ day
 27     21   15
 ```
 
-#### 📝 sample19_long_to_wide.R
+#### 📝 my3-4-19_long_to_wide.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -3589,7 +3589,7 @@ print(my_wider)
 **実行方法：**
 
 ```bash
-$ Rscript sample19_long_to_wide.R
+$ Rscript my3-4-19_long_to_wide.R
 ```
 
 **期待される出力：**
@@ -3820,7 +3820,7 @@ Pythonで、以下の処理をしてください：
 
 ### 📝 解答例（基本版）
 
-#### exercise01_student_analysis.py
+#### ex3-4-01_student_analysis.py
 
 ```python
 # pandasライブラリを読み込む
@@ -3905,12 +3905,10 @@ print("=" * 50)
 **実行方法：**
 
 ```bash
-(class) $ python exercise01_student_analysis.py
+(class) $ python ex3-4-01_student_analysis.py
 ```
 
----
-
-#### exercise01_student_analysis.R
+#### ex3-4-01_student_analysis.R
 
 ```r
 # tidyverseライブラリを読み込む
@@ -4003,93 +4001,8 @@ cat(strrep("=", 50), "\n")
 **実行方法：**
 
 ```bash
-$ Rscript exercise01_student_analysis.R
+$ Rscript ex3-4-01_student_analysis.R
 ```
-
----
-
-### 📚 参考: より実践的な書き方（発展版）
-
-より実務的なコードの書き方を学びたい方のために、関数化とエラーハンドリングを含む発展版を紹介します。
-
-**現時点では基本版で十分です。** 意欲的な学生の方は、以下を参考にしてください。
-
-#### exercise01_advanced.py（発展版）
-
-```python
-import pandas as pd
-from typing import Dict, Tuple
-
-def load_student_data() -> pd.DataFrame:
-    """学生データを作成する"""
-    return pd.DataFrame({
-        'student_id': range(1, 11),
-        'name': ['Alice', 'Bob', 'Charlie', 'David', 'Emma', 
-                 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack'],
-        'english': [85, 92, 78, 88, 95, 72, 90, 83, 88, 91],
-        'math': [90, 85, 88, 92, 89, 78, 87, 90, 85, 88],
-        'science': [88, 90, 85, 87, 92, 80, 89, 86, 90, 87],
-        'gender': ['f', 'm', 'm', 'm', 'f', 'm', 'f', 'm', 'f', 'm']
-    })
-
-def calculate_statistics(df: pd.DataFrame) -> Dict[str, float]:
-    """各科目の平均点を計算"""
-    return {
-        'english': df['english'].mean(),
-        'math': df['math'].mean(),
-        'science': df['science'].mean()
-    }
-
-def add_total_and_average(df: pd.DataFrame) -> pd.DataFrame:
-    """合計点と平均点を追加"""
-    return df.assign(
-        total=df['english'] + df['math'] + df['science'],
-        average=lambda x: x['total'] / 3
-    )
-
-def get_top_students(df: pd.DataFrame, n: int = 3) -> pd.DataFrame:
-    """上位n名を取得"""
-    return df.sort_values('total', ascending=False).head(n)
-
-def main():
-    """メイン処理"""
-    print("=" * 50)
-    print("学生成績データの総合分析（発展版）")
-    print("=" * 50)
-    
-    # データ読み込み
-    students = load_student_data()
-    
-    # 統計情報
-    stats = calculate_statistics(students)
-    print("\n【基本統計】")
-    for subject, avg in stats.items():
-        print(f"{subject}: {avg:.1f}点")
-    
-    # 合計・平均追加
-    students = add_total_and_average(students)
-    
-    # トップ3取得
-    top3 = get_top_students(students, 3)
-    print("\n【トップ3】")
-    print(top3[['name', 'total', 'average']])
-    
-    print("\n" + "=" * 50)
-
-if __name__ == "__main__":
-    main()
-```
-
----
-
-### 💡 発展版のポイント
-
-1. **関数化**: 処理ごとに関数に分割
-2. **型ヒント**: 引数と戻り値の型を明示
-3. **main関数**: エントリーポイントを明確化
-4. **再利用性**: 関数を組み合わせて様々な分析が可能
-
----
 
 ## 3.4.7 学習チェックリスト
 
@@ -4219,19 +4132,19 @@ if __name__ == "__main__":
 ### データフレームの基本が不安な方
 
 1. 3.4.0〜3.4.1を再読
-2. sample01〜sample05を実行
+2. my3-4-01〜my3-4-05を実行
 3. 自分でデータフレームを作成する練習
 
 ### データの追加・取り出しが不安な方
 
 1. 3.4.2〜3.4.3を再読  
-2. sample06〜sample13を実行
+2. my3-4-06〜my3-4-13を実行
 3. 様々な条件で検索・並べ替えを実験
 
 ### 行列・データ変形が不安な方
 
 1. 3.4.4〜3.4.5を再読
-2. sample14〜sample19を実行
+2. my3-4-14〜my3-4-19を実行
 3. 自分でデータを変形してみる
 
 ### 統合的な理解が不安な方

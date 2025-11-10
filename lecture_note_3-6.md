@@ -1,7 +1,5 @@
 # 3.6 Rのパッケージ, Pythonのモジュール
 
----
-
 ## 📚 目次
 
 - [3.6.0 イントロダクション：パッケージとモジュールの世界へ](#360-イントロダクションパッケージとモジュールの世界へ)
@@ -10,8 +8,6 @@
 - [3.6.3 主要ライブラリの実践](#363-主要ライブラリの実践)
 - [3.6.4 統合演習：パッケージを使ったデータ処理](#364-統合演習パッケージを使ったデータ処理)
 - [3.6.5 まとめと自己チェック](#365-まとめと自己チェック)
-
----
 
 ## 3.6.0 イントロダクション：パッケージとモジュールの世界へ
 
@@ -27,8 +23,6 @@
 - ✅ NumPy、pandas、tidyverseなど主要ライブラリの基本操作ができる
 - ✅ GitHub Copilotを使ってパッケージの使い方を効率的に学べる
 - ✅ エラーメッセージを読んで、適切にインストールや更新ができる
-
----
 
 ### 🤔 なぜパッケージとモジュールが必要なのか
 
@@ -47,8 +41,6 @@
 
 プログラミングも同じです。基本的な計算や処理は標準機能でできますが、**データ分析**や**機械学習**、**可視化**などの専門的な作業には、専用のツールが必要です。
 
----
-
 ### 📦 パッケージとモジュールとは？
 
 言語によって呼び方が異なりますが、基本的な考え方は同じです：
@@ -64,8 +56,6 @@
 - **Python**: モジュールまたはライブラリ
 
 少しややこしいですが、実際に使ううちに慣れていきます！
-
----
 
 ### 🌟 データサイエンスで使う主要なパッケージ/ライブラリ
 
@@ -96,8 +86,6 @@
 - 既に多くの人が使い、テストし、改善してきた信頼性の高いコード
 - 一から自分で書くより、はるかに速く、正確で、効率的
 
----
-
 ### 💡 この節の学習の流れ
 
 ```
@@ -113,8 +101,6 @@
 ```
 
 各ステップで、**基本版のサンプルプログラム**を実行しながら学びます。難しそうに見えても、一つひとつはシンプルです。焦らず、順番に進めていきましょう！
-
----
 
 ### 🤖 GitHub Copilotのセットアップ確認
 
@@ -149,8 +135,6 @@
 - **わからない場合は担当教員に相談**
   - 環境設定は重要なので、遠慮なく質問してください
 
----
-
 ### 📝 この節での学習スタイル
 
 この節では、以下のスタイルで学習を進めます：
@@ -175,8 +159,6 @@
    - 何度も書いて、試して、慣れる
    - 体で覚えるのもプログラミングの一部
 
----
-
 ### 🎓 学習の心構え
 
 **完璧を目指さない**
@@ -194,11 +176,7 @@
 - 丸投げせず、対話しながら学ぶ
 - 生成されたコードを理解することが大切
 
----
-
 それでは、Rのパッケージ管理から始めましょう！🚀
-
----
 
 ## 3.6.1 Rのパッケージ管理
 
@@ -244,8 +222,6 @@ Rの世界では、**パッケージ**と**ライブラリ**という用語が�
 - パッケージ = 「本」
 - ライブラリ = 「本棚」
 
----
-
 ### 📖 パッケージの呼び出し：`library()`
 
 それでは、実際にパッケージを呼び出してみましょう。
@@ -263,7 +239,7 @@ library(パッケージ名)
 
 #### サンプルプログラム 1: 基本的なパッケージ呼び出し
 
-**ファイル名**: `sample01_library_basic.R`
+**ファイル名**: `my3-6-01_library_basic.R`
 
 ```r
 # Rパッケージの基本的な呼び出し
@@ -294,9 +270,9 @@ print(result)
 
 ```bash
 $ cd /home/datasci/work
-$ touch sample01_library_basic.R
+$ touch my3-6-01_library_basic.R
 # VS Codeでファイルを開いて、上記のコードを記述
-$ Rscript sample01_library_basic.R
+$ Rscript my3-6-01_library_basic.R
 ```
 
 **期待される出力：**
@@ -330,8 +306,6 @@ $ Rscript sample01_library_basic.R
 3. `filter()`関数を使ってデータをフィルタリング
 4. 年齢30以上のデータ（BobとCharlie）が抽出される
 
----
-
 ### ⚠️ パッケージが見つからないエラー
 
 パッケージを呼び出そうとして、次のようなエラーが出ることがあります：
@@ -347,8 +321,6 @@ library(tidyverse)
 
 **解決方法：**
 パッケージをインストールしてから、もう一度呼び出します。
-
----
 
 ### 📥 パッケージのインストール：`install.packages()`
 
@@ -372,11 +344,9 @@ install.packages("パッケージ名")
 
 最初は覚えにくいかもしれませんが、エラーが出たら「あ、引用符が必要だった！」と思い出しましょう。
 
----
-
 #### サンプルプログラム 2: パッケージのインストール（デモ）
 
-**ファイル名**: `sample02_install_demo.R`
+**ファイル名**: `my3-6-02_install_demo.R`
 
 ```r
 # パッケージのインストールのデモ
@@ -421,10 +391,8 @@ $ R
 > q()  # Rを終了
 
 # その後、スクリプトを実行
-$ Rscript sample02_install_demo.R
+$ Rscript my3-6-02_install_demo.R
 ```
-
----
 
 ### 🔄 複数パッケージの一括インストール
 
@@ -436,8 +404,6 @@ install.packages(c("dplyr", "ggplot2", "readr", "tidyr"))
 ```
 
 これは、データサイエンスプロジェクトの開始時に便利です。必要なパッケージをまとめてインストールできます。
-
----
 
 ### 🎯 名前空間の理解：`::`演算子
 
@@ -469,7 +435,7 @@ psych::describe(データフレーム)
 
 #### サンプルプログラム 3: 名前空間の使用
 
-**ファイル名**: `sample03_namespace.R`
+**ファイル名**: `my3-6-03_namespace.R`
 
 ```r
 # ::演算子を使った直接呼び出しのデモ
@@ -512,7 +478,7 @@ $ R
 **実行方法：**
 
 ```bash
-$ Rscript sample03_namespace.R
+$ Rscript my3-6-03_namespace.R
 ```
 
 **期待される出力：**
@@ -535,8 +501,6 @@ english 2 5 87.80 5.63     87   87.80 5.93  80  95    15  0.1    -1.88 2.52
 2. `library(psych)`を書かなくても関数が使える
 3. `dplyr::filter()`も同様に、libraryなしで使用
 
----
-
 ### 🔄 パッケージの更新
 
 パッケージは定期的にアップデートされます。新機能の追加やバグ修正が行われるので、時々更新するとよいでしょう。
@@ -556,8 +520,6 @@ install.packages("tidyverse")
 - **学期の始め**：新しい環境で作業を始めるとき
 - **エラーが出たとき**：古いバージョンが原因の場合がある
 - **新機能を使いたいとき**：最新版が必要な場合
-
----
 
 ### 🌐 CRANとGitHubからのインストール
 
@@ -590,13 +552,11 @@ devtools::install_github("ユーザー名/リポジトリ名")
 - 最新の開発版が必要な特殊な場合のみ使用します
 - 初心者のうちは、CRANからのインストールで十分です
 
----
-
 ### 📝 サンプルプログラム 4: tidyverseを使ったデータ処理
 
 実際にtidyverseパッケージを使って、データ処理を体験してみましょう。
 
-**ファイル名**: `sample04_tidyverse_basic.R`
+**ファイル名**: `my3-6-04_tidyverse_basic.R`
 
 ```r
 # tidyverseを使った基本的なデータ処理
@@ -631,7 +591,7 @@ print(avg_sales)
 **実行方法：**
 
 ```bash
-$ Rscript sample04_tidyverse_basic.R
+$ Rscript my3-6-04_tidyverse_basic.R
 ```
 
 **期待される出力：**
@@ -674,8 +634,6 @@ $ Rscript sample04_tidyverse_basic.R
 - `group_by()`：グループ化
 - `summarize()`：集計
 
----
-
 ### 🛠️ トラブルシューティング
 
 パッケージを使っていると、時々エラーに遭遇します。よくあるエラーと対処法を紹介します。
@@ -696,8 +654,6 @@ install.packages("ggplot2")
 library(ggplot2)
 ```
 
----
-
 #### エラー 2: "パッケージ 'XXX' は R version Y.Y.Y で作られました"
 
 ```
@@ -709,8 +665,6 @@ Warning: package 'dplyr' was built under R version 4.3.0
 **解決方法：**
 - 多くの場合、警告が出ても動作します
 - 問題がある場合は、Rを最新版に更新するか、パッケージを更新します
-
----
 
 #### エラー 3: 関数が見つからない
 
@@ -728,8 +682,6 @@ library(tidyverse)
 my_data %>% filter(age > 30)
 ```
 
----
-
 #### エラー 4: パッケージの衝突
 
 ```
@@ -746,13 +698,9 @@ my_data %>% filter(age > 30)
 - 通常は気にしなくてOK
 - statsのfilter()を使いたい場合は`stats::filter()`と書く
 
----
-
 ### 💡 GitHub Copilot活用ガイド
 
 ここまでで、Rのパッケージ管理の基本を学びました。GitHub Copilotを使うと、パッケージの使い方をさらに効率的に学べます。実際に試してみましょう！
-
----
 
 #### 🎯 パッケージ管理でCopilotができること
 
@@ -760,8 +708,6 @@ my_data %>% filter(age > 30)
 2. **特定の機能を持つパッケージを提案**
 3. **パッケージの関数の使い方を教えてくれる**
 4. **エラーメッセージの解決方法を提案**
-
----
 
 ### 🚀 使えるプロンプト例
 
@@ -785,8 +731,6 @@ Rでtidyverseパッケージをインストールして呼び出すコードを�
 3. 生成されたコードを確認
 4. 新しいRファイルを作成して、コードを実行してみる
 
----
-
 #### プロンプト例2: データ処理用のパッケージを探す [★★☆]
 
 **Copilot Chatに入力**:
@@ -806,8 +750,6 @@ Rでデータフレームの操作（フィルタリング、グループ化、�
 2. 提案されたパッケージをインストール
 3. 使用例を実際に試してみる
 4. 自分のデータで応用してみる
-
----
 
 #### プロンプト例3: エラーメッセージの解決 [★★☆]
 
@@ -830,8 +772,6 @@ Error in library(ggplot2) : there is no package called 'ggplot2'
 3. 提案された解決方法を試す
 4. 解決できたか確認する
 
----
-
 #### プロンプト例4: 複数パッケージの一括インストール [★★☆]
 
 **Copilot Chatに入力**:
@@ -850,8 +790,6 @@ Rでデータサイエンスに必要な主要パッケージ（tidyverse, ggplo
 2. 生成されたコードを確認
 3. 実際に実行してインストール（時間がかかります）
 4. インストール後、各パッケージを読み込んで確認
-
----
 
 #### プロンプト例5: 名前空間を使った関数呼び出し [★★★]
 
@@ -873,8 +811,6 @@ Rで`::`演算子を使って、libraryを読み込まずにdplyrのfilter関数
 3. `library(dplyr)`を使う方法と比較してみる
 4. どちらの方法が適切か考えてみる
 
----
-
 ### 📚 Copilot活用のコツ
 
 #### 1. **コメントを先に書く**
@@ -891,8 +827,6 @@ Rファイルの中で、コメントとして「やりたいこと」を書く�
 - 「# データフレームを作成して、年齢30以上をフィルタリングする」と書く
 - Copilotの提案を確認（Tabキーで受け入れ）
 
----
-
 #### 2. **段階的に書く**
 
 一度に複雑なコードを生成するのではなく、段階的に書いていくと理解しやすいです。
@@ -907,8 +841,6 @@ library(dplyr)
 # ステップ3: データをフィルタリング
 # ←ここでCopilotが提案
 ```
-
----
 
 #### 3. **生成されたコードを必ず理解する**
 
@@ -927,8 +859,6 @@ Copilotが生成したコードをそのまま使う前に：
    - 条件を変える
    - 動作がどう変わるか観察
 
----
-
 #### 4. **実験する**
 
 Copilotは実験の良いパートナーです：
@@ -940,8 +870,6 @@ Copilotは実験の良いパートナーです：
 ```
 
 失敗しても大丈夫。試行錯誤することで学びが深まります！
-
----
 
 ### ⚠️ 注意事項
 
@@ -965,8 +893,6 @@ Copilotは実験の良いパートナーです：
 - まず自分で考えて、困ったら助けを求める
 - Copilotは「答えを教える先生」ではなく「一緒に学ぶ仲間」
 
----
-
 ### 🎓 推奨される学習の流れ
 
 ```
@@ -984,73 +910,6 @@ Copilotは実験の良いパートナーです：
 ```
 
 **大切なのは「AIと協働する」姿勢です。丸投げではなく、一緒に学ぶパートナーとして活用しましょう！**
-
----
-
-### 📚 参考: より実践的な書き方
-
-ここまでは、シンプルでわかりやすいコードを紹介してきました。ここでは、より実践的な書き方を参考として紹介します。
-
-**注意：現時点では基本版で十分です。** これらの発展版は、意欲的な学生や将来のために参考として掲載しています。無理に理解しようとしなくても大丈夫です！
-
----
-
-#### 発展版サンプル 1: エラーハンドリング付きパッケージ管理
-
-**ファイル名**: `sample01_advanced.R`
-
-```r
-# 発展版：エラーハンドリング付きパッケージ管理
-
-# 関数: パッケージを安全にロードする
-load_package <- function(package_name) {
-  # パッケージが既にインストールされているかチェック
-  if (!require(package_name, character.only = TRUE, quietly = TRUE)) {
-    # インストールされていなければインストール
-    cat(paste("パッケージ", package_name, "をインストールしています...\n"))
-    install.packages(package_name, dependencies = TRUE)
-    
-    # インストール後、再度読み込みを試みる
-    if (!require(package_name, character.only = TRUE, quietly = TRUE)) {
-      stop(paste("パッケージ", package_name, "のロードに失敗しました"))
-    }
-  }
-  cat(paste("パッケージ", package_name, "を読み込みました\n"))
-}
-
-# 使用例
-load_package("dplyr")
-load_package("ggplot2")
-
-# データ処理の実行
-my_data <- data.frame(
-  x = 1:10,
-  y = rnorm(10)
-)
-
-result <- my_data %>%
-  filter(y > 0) %>%
-  summarize(mean_y = mean(y))
-
-print(result)
-```
-
-**この発展版の特徴**:
-- 関数を定義してコードを再利用可能にしている
-- `require()`でパッケージの存在をチェック
-- 存在しない場合は自動的にインストール
-- エラーハンドリングで問題発生時にわかりやすいメッセージ
-
-**基本版との違い**:
-- 基本版：シンプルに`library()`と`install.packages()`を使う
-- 発展版：自動化とエラーハンドリングを含む
-
-**いつ使う？**:
-- 複数のプロジェクトで同じパッケージセットを使う場合
-- チームでコードを共有する場合
-- 自動化されたスクリプトを作る場合
-
----
 
 ## 3.6.2 Pythonのモジュール管理
 
@@ -1101,8 +960,6 @@ numpy/              ← これがパッケージ
 
 **本節では、わかりやすさのため「ライブラリ」と呼びます。**
 
----
-
 ### 📥 標準ライブラリと外部ライブラリ
 
 Pythonのライブラリには2種類あります：
@@ -1135,13 +992,9 @@ Pythonをインストールすると**最初から使える**ライブラリで�
 | **scikit-learn** | 機械学習 | 機械学習アルゴリズム |
 | **SciPy** | 科学計算 | 統計、最適化など |
 
----
-
 ### 🔧 4種類のimport方法
 
 Pythonでライブラリを使うには、`import`文を使います。importには**4種類の方法**があり、それぞれ使い分けます。
-
----
 
 #### 方法1: `import 名前`
 
@@ -1158,8 +1011,6 @@ numpy.array([1, 2, 3, 4])
 - ✅ ライブラリ全体が使える
 - ✅ どのライブラリの関数かが明確
 - ❌ 毎回ライブラリ名を書く必要がある（少し長い）
-
----
 
 #### 方法2: `import 名前 as 別名`
 
@@ -1184,8 +1035,6 @@ np.array([1, 2, 3, 4])
 
 これらの別名は、コミュニティ全体で使われているので、**必ずこの別名を使いましょう**。
 
----
-
 #### 方法3: `from 名前 import 要素名`
 
 **特定の関数やクラスだけ**をインポートします。
@@ -1202,8 +1051,6 @@ array([1, 2, 3, 4])
 - ✅ 必要な機能だけインポートできる
 - ❌ どのライブラリの関数か不明確になる場合がある
 - ❌ 複数のライブラリから同じ名前の関数をインポートすると衝突する
-
----
 
 #### 方法4: `from 名前 import *`（⚠️ 非推奨）
 
@@ -1227,8 +1074,6 @@ array([1, 2, 3, 4])
 - 本書でも、ここ以外では使いません
 - 初心者のうちは、方法2を使いましょう
 
----
-
 ### 📊 4種類のimport方法の比較表
 
 | 方法 | 書き方 | 使用例 | メリット | デメリット | 推奨度 |
@@ -1243,13 +1088,11 @@ array([1, 2, 3, 4])
 - **pandas**: `import pandas as pd`
 - **matplotlib**: `import matplotlib.pyplot as plt`
 
----
-
 ### 💻 サンプルプログラム 6: 4種類のimport方法の比較
 
 それでは、4種類のimport方法を実際に試してみましょう。
 
-**ファイル名**: `sample06_import_methods.py`
+**ファイル名**: `my3-6-06_import_methods.py`
 
 ```python
 # 4種類のimport方法の比較デモ
@@ -1306,9 +1149,9 @@ print("=" * 50)
 ```bash
 $ cd /home/datasci/work
 $ venvc  # 仮想環境を起動
-(class) $ touch sample06_import_methods.py
+(class) $ touch my3-6-06_import_methods.py
 # VS Codeでファイルを開いて、上記のコードを記述
-(class) $ python sample06_import_methods.py
+(class) $ python my3-6-06_import_methods.py
 ```
 
 **期待される出力:**
@@ -1349,8 +1192,6 @@ $ venvc  # 仮想環境を起動
 - しかし、可読性と保守性の観点から方法2が最適
 - 方法4は「動くけど使うべきでない」例
 
----
-
 ### 📦 パッケージのインストール：`pip`
 
 外部ライブラリを使うには、まずインストールが必要です。Pythonでは`pip`というパッケージマネージャを使います。
@@ -1376,13 +1217,11 @@ pip install パッケージ名
 | `pip show パッケージ名` | パッケージの詳細情報 | `pip show numpy` |
 | `pip install --upgrade パッケージ名` | 最新版に更新 | `pip install --upgrade numpy` |
 
----
-
 ### 🛠️ 実践：pipを使ったパッケージ管理
 
 #### サンプルプログラム 7: pip操作のデモ
 
-**ファイル名**: `sample07_pip_demo.py`
+**ファイル名**: `my3-6-07_pip_demo.py`
 
 ```python
 # pipを使ったパッケージ管理のデモ
@@ -1441,7 +1280,7 @@ print("\nすべてのライブラリが正常にインストールされてい�
 **実行方法:**
 
 ```bash
-(class) $ python sample07_pip_demo.py
+(class) $ python my3-6-07_pip_demo.py
 ```
 
 **期待される出力:**
@@ -1454,8 +1293,6 @@ print("\nすべてのライブラリが正常にインストールされてい�
 
 すべてのライブラリが正常にインストールされています！
 ```
-
----
 
 ### ⚠️ ModuleNotFoundError への対処
 
@@ -1480,15 +1317,13 @@ import numpy
 !pip install numpy
 ```
 
----
-
 ### 🎯 NumPyの基本操作
 
 それでは、実際にNumPyを使って配列操作を体験してみましょう。
 
 #### サンプルプログラム 8: NumPyの基本
 
-**ファイル名**: `sample08_numpy_basic.py`
+**ファイル名**: `my3-6-08_numpy_basic.py`
 
 ```python
 # NumPyの基本的な使い方
@@ -1541,7 +1376,7 @@ print(f"標準偏差: {np.std(my_numbers)}")
 **実行方法:**
 
 ```bash
-(class) $ python sample08_numpy_basic.py
+(class) $ python my3-6-08_numpy_basic.py
 ```
 
 **期待される出力:**
@@ -1570,15 +1405,13 @@ print(f"標準偏差: {np.std(my_numbers)}")
 標準偏差: 14.142135623730951
 ```
 
----
-
 ### 🎯 pandasの基本操作
 
 次に、pandasを使ってデータフレーム操作を体験してみましょう。
 
 #### サンプルプログラム 9: pandasの基本
 
-**ファイル名**: `sample09_pandas_basic.py`
+**ファイル名**: `my3-6-09_pandas_basic.py`
 
 ```python
 # pandasの基本的な使い方
@@ -1636,7 +1469,7 @@ print(f"平均スコア: {my_data['score'].mean()}")
 **実行方法:**
 
 ```bash
-(class) $ python sample09_pandas_basic.py
+(class) $ python my3-6-09_pandas_basic.py
 ```
 
 **期待される出力:**
@@ -1687,8 +1520,6 @@ max    35.000000  92.000000
 平均スコア: 86.25
 ```
 
----
-
 ### 🛠️ トラブルシューティング
 
 #### エラー 1: ModuleNotFoundError
@@ -1704,8 +1535,6 @@ import pandas
 (class) $ pip install pandas
 ```
 
----
-
 #### エラー 2: ImportError
 
 ```python
@@ -1719,8 +1548,6 @@ from numpy import nonexistent_function
 - 関数名のスペルを確認
 - NumPyのドキュメントで正しい関数名を確認
 - Copilotに聞いてみる
-
----
 
 #### エラー 3: バージョンの不一致
 
@@ -1742,13 +1569,9 @@ np.some_new_function()
 (class) $ pip install --upgrade numpy
 ```
 
----
-
 ### 💡 GitHub Copilot活用ガイド
 
 Pythonのライブラリ管理でもGitHub Copilotが強力な味方になります。実際に試してみましょう！
-
----
 
 ### 🚀 使えるプロンプト例
 
@@ -1772,8 +1595,6 @@ PythonでNumPyとpandasをインポートするコードを、慣習的な書き
 3. 新しいPythonファイルに貼り付けて実行
 4. 慣習的な書き方を体で覚える
 
----
-
 #### プロンプト例2: パッケージのインストールコマンド [★☆☆]
 
 **Copilot Chatに入力**:
@@ -1792,8 +1613,6 @@ pipでインストールするコマンドを教えてください。
 2. 提案されたコマンドをターミナルで実行
 3. `pip list`でインストールを確認
 4. 各ライブラリをimportして動作確認
-
----
 
 #### プロンプト例3: NumPyの配列操作 [★★☆]
 
@@ -1816,8 +1635,6 @@ PythonのNumPyで1から10までの配列を作成し、
 2. 生成されたコードを実行
 3. 配列の範囲や計算方法を変えて実験
 4. `np.sum()`, `np.std()`なども試してみる
-
----
 
 #### プロンプト例4: pandasでデータフィルタリング [★★☆]
 
@@ -1842,8 +1659,6 @@ Pythonのpandasで、以下のデータフレームを作成してください�
 3. 条件を変えて実験（例：年齢が25未満、スコアが90以上など）
 4. 結果がどう変わるか観察
 
----
-
 #### プロンプト例5: ModuleNotFoundErrorの解決 [★★☆]
 
 **Copilot Chatに入力**:
@@ -1864,8 +1679,6 @@ ModuleNotFoundError: No module named 'seaborn'
 2. エラーメッセージをCopilotに貼り付ける
 3. 提案された解決方法を試す
 4. 同じエラーに遭遇したとき、自分で解決できるようになる
-
----
 
 #### プロンプト例6: import方法の比較 [★★★]
 
@@ -1889,8 +1702,6 @@ from numpy import array, from numpy import *）を比較するコードを書い
 3. それぞれの方法で同じ処理を書いてみる
 4. どの方法が読みやすいか、自分で判断する
 
----
-
 ### 📚 Copilot活用のコツ
 
 #### 1. **ファイルの先頭にコメントを書く**
@@ -1907,8 +1718,6 @@ Pythonファイルの最初に、「このファイルで何をするか」を�
 - 「# pandasを使ってCSVファイルを読み込んでデータ分析」と書く
 - Copilotの提案を確認（Tabキーで受け入れ）
 
----
-
 #### 2. **型ヒントを使う**
 
 Pythonの型ヒント（Type Hints）を使うと、Copilotがより正確なコードを提案します。
@@ -1919,8 +1728,6 @@ import numpy as np
 def calculate_mean(numbers: np.ndarray) -> float:
     # ←ここでCopilotが平均を計算するコードを提案
 ```
-
----
 
 #### 3. **既存のコードから学ぶ**
 
@@ -1935,8 +1742,6 @@ df1 = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
 # 2番目のデータフレーム（←Copilotが似た構造を提案）
 ```
 
----
-
 #### 4. **エラーメッセージを直接質問**
 
 エラーが出たら、そのままCopilotに貼り付けて質問しましょう。
@@ -1946,8 +1751,6 @@ df1 = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
 # 「このエラーの解決方法は？」
 # ModuleNotFoundError: No module named 'sklearn'
 ```
-
----
 
 ### ⚠️ 注意事項
 
@@ -1969,8 +1772,6 @@ df1 = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
 - 各行が何をしているか理解する
 - わからない関数があれば、`help(関数名)`で調べる
 
----
-
 ### 🎓 推奨される学習の流れ
 
 ```
@@ -1991,121 +1792,6 @@ df1 = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
 
 **大切なのは「試行錯誤」と「理解」です。失敗を恐れず、どんどん実験しましょう！**
 
----
-
-### 📚 参考: より実践的な書き方
-
-ここまでは、シンプルでわかりやすいコードを紹介してきました。ここでは、より実践的な書き方を参考として紹介します。
-
-**注意：現時点では基本版で十分です。** これらの発展版は、意欲的な学生や将来のために参考として掲載しています。無理に理解しようとしなくても大丈夫です！
-
----
-
-#### 発展版サンプル 6: 複数モジュールを使った実践的なプログラム
-
-**ファイル名**: `sample06_advanced.py`
-
-```python
-# 発展版：複数モジュールを使った実践的なデータ分析
-
-import numpy as np
-import pandas as pd
-from typing import Tuple
-
-def load_and_prepare_data(data_dict: dict) -> pd.DataFrame:
-    """
-    データを読み込んで準備する
-    
-    Args:
-        data_dict: 辞書形式のデータ
-    
-    Returns:
-        準備されたデータフレーム
-    """
-    df = pd.DataFrame(data_dict)
-    return df
-
-def calculate_statistics(df: pd.DataFrame, column: str) -> Tuple[float, float, float]:
-    """
-    指定された列の統計量を計算する
-    
-    Args:
-        df: データフレーム
-        column: 列名
-    
-    Returns:
-        平均、標準偏差、中央値のタプル
-    """
-    mean = df[column].mean()
-    std = df[column].std()
-    median = df[column].median()
-    
-    return mean, std, median
-
-def filter_data(df: pd.DataFrame, column: str, threshold: float) -> pd.DataFrame:
-    """
-    指定された列が閾値以上のデータを抽出
-    
-    Args:
-        df: データフレーム
-        column: 列名
-        threshold: 閾値
-    
-    Returns:
-        フィルタリングされたデータフレーム
-    """
-    return df[df[column] >= threshold]
-
-def main():
-    """メイン処理"""
-    # データの準備
-    data = {
-        'name': ['Alice', 'Bob', 'Charlie', 'David', 'Eve'],
-        'age': [25, 30, 35, 28, 32],
-        'score': [85, 90, 78, 92, 88]
-    }
-    
-    df = load_and_prepare_data(data)
-    print("元のデータ:")
-    print(df)
-    print()
-    
-    # 統計量の計算
-    mean, std, median = calculate_statistics(df, 'score')
-    print(f"スコアの統計量:")
-    print(f"  平均: {mean:.2f}")
-    print(f"  標準偏差: {std:.2f}")
-    print(f"  中央値: {median:.2f}")
-    print()
-    
-    # データのフィルタリング
-    high_performers = filter_data(df, 'score', 85)
-    print("高得点者（85点以上）:")
-    print(high_performers)
-
-if __name__ == "__main__":
-    main()
-```
-
-**この発展版の特徴**:
-- 関数を使ってコードを構造化
-- 型ヒント（Type Hints）を使用
-- docstringでドキュメント化
-- main関数でエントリーポイントを明確化
-- 再利用可能で保守しやすいコード
-
-**基本版との違い**:
-- 基本版：トップレベルに直接コードを書く
-- 発展版：関数化、型ヒント、docstringを使う
-
-**いつ使う？**:
-- 大規模なプロジェクトで
-- チームで開発するとき
-- コードを他の人と共有するとき
-- 長期的に保守するコードを書くとき
-
----
-
 ## 3.6.3 主要ライブラリの実践
 
 ここまでで、パッケージとモジュールの基本的な使い方を学びました。このセクションでは、データサイエンスでよく使う主要ライブラリの実践的な使い方を体験します。
@@ -2117,15 +1803,13 @@ if __name__ == "__main__":
 - ✅ tidyverseでデータ処理ができる
 - ✅ 実際のデータ分析の流れを体験できる
 
----
-
 ### 🔢 NumPyの実践：数値計算
 
 NumPyは、数値計算の基礎となるライブラリです。高速な配列計算ができます。
 
 #### サンプルプログラム 10: NumPyで統計分析
 
-**ファイル名**: `sample10_numpy_statistics.py`
+**ファイル名**: `my3-6-10_numpy_statistics.py`
 
 ```python
 # NumPyを使った統計分析の実践
@@ -2179,7 +1863,7 @@ print(f"下位5人のスコア: {sorted_scores[:5]}")
 **実行方法:**
 
 ```bash
-(class) $ python sample10_numpy_statistics.py
+(class) $ python my3-6-10_numpy_statistics.py
 ```
 
 **期待される出力:**
@@ -2212,15 +1896,13 @@ print(f"下位5人のスコア: {sorted_scores[:5]}")
 下位5人のスコア: [60 62 63 65 66]
 ```
 
----
-
 ### 📊 pandasの実践：データ分析
 
 pandasは、表形式のデータを扱うための強力なライブラリです。ExcelのようなデータをPythonで操作できます。
 
 #### サンプルプログラム 11: pandasでデータ分析
 
-**ファイル名**: `sample11_pandas_analysis.py`
+**ファイル名**: `my3-6-11_pandas_analysis.py`
 
 ```python
 # pandasを使ったデータ分析の実践
@@ -2279,7 +1961,7 @@ print(cross_tab)
 **実行方法:**
 
 ```bash
-(class) $ python sample11_pandas_analysis.py
+(class) $ python my3-6-11_pandas_analysis.py
 ```
 
 **期待される出力:**
@@ -2330,15 +2012,13 @@ B        1093   1823   1426   836
 C         983    931   1106   866
 ```
 
----
-
 ### 📈 Rのtidyverseの実践：データ処理
 
 tidyverseは、Rでのデータ処理を効率化するパッケージ群です。パイプ演算子を使った直感的なコードが書けます。
 
 #### サンプルプログラム 12: tidyverseでデータ処理
 
-**ファイル名**: `sample12_tidyverse_analysis.R`
+**ファイル名**: `my3-6-12_tidyverse_analysis.R`
 
 ```r
 # tidyverseを使ったデータ分析の実践
@@ -2410,7 +2090,7 @@ print(cross_summary)
 **実行方法:**
 
 ```bash
-$ Rscript sample12_tidyverse_analysis.R
+$ Rscript my3-6-12_tidyverse_analysis.R
 ```
 
 **期待される出力:**
@@ -2469,15 +2149,13 @@ $ Rscript sample12_tidyverse_analysis.R
 3 C         983   931  1106   866
 ```
 
----
-
 ### 🔄 RとPythonの比較：同じ処理を両方で
 
 同じデータ処理をRとPythonの両方で実装してみましょう。どちらの言語も、データ分析の基本的なタスクを効率的にこなせることがわかります。
 
 #### サンプルプログラム 13: データ集計の比較（Python版）
 
-**ファイル名**: `sample13_comparison_python.py`
+**ファイル名**: `my3-6-13_comparison_python.py`
 
 ```python
 # Python版：データ集計の比較
@@ -2512,14 +2190,12 @@ print(dept_count)
 **実行方法:**
 
 ```bash
-(class) $ python sample13_comparison_python.py
+(class) $ python my3-6-13_comparison_python.py
 ```
-
----
 
 #### サンプルプログラム 14: データ集計の比較（R版）
 
-**ファイル名**: `sample14_comparison_r.R`
+**ファイル名**: `my3-6-14_comparison_r.R`
 
 ```r
 # R版：データ集計の比較
@@ -2559,18 +2235,14 @@ print(dept_count)
 **実行方法:**
 
 ```bash
-$ Rscript sample14_comparison_r.R
+$ Rscript my3-6-14_comparison_r.R
 ```
 
 **両方の出力を比較してみましょう！**
 
----
-
 ### 💡 GitHub Copilot活用ガイド
 
 主要ライブラリを使った実践でも、GitHub Copilotが役立ちます。実際のデータ分析タスクをCopilotと一緒に進めてみましょう！
-
----
 
 ### 🚀 使えるプロンプト例
 
@@ -2599,8 +2271,6 @@ PythonのNumPyで、以下の処理を行うコードを書いてください：
 3. 乱数のシード（`np.random.seed()`）を変えて、結果がどう変わるか観察
 4. 統計量の意味を確認
 
----
-
 #### プロンプト例2: pandasでデータの集計 [★★☆]
 
 **Copilot Chatに入力**:
@@ -2624,8 +2294,6 @@ Pythonのpandasで、以下のデータフレームを作成し、製品別の�
 2. 生成されたコードを実行
 3. グループ化のキーを変えてみる（例：日付別）
 4. 他の集計関数（mean, max, minなど）も試す
-
----
 
 #### プロンプト例3: tidyverseでパイプ処理 [★★☆]
 
@@ -2653,8 +2321,6 @@ Rのtidyverseで、以下の処理をパイプ演算子（%>%）を使って書�
 3. フィルタ条件を変更してみる
 4. 並べ替えの順序を変えてみる
 
----
-
 #### プロンプト例4: RとPythonでの同等処理 [★★★]
 
 **Copilot Chatに入力**:
@@ -2678,8 +2344,6 @@ Rのtidyverseで、以下の処理をパイプ演算子（%>%）を使って書�
 2. 両方のコードを実行して結果を比較
 3. どちらの言語が読みやすいか考える
 4. それぞれの言語の得意な処理を理解する
-
----
 
 #### プロンプト例5: データ可視化の準備 [★★★]
 
@@ -2707,8 +2371,6 @@ PythonのNumPyとpandasを使って、以下のデータを準備してくださ
 3. データを確認
 4. 次のセクションでグラフ化に挑戦（統合演習で）
 
----
-
 ### 📚 Copilot活用のコツ
 
 #### 1. **具体的なタスクを与える**
@@ -2719,8 +2381,6 @@ PythonのNumPyとpandasを使って、以下のデータを準備してくださ
 ❌ 悪い例：「データ分析してください」
 ✅ 良い例：「製品別の売上合計を計算して、降順で表示してください」
 ```
-
----
 
 #### 2. **段階的に複雑化する**
 
@@ -2737,8 +2397,6 @@ PythonのNumPyとpandasを使って、以下のデータを準備してくださ
 # ←Copilotが提案
 ```
 
----
-
 #### 3. **エラーを学習の機会にする**
 
 エラーが出たら、そのエラーメッセージをCopilotに貼り付けて解決方法を聞きましょう。
@@ -2749,8 +2407,6 @@ PythonのNumPyとpandasを使って、以下のデータを準備してくださ
 # 「以下のエラーが出ました。解決方法は？」
 # KeyError: 'product'
 ```
-
----
 
 #### 4. **ドキュメントを確認する習慣**
 
@@ -2766,8 +2422,6 @@ import pandas as pd
 # Copilotが提案した関数がわからない場合
 help(pd.DataFrame.groupby)
 ```
-
----
 
 ### ⚠️ 注意事項
 
@@ -2785,8 +2439,6 @@ help(pd.DataFrame.groupby)
 - 大量のデータを扱う場合、処理方法によって速度が大きく変わる
 - Copilotの提案が最適とは限らない
 - 実際のデータサイエンスでは、パフォーマンスも重要
-
----
 
 ### 🎓 推奨される学習の流れ
 
@@ -2808,8 +2460,6 @@ help(pd.DataFrame.groupby)
 
 **大切なのは「理解」と「実験」です。失敗を恐れず、たくさんコードを書きましょう！**
 
----
-
 ## 3.6.4 統合演習：パッケージを使ったデータ処理
 
 ここまで学んだことを統合して、実践的なデータ処理に挑戦しましょう！
@@ -2820,8 +2470,6 @@ help(pd.DataFrame.groupby)
 - ✅ 実際のデータ分析の流れを体験できる
 - ✅ GitHub Copilotを効果的に活用できる
 - ✅ エラーに対処できる
-
----
 
 ### 📝 課題1：売上データの分析（Python版）
 
@@ -2841,9 +2489,7 @@ help(pd.DataFrame.groupby)
 4. 売上が500円以上の取引を抽出
 5. 結果を見やすく表示
 
-**ファイル名**: `exercise01_sales_analysis.py`
-
----
+**ファイル名**: `ex3-6-01_sales_analysis.py`
 
 #### ヒント
 
@@ -2867,8 +2513,6 @@ import numpy as np
 # 条件によるフィルタリング
 # df[df['sales'] >= 500]
 ```
-
----
 
 #### 期待される出力例
 
@@ -2898,11 +2542,9 @@ Name: sales, dtype: int64
 件数: 15件
 ```
 
----
-
 #### 解答例（基本版）
 
-**ファイル名**: `exercise01_sales_analysis_solution.py`
+**ファイル名**: `ex3-6-01_sales_analysis_solution.py`
 
 ```python
 # 課題1の解答例：売上データ分析（Python版）
@@ -2948,17 +2590,13 @@ print(f"最高売上: {sales_data['sales'].max()}円")
 print(f"最低売上: {sales_data['sales'].min()}円")
 ```
 
----
-
 ### 📝 課題2：売上データの分析（R版）
 
 #### 課題の内容
 
 課題1と同じ処理を、Rとtidyverseを使って実装してください。
 
-**ファイル名**: `exercise02_sales_analysis.R`
-
----
+**ファイル名**: `ex3-6-02_sales_analysis.R`
 
 #### ヒント
 
@@ -2982,11 +2620,9 @@ library(tidyverse)
 # data %>% filter(sales >= 500)
 ```
 
----
-
 #### 解答例（基本版）
 
-**ファイル名**: `exercise02_sales_analysis_solution.R`
+**ファイル名**: `ex3-6-02_sales_analysis_solution.R`
 
 ```r
 # 課題2の解答例：売上データ分析（R版）
@@ -3036,110 +2672,6 @@ cat("最高売上:", max(sales_data$sales), "円\n")
 cat("最低売上:", min(sales_data$sales), "円\n")
 ```
 
----
-
-### 📚 参考：より実践的な解答例（発展版）
-
-**注意：現時点では基本版で十分です。** 以下は、より実践的なコードの例です。
-
-#### Python発展版
-
-**ファイル名**: `exercise01_sales_analysis_advanced.py`
-
-```python
-# 発展版：売上データ分析（Python）
-
-import pandas as pd
-import numpy as np
-from typing import Tuple
-
-def generate_sales_data(days: int = 30, seed: int = 42) -> pd.DataFrame:
-    """
-    売上データを生成する
-    
-    Args:
-        days: 日数
-        seed: ランダムシード
-    
-    Returns:
-        売上データフレーム
-    """
-    np.random.seed(seed)
-    
-    data = pd.DataFrame({
-        'date': pd.date_range('2024-01-01', periods=days, freq='D'),
-        'product': np.random.choice(['A', 'B', 'C', 'D'], days),
-        'sales': np.random.randint(100, 1001, days)
-    })
-    
-    return data
-
-def analyze_by_product(df: pd.DataFrame) -> pd.DataFrame:
-    """製品別の分析を行う"""
-    return df.groupby('product')['sales'].agg([
-        ('合計', 'sum'),
-        ('平均', 'mean'),
-        ('件数', 'count')
-    ]).sort_values('合計', ascending=False)
-
-def filter_high_sales(df: pd.DataFrame, threshold: int = 500) -> pd.DataFrame:
-    """高額売上を抽出"""
-    return df[df['sales'] >= threshold]
-
-def calculate_statistics(df: pd.DataFrame) -> Tuple[int, float, int, int]:
-    """統計量を計算"""
-    total = df['sales'].sum()
-    mean = df['sales'].mean()
-    max_val = df['sales'].max()
-    min_val = df['sales'].min()
-    
-    return total, mean, max_val, min_val
-
-def main():
-    """メイン処理"""
-    print("=== 売上データ分析（発展版） ===\n")
-    
-    # データ生成
-    sales_data = generate_sales_data()
-    
-    # 基本情報
-    print("データの先頭10日分:")
-    print(sales_data.head(10))
-    print()
-    
-    # 製品別分析
-    print("製品別分析:")
-    product_analysis = analyze_by_product(sales_data)
-    print(product_analysis)
-    print()
-    
-    # 高額取引
-    print("高額取引（500円以上）:")
-    high_sales = filter_high_sales(sales_data)
-    print(high_sales.head())
-    print(f"件数: {len(high_sales)}件")
-    print()
-    
-    # 統計情報
-    total, mean, max_val, min_val = calculate_statistics(sales_data)
-    print("売上の統計情報:")
-    print(f"合計売上: {total:,}円")
-    print(f"平均売上: {mean:.2f}円")
-    print(f"最高売上: {max_val:,}円")
-    print(f"最低売上: {min_val:,}円")
-
-if __name__ == "__main__":
-    main()
-```
-
-**発展版の特徴**:
-- 関数化で再利用可能
-- 型ヒントで明確化
-- エラーハンドリング（実装可能）
-- 保守性の高いコード
-
----
-
 ### 💡 演習でのGitHub Copilot活用
 
 #### 演習を始める前に
@@ -3171,8 +2703,6 @@ KeyError: 'product'
 [あなたのコード]
 ```
 
----
-
 ### ✅ 演習の評価基準
 
 自分のコードが以下の基準を満たしているか確認しましょう：
@@ -3195,8 +2725,6 @@ KeyError: 'product'
 - [ ] エラーハンドリングがある
 - [ ] ドキュメント文字列がある
 - [ ] より効率的な処理方法を使っている
-
----
 
 ## 3.6.5 まとめと自己チェック
 
@@ -3222,13 +2750,9 @@ KeyError: 'product'
 - ✅ エラーメッセージを読んで対処できる
 - ✅ GitHub Copilotを効果的に活用できる
 
----
-
 ### 📊 自己チェックリスト
 
 以下のチェックリストを使って、学習の達成度を確認しましょう。各項目について、自信を持って「できる」と言えるかチェックしてください。
-
----
 
 #### A. 環境とパッケージ管理（15項目）
 
@@ -3251,8 +2775,6 @@ KeyError: 'product'
 - [ ] `pip install --upgrade`でパッケージを更新できる
 - [ ] 仮想環境（venvc）でパッケージ管理ができる
 
----
-
 #### B. Rパッケージの実践スキル（12項目）
 
 - [ ] tidyverseパッケージを呼び出して使用できる
@@ -3267,8 +2789,6 @@ KeyError: 'product'
 - [ ] `psych::describe()`で記述統計を計算できる
 - [ ] データフレームを作成してtidyverse関数を適用できる
 - [ ] Rのパッケージエコシステムを理解している
-
----
 
 #### C. Pythonモジュールの実践スキル（15項目）
 
@@ -3293,8 +2813,6 @@ KeyError: 'product'
 - [ ] 条件によるフィルタリングができる
 - [ ] `groupby()`でグループ化と集計ができる
 
----
-
 #### D. 概念理解（12項目）
 
 ##### 基本概念
@@ -3315,8 +2833,6 @@ KeyError: 'product'
 - [ ] パッケージのバージョン不一致を理解している
 - [ ] 公式ドキュメントでヘルプを探すことができる
 
----
-
 #### E. AI協働スキル（10項目）
 
 ##### GitHub Copilot基本
@@ -3334,8 +2850,6 @@ KeyError: 'product'
 ##### 学習姿勢
 - [ ] AIに丸投げせず、理解しながら使っている
 - [ ] 生成されたコードを実験して学んでいる
-
----
 
 #### F. 実践スキル（12項目）
 
@@ -3357,8 +2871,6 @@ KeyError: 'product'
 - [ ] `help()`関数でヘルプを参照できる
 - [ ] 公式ドキュメントを読むことができる
 
----
-
 #### G. 統合演習の完遂（6項目）
 
 - [ ] 課題1（Python版）を完了した
@@ -3367,8 +2879,6 @@ KeyError: 'product'
 - [ ] 期待される出力が得られた
 - [ ] コードにコメントを適切に付けた
 - [ ] 発展版の存在を知り、将来の参考にできる
-
----
 
 ### 📈 達成度評価
 
@@ -3386,8 +2896,6 @@ KeyError: 'product'
 - わからない項目は、もう一度教材を読み返しましょう
 - GitHub Copilotに質問して、理解を深めましょう
 - 練習を重ねることで、確実に上達します
-
----
 
 ### 🚀 次のステップ
 
@@ -3417,8 +2925,6 @@ KeyError: 'product'
    - 「なぜ」を理解することを優先
    - AIと対話しながら学ぶ
 
----
-
 ### 💬 学習のヒント
 
 #### 完璧を目指さない
@@ -3435,8 +2941,6 @@ KeyError: 'product'
 - 毎日少しずつでも触れる
 - 短時間でも継続することが大切
 - 習慣化することで自然に身につく
-
----
 
 ### 🎉 お疲れ様でした！
 
@@ -3464,8 +2968,6 @@ KeyError: 'product'
 - 効果的なプロンプトの作成
 - 生成されたコードの理解と検証
 
----
-
 ### 📚 さらに学びたい方へ
 
 #### 公式ドキュメント
@@ -3482,9 +2984,10 @@ KeyError: 'product'
 - **GitHub**: オープンソースプロジェクト
 - **Kaggle**: データサイエンスコンペティション
 
----
-
 ### ✍️ フィードバック
 
 この教材について、改善点や質問があれば、遠慮なく担当教員に相談してください。
+
 あなたの学習の成功を心から応援しています！🚀
+
+**次回予告: 3.7節では、データの可視化について学びます。お楽しみに！**

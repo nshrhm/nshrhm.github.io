@@ -43,7 +43,9 @@ VS Codeで、統合ターミナルを開いてください（メニューから�
 $ venvc
 ```
 
-成功すると、プロンプトの先頭に `(class)` が表示されます。
+* 成功すると、プロンプトの先頭に `(class)` が表示されます。
+* 解除するには `deactivate` と入力してください。
+* 「DESKTOP」はコンピュータ名ですので、ユーザーによって異なります。
 
 ```bash
 (class) datasci@DESKTOP:~$
@@ -53,12 +55,19 @@ $ venvc
 
 💡 **トラブルシューティング**: もし `venvc` コマンドが見つからない場合は、担当教員に確認してください。
 
+* `(class)` が表示されていない場合でも `which python` と入力して、以下の表示が出れば、仮想環境が有効になっています。
+
+```bash
+/home/datasci/.venvs/class/bin/python
+```
+
 ### 作業ディレクトリへの移動
 
+現在、以下のように表示されていれば、正しい作業ディレクトリに移動済です。
 プログラムファイルは、決められた作業ディレクトリに保存します。
 
 ```bash
-$ cd /home/datasci/work
+(class) datasci@juiz:~/work$ 
 ```
 
 現在いるディレクトリを確認するには、以下のコマンドを入力し、
@@ -73,21 +82,27 @@ $ pwd
 /home/datasci/work
 ```
 
+もし、正しい場所にいない場合は、以下のコマンドで移動してください。
+
+```bash
+$ cd /home/datasci/work
+```
+
 ### ファイルの作成と実行方法
 #### Pythonプログラムの場合
 
 **ファイル作成**:
 ```bash
-$ touch sample01.py
+$ touch my3-1-01.py
 ```
 
-- **エディタで開く**: VS Codeの左側のエクスプローラーに `sample01.py` が表示されるので、クリックして開きます。
+- **エディタで開く**: VS Codeの左側のエクスプローラーに `my3-1-01.py` が表示されるので、クリックして開きます。
 - **プログラムを書く**: エディタでコードを入力します。
 
 **実行**
 
 ```bash
-$ python sample01.py
+$ python my3-1-01.py
 ```
 
 #### Rプログラムの場合
@@ -95,16 +110,16 @@ $ python sample01.py
 - **ファイル作成**
 
 ```bash
-$ touch sample01.R
+$ touch my3-1-01.R
 ```
 
-- **エディタで開く**: VS Codeの左側のエクスプローラーに `sample01.R` が表示されるので、クリックして開きます。
+- **エディタで開く**: VS Codeの左側のエクスプローラーに `my3-1-01.R` が表示されるので、クリックして開きます。
 - **プログラムを書く**: エディタでコードを入力します。
 
 - **実行**
 
 ```bash
-$ Rscript sample01.R
+$ Rscript my3-1-01.R
 ```
 
 ### 💡 よくある質問
@@ -131,7 +146,7 @@ $ Rscript sample01.R
 | `TRUE` | `True` | 真（本当、正しい） |
 | `FALSE` | `False` | 偽（嘘、間違い） |
 | `&` | `and` | 論理積（かつ）※Pythonのアレイでは `&` |
-| `|` | `or` | 論理和（または）※Pythonのアレイでは `|` |
+| `\|` | `or` | 論理和（または）※Pythonのアレイでは `|` |
 | `!` | `not` | 否定（でない）※Pythonのアレイでは `~` |
 | ベクタ | リスト・アレイ・シリーズ | 同じ種類のデータを並べて管理 |
 | リスト | 辞書 | 文字列と値のペアを管理 |
@@ -246,7 +261,7 @@ $ Rscript sample01.R
 それでは、実際にプログラムを書いて実行してみましょう。
 
 ### Python版
-**ファイル名**: `sample01_arithmetic.py`
+**ファイル名**: `my3-1-01_arithmetic.py`
 
 ```python
 # 基本的な計算のサンプル
@@ -283,7 +298,7 @@ print(1.23e5)
 **実行方法**
 
 ```bash
-$ python sample01_arithmetic.py
+$ python my3-1-01_arithmetic.py
 5
 3
 6
@@ -296,7 +311,7 @@ $ python sample01_arithmetic.py
 
 ### R版
 
-**ファイル名**: `sample01_arithmetic.R`
+**ファイル名**: `my3-1-01_arithmetic.R`
 
 ```r
 # 基本的な計算のサンプル
@@ -333,7 +348,7 @@ print(1.23e5)
 **実行方法**
 
 ```bash
-$ Rscript sample01_arithmetic.R
+$ Rscript my3-1-01_arithmetic.R
 [1] 5
 [1] 3
 [1] 6
@@ -345,7 +360,7 @@ $ Rscript sample01_arithmetic.R
 ```
 
 ### 🎯 実行してみよう
-1. 上記のプログラムを、それぞれ `sample01_arithmetic.py` と `sample01_arithmetic.R` というファイル名で保存してください
+1. 上記のプログラムを、それぞれ `my3-1-01_arithmetic.py` と `my3-1-01_arithmetic.R` というファイル名で保存してください
 2. ターミナルで実行してみましょう
 3. 結果が表示されることを確認してください
 
@@ -358,7 +373,7 @@ $ Rscript sample01_arithmetic.R
 
 ### Python版
 
-**ファイル名**: `sample02_calculation.py`
+**ファイル名**: `my3-1-02_calculation.py`
 
 ```python
 # 複数の計算を組み合わせたサンプル
@@ -398,7 +413,7 @@ print(my_change)     # お釣り
 **実行方法**
 
 ```bash
-$ python sample02_calculation.py
+$ python my3-1-02_calculation.py
 14
 20
 10.0
@@ -409,7 +424,7 @@ $ python sample02_calculation.py
 ```
 
 ### R版
-**ファイル名**: `sample02_calculation.R`
+**ファイル名**: `my3-1-02_calculation.R`
 
 ```r
 # 複数の計算を組み合わせたサンプル
@@ -449,7 +464,7 @@ print(my_change)     # お釣り
 **実行方法**
 
 ```bash
-$ Rscript sample02_calculation.R
+$ Rscript my3-1-02_calculation.R
 [1] 14
 [1] 20
 [1] 10
@@ -648,7 +663,7 @@ my_name = "Taro"  # 意味のあるデータ
 それでは、変数を使った実践的なプログラムを書いてみましょう。
 
 ### Python版
-**ファイル名**: `sample03_variables.py`
+**ファイル名**: `my3-1-03_variables.py`
 
 ```python
 # 変数を使った計算のサンプル
@@ -673,14 +688,14 @@ print("税込価格:", my_total)
 
 **実行方法**:
 ```bash
-$ python sample03_variables.py
+$ python my3-1-03_variables.py
 商品価格: 1000
 消費税額: 100.0
 税込価格: 1100.0
 ```
 
 ### R版
-**ファイル名**: `sample03_variables.R`
+**ファイル名**: `my3-1-03_variables.R`
 
 ```r
 # 変数を使った計算のサンプル
@@ -705,7 +720,7 @@ print(paste("税込価格:", my_total))
 
 **実行方法**:
 ```bash
-$ Rscript sample03_variables.R
+$ Rscript my3-1-03_variables.R
 [1] "商品価格: 1000"
 [1] "消費税額: 100"
 [1] "税込価格: 1100"
@@ -728,100 +743,6 @@ $ Rscript sample03_variables.R
 1. `my_price` を 1500 に変更して実行してみましょう
 2. 消費税率を8%（0.08）に変更して実行してみましょう
 3. 複数の商品（例: リンゴ、バナナ、オレンジ）の合計金額を計算するプログラムを書いてみましょう
-
-### 📚 参考: より実践的な書き方
-
-**意欲的な学生向けの参考情報です。現時点では基本版で十分ですので、余裕がある方のみ参考にしてください。**
-
-#### Python版（発展）
-
-**ファイル名**: `sample03_advanced.py`
-
-```python
-# より実践的な書き方（参考）
-
-def calculate_with_tax(price, tax_rate=0.10):
-    """
-    税込価格を計算する関数
-    
-    Args:
-        price: 商品価格（正の数）
-        tax_rate: 消費税率（デフォルト10%）
-    
-    Returns:
-        税込価格、税額のタプル
-    """
-    # 入力値の検証
-    if price < 0:
-        print("エラー: 価格は0以上である必要があります")
-        return None, None
-    
-    if tax_rate < 0 or tax_rate > 1:
-        print("エラー: 税率は0から1の間である必要があります")
-        return None, None
-    
-    # 計算
-    tax = price * tax_rate
-    total = price + tax
-    
-    return total, tax
-
-# メイン処理
-if __name__ == "__main__":
-    my_price = 1000
-    my_total, my_tax = calculate_with_tax(my_price)
-    
-    if my_total is not None:
-        print(f"商品価格: {my_price}円")
-        print(f"消費税額: {my_tax}円")
-        print(f"税込価格: {my_total}円")
-```
-
-#### R版（発展）
-
-**ファイル名**: `sample03_advanced.R`
-
-```r
-# より実践的な書き方（参考）
-
-calculate_with_tax <- function(price, tax_rate = 0.10) {
-  # 入力値の検証
-  if (price < 0) {
-    print("エラー: 価格は0以上である必要があります")
-    return(list(total = NULL, tax = NULL))
-  }
-  
-  if (tax_rate < 0 || tax_rate > 1) {
-    print("エラー: 税率は0から1の間である必要があります")
-    return(list(total = NULL, tax = NULL))
-  }
-  
-  # 計算
-  tax <- price * tax_rate
-  total <- price + tax
-  
-  return(list(total = total, tax = tax))
-}
-
-# メイン処理
-my_price <- 1000
-result <- calculate_with_tax(my_price)
-
-if (!is.null(result$total)) {
-  print(paste("商品価格:", my_price, "円"))
-  print(paste("消費税額:", result$tax, "円"))
-  print(paste("税込価格:", result$total, "円"))
-}
-```
-
-#### 発展版の特徴
-
-- ✅ **関数化**: 再利用しやすくなっている
-- ✅ **エラーチェック**: 不正な入力を検出できる
-- ✅ **ドキュメント**: コメントで使い方を説明
-- ✅ **main部分の分離**: プログラムの構造が明確
-
-💡 **今後の学習で**: 3.2節「関数」で、このような書き方を詳しく学びます。今はシンプルな基本版を理解することに集中してください。
 
 ## 💡 重要ポイントのまとめ（3.1.2）
 
@@ -1017,7 +938,7 @@ f'My name is {my_name} and I am {my_age} years old.'
 
 ### Python版
 
-- **ファイル名**: `sample04_string_basic.py`
+- **ファイル名**: `my3-1-04_string_basic.py`
 
 ```python
 # 文字列の基本操作のサンプル
@@ -1043,7 +964,7 @@ print("7文字目から:", my_text[7:])
 - **実行方法**
 
 ```bash
-$ python sample04_string_basic.py
+$ python my3-1-04_string_basic.py
 greetingの長さ: 5
 nameの長さ: 4
 Hello, Taro!
@@ -1053,7 +974,7 @@ Hello, Taro!
 
 ### R版
 
-- **ファイル名**: `sample04_string_basic.R`
+- **ファイル名**: `my3-1-04_string_basic.R`
 
 ```r
 # 文字列の基本操作のサンプル
@@ -1080,7 +1001,7 @@ print(paste("8文字目から:", substr(my_text, 8, nchar(my_text))))
 **実行方法**
 
 ```bash
-$ Rscript sample04_string_basic.R
+$ Rscript my3-1-04_string_basic.R
 [1] "greetingの長さ: 5"
 [1] "nameの長さ: 4"
 [1] "Hello, Taro!"
@@ -1092,7 +1013,7 @@ $ Rscript sample04_string_basic.R
 テンプレートを使った文字列の作成を試してみましょう。
 
 ### Python版
-- **ファイル名**: `sample05_string_format.py`
+- **ファイル名**: `my3-1-05_string_format.py`
 
 ```python
 # 文字列フォーマットのサンプル
@@ -1120,14 +1041,14 @@ print(f"{my_quantity}個で{my_price * my_quantity}円です")
 - **実行方法**
 
 ```bash
-$ python sample05_string_format.py
+$ python my3-1-05_string_format.py
 My name is Taro. I am 20 years old. I live in Tokyo.
 My name is Taro. I am 20 years old. I live in Tokyo.
 3個で3000円です
 ```
 
 ### R版
-- **ファイル名**: `sample05_string_format.R`
+- **ファイル名**: `my3-1-05_string_format.R`
 
 ```r
 # 文字列フォーマットのサンプル
@@ -1155,7 +1076,7 @@ print(sprintf("%d個で%d円です", my_quantity, my_price * my_quantity))
 - **実行方法**
 
 ```bash
-$ Rscript sample05_string_format.R
+$ Rscript my3-1-05_string_format.R
 [1] "My name is Taro. I am 20 years old. I live in Tokyo."
 [1] "My name is Taro . I am 20 years old. I live in Tokyo ."
 [1] "3個で3000円です"
@@ -1180,122 +1101,6 @@ $ Rscript sample05_string_format.R
 1. 自分の名前、年齢、出身地を変数に入れて、自己紹介文を作成してみましょう
 2. 商品名、価格、個数から「〇〇を△個、合計□□円」という文字列を作ってみましょう
 3. 部分文字列を使って、メールアドレスから@より前の部分を取り出してみましょう
-
-### 📚 参考: より実践的な書き方
-**意欲的な学生向けの参考情報です。現時点では基本版で十分ですので、余裕がある方のみ参考にしてください。**
-
-#### Python版（発展）
-- **ファイル名**: `sample05_advanced.py`
-
-```python
-# より実践的な書き方（参考）
-
-def create_greeting(name, age, city):
-    """
-    自己紹介文を生成する関数
-    
-    Args:
-        name: 名前（文字列）
-        age: 年齢（整数）
-        city: 居住都市（文字列）
-    
-    Returns:
-        自己紹介文（文字列）
-    """
-    # 入力値の検証
-    if not isinstance(name, str) or not name:
-        return "エラー: 名前は空でない文字列である必要があります"
-    
-    if not isinstance(age, int) or age < 0:
-        return "エラー: 年齢は正の整数である必要があります"
-    
-    if not isinstance(city, str) or not city:
-        return "エラー: 都市名は空でない文字列である必要があります"
-    
-    # 自己紹介文の生成
-    greeting = f"My name is {name}. I am {age} years old. I live in {city}."
-    return greeting
-
-# メイン処理
-if __name__ == "__main__":
-    # 正常なケース
-    result = create_greeting("Taro", 20, "Tokyo")
-    print(result)
-    
-    # エラーケース（年齢が負の数）
-    result = create_greeting("Hanako", -5, "Osaka")
-    print(result)
-    
-    # 複数人の自己紹介
-    people = [
-        {"name": "Taro", "age": 20, "city": "Tokyo"},
-        {"name": "Hanako", "age": 22, "city": "Osaka"},
-        {"name": "Jiro", "age": 19, "city": "Kyoto"}
-    ]
-    
-    print("\n=== 複数人の自己紹介 ===")
-    for person in people:
-        greeting = create_greeting(person["name"], person["age"], person["city"])
-        print(greeting)
-```
-
-#### R版（発展）
-- **ファイル名**: `sample05_advanced.R`
-
-```r
-# より実践的な書き方（参考）
-
-create_greeting <- function(name, age, city) {
-  # 入力値の検証
-  if (!is.character(name) || nchar(name) == 0) {
-    return("エラー: 名前は空でない文字列である必要があります")
-  }
-  
-  if (!is.numeric(age) || age < 0) {
-    return("エラー: 年齢は正の数である必要があります")
-  }
-  
-  if (!is.character(city) || nchar(city) == 0) {
-    return("エラー: 都市名は空でない文字列である必要があります")
-  }
-  
-  # 自己紹介文の生成
-  greeting <- sprintf("My name is %s. I am %d years old. I live in %s.", 
-                      name, as.integer(age), city)
-  return(greeting)
-}
-
-# メイン処理
-# 正常なケース
-result <- create_greeting("Taro", 20, "Tokyo")
-print(result)
-
-# エラーケース（年齢が負の数）
-result <- create_greeting("Hanako", -5, "Osaka")
-print(result)
-
-# 複数人の自己紹介
-people <- list(
-  list(name = "Taro", age = 20, city = "Tokyo"),
-  list(name = "Hanako", age = 22, city = "Osaka"),
-  list(name = "Jiro", age = 19, city = "Kyoto")
-)
-
-print("\n=== 複数人の自己紹介 ===")
-for (person in people) {
-  greeting <- create_greeting(person$name, person$age, person$city)
-  print(greeting)
-}
-```
-
-#### 発展版の特徴
-
-- ✅ **関数化**: 処理を再利用可能にしている
-- ✅ **入力検証**: 不正なデータを検出できる
-- ✅ **エラーメッセージ**: 問題を具体的に伝える
-- ✅ **複数データの処理**: リストやループを使った応用
-
-💡 **今後の学習で**: 3.3節「コレクション」と3.7節「反復処理」で、このような書き方を詳しく学びます。
 
 ## 💡 重要ポイントのまとめ（3.1.3）
 
@@ -1579,7 +1384,7 @@ print(my_message)
 論理値と条件判断を使った実践的なプログラムを書いてみましょう。
 
 ### Python版
-**ファイル名**: `sample06_logic.py`
+**ファイル名**: `my3-1-06_logic.py`
 
 ```python
 # 論理値と条件判断のサンプル
@@ -1618,7 +1423,7 @@ print(f"割引後: {my_final_price}円")
 **実行方法**
 
 ```bash
-$ python sample06_logic.py
+$ python my3-1-06_logic.py
 === 比較演算 ===
 点数: 85
 80点以上: True
@@ -1639,7 +1444,7 @@ $ python sample06_logic.py
 ```
 
 ### R版
-**ファイル名**: `sample06_logic.R`
+**ファイル名**: `my3-1-06_logic.R`
 
 ```r
 # 論理値と条件判断のサンプル
@@ -1678,7 +1483,7 @@ print(paste("割引後:", my_final_price, "円"))
 **実行方法**
 
 ```bash
-$ Rscript sample06_logic.R
+$ Rscript my3-1-06_logic.R
 [1] "=== 比較演算 ==="
 [1] "点数: 85"
 [1] "80点以上: TRUE"
@@ -1714,169 +1519,6 @@ $ Rscript sample06_logic.R
 1. 自分の年齢を変数に入れて、「未成年」「成人」「高齢者（65歳以上）」を判定するプログラムを書いてみましょう
 2. 2つの数値を比較して、大きい方を表示するプログラムを書いてみましょう
 3. 試験の点数（0-100点）を入れて、「優（80点以上）」「良（60-79点）」「可（40-59点）」「不可（39点以下）」を判定するプログラムを書いてみましょう
-
-
-### 📚 参考: より実践的な書き方
-**意欲的な学生向けの参考情報です。現時点では基本版で十分ですので、余裕がある方のみ参考にしてください。**
-
-#### Python版（発展）
-**ファイル名**: `sample06_advanced.py`
-
-```python
-# より実践的な書き方（参考）
-
-def evaluate_score(score):
-    """
-    点数を評価する関数
-    
-    Args:
-        score: 点数（0-100）
-    
-    Returns:
-        評価（優/良/可/不可）
-    """
-    if not isinstance(score, (int, float)):
-        return "エラー: 点数は数値である必要があります"
-    
-    if score < 0 or score > 100:
-        return "エラー: 点数は0-100の範囲である必要があります"
-    
-    if score >= 80:
-        return "優"
-    elif score >= 60:
-        return "良"
-    elif score >= 40:
-        return "可"
-    else:
-        return "不可"
-
-def check_driving_eligibility(age, has_license):
-    """
-    運転資格を判定する関数
-    
-    Args:
-        age: 年齢
-        has_license: 免許の有無
-    
-    Returns:
-        判定結果のメッセージ
-    """
-    if not isinstance(age, int) or age < 0:
-        return "エラー: 年齢は正の整数である必要があります"
-    
-    if not isinstance(has_license, bool):
-        return "エラー: 免許の有無はTrue/Falseで指定してください"
-    
-    if age >= 18 and has_license:
-        return "運転可能です"
-    elif age >= 18 and not has_license:
-        return "免許を取得してください"
-    else:
-        return "18歳未満のため運転できません"
-
-# メイン処理
-if __name__ == "__main__":
-    # 点数評価のテスト
-    print("=== 点数評価 ===")
-    test_scores = [95, 75, 55, 35, -10, 150]
-    for score in test_scores:
-        result = evaluate_score(score)
-        print(f"点数 {score}: {result}")
-    
-    # 運転資格判定のテスト
-    print("\n=== 運転資格判定 ===")
-    test_cases = [
-        (25, True),
-        (20, False),
-        (16, True),
-        (16, False)
-    ]
-    for age, has_license in test_cases:
-        result = check_driving_eligibility(age, has_license)
-        print(f"年齢 {age}, 免許 {has_license}: {result}")
-```
-
-#### R版（発展）
-**ファイル名**: `sample06_advanced.R`
-
-```r
-# より実践的な書き方（参考）
-
-evaluate_score <- function(score) {
-  # 入力値の検証
-  if (!is.numeric(score)) {
-    return("エラー: 点数は数値である必要があります")
-  }
-  
-  if (score < 0 || score > 100) {
-    return("エラー: 点数は0-100の範囲である必要があります")
-  }
-  
-  # 評価
-  if (score >= 80) {
-    return("優")
-  } else if (score >= 60) {
-    return("良")
-  } else if (score >= 40) {
-    return("可")
-  } else {
-    return("不可")
-  }
-}
-
-check_driving_eligibility <- function(age, has_license) {
-  # 入力値の検証
-  if (!is.numeric(age) || age < 0) {
-    return("エラー: 年齢は正の数である必要があります")
-  }
-  
-  if (!is.logical(has_license)) {
-    return("エラー: 免許の有無はTRUE/FALSEで指定してください")
-  }
-  
-  # 判定
-  if (age >= 18 && has_license) {
-    return("運転可能です")
-  } else if (age >= 18 && !has_license) {
-    return("免許を取得してください")
-  } else {
-    return("18歳未満のため運転できません")
-  }
-}
-
-# メイン処理
-# 点数評価のテスト
-print("=== 点数評価 ===")
-test_scores <- c(95, 75, 55, 35, -10, 150)
-for (score in test_scores) {
-  result <- evaluate_score(score)
-  print(paste("点数", score, ":", result))
-}
-
-# 運転資格判定のテスト
-print("\n=== 運転資格判定 ===")
-test_cases <- list(
-  list(age = 25, has_license = TRUE),
-  list(age = 20, has_license = FALSE),
-  list(age = 16, has_license = TRUE),
-  list(age = 16, has_license = FALSE)
-)
-for (test_case in test_cases) {
-  result <- check_driving_eligibility(test_case$age, test_case$has_license)
-  print(paste("年齢", test_case$age, ", 免許", test_case$has_license, ":", result))
-}
-```
-
-#### 発展版の特徴
-
-- ✅ **関数化**: 判定ロジックを再利用可能にしている
-- ✅ **入力検証**: 不正なデータを検出できる
-- ✅ **多段階の条件分岐**: if-elif-else を使った複雑な判定
-- ✅ **テストケース**: 様々なパターンを自動でテスト
-
-💡 **今後の学習で**: 3.2節「関数」で、このような書き方を詳しく学びます。
-
----
 
 ## 💡 重要ポイントのまとめ（3.1.4）
 この節で学んだこと
@@ -2016,7 +1658,7 @@ os.getcwd()
 作業ディレクトリの確認と変更を試してみましょう。
 
 ### Python版
-**ファイル名**: `sample07_directory.py`
+**ファイル名**: `my3-1-07_directory.py`
 
 ```python
 # 作業ディレクトリの操作サンプル
@@ -2052,14 +1694,14 @@ print("一つ上の絶対パス:", os.path.abspath('..'))
 
 **実行方法**:
 ```bash
-$ python sample07_directory.py
+$ python my3-1-07_directory.py
 === 現在の作業ディレクトリ ===
 /home/datasci/work
 
 === ファイル一覧 ===
-sample01_arithmetic.py
-sample02_calculation.py
-sample03_variables.py
+my3-1-01_arithmetic.py
+my3-1-02_calculation.py
+my3-1-03_variables.py
 ...
 
 === 一つ上に移動 ===
@@ -2074,7 +1716,7 @@ sample03_variables.py
 ```
 
 ### R版
-**ファイル名**: `sample07_directory.R`
+**ファイル名**: `my3-1-07_directory.R`
 
 ```r
 # 作業ディレクトリの操作サンプル
@@ -2109,13 +1751,13 @@ print(paste("一つ上の絶対パス:", normalizePath('..')))
 
 **実行方法**:
 ```bash
-$ Rscript sample07_directory.R
+$ Rscript my3-1-07_directory.R
 [1] "=== 現在の作業ディレクトリ ==="
 [1] "/home/datasci/work"
 [1] "\n=== ファイル一覧 ==="
-[1] "sample01_arithmetic.R"
-[1] "sample02_calculation.R"
-[1] "sample03_variables.R"
+[1] "my3-1-01_arithmetic.R"
+[1] "my3-1-02_calculation.R"
+[1] "my3-1-03_variables.R"
 ...
 [1] "\n=== 一つ上に移動 ==="
 [1] "移動後: /home/datasci"
@@ -2234,7 +1876,7 @@ result = x + y
 **エラーメッセージ**:
 ```
 Traceback (most recent call last):
-  File "sample.py", line 3, in <module>
+  File "my3-1-.py", line 3, in <module>
     result = x + y
 TypeError: unsupported operand type(s) for +: 'int' and 'str'
 ```
@@ -2243,7 +1885,7 @@ TypeError: unsupported operand type(s) for +: 'int' and 'str'
 1. **最後の行が重要**: `TypeError: unsupported operand type(s) for +: 'int' and 'str'`
    - `TypeError`: 型が合わない
    - `int`（整数）と `str`（文字列）を `+` で足せない
-2. **エラーが起きた場所**: `File "sample.py", line 3`
+2. **エラーが起きた場所**: `File "my3-1-.py", line 3`
    - ファイル名と行番号が示されている
 3. **エラーが起きた行**: `result = x + y`
 
@@ -2532,7 +2174,7 @@ my_price = 1500
 
 ### 解答例（基本版）
 #### Python版
-**ファイル名**: `exercise01_tax.py`
+**ファイル名**: `ex3-1-01_tax.py`
 
 ```python
 # 課題1: 消費税計算プログラム
@@ -2556,7 +2198,7 @@ print(f"税込価格: {my_total}円")
 ```
 
 #### R版
-**ファイル名**: `exercise01_tax.R`
+**ファイル名**: `ex3-1-01_tax.R`
 
 ```r
 # 課題1: 消費税計算プログラム
@@ -2577,43 +2219,6 @@ my_total <- my_price + my_tax
 print(paste("商品価格:", my_price, "円"))
 print(paste("消費税額:", my_tax, "円"))
 print(paste("税込価格:", my_total, "円"))
-```
-
-### 解答例（発展版）
-#### Python版
-**ファイル名**: `exercise01_tax_advanced.py`
-
-```python
-# 課題1: 消費税計算プログラム（発展版）
-
-def calculate_tax(price, tax_rate=0.10):
-    """
-    消費税を計算する
-    
-    Args:
-        price: 商品価格
-        tax_rate: 消費税率（デフォルト10%）
-    
-    Returns:
-        (税額, 税込価格) のタプル
-    """
-    if price < 0:
-        print("エラー: 価格は0以上である必要があります")
-        return None, None
-    
-    tax = price * tax_rate
-    total = price + tax
-    return tax, total
-
-if __name__ == "__main__":
-    # テストケース
-    test_prices = [1500, 2000, 500, 10000]
-    
-    print("=== 消費税計算 ===")
-    for price in test_prices:
-        tax, total = calculate_tax(price)
-        if tax is not None:
-            print(f"価格: {price}円 → 税額: {tax}円, 税込: {total}円")
 ```
 
 ## 課題2: 自己紹介文生成プログラム
@@ -2647,7 +2252,7 @@ my_city = 'Tokyo'
 
 ### 解答例（基本版）
 #### Python版
-**ファイル名**: `exercise02_profile.py`
+**ファイル名**: `ex3-1-02_profile.py`
 
 ```python
 # 課題2: 自己紹介文生成プログラム
@@ -2673,7 +2278,7 @@ print(f"メッセージ: {my_message}")
 ```
 
 #### R版
-**ファイル名**: `exercise02_profile.R`
+**ファイル名**: `ex3-1-02_profile.R`
 
 ```r
 # 課題2: 自己紹介文生成プログラム
@@ -2698,68 +2303,6 @@ print(paste("年齢:", my_age, "歳"))
 print(paste("出身:", my_city))
 print(paste("メッセージ:", my_message))
 ```
-
-### 解答例（発展版）
-#### Python版
-**ファイル名**: `exercise02_profile_advanced.py`
-
-```python
-# 課題2: 自己紹介文生成プログラム（発展版）
-
-def create_profile(name, age, city):
-    """
-    自己紹介文を生成する
-    
-    Args:
-        name: 名前
-        age: 年齢
-        city: 出身地
-    
-    Returns:
-        自己紹介情報の辞書
-    """
-    # 入力検証
-    if not name or not isinstance(name, str):
-        return {"error": "名前は空でない文字列である必要があります"}
-    
-    if age < 0 or not isinstance(age, int):
-        return {"error": "年齢は正の整数である必要があります"}
-    
-    # プロフィール作成
-    profile = {
-        "name": name,
-        "initial": name[0],
-        "age": age,
-        "city": city,
-        "message": f"Hello! I'm {name} from {city}. I'm {age} years old.",
-        "name_length": len(name)
-    }
-    
-    return profile
-
-if __name__ == "__main__":
-    # テストケース
-    people = [
-        {"name": "Taro Yamada", "age": 20, "city": "Tokyo"},
-        {"name": "Hanako Suzuki", "age": 22, "city": "Osaka"},
-        {"name": "Jiro Tanaka", "age": 19, "city": "Kyoto"}
-    ]
-    
-    for person in people:
-        profile = create_profile(person["name"], person["age"], person["city"])
-        
-        if "error" in profile:
-            print(f"エラー: {profile['error']}")
-        else:
-            print(f"\n=== {profile['name']} ===")
-            print(f"イニシャル: {profile['initial']}")
-            print(f"年齢: {profile['age']}歳")
-            print(f"出身: {profile['city']}")
-            print(f"名前の長さ: {profile['name_length']}文字")
-            print(f"メッセージ: {profile['message']}")
-```
-
----
 
 ## 課題3: 会員割引計算プログラム
 ### 課題の説明
@@ -2790,7 +2333,7 @@ my_is_member = True
 
 ### 解答例（基本版）
 #### Python版
-**ファイル名**: `exercise03_discount.py`
+**ファイル名**: `ex3-1-03_discount.py`
 
 ```python
 # 課題3: 会員割引計算プログラム
@@ -2820,7 +2363,7 @@ print(f"最終価格: {my_final_price}円")
 ```
 
 #### R版
-**ファイル名**: `exercise03_discount.R`
+**ファイル名**: `ex3-1-03_discount.R`
 
 ```r
 # 課題3: 会員割引計算プログラム
@@ -2847,72 +2390,6 @@ print(paste("会員:", ifelse(my_is_member, "はい", "いいえ")))
 print(paste("会員割引: -", my_member_discount, "円"))
 print(paste("大口割引: -", my_bulk_discount, "円"))
 print(paste("最終価格:", my_final_price, "円"))
-```
-
-### 解答例（発展版）
-#### Python版
-**ファイル名**: `exercise03_discount_advanced.py`
-
-```python
-# 課題3: 会員割引計算プログラム（発展版）
-
-def calculate_discount(price, is_member, member_rate=0.2, bulk_threshold=1000, bulk_discount=100):
-    """
-    割引を計算する
-    
-    Args:
-        price: 商品価格
-        is_member: 会員かどうか
-        member_rate: 会員割引率（デフォルト20%）
-        bulk_threshold: 大口割引の閾値（デフォルト1000円）
-        bulk_discount: 大口割引額（デフォルト100円）
-    
-    Returns:
-        割引情報の辞書
-    """
-    if price < 0:
-        return {"error": "価格は0以上である必要があります"}
-    
-    # 会員割引
-    member_discount = price * member_rate if is_member else 0
-    price_after_member = price - member_discount
-    
-    # 大口割引
-    bulk_discount_amount = bulk_discount if price_after_member >= bulk_threshold else 0
-    final_price = price_after_member - bulk_discount_amount
-    
-    return {
-        "original_price": price,
-        "is_member": is_member,
-        "member_discount": member_discount,
-        "bulk_discount": bulk_discount_amount,
-        "final_price": final_price,
-        "total_discount": member_discount + bulk_discount_amount,
-        "discount_rate": ((member_discount + bulk_discount_amount) / price * 100) if price > 0 else 0
-    }
-
-if __name__ == "__main__":
-    # テストケース
-    test_cases = [
-        {"price": 1500, "is_member": True},
-        {"price": 1500, "is_member": False},
-        {"price": 800, "is_member": True},
-        {"price": 800, "is_member": False},
-    ]
-    
-    for i, case in enumerate(test_cases, 1):
-        print(f"\n=== ケース{i} ===")
-        result = calculate_discount(case["price"], case["is_member"])
-        
-        if "error" in result:
-            print(f"エラー: {result['error']}")
-        else:
-            print(f"商品価格: {result['original_price']}円")
-            print(f"会員: {'はい' if result['is_member'] else 'いいえ'}")
-            print(f"会員割引: -{result['member_discount']}円")
-            print(f"大口割引: -{result['bulk_discount']}円")
-            print(f"合計割引: -{result['total_discount']}円 ({result['discount_rate']:.1f}%)")
-            print(f"最終価格: {result['final_price']}円")
 ```
 
 ## 🎯 挑戦課題
@@ -2946,10 +2423,9 @@ if __name__ == "__main__":
 ## 💡 重要ポイントのまとめ（3.1.7）
 この節で学んだこと
 
-- ✅ **統合的な思考**: 複数の機能を組み合わせてプログラムを作る  
-- ✅ **実践的な課題**: 消費税計算、自己紹介文、割引計算  
-- ✅ **段階的な開発**: 基本版から発展版へ  
-- ✅ **テストの重要性**: 様々な入力で動作確認  
+- ✅ **統合的な思考**: 複数の機能を組み合わせてプログラムを作る
+- ✅ **実践的な課題**: 消費税計算、自己紹介文、割引計算
+- ✅ **テストの重要性**: 様々な入力で動作確認
 - ✅ **コードの改善**: より良い書き方を学ぶ
 
 ### 次のステップ

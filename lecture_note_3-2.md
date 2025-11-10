@@ -213,12 +213,12 @@ print(message)
 
 #### 💻 サンプル01: 平方根の計算
 
-- **ファイル名**: `sample01_sqrt.py` / `sample01_sqrt.R`
+- **ファイル名**: `my3-2-01_sqrt.py` / `my3-2-01_sqrt.R`
 
 - **Python版**
 
 ```python
-# sample01_sqrt.py
+# my3-2-01_sqrt.py
 # 平方根を計算するサンプル
 
 # mathモジュールをインポート（数学関数を使うため）
@@ -234,7 +234,7 @@ print(f"4の平方根: {result}")
 - **実行方法**
 
 ```bash
-$ python sample01_sqrt.py
+$ python my3-2-01_sqrt.py
 ```
 
 **期待される出力**
@@ -246,7 +246,7 @@ $ python sample01_sqrt.py
 **R版**
 
 ```r
-# sample01_sqrt.R
+# my3-2-01_sqrt.R
 # 平方根を計算するサンプル
 
 # 4の平方根を計算
@@ -259,7 +259,7 @@ print(paste0("4の平方根: ", result))
 **実行方法**
 
 ```bash
-$ Rscript sample01_sqrt.R
+$ Rscript my3-2-01_sqrt.R
 ```
 
 **期待される出力**
@@ -307,11 +307,11 @@ print(result)  # 2
 
 log₁₀(100) = 2 を計算します。これは「10を何乗すると100になるか？」という問いで、答えは2です（10² = 100）。
 
-- **ファイル名**: `sample02_log_basic.py` / `sample02_log_basic.R`
+- **ファイル名**: `my3-2-02_log_basic.py` / `my3-2-02_log_basic.R`
 - **Python版**:
 
 ```python
-# sample02_log_basic.py
+# my3-2-02_log_basic.py
 # 対数を計算するサンプル（複数引数）
 
 import math
@@ -328,7 +328,7 @@ print(f"検証: 10の{result}乗 = {10 ** result}")
 **実行方法**
 
 ```bash
-$ python sample02_log_basic.py
+$ python my3-2-02_log_basic.py
 ```
 
 **期待される出力**
@@ -341,7 +341,7 @@ $ python sample02_log_basic.py
 **R版**
 
 ```r
-# sample02_log_basic.R
+# my3-2-02_log_basic.R
 # 対数を計算するサンプル（複数引数）
 
 # log₁₀(100) を計算
@@ -356,7 +356,7 @@ print(paste0("検証: 10の", result, "乗 = ", 10^result))
 **実行方法**
 
 ```bash
-$ Rscript sample02_log_basic.R
+$ Rscript my3-2-02_log_basic.R
 ```
 
 **期待される出力**
@@ -400,12 +400,12 @@ math.log(x=100, base=10) # エラー！
 #### 💻 サンプル03: デフォルト引数の利用
 `log`関数の第2引数を省略すると、**自然対数**（底がネイピア数eの対数）が計算されます。
 
-**ファイル名**: `sample03_log_default.py` / `sample03_log_default.R`
+**ファイル名**: `my3-2-03_log_default.py` / `my3-2-03_log_default.R`
 
 **Python版**
 
 ```python
-# sample03_log_default.py
+# my3-2-03_log_default.py
 # デフォルト引数を利用するサンプル
 
 import math
@@ -425,7 +425,7 @@ print(f"ネイピア数e: {math.e}")
 **実行方法**
 
 ```bash
-$ python sample03_log_default.py
+$ python my3-2-03_log_default.py
 ```
 
 **期待される出力**
@@ -439,7 +439,7 @@ $ python sample03_log_default.py
 **R版**
 
 ```r
-# sample03_log_default.R
+# my3-2-03_log_default.R
 # デフォルト引数を利用するサンプル
 
 # 第2引数を省略 - 自然対数が計算される
@@ -457,7 +457,7 @@ print(paste0("ネイピア数e: ", exp(1)))
 **実行方法**
 
 ```bash
-$ Rscript sample03_log_default.R
+$ Rscript my3-2-03_log_default.R
 ```
 
 **期待される出力**
@@ -479,12 +479,12 @@ $ Rscript sample03_log_default.R
 
 よく使う底の対数には、専用の関数が用意されています。
 
-**ファイル名**: `sample04_log_variants.py` / `sample04_log_variants.R`
+**ファイル名**: `my3-2-04_log_variants.py` / `my3-2-04_log_variants.R`
 
 **Python版**
 
 ```python
-# sample04_log_variants.py
+# my3-2-04_log_variants.py
 # 対数の専用関数を使うサンプル
 
 import math
@@ -505,7 +505,7 @@ print(f"検証: 2の{log2_result}乗 = {2 ** int(log2_result)}")
 
 **実行方法**:
 ```bash
-$ python sample04_log_variants.py
+$ python my3-2-04_log_variants.py
 ```
 
 **期待される出力**:
@@ -520,7 +520,7 @@ log₂(1024) = 10.0
 **R版**
 
 ```r
-# sample04_log_variants.R
+# my3-2-04_log_variants.R
 # 対数の専用関数を使うサンプル
 
 # 常用対数（底が10）
@@ -540,7 +540,7 @@ print(paste0("検証: 2の", log2_result, "乗 = ", 2^log2_result))
 **実行方法**
 
 ```bash
-$ Rscript sample04_log_variants.R
+$ Rscript my3-2-04_log_variants.R
 ```
 
 **期待される出力**
@@ -587,12 +587,12 @@ sqrt(4)
 
 #### 💻 サンプル05: パイプの基本
 
-**ファイル名**: `sample05_pipe.R`
+**ファイル名**: `my3-2-05_pipe.R`
 
 **R版**
 
 ```r
-# sample05_pipe.R
+# my3-2-05_pipe.R
 # パイプ演算子の基本的な使い方
 
 # tidyverseパッケージを読み込む（パイプを使うため）
@@ -614,7 +614,7 @@ print(paste0("括弧を省略: ", result_pipe2))
 **実行方法**
 
 ```bash
-$ Rscript sample05_pipe.R
+$ Rscript my3-2-05_pipe.R
 ```
 
 **期待される出力**
@@ -641,12 +641,12 @@ $ Rscript sample05_pipe.R
 
 パイプの真価は、**複数の処理を繋げるとき**に発揮されます。
 
-**ファイル名**: `sample06_pipe_chain.R`
+**ファイル名**: `my3-2-06_pipe_chain.R`
 
 **R版**
 
 ```r
-# sample06_pipe_chain.R
+# my3-2-06_pipe_chain.R
 # パイプで複数の処理を繋げるサンプル
 
 library(tidyverse)
@@ -675,7 +675,7 @@ print(paste0("複雑な例: ", result_complex))
 **実行方法**
 
 ```bash
-$ Rscript sample06_pipe_chain.R
+$ Rscript my3-2-06_pipe_chain.R
 ```
 
 **期待される出力**
@@ -852,7 +852,7 @@ Pythonのmath.ceil関数とmath.floor関数の違いを、
 ファイルにコメントを書いてから、Copilotに続きを書いてもらいます。
 
 ```python
-# sample_copilot.py
+# my3-2_copilot.py
 # 円の面積を計算するプログラム
 
 import math
@@ -1022,12 +1022,12 @@ print(calculate_with_tax(1500))
 
 #### 💻 サンプル07: 基本的な関数定義
 
-**ファイル名**: `sample07_define_basic.py` / `sample07_define_basic.R`
+**ファイル名**: `my3-2-07_define_basic.py` / `my3-2-07_define_basic.R`
 
 **Python版**
 
 ```python
-# sample07_define_basic.py
+# my3-2-07_define_basic.py
 # 基本的な関数定義のサンプル
 
 # 関数を定義（引数aとbを受け取り、a - bを返す）
@@ -1050,7 +1050,7 @@ print(f"3 - 10 = {answer3}")
 **実行方法**
 
 ```bash
-$ python sample07_define_basic.py
+$ python my3-2-07_define_basic.py
 ```
 
 **期待される出力**
@@ -1064,7 +1064,7 @@ $ python sample07_define_basic.py
 **R版**
 
 ```r
-# sample07_define_basic.R
+# my3-2-07_define_basic.R
 # 基本的な関数定義のサンプル
 
 # 関数を定義（引数aとbを受け取り、a - bを返す）
@@ -1088,7 +1088,7 @@ print(paste0("3 - 10 = ", answer3))
 **実行方法**
 
 ```bash
-$ Rscript sample07_define_basic.R
+$ Rscript my3-2-07_define_basic.R
 ```
 
 **期待される出力**
@@ -1144,12 +1144,12 @@ def 関数名(引数1, 引数2, ...):
 
 実際のデータサイエンスで使いそうな関数を作ってみましょう。
 
-**ファイル名**: `sample08_practical.py` / `sample08_practical.R`
+**ファイル名**: `my3-2-08_practical.py` / `my3-2-08_practical.R`
 
 **Python版**
 
 ```python
-# sample08_practical.py
+# my3-2-08_practical.py
 # 実用的な関数のサンプル
 
 # 摂氏を華氏に変換する関数
@@ -1179,7 +1179,7 @@ print(f"体重{my_weight}kg、身長{my_height}cmのBMI: {my_bmi:.2f}")
 **実行方法**
 
 ```bash
-$ python sample08_practical.py
+$ python my3-2-08_practical.py
 ```
 
 **期待される出力**
@@ -1192,7 +1192,7 @@ $ python sample08_practical.py
 **R版**
 
 ```r
-# sample08_practical.R
+# my3-2-08_practical.R
 # 実用的な関数のサンプル
 
 # 摂氏を華氏に変換する関数
@@ -1224,7 +1224,7 @@ print(paste0("体重", my_weight, "kg、身長", my_height, "cmのBMI: ", round(
 **実行方法**
 
 ```bash
-$ Rscript sample08_practical.R
+$ Rscript my3-2-08_practical.R
 ```
 
 **期待される出力**
@@ -1256,12 +1256,12 @@ $ Rscript sample08_practical.R
 
 #### 💻 サンプル09: デフォルト引数付き関数
 
-**ファイル名**: `sample09_default.py` / `sample09_default.R`
+**ファイル名**: `my3-2-09_default.py` / `my3-2-09_default.R`
 
 **Python版**
 
 ```python
-# sample09_default.py
+# my3-2-09_default.py
 # デフォルト引数を持つ関数のサンプル
 
 # 消費税を計算する関数（税率のデフォルトは10%）
@@ -1289,7 +1289,7 @@ print(f"商品価格{price3}円（税率5%）: {total3}円")
 **実行方法**
 
 ```bash
-$ python sample09_default.py
+$ python my3-2-09_default.py
 ```
 
 **期待される出力**:
@@ -1302,7 +1302,7 @@ $ python sample09_default.py
 **R版**
 
 ```r
-# sample09_default.R
+# my3-2-09_default.R
 # デフォルト引数を持つ関数のサンプル
 
 # 消費税を計算する関数（税率のデフォルトは10%）
@@ -1331,7 +1331,7 @@ print(paste0("商品価格", price3, "円（税率5%）: ", total3, "円"))
 **実行方法**
 
 ```bash
-$ Rscript sample09_default.R
+$ Rscript my3-2-09_default.R
 ```
 
 **期待される出力**
@@ -1370,12 +1370,12 @@ def 関数名(引数1, 引数2=デフォルト値):
 
 #### 💻 サンプル10: 複数のデフォルト引数
 
-**ファイル名**: `sample10_multiple_defaults.py` / `sample10_multiple_defaults.R`
+**ファイル名**: `my3-2-10_multiple_defaults.py` / `my3-2-10_multiple_defaults.R`
 
 **Python版**
 
 ```python
-# sample10_multiple_defaults.py
+# my3-2-10_multiple_defaults.py
 # 複数のデフォルト引数を持つ関数のサンプル
 
 # 挨拶メッセージを作る関数
@@ -1403,7 +1403,7 @@ print(msg4)
 **実行方法**
 
 ```bash
-$ python sample10_multiple_defaults.py
+$ python my3-2-10_multiple_defaults.py
 ```
 
 **期待される出力**
@@ -1418,7 +1418,7 @@ $ python sample10_multiple_defaults.py
 **R版**
 
 ```r
-# sample10_multiple_defaults.R
+# my3-2-10_multiple_defaults.R
 # 複数のデフォルト引数を持つ関数のサンプル
 
 # 挨拶メッセージを作る関数
@@ -1447,7 +1447,7 @@ print(msg4)
 **実行方法**
 
 ```bash
-$ Rscript sample10_multiple_defaults.R
+$ Rscript my3-2-10_multiple_defaults.R
 ```
 
 **期待される出力**
@@ -1472,12 +1472,12 @@ $ Rscript sample10_multiple_defaults.R
 
 #### 💻 サンプル11: 無名関数の基本
 
-**ファイル名**: `sample11_lambda.py` / `sample11_lambda.R`
+**ファイル名**: `my3-2-11_lambda.py` / `my3-2-11_lambda.R`
 
 **Python版**
 
 ```python
-# sample11_lambda.py
+# my3-2-11_lambda.py
 # 無名関数（lambda式）のサンプル
 
 # 通常の関数定義
@@ -1506,7 +1506,7 @@ print(f"lambda式で足し算: 3 + 7 = {result4}")
 **実行方法**
 
 ```bash
-$ python sample11_lambda.py
+$ python my3-2-11_lambda.py
 ```
 
 **期待される出力**
@@ -1521,7 +1521,7 @@ lambda式で足し算: 3 + 7 = 10
 **R版**
 
 ```r
-# sample11_lambda.R
+# my3-2-11_lambda.R
 # 無名関数のサンプル
 
 # 通常の関数定義
@@ -1550,7 +1550,7 @@ print(paste0("無名関数で足し算: 3 + 7 = ", result4))
 
 **実行方法**:
 ```bash
-$ Rscript sample11_lambda.R
+$ Rscript my3-2-11_lambda.R
 ```
 
 **期待される出力**
@@ -1597,12 +1597,12 @@ function(引数) 式
 
 関数を組み合わせることで、複雑な処理を分かりやすく書けます。
 
-**ファイル名**: `sample12_combined.py` / `sample12_combined.R`
+**ファイル名**: `my3-2-12_combined.py` / `my3-2-12_combined.R`
 
 **Python版**
 
 ```python
-# sample12_combined.py
+# my3-2-12_combined.py
 # 複数の関数を組み合わせるサンプル
 
 # 摂氏を華氏に変換
@@ -1641,7 +1641,7 @@ for temp in temperatures:
 **実行方法**
 
 ```bash
-$ python sample12_combined.py
+$ python my3-2-12_combined.py
 ```
 
 **期待される出力**
@@ -1656,7 +1656,7 @@ $ python sample12_combined.py
 
 **R版**:
 ```r
-# sample12_combined.R
+# my3-2-12_combined.R
 # 複数の関数を組み合わせるサンプル
 
 # 摂氏を華氏に変換
@@ -1700,7 +1700,7 @@ for (temp in temperatures) {
 **実行方法**
 
 ```bash
-$ Rscript sample12_combined.R
+$ Rscript my3-2-12_combined.R
 ```
 
 **期待される出力**
@@ -1732,10 +1732,10 @@ $ Rscript sample12_combined.R
 
 ### Python版: 型ヒントとdocstring
 
-**ファイル名**: `sample07_advanced.py`
+**ファイル名**: `my3-2-07_advanced.py`
 
 ```python
-# sample07_advanced.py
+# my3-2-07_advanced.py
 # より実践的な関数定義（Python）
 
 def calculate_bmi(weight: float, height: float) -> float:
@@ -1776,10 +1776,10 @@ except ValueError as e:
 
 ### R版: より構造化された関数
 
-**ファイル名**: `sample07_advanced.R`
+**ファイル名**: `my3-2-07_advanced.R`
 
 ```r
-# sample07_advanced.R
+# my3-2-07_advanced.R
 # より実践的な関数定義（R）
 
 #' BMI（体格指数）を計算します
@@ -2766,285 +2766,6 @@ $ Rscript exercise02_statistics.R
 #     = (400+100+0+100+400) / 5 = 1000 / 5 = 200
 # 標準偏差: √200 ≈ 14.14
 ```
-
-## 📚 参考: より実践的な書き方
-**現時点では基本版で十分です**が、意欲的な方のために、より実践的な書き方も紹介します。
-
-### 演習1の発展版（Python）
-**ファイル名**: `exercise01_temperature_advanced.py`
-
-```python
-# exercise01_temperature_advanced.py
-# 温度変換プログラム（発展版）
-
-def celsius_to_fahrenheit(celsius: float) -> float:
-    """
-    摂氏を華氏に変換します。
-    
-    Args:
-        celsius (float): 摂氏温度
-    
-    Returns:
-        float: 華氏温度
-    """
-    return celsius * 9/5 + 32
-
-def celsius_to_kelvin(celsius: float) -> float:
-    """
-    摂氏をケルビンに変換します。
-    
-    Args:
-        celsius (float): 摂氏温度
-    
-    Returns:
-        float: ケルビン温度
-    """
-    if celsius < -273.15:
-        raise ValueError("絶対零度（-273.15°C）より低い温度は存在しません")
-    return celsius + 273.15
-
-def fahrenheit_to_celsius(fahrenheit: float) -> float:
-    """華氏を摂氏に変換します。"""
-    return (fahrenheit - 32) * 5/9
-
-def kelvin_to_celsius(kelvin: float) -> float:
-    """ケルビンを摂氏に変換します。"""
-    if kelvin < 0:
-        raise ValueError("ケルビン温度は0未満にはなりません")
-    return kelvin - 273.15
-
-def convert_temperature(temp: float, from_unit: str, to_unit: str) -> float:
-    """
-    任意の温度単位間で変換します。
-    
-    Args:
-        temp (float): 変換する温度
-        from_unit (str): 変換元の単位（"C", "F", "K"）
-        to_unit (str): 変換先の単位（"C", "F", "K"）
-    
-    Returns:
-        float: 変換後の温度
-    
-    Raises:
-        ValueError: 無効な単位が指定された場合
-    """
-    valid_units = ["C", "F", "K"]
-    
-    if from_unit not in valid_units or to_unit not in valid_units:
-        raise ValueError(f"単位は {valid_units} のいずれかを指定してください")
-    
-    # 変換マップ
-    to_celsius = {
-        "C": lambda x: x,
-        "F": fahrenheit_to_celsius,
-        "K": kelvin_to_celsius
-    }
-    
-    from_celsius = {
-        "C": lambda x: x,
-        "F": celsius_to_fahrenheit,
-        "K": celsius_to_kelvin
-    }
-    
-    # まず摂氏に変換してから目的の単位に変換
-    celsius = to_celsius[from_unit](temp)
-    result = from_celsius[to_unit](celsius)
-    
-    return result
-
-# テスト（エラーハンドリング付き）
-if __name__ == "__main__":
-    try:
-        print("=== 正常なテスト ===")
-        print(f"25°C = {convert_temperature(25, 'C', 'F')}°F")
-        print(f"77°F = {convert_temperature(77, 'F', 'K')}K")
-        
-        print("\n=== エラーのテスト ===")
-        # 絶対零度以下
-        result = convert_temperature(-300, 'C', 'K')
-    except ValueError as e:
-        print(f"エラー検出: {e}")
-```
-
-#### 📝 発展版で追加されている要素
-
-**1. 型ヒント**
-
-```python
-def celsius_to_fahrenheit(celsius: float) -> float:
-```
-- 引数と戻り値の型を明示
-- コードの意図が明確になる
-
-**2. docstring**
-
-```python
-"""
-摂氏を華氏に変換します。
-...
-"""
-```
-- 関数の説明、引数、戻り値を文書化
-- `help()`関数で表示できる
-
-**3. エラーハンドリング**
-
-```python
-if celsius < -273.15:
-    raise ValueError("...")
-```
-- 不正な入力を検出
-- 適切なエラーメッセージを表示
-
-**4. 辞書とlambdaの活用**
-
-```python
-to_celsius = {
-    "C": lambda x: x,
-    "F": fahrenheit_to_celsius,
-    "K": kelvin_to_celsius
-}
-```
-- より柔軟な設計
-- 新しい単位の追加が簡単
-
-### 演習2の発展版（Python）
-
-**ファイル名**: `exercise02_statistics_advanced.py`
-
-```python
-# exercise02_statistics_advanced.py
-# 統計計算プログラム（発展版）
-
-from typing import List
-
-def calculate_mean(numbers: List[float]) -> float:
-    """
-    平均値を計算します。
-    
-    Args:
-        numbers (List[float]): 数値のリスト
-    
-    Returns:
-        float: 平均値
-    
-    Raises:
-        ValueError: リストが空の場合
-    """
-    if not numbers:
-        raise ValueError("空のリストの平均値は計算できません")
-    
-    return sum(numbers) / len(numbers)
-
-def calculate_median(numbers: List[float]) -> float:
-    """中央値を計算します。"""
-    if not numbers:
-        raise ValueError("空のリストの中央値は計算できません")
-    
-    sorted_numbers = sorted(numbers)
-    count = len(sorted_numbers)
-    
-    if count % 2 == 1:
-        return sorted_numbers[count // 2]
-    else:
-        middle1 = sorted_numbers[count // 2 - 1]
-        middle2 = sorted_numbers[count // 2]
-        return (middle1 + middle2) / 2
-
-def calculate_variance(numbers: List[float], sample: bool = False) -> float:
-    """
-    分散を計算します。
-    
-    Args:
-        numbers (List[float]): 数値のリスト
-        sample (bool): Trueの場合は標本分散（n-1で割る）
-    
-    Returns:
-        float: 分散
-    """
-    if not numbers:
-        raise ValueError("空のリストの分散は計算できません")
-    
-    mean = calculate_mean(numbers)
-    squared_diffs = [(x - mean) ** 2 for x in numbers]
-    
-    divisor = len(numbers) - 1 if sample else len(numbers)
-    return sum(squared_diffs) / divisor
-
-def calculate_std(numbers: List[float], sample: bool = False) -> float:
-    """標準偏差を計算します。"""
-    return calculate_variance(numbers, sample) ** 0.5
-
-class Statistics:
-    """統計量をまとめて扱うクラス"""
-    
-    def __init__(self, numbers: List[float]):
-        if not numbers:
-            raise ValueError("空のリストは処理できません")
-        self.numbers = numbers
-        self._compute_all()
-    
-    def _compute_all(self):
-        """すべての統計量を計算"""
-        self.mean = calculate_mean(self.numbers)
-        self.median = calculate_median(self.numbers)
-        self.range = max(self.numbers) - min(self.numbers)
-        self.variance = calculate_variance(self.numbers)
-        self.std = calculate_std(self.numbers)
-    
-    def show(self):
-        """統計量を表示"""
-        print(f"データ数: {len(self.numbers)}")
-        print(f"平均値: {self.mean:.2f}")
-        print(f"中央値: {self.median:.2f}")
-        print(f"範囲: {self.range:.2f}")
-        print(f"分散: {self.variance:.2f}")
-        print(f"標準偏差: {self.std:.2f}")
-
-# テスト
-if __name__ == "__main__":
-    try:
-        test_data = [10, 20, 30, 40, 50]
-        stats = Statistics(test_data)
-        stats.show()
-    except ValueError as e:
-        print(f"エラー: {e}")
-```
-
-#### 📝 発展版で追加されている要素
-
-**1. 型ヒント（List[float]）**
-- リストの要素の型も指定
-
-**2. オプション引数（sample）**
-- 標本分散と母分散を切り替え可能
-
-**3. リスト内包表記**
-
-```python
-squared_diffs = [(x - mean) ** 2 for x in numbers]
-```
-
-- よりPythonらしい書き方
-
-**4. クラス化**
-- 統計量をオブジェクトとして扱う
-- より高度な設計
-
-### 🎯 基本版と発展版の使い分け
-
-**基本版を使うべき場合**
-- 学習中の現在
-- シンプルな処理で十分な場合
-- コードの理解が最優先の場合
-
-**発展版を目指すべき場合**
-- 基本をマスターした後
-- 実務で使うコードを書く場合
-- チームで開発する場合
-- 長期間メンテナンスするコードの場合
-
-**まずは基本版を完璧にマスターしましょう！** 発展版は、基本版が理解できてから挑戦してください。
 
 ## 3.2.4 まとめ
 ### 🎓 本節で学んだこと

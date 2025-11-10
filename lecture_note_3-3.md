@@ -115,7 +115,7 @@ VS Codeの右下に **Copilotのアイコン** が表示されていることを
 
 #### サンプルプログラム：基本的な1次元データの作成
 
-**sample01_vector_basic.R**
+**my3-3-01_vector_basic.R**
 
 ```r
 # 1次元データ（ベクタ）の作成
@@ -127,7 +127,7 @@ print(x)
 
 **実行方法**
 ```bash
-$ Rscript sample01_vector_basic.R
+$ Rscript my3-3-01_vector_basic.R
 ```
 
 **期待される出力**
@@ -137,7 +137,7 @@ $ Rscript sample01_vector_basic.R
 
 ---
 
-**sample01_list_basic.py**
+**my3-3-01_list_basic.py**
 
 ```python
 # 1次元データ（リスト）の作成
@@ -149,7 +149,7 @@ print(x)
 
 **実行方法**
 ```bash
-$ python sample01_list_basic.py
+$ python my3-3-01_list_basic.py
 ```
 
 **期待される出力**
@@ -166,7 +166,7 @@ $ python sample01_list_basic.py
 
 #### サンプルプログラム：要素数の確認
 
-**sample02_vector_length.R**
+**my3-3-02_vector_length.R**
 
 ```r
 # ベクタの作成
@@ -186,7 +186,7 @@ print(paste("要素数:", n))
 
 ---
 
-**sample02_list_length.py**
+**my3-3-02_list_length.py**
 
 ```python
 # リストの作成
@@ -216,7 +216,7 @@ print(f"要素数: {n}")
 
 #### サンプルプログラム：要素の取り出し
 
-**sample03_vector_access.R**
+**my3-3-03_vector_access.R**
 
 ```r
 # ベクタの作成
@@ -236,7 +236,7 @@ print(paste("2番目の要素:", element))
 
 ---
 
-**sample03_list_access.py**
+**my3-3-03_list_access.py**
 
 ```python
 # リストの作成
@@ -260,7 +260,7 @@ print(f"2番目の要素: {element}")
 
 #### サンプルプログラム：要素の更新
 
-**sample04_vector_update.R**
+**my3-3-04_vector_update.R**
 
 ```r
 # ベクタの作成
@@ -289,7 +289,7 @@ print(x)
 
 ---
 
-**sample04_list_update.py**
+**my3-3-04_list_update.py**
 
 ```python
 # リストの作成
@@ -325,7 +325,7 @@ print(x)
 
 #### サンプルプログラム：負のインデックス
 
-**sample05_vector_negative.R**
+**my3-3-05_vector_negative.R**
 
 ```r
 # ベクタの作成
@@ -353,7 +353,7 @@ print(x)
 
 ---
 
-**sample05_list_negative.py**
+**my3-3-05_list_negative.py**
 
 ```python
 # リストの作成
@@ -379,7 +379,7 @@ print(f"後ろから2番目の要素: {element}")
 
 #### サンプルプログラム：要素の追加（新規作成）
 
-**sample06_vector_append.R**
+**my3-3-06_vector_append.R**
 
 ```r
 # ベクタの作成
@@ -404,7 +404,7 @@ print(x)
 [1] "foo" "bar" "baz"
 ```
 
-**sample06_list_append.py**
+**my3-3-06_list_append.py**
 
 ```python
 # リストの作成
@@ -435,7 +435,7 @@ print(x)
 
 #### サンプルプログラム：元のデータを更新
 
-**sample07_vector_update_inplace.R**
+**my3-3-07_vector_update_inplace.R**
 
 ```r
 # ベクタの作成
@@ -457,7 +457,7 @@ print(x)
 
 ---
 
-**sample07_list_update_inplace.py**
+**my3-3-07_list_update_inplace.py**
 
 ```python
 # リストの作成
@@ -645,7 +645,7 @@ RとPythonで、["A", "B", "C", "D"]という4要素のデータを作成し、
 
 #### サンプルプログラム：連続整数の生成
 
-**sample08_seq_basic.R**
+**my3-3-08_seq_basic.R**
 
 ```r
 # 1から5までの整数ベクタ
@@ -668,7 +668,7 @@ print(paste("要素数:", length(x)))
 
 ---
 
-**sample08_range_basic.py**
+**my3-3-08_range_basic.py**
 
 ```python
 # 0から4までの整数リスト
@@ -697,7 +697,7 @@ print(f"要素数: {len(x)}")
 
 #### サンプルプログラム：偶数の生成
 
-**sample09_seq_even.R**
+**my3-3-09_seq_even.R**
 
 ```r
 # 0以上10以下の偶数
@@ -716,7 +716,7 @@ print(even_numbers)
 
 ---
 
-**sample09_range_even.py**
+**my3-3-09_range_even.py**
 
 ```python
 # 0以上10以下の偶数
@@ -741,7 +741,7 @@ print(even_numbers)
 
 #### サンプルプログラム：小数の等間隔データ
 
-**sample10_seq_decimal.R**
+**my3-3-10_seq_decimal.R**
 
 ```r
 # 0から1まで間隔0.5
@@ -760,7 +760,7 @@ print(x)
 
 ---
 
-**sample10_arange_decimal.py**
+**my3-3-10_arange_decimal.py**
 
 ```python
 import numpy as np
@@ -789,7 +789,7 @@ print(x)
 
 #### サンプルプログラム：要素数指定
 
-**sample11_seq_length.R**
+**my3-3-11_seq_length.R**
 
 ```r
 # 0から100までを5等分
@@ -808,7 +808,7 @@ print(x)
 
 ---
 
-**sample11_linspace.py**
+**my3-3-11_linspace.py**
 
 ```python
 import numpy as np
@@ -833,7 +833,7 @@ print(x)
 
 #### サンプルプログラム：値の繰り返し
 
-**sample12_rep.R**
+**my3-3-12_rep.R**
 
 ```r
 # 10を5個並べる
@@ -852,7 +852,7 @@ print(x)
 
 ---
 
-**sample12_repeat.py**
+**my3-3-12_repeat.py**
 
 ```python
 # 10を5個並べる
@@ -875,7 +875,7 @@ print(x)
 
 #### サンプルプログラム：実用例
 
-**sample13_practical_seq.R**
+**my3-3-13_practical_seq.R**
 
 ```r
 # 0から2πまで100個の点
@@ -902,7 +902,7 @@ print(head(y, 5))
 
 ---
 
-**sample13_practical_linspace.py**
+**my3-3-13_practical_linspace.py**
 
 ```python
 import numpy as np
@@ -1078,7 +1078,7 @@ numpy を使い、最初の10個のデータだけ表示してください。
 
 #### サンプルプログラム：基本的なファクタ
 
-**sample14_factor_basic.R**
+**my3-3-14_factor_basic.R**
 
 ```r
 # 元になるベクタを作成
@@ -1111,7 +1111,7 @@ Levels: グー チョキ パー
 
 #### サンプルプログラム：水準の順序
 
-**sample15_factor_order.R**
+**my3-3-15_factor_order.R**
 
 ```r
 # アンケートの回答データ
@@ -1149,7 +1149,7 @@ response_factor
 
 #### サンプルプログラム：水準外のデータ
 
-**sample16_factor_na.R**
+**my3-3-16_factor_na.R**
 
 ```r
 # 曜日データ（「祝日」が含まれている）
@@ -1183,7 +1183,7 @@ Levels: 月 火 水 木 金 土 日
 
 #### サンプルプログラム：水準の自動設定
 
-**sample17_factor_auto.R**
+**my3-3-17_factor_auto.R**
 
 ```r
 # 色のデータ
@@ -1368,7 +1368,7 @@ NumPyは数値計算用のライブラリで、データサイエンスに不可
 
 #### サンプルプログラム：スカラー演算
 
-**sample18_vector_scalar.R**
+**my3-3-18_vector_scalar.R**
 
 ```r
 # ベクタの作成
@@ -1403,7 +1403,7 @@ print(result_mul)
 
 ---
 
-**sample18_array_scalar.py**
+**my3-3-18_array_scalar.py**
 
 ```python
 import numpy as np
@@ -1446,7 +1446,7 @@ print(result_mul)
 
 #### サンプルプログラム：関数の適用
 
-**sample19_vector_function.R**
+**my3-3-19_vector_function.R**
 
 ```r
 # ベクタの作成
@@ -1473,7 +1473,7 @@ print(result)
 
 ---
 
-**sample19_array_function.py**
+**my3-3-19_array_function.py**
 
 ```python
 import numpy as np
@@ -1508,7 +1508,7 @@ sin関数を適用:
 
 #### サンプルプログラム：要素ごとの演算
 
-**sample20_vector_elementwise.R**
+**my3-3-20_vector_elementwise.R**
 
 ```r
 # 二つのベクタ
@@ -1549,7 +1549,7 @@ print(result_mul)
 
 ---
 
-**sample20_array_elementwise.py**
+**my3-3-20_array_elementwise.py**
 
 ```python
 import numpy as np
@@ -1598,7 +1598,7 @@ x * y (要素ごとの乗算):
 
 #### サンプルプログラム：内積
 
-**sample21_inner_product.R**
+**my3-3-21_inner_product.R**
 
 ```r
 # 二つのベクタ
@@ -1630,7 +1630,7 @@ print(inner_product2)
 
 ---
 
-**sample21_inner_product.py**
+**my3-3-21_inner_product.py**
 
 ```python
 import numpy as np
@@ -1667,7 +1667,7 @@ print(inner_product2)
 
 #### サンプルプログラム：論理演算
 
-**sample22_logical_operations.R**
+**my3-3-22_logical_operations.R**
 
 ```r
 # 二つの論理値ベクタ
@@ -1708,7 +1708,7 @@ print(result_or)
 
 ---
 
-**sample22_logical_operations.py**
+**my3-3-22_logical_operations.py**
 
 ```python
 import numpy as np
@@ -1757,7 +1757,7 @@ x | y (OR):
 
 #### サンプルプログラム：比較演算
 
-**sample23_comparison.R**
+**my3-3-23_comparison.R**
 
 ```r
 # 三つのベクタ
@@ -1801,7 +1801,7 @@ print(uw_comparison)
 
 ---
 
-**sample23_comparison.py**
+**my3-3-23_comparison.py**
 
 ```python
 import numpy as np
@@ -1851,7 +1851,7 @@ u == w (要素ごと):
 
 #### サンプルプログラム：比較結果の集計
 
-**sample24_comparison_count.R**
+**my3-3-24_comparison_count.R**
 
 ```r
 # 二つのベクタ
@@ -1900,7 +1900,7 @@ print(ratio_same)
 
 ---
 
-**sample24_comparison_count.py**
+**my3-3-24_comparison_count.py**
 
 ```python
 import numpy as np
@@ -2092,7 +2092,7 @@ Pythonで、0から100までのランダムな整数10個のアレイを作成�
 
 #### サンプルプログラム：異なる型のデータ
 
-**sample25_list_mixed.R**
+**my3-3-25_list_mixed.R**
 
 ```r
 # 数値と文字列を含むリスト
@@ -2122,7 +2122,7 @@ print(class(x))
 
 ---
 
-**sample25_list_mixed.py**
+**my3-3-25_list_mixed.py**
 
 ```python
 # 数値と文字列を含むリスト
@@ -2151,7 +2151,7 @@ print(type(x))
 
 #### サンプルプログラム：要素の取り出し
 
-**sample26_list_access.R**
+**my3-3-26_list_access.R**
 
 ```r
 # リストの作成
@@ -2180,7 +2180,7 @@ print(class(element))
 
 ---
 
-**sample26_list_access.py**
+**my3-3-26_list_access.py**
 
 ```python
 # リストの作成
@@ -2211,7 +2211,7 @@ two
 
 #### サンプルプログラム：ユーザー情報
 
-**sample27_list_userinfo.R**
+**my3-3-27_list_userinfo.R**
 
 ```r
 # ユーザー情報（ID、名前、アクティブ状態）
@@ -2248,7 +2248,7 @@ $is_active
 
 ---
 
-**sample27_list_userinfo.py**
+**my3-3-27_list_userinfo.py**
 
 ```python
 # ユーザー情報（ID、名前、アクティブ状態）
@@ -2416,7 +2416,7 @@ Pythonで、学生情報（学籍番号、氏名、学年、GPA）を保存す�
 
 #### サンプルプログラム：基本的な名前付きリスト
 
-**sample28_named_list.R**
+**my3-3-28_named_list.R**
 
 ```r
 # 名前付きリストの作成
@@ -2451,7 +2451,7 @@ $orange
 
 #### サンプルプログラム：基本的な辞書
 
-**sample28_dictionary.py**
+**my3-3-28_dictionary.py**
 
 ```python
 # 辞書の作成
@@ -2483,7 +2483,7 @@ appleの訳:
 
 #### サンプルプログラム：要素の追加
 
-**sample29_add_element.R**
+**my3-3-29_add_element.R**
 
 ```r
 # 名前付きリストの作成
@@ -2515,7 +2515,7 @@ $grape
 
 ---
 
-**sample29_add_element.py**
+**my3-3-29_add_element.py**
 
 ```python
 # 辞書の作成
@@ -2544,7 +2544,7 @@ print(fruits)
 
 #### サンプルプログラム：複数のアクセス方法
 
-**sample30_access_methods.R**
+**my3-3-30_access_methods.R**
 
 ```r
 # 名前付きリストの作成
@@ -2583,7 +2583,7 @@ print(result4)
 
 ---
 
-**sample30_access_methods.py**
+**my3-3-30_access_methods.py**
 
 ```python
 # 辞書の作成
@@ -2616,7 +2616,7 @@ print(result2)
 
 #### サンプルプログラム：ユーザー情報（改良版）
 
-**sample31_user_dict.R**
+**my3-3-31_user_dict.R**
 
 ```r
 # ユーザー情報（名前付きリスト）
@@ -2649,7 +2649,7 @@ print(paste("アクティブ:", user$is_active))
 
 ---
 
-**sample31_user_dict.py**
+**my3-3-31_user_dict.py**
 
 ```python
 # ユーザー情報（辞書）
@@ -2822,7 +2822,7 @@ RとPythonの最も重要な違いの一つが、**変数への割り当て**の
 
 #### サンプルプログラム：Rのコピー動作
 
-**sample32_copy_r.R**
+**my3-3-32_copy_r.R**
 
 ```r
 # 元のベクタ
@@ -2856,7 +2856,7 @@ print(x)
 
 #### サンプルプログラム：Pythonの参照動作
 
-**sample32_reference_python.py**
+**my3-3-32_reference_python.py**
 
 ```python
 # 元のリスト
@@ -2920,7 +2920,7 @@ Pythonでも、Rのようにコピーを作ることができます。
 
 #### サンプルプログラム：Pythonでのコピー
 
-**sample33_copy_python.py**
+**my3-3-33_copy_python.py**
 
 ```python
 # 元のリスト
@@ -2964,7 +2964,7 @@ Pythonには2種類の「同じ」があります：
 
 #### サンプルプログラム：等価と同一の違い
 
-**sample34_equality_identity.py**
+**my3-3-34_equality_identity.py**
 
 ```python
 # 二つのリスト
