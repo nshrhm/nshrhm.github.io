@@ -1,0 +1,1235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>LLMの感情理解特性とペルソナ多様性の分析</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- タイトル -->
+<h2>LLMの感情理解特性と<br />ペルソナ多様性の分析</h2>
+<p><strong>Analysis of Emotional Understanding Characteristics and Persona Diversity in Large Language Models</strong></p>
+<div style="font-size: 0.8em;">
+○白濱 成希$^1$　中谷 直史$^2$　渡邉 志$^3$
+<p>$^1$下関市立大学　$^2$順天堂大学　$^3$静岡理工科大学</p>
+</div>
+<aside class="notes">
+本日は貴重なお時間をいただき、ありがとうございます。下関市立大学の白濱です。本発表では、大規模言語モデルの感情理解能力をファジィ理論とペルソナ多様性の観点から分析した研究についてご報告いたします。
+<p>【時間配分: 30秒】
+【累積: 0.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>研究背景</h2>
+<h3>LLM感情評価の課題</h3>
+<ul>
+<li>
+<p><strong>従来研究の限界</strong></p>
+<ul>
+<li>単一評価者視点による分析が主流</li>
+<li>人間の感情理解は認知特性に依存</li>
+</ul>
+</li>
+<li>
+<p><strong>本研究のアプローチ</strong></p>
+<ul>
+<li>ファジィ理論ベースの評価フレームワーク</li>
+<li>4つのペルソナによる多角的評価</li>
+<li>7社36種類のLLMの体系的比較</li>
+</ul>
+</li>
+</ul>
+<aside class="notes">
+大規模言語モデルの感情理解能力は、人間とAIの自然な対話において重要な要素です。しかし従来のLLM評価研究では、単一の評価者視点による分析が主流でした。人間の感情理解は個人の認知特性に大きく依存するため、多様な視点からの評価が必要です。
+<p>本研究では、ファジィ理論を用いた感情評価フレームワークを提案し、4つの異なるペルソナを設計することで、認知的多様性を制御しながら36種類のLLMを体系的に評価しました。</p>
+<p>【時間配分: 1分】
+【累積: 1.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>研究上の問い (RQ)</h2>
+<div style="font-size: 0.9em;">
+<ol>
+<li>
+<p><strong>ペルソナ間で感情評価パターンは異なるか？</strong></p>
+<ul>
+<li>認知特性 $\times$ temperatureによる評価多様性の検証</li>
+</ul>
+</li>
+<li>
+<p><strong>LLMモデル間で感情理解特性は分類可能か？</strong></p>
+<ul>
+<li>ベンダーとアーキテクチャによるクラスタリング</li>
+</ul>
+</li>
+<li>
+<p><strong>評価対象テキストは感情相関に影響するか？</strong></p>
+<ul>
+<li>文学ジャンルによる依存性の検証</li>
+</ul>
+</li>
+</ol>
+</div>
+<aside class="notes">
+本研究では3つのリサーチクエスチョンを設定しました。
+<p>第一に、異なる認知特性を持つペルソナ間で、感情評価パターンに有意な差が生じるかを検証します。詩人とロボットという対照的なペルソナを設計し、temperatureパラメータとの相乗効果を分析します。</p>
+<p>第二に、36種類のLLMモデル間で感情理解特性による分類が可能かを検証します。t-SNE分析によるクラスタリングを行い、ベンダーやアーキテクチャの影響を明らかにします。</p>
+<p>第三に、評価対象となるテキストのジャンルが感情間の相関パターンに影響するかを検証します。</p>
+<p>【時間配分: 1分】
+【累積: 2.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>提案手法：ペルソナベース評価</h2>
+<div style="font-size: 0.75em;">
+<table>
+<thead>
+<tr>
+<th>ペルソナ</th>
+<th>認知特性</th>
+<th>Temperature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P1: 大学1年生</strong></td>
+<td>直感的・感情移入型</td>
+<td>0.7</td>
+</tr>
+<tr>
+<td><strong>P2: 文学研究者</strong></td>
+<td>客観的・構造的理解</td>
+<td>0.4</td>
+</tr>
+<tr>
+<td><strong>P3: 感情豊かな詩人</strong></td>
+<td>高感受性・創造的解釈</td>
+<td>0.9</td>
+</tr>
+<tr>
+<td><strong>P4: 無感情なロボット</strong></td>
+<td>論理的一貫性重視</td>
+<td>0.1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<br />
+<ul>
+<li><strong>4つの基本感情</strong>: 面白さ, 驚き, 悲しみ, 怒り</li>
+<li><strong>評価スケール</strong>: 0-100の連続値</li>
+</ul>
+<aside class="notes">
+提案手法の核心となるペルソナベース評価システムをご説明します。文学における感情分析の知見を活用し、4つの基本感情を0から100の連続値で評価します。
+<p>認知特性の多様性を捉えるため、4つのペルソナを定義しました。大学1年生は直感的で感情移入しやすい特性、文学研究者は客観的で構造的な理解を持つ特性です。感情豊かな詩人は高い感受性と創造的解釈、無感情なロボットは論理的一貫性を重視する特性を持ちます。</p>
+<p>各ペルソナにはtemperatureパラメータを設定し、認知特性を技術的に制御しています。詩人には0.9、ロボットには0.1を設定することで、対照的な評価傾向を実現します。</p>
+<p>【時間配分: 1分】
+【累積: 3.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>提案手法：ファジィ評価</h2>
+<img src="figures/fuzzy_membership_functions.png" alt="ファジィメンバーシップ関数" style="width: 65%; height: auto;">
+<div style="font-size: 0.85em;">
+<ul>
+<li><strong>Low (0-30)</strong> / <strong>Medium (10-70)</strong> / <strong>High (50-100)</strong></li>
+<li>重複領域が感情の曖昧性を表現</li>
+</ul>
+</div>
+<aside class="notes">
+次にファジィ評価フレームワークについてご説明します。各感情スコアはLow、Medium、Highの3つの重複するファジィ集合に分類されます。
+<p>重要なのは、これらの集合が重複する領域です。例えばスコア40の場合、LowとMediumの両方に所属し、この重複が感情の曖昧性を数学的に表現します。</p>
+<p>従来の離散的分類では表現できなかった「やや面白い」「かなり悲しい」といった微妙なニュアンスを、ファジィ理論により定量化することが可能になります。</p>
+<p>【時間配分: 1分】
+【累積: 4.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>実験デザイン</h2>
+<div style="font-size: 0.85em;">
+<ul>
+<li>
+<p><strong>対象モデル</strong>: 7社36種類のLLM</p>
+<ul>
+<li>OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Alibaba</li>
+</ul>
+</li>
+<li>
+<p><strong>評価テキスト</strong>: 青空文庫より3作品</p>
+<ol>
+<li>夢野 久作「懐中時計」（寓話的）</li>
+<li>夢野 久作「お金とピストル」（物語的）</li>
+<li>高村 光太郎「ぼろぼろな駝鳥」（詩的）</li>
+</ol>
+</li>
+<li>
+<p><strong>実験規模</strong>: 4,320回（36モデル × 4ペルソナ × 3テキスト × 10試行）</p>
+</li>
+<li>
+<p><strong>データ収集</strong>: 4,227件（<strong>成功率97.8%</strong>）</p>
+</li>
+</ul>
+</div>
+<aside class="notes">
+実験設計についてご説明します。評価対象は7社36種類の主要LLMです。OpenAI、Anthropic、Google、xAI、DeepSeek、Meta、Alibabaの各社から最新モデルを選定しました。
+<p>評価テキストは青空文庫から3作品を厳選しました。夢野久作の「懐中時計」は寓話的テキスト、「お金とピストル」は物語的テキスト、高村光太郎の「ぼろぼろな駝鳥」は詩的テキストとして、異なるジャンルを網羅しています。</p>
+<p>実験規模は計画4,320回、実際に4,227件のデータを収集し、約98%という高い成功率を達成しました。</p>
+<p>【時間配分: 1分】
+【累積: 5.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 実験結果1：ペルソナ別評価パターン -->
+<div style="font-size: 0.6em;">
+<h2>実験結果1：ペルソナ別評価パターン</h2>
+<img src="figures/persona_radar_chart.png" alt="ペルソナ別感情評価パターン" style="width: 60%; height: auto;">
+<ul>
+<li><strong>P3（詩人）</strong>: 全感情で最高スコア</li>
+<li><strong>P4（ロボット）</strong>: 最も控えめな評価</li>
+</ul>
+</div>
+<aside class="notes">
+まず、ペルソナ別の評価パターンについてご報告します。このレーダーチャートは4つのペルソナの感情評価パターンを比較したものです。
+<p>見ての通り、P3の詩人ペルソナは全ての感情次元で最も高いスコアを示し、P4のロボットペルソナは最も控えめな評価を行う傾向が明確に表れています。</p>
+<p>この結果は、temperatureパラメータとペルソナの認知特性が相乗的に作用し、設計通りの評価多様性が実現されたことを示しています。</p>
+<p>【時間配分: 1分】
+【累積: 6.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>結果1：統計的検証</h2>
+<div style="font-size: 0.8em;">
+<table>
+<thead>
+<tr>
+<th>感情</th>
+<th>$F$値</th>
+<th>$p$値</th>
+<th>有意性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interest</strong></td>
+<td>9.51</td>
+<td>$p&lt;0.001$</td>
+<td>***</td>
+</tr>
+<tr>
+<td><strong>Surprise</strong></td>
+<td>19.95</td>
+<td>$p&lt;0.001$</td>
+<td>***</td>
+</tr>
+<tr>
+<td>Sadness</td>
+<td>2.92</td>
+<td>$p=0.033$</td>
+<td>*</td>
+</tr>
+<tr>
+<td>Anger</td>
+<td>3.22</td>
+<td>$p=0.022$</td>
+<td>*</td>
+</tr>
+</tbody>
+</table>
+<p><strong>P3-P4間の効果量</strong>: Cohen’s $d = 0.18-0.32$, ($p&lt;0.001$)</p>
+<p><strong>Temperature-分散相関</strong>: $r = 0.97, p = 0.031$</p>
+</div>
+<aside class="notes">
+統計的検証の結果をご報告します。一元配置分散分析の結果、Interest（面白さ）とSurprise（驚き）で高度に有意な差が確認されました。特にSurpriseはF値19.95と非常に大きな差を示しています。
+<p>対照的なP3とP4のペルソナ間では、全感情で高度に有意な差が確認され、効果量はCohen’s dで0.18から0.32の範囲でした。</p>
+<p>さらに重要な発見として、temperatureパラメータと評価分散の間に非常に強い正の相関、r=0.97、p=0.031を確認しました。これはペルソナ設計の理論的妥当性を統計的に裏付ける結果です。</p>
+<p>【時間配分: 1分】
+【累積: 7.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>結果1：ファジィ分布特性</h2>
+<img src="figures/fuzzy_distribution_interest.png" alt="面白さのファジィ分布" style="width: 48%; height: auto; display: inline-block;">
+<img src="figures/fuzzy_distribution_anger.png" alt="怒りのファジィ分布" style="width: 48%; height: auto; display: inline-block;">
+<div style="font-size: 0.8em;">
+<ul>
+<li><strong>P3（詩人）</strong>: High領域に68.4%が分布</li>
+<li><strong>P4（ロボット）</strong>: Medium領域に71.2%が集中</li>
+</ul>
+</div>
+<aside class="notes">
+ファジィメンバーシップ分布の特性を分析しました。左が面白さ、右が怒りの分布です。
+<p>面白さでは、P3の詩人がHigh領域に68.4%と最も多く分布し、P4のロボットはMedium領域に71.2%が集中する傾向が確認されました。</p>
+<p>怒りでは全ペルソナがLow領域に主要な分布を示しますが、P3の詩人のみがMedium-High領域にも32.1%の有意な分布を持つことが明らかになりました。これは詩人ペルソナの高い感受性を定量的に裏付ける結果です。</p>
+<p>【時間配分: 1分】
+【累積: 8.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 実験結果2：モデルクラスタリング -->
+<div style="font-size: 0.6em;">
+<h2>実験結果2：モデルクラスタリング</h2>
+</div>
+<img src="figures/model_clustering_tsne.png" alt="t-SNEによるモデルクラスタリング" style="width: 100%; height: auto;">
+<aside class="notes">
+次に、t-SNE分析によるモデルクラスタリングの結果をご報告します。36モデルを5つの明確なクラスターに分類することができました。
+<p>【時間配分: 30秒】
+【累積: 9分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 実験結果2：5つのクラスター -->
+<div style="font-size: 0.8em;">
+<h2>実験結果2：5つのクラスター</h2>
+<table>
+<thead>
+<tr>
+<th>クラスター</th>
+<th>モデル群</th>
+<th>特性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Claude, GPT-4o系列</td>
+<td>高性能対話モデル</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>Llama系列</td>
+<td>バランス型</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>o1, DeepSeek-R1系列</td>
+<td>推論特化</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>Qwen, Gemma系列</td>
+<td>多言語モデル</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>Grok系列</td>
+<td>新興モデル</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一貫性スコア範囲</strong>: 0.746 - 0.886</p>
+</div>
+<aside class="notes">
+5つのクラスターの詳細をご説明します。第1クラスターはClaudeやGPT-4o系列の高性能対話モデル、第2クラスターはLlama系列のバランス型、第3クラスターはo1やDeepSeek-R1系列の推論特化モデルです。
+<p>第4クラスターはQwenやGemma系列の多言語モデル、第5クラスターはGrok系列の新興モデルが分類されました。</p>
+<p>一貫性スコアは0.746から0.886の範囲に分布し、開発者グループ別ではAlibabaが0.858で最高値を示しました。この差異は、モデル選択の重要性を示唆しています。</p>
+<p>【時間配分: 1分】
+【累積: 10分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>結果3：テキスト依存性</h2>
+<img src="figures/text_correlation_text2.png" alt="テキスト別感情相関パターン" style="width: 65%; height: auto;">
+<aside class="notes">
+テキスト依存性分析の結果をご報告します。この図は物語的テキストにおける感情間相関パターンを示しています。
+<p>【時間配分: 30秒】
+【累積: 10.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 実験結果3：ジャンル別相関
+ -->
+<div style="font-size: 0.80em;">
+<h2>実験結果3：ジャンル別相関</h2>
+<br />
+<table>
+<thead>
+<tr>
+<th>テキスト</th>
+<th>ジャンル</th>
+<th>面白さ-悲しみの相関</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 懐中時計</td>
+<td>寓話的</td>
+<td>$r = -0.19$</td>
+</tr>
+<tr>
+<td>2. お金とピストル</td>
+<td>物語的</td>
+<td>$r = -0.70$</td>
+</tr>
+<tr>
+<td>3. ぼろぼろな駝鳥</td>
+<td>詩的</td>
+<td>$r = -0.66$</td>
+</tr>
+</tbody>
+</table>
+<div style="text-align:right;margin-right:60px;">※ 全て $p < 0.001$
+</div>
+<br />
+<div style="text-align:left;margin-left:60px;">
+<ul>
+<li>物語的・詩的テキストで強い負の相関</li>
+<li>文学ジャンルの感情的緊張構造を反映</li>
+</ul>
+</div>
+</div>
+<aside class="notes">
+3つの文学テキストにおけるInterestとSadnessの相関を分析しました。寓話的テキストでは弱い負の相関r=-0.19、物語的テキストでは強い負の相関r=-0.70、詩的テキストではr=-0.66を示しました。
+<p>この結果は、文学ジャンルによって感情間の関係性が大きく異なることを示しています。特に物語的・詩的テキストでの強い負の相関は、これらのジャンルが持つ感情的緊張構造を反映していると考えられます。</p>
+<p>【時間配分: 1分】
+【累積: 11.5分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>考察</h2>
+<div style="font-size: 0.8em;text-align:left;margin-left:60px;">
+<p><strong>1. ペルソナ$\times$Temperatureの相乗効果</strong></p>
+<ul>
+<li>認知特性とパラメータ設定が相互に作用</li>
+<li>$r = 0.97$ 強い相関、設計の妥当性</li>
+</ul>
+<p><strong>2. モデルアーキテクチャの影響</strong></p>
+<ul>
+<li>対話最適化 vs 推論特化で異なる感情処理パターン</li>
+<li>学習方法・設計思想がクラスター形成に反映</li>
+</ul>
+<p><strong>3. 実用的示唆</strong></p>
+<ul>
+<li>感情支援システム $\rightarrow$ 高一貫性の対話モデル群</li>
+<li>論理的分析 $\rightarrow$ 推論特化モデル群</li>
+<li>創作支援 $\rightarrow$ 高感度の多言語モデル群</li>
+</ul>
+</div>
+<aside class="notes">
+考察に移ります。第一に、temperatureパラメータとペルソナの相互作用について、r=0.97という非常に強い相関を確認しました。P3の詩人は最高の感情感度を示し、P4のロボットは最も抑制的な評価を行いました。これは温度設定がペルソナの認知特性と相乗的に作用することを示唆しています。
+<p>第二に、LLMの感情理解能力が学習アーキテクチャに強く依存することが明らかになりました。対話最適化モデルと推論特化モデルで異なる感情処理パターンが観察されました。</p>
+<p>第三に、実用的示唆として、用途に応じたモデル選択指針を提供できます。感情支援には高一貫性の対話モデル群、論理的分析には推論特化モデル群が適しています。</p>
+<p>【時間配分: 1.5分】
+【累積: 13分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>結論: 本研究の貢献</h2>
+<div style="font-size: 0.8em;text-align:left;margin-left:60px;">
+<p><strong>1. ペルソナベース多様性の定量化</strong></p>
+<ul>
+<li>主成分分析で3成分抽出（累積寄与率95.5%）</li>
+<li>ペルソナ間の統計的有意差を実証</li>
+</ul>
+<p><strong>2. t-SNE分析による5クラスター分類</strong></p>
+<ul>
+<li>ベンダー・アーキテクチャ別の感情処理特性を明確化</li>
+<li>一貫性スコア0.746-0.886の範囲を特定</li>
+</ul>
+<p><strong>3. テキストジャンル依存性の実証</strong></p>
+<ul>
+<li>寓話・物語・詩で異なる感情相関パターン</li>
+<li>文学研究への新たな知見を提供</li>
+</ul>
+</div>
+<aside class="notes">
+結論として、本研究の3つの主要な貢献をまとめます。
+<p>第一に、ペルソナベース多様性の定量化に成功しました。主成分分析により3つの主要成分を抽出し、累積寄与率95.5%を達成しました。</p>
+<p>第二に、t-SNE分析により36モデルを5つのクラスターに分類しました。これにより、ベンダーやアーキテクチャ別の感情処理特性が明確になりました。</p>
+<p>第三に、文学ジャンルによる感情相関パターンの変化を実証しました。これらの結果は、用途別のLLM選択指針を提供するとともに、より人間に近いAIシステムの実現に向けた重要な知見です。</p>
+<p>【時間配分: 1分】
+【累積: 14分/14分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>謝辞</h2>
+<div style="font-size: 0.80em; text-align:left; margin-left:60px;">
+<p>本研究にご協力いただいた関係者の皆様に、深く感謝申し上げます。</p>
+<h3>連絡先</h3>
+<ul>
+<li>白濵 成希（下関市立大学 データサイエンス学部）</li>
+<li><strong>E-mail</strong>: <a href="mailto:nshirahama@ieee.org">nshirahama@ieee.org</a></li>
+<li><strong>GitHub</strong>: <a href="https://github.com/nshrhm/bmfsa2025">https://github.com/nshrhm/bmfsa2025</a></li>
+</ul>
+</div>
+<aside class="notes">
+以上で発表を終わります。本研究では、ファジィ理論とペルソナ多様性の観点から36種類のLLMの感情理解特性を分析し、モデル間の差異と用途別選択指針を明らかにしました。ご清聴ありがとうございました。ご質問がございましたら、よろしくお願いいたします。
+<p>【時間配分: 30秒】
+【累積: 14.5分/15分】</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>質疑応答</h1>
+<h2>Q &amp; A</h2>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q1. なぜファジィ理論を採用したのか？ -->
+<div style="font-size: 0.80em;">
+<h2>Q1. なぜファジィ理論を採用したのか？</h2>
+<h3>A. 感情の曖昧性を数学的に表現するため</h3>
+<ul>
+<li>
+<p><strong>従来の離散的評価の限界</strong></p>
+<ul>
+<li>Likert尺度では感情の連続性を捉えられない</li>
+<li>「やや面白い」等の中間的表現が困難</li>
+</ul>
+</li>
+<li>
+<p><strong>ファジィ理論の利点</strong></p>
+<ul>
+<li>0-100の連続値を3つの重複領域で評価</li>
+<li>複数感情の同時存在を定量的に表現</li>
+<li>評価の不確実性を数学的にモデル化</li>
+</ul>
+</li>
+</ul>
+</div>
+<aside class="notes">
+ファジィ理論を採用した理由は、人間の感情認知が本質的に曖昧で連続的であるためです。従来のLikert尺度では「やや面白い」といった中間的な感情表現を適切に捉えることができませんでした。ファジィ理論により、Low・Medium・Highの重複領域で評価することで、感情の曖昧性を数学的に表現することが可能になりました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q2. ペルソナとtemperatureの関係は？ -->
+<div style="font-size: 0.75em;">
+<h2>Q2. ペルソナとtemperatureの関係は？</h2>
+<h3>A. 認知特性とパラメータの相乗効果</h3>
+<ul>
+<li>
+<p><strong>設計原理</strong></p>
+<ul>
+<li>高感受性ペルソナ → 高temperature（創造的応答）</li>
+<li>論理的ペルソナ → 低temperature（安定した応答）</li>
+</ul>
+</li>
+<li>
+<p><strong>実証結果</strong></p>
+<ul>
+<li>Temperature-分散相関: $r = 0.97, p = 0.031$</li>
+<li>理論的設計が実験データで裏付けられた</li>
+</ul>
+</li>
+<li>
+<p><strong>実用的意義</strong></p>
+<ul>
+<li>temperatureパラメータで認知的多様性を制御可能</li>
+<li>用途に応じた評価視点の調整が可能</li>
+</ul>
+</li>
+</ul>
+</div>
+<aside class="notes">
+ペルソナとtemperatureの関係について、詩人には0.9、ロボットには0.1を設定しました。r=0.97という非常に強い相関が、設計の妥当性を裏付けています。これは、temperatureパラメータを調整することで、認知的多様性を技術的に制御できることを示しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q3. 日本語文学以外への適用可能性は？ -->
+<div style="font-size: 0.80em;">
+<h2>Q3. 日本語文学以外への適用可能性は？</h2>
+<h3>A. 多言語・多文化への拡張が今後の課題</h3>
+<ul>
+<li>
+<p><strong>本研究の範囲</strong></p>
+<ul>
+<li>日本語文学3作品に限定</li>
+<li>感情表現の豊かさ・解釈の多様性で選定</li>
+</ul>
+</li>
+<li>
+<p><strong>今後の展望</strong></p>
+<ul>
+<li>英語・中国語等での検証拡張</li>
+<li>文化的感情表現の差異分析</li>
+<li>より普遍的な評価フレームワークの構築</li>
+</ul>
+</li>
+<li>
+<p><strong>期待される発見</strong></p>
+<ul>
+<li>言語・文化依存の感情処理パターン</li>
+<li>多言語LLMの比較優位性</li>
+</ul>
+</li>
+</ul>
+</div>
+<aside class="notes">
+本研究は日本語文学3作品に限定しており、他言語での適用可能性の検証は今後の重要な課題です。英語や中国語での検証、文化的な感情表現の差異分析を計画しています。特に、多言語モデルが文化を超えてどのような感情処理特性を示すかは興味深いテーマです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q4. モデル間の差異の原因は？ -->
+<div style="font-size: 0.80em;">
+<h2>Q4. モデル間の差異の原因は？</h2>
+<h3>A. 学習データ・アーキテクチャ・設計思想の違い</h3>
+<ul>
+<li>
+<p><strong>クラスター形成の要因</strong></p>
+<ul>
+<li>対話最適化 vs 推論特化のアーキテクチャ差</li>
+<li>学習データの質と多様性</li>
+<li>安全性・創造性のバランス設計</li>
+</ul>
+</li>
+<li>
+<p><strong>具体的な差異</strong></p>
+<ul>
+<li>Claude, GPT-4o: 高い対話品質・安定した評価</li>
+<li>o1, DeepSeek-R1: 推論重視・論理的一貫性</li>
+<li>Qwen: 多言語対応・高い一貫性スコア(0.858)</li>
+</ul>
+</li>
+</ul>
+</div>
+<aside class="notes">
+モデル間の差異は、主に学習データ、アーキテクチャ、設計思想の違いに起因すると考えられます。対話最適化モデルと推論特化モデルで明確に異なる感情処理パターンが観察されました。Alibabaのモデルが最高の一貫性スコアを示したことは、多言語学習データの質と量が影響している可能性があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q5. 実用的な応用先は？ -->
+<div style="font-size: 0.8em;">
+<h2>Q5. 実用的な応用先は？</h2>
+<h3>A. 用途別のLLM選択指針を提供</h3>
+<ul>
+<li>
+<p><strong>感情支援システム</strong></p>
+<ul>
+<li>高一貫性の対話モデル群（Claude, GPT-4o系列）</li>
+<li>安定した感情理解が必要な場面に適合</li>
+</ul>
+</li>
+<li>
+<p><strong>論理的分析</strong></p>
+<ul>
+<li>推論特化モデル群（o1, DeepSeek-R1系列）</li>
+<li>感情を排した客観的分析に適合</li>
+</ul>
+</li>
+<li>
+<p><strong>創作支援</strong></p>
+<ul>
+<li>高感度の多言語モデル群</li>
+<li>創造的な感情表現が求められる場面に適合</li>
+</ul>
+</li>
+</ul>
+</div>
+<aside class="notes">
+実用的応用として、本研究は用途別のLLM選択指針を提供します。感情支援システムには高い一貫性を持つClaudeやGPT-4o系列、論理的分析にはo1やDeepSeek-R1系列、創作支援には高感度の多言語モデル群が適しています。一貫性スコアの分散が0.746から0.886と大きいことは、適切なモデル選択の重要性を示しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Q6. 評価の曖昧性とは具体的に何か？ -->
+<div style="font-size: 0.80em;">
+<h2>Q6. 評価の曖昧性とは具体的に何か？</h2>
+<h3>A. ファジィメンバーシップによる重複所属</h3>
+<ul>
+<li>
+<p><strong>定義</strong></p>
+<ul>
+<li>評価スコアが複数のファジィ集合に同時に所属する状態</li>
+<li>例: スコア40 → Low(0.33) + Medium(0.75)</li>
+</ul>
+</li>
+<li>
+<p><strong>意義</strong></p>
+<ul>
+<li>人間の感情認知の曖昧さを数学的に表現</li>
+<li>「やや面白い」等の中間的評価を定量化</li>
+</ul>
+</li>
+<li>
+<p><strong>分析結果</strong></p>
+<ul>
+<li>全評価データの88.2%が中間的評価</li>
+<li>モデル・ペルソナ間で曖昧性パターンが異なる</li>
+</ul>
+</li>
+</ul>
+</div>
+<aside class="notes">
+評価の曖昧性とは、感情スコアが複数のファジィ集合に同時に所属する状態を指します。例えばスコア40の場合、Low集合に0.33、Medium集合に0.75の所属度を持ちます。この重複が「やや面白い」といった中間的な感情表現を数学的に表現します。実際、全評価データの88.2%がこのような中間的評価でした。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>補足：36 LLMモデル一覧</h2>
+<div style="font-size: 0.5em;">
+<table>
+<thead>
+<tr>
+<th><strong>開発元</strong></th>
+<th><strong>モデル</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenAI</strong></td>
+<td>gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-4o, gpt-4o-mini, o4-mini, o3, o3-mini, o1-mini</td>
+</tr>
+<tr>
+<td><strong>Google</strong></td>
+<td>gemini-2.5-pro, gemini-2.5-flash, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-2.0-pro-exp, gemini-2.0-flash-thinking-exp, gemma-3-27b/12b/4b/1b-it</td>
+</tr>
+<tr>
+<td><strong>Anthropic</strong></td>
+<td>claude-3-7-sonnet, claude-3-5-sonnet, claude-3-5-haiku, claude-3-haiku</td>
+</tr>
+<tr>
+<td><strong>xAI</strong></td>
+<td>grok-3-latest, grok-3-fast-latest, grok-3-mini-latest, grok-3-mini-fast-latest, grok-2-latest</td>
+</tr>
+<tr>
+<td><strong>DeepSeek</strong></td>
+<td>DeepSeek-R1, DeepSeek-V3-0324, DeepSeek-V3</td>
+</tr>
+<tr>
+<td><strong>Meta</strong></td>
+<td>Llama-4-Maverick-17B, Llama-4-Scout-17B, Meta-Llama-3.3-70B</td>
+</tr>
+<tr>
+<td><strong>Alibaba</strong></td>
+<td>Qwen3-235B-A22B-FP8, Qwen2.5-VL-7B-Instruct</td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="notes">
+本研究で評価した36種類のLLMの一覧です。各ベンダーから最新の主要モデルを選定し、体系的な比較評価を実施しました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>補足：一貫性スコア分布</h2>
+<img src="figures/language_numerical_consistency.png" alt="モデル別一貫性分布" style="width: 75%; height: auto;">
+<aside class="notes">
+モデル別の評価一貫性スコアの分布です。上位モデルではo3-mini（0.886）、Qwen2.5-VL-7B-Instruct（0.881）が高い一貫性を示し、下位モデルではgemini-2.5-flash-preview（0.746）で低い一貫性が観察されました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>補足：詳細な統計結果</h2>
+<div style="font-size: 0.7em;">
+<table>
+<thead>
+<tr>
+<th>分析項目</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCA累積寄与率</td>
+<td>95.5% (3成分)</td>
+</tr>
+<tr>
+<td>面白さ $F$値</td>
+<td>9.51 ($p&lt;0.001$)</td>
+</tr>
+<tr>
+<td>驚き $F$値</td>
+<td>19.95 ($p&lt;0.001$)</td>
+</tr>
+<tr>
+<td>悲しみ $F$値</td>
+<td>2.92 ($p=0.033$)</td>
+</tr>
+<tr>
+<td>怒り $F$値</td>
+<td>3.22 ($p=0.022$)</td>
+</tr>
+<tr>
+<td>P3-P4 Cohen’s $d$</td>
+<td>0.18-0.32</td>
+</tr>
+<tr>
+<td>Temperature-分散相関</td>
+<td>$r=0.97\ (p=0.031)$</td>
+</tr>
+<tr>
+<td>一貫性スコア範囲</td>
+<td>0.746-0.886</td>
+</tr>
+<tr>
+<td>データ収集成功率</td>
+<td>97.8%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="notes">
+詳細な統計結果の一覧です。主成分分析、分散分析、効果量、相関分析の全てで統計的に有意な結果が得られています。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: false,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
