@@ -1,0 +1,1433 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1. -->
+<h2>3.6 Rのパッケージ, <br />Pythonのモジュール</h2>
+<p>データサイエンスプログラミング入門</p>
+<audio controls autoplay src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日は3.6節として、Rの「パッケージ」とPythonの「モジュール（ライブラリ）」を扱います。ここを押さえると、統計解析・可視化・機械学習など、必要な機能を“自作せずに”すぐ使えるようになります。
+<p>この節は、今後の演習全体の土台です。途中でターミナル操作やエラーも出ますが、むしろそれが学びの中心です。エラーは敵ではなく、次に何をすべきかを教えてくれるメッセージだと思って進めましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2. -->
+<h2>本日の流れ</h2>
+<ol>
+<li>パッケージ/モジュールが必要な理由</li>
+<li><strong>R</strong>：インストールと<code>library()</code>、<code>::</code>、エラー対処</li>
+<li><strong>Python</strong>：importの使い分け、<code>pip</code>、エラー対処</li>
+<li>主要ライブラリ（NumPy / pandas / tidyverse）を触る</li>
+<li>統合演習（売上データ分析）</li>
+</ol>
+<audio controls autoplay src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日のゴールは「主要ライブラリを“導入して使い始める”こと」です。細かな暗記より、手を動かして“使える状態”にするのが優先です。
+<p>前半は概念と手順、後半は手を動かすパートにします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3. -->
+<h2>学習目標（この節の到達点）</h2>
+<ul>
+<li>Rで<code>library()</code>で呼び出せる / 入っていなければ入れられる</li>
+<li>Pythonで適切な<code>import</code>方法を選べる</li>
+<li>“見つからない”エラーに対処できる</li>
+<li>NumPy・pandas・tidyverseの基本操作ができる</li>
+<li>Copilotで使い方を効率よく学べる</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+この節の学習目標を確認します。特に重要なのは「導入」と「エラー対処」です。データ分析は、道具が使えないと始まりません。
+<p>そしてもう1つ、Copilotを“丸投げ”ではなく、“調べ方の相棒”として使う、という姿勢を徹底します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4. -->
+<div style="font-size: 0.8em;">
+<h2>なぜパッケージ/モジュールが必要？</h2>
+<ul>
+<li>データ分析は「定番の部品」を組み合わせる作業</li>
+<li>自作すると時間が溶ける（車輪の再発明）</li>
+<li>信頼されている実装・高速化・テストが揃っている</li>
+<li>使い方を学べば、応用範囲が一気に広がる</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+皆さんに毎回ゼロから“統計関数”や“グラフ描画”を実装させるのは、教育としても非効率です。現場でも同じで、定番ライブラリを使うのが基本です。
+<p>ただし、使うには「導入」「呼び出し」「エラー対処」が必要です。今日はそこをきちんと押さえます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5. -->
+<div style="font-size: 0.8em;">
+<h2>用語の整理</h2>
+<ul>
+<li><strong>R</strong>：パッケージ（package）／ライブラリ（library）</li>
+<li><strong>Python</strong>：モジュール（module）／パッケージ（package）／ライブラリ（library）</li>
+<li>重要なのは「何が“どこに入っていて”どう呼ぶか」</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+言葉がややこしいので、最初に整理します。Rでは“パッケージ”が機能のまとまりで、それを読み込む操作が`library()`です。
+<p>Pythonは“ファイル1個＝モジュール”、フォルダ構成を持つと“パッケージ”、それらを含む大きな集合を“ライブラリ”と言うことが多いです。</p>
+<p>今日は用語の厳密さより、実務で迷わないための整理を目標にします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6. -->
+<div style="font-size: 0.8em;">
+<h2>データサイエンスの定番ライブラリ</h2>
+<table>
+<thead>
+<tr>
+<th>言語</th>
+<th>代表例</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R</td>
+<td>tidyverse / ggplot2 / dplyr</td>
+<td>データ処理・可視化</td>
+</tr>
+<tr>
+<td>R</td>
+<td>readr / psych</td>
+<td>データ読込・心理統計</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>NumPy / pandas</td>
+<td>数値計算・表データ</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>matplotlib / scikit-learn</td>
+<td>可視化・機械学習</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls autoplay src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+この表の名前は、今後の演習で何度も出ます。特に、Rならtidyverse、PythonならNumPyとpandasが“入口”です。
+<p>今日の後半で、実際に触って「できた」という成功体験を作ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7. -->
+<div style="font-size: 1.0em;">
+<h2>今日の学び方（重要）</h2>
+<ul>
+<li><strong>実行→確認→小さく修正</strong>の反復</li>
+<li>エラーは「次の行動のヒント」</li>
+<li>Copilotは「調べ方を短縮する道具」
+<ul>
+<li>生成コードは“理解してから”採用</li>
+</ul>
+</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の授業は“読む授業”ではなく“実行する授業”です。まず動かして、出力やエラーを見て、そこから修正します。
+<p>Copilotは便利ですが、コピペで終わらせると身につきません。生成されたコードは、必ず「何をしているか」を説明できる状態にしてから使いましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8. -->
+<div style="font-size: 0.8em;">
+<h1>3.6.1 Rのパッケージ管理</h1>
+</div>
+<audio controls autoplay src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからRのパッケージ管理に入ります。Rはパッケージ文化が非常に強い言語で、分析の多くがパッケージ中心に回っています。
+<p>ポイントは2つです。「入れる（install）」と「使う（library）」が別、そして「衝突（conflict）」が起きる、です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9. -->
+<div style="font-size: 0.8em;">
+<h2>R：パッケージとライブラリ</h2>
+<ul>
+<li><strong>パッケージ</strong>：関数やデータのまとまり（例：<code>ggplot2</code>, <code>dplyr</code>）</li>
+<li><strong>ライブラリ</strong>：パッケージが置かれている場所</li>
+<li><code>library(ggplot2)</code>＝“ggplot2を使える状態にする”</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+料理で例えるなら、パッケージは“レシピ集”、ライブラリは“本棚”です。本棚に本があっても、開いて読まないと使えません。library()は「使う本を開く」操作だと思ってください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10. -->
+<div style="font-size: 0.8em;">
+<h2>R：インストールと呼び出し</h2>
+<ol>
+<li><strong>インストール</strong>：<code>install.packages(&quot;tidyverse&quot;)</code></li>
+<li><strong>呼び出し</strong>：<code>library(tidyverse)</code></li>
+<li><strong>使用</strong>：<code>dplyr::filter(...)</code> など</li>
+</ol>
+</div>
+<audio controls autoplay src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+この3段階を混同すると、エラーで詰まります。特に初心者がやりがちなのが、インストールせずにlibrary()だけ書いてしまうことです。
+<p>今日の演習は、この流れを“体に覚えさせる”のが目的です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11. -->
+<div style="font-size: 0.8em;">
+<h2><code>library()</code>の基本</h2>
+<pre><code class="language-r">library(tidyverse)
+</code></pre>
+<ul>
+<li>tidyverseは複数パッケージの集合</li>
+<li>読み込むと、使える関数が増える</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+まずは基本です。library (tidyverse) を実行すると、dplyrやggplot2などがまとめて使えるようになります。
+<p>実行時にメッセージが出ますが、これは“読み込まれた内容”や“注意点”を教えてくれています。無視せず、一度は目を通してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12. -->
+<div style="font-size: 0.8em;">
+<h2>tidyverseの“conflict”（衝突）</h2>
+<p>例：<code>filter()</code>が複数のパッケージにある</p>
+<ul>
+<li><code>dplyr::filter()</code>（データ操作）</li>
+<li><code>stats::filter()</code>（時系列フィルタ）</li>
+</ul>
+<p>対処：<strong>どちらの関数か明示する</strong></p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+tidyverseを読み込むと、filter()などの関数名が他のパッケージと衝突することがあります。これは“危険”ではなく“よくあること”です。
+<p>対処は簡単で、dplyr::filter()のように書きます。これで「どのパッケージの関数か」を明示できます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13. -->
+<div style="font-size: 0.75em;">
+<h2>典型エラー：パッケージが見つからない</h2>
+<pre><code class="language-r">library(tidyverse)
+# Error: there is no package called 'tidyverse'
+</code></pre>
+<p>意味：<strong>まだインストールされていない</strong></p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+このエラーは超頻出です。意味は単純で、「本棚にその本がありません」ということです。解決はインストールです。
+<p>ここで重要なのは、エラーを見たら“原因が何か”を一言で言えること。慣れると、エラーは怖くなくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14. -->
+<div style="font-size: 0.8em;">
+<h2><code>install.packages()</code>の基本</h2>
+<pre><code class="language-r">install.packages(&quot;tidyverse&quot;)
+library(tidyverse)
+</code></pre>
+<ul>
+<li>インストールは <strong>文字列</strong></li>
+<li>呼び出しは <strong>名前（通常は引用符なし）</strong></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rで紛らわしいポイントが、引用符の有無です。install.packages()は“パッケージ名という文字列”を渡すのでダブルクォートが必要です。
+<p>一方、library()は通常、名前として扱うのでクォートは付けません。ここは最初にしっかり押さえましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15. -->
+<div style="font-size: 0.8em;">
+<h2>まとめて入れる（実務でよくやる）</h2>
+<pre><code class="language-r">install.packages(c(&quot;dplyr&quot;, &quot;ggplot2&quot;, &quot;readr&quot;))
+</code></pre>
+<ul>
+<li><code>c()</code>でベクトルにして渡す</li>
+<li>環境構築では“まとめて”が基本</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+授業やプロジェクトでは、必要パッケージをまとめて入れることが多いです。c()は「複数をまとめる」関数です。
+<p>実務では、プロジェクト開始時に必要パッケージ一覧を用意して、一括でセットアップします。皆さんも今後そういう作業が増えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16. -->
+<div style="font-size: 0.8em;">
+<h2><code>::</code>（名前空間）を使う</h2>
+<pre><code class="language-r">high_scorers &lt;- dplyr::filter(my_scores, math &gt;= 90)
+</code></pre>
+<ul>
+<li><code>library()</code>なしでも関数を呼べる</li>
+<li>衝突回避にも強い</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+コロン コロン は「このパッケージのこの関数」と指定する記法です。大量にパッケージを読み込むと衝突が増えるので、必要な関数だけ :: で呼ぶのは実務でもよくやります。
+<p>ここで一度、隣の人と“library () と コロン コロン の使い分け”を30秒で話してみてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17. -->
+<div style="font-size: 0.8em;">
+<h2>環境を確認する（トラブル時の必須）</h2>
+<ul>
+<li><code>packageVersion(&quot;dplyr&quot;)</code>：バージョン確認</li>
+<li><code>sessionInfo()</code>：環境情報（授業で重要）</li>
+<li><code>.libPaths()</code>：ライブラリの場所</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+「動かない」原因の多くはバージョンや環境差です。提出課題で再現できないとき、sessionInfo()があると原因特定が一気に早くなります。
+<p>今後、レポートや再現性の観点でも重要になりますので、覚えておきましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18. -->
+<div style="font-size: 0.8em;">
+<h2>更新・削除（必要なときだけ）</h2>
+<ul>
+<li>更新：<code>update.packages(ask = FALSE)</code></li>
+<li>削除：<code>remove.packages(&quot;パッケージ名&quot;)</code></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+更新は便利ですが、授業や演習では“急に挙動が変わる”原因にもなります。授業期間中は、むやみに全更新せず、必要になったときだけにしましょう。
+<p>削除は基本的に不要ですが、壊れたインストールの復旧で使うことがあります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19. -->
+<div style="font-size: 0.8em;">
+<h2>GitHubから入れる（CRANに無いとき）</h2>
+<pre><code class="language-r"># 例：GitHub上のパッケージ
+# remotes::install_github(&quot;tidyverse/ggplot2&quot;)
+</code></pre>
+<ul>
+<li>研究開発版・未公開版を使う場面</li>
+<li>依存関係やバージョン差に注意</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+CRANに無いパッケージや、最新版を試したいときにGitHubから入れます。授業では“必要なときだけ”扱いますが、研究では頻繁に出ます。
+<p>ただし環境差が増えるので、バージョン管理と再現性には注意が必要です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20. -->
+<div style="font-size: 0.8em;">
+<h2>よくあるRトラブル（対処の型）</h2>
+<ul>
+<li>00LOCKが残る → ロックディレクトリ削除</li>
+<li>権限が無い → ライブラリ場所を確認（<code>.libPaths()</code>）</li>
+<li>ミラーが遅い/落ちる → <code>repos</code>設定を見直す</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rのインストールでよくある詰まりポイントです。特に00LOCKは「途中で失敗した」サインです。
+<p>困ったら、エラーメッセージをそのまま貼って相談するのが最短です。Copilotに聞くときも、エラー全文を貼るのがコツです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21. -->
+<div style="font-size: 0.8em;">
+<h2>Copilotに聞く（R：例）</h2>
+<ul>
+<li>「tidyverseでCSVを読み込み、グループ集計する例を作って」</li>
+<li>「<code>there is no package called ...</code>の原因と対処を説明して」</li>
+<li>「<code>dplyr::filter</code>と<code>stats::filter</code>の違いを教えて」</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotは“検索のショートカット”として使います。ポイントは、やりたいタスクを具体的に言語化することです。
+<p>生成されたコードは、まず自分で実行して、出力を確認し、どの関数が何をしているかを説明できるようにしてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22. -->
+<div style="font-size: 0.8em;">
+<h2>ミニチェック（R）</h2>
+<ol>
+<li><code>install.packages()</code> と <code>library()</code> の違いは？</li>
+<li><code>::</code> を使うメリットは？</li>
+<li><code>sessionInfo()</code> はいつ使う？</li>
+</ol>
+</div>
+<audio controls autoplay src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで理解確認です。30秒考えてから、1つだけ隣の人と答え合わせしてください。
+<p>それでは回答です。
+1は「入れる vs 使う」、2は「衝突回避・必要な関数だけ」、3は「環境差の原因調査」です。ここが言えればOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23. -->
+<div style="font-size: 1.0em;">
+<h1>3.6.2 Pythonの<br />モジュール管理</h1>
+</div>
+<audio controls autoplay src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+次はPythonです。Pythonはimportの書き方が複数あり、最初は迷いやすいところです。
+<p>ただ、原則はシンプルで「読みやすさ」と「衝突回避」です。pipと仮想環境の扱いも合わせて押さえます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24. -->
+<div style="font-size: 0.8em;">
+<h2>Python：モジュール/パッケージ/ライブラリ</h2>
+<ul>
+<li><strong>モジュール</strong>：<code>.py</code>ファイル1つ（例：<code>math</code>）</li>
+<li><strong>パッケージ</strong>：複数モジュールのまとまり（フォルダ構成）</li>
+<li><strong>ライブラリ</strong>：機能の大きな集合（NumPy, pandasなど）</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonは構造が階層的です。まずは「ファイル単位がモジュール」という理解で十分です。そこからフォルダでまとめるとパッケージ、さらにそれを含む大きな枠をライブラリと言います。
+<p>用語は揺れますが、importできる単位を意識しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25. -->
+<div style="font-size: 0.8em;">
+<h2>標準ライブラリ vs 外部ライブラリ</h2>
+<ul>
+<li><strong>標準ライブラリ</strong>：最初から入っている（例：<code>math</code>, <code>random</code>）</li>
+<li><strong>外部ライブラリ</strong>：自分で入れる（例：<code>numpy</code>, <code>pandas</code>）</li>
+</ul>
+<p>ポイント：外部は <strong>pipでインストール</strong> が必要</p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+「importできない」原因の多くは、外部ライブラリが入っていないことです。標準ライブラリは最初から使えますが、NumPyやpandasは自分で入れます。
+<p>この区別ができると、エラー対応が速くなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26. -->
+<div style="font-size: 0.8em;">
+<h2>importの4パターン（まずは覚える）</h2>
+<ol>
+<li><code>import numpy</code></li>
+<li><code>import numpy as np</code></li>
+<li><code>from numpy import mean</code></li>
+<li><code>from numpy import *</code>（非推奨）</li>
+</ol>
+</div>
+<audio controls autoplay src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonのimportは4パターンが基本です。今日の推奨は2番の as です。短く書けて、読みやすくなります。
+<p>4番は便利そうですが、何がどこから来たのか分からなくなるので、基本的に使いません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27. -->
+<div style="font-size: 0.8em;">
+<h2>importの使い分け（おすすめ）</h2>
+<table>
+<thead>
+<tr>
+<th>目的</th>
+<th>推奨</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一般的</td>
+<td><code>import numpy as np</code></td>
+<td>慣習・短い</td>
+</tr>
+<tr>
+<td>特定関数だけ</td>
+<td><code>from math import sqrt</code></td>
+<td>明確</td>
+</tr>
+<tr>
+<td>学習用（慎重に）</td>
+<td><code>import numpy</code></td>
+<td>明示的</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls autoplay src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+使い分けの基準は「読みやすさ」と「衝突回避」です。NumPyは np 、pandasは pd が慣習です。慣習に従うと、他人のコードも読みやすくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28. -->
+<div style="font-size: 0.8em;">
+<h2><code>pip</code>で入れる（外部ライブラリ）</h2>
+<pre><code class="language-bash">pip install numpy pandas matplotlib
+pip list
+pip show numpy
+</code></pre>
+<ul>
+<li>pip = Pythonのパッケージ管理ツール</li>
+<li>インストール済み確認もできる</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+外部ライブラリはpipで入れます。pip list は「今の環境に何が入っているか」、 pip show は「そのライブラリの詳細」です。
+<p>授業用環境では仮想環境を使うので、必ず“授業の環境”でpipを実行する点が重要です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29. -->
+<div style="font-size: 0.8em;">
+<h2>どこでpipを打つ？（WSL2 + venv）</h2>
+<pre><code class="language-bash">$ cd /home/datasci/work
+$ venvc          # 仮想環境を起動
+(class) $ pip install numpy
+(class) $ python my_script.py
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは運用上とても重要です。仮想環境を起動していない状態でpipを打つと、別の場所に入ってしまい「入れたのにimportできない」が起きます。
+<p>ターミナルの先頭に (class) のような表示が出ているか確認してからpipを実行しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30. -->
+<div style="font-size: 0.8em;">
+<h2>典型エラー</h2>
+<ul>
+<li><strong>ModuleNotFoundError</strong></li>
+</ul>
+<pre><code class="language-python">import numpy
+# ModuleNotFoundError: No module named 'numpy'
+</code></pre>
+<h3>対処</h3>
+<ol>
+<li>仮想環境を確認</li>
+<li><code>pip install numpy</code></li>
+</ol>
+</div>
+<audio controls autoplay src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python側の“見つからない”エラーです。基本は「入っていない」です。ただし、入っているのに出る場合は、環境が違うことが多いです。
+<p>まず仮想環境が起動しているか確認、それでもダメならpipで入れます。ここまでが型です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31. -->
+<div style="font-size: 0.8em;">
+<h2>Copilotに聞く（Python：例）</h2>
+<ul>
+<li>「4種類のimport方法の違いを、短い例で比較して」</li>
+<li>「ModuleNotFoundErrorの原因を切り分ける手順を教えて」</li>
+<li>「pandasでDataFrameを作って、groupby集計する例を作って」</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonは“書き方の選択肢”が多いので、比較表を作らせると学習効率が上がります。Copilotに頼むときは「比較」「短い例」「理由」をセットにすると良いです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32. -->
+<div style="font-size: 0.8em;">
+<h2>ミニチェック（Python）</h2>
+<ol>
+<li><code>import numpy as np</code> を推奨する理由は？</li>
+<li><code>from ... import *</code> が非推奨な理由は？</li>
+<li>pipで入れたのにimportできないとき、最初に疑うことは？</li>
+</ol>
+</div>
+<audio controls autoplay src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここも30秒考えてから、2人組で答え合わせします。
+<p>どうでしたか。それでは回答です。
+1は「短く・慣習・読みやすい」、2は「由来が不明で衝突しやすい」、3は「仮想環境が違う」です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 33. -->
+<div style="font-size: 1.0em;">
+<h1>3.6.3 主要<br />ライブラリの実践</h1>
+<audio controls autoplay src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
+<aside class="notes">
+後半は主要ライブラリを実際に動かしていきます。ここは“理解より先に実行”でOKです。まず動かして、どんな入出力か掴みましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 34. -->
+<div style="font-size: 1.0em;">
+<h2>NumPy：数値計算の基本</h2>
+<ul>
+<li>配列（ndarray）で高速計算</li>
+<li>代表関数：<code>np.mean</code>, <code>np.sum</code>, <code>np.max</code>, <code>np.min</code></li>
+<li>統計量をまず出してみる</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
+<aside class="notes">
+NumPyはPythonの数値計算の土台です。pandasも内部でNumPyを使っています。まずは「配列を作る」「平均など統計量を出す」をやります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 35. -->
+<div style="font-size: 1.0em;">
+<h2>NumPy 実装イメージ</h2>
+<pre><code class="language-python">import numpy as np
+
+x = np.array([10, 20, 30, 40, 50])
+print(np.mean(x), np.max(x), np.min(x))
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
+<aside class="notes">
+この程度の短いコードでOKです。まず動かして、出力が想像どおりか確認します。
+<p>ここで質問：配列に対して x * 2 をすると何が起きると思いますか？ 10秒考えてください。実行して確かめます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 36. -->
+<div style="font-size: 1.0em;">
+<h2>pandas：表データ（DataFrame）</h2>
+<ul>
+<li>Excelの表に近い構造</li>
+<li>代表操作：作成 / フィルタ / 集計（groupby）</li>
+<li><code>shape</code>, <code>columns</code>, <code>dtypes</code> をまず見る</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_36.mp3" type="audio/mpeg" />
+<aside class="notes">
+pandasは“表”を扱う中心ライブラリです。まずは「データの形を把握する」癖を付けましょう。shape で行列サイズ、columnsで列名、dtypes で型です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 37. -->
+<div style="font-size: 1.0em;">
+<h2>pandas 実装イメージ</h2>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({&quot;name&quot;: [&quot;A&quot;,&quot;B&quot;], &quot;score&quot;: [80, 95]})
+print(df)
+print(df[df[&quot;score&quot;] &gt;= 90])
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_37.mp3" type="audio/mpeg" />
+<aside class="notes">
+DataFrameを作って、条件で絞り込むところまでやります。ここができると、実データでも同じ発想で処理できます。
+<p>次にgroupbyで集計しますが、まずはこのフィルタが“行を残す”操作だと理解してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 38. -->
+<div style="font-size: 0.8em;">
+<h2>R tidyverse：パイプでデータ処理</h2>
+<ul>
+<li><code>%&gt;%</code>（または<code>|&gt;</code>）で処理をつなぐ</li>
+<li><code>filter</code>, <code>select</code>, <code>mutate</code>, <code>summarise</code>, <code>group_by</code></li>
+<li>「読みやすいデータ処理」を目指す</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_38.mp3" type="audio/mpeg" />
+<aside class="notes">
+R側はtidyverseです。特徴は“パイプ”で処理をつなげて、処理の流れが読みやすいこと。関数名も英語ですが、だいたい直感的です。
+<p>ここは慣れです。まずはサンプルを動かして、何が起きているかを説明できればOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 39. -->
+<div style="font-size: 1.0em;">
+<h2>tidyverse 実装イメージ</h2>
+<pre><code class="language-r">library(tidyverse)
+
+df &lt;- tibble(name = c(&quot;A&quot;,&quot;B&quot;), score = c(80, 95))
+
+df %&gt;%
+  filter(score &gt;= 90)
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_39.mp3" type="audio/mpeg" />
+<aside class="notes">
+pandasのフィルタと同じことをRでもやってみます。言語は違っても「表を作る→条件で絞る」は同じです。
+<p>この“対応関係”を意識すると、両方できるようになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 40. -->
+<div style="font-size: 0.8em;">
+<h2>同じ処理をRとPythonで（比較）</h2>
+<ul>
+<li>目的：<strong>「やりたいこと」→「言語ごとの書き方」</strong></li>
+<li>例：グループ別合計、並べ替え、上位表示</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_40.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここがこの節の本質です。言語の文法より、「何をしたいか」を言語化できることが重要です。その上で、Rならtidyverse、Pythonならpandasで書けばいいですね。
+<p>次の統合演習でも、同じ分析を両方でやります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 41. -->
+<div style="font-size: 1.0em;">
+<h2>Copilot活用（実践パート）</h2>
+<ul>
+<li>「このデータでgroupby集計する例を作って」</li>
+<li>「Rのtidyverseで同等処理に書き換えて」</li>
+<li>「出力例も付けて、どこがポイントか説明して」</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_41.mp3" type="audio/mpeg" />
+<aside class="notes">
+実践パートでは、Copilotに“変換”を手伝わせるのが特に有効です。Pythonの処理をRに変換、あるいはその逆です。
+<p>ただし、生成結果をそのまま信じないで、必ず自分で実行し、期待する結果になっているか確認してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 42. -->
+<div style="font-size: 1.0em;">
+<h1>3.6.4 統合演習：パッケージを使ったデータ処理</h1>
+</div>
+<audio controls autoplay src="./voiceovers/slide_42.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから統合演習です。今日学んだ「導入」「呼び出し」「集計・フィルタ」を一気に使います。
+<p>完成度より、動くところまで持っていくこと、そしてエラーに対処できることを重視します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 43. -->
+<div style="font-size: 1.0em;">
+<h2>演習の目標</h2>
+<ul>
+<li>RとPythonの両方で“ライブラリを使う”経験</li>
+<li>実データ分析の流れ（作成→集計→表示→抽出）</li>
+<li>Copilotを効果的に使う</li>
+<li>エラーを自力で直す</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_43.mp3" type="audio/mpeg" />
+<aside class="notes">
+演習の目標はこの4つです。特に「エラーを直す」を達成すると、今後の演習がかなり楽になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 44. -->
+<div style="font-size: 0.8em;">
+<h2>課題1（Python）：売上データ分析</h2>
+<p>要件：</p>
+<ol>
+<li>データフレーム作成（30日・製品A〜D・売上100〜1000）</li>
+<li>製品別売上合計（groupby）</li>
+<li>日別推移を表示（最初の10日）</li>
+<li>500円以上を抽出</li>
+<li>見やすく表示</li>
+</ol>
+<p>ファイル名：<code>ex3-6-01_sales_analysis.py</code></p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_44.mp3" type="audio/mpeg" />
+<aside class="notes">
+課題1はPythonで行います。ポイントはpandasのDataFrameとgroupbyです。まずは要件1と2を達成しましょう。3〜5はその後でOKです。
+<p>困ったらCopilotに「pandasで30日分の売上データを生成し、groupbyで集計する」と投げると出発点が作れます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 45. -->
+<div style="font-size: 0.8em;">
+<h2>課題2（R）：同じ分析をtidyverseで</h2>
+<ul>
+<li>課題1と同じ処理をRで実装</li>
+<li>tidyverse（<code>dplyr</code>）で集計・抽出</li>
+<li>ファイル名：<code>ex3-6-02_sales_analysis.R</code></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_45.mp3" type="audio/mpeg" />
+<aside class="notes">
+課題2はRで同等処理です。ここで重要なのは“同じ目的”をRでどう書くかです。dplyrの group_by と summarise 、そして filter が鍵です。
+<p>Pythonが先にできた人は、その処理をRに翻訳する形で進めると良いです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 46. -->
+<div style="font-size: 1.0em;">
+<h2>自己評価（最低限ここまで）</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4160826"><label class="task-list-item-label" for="task-item-4160826"> エラーなく実行できる</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8705036"><label class="task-list-item-label" for="task-item-8705036"> 集計結果が出る</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3741642"><label class="task-list-item-label" for="task-item-3741642"> フィルタ結果が出る</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9917939"><label class="task-list-item-label" for="task-item-9917939"> コメントと変数名が分かりやすい</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4409931"><label class="task-list-item-label" for="task-item-4409931"> 適切なライブラリを使っている</label></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_46.mp3" type="audio/mpeg" />
+<aside class="notes">
+評価基準です。まずは「動く」「集計」「フィルタ」まで到達すれば合格ラインです。余力があれば関数化やエラーハンドリングに挑戦してください。
+<p>提出時に、うまくいかなかった点と、どのエラーにどう対処したかを一言添えると学習効果が高いです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 47. -->
+<div style="font-size: 0.8em;">
+<h2>本日のまとめ（重要ポイント）</h2>
+<ul>
+<li>R：<code>install.packages()</code> → <code>library()</code> → 必要なら<code>::</code></li>
+<li>Python：適切な<code>import</code>＋外部は<code>pip</code></li>
+<li>“見つからない”は <strong>インストール or 環境違い</strong></li>
+<li>NumPy / pandas / tidyverse は定番の入口</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_47.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後にまとめです。今日の節は「道具を使えるようにする」がテーマでした。インストールと呼び出し、そしてエラー対処の型を身につけるのが最重要です。
+<p>ここが固まると、次の章以降で新しい手法が出ても、必要なライブラリを自分で導入して試せるようになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 48. -->
+<div style="font-size: 0.8em;">
+<h2>自己チェック（次回まで）</h2>
+<ul>
+<li>R：<code>library()</code>と<code>install.packages()</code>を言い分けられる</li>
+<li>R：衝突が起きたら<code>::</code>で指定できる</li>
+<li>Python：<code>import ... as ...</code>を基本にできる</li>
+<li>Python：ModuleNotFoundErrorを自分で直せる</li>
+<li>演習：同じ処理をR/Pythonで書ける</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_48.mp3" type="audio/mpeg" />
+<aside class="notes">
+次回までの自己チェックです。できていない項目があれば、今日のサンプルプログラムを再実行するのが最短です。
+<p>お疲れ様でした。最後にGoogle Classroomのチェックリストに取り組んでください。
+これで授業を終わります。お疲れ様でした。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
