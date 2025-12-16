@@ -1,0 +1,1560 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>36個のLLMにおける「感情的個性」：4ペルソナと日本語テキスト3作品を用いた分析</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1. タイトル -->
+<div style="font-size: 0.8em;">
+<h2>36個のLLMにおける感情的個性</h2>
+<h3>4ペルソナと日本語テキスト3作品を用いた分析</h3>
+<br />
+<p><strong>白濵 成希$^1$, 中谷 直史$^2$, 渡邊 志$^3$</strong></p>
+<p>$^1$下関市立大学, $^2$順天堂大学, $^3$静岡理工科大学</p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+皆さん、こんにちは。下関市立大学、データサイエンス学部、「しらはま なるき」です。
+今日は「LLMにも“感情のクセ”があるのか？」を、データを取って確かめた研究を紹介します。
+同じ文章を読ませても、モデルによって「面白い」「悲しい」などの感じ方が変わる可能性があります。
+この差は、チャットボットや学習支援など“人と話すAI”ではとても重要です。
+30分で、(1) 何を問題にしたか、(2) どう公平に比べたか、(3) 何が分かったか、(4) 実装では何を工夫したか、の順で説明します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2. 研究の動機 -->
+<div style="font-size: 0.8em;">
+<h2>研究の動機</h2>
+<ul>
+<li><strong>課題</strong>: LLMは感情理解能力に大きな違いを示す</li>
+<li><strong>ギャップ</strong>: 複数モデル間での標準化された評価手法の欠如</li>
+<li><strong>影響</strong>: 自然な人間との相互作用とAIアプリケーションに影響</li>
+</ul>
+<div style="text-align: center; margin-top: 20px;">
+<strong>異なるLLMはどのように感情を異なって解釈するのか？</strong>
+</div>
+</div>
+<audio controls autoplay src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+まず動機です。LLMは「文章の要約」だけでなく、「相手の気持ちを汲む」ような場面でも使われます。
+ところが、モデルが違うと同じ文でも受け取り方が変わり、返答の雰囲気が変わります。
+たとえば相談相手が、あるモデルでは共感的、別のモデルでは淡々として見える、といった差です。
+問題は、こうした違いを“感覚”ではなく、同じ条件で測る標準的な方法があまり整っていない点です。
+そこで本研究は、「異なるLLMは感情をどのように違って解釈するのか？」を、同一ルールの実験で比べます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3. 研究仮説 -->
+<div style="font-size: 0.9em;">
+<h2>研究仮説</h2>
+<ul>
+<li>
+<p><strong>仮説1 (H1)</strong>: ベンダーグループと割り当てられたペルソナがLLMの感情評価に有意に影響する</p>
+</li>
+<li>
+<p><strong>仮説2 (H2)</strong>: 文学テキストの内容がLLMによって評価される感情次元に有意に影響する</p>
+</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは「何が効いて、どれくらい効くのか」を分けて考えるために、仮説を2つ立てました。
+H1は「モデルを作った会社（ベンダー）」と「与える役割（ペルソナ）」で、感情の点数が変わる、というものです。
+H2は「文章の種類（テキスト内容）」によって、点数が大きく変わる、というものです。
+この2つを分けて検証すると、「モデル選びが重要なのか」「入力文（コンテンツ）が重要なのか」を整理して議論できます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4. 実験設定 -->
+<div style="font-size: 0.8em;">
+<h2>実験設定</h2>
+<ul>
+<li><strong>モデル</strong>: 7つのベンダーグループから36個の最先端LLM
+<ul>
+<li>OpenAI, Google, Anthropic, xAI, DeepSeek, Meta, Alibaba</li>
+</ul>
+</li>
+<li><strong>テキスト</strong>: 青空文庫から3つの日本語文学作品</li>
+<li><strong>ペルソナ</strong>: 4つの異なる役割
+<ul>
+<li>大学一年生、文学研究者、感情的詩人、無感情なロボット</li>
+</ul>
+</li>
+<li><strong>指標</strong>: 4つの感情次元
+<ul>
+<li>興味深さ、驚き、悲しみ、怒り</li>
+</ul>
+</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+実験の設計です。ポイントは「条件を揃えて比べる」ことです。
+モデルは36種類、文章は3作品、役割（ペルソナ）は4種類。さらに同じ条件で10回繰り返します。
+LLMは確率的に出力が揺れるので、1回だけだと“たまたま”が混ざります。繰り返しで平均やばらつきも見ます。
+評価は4つの感情（面白さ・驚き・悲しみ・怒り）を0〜100点で付け、理由も文章で説明してもらいます。
+つまり、LLMに「同じアンケート」を配って、大規模な比較実験をしたイメージです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5. 評価対象テキスト（3作品） -->
+<div style="font-size: 0.65em;">
+<h2>評価対象テキスト（3作品）</h2>
+<ul>
+<li>全モデルに <strong>同じ3作品</strong> を読ませます（出典：青空文庫）</li>
+<li>作品のタイプをあえて変えて、LLMがどんな感情を出しやすいかを比べます</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>作品名</th>
+<th>タイプ</th>
+<th>狙い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>t1</code></td>
+<td>懐中時計</td>
+<td>寓話・短い会話文</td>
+<td>面白さ（＋教訓の納得感）</td>
+</tr>
+<tr>
+<td><code>t2</code></td>
+<td>お金とピストル</td>
+<td>オチのある短編</td>
+<td>驚き（＋面白さ）</td>
+</tr>
+<tr>
+<td><code>t3</code></td>
+<td>ぼろぼろな駝鳥</td>
+<td>詩（反復・比喩）</td>
+<td>悲しみ／怒り（＋違和感）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>全文リンク</strong></p>
+<ul>
+<li><a href="https://www.aozora.gr.jp/cards/000096/files/46823_27680.html">https://www.aozora.gr.jp/cards/000096/files/46823_27680.html</a></li>
+<li><a href="https://www.aozora.gr.jp/cards/000096/files/46720_27694.html">https://www.aozora.gr.jp/cards/000096/files/46720_27694.html</a></li>
+<li><a href="https://www.aozora.gr.jp/cards/001168/files/56694_55474.html">https://www.aozora.gr.jp/cards/001168/files/56694_55474.html</a></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから、使った3作品を軽く紹介します。作品を変えると、私たち人間も感じ方が変わりますよね。
+LLMでも同じで、内容のタイプ（寓話・オチのある話・詩）によって、出てくる感情のパターンが変わるはずです。
+この“作品の違い”が、さきほどの統計で「分散の50%以上」を説明していた主役でした。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6. 作品1：懐中時計（`t1`）-->
+<h2>作品1：懐中時計（<code>t1</code>）</h2>
+<p><strong>冒頭（抜粋）</strong></p>
+<blockquote>
+<p>懐中時計が箪笥の向う側へ落ちて一人でチクタクと動いておりました。<br>
+鼠が見つけて笑いました。</p>
+</blockquote>
+<audio controls autoplay src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+1つ目は「懐中時計」です。会話が中心で短く、教訓がはっきりしているタイプの文章です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7. 懐中時計、どんな話？ -->
+<div style="font-size: 0.80em;">
+<h2>どんな話？</h2>
+<ul>
+<li>「誰も見ていないときも働く意味」をめぐる、短い寓話です</li>
+</ul>
+<p><strong>LLMの感情が動くポイント</strong></p>
+<ul>
+<li>“勤勉は正しい”という価値観に寄せるか、皮肉として読むかで、点数が変わりやすい</li>
+<li>予想：面白さは上がりやすい／怒りは出にくい</li>
+</ul>
+<p>出典：<a href="https://www.aozora.gr.jp/cards/000096/files/46823_27680.html">https://www.aozora.gr.jp/cards/000096/files/46823_27680.html</a></p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+初心者の皆さんは、まず“どんな気分になるか”を素直に想像してみてください。くすっとするのか、納得するのか、逆に説教っぽく感じるのか。
+LLMも同様で、価値観の置き方によって「面白さ」や理由文が変わります。ここがモデル差の出やすい部分です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8. 作品2：お金とピストル（`t2`） -->
+<h2>作品2：お金とピストル（<code>t2</code>）</h2>
+<p><strong>冒頭（抜粋）</strong></p>
+<blockquote>
+<p>泥棒がケチンボの家へ入ってピストルを見せて、お金を出せと言いました。
+ケチンボは、「ただお金を出すのはいやだ…」と答えました。</p>
+</blockquote>
+<audio controls autoplay src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+2つ目は「お金とピストル」です。読みやすい短編で、“オチ”があるので驚きが出やすいタイプです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9. お金とピストル、どんな話？ -->
+<div style="font-size: 0.80em;">
+<h2>どんな話？</h2>
+<ul>
+<li>“だまし合い”が二段階でひっくり返る、オチのある短編です</li>
+</ul>
+<p><strong>LLMの感情が動くポイント</strong></p>
+<ul>
+<li>期待：驚きが上がりやすい（展開の反転）＋面白さも上がりやすい</li>
+<li>ただし、登場人物の行動を「滑稽」と読むか「不誠実」と読むかで、怒りの出方が変わることもあります</li>
+</ul>
+<p>出典：<a href="https://www.aozora.gr.jp/cards/000096/files/46720_27694.html">https://www.aozora.gr.jp/cards/000096/files/46720_27694.html</a></p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは、驚きの点数が上がるだけでなく、理由説明がどれだけ筋道立っているかも見どころです。
+同じ展開でも、モデルによって「面白いから高得点」になるのか、「倫理的に嫌だから怒りが出る」のか、読みが分かれます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10. 作品3: ぼろぼろな駝鳥 -->
+<h2>作品3：ぼろぼろな駝鳥（<code>t3</code>）</h2>
+<p><strong>冒頭（抜粋）</strong></p>
+<blockquote>
+<p>何が面白くて駝鳥を飼かうのだ。<br>
+動物園の四坪半のぬかるみの中では、</p>
+</blockquote>
+<audio controls autoplay src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+3つ目は「ぼろぼろな駝鳥」です。会話文ではなく、詩に近いリズムで、読後感がざらっとします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11. ぼろぼろな駝鳥、どんな話？ -->
+<div style="font-size: 0.80em;">
+<h2>どんな話？</h2>
+<ul>
+<li>反復（「…ぢゃないか」）と比喩で畳みかける、詩のような文章です</li>
+</ul>
+<p><strong>LLMの感情が動くポイント</strong></p>
+<ul>
+<li>“閉じ込められた存在”への痛みや怒りを、どれだけ読み取るか</li>
+<li>予想：悲しみ／怒りが上がりやすい一方、面白さは下がりやすい</li>
+</ul>
+<p>出典：<a href="https://www.aozora.gr.jp/cards/001168/files/56694_55474.html">https://www.aozora.gr.jp/cards/001168/files/56694_55474.html</a></p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここはモデルの“解釈力”が試されます。単にネガティブ語を拾うだけでなく、閉塞感や抗議のトーンをどう言語化するかが違いになります。
+この作品は、悲しみや怒りが出やすい一方で、「面白い」と感じるかどうかはモデル差が大きく出ることが期待されます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12. プロンプト例 -->
+<div style="font-size: 0.72em;">
+<h2>プロンプト例（LLMに実際に渡す文章）</h2>
+<p><strong>System（役割付与）</strong></p>
+<pre><code class="language-text">あなたは大学１年生です。日本の文学テキストに対する感情分析を行います。
+</code></pre>
+<p><strong>User（質問票テンプレ + 本文差し込み）</strong></p>
+<pre><code class="language-text">以下のテキストを読んで、4つの感情（面白さ、驚き、悲しみ、怒り）について0-100の数値で評価し、
+その理由も説明してください。
+
+テキスト：
+（例）泥棒がケチンボの家へ入ってピストルを見せて、お金を出せと言いました。…
+
+回答は以下の形式で記述してください：
+Q1. 面白さ(数値): [0-100]
+Q1. 面白さ(理由): [説明]
+...
+Q4. 怒り(数値): [0-100]
+Q4. 怒り(理由): [説明]
+</code></pre>
+<ul>
+<li><code>parameters.py</code> では、このテンプレに <code>TEXT_CONTENT[t*]</code> を差し込み、形式を揃えて全モデルに配ります</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+この1枚が、実験の“入力”の正体です。上はSystemで「誰として読むか」を指定し、下はUserで「何を、どう答えるか」を指定します。
+ここで重要なのは、回答フォーマットを固定している点です。自由作文にすると集計が難しいので、Q1〜Q4の形で数値を必ず出してもらいます。
+本文部分だけを3作品で入れ替えることで、「質問は同じ、文章だけ違う」という公平な比較ができます。
+次は、この同じプロンプトを36モデルに投げたとき、どんな差が出たかを見ていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13. 評価対象モデル -->
+<div style="font-size: 0.5em;">
+<h2>評価対象モデル (36個のLLM)</h2>
+<table>
+<thead>
+<tr>
+<th><strong>シリーズ</strong></th>
+<th><strong>モデル</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GPTシリーズ</strong></td>
+<td>gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-4o, gpt-4o-mini</td>
+</tr>
+<tr>
+<td><strong>oシリーズ</strong></td>
+<td>o4-mini, o3, o3-mini, o1-mini</td>
+</tr>
+<tr>
+<td><strong>Gemini</strong></td>
+<td>gemini-2.5-pro-preview-03-25, gemini-2.5-flash-preview-04-17, gemini-2.0-flash, gemini-2.0-flash-lite, gemini-2.0-pro-exp, gemini-2.0-flash-thinking-exp</td>
+</tr>
+<tr>
+<td><strong>Gemma</strong></td>
+<td>gemma-3-27b-it, gemma-3-12b-it, gemma-3-4b-it, gemma-3-1b-it</td>
+</tr>
+<tr>
+<td><strong>Claude</strong></td>
+<td>claude-3-7-sonnet-20250219, claude-3-5-sonnet-20241022, claude-3-5-haiku-20241022, claude-3-haiku-20240307</td>
+</tr>
+<tr>
+<td><strong>Grok (xAI)</strong></td>
+<td>grok-3-latest, grok-3-fast-latest, grok-3-mini-latest, grok-3-mini-fast-latest, grok-2-latest</td>
+</tr>
+<tr>
+<td><strong>DeepSeek</strong></td>
+<td>DeepSeek-R1, DeepSeek-V3-0324, DeepSeek-V3</td>
+</tr>
+<tr>
+<td><strong>Llama (Meta)</strong></td>
+<td>Llama-4-Maverick-17B-128E-Instruct-FP8, Llama-4-Scout-17B-16E-Instruct, Meta-Llama-3.3-70B-Instruct-Turbo</td>
+</tr>
+<tr>
+<td><strong>Qwen</strong></td>
+<td>Qwen3-235B-A22B-FP8, Qwen2.5-VL-7B-Instruct</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls autoplay src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは一覧表なので、細部を暗記する必要はありません。
+押さえてほしいのは「7社（ベンダー）× 複数のモデル系列」で、合計36モデルを同じ条件で評価した点です。
+同じ会社でも、汎用モデル・高速モデル・推論寄りモデルなど、設計や調整の方向性が違います。
+学習データ、追加学習（安全性や口調の調整）、応答の生成方法が違うと、感情の出方にも差が出る可能性があります。
+次のスライドからは、この“違い”を統計的に確かめます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14. 研究手法 -->
+<div style="font-size: 0.8em;">
+<h2>研究手法</h2>
+<p><strong>データ収集:</strong></p>
+<ul>
+<li>自動バッチ処理による標準化実験プラットフォーム</li>
+<li>品質管理後の総データポイント数: 4,067個</li>
+<li>モデル-テキスト-ペルソナの組み合わせごとに10回試行</li>
+</ul>
+<p><strong>統計分析:</strong></p>
+<ul>
+<li>仮説1用の二元配置分散分析（ペルソナ $\times$ ベンダー効果）</li>
+<li>仮説2用の一元配置分散分析（テキスト内容効果）</li>
+<li>仮定が満たされない場合のノンパラメトリック検定</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+研究手法の要点は2つです。「データの取り方」と「差の確かめ方」です。
+データ収集では、全モデルに同じ形式の質問を投げ、出力形式も固定して数値を取り出せるようにしました。
+不完全な回答や形式が崩れたものを除外した結果、4,067件のデータが残りました。
+差の検証にはANOVA（分散分析）を使います。ざっくり言うと「平均点の差が、偶然のブレでは説明しにくいか？」を確かめる方法です。
+さらに、p値だけでなく効果量（どれくらい大きい差か）も見て、実用的に意味があるかを判断します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15. 主要結果: 仮説1 -->
+<div style="font-size: 0.6em;">
+<h2>主要結果: 仮説1</h2>
+<p><strong>統計的証拠（二元配置分散分析）:</strong></p>
+<ul>
+<li><strong>興味深さ</strong>: ペルソナ $F(3,4039) = 9.442, p &lt; 0.001$</li>
+</ul>
+<div style="margin-left:160px;">ベンダー $F(6,4039) = 34.244, p < 0.001$</div>
+<ul>
+<li><strong>驚き</strong>: ペルソナ $F(3,4039) = 20.253, p &lt; 0.001$</li>
+</ul>
+<div style="margin-left:100px;">ベンダー $F(6,4039) = 38.687, p < 0.001$</div>
+<ul>
+<li><strong>悲しみ</strong>: ペルソナ $F(3,4039) = 2.800, p = 0.039$</li>
+</ul>
+<div style="margin-left:115px;">ベンダー $F(6,4039) = 17.506, p < 0.001$</div>
+<ul>
+<li><strong>怒り</strong>: ペルソナ $F(3,4039) = 3.376, p = 0.018$</li>
+</ul>
+<div style="margin-left:85px;">ベンダー $F(6,4039) = 18.917, p < 0.001$</div>
+<p><strong>結果</strong>: ペルソナとベンダーの両方が感情評価に有意に影響（$p &lt; 0.05$）</p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから結果です。まず仮説1（H1）です。
+表のF値は「グループ間の差が、内部のばらつきに比べてどれだけ大きいか」を表す指標です。
+p値は「本当は差がないのに、たまたま今みたいな差が出る確率」です。小さいほど“偶然ではなさそう”と言えます。
+この結果では、4つの感情すべてで「ペルソナ」と「ベンダー」の両方が有意でした。
+つまり、同じ文章でも“演じさせる役割”と“どの会社のモデルか”の両方が、感情点数に影響することが分かりました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16. ベンダー固有の感情プロファイル -->
+<div style="font-size: 0.8em;">
+<h2>ベンダー固有の感情プロファイル</h2>
+<p><strong>観察された特徴的パターン:</strong></p>
+<ul>
+<li><strong>Alibaba</strong>: 高い「興味深さ」、低い負の感情</li>
+<li><strong>Google</strong>: 穏健でバランスの取れた次元横断的評価</li>
+<li><strong>Anthropic</strong>: 顕著にバランスの取れた応答</li>
+<li><strong>OpenAI</strong>: 次元横断的に一貫性</li>
+</ul>
+<p><strong>2つのタイプを特定:</strong></p>
+<ul>
+<li><strong>「一貫した個性傾向」</strong>: ペルソナに関係なく一貫</li>
+<li><strong>「ペルソナカメレオン」</strong>: ペルソナに基づいて適応</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+ベンダーごとに“平均的な傾向”を見ていくと、確かにクセが見えてきます。
+たとえば、あるベンダーは「面白さ」を高めに付けやすく、負の感情は控えめ、という傾向が見られました。
+一方で、別のベンダーは全体にバランスが良く、極端な点数になりにくい、といった特徴があります。
+ここで強調したいのは「良い・悪い」というより、「設計や調整の違いが応答のスタイルに表れる」という点です。
+また、ペルソナを変えてもあまり動かない“固定個性”タイプと、役割に合わせて大きく変わる“カメレオン”タイプがある、という整理ができます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17. ベンダー感情プロファイル -->
+<div style="font-size: 0.8em;">
+<h2>ベンダー感情プロファイル</h2>
+<div style="text-align: center;">
+<img src="./images/persona_model_emotion_vendor.png" alt="ベンダー感情プロファイル" style="width: 60%; height: auto;">
+</div>
+</div>
+<audio controls autoplay src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+この図は、ベンダー×ペルソナで、4つの感情がどう変わるかをまとめたものです。
+見方のコツは2つあります。
+1つ目は「同じベンダー内で、ペルソナを変えると色（点数）がどれくらい動くか」です。ここが大きいほど“カメレオン型”です。
+2つ目は「ベンダー間で、同じペルソナでも色が違うか」です。ここが大きいほど“ベンダー差”が強いと言えます。
+図は平均傾向なので、次のスライド以降ではテキスト内容の影響も含めて、全体像を整理します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18. 主要結果: 仮説2 -->
+<div style="font-size: 0.6em;">
+<h2>主要結果: 仮説2</h2>
+<p><strong>統計的証拠（ANOVA・クラスカル-ワリス検定）:</strong></p>
+<ul>
+<li><strong>興味深さ</strong>: $F(2,4064) = 2571.80, p &lt; 0.001, \eta^2 = 0.559$ （大きな効果）</li>
+<li><strong>驚き</strong>: $F(2,4064) = 1999.16, p &lt; 0.001, \eta^2 = 0.496$ （大きな効果）</li>
+<li><strong>悲しみ</strong>: $F(2,4064) = 5213.37, p &lt; 0.001, \eta^2 = 0.720$ （大きな効果）</li>
+<li><strong>怒り</strong>: $F(2,4064) = 2430.47, p &lt; 0.001, \eta^2 = 0.545$ （大きな効果）</li>
+</ul>
+<p><strong>重要な発見</strong>: テキスト内容が感情評価の分散の<strong>50%以上</strong>を説明</p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+次に仮説2（H2）です。ここは初心者の方にこそ面白いポイントです。
+η²（イータ二乗）は「点数のばらつきのうち、何割が“要因”で説明できるか」を表す効果量です。
+この結果では、テキスト内容だけで分散の50%以上を説明できています。つまり、文章そのものが感情評価を強く左右します。
+言い換えると、モデル差やペルソナ差もある一方で、「何を読ませるか」が最も大きなドライバーになっていました。
+これは、LLMがテキストの雰囲気の違いをある程度拾って反応している、という証拠にもなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19. テキスト固有の感情パターン -->
+<div style="font-size: 0.8em;">
+<h2>テキスト固有の感情パターン</h2>
+<div style="font-size: 0.8em;">
+<p><strong>文学によって駆動される感情応答:</strong></p>
+<ul>
+<li><strong>「懐中時計」</strong>: 顕著な「興味深さ」スコア、低い「悲しみ」と「怒り」</li>
+<li><strong>「お金とピストル」</strong>: 著しく高い「興味深さ」と「驚き」評価</li>
+<li><strong>「ぼろぼろな駝鳥」</strong>: 低い「興味深さ」だが高い「悲しみ」と「怒り」</li>
+</ul>
+<p><strong>含意</strong>: LLMは異なる文学作品間の感情特性を成功裏に区別</p>
+</div>
+</div>
+<audio controls autoplay src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+3作品それぞれで、感情の“型”がはっきり違いました。
+「懐中時計」は寓話的で、面白さは出やすい一方、悲しみや怒りは出にくい傾向です。
+「お金とピストル」はオチのある物語なので、驚きや面白さが高く出やすい。
+「ぼろぼろな駝鳥」は詩で、陰鬱さや切迫感があり、悲しみ・怒りが高めに出ます。
+人間が読んでも納得しやすい方向に差が出ている点が、「内容に反応している」ことを直感的に支えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20. テキスト感情分布 -->
+<div style="font-size: 0.8em;">
+<h2>テキスト感情分布</h2>
+<div style="text-align: center;">
+<img src="./images/text_emotion_distribution.png" alt="テキスト感情分布" style="width: 100%; height: auto;">
+</div>
+</div>
+<audio controls autoplay src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは“分布”で見るスライドです。平均だけだと、ばらつきが見えません。
+バイオリンプロットは、横幅が広いほど「その点数を付けた回数が多い」ことを表します。
+つまり、同じ作品でもモデルによって点数が揃うのか、割れるのかが一目で分かります。
+この図を見ると、作品ごとに分布の位置が明確にずれていて、テキスト内容が強く効いていることが視覚的にも確認できます。
+同時に、作品によっては分布が広く、モデル間で解釈が割れやすいことも分かります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21. 実用的示唆 -->
+<div style="font-size: 0.8em;">
+<h2>実用的示唆</h2>
+<p><strong>モデル選択において:</strong></p>
+<ul>
+<li>ベンダー固有の感情特性を考慮</li>
+<li>「固定個性」対「ペルソナ適応可能」モデルの選択</li>
+</ul>
+<p><strong>アプリケーション設計において:</strong></p>
+<ul>
+<li>テキスト内容がより強い影響（$&gt;50%$の分散）</li>
+<li>異なるベンダーグループが異なる分析タスクに適合</li>
+</ul>
+<p><strong>AI開発において:</strong></p>
+<ul>
+<li>系統的感情バイアスの証拠</li>
+<li>感情認識評価と選択の必要性</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+実用面の話です。結論を先に言うと、「モデル選び」も大事ですが、「入力文（コンテンツ設計）」はもっと大事になり得ます。
+感情に敏感なアプリ（相談、教育、接客など）では、ベンダーごとの傾向を知っておくと、体験の設計がしやすいです。
+同時に、テキスト内容が分散の半分以上を決めるので、ユーザーに見せる文・質問の作り方が結果を大きく左右します。
+現場では、使いたい文章やユースケースに近いデータで“小さな評価実験”を回し、モデルのクセを把握してから採用するのが安全です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22. 限界と今後の課題 -->
+<div style="font-size: 0.8em;">
+<h2>限界と今後の課題</h2>
+<p><strong>現在の限界:</strong></p>
+<ul>
+<li>日本語文学テキストのみに焦点</li>
+<li>4つの感情次元（Plutchikの枠組み）</li>
+<li>テキストのみの分析（マルチモーダル入力なし）</li>
+</ul>
+<p><strong>今後の方向性:</strong></p>
+<ul>
+<li>異文化・多言語評価</li>
+<li>マルチモーダル感情分析（テキスト+画像+音声）</li>
+<li>複数セッション間の時間的一貫性</li>
+<li>説明的根拠の品質分析</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+もちろん限界もあります。今回は「日本語の短い文学作品」「4つの感情」「テキストだけ」に絞りました。
+これは実験をシンプルにして比較しやすくするためですが、その分、日常会話や他言語にそのまま一般化できるとは限りません。
+感情も本来はもっと複雑で、喜び・恐れ・嫌悪のような次元や、混ざり合った感情も扱う必要があります。
+今後は、多言語・異文化で同様の評価を行い、画像や音声も含むマルチモーダルな感情理解へ拡張したいと考えています。
+また、理由説明の質や、時間をおいたときの一貫性（同じモデルが同じように判断するか）も、信頼性の観点で重要なテーマです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23. 結論 -->
+<div style="font-size: 0.8em;">
+<h2>結論</h2>
+<p><strong>主要な貢献:</strong></p>
+<ul>
+<li>厳密な統計検証による36個のLLMの<strong>包括的評価</strong></li>
+<li>AIモデルにおける<strong>ベンダー固有の「感情的個性」の証拠</strong></li>
+<li><strong>強いテキスト内容感度</strong>（$&gt;50%$の分散説明）</li>
+<li>感情に敏感なAIアプリケーション向けの<strong>実用的ガイドライン</strong></li>
+</ul>
+<p><strong>インパクト</strong>: LLMの感情能力理解と人間中心AIシステム開発基盤</p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+まとめです。今日の持ち帰りは3つです。
+1つ目は、LLMの感情評価には“モデルごとの系統的な差”があること。
+2つ目は、役割（ペルソナ）を与えると、点数の付け方が実際に変わり得ること。
+3つ目は、何より「テキスト内容」が大きく効く、ということです。
+データサイエンスの視点では、LLMを“確率的なシステム”として扱い、必ず評価実験で確かめる姿勢が大切です。
+この後は質疑応答として、設計の意図や、応用先について補足します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24. 質疑応答 -->
+<h1>質疑応答</h1>
+<h2>Q &amp; A</h2>
+<audio controls autoplay src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+ご清聴ありがとうございました。ここからは質疑応答に移ります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25. Q1. なぜ4人のペルソナを？ -->
+<div style="font-size: 0.7em;">
+<h2>Q1. なぜ4人のペルソナを？</h2>
+<h3>A1. 多様な&quot;モノサシ&quot;で評価の妥当性を検証</h3>
+<ul>
+<li><strong>設定の意図</strong>
+<ul>
+<li>4つの異なるペルソナを設定、<u>評価者の多様性</u>を実験で再現</li>
+</ul>
+</li>
+<li><strong>ペルソナとtemperatureの関係</strong>
+<ul>
+<li>ペルソナの多様性を<code>temperature</code>パラメータで調整
+<ul>
+<li>感情豊かな詩人 (多様性重視) → <strong>temperature: <span style="color: #dc3545;">高</span></strong></li>
+<li>無感情なロボット (一貫性重視) → <strong>temperature: <span style="color: #007bff;">低</span></strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>設計の妥当性</strong>
+<ul>
+<li>temperature設定と実際の評価のばらつき</li>
+<li><strong><span style="color: red;">強い正の相関</span></strong> ($r=0.73, p&lt;0.001$)を確認</li>
+<li>ペルソナ設計が有効であったことを実証</li>
+</ul>
+</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+感情の評価は、誰が読むかで変わります。これは人間でも同じです。
+そこで本研究では、あえて4つの“読み手”を用意し、LLMに役割を演じさせました。
+ここで出てくる`temperature`は、出力のランダムさ（ゆらぎ）を調整するつまみです。高いほど多様な表現が出やすく、低いほど同じような答えになりやすい。
+実際に、temperatureを上げたペルソナほど点数のばらつきが大きくなり、相関（r=0.73）も確認できました。
+つまり「ペルソナ設計＝気分だけの設定」ではなく、統計的に“効いている”ことが確かめられました。
+</aside>
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26. Q2. なぜ評価対象に「日本の文学」を？ -->
+<div style="font-size: 0.7em;">
+<h2>Q2. なぜ評価対象に「日本の文学」を？</h2>
+<h3>A2. LLMの真の実力を測るための&quot;挑戦状&quot;</h3>
+<ul>
+<li>
+<p><strong>選定理由</strong></p>
+<ul>
+<li>日本語の文学作品は、<u>感情の機微</u>や<u>豊かな比喩表現</u>に富んでおり、LLMの高度な感情理解能力を評価するのに最適な題材と考えた。</li>
+</ul>
+</li>
+<li>
+<p><strong>テキスト選定の3つの基準</strong></p>
+<ol>
+<li><strong>簡潔さ</strong>: LLMが処理しやすい適切な長さ</li>
+<li><strong>感情的豊かさ</strong>: 評価すべき感情が豊かに含まれている</li>
+<li><strong>解釈の多様性</strong>: 多様な解釈が可能な文学的深みがある</li>
+</ol>
+</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+LLMの“感情理解”を試すなら、教科書みたいな平坦な文章より、感情の機微が詰まった文章の方が向いています。
+そこで、青空文庫から日本語文学を選びました。比喩や行間があり、解釈が割れやすいので、LLMにとっては良いストレステストです。
+ただし長すぎると比較が難しいので、(1) 適切な長さ、(2) 感情表現の豊かさ、(3) 解釈の多様性、の3基準で選びました。
+3作品のタイプをあえて変えているので、「文章の種類が変わると感情がどう動くか」が見えやすくなります。
+</aside>
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27. Q3. なぜモデルで感情の捉え方が違う？ -->
+<div style="font-size: 0.7em;">
+<h2>Q3. なぜモデルで感情の捉え方が違う？</h2>
+<h3>A3. 開発企業の&quot;思想&quot;が反映されたモデルの個性</h3>
+<ul>
+<li><strong>驚きの結果</strong>
+<ul>
+<li>AlibabaとxAIのモデルで、感情スコアに <strong><span style="color: red;">27.2ポイント</span></strong> もの大差が確認された。</li>
+</ul>
+</li>
+<li><strong>考えられる理由</strong>
+<ul>
+<li>各LLMが学習した<u>データ</u>や、応答を調整する<u>開発思想</u>の違いを反映していると考えられる。</li>
+</ul>
+</li>
+<li><strong>モデルの個性</strong>
+<ul>
+<li><strong>Alibaba系</strong>: ポジティブ感情を高評価する「<strong>高評価集中型</strong>」</li>
+<li><strong>xAI系</strong>: 評価がばらつき、多様な解釈を許容する「<strong>多様性許容型</strong>」</li>
+</ul>
+</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+同じ文章でもモデルで点数が変わる理由は、大きく分けて3つあります。
+1つ目は学習データの違いです。どんな文章を多く読んで育ったかで、感情語の使い方や基準が変わります。
+2つ目は追加学習（安全性や口調の調整）です。強い断定を避ける、ネガティブ表現を和らげる、といった方針が影響します。
+3つ目は生成方法（推論寄りか、速度重視か、など）です。同じ“知識”でも出し方が違います。
+今回の例では、ベンダー間で平均27ポイント以上の差が出ており、モデルの“思想”が数値として見える形になりました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28. Q4. 言語-数値整合性とは？ -->
+<div style="font-size: 0.7em;">
+<h2>Q4. 言語-数値整合性とは？</h2>
+<h3>A4. &quot;言っていること&quot;と&quot;やっていること&quot;の一致度</h3>
+<ul>
+<li><strong>言語-数値整合性とは</strong>
+<ul>
+<li>LLMが算出した<strong>数値評価</strong>（例: <code>80点</code>）と、その<strong>理由説明</strong>（例: <code>「非常に感動した」</code>）が、<u>どれだけ一致しているか</u>を示す指標</li>
+</ul>
+</li>
+<li><strong>重要な発見</strong>
+<ul>
+<li>モデル間で、この整合性に <strong><span style="color: red;">最大6.5倍</span></strong> もの差があった</li>
+</ul>
+</li>
+<li><strong>これが意味すること</strong>
+<ul>
+<li><strong>整合性が高い</strong>モデルは、人間のように思考が<strong>一貫しており、信頼性が高い</strong></li>
+<li><strong>整合性が低い</strong>モデルは、<u>なぜその評価に至ったのかを論理的に説明できていない</u>可能性</li>
+</ul>
+</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは“信頼性”の話です。点数と理由が矛盾していたら、その出力は使いにくいですよね。
+たとえば「80点」と言いながら理由が「退屈だった」だと、何を信じればいいのか分からなくなります。
+このズレを定量化したのが「言語-数値整合性」です。要するに「点数の強さ」と「理由文のトーン」が一致しているかを見ます。
+モデル間で最大6.5倍の差があったというのは、同じタスクでも“説明の一貫性”が大きく違うことを意味します。
+ユーザーに説明責任が求められる場面（教育、医療、行政など）では、こうした整合性もモデル選びの重要な指標になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29. Q5. 本研究の限界と今後の展望 -->
+<div style="font-size: 0.7em;">
+<h2>Q5. 本研究の限界と今後の展望</h2>
+<ul>
+<li><strong>1. <u>対象の限定性</u></strong>
+<ul>
+<li><strong>現状</strong>: 日本語の文学テキストのみを分析</li>
+<li><strong>今後</strong>: 他言語や日常会話への応用可能性を検証</li>
+</ul>
+</li>
+<li><strong>2. <u>感情の限定性</u></strong>
+<ul>
+<li><strong>現状</strong>: 4つの基本感情に絞って評価</li>
+<li><strong>今後</strong>: より複雑な<strong>複合感情</strong>（例: 嬉しさと悲しさが混在）への拡張</li>
+</ul>
+</li>
+<li><strong>3. <u>手法の限定性</u></strong>
+<ul>
+<li><strong>現状</strong>: メンバーシップ関数は本研究で定義した一例</li>
+<li><strong>今後</strong>: 異なる定義を用いることでの変化を検証</li>
+</ul>
+</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+限界の整理は、データサイエンスではとても大事です。「何が言えて、何が言えないか」を明確にします。
+今回は日本語文学に限定したので、日常会話や他言語でも同じ傾向が出るかは追加検証が必要です。
+感情も4つに絞りましたが、現実は“喜びと悲しみが混ざる”など複雑なので、拡張が課題です。
+さらに、数値と理由の対応づけ（どんな指標で整合性を見るか）も、定義の仕方で結果が変わり得ます。
+この3点を次の研究テーマとして、より汎用的で現場に近い評価へ広げていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30. Q6. チャレンジ：より複雑な感情へ -->
+<div style="font-size: 0.75em;">
+<h2>Q6. チャレンジ：より複雑な感情へ</h2>
+<ul>
+<li>
+<p><strong>Step 1: <u>基本感情の拡張</u></strong></p>
+<ul>
+<li>現在の4感情から、<code>喜び</code>、<code>恐れ</code>、<code>嫌悪</code>などを含む<strong>6基本感情</strong>へ</li>
+</ul>
+</li>
+<li>
+<p><strong>Step 2: <u>複合感情の定量化</u></strong></p>
+<ul>
+<li>「驚き」と「悲しみ」など、<strong>複数の感情が同時に存在する状態</strong>を分析する手法を確立</li>
+</ul>
+</li>
+<li>
+<p><strong>Step 3: <u>感情推移の分析</u></strong></p>
+<ul>
+<li>物語の進行に伴う、<strong>感情のダイナミックな変化</strong>を追跡するシステムを構築</li>
+</ul>
+</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+今後の展開を、データサイエンスの言葉にすると次の3段階です。
+Step1はクラス（感情の種類）を増やす、つまり多クラス化です。
+Step2は「混ざった感情」を扱うので、複数ラベルや連続値の回帰のような発想が必要になります。
+Step3は時間方向、つまり物語の進行に沿った時系列解析です。文章を区切って、感情の推移を追いかけるイメージです。
+こうした拡張は、皆さんが今後学ぶ統計・機械学習の内容と直結しています。
+</aside>
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31. Q7. この研究が拓く未来 -->
+<div style="font-size: 0.7em;">
+<h2>Q7. この研究が拓く未来</h2>
+<h3>～曖昧さを理解するAIの応用可能性～</h3>
+<ul>
+<li>
+<p><strong><span style="color: #007bff;">AIアシスタント / チャットボット</span></strong></p>
+<ul>
+<li>ユーザーの<u>曖昧な感情</u>を汲み取り、より心に寄り添った対話を実現</li>
+</ul>
+</li>
+<li>
+<p><strong><span style="color: #28a745;">カスタマーサポート</span></strong></p>
+<ul>
+<li>顧客の感情を多角的に分析し、<u>サービス品質を定量的に改善</u></li>
+</ul>
+</li>
+<li>
+<p><strong><span style="color: #ffc107;">教育 / エンターテイメント</span></strong></p>
+<ul>
+<li>学習者の心理状態の把握や、個人の気分に合わせた <strong>コンテンツ推薦</strong></li>
+</ul>
+</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+応用先はたくさんありますが、共通するキーワードは「人の状態を誤解しない」ことです。
+AIアシスタントなら、ユーザーの曖昧な気分を読み違えずに、言葉選びを調整できます。
+カスタマーサポートなら、怒りや不満の兆候を早めに検知して、対応を改善できます。
+教育では、学習者のやる気や混乱のサインを拾い、説明の出し方を変えることも考えられます。
+ただし感情データはセンシティブなので、プライバシーや誤判定への備えも含めて、慎重に設計する必要があります。
+</aside>
+</div>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32. 実装紹介: parameters.py -->
+<div style="font-size: 0.8em;">
+<h2>実装紹介：<code>parameters.py</code>（実験の設計図）</h2>
+<ul>
+<li>この研究は、自作リポジトリ <code>llm-literary-analysis</code> の実験スクリプトから <code>parameters.py</code> を読み込んで動かします</li>
+<li>ここに <strong>「誰が（ペルソナ）」「何を（文学作品）」「どう聞くか（プロンプト）」「どう実行するか（モデル差分）」</strong> が集約されます</li>
+<li>設定を1か所に集めると、<strong>比較の公平性</strong>と<strong>再現性</strong>が上がります（条件の取り違えが減る）</li>
+</ul>
+<p><strong>3つの層</strong></p>
+<ol>
+<li><code>BASE_PROMPT</code> / <code>SYSTEM_PROMPTS</code>（質問文・役割）</li>
+<li><code>PERSONAS</code> / <code>TEXTS</code> / <code>TEXT_CONTENT</code>（実験条件）</li>
+<li><code>MODEL_CONFIGS</code> / <code>*_MODELS</code> / <code>TRIALS</code>（実行条件）</li>
+</ol>
+</div>
+<audio controls autoplay src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからは実装の話です。研究は「良いアイデア」だけでなく「再現できる実装」が重要です。
+`parameters.py` は実験条件の設計図で、ペルソナ・テキスト・プロンプト・モデル差分を1か所に集めています。
+こうしておくと、条件の書き換えが簡単で、比較の公平性も保てます（“いつの間にか条件が違っていた”を防げます）。
+皆さんがレポートや卒研で実験するときも、設定を一元管理する癖を付けると強いです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 33. 質問票テンプレ：`BASE_PROMPT` -->
+<div style="font-size: 0.8em;">
+<h2>1) 質問票テンプレ：<code>BASE_PROMPT</code></h2>
+<ul>
+<li><code>{text_content}</code> に作品本文を差し込むだけで、毎回同じ“質問票”を配れます</li>
+<li><strong>出力形式を固定</strong>（<code>Q1...Q4</code>）することで、後で数値を機械的に取り出せます（パースしやすい）</li>
+<li>数値と理由を同時に取ると、**「点数」＋「根拠」**をセットで保存できます</li>
+</ul>
+<pre><code class="language-python">BASE_PROMPT = &quot;&quot;&quot;... テキスト：
+{text_content}
+
+回答は以下の形式で：
+Q1. 面白さ(数値): [0-100]
+Q1. 面白さ(理由): [説明]
+...&quot;&quot;&quot;
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
+<aside class="notes">
+`BASE_PROMPT` は、LLMに配る“アンケート用紙”のテンプレです。
+出力形式を固定しているのは、後で正規表現などで数値を自動抽出するためです。
+人間向けの自由記述だけだと集計が大変ですが、フォーマットを決めるとデータにできます。
+データサイエンスでは「集計できる形で記録する」ことがまず勝ち筋なので、ここが実装の肝です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 34. “読み手”を変える：`SYSTEM_PROMPTS` と `PERSONAS` -->
+<div style="font-size: 0.8em;">
+<h2>2) “読み手”を変える：<code>SYSTEM_PROMPTS</code> と <code>PERSONAS</code></h2>
+<ul>
+<li><code>SYSTEM_PROMPTS</code> は、LLMに与える <strong>“役割指示（演技の台本）”</strong></li>
+<li><code>PERSONAS</code> は、ペルソナの説明と <code>base_temperature</code>（出力の“ゆらぎ”）を持ちます
+<ul>
+<li>温度が高いほど、表現が多様になりやすい（ただしブレも増える）</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python">SYSTEM_PROMPTS = {&quot;p1&quot;: &quot;あなたは大学１年生です。...&quot;, &quot;p4&quot;: &quot;あなたは無感情なロボットです。...&quot;}
+
+PERSONAS = {
+  &quot;p1&quot;: {&quot;name&quot;: &quot;大学１年生&quot;, &quot;base_temperature&quot;: 0.7},
+  &quot;p4&quot;: {&quot;name&quot;: &quot;無感情なロボット&quot;, &quot;base_temperature&quot;: 0.1},
+}
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
+<aside class="notes">
+`SYSTEM_PROMPTS` は「あなたは〜です」という役割付けで、LLMの口調や視点を変えます。
+`PERSONAS` 側には、そのペルソナの説明と、`base_temperature`（ゆらぎの強さ）を持たせています。
+つまり、役割の文章だけでなく、生成パラメータでも“読み手の個性”を一緒に設計しています。
+この2段構えにすると、同じ作品でも「大学1年生として読む」「研究者として読む」といった比較が安定してできます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 35. 条件を揃えて繰り返す：`TEXTS` / `TEXT_CONTENT` / `TRIALS` -->
+<div style="font-size: 0.8em;">
+<h2>3) 条件を揃えて繰り返す：<code>TEXTS</code> / <code>TEXT_CONTENT</code> / <code>TRIALS</code></h2>
+<ul>
+<li><code>TEXTS</code> は作品IDとメタ情報（作品名、必要なら温度補正）</li>
+<li><code>TEXT_CONTENT</code> は本文（実験ではここが入力データ）</li>
+<li><code>TRIALS = 10</code> は <strong>同じ条件で10回繰り返す</strong>設定
+<ul>
+<li>1回だけだと「たまたま」の影響が残るため、分布（ばらつき）も見ます</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python">TEXTS = {&quot;t1&quot;: {&quot;name&quot;: &quot;懐中時計&quot;, &quot;temperature_modifier&quot;: 0.0}, ...}
+TEXT_CONTENT = {&quot;t1&quot;: &quot;&quot;&quot;懐中時計が...&quot;&quot;&quot;, ...}
+TRIALS = 10
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
+<aside class="notes">
+テキスト側は、ID（t1〜）と本文を分けています。IDを軸にすると、集計や可視化が簡単です。
+`TRIALS = 10` は、同じ条件を10回繰り返す設定で、平均だけでなく“ばらつき”も評価します。
+LLMはサイコロのように揺れるので、繰り返しは信頼性の基本になります。
+初心者の皆さんには「1回の結果で結論を出さない」という姿勢を、ぜひ覚えて帰ってほしいです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- モデル差分を吸収：`MODEL_CONFIGS` と `*_MODELS` -->
+<div style="font-size: 0.75em;">
+<h2>4) モデル差分を吸収：<code>MODEL_CONFIGS</code> と <code>*_MODELS</code></h2>
+<ul>
+<li>ベンダーやモデルによって、APIの入力形式が違います（例：<code>messages</code> / <code>content</code> / <code>combined</code>）</li>
+<li>“推論系モデル”など、<code>temperature</code> を受け付けないモデルもあります（<code>temperature_support: False</code>）</li>
+<li>価格やエンドポイントを持たせておくと、実験の <strong>コスト見積り</strong>や<strong>呼び分け</strong>ができます</li>
+</ul>
+<pre><code class="language-python">MODEL_CONFIGS[&quot;openai&quot;][&quot;o1-mini&quot;] = {&quot;format&quot;: &quot;combined&quot;, &quot;temperature_support&quot;: False}
+
+OPENAI_MODELS[&quot;gpt-4o-mini&quot;] = {
+  &quot;model_name&quot;: &quot;gpt-4o-mini&quot;,
+  &quot;pricing&quot;: {&quot;input&quot;: 0.15, &quot;output&quot;: 0.60},
+}
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_36.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後にモデル差分です。実はここが実務では一番ハマりどころです。
+APIはベンダーによって入力形式が違い、同じ“temperature”でも使えないモデル（推論系）があります。
+`MODEL_CONFIGS` と `*_MODELS` に差分をまとめることで、実験側のコードは「同じインターフェース」で呼べます。
+価格情報も持たせているので、「この実験を回すとどれくらい費用がかかるか」を事前に見積もれます。
+研究でもプロダクトでも、コスト・再現性・公平性を同時に管理するための工夫です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 37. 実験ループ（概念図） -->
+<div style="font-size: 0.75em;">
+<h2>実験ループ（概念図）</h2>
+<pre><code class="language-python">for model in models:
+  for persona in PERSONAS:
+    for text in TEXTS:
+      for _ in range(TRIALS):
+        system = SYSTEM_PROMPTS[persona]
+        prompt = BASE_PROMPT.format(text_content=TEXT_CONTENT[text])
+        temp = PERSONAS[persona][&quot;base_temperature&quot;] + TEXTS[text][&quot;temperature_modifier&quot;]
+        result = call_llm(model, system, prompt, temp)
+        save(result)
+</code></pre>
+<ul>
+<li><strong>“モデル以外は全部同じ”</strong> にして比較するのがポイントです</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_37.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドは実験ループの概念図を表しています。モデル以外は全部同じにして比較するのがポイントですね。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 38. DeepWiki -->
+<h2>DeepWiki</h2>
+<p><img src="./deeepwiki.png" alt="DeepWiki"></p>
+<p><a href="https://deepwiki.com/nshrhm/llm-literary-analysis">https://deepwiki.com/nshrhm/llm-literary-analysis</a></p>
+<audio controls autoplay src="./voiceovers/slide_38.mp3" type="audio/mpeg" />
+<aside class="notes">
+他にも内容や実装に関して質問があるのではないでしょうか。その時はDeepWikiに質問を投げてみてください。AIが回答してくれます。ある程度は正しくしてくれるでしょう。してくれるといいですね。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 39. GitHub -->
+<h2>GitHub</h2>
+<p><img src="QR_257909.png" alt="GitHub"></p>
+<p><a href="https://github.com/nshrhm/llm-literary-analysis">https://github.com/nshrhm/llm-literary-analysis</a></p>
+<audio controls autoplay src="./voiceovers/slide_39.mp3" type="audio/mpeg" />
+<aside class="notes">
+実験に使ったプログラムは全てGitHubで公開しています。興味のある人はアクセスしてみてください。
+<p>ここまで、ご清聴ありがとうございました。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: false,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
