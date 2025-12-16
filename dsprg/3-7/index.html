@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1. -->
+<div style="font-size: 1.0em;">
+<h1>3.7 反復処理</h1>
+<p>データサイエンスプログラミング入門</p>
+</div>
+<audio controls autoplay src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日は3.7節として、反復処理（同じ処理をたくさん回す）を「for文に頼らずに」整理して学びます。
+<p>データサイエンスで反復は避けて通れません。大量データ・シミュレーション・パラメータ実験が全部ここに繋がります。今日は“書き方の型”を4パターンに分けて、R/Pythonを対応づけて押さえます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2. -->
+<div style="font-size: 1.0em;">
+<h2>本日の流れ（90分）</h2>
+<ol>
+<li>反復処理が必要な理由（腹落ち）</li>
+<li>for文を避ける理由（先に結論）</li>
+<li>反復処理4パターン（入力→出力の型）</li>
+<li>パターン1〜4（代表サンプルを実行）</li>
+<li>並列処理入門（furrr / pandarallel）</li>
+<li>統合演習（モンテカルロ / パイプライン）</li>
+<li>まとめ・自己チェック・達成度評価</li>
+</ol>
+</div>
+<audio controls autoplay src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+この順番でいきます。最初に「なぜ必要か」と「なぜforを避けるか」を早めに確定させて、その後は4パターンで迷子にならないようにします。
+<p>途中で何回か確認質問を入れます。「これはどのパターン？」と「戻り値の型は何？」が合言葉です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3. -->
+<div style="font-size: 1.0em;">
+<h2>学習目標（この節の到達点）</h2>
+<ul>
+<li>反復処理を「4パターン」で分類できる</li>
+<li>R/Pythonで各パターンを実装できる</li>
+<li>戻り値の型（ベクトル/Series/データフレーム）を意識できる</li>
+<li>並列化できる/できないを判断できる</li>
+<li>Copilotを学習補助として使える（丸投げしない）</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+暗記より「分類→実装→検証」の流れを身につけるのがゴールです。
+<p>特に“型”です。どのパターンも、最後に「何が返ってくるか」でバグりやすいので、そこを意識して進めます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4. -->
+<div style="font-size: 1.0em;">
+<h2>反復処理は何のため？</h2>
+<ul>
+<li>大量データに同じ計算を当てたい</li>
+<li>シミュレーションを何千回も回したい</li>
+<li>パラメータの組み合わせで実験したい</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+反復処理は「同じ処理を、たくさんの入力に対して適用する」ことです。
+<p>ここで質問：みなさんが“反復したい”場面はどれですか？（大量データ / シミュレーション / パラメータ実験）手を挙げなくていいので、心の中で選んでください。今日は全部扱います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5. -->
+<div style="font-size: 1.0em;">
+<h2>なぜfor文を避ける？</h2>
+<h3>（先に結論）</h3>
+<ul>
+<li>コードが短く読みやすい（意図が見える）</li>
+<li>インデックス管理が減って安全</li>
+<li>内部で最適化されていることが多い</li>
+<li>後で並列化しやすい</li>
+</ul>
+<pre><code class="language-python"># forより意図が見える（例）
+doubled = [n * 2 for n in numbers]
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+for文が悪い、という話ではなく、データサイエンスでは「型が揃ったデータに同じ処理」を当てることが多いので、関数型の書き方がハマります。
+<p>ここで確認：上の1行は「何をしたいか」がforより読み取りやすい、という感覚を持てればOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6. -->
+<div style="font-size: 0.6em;">
+<h2>反復処理4パターン（入力→出力の型）</h2>
+<table>
+<thead>
+<tr>
+<th>パターン</th>
+<th>入力</th>
+<th>出力</th>
+<th>R</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>指定回数</td>
+<td>1次元</td>
+<td><code>replicate</code></td>
+<td>内包表記</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1次元</td>
+<td>1次元</td>
+<td><code>map_dbl</code></td>
+<td><code>apply</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>1次元</td>
+<td>データフレーム</td>
+<td><code>map_dfr</code></td>
+<td><code>apply</code> + <code>pd.Series</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>データフレーム</td>
+<td>データフレーム</td>
+<td><code>pmap_dfr</code></td>
+<td><code>apply(axis=1)</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls autoplay src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の地図です。迷ったら「入力は何？出力は何？」に戻ります。
+<p>ミニ質問：</p>
+<ul>
+<li>「サンプルサイズごとに平均を1個ずつ」→どれ？（パターン2）</li>
+<li>「各サンプルサイズで平均と標準偏差を表に」→どれ？（パターン3）<br>
+こういう判定ができれば、実装はだいぶ楽になります。</li>
+</ul>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7. -->
+<div style="font-size: 0.8em;">
+<h2>使用ライブラリと準備</h2>
+<ul>
+<li>R：<code>tidyverse</code>（必要なら<code>furrr</code>）</li>
+<li>Python：<code>numpy</code>, <code>pandas</code>（必要なら<code>pandarallel</code>）</li>
+</ul>
+<pre><code class="language-bash">$ venvc
+$ cd ~/work
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+まず環境を揃えます。venvcで仮想環境を有効化して、プロンプトに(class)が出るのを確認してください。作業場所は~/workです。
+<p>Rはlibrary(tidyverse)、Pythonはimport numpy as np, import pandas as pdが基本セットです。並列は後半で必要になったら追加します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8. -->
+<div style="font-size: 0.8em;">
+<h2>Copilotの使い方（授業ルール）</h2>
+<ul>
+<li>目的→入力→出力を言語化してから聞く</li>
+<li>生成コードは必ず実行して検証する</li>
+<li>エラーは「全文をそのまま」渡して相談する</li>
+<li>丸投げしない（理解できる単位に分割）</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotは「調べ方を短縮する道具」です。答えを丸投げで受け取ると、今日は特に“型”が身につきません。
+<p>困ったときは、エラー文を省略せずにそのまま貼って「原因と修正案」を聞くのがコツです。あと、いきなり完成形を求めず「まず関数だけ」「次にapply」みたいに段階的にいきましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9. -->
+<div style="font-size: 0.8em;">
+<h2>パターン1：指定回数→1次元</h2>
+<ul>
+<li>使う場面：シミュレーションをN回、結果を集めたい</li>
+<li>R：<code>replicate(n, expr)</code></li>
+<li>Python：<code>[expr for i in range(n)]</code></li>
+<li>落とし穴：<code>[result] * 3</code> は「同じ値の複製」</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+パターン1は「回数が入力」です。モンテカルロの基本形ですね。
+<p>ここで質問：[np.random.random()] * 3は毎回乱数が変わると思いますか？（変わりません。1回だけ作った値を3回コピーです。）この“評価タイミング”が落とし穴です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10. -->
+<div style="font-size: 0.8em;">
+<h2>代表サンプル（パターン1）</h2>
+<ul>
+<li>目的：乱数の平均を「5回」計算して集める</li>
+<li>ファイル：<code>my3-7-01_replicate.py</code> / <code>my3-7-01_replicate.R</code></li>
+<li>実行：<code>python my3-7-01_replicate.py</code> / <code>Rscript my3-7-01_replicate.R</code></li>
+<li>見るポイント：関数→繰り返し→結果の要約</li>
+</ul>
+<pre><code class="language-python">import numpy as np
+
+def calculate_mean(n):
+    return np.mean(np.random.random(n))
+
+results = [calculate_mean(10) for i in range(5)]
+print(results)
+print(f&quot;平均: {np.mean(results):.4f}&quot;)
+print(f&quot;標準偏差: {np.std(results, ddof=1):.4f}&quot;)
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+手順は教材どおりで、touchでファイルを作ってVS Codeで貼り付け、実行です（cd ~/workを忘れずに）。
+<p>見るポイントは3つです。</p>
+<ol>
+<li>まず関数を作って1回動作確認できるか</li>
+<li>繰り返しが「内包表記（またはreplicate）」になっているか</li>
+<li>結果を平均・標準偏差で要約できているか</li>
+</ol>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11. -->
+<div style="font-size: 1.0em;">
+<h2>Copilot活用（パターン1）</h2>
+<ul>
+<li>例：「内包表記でサイコロを10回振って結果をリストに」</li>
+<li>例：「<code>[f(10)] * 3</code>がダメな理由を説明して」</li>
+<li>ルール：生成後に必ず実行・妥当性確認</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+パターン1はプロンプトが書きやすいです。「N回繰り返してリストに」がそのまま言えるので。
+<p>ただし、生成されたコードが“本当に毎回計算しているか”は自分で確認してください。乱数はとくに、複数回実行して挙動を見るのが大事です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12. -->
+<div style="font-size: 1.0em;">
+<h2>パターン2：1次元→1次元</h2>
+<ul>
+<li>使う場面：パラメータ（例：サンプルサイズ）を変えながら同じ計算</li>
+<li>R：<code>v %&gt;% map_dbl(f)</code></li>
+<li>Python：<code>s.apply(f)</code>（結果はSeries）</li>
+<li>注意：ベクトル化できるなら、そちらが優先</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+パターン2は「入力がベクトル/Series」です。要素ごとに関数を当てて、スカラーの結果を並べます。
+<p>ここで確認：np.sqrt(v)みたいにベクトル化できる関数は、apply/mapを使わない方が速くて簡潔です。apply/mapは「複雑でベクトル化できない処理」のときに登場します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13. -->
+<div style="font-size: 0.8em;">
+<h2>代表サンプル（パターン2）</h2>
+<ul>
+<li>目的：複数サンプルサイズで「乱数平均」を計算する</li>
+<li>ファイル：<code>my3-7-02_map_vector.py</code> / <code>my3-7-02_map_vector.R</code></li>
+<li>実行：<code>python my3-7-02_map_vector.py</code> / <code>Rscript my3-7-02_map_vector.R</code></li>
+<li>見るポイント：入力がSeries/ベクトル、出力が1次元</li>
+</ul>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+
+def calculate_mean(n):
+    return np.mean(np.random.random(n))
+
+sample_sizes = pd.Series([5, 10, 50, 100, 500, 1000])
+results = sample_sizes.apply(calculate_mean)
+print(results)
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+ポイントは「入力が1次元」であること。sample_sizesがSeriesになっていて、その各要素（5,10,...)が関数に入ります。
+<p>ミニ質問：このresultsの型は何ですか？（Seriesです）<br>
+この“型の意識”が次のパターン3に直結します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14. -->
+<div style="font-size: 0.8em;">
+<h2>Copilot活用（パターン2）</h2>
+<ul>
+<li>例：「Series.applyで摂氏→華氏変換をしたい」</li>
+<li>例：「ベクトル化できるか判断する観点を教えて」</li>
+<li>ルール：戻り値の型（Seriesかlistか）を確認</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+applyで何が返ってくるか（Seriesなのか、DataFrameになるのか）を、Copilotに聞きながらでもいいので確認しましょう。
+<p>“動いたけど型が違う”が一番つらいので、type()や表示で早めに確認するクセをつけます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15. -->
+<div style="font-size: 0.8em;">
+<h2>パターン3：1次元→データフレーム</h2>
+<ul>
+<li>使う場面：各入力から「複数の値」を出して表にまとめたい</li>
+<li>R：<code>v %&gt;% map_dfr(f)</code>（関数はリスト/データフレームを返す）</li>
+<li>Python：<code>s.apply(f)</code>（関数は<code>pd.Series</code>を返す）</li>
+<li>落とし穴：列名（index）を揃えないと崩れる</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+パターン3は「1入力→1行」です。平均と標準偏差、みたいに“複数列”を作ります。
+<p>ここで質問：Python側の関数は「何を返す」とDataFrameになりやすいですか？（pd.Seriesで、indexが列名になる）ここを外すと、意図しない形になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16. -->
+<div style="font-size: 0.8em;">
+<h2>代表サンプル（パターン3）</h2>
+<ul>
+<li>目的：サンプルサイズごとに平均・標準偏差を表にする</li>
+<li>ファイル：<code>my3-7-03_map_dataframe.py</code> / <code>my3-7-03_map_dataframe.R</code></li>
+<li>実行：<code>python my3-7-03_map_dataframe.py</code> / <code>Rscript my3-7-03_map_dataframe.R</code></li>
+<li>見るポイント：<code>pd.Series</code>（列名）と<code>ddof=1</code></li>
+</ul>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+
+def calculate_statistics(n):
+    x = np.random.random(n)
+    return pd.Series({'sample_size': n, 'mean': x.mean(), 'std_dev': x.std(ddof=1)})
+
+sample_sizes = pd.Series([5, 10, 50, 100, 500, 1000])
+results = sample_sizes.apply(calculate_statistics)
+print(results)
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは「戻り値がSeries」というのが最重要です。辞書っぽく見えますが、最後はSeriesにして列名を確定させています。
+<p>標準偏差は d d o f=1 （不偏）を使う点も教材に合わせます。結果が“行＝サンプルサイズ”になっていれば成功です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17. -->
+<div style="font-size: 0.8em;">
+<h2>Copilot活用（パターン3）</h2>
+<ul>
+<li>例：「<code>pd.Series</code>を返してDataFrameにする例を作って」</li>
+<li>例：「列名（index）の役割を説明して」</li>
+<li>ルール：列名と値の対応を目視で確認</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+パターン3は、CopilotがSeriesの書き方を間違えることがあります。なので「実行→print→列が揃ってるか」を必ず確認しましょう。
+<p>不安なら「1要素だけapplyして形を見る」でもOKです。小さく確認してから広げます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18. -->
+<div style="font-size: 0.8em;">
+<h2>パターン4：データフレーム→データフレーム</h2>
+<ul>
+<li>使う場面：複数パラメータの組み合わせ（グリッド）で実験</li>
+<li>R：<code>df %&gt;% pmap_dfr(f)</code></li>
+<li>Python：<code>df.apply(lambda row: f(*row), axis=1)</code></li>
+<li>落とし穴：<code>axis=1</code>、列名ミス、lambda構文</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+パターン4は「各行が実験条件」です。xとyみたいに複数引数を関数に渡します。
+<p>ここで質問： axis=1 を忘れるとどうなりますか？（列方向に回って、rowが列になるので崩れます）列名も間違いやすいので、 df.columns で先に確認するのが型です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19. -->
+<div style="font-size: 0.8em;">
+<h2>代表サンプル（パターン4）</h2>
+<ul>
+<li>目的：パラメータグリッド（x,y）で統計量を計算する</li>
+<li>ファイル：<code>my3-7-04_pmap.py</code> / <code>my3-7-04_pmap.R</code></li>
+<li>実行：<code>python my3-7-04_pmap.py</code> / <code>Rscript my3-7-04_pmap.R</code></li>
+<li>見るポイント：<code>apply(axis=1)</code>、<code>lambda</code>、列名対応</li>
+</ul>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+
+def run_experiment(x, y):
+    a = np.random.randint(1, y + 1, x)
+    return pd.Series({'sample_size': x, 'max_value': y, 'mean': a.mean()})
+
+param_grid = pd.DataFrame({'x': [10, 10, 100, 100], 'y': [6, 12, 6, 12]})
+results = param_grid.apply(lambda row: run_experiment(row['x'], row['y']), axis=1)
+print(results)
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+このサンプルは「行＝実験、列＝条件」の形を作って、それを1行ずつ関数に渡しています。
+<p>見てほしいのは、(1) param_grid が入力、(2) run_experiment が複数引数、(3) 戻り値がSeriesで、結果がDataFrameになる、の3点です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20. -->
+<div style="font-size: 0.8em;">
+<h2>Copilot活用（パターン4）</h2>
+<ul>
+<li>例：「パラメータグリッドを作ってapply(axis=1)で実験したい」</li>
+<li>例：「列名を間違えたときの典型エラーと直し方は？」</li>
+<li>ルール：小さいグリッドで1行ずつ検証</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+パターン4はエラーが出やすいぶん、Copilotと相性がいいです。エラー全文をそのまま渡して「原因→修正」を聞きましょう。
+<p>ただし、いきなり大きなグリッドにせず、まず2〜4行で形を確認してから増やすのが安全です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21. -->
+<div style="font-size: 0.8em;">
+<h2>並列処理入門（いつ使う？）</h2>
+<ul>
+<li>利点：独立な計算を速くできる</li>
+<li>注意：独立性 / オーバーヘッド / デバッグ / 乱数</li>
+<li>使うべき：回数が多い・1回が重い</li>
+<li>使わない：小さいタスク・依存関係あり</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+並列は「何でも速くなる魔法」ではありません。並列化の準備コスト（オーバーヘッド）があるので、小さい処理はむしろ遅くなります。
+<p>ここで質問：いままでのパターンで、並列化しやすいのはどれですか？（全部可能性はありますが、独立な繰り返し＝パターン2/3/4が特に相性良いです。パターン1も独立ならOK。）</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22. -->
+<div style="font-size: 0.8em;">
+<h2>最小手順（furrr / pandarallel）＋代表サンプル</h2>
+<ul>
+<li>R：<code>library(furrr)</code>→<code>plan(multisession)</code>→<code>future_map_*</code></li>
+<li>R（乱数）：<code>.options = furrr_options(seed = TRUE)</code></li>
+<li>Python：<code>pandarallel.initialize()</code>→<code>apply</code>→<code>parallel_apply</code></li>
+<li>ファイル：<code>my3-7-05_parallel.R</code> / <code>my3-7-05_parallel.py</code></li>
+</ul>
+<pre><code class="language-python">from pandarallel import pandarallel
+pandarallel.initialize(progress_bar=False)
+
+# v.apply(f) の代わりに v.parallel_apply(f)
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使うならseed設定も忘れない（再現性のため）という話でした。
+<p>Pythonは pandarallel.initialize() して、 apply を parallel_apply に置き換えるだけ、という最小形を押さえます。代表サンプル my3-7-05_parallel.* で「通常 vs 並列」を実行時間で比較してください。小さいタスクだと遅くなることもある、という注意も確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23. -->
+<div style="font-size: 0.8em;">
+<h2>統合演習（3.7.6）：全パターンをつなぐ</h2>
+<ul>
+<li>課題1：モンテカルロ（パターン1＋2/3）</li>
+<li>課題2：分析パイプライン（パターン4）</li>
+<li>ゴール：結果をデータフレームで整理して解釈する</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからは“統合”です。バラバラだった4パターンを、課題で使い分けます。
+<p>迷ったら、最初の表に戻って「入力→出力」で判定してください。特に「最終的に表（データフレーム）にするか」が分岐点です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24. -->
+<div style="font-size: 0.8em;">
+<h2>演習課題1：モンテカルロ（円周率の推定）</h2>
+<ul>
+<li>ファイル：<code>ex3-7-01_monte_carlo.py</code> / <code>ex3-7-01_monte_carlo.R</code></li>
+<li>実行：<code>python ex3-7-01_monte_carlo.py</code> / <code>Rscript ex3-7-01_monte_carlo.R</code></li>
+<li>入力：<code>[100, 500, 1000, 5000, 10000]</code>（各サイズで10回）</li>
+<li>出力：<code>sample_size, trial, pi_estimate, error</code></li>
+</ul>
+<pre><code class="language-text">π ≈ 4 × (円の内側の点数 / 全点数)
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+やることは3段階です。  
+1) 1回の推定（n点でπ推定）を関数にする  
+2) その関数を10回回して結果を集める（パターン1）  
+3) サンプルサイズごとにまとめる（パターン2または3）
+<p>エラーは |推定値 - π| です。サンプルサイズが大きいほど誤差が小さくなる傾向を確認できればOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25. -->
+<div style="font-size: 0.8em;">
+<h2>演習課題2：データ分析パイプライン（分布比較）</h2>
+<ul>
+<li>ファイル：<code>ex3-7-02_data_pipeline.py</code> / <code>ex3-7-02_data_pipeline.R</code></li>
+<li>実行：<code>python ex3-7-02_data_pipeline.py</code> / <code>Rscript ex3-7-02_data_pipeline.R</code></li>
+<li>入力：<code>[50, 100, 500, 1000] × {uniform, normal, exponential}</code></li>
+<li>出力：<code>mean, std, skewness, kurtosis</code></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+課題2はパターン4ど真ん中です。入力は「サンプルサイズ×分布」のグリッド（データフレーム）で、各行に対して統計量を計算します。
+<p>Pythonは scipy.stats で歪度・尖度を計算します。Rは moments パッケージを使うので、初回は教材にあるコマンドでインストールしてください。最後に分布ごとの特徴（一様/正規/指数）を出力の数値から説明できればOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26. -->
+<div style="font-size: 0.8em;">
+<h2>発展課題（オプション）</h2>
+<ul>
+<li>並列化：Rは<code>future_map_*</code> / Pythonは<code>parallel_apply()</code></li>
+<li>可視化：Pythonは<code>matplotlib</code>, <code>seaborn</code> / Rは<code>ggplot2</code></li>
+<li>自作シミュレーション：課題を自分で設計して表にまとめる</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+余力がある人向けです。並列化は「独立で重い」場合にだけ効きます。まず通常版が正しく動いてから並列にしてください。
+<p>可視化は、課題1なら「サンプルサイズ vs 誤差」、課題2なら「分布ごとのヒストグラム」などが定番です。自作はサイコロやランダムウォークなど、教材のアイデア例を使ってOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27. -->
+<div style="font-size: 0.8em;">
+<h2>まとめ（重要ポイント）</h2>
+<ul>
+<li>反復は「入力→出力の型」で4パターンに整理</li>
+<li>戻り値の型（ベクトル/Series/データフレーム）を最優先で確認</li>
+<li>ベクトル化できるならベクトル化が基本</li>
+<li>並列は「独立・重い」処理でだけ使う</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に要点です。今日の勝ち筋は、パターン表に戻って迷わないこと、そして「何が返ってくるか」を常に確認することでした。
+<p>ここで質問：いま手元の作業は、どのパターンで書けますか？（課題1/2を指して、口に出さなくていいので判定してみてください。）</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28. -->
+<div style="font-size: 0.8em;">
+<h2>自己チェック（抜粋）</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6618225"> <code>venvc</code>→<code>cd ~/work</code><label class="task-list-item-label" for="task-item-6618225"> `venvc`→`cd ~/work`で実行できる</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3170109"><label class="task-list-item-label" for="task-item-3170109"> パターン1〜4を「入力→出力」で言い分けられる</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7269796"> <code>my3-7-01</code>〜<code>my3-7-05</code><label class="task-list-item-label" for="task-item-7269796"> `my3-7-01`〜`my3-7-05`を実行して確認できた</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5143950"> <code>ex3-7-01</code>または<code>ex3-7-02</code><label class="task-list-item-label" for="task-item-5143950"> `ex3-7-01`または`ex3-7-02`を完成させた</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1333824"><label class="task-list-item-label" for="task-item-1333824"> Copilotは「検証しながら」使えた</label></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+教材にはA〜Kの詳細チェックリストがありますが、授業としてはこの抜粋を最低ラインにします。
+<p>特に「サンプルを実行して動作確認したか」が重要です。読むだけだと定着しないので、最後は必ず実行で締めてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29. -->
+<div style="font-size: 0.8em;">
+<h2>達成度評価と次の学習へ</h2>
+<ul>
+<li>達成度（教材のチェック数）
+<ul>
+<li>65以上：優秀（十分に理解）</li>
+<li>55〜64：良好（基本OK、復習で固める）</li>
+<li>45〜54：要復習（重要概念を見直す）</li>
+<li>44以下：再学習推奨（最初からやり直し）</li>
+</ul>
+</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+次回までの自己チェックです。評価は“点数”というより、抜けを見つけるためのものです。特に戻り値の型と、どのパターンを使うかの判断は、後の章で何度も使います。
+<p>お疲れ様でした。最後にGoogle Classroomのチェックリストに取り組んでください。
+これで授業を終わります。お疲れ様でした。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
