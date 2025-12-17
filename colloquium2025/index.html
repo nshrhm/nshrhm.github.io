@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>36個のLLMにおける「感情的個性」：4ペルソナと日本語テキスト3作品を用いた分析</title>
+  <title>36個のLLMにおける「感情的個性」</title>
 
   <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
   <meta name="author" content="Hakim El Hattab">
@@ -51,6 +51,8 @@
 
    <!-- css list -->
 	
+  <link rel="stylesheet" href="style.css">
+  
 
    
 
@@ -80,7 +82,7 @@
 <h2>36個のLLMにおける感情的個性</h2>
 <h3>4ペルソナと日本語テキスト3作品を用いた分析</h3>
 <br />
-<p><strong>白濵 成希$^1$, 中谷 直史$^2$, 渡邉 志$^3$</strong></p>
+<p><strong>白濵 成希$^1$, 中谷 直史$^2$, 渡邊 志$^3$</strong></p>
 <p>$^1$下関市立大学, $^2$順天堂大学, $^3$静岡理工科大学</p>
 </div>
 <audio controls autoplay src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
@@ -171,7 +173,7 @@ H2は「文章の種類（テキスト内容）」によって、点数が大き
 </li>
 <li><strong>指標</strong>: 4つの感情次元
 <ul>
-<li>面白さ、驚き、悲しみ、怒り</li>
+<li>興味深さ、驚き、悲しみ、怒り</li>
 </ul>
 </li>
 </ul>
@@ -527,7 +529,7 @@ Q4. 怒り(理由): [説明]
 <h2>主要結果: 仮説1</h2>
 <p><strong>統計的証拠（二元配置分散分析）:</strong></p>
 <ul>
-<li><strong>面白さ</strong>: ペルソナ $F(3,4039) = 9.442, p &lt; 0.001$</li>
+<li><strong>興味深さ</strong>: ペルソナ $F(3,4039) = 9.442, p &lt; 0.001$</li>
 </ul>
 <div style="margin-left:160px;">ベンダー $F(6,4039) = 34.244, p < 0.001$</div>
 <ul>
@@ -565,7 +567,7 @@ p値は「本当は差がないのに、たまたま今みたいな差が出る�
 <h2>ベンダー固有の感情プロファイル</h2>
 <p><strong>観察された特徴的パターン:</strong></p>
 <ul>
-<li><strong>Alibaba</strong>: 高い「面白さ」、低い負の感情</li>
+<li><strong>Alibaba</strong>: 高い「興味深さ」、低い負の感情</li>
 <li><strong>Google</strong>: 穏健でバランスの取れた次元横断的評価</li>
 <li><strong>Anthropic</strong>: 顕著にバランスの取れた応答</li>
 <li><strong>OpenAI</strong>: 次元横断的に一貫性</li>
@@ -620,7 +622,7 @@ p値は「本当は差がないのに、たまたま今みたいな差が出る�
 <h2>主要結果: 仮説2</h2>
 <p><strong>統計的証拠（ANOVA・クラスカル-ワリス検定）:</strong></p>
 <ul>
-<li><strong>面白さ</strong>: $F(2,4064) = 2571.80, p &lt; 0.001, \eta^2 = 0.559$ （大きな効果）</li>
+<li><strong>興味深さ</strong>: $F(2,4064) = 2571.80, p &lt; 0.001, \eta^2 = 0.559$ （大きな効果）</li>
 <li><strong>驚き</strong>: $F(2,4064) = 1999.16, p &lt; 0.001, \eta^2 = 0.496$ （大きな効果）</li>
 <li><strong>悲しみ</strong>: $F(2,4064) = 5213.37, p &lt; 0.001, \eta^2 = 0.720$ （大きな効果）</li>
 <li><strong>怒り</strong>: $F(2,4064) = 2430.47, p &lt; 0.001, \eta^2 = 0.545$ （大きな効果）</li>
@@ -649,9 +651,9 @@ p値は「本当は差がないのに、たまたま今みたいな差が出る�
 <div style="font-size: 0.8em;">
 <p><strong>文学によって駆動される感情応答:</strong></p>
 <ul>
-<li><strong>「懐中時計」</strong>: 顕著な「面白さ」スコア、低い「悲しみ」と「怒り」</li>
-<li><strong>「お金とピストル」</strong>: 著しく高い「面白さ」と「驚き」評価</li>
-<li><strong>「ぼろぼろな駝鳥」</strong>: 低い「面白さ」だが高い「悲しみ」と「怒り」</li>
+<li><strong>「懐中時計」</strong>: 顕著な「興味深さ」スコア、低い「悲しみ」と「怒り」</li>
+<li><strong>「お金とピストル」</strong>: 著しく高い「興味深さ」と「驚き」評価</li>
+<li><strong>「ぼろぼろな駝鳥」</strong>: 低い「興味深さ」だが高い「悲しみ」と「怒り」</li>
 </ul>
 <p><strong>含意</strong>: LLMは異なる文学作品間の感情特性を成功裏に区別</p>
 </div>
@@ -1088,11 +1090,12 @@ AIアシスタントなら、ユーザーの曖昧な気分を読み違えずに
             
             <!-- 32. 実装紹介: parameters.py -->
 <div style="font-size: 0.8em;">
-<h2>実装紹介：<code>parameters.py</code>（実験の設計図）</h2>
+<h2>実装紹介：<code>parameters.py</code></h2>
+<h3>実験の設計図</h3>
 <ul>
-<li>この研究は、自作リポジトリ <code>llm-literary-analysis</code> の実験スクリプトから <code>parameters.py</code> を読み込んで動かします</li>
-<li>ここに <strong>「誰が（ペルソナ）」「何を（文学作品）」「どう聞くか（プロンプト）」「どう実行するか（モデル差分）」</strong> が集約されます</li>
-<li>設定を1か所に集めると、<strong>比較の公平性</strong>と<strong>再現性</strong>が上がります（条件の取り違えが減る）</li>
+<li>自作リポジトリ <code>llm-literary-analysis</code> の実験スクリプトの設定ファイル <code>parameters.py</code></li>
+<li><strong>「誰が（ペルソナ）」「何を（文学作品）」「どう聞くか（プロンプト）」「どう実行するか（モデル差分）」</strong> の集約</li>
+<li>設定を1か所で管理、<strong>比較の公平性</strong>と<strong>再現性</strong> の向上</li>
 </ul>
 <p><strong>3つの層</strong></p>
 <ol>
@@ -1104,7 +1107,7 @@ AIアシスタントなら、ユーザーの曖昧な気分を読み違えずに
 <audio controls autoplay src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
 <aside class="notes">
 ここからは実装の話です。研究は「良いアイデア」だけでなく「再現できる実装」が重要です。
-`parameters.py` は実験条件の設計図で、ペルソナ・テキスト・プロンプト・モデル差分を1か所に集めています。
+parameters.py は実験条件の設計図で、ペルソナ・テキスト・プロンプト・モデル差分を1か所に集めています。
 こうしておくと、条件の書き換えが簡単で、比較の公平性も保てます（“いつの間にか条件が違っていた”を防げます）。
 皆さんがレポートや卒研で実験するときも、設定を一元管理する癖を付けると強いです。
 </aside>
@@ -1120,9 +1123,9 @@ AIアシスタントなら、ユーザーの曖昧な気分を読み違えずに
 <div style="font-size: 0.8em;">
 <h2>1) 質問票テンプレ：<code>BASE_PROMPT</code></h2>
 <ul>
-<li><code>{text_content}</code> に作品本文を差し込むだけで、毎回同じ“質問票”を配れます</li>
-<li><strong>出力形式を固定</strong>（<code>Q1...Q4</code>）することで、後で数値を機械的に取り出せます（パースしやすい）</li>
-<li>数値と理由を同時に取ると、**「点数」＋「根拠」**をセットで保存できます</li>
+<li><code>{text_content}</code> に作品本文を差し込むだけで、毎回同じ“質問票”を配れる</li>
+<li><strong>出力形式を固定</strong>（<code>Q1...Q4</code>）することで、後で数値を機械的に取り出せる（パースしやすい）</li>
+<li>数値と理由を同時に取ると、<strong>「点数」＋「根拠」</strong> をセットで保存可能</li>
 </ul>
 <pre><code class="language-python">BASE_PROMPT = &quot;&quot;&quot;... テキスト：
 {text_content}
@@ -1135,7 +1138,7 @@ Q1. 面白さ(理由): [説明]
 </div>
 <audio controls autoplay src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
 <aside class="notes">
-`BASE_PROMPT` は、LLMに配る“アンケート用紙”のテンプレです。
+BASE_PROMPT は、LLMに配る“アンケート用紙”のテンプレです。
 出力形式を固定しているのは、後で正規表現などで数値を自動抽出するためです。
 人間向けの自由記述だけだと集計が大変ですが、フォーマットを決めるとデータにできます。
 データサイエンスでは「集計できる形で記録する」ことがまず勝ち筋なので、ここが実装の肝です。
@@ -1150,10 +1153,11 @@ Q1. 面白さ(理由): [説明]
             
             <!-- 34. “読み手”を変える：`SYSTEM_PROMPTS` と `PERSONAS` -->
 <div style="font-size: 0.8em;">
-<h2>2) “読み手”を変える：<code>SYSTEM_PROMPTS</code> と <code>PERSONAS</code></h2>
+<h2>2) “読み手”を変える</h2>
+<h3><code>SYSTEM_PROMPTS</code> と <code>PERSONAS</code></h3>
 <ul>
 <li><code>SYSTEM_PROMPTS</code> は、LLMに与える <strong>“役割指示（演技の台本）”</strong></li>
-<li><code>PERSONAS</code> は、ペルソナの説明と <code>base_temperature</code>（出力の“ゆらぎ”）を持ちます
+<li><code>PERSONAS</code> は、ペルソナの説明と <code>base_temperature</code>（出力の“ゆらぎ”）を持つ
 <ul>
 <li>温度が高いほど、表現が多様になりやすい（ただしブレも増える）</li>
 </ul>
@@ -1169,8 +1173,8 @@ PERSONAS = {
 </div>
 <audio controls autoplay src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
 <aside class="notes">
-`SYSTEM_PROMPTS` は「あなたは〜です」という役割付けで、LLMの口調や視点を変えます。
-`PERSONAS` 側には、そのペルソナの説明と、`base_temperature`（ゆらぎの強さ）を持たせています。
+SYSTEM_PROMPTS は「あなたは〜です」という役割付けで、LLMの口調や視点を変えます。
+PERSONAS 側には、そのペルソナの説明と、base_temperature（ゆらぎの強さ）を持たせています。
 つまり、役割の文章だけでなく、生成パラメータでも“読み手の個性”を一緒に設計しています。
 この2段構えにすると、同じ作品でも「大学1年生として読む」「研究者として読む」といった比較が安定してできます。
 </aside>
@@ -1190,7 +1194,7 @@ PERSONAS = {
 <li><code>TEXT_CONTENT</code> は本文（実験ではここが入力データ）</li>
 <li><code>TRIALS = 10</code> は <strong>同じ条件で10回繰り返す</strong>設定
 <ul>
-<li>1回だけだと「たまたま」の影響が残るため、分布（ばらつき）も見ます</li>
+<li>1回だけだと「たまたま」の影響が残るため、分布（ばらつき）も見る</li>
 </ul>
 </li>
 </ul>
@@ -1202,7 +1206,7 @@ TRIALS = 10
 <audio controls autoplay src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
 <aside class="notes">
 テキスト側は、ID（t1〜）と本文を分けています。IDを軸にすると、集計や可視化が簡単です。
-`TRIALS = 10` は、同じ条件を10回繰り返す設定で、平均だけでなく“ばらつき”も評価します。
+TRIALS = 10 は、同じ条件を10回繰り返す設定で、平均だけでなく“ばらつき”も評価します。
 LLMはサイコロのように揺れるので、繰り返しは信頼性の基本になります。
 初心者の皆さんには「1回の結果で結論を出さない」という姿勢を、ぜひ覚えて帰ってほしいです。
 </aside>
@@ -1215,12 +1219,13 @@ LLMはサイコロのように揺れるので、繰り返しは信頼性の基�
         <section >
             
             <!-- モデル差分を吸収：`MODEL_CONFIGS` と `*_MODELS` -->
-<div style="font-size: 0.75em;">
-<h2>4) モデル差分を吸収：<code>MODEL_CONFIGS</code> と <code>*_MODELS</code></h2>
+<div style="font-size: 0.70em;">
+<h2>4) モデル差分を吸収</h2>
+<h3><code>MODEL_CONFIGS</code> と <code>*_MODELS</code></h3>
 <ul>
-<li>ベンダーやモデルによって、APIの入力形式が違います（例：<code>messages</code> / <code>content</code> / <code>combined</code>）</li>
-<li>“推論系モデル”など、<code>temperature</code> を受け付けないモデルもあります（<code>temperature_support: False</code>）</li>
-<li>価格やエンドポイントを持たせておくと、実験の <strong>コスト見積り</strong>や<strong>呼び分け</strong>ができます</li>
+<li>ベンダーやモデルによって、APIの入力形式が異なる（例：<code>messages</code> / <code>content</code> / <code>combined</code>）</li>
+<li>“推論系モデル”など、<code>temperature</code> を受け付けないモデルもある（<code>temperature_support: False</code>）</li>
+<li>価格やエンドポイントを持たせることで、実験の <strong>コスト見積り</strong>や<strong>呼び分け</strong>が可能に</li>
 </ul>
 <pre><code class="language-python">MODEL_CONFIGS[&quot;openai&quot;][&quot;o1-mini&quot;] = {&quot;format&quot;: &quot;combined&quot;, &quot;temperature_support&quot;: False}
 
@@ -1233,8 +1238,8 @@ OPENAI_MODELS[&quot;gpt-4o-mini&quot;] = {
 <audio controls autoplay src="./voiceovers/slide_36.mp3" type="audio/mpeg" />
 <aside class="notes">
 最後にモデル差分です。実はここが実務では一番ハマりどころです。
-APIはベンダーによって入力形式が違い、同じ“temperature”でも使えないモデル（推論系）があります。
-`MODEL_CONFIGS` と `*_MODELS` に差分をまとめることで、実験側のコードは「同じインターフェース」で呼べます。
+APIはベンダーによって入力形式が違い、同じ temperature でも使えないモデル（推論系）があります。
+MODEL_CONFIGS と *_MODELS に差分をまとめることで、実験側のコードは「同じインターフェース」で呼べます。
 価格情報も持たせているので、「この実験を回すとどれくらい費用がかかるか」を事前に見積もれます。
 研究でもプロダクトでも、コスト・再現性・公平性を同時に管理するための工夫です。
 </aside>
@@ -1260,7 +1265,7 @@ APIはベンダーによって入力形式が違い、同じ“temperature”で
         save(result)
 </code></pre>
 <ul>
-<li><strong>“モデル以外は全部同じ”</strong> にして比較するのがポイントです</li>
+<li><strong>“モデル以外は全部同じ”</strong> にして比較するのがポイント</li>
 </ul>
 </div>
 <audio controls autoplay src="./voiceovers/slide_37.mp3" type="audio/mpeg" />
