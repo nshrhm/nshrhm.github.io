@@ -51,6 +51,8 @@
 
    <!-- css list -->
 	
+  <link rel="stylesheet" href="style.css">
+  
 
    
 
@@ -92,6 +94,7 @@
         <section >
             
             <!-- 2. -->
+<div style="font-size: 0.8em;">
 <h2>本日の流れ</h2>
 <ol>
 <li>パッケージ/モジュールが必要な理由</li>
@@ -100,6 +103,7 @@
 <li>主要ライブラリ（NumPy / pandas / tidyverse）を触る</li>
 <li>統合演習（売上データ分析）</li>
 </ol>
+</div>
 <audio controls autoplay src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
 <aside class="notes">
 今日のゴールは「主要ライブラリを“導入して使い始める”こと」です。細かな暗記より、手を動かして“使える状態”にするのが優先です。
@@ -114,6 +118,7 @@
         <section >
             
             <!-- 3. -->
+<div style="font-size: 0.8em;">
 <h2>学習目標（この節の到達点）</h2>
 <ul>
 <li>Rで<code>library()</code>で呼び出せる / 入っていなければ入れられる</li>
@@ -122,6 +127,7 @@
 <li>NumPy・pandas・tidyverseの基本操作ができる</li>
 <li>Copilotで使い方を効率よく学べる</li>
 </ul>
+</div>
 <audio controls autoplay src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
 <aside class="notes">
 この節の学習目標を確認します。特に重要なのは「導入」と「エラー対処」です。データ分析は、道具が使えないと始まりません。
@@ -1064,7 +1070,7 @@ pandasのフィルタと同じことをRでもやってみます。言語は違�
             <!-- 44. -->
 <div style="font-size: 0.8em;">
 <h2>課題1（Python）：売上データ分析</h2>
-<p>要件：</p>
+<h3>要件：</h3>
 <ol>
 <li>データフレーム作成（30日・製品A〜D・売上100〜1000）</li>
 <li>製品別売上合計（groupby）</li>
@@ -1113,11 +1119,11 @@ pandasのフィルタと同じことをRでもやってみます。言語は違�
 <div style="font-size: 1.0em;">
 <h2>自己評価（最低限ここまで）</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4160826"><label class="task-list-item-label" for="task-item-4160826"> エラーなく実行できる</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8705036"><label class="task-list-item-label" for="task-item-8705036"> 集計結果が出る</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3741642"><label class="task-list-item-label" for="task-item-3741642"> フィルタ結果が出る</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9917939"><label class="task-list-item-label" for="task-item-9917939"> コメントと変数名が分かりやすい</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4409931"><label class="task-list-item-label" for="task-item-4409931"> 適切なライブラリを使っている</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2084529"><label class="task-list-item-label" for="task-item-2084529"> エラーなく実行できる</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2178530"><label class="task-list-item-label" for="task-item-2178530"> 集計結果が出る</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8842737"><label class="task-list-item-label" for="task-item-8842737"> フィルタ結果が出る</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5606545"><label class="task-list-item-label" for="task-item-5606545"> コメントと変数名が分かりやすい</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7381156"><label class="task-list-item-label" for="task-item-7381156"> 適切なライブラリを使っている</label></li>
 </ul>
 </div>
 <audio controls autoplay src="./voiceovers/slide_46.mp3" type="audio/mpeg" />
