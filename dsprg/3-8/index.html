@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>3.8 その他</h1>
+<!-- 1. -->
+<h2>プログラミングで困ったときに</h2>
+<h3>データサイエンスプログラミング入門</h3>
+<audio controls autoplay src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日は3.8節です。「困ったときにどう動くか」を、R/Python共通の実戦知識として整理します。
+<p>この章は“概念より行動”です。エラーが出たとき、型が分からないとき、欠損が混じっているときに、止まらずに前へ進める状態を作ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日の流れ</h2>
+<!-- 2. -->
+<ol>
+<li>3本柱の全体像（エラー / 調査 / 欠損）</li>
+<li>AI協働学習の心構え（丸投げ禁止）</li>
+<li>3.8.1 エラー対処（読み方→原因→手順）</li>
+<li>3.8.2 調査（型 / 変数一覧 / ヘルプ）</li>
+<li>3.8.3 欠損値（判定と計算）</li>
+<li>3.8.4 統合演習（デバッグ / 欠損 / 調査）</li>
+<li>3.8.5 チェックリスト・達成度・まとめ</li>
+</ol>
+<audio controls autoplay src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+前半は「困ったときの型」を整理して、後半はサンプルと演習で手を動かします。
+<p>途中で何回か確認します。「まず何を見る？」「この判定はどれ？」「R/Pythonだと何？」を口に出せるようにしましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習目標（この節の到達点）</h2>
+<!-- 3. -->
+<ul>
+<li>エラーメッセージを読んで原因を推測できる</li>
+<li>型を確認し、変数一覧やヘルプで自分で調べられる</li>
+<li>欠損値（R: <code>NA</code> / Python: <code>np.nan</code>）を正しく扱える</li>
+<li>Copilotを「学習パートナー」として使える（丸投げしない）</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+ゴールは「困った、自分で調べる、解決できる」です。
+<p>特に“欠損判定を ==でやらない”と、“エラーを怖がらない”は、この章の最重要ポイントです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4. 3本柱の全体像（今日の地図） -->
+<div style="font-size: 0.6em;">
+<h2>3本柱の全体像（今日の地図）</h2>
+<table>
+<thead>
+<tr>
+<th>トピック</th>
+<th>なぜ重要？</th>
+<th>今日やること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>エラー対処</td>
+<td>プログラミングの多くはデバッグ</td>
+<td>読み方・典型原因・手順</td>
+</tr>
+<tr>
+<td>調査方法</td>
+<td>自分で調べる力がつく</td>
+<td>型 / 変数一覧 / ヘルプ</td>
+</tr>
+<tr>
+<td>欠損値</td>
+<td>実データには欠損がある</td>
+<td>判定（専用関数）・欠損無視計算</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls autoplay src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+この表を“地図”として使います。迷ったらここに戻ります。
+<p>この章は「覚える」より「こういう動き方がある」と知っておくのが大事です。必要になったときに参照できればOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5. AI協働学習の心構え（丸投げ禁止） -->
+<div style="font-size: 0.75em;">
+<h2>3.8.0 AI協働学習の心構え（丸投げ禁止）</h2>
+<ul>
+<li>Copilotはエラー解決が得意</li>
+<li>ただし「読まずに投げる」と力が付かない
+<br /><br /></li>
+</ul>
+<h3>学習サイクル（推奨）</h3>
+<ol>
+<li>まず自分で <strong>読む</strong></li>
+<li>原因を <strong>推測</strong> する</li>
+<li>分からなければ <strong>質問</strong> する</li>
+<li>回答を <strong>理解</strong> する</li>
+<li>修正して <strong>再現</strong> できるようにする</li>
+</ol>
+</div>
+<audio controls autoplay src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotは便利ですが、今日の目的は「自力で前に進む力」をつけることです。
+<p>ポイントは“再現”です。解決できたら終わりではなく、次に同じエラーが出たときに自分で直せる状態にします。</p>
+<p>インタラクション1
+いまの学習サイクルで、自分が飛ばしがちなステップは「読む、推測、質問、理解、再現」のうち、どれですか？</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6. よく遭遇するエラーとその対処方法 -->
+<div style="font-size: 0.75em;">
+<h1>3.8.1 よく遭遇するエラーとその対処方法</h1>
+<ul>
+<li>エラーは「敵」ではなく「ヒント」</li>
+<li>エラーが出る方が、間違いに気づける</li>
+</ul>
+<pre><code class="language-text">エラーが出た → 問題の場所が分かった → 修正できる → 成長
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+初心者が一番つらいのは「エラー＝失敗」と思って止まることです。
+<p>実際は、エラーが出ることで“場所”が特定できます。黙って間違った結果が出る方が怖いので、まずは「ヒントが出た」と捉えましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7. エラーメッセージの読み方（種類・場所・内容） -->
+<div style="font-size: 0.75em;">
+<h2>エラーメッセージの読み方<br />（種類・場所・内容）</h2>
+<table>
+<thead>
+<tr>
+<th>見るもの</th>
+<th>何が分かる？</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>種類</td>
+<td>何が問題か</td>
+<td><code>NameError</code>, <code>SyntaxError</code></td>
+</tr>
+<tr>
+<td>場所</td>
+<td>どこで起きたか</td>
+<td><code>line 5</code>, <code>sample.py:5</code></td>
+</tr>
+<tr>
+<td>内容</td>
+<td>具体的に何が悪いか</td>
+<td><code>name 'x' is not defined</code></td>
+</tr>
+</tbody>
+</table>
+<br />
+<h3>英語がつらいとき</h3>
+<ul>
+<li>翻訳ツール / ウェブ検索 / Copilot</li>
+<li>検索は完全一致が強い：<code>R &quot;could not find function&quot;</code></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+読む順番は「種類、場所、内容」です。ここだけ固定します。
+<p>インタラクション2
+いま目の前にある（想定の）エラーは、種類/場所/内容のどれが書いてありますか？まず“場所”を探してみてください。</p>
+<p>英語は全部理解しなくてOKです。キーワード（not defined / not found / invalid syntax）だけ拾えれば進めます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8. -->
+<div style="font-size: 0.75em;">
+<h2>典型原因と、解決の行動手順</h2>
+<h3>まず疑う（上から順に）</h3>
+<ol>
+<li>スペルミス（大文字・小文字含む）</li>
+<li>読み込み忘れ（Python: <code>import</code> / R: <code>library()</code>）</li>
+<li>未インストール（Python: <code>pip install</code> / R: <code>install.packages()</code>）</li>
+</ol>
+<p>「関数が見つからない」ときのフローチャート</p>
+<pre><code class="language-text">スペルは正しい？ → 読み込んだ？ → インストール済み？ → 相談
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+この章の“行動手順”です。迷ったらこの順で潰します。
+<p>インタラクション3
+エラーが出た瞬間、最初に疑うのは何でしたか？
+スペル、読み込み、インストールの順に確認しましょう。
+特に「大文字小文字」と「読み込み忘れ」は頻出です。ここだけで多くのエラーが消えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9. -->
+<div style="font-size: 0.75em;">
+<h2>代表サンプル</h2>
+<h3>エラーの再現と解決</h3>
+<ul>
+<li>目的：わざとエラーを出して、直す流れを体験する</li>
+<li>ファイル：<code>my3-8-01_error_demo.py</code> / <code>my3-8-01_error_demo.R</code></li>
+<li>実行：<code>python my3-8-01_error_demo.py</code> / <code>Rscript my3-8-01_error_demo.R</code></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+まずは教材どおりにファイルを作って実行します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10. -->
+<div style="font-size: 0.60em;">
+<h2>チェックポイント</h2>
+<ul>
+<li>「読み込み忘れ」で何が起きるか</li>
+<li>直した後に出力が出るか</li>
+<li>ついでに型確認（<code>type()</code> / 表示）</li>
+</ul>
+<pre><code class="language-python"># 読み込み忘れ（コメントを外すと NameError）
+# my_array = numpy.array([1, 2, 3])
+
+# 解決：使う前に import
+import numpy
+my_array = numpy.array([1, 2, 3])
+print(my_array)
+print(type(my_array))
+
+# 別名 import（よくある形）
+import numpy as np
+print(np.array([4, 5, 6]))
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python版は、コメントを外すとエラーが出るように作ってあります。実際にエラーを出して、メッセージを読み、import を入れて直すところまでやってください。
+<p>R版も同様で、tibble関数 を使う前に library(tibble) が必要、という体験をします。</p>
+<p>インタラクション4
+このサンプルのエラーは「読み込み忘れ」と「未インストール」のどちらですか？</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot活用（エラー対処）</h2>
+<ul>
+<li>エラー文は「そのまま」貼る（省略しない）</li>
+<li>コードも一緒に貼ると精度が上がる</li>
+<li>解決だけでなく「なぜ？」も聞く</li>
+<li>回答は必ず実行して検証する</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilot活用法を紹介します。エラー文を編集しないで貼るのも効果的です。
+<p>「なぜそれで直るのか」を一言で言える状態にして終わりましょう。同じエラーに何度も頼らない、が目標です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12. -->
+<div style="font-size: 0.60em;">
+<h1>3.8.2 変数や関数についての調査</h1>
+<h3>やることは3つ</h3>
+<table>
+<thead>
+<tr>
+<th>目的</th>
+<th>Python</th>
+<th>R</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>型を知る</td>
+<td><code>type(x)</code></td>
+<td><code>typeof(x)</code></td>
+</tr>
+<tr>
+<td>変数一覧</td>
+<td><code>%whos</code>（Jupyter）/ <code>locals()</code></td>
+<td><code>ls()</code> / Environmentタブ</td>
+</tr>
+<tr>
+<td>ヘルプ</td>
+<td><code>help(func)</code> / <code>?</code></td>
+<td><code>help()</code> / <code>?</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls autoplay src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは「自分で調べる」がテーマです。分からないことを“調査できる”ようになると、学習速度が上がります。
+<p>インタラクション5
+いま手元の変数 x があるとして、まず何をしますか？</p>
+<p>回答です。私のお薦めは type や typeof で型を確認することです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13. -->
+<div style="font-size: 0.60em;">
+<h2>代表サンプル（型確認と変数一覧）</h2>
+<ul>
+<li>目的：型確認→変数一覧→ヘルプの入口を体験する</li>
+<li>ファイル：<code>my3-8-02_type_check.py</code> / <code>my3-8-02_type_check.R</code></li>
+<li>実行：<code>python my3-8-02_type_check.py</code> / <code>Rscript my3-8-02_type_check.R</code></li>
+<li>確認ポイント
+<ul>
+<li><code>type()</code> / <code>typeof()</code> の出力</li>
+<li>変数一覧の出し方（Python: <code>locals()</code> / R: <code>ls()</code>）</li>
+<li>ヘルプは「対話モードで見る」前提</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python">my_int = 42
+my_float = 3.14
+my_str = &quot;Hello&quot;
+
+print(type(my_int))
+print(type(my_float))
+print(type(my_str))
+
+my_user_vars = {k: type(v).__name__ for k, v in locals().items()
+                if not k.startswith('_') and k != 'my_user_vars'}
+print(my_user_vars)
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+このサンプルは「調査の手順」をまとめて体験するためのものです。
+<p>R言語では typeof関数 と ls関数 が中心です。ヘルプについては、スクリプトではなくRコンソールで「?log」などを試す、という前提になっています。</p>
+<p>余裕があれば、教材の例にある値でも型を確かめてみてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot活用（調査）</h2>
+<ul>
+<li>「この関数は何をする？」を聞く</li>
+<li>型ごとの違いを表で整理してもらう</li>
+<li>最後は <code>help()</code> / <code>?</code> でも確認する</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotは“説明”が得意ですが、最終的には自分でヘルプを見られるようになるのが目標です。
+<p>とくにヘルプで表示されるサンプルは参考になるので、そこをコピーして試す、という流れを作ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>3.8.3 欠損値の扱い</h1>
+<ul>
+<li>表現：Rは<code>NA</code>、Pythonは<code>np.nan</code></li>
+<li>判定：<code>==</code> ではなく専用関数
+<ul>
+<li>Python：<code>np.isnan()</code></li>
+<li>R：<code>is.na()</code></li>
+</ul>
+</li>
+<li>欠損を無視した計算
+<ul>
+<li>Python：<code>np.nansum</code>, <code>np.nanmean</code></li>
+<li>R：<code>na.rm = TRUE</code></li>
+</ul>
+</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+欠損値は“実データの標準装備”です。ここを避けると、計算が nan/NA になって止まりやすくなります。
+<p>一番大事なのは「欠損判定は「イコール イコール」ではない」です。ここだけは確実に押さえます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16. -->
+<div style="font-size: 0.80em;">
+<h2>欠損判定は <code>==</code> ではない（重要）</h2>
+<h3>間違い</h3>
+<pre><code class="language-python">x = np.nan
+x == np.nan  # False
+</code></pre>
+<pre><code class="language-r">x &lt;- NA
+x == NA  # NA
+</code></pre>
+<h3>正しい</h3>
+<ul>
+<li>Python：<code>np.isnan(x)</code></li>
+<li>R：<code>is.na(x)</code></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+欠損は「不明な値」なので、不明同士が等しいかは判断できません。だから「イコール イコール」は使えません。
+<p>インタラクション6
+欠損判定に使う関数は、Python/Rでそれぞれ何でしたか？</p>
+<p>それでは回答です。Pythonは np.isnanを使います。R言語では <a href="http://is.na">is.na</a> を使います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17. -->
+<div style="font-size: 0.80em;">
+<h2>代表サンプル（欠損値の判定と計算）</h2>
+<ul>
+<li>目的：欠損の判定→カウント→欠損無視計算→除外 を一通りやる</li>
+<li>ファイル：<code>my3-8-03_missing_value.py</code> / <code>my3-8-03_missing_value.R</code></li>
+<li>実行：<code>python my3-8-03_missing_value.py</code> / <code>Rscript my3-8-03_missing_value.R</code></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+このサンプルは欠損処理の基本動作を全部まとめています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18. -->
+<div style="font-size: 0.80em;">
+<h2>確認ポイント</h2>
+<ul>
+<li><code>np.isnan</code> / <code>is.na</code> の結果</li>
+<li><code>np.nanmean</code> と <code>na.rm = TRUE</code> の違い</li>
+<li>欠損除外（<code>~np.isnan</code> / <code>!is.na</code>）</li>
+</ul>
+<pre><code class="language-python">import numpy as np
+my_data = np.array([10, np.nan, 30, 40, np.nan])
+
+is_missing = np.isnan(my_data)
+print(is_missing)
+print(np.sum(is_missing))
+
+print(np.mean(my_data))
+print(np.nanmean(my_data))
+
+print(my_data[~np.isnan(my_data)])
+</code></pre>
+</div>
+<audio controls autoplay src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+まずは「欠損が何個か」を数えられるようになりましょう。その上で、平均などの計算を“欠損無視”に切り替える、という流れです。
+<p>R版も同じ流れで、na.rm = TRUE が鍵です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19. -->
+<div style="font-size: 0.80em;">
+<h2>Copilot活用（欠損値）</h2>
+<ul>
+<li>まずは「このデータで欠損を除外する方法」を聞く</li>
+<li>処理方法はデータの性質で最適が変わる</li>
+<li>提案は必ず試して、結果が妥当か確認する</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+欠損処理は“正解が1つ”ではありません。目的とデータの性質で方針が変わります。
+<p>なので、Copilotの提案は参考にしつつ、最終判断は自分でします。処理後に欠損数や平均が妥当か、必ず確認してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20. -->
+<div style="font-size: 0.75em;">
+<h1>3.8.4 統合演習</h1>
+<ul>
+<li>演習1：エラー修正チャレンジ</li>
+<li>演習2：欠損値処理</li>
+<li>演習3：総合調査（型 / ヘルプ / エラー）
+<br /><br /></li>
+</ul>
+<h3>解答例ファイル（比較して学ぶ）</h3>
+<ul>
+<li><code>exercise01_debug_answer.py</code> / <code>exercise01_debug_answer.R</code></li>
+<li><code>exercise02_missing_answer.py</code> / <code>exercise02_missing_answer.R</code></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからは統合演習です。今日の3本柱を“まとめて使う”練習をします。
+<p>方針は「自分でやる。そして、解答例と比較する」です。差分を見ると学びが早いです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21. -->
+<div style="font-size: 0.75em;">
+<h2>演習1：エラー修正チャレンジ</h2>
+<ul>
+<li>目的：典型エラー3種を、自力で直す</li>
+<li>提出物（作成ファイル）
+<ul>
+<li>Python：<code>exercise01_debug.py</code></li>
+<li>R：<code>exercise01_debug.R</code></li>
+</ul>
+</li>
+<li>実行：<code>python exercise01_debug.py</code> / <code>Rscript exercise01_debug.R</code></li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+まずは教材の指示どおりにファイルを作って貼り付けます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>確認ポイント（3つのエラー）</h2>
+<ul>
+<li>読み込み（import/library）</li>
+<li>関数名（大文字小文字）</li>
+<li>スペル（<code>print</code> など）</li>
+</ul>
+<pre><code class="language-python"># エラー1: モジュールの問題
+my_data = numpy.array([10, 20, 30, 40, 50])
+
+# エラー2: 関数名の問題
+my_average = mean(my_data)
+
+# エラー3: 変数名の問題
+pritn(f&quot;平均値: {my_average}&quot;)
+</code></pre>
+<audio controls autoplay src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+手順は固定です。
+１. まず実行してエラーを出す
+２. エラーメッセージを「種類・場所・内容」で読む
+３. スペル→読み込み→未インストール、の順で潰す
+４. 動いたら終了ではなく、何を直したかを説明できる状態にする
+<p>R版も同じで、tibble や summarise を使う前に必要な読み込みがあること、 Mean と mean が別物であること、prnt がスペルミスであること、を直します。</p>
+<p>困ったらCopilotに「エラー文＋コード」を貼って聞いてOKですが、最後は自分の言葉で“原因と修正”をまとめてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>演習2：欠損値処理（要件）</h2>
+<h3>データ</h3>
+<div style="font-size: 0.65em;">
+<ul>
+<li>Python：<code>[85, np.nan, 72, 90, np.nan, 78, 65, np.nan, 88, 95]</code></li>
+<li>R：<code>c(85, NA, 72, 90, NA, 78, 65, NA, 88, 95)</code></li>
+</ul>
+</div>
+<br />
+<h3>要件</h3>
+<ol>
+<li>欠損値の数を数える</li>
+<li>欠損を除いた平均を出す</li>
+<li>欠損を除いた最高点・最低点を出す</li>
+</ol>
+<audio controls autoplay src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+演習2は欠損処理です。ここは3.8.3の内容をそのまま使います。
+<p>欠損判定は専用関数を使ってください。
+解答例と比較して進めてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24. -->
+<div style="font-size: 0.75em;">
+<h2>演習3：総合調査（型 / ヘルプ / エラー）</h2>
+<ol>
+<li>型の調査（PythonとRの両方）
+<ul>
+<li><code>42</code>, <code>42.0</code>, <code>&quot;42&quot;</code>, <code>True</code> / <code>TRUE</code></li>
+</ul>
+</li>
+<li>ヘルプの活用
+<ul>
+<li>Python：<code>sorted()</code></li>
+<li>R：<code>sort()</code></li>
+</ul>
+</li>
+<li>エラー調査
+<ul>
+<li>Python：<code>ZeroDivisionError: division by zero</code></li>
+<li>R：<code>non-numeric argument to binary operator</code></li>
+</ul>
+</li>
+</ol>
+</div>
+<audio controls autoplay src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+演習3は「自分で調べる」ことができるか確認する演習です。
+<p>型は type関数 や typeof関数 で、ヘルプは help関数や？で確認してください。エラーは3.8.1の読み方で確認します。</p>
+<p>インタラクション7
+“42” は数値ですか？文字列ですか？
+型を見て即答できる状態にしてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25. -->
+<div style="font-size: 0.60em;">
+<h1>3.8.5 学習チェックリスト</h1>
+<ul>
+<li><strong>A 環境</strong> ：<code>venvc</code> / <code>cd /home/datasci/work</code> / <code>touch</code> / <code>python</code> / <code>Rscript</code></li>
+<li><strong>B エラー</strong>：種類・場所・内容、スペル、読み込み、未インストール</li>
+<li><strong>C 調査</strong> ：<code>type()</code> / <code>typeof()</code>、変数一覧、<code>help()</code> / <code>?</code></li>
+<li><strong>D 欠損</strong> ：<code>np.nan</code> / <code>NA</code>、<code>np.isnan</code> / <code>is.na</code>、<code>nan*</code> / <code>na.rm</code></li>
+<li><strong>E AI協働</strong> ：貼る→理解→検証→再現</li>
+<li><strong>F 統合演習</strong> ：演習1〜3、解答例と比較</li>
+<li><strong>G 概念</strong> ：困った→調べる→解決→成長</li>
+</ul>
+</div>
+<audio controls autoplay src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+Google Classroomには詳細チェックリストがありますが、授業としてはこの要点が押さえられていればOKです。
+<p>できていない項目があれば、該当セクション（3.8.1〜3.8.3）に戻って、サンプルを再実行するのが最短です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26. -->
+<div style="font-size: 0.80em;">
+<h2>達成度の目安＋本節まとめ（早見表）</h2>
+<h3>達成度（チェック数）</h3>
+<table>
+<thead>
+<tr>
+<th>チェック数</th>
+<th>評価</th>
+<th>コメント</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50以上</td>
+<td>優秀</td>
+<td>十分に理解できている</td>
+</tr>
+<tr>
+<td>40-49</td>
+<td>良好</td>
+<td>基本はOK</td>
+</tr>
+<tr>
+<td>30-39</td>
+<td>合格</td>
+<td>復習で固めたい</td>
+</tr>
+<tr>
+<td>29以下</td>
+<td>要復習</td>
+<td>該当セクションを読み直す</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls autoplay src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+達成度は“点数”というより、抜けを見つけるための目安です。いくつ理解できましたか？
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27. -->
+<div style="font-size: 0.70em;">
+<h2>早見表</h2>
+<table>
+<thead>
+<tr>
+<th>トピック</th>
+<th>Python</th>
+<th>R</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>型確認</td>
+<td><code>type(x)</code></td>
+<td><code>typeof(x)</code></td>
+</tr>
+<tr>
+<td>ヘルプ</td>
+<td><code>help(func)</code></td>
+<td><code>?func</code></td>
+</tr>
+<tr>
+<td>欠損値</td>
+<td><code>np.nan</code></td>
+<td><code>NA</code></td>
+</tr>
+<tr>
+<td>欠損判定</td>
+<td><code>np.isnan(x)</code></td>
+<td><code>is.na(x)</code></td>
+</tr>
+<tr>
+<td>読み込み</td>
+<td><code>import xxx</code></td>
+<td><code>library(xxx)</code></td>
+</tr>
+<tr>
+<td>インストール</td>
+<td><code>pip install xxx</code></td>
+<td><code>install.packages(&quot;xxx&quot;)</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls autoplay src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、この早見表をブックマークするつもりで見てください。困ったときはここに戻って、型・ヘルプ・欠損・読み込み・インストールのどれかを確認すれば、前に進めます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>終わりに</h2>
+<pre><code class="language-text">困った → 調べる → 解決 → 成長
+</code></pre>
+<ul>
+<li>エラーはヒント</li>
+<li>自分で調べる手段がある</li>
+<li>本当に困ったらCopilotに相談（丸投げしない）</li>
+</ul>
+<audio controls autoplay src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後は行動で締めます。困るのは当たり前で、そこからどう動くかが成長の差になります。
+<p>次からの演習でも、エラー・調査・欠損は必ず出ます。今日の“型”をそのまま使ってください。お疲れさまでした。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
