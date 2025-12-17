@@ -108,7 +108,7 @@
 <li>まとめ・自己チェック・達成度評価</li>
 </ol>
 </div>
-<audio controls autoplay src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
 <aside class="notes">
 この順番でいきます。最初に「なぜ必要か」と「なぜforを避けるか」を早めに確定させて、その後は4パターンで迷子にならないようにします。
 <p>途中で何回か確認質問を入れます。「これはどのパターン？」と「戻り値の型は何？」が合言葉です。</p>
@@ -132,7 +132,7 @@
 <li>Copilotを学習補助として使える（丸投げしない）</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
 <aside class="notes">
 暗記より「分類→実装→検証」の流れを身につけるのがゴールです。
 <p>特に“型”です。どのパターンも、最後に「何が返ってくるか」でバグりやすいので、そこを意識して進めます。</p>
@@ -154,7 +154,7 @@
 <li>パラメータの組み合わせで実験したい</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
 <aside class="notes">
 反復処理は「同じ処理を、たくさんの入力に対して適用する」ことです。
 <p>ここで質問：みなさんが“反復したい”場面はどれですか？（大量データ / シミュレーション / パラメータ実験）手を挙げなくていいので、心の中で選んでください。今日は全部扱います。</p>
@@ -181,7 +181,7 @@
 doubled = [n * 2 for n in numbers]
 </code></pre>
 </div>
-<audio controls autoplay src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
 <aside class="notes">
 for文が悪い、という話ではなく、データサイエンスでは「型が揃ったデータに同じ処理」を当てることが多いので、関数型の書き方がハマります。
 <p>ここで確認：上の1行は「何をしたいか」がforより読み取りやすい、という感覚を持てればOKです。</p>
@@ -239,7 +239,7 @@ for文が悪い、という話ではなく、データサイエンスでは「�
 </tbody>
 </table>
 </div>
-<audio controls autoplay src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
 <aside class="notes">
 今日の地図です。迷ったら「入力は何？出力は何？」に戻ります。
 <p>ミニ質問：</p>
@@ -268,7 +268,7 @@ for文が悪い、という話ではなく、データサイエンスでは「�
 $ cd ~/work
 </code></pre>
 </div>
-<audio controls autoplay src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
 <aside class="notes">
 まず環境を揃えます。venvcで仮想環境を有効化して、プロンプトに(class)が出るのを確認してください。作業場所は~/workです。
 <p>Rはlibrary(tidyverse)、Pythonはimport numpy as np, import pandas as pdが基本セットです。並列は後半で必要になったら追加します。</p>
@@ -291,7 +291,7 @@ $ cd ~/work
 <li>丸投げしない（理解できる単位に分割）</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
 <aside class="notes">
 Copilotは「調べ方を短縮する道具」です。答えを丸投げで受け取ると、今日は特に“型”が身につきません。
 <p>困ったときは、エラー文を省略せずにそのまま貼って「原因と修正案」を聞くのがコツです。あと、いきなり完成形を求めず「まず関数だけ」「次にapply」みたいに段階的にいきましょう。</p>
@@ -314,7 +314,7 @@ Copilotは「調べ方を短縮する道具」です。答えを丸投げで受�
 <li>落とし穴：<code>[result] * 3</code> は「同じ値の複製」</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
 <aside class="notes">
 パターン1は「回数が入力」です。モンテカルロの基本形ですね。
 <p>ここで質問：[np.random.random()] * 3は毎回乱数が変わると思いますか？（変わりません。1回だけ作った値を3回コピーです。）この“評価タイミング”が落とし穴です。</p>
@@ -347,7 +347,7 @@ print(f&quot;平均: {np.mean(results):.4f}&quot;)
 print(f&quot;標準偏差: {np.std(results, ddof=1):.4f}&quot;)
 </code></pre>
 </div>
-<audio controls autoplay src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
 <aside class="notes">
 手順は教材どおりで、touchでファイルを作ってVS Codeで貼り付け、実行です（cd ~/workを忘れずに）。
 <p>見るポイントは3つです。</p>
@@ -374,7 +374,7 @@ print(f&quot;標準偏差: {np.std(results, ddof=1):.4f}&quot;)
 <li>ルール：生成後に必ず実行・妥当性確認</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
 <aside class="notes">
 パターン1はプロンプトが書きやすいです。「N回繰り返してリストに」がそのまま言えるので。
 <p>ただし、生成されたコードが“本当に毎回計算しているか”は自分で確認してください。乱数はとくに、複数回実行して挙動を見るのが大事です。</p>
@@ -397,7 +397,7 @@ print(f&quot;標準偏差: {np.std(results, ddof=1):.4f}&quot;)
 <li>注意：ベクトル化できるなら、そちらが優先</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
 <aside class="notes">
 パターン2は「入力がベクトル/Series」です。要素ごとに関数を当てて、スカラーの結果を並べます。
 <p>ここで確認：np.sqrt(v)みたいにベクトル化できる関数は、apply/mapを使わない方が速くて簡潔です。apply/mapは「複雑でベクトル化できない処理」のときに登場します。</p>
@@ -430,7 +430,7 @@ results = sample_sizes.apply(calculate_mean)
 print(results)
 </code></pre>
 </div>
-<audio controls autoplay src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
 <aside class="notes">
 ポイントは「入力が1次元」であること。sample_sizesがSeriesになっていて、その各要素（5,10,...)が関数に入ります。
 <p>ミニ質問：このresultsの型は何ですか？（Seriesです）<br>
@@ -453,7 +453,7 @@ print(results)
 <li>ルール：戻り値の型（Seriesかlistか）を確認</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
 <aside class="notes">
 applyで何が返ってくるか（Seriesなのか、DataFrameになるのか）を、Copilotに聞きながらでもいいので確認しましょう。
 <p>“動いたけど型が違う”が一番つらいので、type()や表示で早めに確認するクセをつけます。</p>
@@ -476,7 +476,7 @@ applyで何が返ってくるか（Seriesなのか、DataFrameになるのか）
 <li>落とし穴：列名（index）を揃えないと崩れる</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
 <aside class="notes">
 パターン3は「1入力→1行」です。平均と標準偏差、みたいに“複数列”を作ります。
 <p>ここで質問：Python側の関数は「何を返す」とDataFrameになりやすいですか？（pd.Seriesで、indexが列名になる）ここを外すと、意図しない形になります。</p>
@@ -510,7 +510,7 @@ results = sample_sizes.apply(calculate_statistics)
 print(results)
 </code></pre>
 </div>
-<audio controls autoplay src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
 <aside class="notes">
 ここは「戻り値がSeries」というのが最重要です。辞書っぽく見えますが、最後はSeriesにして列名を確定させています。
 <p>標準偏差は d d o f=1 （不偏）を使う点も教材に合わせます。結果が“行＝サンプルサイズ”になっていれば成功です。</p>
@@ -532,7 +532,7 @@ print(results)
 <li>ルール：列名と値の対応を目視で確認</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
 <aside class="notes">
 パターン3は、CopilotがSeriesの書き方を間違えることがあります。なので「実行→print→列が揃ってるか」を必ず確認しましょう。
 <p>不安なら「1要素だけapplyして形を見る」でもOKです。小さく確認してから広げます。</p>
@@ -555,7 +555,7 @@ print(results)
 <li>落とし穴：<code>axis=1</code>、列名ミス、lambda構文</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
 <aside class="notes">
 パターン4は「各行が実験条件」です。xとyみたいに複数引数を関数に渡します。
 <p>ここで質問： axis=1 を忘れるとどうなりますか？（列方向に回って、rowが列になるので崩れます）列名も間違いやすいので、 df.columns で先に確認するのが型です。</p>
@@ -589,7 +589,7 @@ results = param_grid.apply(lambda row: run_experiment(row['x'], row['y']), axis=
 print(results)
 </code></pre>
 </div>
-<audio controls autoplay src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
 <aside class="notes">
 このサンプルは「行＝実験、列＝条件」の形を作って、それを1行ずつ関数に渡しています。
 <p>見てほしいのは、(1) param_grid が入力、(2) run_experiment が複数引数、(3) 戻り値がSeriesで、結果がDataFrameになる、の3点です。</p>
@@ -610,7 +610,7 @@ print(results)
 <li>例：「列名を間違えたときの典型エラーと直し方は？」</li>
 <li>ルール：小さいグリッドで1行ずつ検証</li>
 </ul>
-<audio controls autoplay src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
 <aside class="notes">
 パターン4はエラーが出やすいぶん、Copilotと相性がいいです。エラー全文をそのまま渡して「原因→修正」を聞きましょう。
 <p>ただし、いきなり大きなグリッドにせず、まず2〜4行で形を確認してから増やすのが安全です。</p>
@@ -633,7 +633,7 @@ print(results)
 <li>使わない：小さいタスク・依存関係あり</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
 <aside class="notes">
 並列は「何でも速くなる魔法」ではありません。並列化の準備コスト（オーバーヘッド）があるので、小さい処理はむしろ遅くなります。
 <p>ここで質問：いままでのパターンで、並列化しやすいのはどれですか？（全部可能性はありますが、独立な繰り返し＝パターン2/3/4が特に相性良いです。パターン1も独立ならOK。）</p>
@@ -662,7 +662,7 @@ pandarallel.initialize(progress_bar=False)
 # v.apply(f) の代わりに v.parallel_apply(f)
 </code></pre>
 </div>
-<audio controls autoplay src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
 <aside class="notes">
 Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使うならseed設定も忘れない（再現性のため）という話でした。
 <p>Pythonは pandarallel.initialize() して、 apply を parallel_apply に置き換えるだけ、という最小形を押さえます。代表サンプル my3-7-05_parallel.* で「通常 vs 並列」を実行時間で比較してください。小さいタスクだと遅くなることもある、という注意も確認します。</p>
@@ -684,7 +684,7 @@ Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使
 <li>ゴール：結果をデータフレームで整理して解釈する</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
 <aside class="notes">
 ここからは“統合”です。バラバラだった4パターンを、課題で使い分けます。
 <p>迷ったら、最初の表に戻って「入力→出力」で判定してください。特に「最終的に表（データフレーム）にするか」が分岐点です。</p>
@@ -709,7 +709,7 @@ Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使
 <pre><code class="language-text">π ≈ 4 × (円の内側の点数 / 全点数)
 </code></pre>
 </div>
-<audio controls autoplay src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
 <aside class="notes">
 やることは3段階です。  
 1) 1回の推定（n点でπ推定）を関数にする  
@@ -735,7 +735,7 @@ Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使
 <li>出力：<code>mean, std, skewness, kurtosis</code></li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
 <aside class="notes">
 課題2はパターン4ど真ん中です。入力は「サンプルサイズ×分布」のグリッド（データフレーム）で、各行に対して統計量を計算します。
 <p>Pythonは scipy.stats で歪度・尖度を計算します。Rは moments パッケージを使うので、初回は教材にあるコマンドでインストールしてください。最後に分布ごとの特徴（一様/正規/指数）を出力の数値から説明できればOKです。</p>
@@ -757,7 +757,7 @@ Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使
 <li>自作シミュレーション：課題を自分で設計して表にまとめる</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
 <aside class="notes">
 余力がある人向けです。並列化は「独立で重い」場合にだけ効きます。まず通常版が正しく動いてから並列にしてください。
 <p>可視化は、課題1なら「サンプルサイズ vs 誤差」、課題2なら「分布ごとのヒストグラム」などが定番です。自作はサイコロやランダムウォークなど、教材のアイデア例を使ってOKです。</p>
@@ -780,7 +780,7 @@ Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使
 <li>並列は「独立・重い」処理でだけ使う</li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
 <aside class="notes">
 最後に要点です。今日の勝ち筋は、パターン表に戻って迷わないこと、そして「何が返ってくるか」を常に確認することでした。
 <p>ここで質問：いま手元の作業は、どのパターンで書けますか？（課題1/2を指して、口に出さなくていいので判定してみてください。）</p>
@@ -804,7 +804,7 @@ Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使
 <li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9566928"><label class="task-list-item-label" for="task-item-9566928"> Copilotは「検証しながら」使えた</label></li>
 </ul>
 </div>
-<audio controls autoplay src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
 <aside class="notes">
 教材にはA〜Kの詳細チェックリストがありますが、授業としてはこの抜粋を最低ラインにします。
 <p>特に「サンプルを実行して動作確認したか」が重要です。読むだけだと定着しないので、最後は必ず実行で締めてください。</p>
@@ -830,7 +830,7 @@ Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使
 </ul>
 </li>
 </ul>
-<audio controls autoplay src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
 <aside class="notes">
 次回までの自己チェックです。評価は“点数”というより、抜けを見つけるためのものです。特に戻り値の型と、どのパターンを使うかの判断は、後の章で何度も使います。
 <p>お疲れ様でした。最後にGoogle Classroomのチェックリストに取り組んでください。
@@ -988,7 +988,7 @@ Rは「mapの前にfuture_を付ける」が基本ルールです。乱数を使
         defaultNotes: false, // use slide notes as default for the text to speech converter
         defaultText: false, // use slide text as default for the text to speech converter
         advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
-        autoplay: false, // automatically start slideshow
+       : false, // automatically start slideshow
         defaultDuration: 5, // default duration in seconds if no audio is available
         defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
         playerOpacity: 0.05, // opacity value of audio player if unfocused
