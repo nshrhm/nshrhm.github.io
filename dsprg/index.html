@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>データサイエンスプログラミング演習 - 下関市立大学</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      padding: 50px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 30px;
+      border-bottom: 2px solid #eee;
+    }
+    .university {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #888;
+    }
+    h2 {
+      font-size: 18px;
+      color: #444;
+      margin-bottom: 24px;
+      padding-left: 12px;
+      border-left: 4px solid #667eea;
+    }
+    .materials {
+      list-style: none;
+    }
+    .materials li {
+      margin-bottom: 16px;
+    }
+    .materials a {
+      display: block;
+      padding: 20px 24px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #333;
+      transition: all 0.3s ease;
+      border: 1px solid #eee;
+    }
+    .materials a:hover {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+    .lecture-number {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+    .materials a:hover .lecture-number {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .lecture-title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p class="university">下関市立大学 データサイエンス学部</p>
+      <h1>データサイエンスプログラミング演習</h1>
+      <p class="subtitle">2025年度 秋期</p>
+    </header>
+
+    <main>
+      <h2>オンデマンド資料</h2>
+      <ul class="materials">
+        <li>
+          <a href="3-6/index.html">
+            <p class="lecture-number">3.6</p>
+            <p class="lecture-title">Rのパッケージ, Pythonのモジュール</p>
+          </a>
+        </li>
+        <li>
+          <a href="3-7/index.html">
+            <p class="lecture-number">3.7</p>
+            <p class="lecture-title">反復処理</p>
+          </a>
+        </li>
+        <li>
+          <a href="3-8/index.html">
+            <p class="lecture-number">3.8</p>
+            <p class="lecture-title">その他 ─ プログラミングで困ったときに</p>
+          </a>
+        </li>
+      </ul>
+    </main>
+
+    <footer>
+      Shimonoseki City University
+    </footer>
+  </div>
+</body>
+</html>
