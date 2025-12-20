@@ -1,0 +1,1221 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>4.2 データの可視化</h1>
+<h2>第4章: 記述統計</h2>
+<h3>データサイエンスプログラミング入門</h3>
+<br />
+<p>下関市立大学 データサイエンス学部</p>
+<p>白濵 成希</p>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+おはようございます。今日は第4章の続き、4.2「データの可視化」です。記述統計は、数値を出すだけではなく、図で“全体像”を掴むところまでがセットです。
+<p>今日の狙いは、R と Python の両方で、同じデータから同じ種類の図を作り、そして必ずファイル（PNG）として保存できるようになることです。WSL2環境だとGUI表示が不安定なことがあるので、最初から「保存」を基本にして進めます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日の内容</h2>
+<ol>
+<li><strong>準備</strong>：iris を読み込み、作業フォルダで PNG 保存できる状態にする</li>
+<li><strong>ヒストグラム</strong>：breaks/bins を明示して再現性を確保</li>
+<li><strong>散布図</strong>：2変数の関係を軸で説明できる</li>
+<li><strong>箱ひげ図</strong>：四分位数・外れ値をまとめて比較</li>
+<li><strong>棒グラフ＋エラーバー</strong>：平均・SD/SE を可視化</li>
+<li><strong>モザイクプロット</strong>：分割表を面積で見る</li>
+<li><strong>関数のグラフ</strong>：モデル式を描く基本</li>
+<li><strong>統一的な書き方</strong>：R=ggplot2 / Python=fig/ax</li>
+</ol>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日は“図の種類が多い”回です。その分、1つ1つを深掘りしすぎず、まずは「型」を揃えて作れるようにします。
+<p>後半で「統一的な書き方」に触れますが、ここができると、複数枚の図を作るときにコードが読みやすくなり、レポートの品質も上がります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習目標（到達目標）</h2>
+<ul>
+<li>図を <strong>画面表示ではなく PNG 保存</strong>として確実に出力できる</li>
+<li>ヒストグラムで <strong>境界（breaks/bins）を明示</strong>できる</li>
+<li>散布図・箱ひげ図で <strong>軸・要約の意味</strong>を説明できる</li>
+<li>平均・標準偏差・標準誤差を区別し、棒グラフ＋エラーバーで表せる</li>
+<li>R は ggplot2、Python は fig/ax で <strong>統一的に整える</strong>発想を持てる</li>
+</ul>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日は“作図”が目的に見えますが、実は再現性の練習です。図が出た、で終わらずに、同じ手順でいつでも同じ図を再生成できる状態を作ります。
+<p>そのために、境界を明示する、保存ファイル名を固定する、作業フォルダを揃える、という基本を徹底します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>可視化の基本フロー（再現性の型）</h2>
+<ol>
+<li>データを確認（列名・型・欠損）</li>
+<li>図の設計を決める（軸、分割、範囲）</li>
+<li>描く（最小コードで）</li>
+<li><strong>ラベルを付ける</strong>（軸・タイトル）</li>
+<li><strong>保存する</strong>（PNG / dpi）</li>
+<li>ファイルを確認（増えたか、サイズは妥当か）</li>
+</ol>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+この6ステップを毎回の型にします。特に4と5。ラベルがない図はレポートとして使えません。保存しない図は再利用できません。
+<p>「保存されていない＝存在しない」と思ってください。授業では、出力ファイルが増えていることを毎回確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>WSL2 での方針：まず PNG 保存</h2>
+<ul>
+<li>環境により GUI 表示が不安定になり得る</li>
+<li>まずは <strong>保存できること</strong>を最優先</li>
+<li>その後、必要なら表示（Jupyter等）へ拡張</li>
+</ul>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+WSL2は便利ですが、図の表示は環境差が出やすいです。そこで今日は、最初から PNG 保存を前提にします。
+<p>保存できれば、OSや環境に依存せず、結果を提出できます。研究でも実務でも同じ考え方です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.2.0 準備</h1>
+<h2>データと作業フォルダの確認</h2>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+まずは土台作りです。今日の作図が全部うまくいくかどうかは、作業フォルダとデータの読み込みが安定しているかで決まります。
+<p>iris を読み込み、PNG保存ができる状態まで持っていきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>iris データ（アヤメ）</h2>
+<ul>
+<li>教材向けの定番データセット</li>
+<li>数値列：Sepal.Length / Sepal.Width / Petal.Length / Petal.Width</li>
+<li>カテゴリ列：Species（品種）</li>
+</ul>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+iris は統計の入門で定番のデータです。数値列が4本、カテゴリが1本。可視化の練習にちょうど良い構造です。
+<p>今日はこのデータで、1次元・2次元・カテゴリ×カテゴリ、いろいろな図を練習します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：iris の確認（最初に必ず）</h2>
+<pre><code class="language-r">head(iris)
+nrow(iris)
+names(iris)
+table(iris$Species)
+</code></pre>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rは iris が最初から入っています。まず head、行数、列名、Speciesの件数を確認します。
+<p>この4点チェックで、データの形はほぼ分かります。何かがおかしいときは、ここに戻ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：iris の確認（例：statsmodels）</h2>
+<pre><code class="language-python">import statsmodels.api as sm
+
+iris = sm.datasets.get_rdataset(&quot;iris&quot;, &quot;datasets&quot;).data
+print(iris.head())
+print(iris.shape)
+print(iris.columns)
+print(iris[&quot;Species&quot;].value_counts())
+</code></pre>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python側は例として statsmodels から iris を読み込みます。pandasのDataFrameで受け取れるので、head/shape/columns/value_countsという流れで確認します。
+<p>Rと同じ情報が取れているか、ここで突き合わせてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業フォルダと保存の確認</h2>
+<ul>
+<li>R：<code>setwd(&quot;/home/datasci/work&quot;)</code></li>
+<li>Python：カレントディレクトリで実行（必要なら <code>os.getcwd()</code>）</li>
+<li>まずは「空のPNG」が保存できるか確認してもよい</li>
+</ul>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+次に作業フォルダです。ここがブレると「保存したはずなのに見つからない」が起きます。
+<p>Rは setwd で固定、Pythonは基本は実行した場所が作業ディレクトリです。迷ったら <code>ls</code> で今いる場所とファイル一覧を確認してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.2.1 ヒストグラム</h1>
+<h2>1次元分布を見る最初の図</h2>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+次はヒストグラムです。1次元データの分布を見る基本中の基本です。
+<p>ここで重要なのは「ビンの切り方」。切り方が違うと見え方が変わります。比較学習では必ず境界を明示します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ヒストグラムの“事故ポイント”</h2>
+<ol>
+<li><strong>右閉/左閉</strong>：境界値がどちらの階級に入るか</li>
+<li><strong>階級数</strong>：自動決定だとR/Pythonで変わりやすい</li>
+<li><strong>範囲</strong>：同じ階級数でも範囲が違うと一致しない</li>
+</ol>
+<ul>
+<li><strong>対策</strong>：<code>breaks/bins</code> を<strong>配列で明示</strong>する</li>
+</ul>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+「境界値がどちらの階級に入るか」　「階級数、自動決定だとR/Pythonで変わりやすい」　「同じ階級数でも範囲が違うと一致しない」　この3つがズレの原因です。授業でも現場でも、ここを曖昧にすると議論が成立しません。
+<p>今日は「境界を配列で明示」することで、RとPythonのヒストグラムを揃えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：境界を明示して保存</h2>
+<pre><code class="language-r">x &lt;- iris$Sepal.Length
+b &lt;- seq(min(x), max(x), length.out = 10)  # 9区間
+
+png(&quot;my4-2-01_hist_R.png&quot;, width=800, height=500)
+hist(x, breaks=b, right=FALSE, main=&quot;Sepal.Length&quot;,
+     xlab=&quot;Sepal.Length&quot;, col=&quot;gray&quot;)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rでは hist に breaks を渡します。right=FALSE で左閉に寄せて、境界の扱いを明示します。
+<p>png()関数 と dev.off()関数 を忘れると保存されません。保存できたら ls でPNGが増えていることを確認しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：bins を明示して保存</h2>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+x = iris[&quot;Sepal.Length&quot;]
+b = np.linspace(x.min(), x.max(), 10)
+
+plt.hist(x, bins=b, edgecolor=&quot;black&quot;)
+plt.title(&quot;Sepal.Length&quot;)
+plt.xlabel(&quot;Sepal.Length&quot;)
+plt.ylabel(&quot;count&quot;)
+plt.savefig(&quot;my4-2-01_hist_P.png&quot;, dpi=150)
+</code></pre>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonはbinsを配列で渡します。np.linspaceで境界を作るのが最短です。
+<p>savefigを忘れるのが一番多いミスです。実行しても画面に何も出ないのは正常、PNGが増えれば成功です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ヒストグラム：チェック項目</h2>
+<ul>
+<li>R/Pythonで <strong>同じ境界</strong>を使っているか</li>
+<li>右閉/左閉を変えたなら、その意図を説明できるか</li>
+<li>ファイルが増えているか（<code>ls -l *.png</code>）</li>
+</ul>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+このチェックができれば、ヒストグラムは合格です。
+<p>境界を明示する癖をつけておくと、研究の図でも議論がスムーズになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.2.2 散布図</h1>
+<h2>2変数の関係を見る</h2>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+次は散布図。2つの数値列の関係を見る最重要の図です。
+<p>ここでいう「2次元」は空間ではなく、変数が2つという意味です。軸が何を表しているか、必ず説明できるようにします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>散布図で見るもの</h2>
+<ul>
+<li>x軸＝変数1、y軸＝変数2</li>
+<li>点の広がり：相関の雰囲気</li>
+<li>かたまり：グループ（Speciesなど）</li>
+<li>外れ点：入力ミスや特殊ケースの手がかり</li>
+</ul>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+散布図は、相関だけでなく、クラスの分離や外れ点も見れます。データの状況把握として最初に作る価値が高いです。
+<p>今日は Sepal.Length と Sepal.Width の例で練習します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：散布図を保存</h2>
+<pre><code class="language-r">png(&quot;my4-2-02_scatter_R.png&quot;, width=800, height=500)
+plot(iris$Sepal.Length, iris$Sepal.Width,
+     xlab=&quot;Sepal.Length&quot;, ylab=&quot;Sepal.Width&quot;,
+     main=&quot;Sepal.Length vs Sepal.Width&quot;)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rの plot は最短で散布図を作れます。ここでもラベルは必須です。
+<p>まずは“軸が何かを言える図”を作る。凝った装飾はその後です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：DataFrameから散布図を保存</h2>
+<pre><code class="language-python">ax = iris.plot(x=&quot;Sepal.Length&quot;, y=&quot;Sepal.Width&quot;, kind=&quot;scatter&quot;,
+               title=&quot;Sepal.Length vs Sepal.Width&quot;)
+ax.set_xlabel(&quot;Sepal.Length&quot;)
+ax.set_ylabel(&quot;Sepal.Width&quot;)
+plt.savefig(&quot;my4-2-02_scatter_P.png&quot;, dpi=150)
+</code></pre>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+PythonはDataFrameのplotを使うと、短く書けます。ここでも最後は savefig です。
+<p>「図が出たけど軸ラベルがない」はよくある失敗なので、必ずラベルを入れてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ここで小確認</h2>
+<ul>
+<li>x軸とy軸は何の変数？</li>
+<li>右上がり／右下がりの傾向はある？</li>
+</ul>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+散布図は作って終わりではなく、読み取る練習もします。
+<p>今の散布図で、x軸・y軸が何かを言えますか。傾向が見えるかどうかも、まずは言葉にしてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>休憩（5分）</h1>
+<ul>
+<li>ここまで：準備／ヒストグラム／散布図</li>
+<li>PNGが3枚（準備を含めるなら複数）できているか確認</li>
+</ul>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで5分休憩です。戻ってきたら箱ひげ図以降を進めます。
+<p>休憩中に、PNGがちゃんと保存されているかだけ確認しておいてください。ファイルが増えていないなら、savefig/dev.offの漏れが疑わしいです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.2.3 箱ひげ図</h1>
+<h2>複数列の分布を一枚で比較</h2>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+後半に入りました。次は箱ひげ図です。
+<p>データの列が増えてくると、1列ずつヒストグラムを作るのが大変になります。箱ひげ図なら、複数列の分布を一枚でざっくり比較できます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>箱ひげ図の読み方</h2>
+<ul>
+<li>箱：Q1〜中央値〜Q3</li>
+<li>ひげ：IQR×1.5以内の範囲</li>
+<li>外れ値：点で表示されることが多い</li>
+</ul>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+箱ひげ図は、四分位数を可視化したものです。
+<p>「中央値がどれくらい」「ばらつきが大きいか」「外れ値があるか」を、短時間で比較できます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：数値列だけ箱ひげ図（Speciesは除外）</h2>
+<pre><code class="language-r">png(&quot;my4-2-03_boxplot_R.png&quot;, width=900, height=500)
+boxplot(iris[, -5], main=&quot;iris: 数値列の箱ひげ図&quot;, ylab=&quot;値&quot;)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+Speciesはカテゴリ列なので除外します。iris[, -5] で5列目を落とす、という書き方もよく使います。
+<p>数値列だけを対象にする、という原則はこの後の集計でも同じです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：数値列だけ箱ひげ図</h2>
+<pre><code class="language-python">num = iris.drop(columns=[&quot;Species&quot;])
+num.boxplot()
+plt.title(&quot;iris: 数値列の箱ひげ図&quot;)
+plt.ylabel(&quot;値&quot;)
+plt.savefig(&quot;my4-2-03_boxplot_P.png&quot;, dpi=150)
+</code></pre>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonでも同じ発想です。まず数値列だけにする。次に箱ひげ図。最後に保存。
+<p>dropで列を落とすところがポイントです。これができると、データが大きくなっても同じ型で作図できます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.2.4 棒グラフとエラーバー</h1>
+<h2>代表値＋不確かさをセットで</h2>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+次は棒グラフとエラーバーについて説明します。平均を比べるときに定番の図です。
+<p>ただし棒グラフだけだと“ばらつき”が見えません。そこで標準偏差や標準誤差をエラーバーで付けます。ここは統計の意味理解が重要です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>SD と SE を区別する</h2>
+<ul>
+<li><strong>標準偏差（SD）</strong>：データのばらつき（個体差）</li>
+<li><strong>標準誤差（SE）</strong>：平均の不確かさ（推定の揺れ）<br>
+$$SE=\frac{SD}{\sqrt{n}}$$</li>
+<li>棒グラフに付けるのは、目的に応じて（今日は SE 例）</li>
+</ul>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+棒グラフで混乱しがちなのが SD と SE です。
+<p>SDは“データ自体の散らばり”。SEは“平均の不確かさ”。平均を比較したいとき、SEを付けることが多い、という話です。今日は計算と作図の流れを押さえます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：平均とSEを計算して作図</h2>
+<pre><code class="language-r">cols &lt;- c(&quot;Sepal.Length&quot;,&quot;Sepal.Width&quot;,&quot;Petal.Length&quot;,&quot;Petal.Width&quot;)
+n  &lt;- nrow(iris)
+m  &lt;- sapply(iris[, cols], mean)
+sd &lt;- sapply(iris[, cols], sd)
+se &lt;- sd / sqrt(n)
+
+png(&quot;my4-2-04_bar_error_R.png&quot;, width=900, height=500)
+bp &lt;- barplot(m, ylim=c(0, max(m+se)*1.2),
+              main=&quot;平均 + SE&quot;, ylab=&quot;値&quot;)
+arrows(bp, m-se, bp, m+se, angle=90, code=3, length=0.05)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rは、まず平均とSEを自分で計算してから描きます。barplotで棒、arrowsでエラーバーです。
+<p>ここで大事なのは、計算から描画、という順序を意識することです。図の裏にある数値が説明できるようになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：平均とSEを計算して作図</h2>
+<pre><code class="language-python">import numpy as np
+
+cols = [&quot;Sepal.Length&quot;,&quot;Sepal.Width&quot;,&quot;Petal.Length&quot;,&quot;Petal.Width&quot;]
+n  = len(iris)
+m  = iris[cols].mean()
+sd = iris[cols].std(ddof=1)
+se = sd / np.sqrt(n)
+
+plt.figure(figsize=(8,5))
+plt.bar(cols, m.values, yerr=se.values, capsize=4)
+plt.title(&quot;平均 + SE&quot;)
+plt.ylabel(&quot;値&quot;)
+plt.savefig(&quot;my4-2-04_bar_error_P.png&quot;, dpi=150)
+</code></pre>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonでも同じ流れです。平均、標準偏差、SEを出してから棒グラフにyerrで渡します。
+<p>std(ddof=1)を明示しているのは、前回の講義、4.1とつながっています。定義を揃える癖をつけましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.2.5 モザイクプロット</h1>
+<h2>分割表を面積で見る</h2>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+次はモザイクプロットです。カテゴリ×カテゴリの関係を、面積で表す図です。
+<p>まず分割表（クロス集計）を作る。次にそれをモザイクで描く。この順番を守れば、読み方も自然になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>例：Species × (Sepal.Width &gt; 3)</h2>
+<ul>
+<li><code>w_Sepal = (Sepal.Width &gt; 3)</code> を TRUE/FALSE 化</li>
+<li><code>table(Species, w_Sepal)</code> が分割表</li>
+<li>面積がサンプル数に比例するのが特徴</li>
+</ul>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+例として、Sepal.Widthが3より大きいかどうかで2値カテゴリを作ります。これとSpeciesの関係を見ます。
+<p>分割表を作って数を確認した上で、モザイクを見てください。順番が逆だと誤読しやすいです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：分割表→モザイクプロット</h2>
+<pre><code class="language-r">my_df &lt;- data.frame(
+  Species = iris$Species,
+  w_Sepal = (iris$Sepal.Width &gt; 3)
+)
+print(table(my_df))
+
+png(&quot;my4-2-05_mosaic_R.png&quot;, width=900, height=600)
+mosaicplot(~ Species + w_Sepal, data=my_df,
+           main=&quot;Species × (Sepal.Width &gt; 3)&quot;)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rはtableで分割表を確認してから、mosaicplotです。
+<p>この図は“面積”が重要なので、見た目の色よりも、どの組み合わせが多いか、という読み方をしてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：分割表→モザイク（statsmodels）</h2>
+<pre><code class="language-python">import pandas as pd
+from statsmodels.graphics.mosaicplot import mosaic
+import matplotlib.pyplot as plt
+
+df = iris.assign(w_Sepal=iris[&quot;Sepal.Width&quot;] &gt; 3)
+ct = pd.crosstab(df[&quot;Species&quot;], df[&quot;w_Sepal&quot;])
+print(ct)
+
+plt.figure(figsize=(8,5))
+mosaic(ct.stack())
+plt.title(&quot;Species × (Sepal.Width &gt; 3)&quot;)
+plt.savefig(&quot;my4-2-05_mosaic_P.png&quot;, dpi=150)
+</code></pre>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python側は、まずcrosstabで分割表を出します。その上で、statsmodelsのmosaicを使います。
+<p>この手の図は、最初に数表を出してから図に行くと、読み取りミスが減ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.2.6 関数のグラフ</h1>
+<h2>y = x^3 - x を描く</h2>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
+<aside class="notes">
+次は関数のグラフです。統計そのものというより、モデル式や損失関数を描きたいときに役立ちます。
+<p>例として y = x^3 - x を -2 から 2 の範囲で描きます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：curveでそのまま描ける</h2>
+<pre><code class="language-r">png(&quot;my4-2-06_function_R.png&quot;, width=800, height=500)
+curve(x^3 - x, from=-2, to=2,
+      main=&quot;y = x^3 - x&quot;, xlab=&quot;x&quot;, ylab=&quot;y&quot;)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rはcurveが便利です。式をそのまま渡せます。入門ではこれだけで十分です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：linspace→計算→plot</h2>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-2, 2, 100)
+y = x**3 - x
+
+plt.plot(x, y)
+plt.title(&quot;y = x^3 - x&quot;)
+plt.xlabel(&quot;x&quot;); plt.ylabel(&quot;y&quot;)
+plt.savefig(&quot;my4-2-06_function_P.png&quot;, dpi=150)
+</code></pre>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonは点列を作って計算して描きます。np.linspace→式→plot、という型です。
+<p>この型は、将来どんな関数でも同じです。損失関数や活性化関数の図も、この型で作れます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.2.7 統一的な可視化</h1>
+<h2>R=ggplot2 / Python=fig,ax</h2>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、統一的な可視化です。
+<p>Rはggplot2で書き方を統一、Pythonはfig/axで構造を統一。見た目の好みではなく、複数枚の図を作るときの再利用性と説明しやすさが上がります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>なぜ「統一」が効くのか</h2>
+<ul>
+<li>図の部品（データ・軸・幾何・注釈）が分離される</li>
+<li>変更箇所が明確になる（タイトルだけ変える等）</li>
+<li>図が増えても “型” をコピーして回せる</li>
+</ul>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" />
+<aside class="notes">
+統一的な書き方は、作図が増えたときに真価が出ます。
+<p>研究では図が10枚、20枚と増えます。そのときに、毎回バラバラな書き方をしていると、修正が地獄になります。最初から型を揃える、というのが今日のメッセージです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：ggplot2（散布図、色=Species）</h2>
+<pre><code class="language-r">library(ggplot2)
+
+p &lt;- ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +
+  geom_point() +
+  labs(title=&quot;ggplot2: 散布図（色=Species）&quot;,
+       x=&quot;Sepal.Length&quot;, y=&quot;Sepal.Width&quot;)
+
+ggsave(&quot;my4-2-07_ggplot_scatter_R.png&quot;, plot=p, width=7, height=5, dpi=150)
+</code></pre>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" />
+<aside class="notes">
+ggplot2は「データ＋設計＋幾何（geom）」という考え方で統一します。
+<p>ここでは aes で軸と色を指定し、geom_pointで散布図にします。保存は ggsave。これも“保存が基本”です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：fig/ax（散布図、色=Species）</h2>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(7,5))
+for sp, g in iris.groupby(&quot;Species&quot;):
+    ax.scatter(g[&quot;Sepal.Length&quot;], g[&quot;Sepal.Width&quot;], label=sp)
+
+ax.set_title(&quot;fig/ax: 散布図（色=Species）&quot;)
+ax.set_xlabel(&quot;Sepal.Length&quot;)
+ax.set_ylabel(&quot;Sepal.Width&quot;)
+ax.legend()
+fig.savefig(&quot;my4-2-07_figax_scatter_P.png&quot;, dpi=150)
+</code></pre>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonのfig/axは、図全体（fig）と描画領域（ax）を分けます。
+<p>統一のポイントは、必ず fig, ax = plt.subplots() から始めること。そして ax に対して描く。最後は fig.savefig。これで構造が揃い、読みやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>統合ミニ演習</h2>
+<ul>
+<li>目標：<code>my4-2-01</code>〜<code>my4-2-07</code> のPNGが増える</li>
+<li>できたら確認：
+<ul>
+<li><code>ls -1 *.png | wc -l</code></li>
+<li>ファイル名が意図通りか（R/Pで区別できるか）</li>
+</ul>
+</li>
+</ul>
+<audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで10分、手を動かします。今日の各セクションの基本スクリプトを実行して、PNGが増えることを確認してください。
+<p>できた人は、隣の人の画面も見て、ファイル名が揃っているかを確認してあげてください。再現性は“自分だけ動く”では弱いので、他人の環境でも同じになるかを意識します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>よくあるミスと対処（可視化共通）</h2>
+<ul>
+<li>保存忘れ：Rは <code>dev.off()</code>、Pythonは <code>savefig()</code></li>
+<li>作業フォルダ違い：<code>setwd()</code> / 実行場所を確認</li>
+<li>列名ミス：<code>names()</code> / <code>columns</code> で再確認</li>
+<li>ddof：標準偏差を比較するときは明示（Python側）</li>
+</ul>
+<audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg" />
+<aside class="notes">
+失敗の多くは、保存忘れと作業フォルダ違いです。
+<p>「見えない」は正常、「ファイルがない」は失敗、という区別を徹底してください。ddofは4.1の復習として、標準偏差の比較では明示、という方針です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot の使いどころ</h2>
+<ul>
+<li>可視化は定型なので、たたき台生成に向く</li>
+<li>ただし “保存” や “統一ルール” を勝手に省略しがち</li>
+<li>プロンプトに必ず書く：
+<ul>
+<li><strong>PNG保存必須</strong></li>
+<li>ファイル名（例：<code>my4-2-04_bar_error_P.png</code>）</li>
+<li>Pythonは <code>fig/ax</code> で書く（4.2.7）</li>
+</ul>
+</li>
+</ul>
+<audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotは、書き方のテンプレ生成には強いです。ただし、保存や統一ルールは省略されがちなので、制約を明示してください。
+<p>“丸投げ禁止”です。生成されたコードを読んで、何をしているか説明できる状態を目標として作成してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日のまとめ</h2>
+<ul>
+<li>図は「描く」より <strong>保存して残す</strong>が基本</li>
+<li>ヒストグラムは <strong>境界を明示</strong>して再現性を確保</li>
+<li>散布図は <strong>軸の意味</strong>を説明できるようにする</li>
+<li>箱ひげ図は <strong>四分位数＋外れ値</strong>で比較する</li>
+<li>棒グラフは <strong>平均＋SD/SE</strong>をセットで考える</li>
+<li>統一：R=ggplot2、Python=fig/ax</li>
+</ul>
+<audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日のポイントを押さえておけば、データを受け取った時に「まず何を描くか」が決められるようになります。
+<p>次回以降の内容でも、まずは記述統計と可視化で当たりをつける、という順番を大事にしてください。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
