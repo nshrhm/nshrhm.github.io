@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>第3章: RとPython</h1>
+<h2>3.1 入門（RとPythonの基本）</h2>
+<p>データサイエンスプログラミング入門</p>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+こんにちは。今日は第3章の最初、「3.1 入門」です。ここは“いきなり難しいことをやらないで、まず手を動かして動く状態を作る回”です。
+<p>この回は、RとPythonを並走させます。どちらか片方だけ覚えるのではなく、「同じことを両方でできる」ことを目標にします。講義中も、Rの書き方・Pythonの書き方をセットで確認します。途中で何度も止めて、皆さんの画面で動いているかチェックします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日の内容</h2>
+<div style="font-size: 0.9em;">
+<ol>
+<li><strong>準備</strong>：環境・作業ディレクトリ・実行方法</li>
+<li><strong>基本</strong>：数値演算／変数／文字列／条件分岐</li>
+<li><strong>作業管理</strong>：作業ディレクトリ（ファイルの場所）</li>
+<li><strong>実務力</strong>：エラー対応（デバッグの基本）</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の流れです。最初に環境を整えて、必ず「RもPythonも実行できる」状態にします。次に、入門としてよく使う4要素――数値計算、変数、文字列、条件分岐――を最低限マスターします。
+<p>後半は、実際につまずきやすい“作業ディレクトリ”と“エラー対応”です。ここを押さえると、課題で詰まりにくくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習目標（到達目標）</h2>
+<ul>
+<li>数値計算ができる（R/Python）</li>
+<li>変数を使ってデータを保存・再利用できる</li>
+<li>文字列を扱える（結合・抽出・整形）</li>
+<li>条件によって処理を変えられる</li>
+<li>作業ディレクトリを理解してファイルを扱える</li>
+<li>簡単なプログラムを自分で書いて実行できる</li>
+</ul>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+ゴールを明確にします。今日の基準は「それっぽく書ける」ではなく、「自分の手で動かせる」です。RとPythonで同じ結果が出ることも意識します。
+<p>特に、作業ディレクトリとエラー対応は、現場の“生存スキル”です。ここを今日のうちに身につけましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>なぜ R と Python の両方を学ぶのか</h2>
+<ul>
+<li><strong>R</strong>：統計分析・可視化に強い</li>
+<li><strong>Python</strong>：機械学習・汎用プログラミングに強い</li>
+<li>両方を学ぶと、 <strong>本質（考え方）</strong> が見える<br>
+→ 片方が分かれば、もう片方もだいたい読める</li>
+</ul>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+データサイエンスでは、RもPythonも現役です。Rは統計・可視化の文化が強く、Pythonは機械学習やアプリ作りまで広いです。
+<p>ただ、ここで大事なのは「二言語を暗記する」ではなく、「考え方を共通化する」ことです。計算、変数、条件分岐などは、言語が違っても同じ発想で書けます。そこを狙って、両方を並走します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.1.0 学習準備：環境の確認</h2>
+<ul>
+<li><strong>OS</strong>：Windows + WSL2（Ubuntu 24.04）</li>
+<li><strong>エディタ</strong>：VS Code</li>
+<li><strong>ターミナル</strong>：VS Code 統合ターミナル</li>
+</ul>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+まず環境確認です。今日はWSL2上のUbuntuで作業します。VS Codeの統合ターミナルを開いてください。
+<p>ここから先は、ターミナルでコマンドを打つ場面が頻繁にあります。講義中に「ターミナルが見つからない」という人が出やすいので、今このタイミングで必ず開いてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>仮想環境の起動（venvc）</h2>
+<ol>
+<li>ターミナルを開く（VS Code）</li>
+<li><code>venvc</code> を実行</li>
+<li>プロンプトに <code>(class)</code> が付くのを確認</li>
+</ol>
+<p>確認（どちらでもOK）：</p>
+<pre><code class="language-bash">which python
+# /home/datasci/.venvs/class/bin/python ならOK
+</code></pre>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+次に仮想環境です。配布している環境では、必要なパッケージを“class環境”に入れています。ターミナルで venvc を実行してください。
+<p>目印はプロンプト先頭に (class) が付くこと。もし付かなくても、which python で /home/datasci/.venvs/class/bin/python が出れば有効です。</p>
+<p>ここで止めます。今、(class) が付いている人、手を挙げてください。付いていない人は声をかけます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業ディレクトリへ移動</h2>
+<p>目標：プロンプトが <code>~/work</code> になる<br>
+確認：</p>
+<pre><code class="language-bash">pwd
+# /home/datasci/work ならOK
+</code></pre>
+<p>移動：</p>
+<pre><code class="language-bash">cd /home/datasci/work
+</code></pre>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+次に“作業場所”です。ファイルは必ず /home/datasci/work に保存します。pwd で確認して、違っていたら cd で移動してください。
+<p>作業ディレクトリがずれると、後で「ファイルが見つからない」エラーの原因になります。地味ですが、今日の最重要ポイントの一つです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ファイル作成と実行</h2>
+<p>作成：</p>
+<pre><code class="language-bash">touch my3-1-01.py
+touch my3-1-01.R
+</code></pre>
+<p>実行：</p>
+<pre><code class="language-bash">python my3-1-01.py
+Rscript my3-1-01.R
+</code></pre>
+<p>ルール：拡張子（<code>.py</code> / <code>.R</code>）、日本語・空白は避ける</p>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+ファイルの作成と実行です。touch は空のファイルを作るコマンド。Pythonは python ファイル名、Rは Rscript ファイル名で実行します。
+<p>ファイル名は自由ですが、拡張子は必須です。日本語や空白は避けてください。OSやツールによって事故ります。</p>
+<p>ここで一回、全員：touch でファイルを作って、VS Codeのエクスプローラで見えるところまで確認しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R と Python：重要な相違点</h2>
+<div style="font-size: 0.9em;">
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>R</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代入</td>
+<td><code>&lt;-</code></td>
+<td><code>=</code></td>
+</tr>
+<tr>
+<td>真偽値</td>
+<td><code>TRUE</code> / <code>FALSE</code></td>
+<td><code>True</code> / <code>False</code></td>
+</tr>
+<tr>
+<td>論理積・和・否定</td>
+<td><code>&amp;</code> / <code>\|</code> / <code>!</code></td>
+<td><code>and</code> / <code>or</code> / <code>not</code></td>
+</tr>
+<tr>
+<td>インデックス開始</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>x[-1]</code> の意味</td>
+<td>1番目を除く</td>
+<td>後ろから1番目</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここが最初の落とし穴です。特に、代入記号と真偽値、そしてインデックス。これでRとPythonの結果がズレます。
+<p>今日の授業中も、「ズレたらまずこの表を疑う」を合言葉にします。スクショしておいてもいいです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>インデックス：数え方が違う</h2>
+<p>データ：<code>2, 3, 5, 7</code></p>
+<ul>
+<li><strong>R（1から）</strong>：1番目=2、2番目=3、…</li>
+<li><strong>Python（0から）</strong>：0番目=2、1番目=3、…</li>
+</ul>
+<p>覚え方：</p>
+<ul>
+<li>R → 人間の数え方（1,2,3…）</li>
+<li>Python → コンピュータの数え方（0,1,2…）</li>
+</ul>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+インデックスは必ず差が出ます。Rは1から、Pythonは0から。これだけは暗記です。
+<p>後の章で、配列やデータフレームを扱うときに毎回出てきます。今のうちに身体に入れてください。では確認：Pythonで「2番目」は、インデックスいくつですか？…そう、1です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.1.1 数値演算：基本の演算子</h2>
+<table>
+<thead>
+<tr>
+<th>演算</th>
+<th>R</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>足し算・引き算・掛け算・割り算</td>
+<td><code>+ - * /</code></td>
+<td><code>+ - * /</code></td>
+</tr>
+<tr>
+<td>整数の割り算</td>
+<td><code>%/%</code></td>
+<td><code>//</code></td>
+</tr>
+<tr>
+<td>余り</td>
+<td><code>%%</code></td>
+<td><code>%</code></td>
+</tr>
+<tr>
+<td>べき乗</td>
+<td><code>^</code></td>
+<td><code>**</code></td>
+</tr>
+</tbody>
+</table>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+まず計算です。四則演算は同じ記号ですが、整数の割り算とべき乗は違います。Rは %/% と ^、Pythonは // と **。
+<p>課題で「商と余り」を使う場面は頻出です。ここで手を動かして慣れましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>数値の注意点</h2>
+<h3>指数表記とコメント</h3>
+<p>指数表記：</p>
+<ul>
+<li><code>1.23e5</code> = 123000</li>
+<li><code>1.23e-3</code> = 0.00123</li>
+</ul>
+<p>コメント（メモ）：</p>
+<pre><code class="language-python"># これはコメント
+2 + 3  # 行の途中もOK
+</code></pre>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+指数表記はデータの世界で頻出です。e は “10のべき”だと思ってください。
+<p>あとコメント。コメントは“未来の自分へのメモ”です。課題提出でも、意図が分かるコメントは評価が上がります。とりあえず「何をしているか」を1行で書く癖をつけましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル1：基本的な計算</h2>
+<p><strong>Python</strong></p>
+<pre><code class="language-python">print(2 + 3)
+print(10 // 3, 10 % 3)
+print(2 ** 3)
+</code></pre>
+<p><strong>R</strong></p>
+<pre><code class="language-r">print(2 + 3)
+print(10 %/% 3); print(10 %% 3)
+print(2 ^ 3)
+</code></pre>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+サンプル1を実行します。ここは“動かして一致を確認する”時間です。PythonとRで同じ意味になるように書いています。
+<p>実行して、出力が同じになるか確認してください。違ったら、どこが違うかを見つけるのが学びです。特に、整数除算とべき乗は混乱ポイントです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル2</h2>
+<h3>複数の計算を組み合わせる</h3>
+<p>ポイント：<strong>括弧で意図を明示する</strong>（優先順位ミスを防ぐ）</p>
+<p>例：税込価格</p>
+<ul>
+<li>税抜価格 <code>price</code></li>
+<li>税率 <code>tax_rate</code></li>
+</ul>
+<p>計算：<code>price * (1 + tax_rate)</code></p>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+次は計算の組み合わせです。演算子の優先順位で事故が起きやすいので、括弧で意図を明示する癖をつけます。
+<p>税込価格の式は price * (1 + tax_rate)。この形は今後も何度も出ます。括弧が無いと、見た人が誤解します。機械は読めても、人が読めないコードになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.1.2 変数</h2>
+<h3>データを保存して再利用する</h3>
+<ul>
+<li>変数は「ラベル付きの箱」</li>
+<li>代入：Rは <code>&lt;-</code>、Pythonは <code>=</code></li>
+<li>表示：<code>print(...)</code> を使うのが安全</li>
+</ul>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから“プログラミングらしさ”が出ます。変数は値を保存して、あとで使うための箱です。
+<p>Rは x &lt;- 10、Pythonは x = 10。表示は print を基本にします。Rは行末だけでも表示されることがありますが、スクリプトとして実行すると表示されない場面があるので、入門の間は print で統一しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>変数名</h2>
+<h3>命名規則と my_ ルール</h3>
+<p>基本ルール：</p>
+<ul>
+<li>英数字と <code>_</code> を使う</li>
+<li>日本語・空白は避ける</li>
+<li>意味が分かる名前にする</li>
+</ul>
+<p>本書ルール：<strong>自分で作る変数は <code>my_</code> で始める</strong></p>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+変数名は、読みやすさを左右します。短すぎる名前や意味不明な名前は、後で自分が困ります。
+<p>本書のルールとして、皆さんが作る変数は my_ で始めます。これは“自分の変数”がどれかすぐ分かるようにするためです。課題でも徹底してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size: 0.8em;">
+<h2>サンプル3</h2>
+<h3>変数を使った計算（税計算）</h3>
+<p><strong>Python（例）</strong></p>
+<pre><code class="language-python">my_price = 1000
+my_tax_rate = 0.10
+my_total = my_price * (1 + my_tax_rate)
+print(my_total)
+</code></pre>
+<p><strong>R（例）</strong></p>
+<pre><code class="language-r">my_price &lt;- 1000
+my_tax_rate &lt;- 0.10
+my_total &lt;- my_price * (1 + my_tax_rate)
+print(my_total)
+</code></pre>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+変数を使った定番例、税計算です。税率は 10% なら 0.10。ここを 10 と書くと爆発します。
+<p>今、実行してみてください。出力が 1100 になればOKです。もし違うなら、変数の値を print して確認しましょう。デバッグの第一歩です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ミニ演習</h2>
+<h3>税計算を改変する（ペア）</h3>
+<p>ペアで相談して、次を満たすように改変：</p>
+<ol>
+<li>税率を <strong>8%</strong> に変更</li>
+<li>価格が 2000円以上なら <strong>5% 割引</strong>してから税込計算</li>
+<li>途中の値（割引後の価格）も <code>print</code> する</li>
+</ol>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで5分、ペアでミニ演習です。税率を変えるのは簡単ですが、割引を入れると“順序”が重要になります。割引→税込、です。
+<p>途中の値を print してください。途中経過を出すと、ミスの場所が特定しやすくなります。</p>
+<p>5分後に、誰か1組に「どこをどう変えたか」を口頭で説明してもらいます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.1.3 文字列：基本操作</h2>
+<ul>
+<li>文字列：<code>&quot;...&quot;</code> または <code>'...'</code></li>
+<li>長さ：Rは <code>nchar()</code>、Pythonは <code>len()</code></li>
+<li>結合：
+<ul>
+<li>R：<code>str_c()</code> / <code>paste()</code></li>
+<li>Python：<code>+</code> / <code>f&quot;...&quot;</code></li>
+</ul>
+</li>
+</ul>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+次は文字列です。データサイエンスは“文字”を扱う場面が多いです。ファイル名、列名、カテゴリ名、Webデータなど。
+<p>長さはRが nchar、Pythonが len。結合はRは str_c または paste。Pythonは + でもいいですが、よく使うのは f文字列です。後で例を見せます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>文字列の抽出・検索</h2>
+<p>例：<code>&quot;datasci@example.com&quot;</code></p>
+<ul>
+<li>部分文字列：
+<ul>
+<li>R：<code>substr(s, start, stop)</code></li>
+<li>Python：<code>s[start:stop]</code>（stopは含まない）</li>
+</ul>
+</li>
+<li>含むか：
+<ul>
+<li>R：<code>str_detect(s, &quot;ex&quot;)</code></li>
+<li>Python：<code>&quot;ex&quot; in s</code></li>
+</ul>
+</li>
+</ul>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+抽出と検索は超頻出です。メールアドレスからユーザ名を取りたい、ログから条件に合う行を抜きたい、など。
+<p>ここで一つ注意。Pythonのスライスは「終端を含まない」。Rのsubstrは終端を含みます。この違いはインデックスと並んで事故りやすいので、使うときは一回 print して確認しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル4</h2>
+<h3>文字列の基本操作</h3>
+<p><strong>Python（例）</strong></p>
+<pre><code class="language-python">my_first = &quot;Naruki&quot;
+my_last = &quot;Shirahama&quot;
+print(my_last + &quot; &quot; + my_first)
+print(len(my_last))
+</code></pre>
+<p><strong>R（例）</strong></p>
+<pre><code class="language-r">my_first &lt;- &quot;Naruki&quot;
+my_last &lt;- &quot;Shirahama&quot;
+print(str_c(my_last, &quot; &quot;, my_first))
+print(nchar(my_last))
+</code></pre>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+サンプル4を動かします。結合と長さです。Rは str_c、Pythonは + でやっていますが、Pythonは f文字列でも書けます。
+<p>ここで確認：名字と名前の順を入れ替えるとき、どこを変えればいいですか？変数名が分かりやすいと、変更箇所も一目で分かります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル5</h2>
+<h3>文字列のフォーマット（整形）</h3>
+<p><strong>Python（f文字列）</strong></p>
+<pre><code class="language-python">my_score = 92
+print(f&quot;あなたの得点は {my_score} 点です&quot;)
+</code></pre>
+<p><strong>R（sprintf）</strong></p>
+<pre><code class="language-r">my_score &lt;- 92
+print(sprintf(&quot;あなたの得点は %d 点です&quot;, my_score))
+</code></pre>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+表示を整える方法です。Pythonは f文字列が読みやすい。Rは sprintf が定番です。
+<p>データ分析では、結果を文章に埋め込む場面が多いです。グラフタイトル、ログ出力、レポート自動生成など。ここは実務でもそのまま使います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.1.4 論理値：True / False</h2>
+<ul>
+<li>比較：<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code> , <code>&gt;=</code></li>
+<li>論理演算：
+<ul>
+<li>R：<code>&amp;</code> / <code>\|</code> / <code>!</code></li>
+<li>Python：<code>and</code> / <code>or</code> / <code>not</code></li>
+</ul>
+</li>
+</ul>
+<p>注意：小数の <code>==</code> は危険なことがある</p>
+<ul>
+<li>R：<code>all.equal(a, b)</code></li>
+<li>Python：<code>math.isclose(a, b)</code></li>
+</ul>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+次は論理値です。条件分岐の材料になります。比較は両方とも似ています。
+<p>注意点は小数の比較です。計算誤差で、見た目は同じでも厳密には違うことがあります。入門では気にしすぎなくていいですが、ハマったときに all.equal / isclose を思い出してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>条件分岐：if / else</h2>
+<p><strong>Python</strong></p>
+<pre><code class="language-python">if my_score &gt;= 60:
+    print(&quot;合格&quot;)
+else:
+    print(&quot;不合格&quot;)
+</code></pre>
+<p><strong>R</strong></p>
+<pre><code class="language-r">if (my_score &gt;= 60) {
+  print(&quot;合格&quot;)
+} else {
+  print(&quot;不合格&quot;)
+}
+</code></pre>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+条件分岐です。Pythonはインデントが意味を持つので、そこがRと大きく違います。Rは波括弧です。
+<p>ここは“写経”でOKなので、まず動かしてください。合格・不合格の基準値を変えて、出力が変わることを確認しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ミニ演習：送料ルールを作る（個人→ペア）</h2>
+<p>ルール（例）：</p>
+<ul>
+<li>3000円以上：送料0円</li>
+<li>それ未満：送料500円</li>
+<li>合計（商品+送料）を表示する</li>
+</ul>
+<p>ヒント：<code>if</code> と変数を使う</p>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+2つ目のミニ演習です。まず個人で2分考えて、その後ペアで確認します。
+<p>実務では“ルール”をコードに落とす作業が多いです。条件分岐が書ければ、かなりの業務ロジックが実装できます。できた人は、閾値や送料を変えて動作確認してみてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.1.5 作業ディレクトリ</h2>
+<h3>ファイルの「現在地」</h3>
+<ul>
+<li>今いる場所：Rは <code>getwd()</code> / Pythonは <code>os.getcwd()</code></li>
+<li>移動：Rは <code>setwd()</code> / Pythonは <code>os.chdir()</code></li>
+<li>相対パスと絶対パス</li>
+<li><code>.</code>（今）と <code>..</code>（一つ上）</li>
+</ul>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここが本当に大事です。作業ディレクトリは「ファイルを探す基準点」です。読み込みや保存の失敗の大半は、ここが原因です。
+<p>まず今いる場所を確認し、必要なら移動する。相対パスと絶対パス、そして . と … の意味を押さえれば、ファイル操作で詰まる確率が激減します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル7</h2>
+<h3>ファイル一覧を取得する</h3>
+<p><strong>Python</strong></p>
+<pre><code class="language-python">import os
+print(os.listdir(&quot;.&quot;))
+</code></pre>
+<p><strong>R</strong></p>
+<pre><code class="language-r">print(list.files(&quot;.&quot;))
+</code></pre>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+サンプル7です。カレントディレクトリのファイル一覧を出します。これが出せると「ファイルがある・ない」がすぐ確認できます。
+<p>まず実行して、<a href="http://my3-1-01.py">my3-1-01.py</a> と my3-1-01.R が一覧に出るか確認してください。出ない人は、作業ディレクトリが違う可能性が高いです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.1.6 デバッグ</h2>
+<h3>エラーメッセージはヒント</h3>
+<p>Python（典型）：</p>
+<ul>
+<li><code>Traceback ...</code>（場所の追跡）</li>
+<li>最後の行が“核心”（例：<code>NameError</code>, <code>TypeError</code>）</li>
+</ul>
+<p>R（典型）：</p>
+<ul>
+<li><code>Error in ... : ...</code> の形式</li>
+</ul>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後にデバッグです。エラーは怖くありません。むしろ、どこが悪いかを教えてくれるメッセージです。
+<p>PythonはTracebackを上から読むのではなく、最後の行を見る。Rは「Error in どこで」→「理由」の順です。まず形式に慣れましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>よくあるエラー</h2>
+<ul>
+<li>変数名のタイプミス（NameError）</li>
+<li>インデントミス（Python）</li>
+<li>型の不一致（文字列+数値など）</li>
+<li>括弧・引用符の閉じ忘れ</li>
+<li><code>=</code> と <code>==</code> の混同</li>
+<li>モジュール/パッケージの読み込み忘れ（<code>import</code> / <code>library</code>）</li>
+<li>ファイルが見つからない（パス／作業ディレクトリ）</li>
+<li>0で割る</li>
+</ul>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+初心者がよく踏む地雷リストです。全部、授業中に必ず誰かが踏みます。大事なのは“踏んだ後の動き”です。
+<p>まずエラー文を読む。次に、該当行に飛ぶ。変数名や括弧、インデントを確認する。ファイルが見つからないなら、作業ディレクトリと一覧を確認する。この順番で対処します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>トラブルシューティングの型（今日の持ち帰り）</h2>
+<ol>
+<li>エラーの最後の行を読む（種類を特定）</li>
+<li>行番号に移動して、周辺を確認</li>
+<li><code>print</code> で途中の値を確認</li>
+<li>コメントアウトで切り分け</li>
+<li>そのまま検索（エラーメッセージ全文）</li>
+</ol>
+<p>次：統合演習と自己チェック（復習の道しるべ）</p>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、困ったときの“型”を渡します。これを守るだけで、解決速度が上がります。
+<p>今日の授業後は、サンプル1〜7をもう一回動かして、値を変えて挙動を確認してください。次に、自己チェックリストで穴を見つけて埋める。これが最短ルートです。</p>
+<p>次回以降は、この基礎の上に積み上げていきます。ここで詰まったままだと後が苦しいので、遠慮なく質問してください。お疲れさまでした。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
