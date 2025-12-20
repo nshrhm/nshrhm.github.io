@@ -1,3 +1,8 @@
+/* 見出しの大文字変換を無効化（reveal.jsテーマのデフォルトを上書き） */
+:root {
+  --r-heading-text-transform: none;
+}
+
 /* コードブロック全体の位置（外側の余白） */
 .reveal pre {
     margin-top: 40px;    /* 上の要素との距離 */
