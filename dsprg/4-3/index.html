@@ -1,0 +1,1502 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>第4章: 統計入門</h1>
+<!--
+スライド構成（90分想定・目安）
+- 01-05: 導入 (10分)
+- 06-12: 乱数・seed・ヒストグラムの直感 (15分)
+- 13-18: 一様乱数（離散/連続）(15分)
+- 19-26: 二項乱数・正規乱数 (25分)
+- 27-30: 差分整理・トラブルシュート・Copilot (10分)
+- 31-34: 演習・まとめ (15分)
+-->
+<h2>4.3 乱数とシミュレーション入門</h2>
+<p>データサイエンスプログラミング入門</p>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+おはようございます。今日は第4章3節、「乱数とシミュレーション入門」です。
+この回のゴールは、乱数を「ただのランダムな数」ではなく、シミュレーションの道具として使いこなせるようになることです。
+<p>Python と R を並行して進めます。両方で同じ現象を再現し、同じ結論に到達できるようにしましょう。
+途中で手を動かす場面を多めに入れます。わからなくなったら、その場で止めて質問してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日の内容</h2>
+<ol>
+<li>乱数（疑似乱数）とシミュレーションの考え方</li>
+<li>seed（タネ）と再現性</li>
+<li>ヒストグラムで分布の形をつかむ</li>
+<li>4種類の乱数：一様（離散/連続）、二項、正規</li>
+<li>Python/Rの関数対応と「つまずき」対策</li>
+<li>演習：サイコロ平均が回数で安定するか</li>
+</ol>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の流れです。前半は考え方の整理、後半は実装と確認です。
+特に大事なのは「ヒストグラムで形を見る」「seedで再現性を作る」の2点です。
+<p>後半の二項乱数は、RとPythonで引数の意味が混乱しがちなので、そこは丁寧にやります。
+最後は短い演習を入れて、「多数回で安定する」という感覚を平均値で確認して終わります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習目標（到達目標）</h2>
+<ul>
+<li>乱数を「シミュレーションに使う道具」として説明できる</li>
+<li>一様乱数（離散/連続）を作り、ヒストグラムで確認できる</li>
+<li>二項乱数（コイン投げ）を作り、分布の山を説明できる</li>
+<li>正規乱数を作り、平均・標準偏差と形の関係を説明できる</li>
+<li>Python/Rの乱数関数の対応関係を表で整理できる</li>
+<li>（発展）二項分布が正規分布に近づく直観を言葉で説明できる</li>
+</ul>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+到達目標をはっきりさせます。今日は「理屈を厳密に証明」する回ではありません。
+まずは直感を掴んで、PythonとRで再現できることが重要です。
+<p>特に、RとPythonで結果がズレたときに「なぜズレたのか」を説明できるようになると、実務でも強いです。
+この回では、ズレの原因として典型の「引数の意味」と「seed」を扱います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>前提と準備</h2>
+<p>できていると良いこと（最低限）</p>
+<ul>
+<li>VS Code の統合ターミナルが開ける</li>
+<li><code>/home/datasci/work</code> に移動し、ファイルを作って編集できる</li>
+<li><code>python ...</code> と <code>Rscript ...</code> を実行できる</li>
+<li>ヒストグラムは「回数を棒で見る図」だと知っている（詳しい理屈は後でOK）</li>
+</ul>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+前提はこの4つだけです。特に、ヒストグラムの理屈を完全に理解していなくても大丈夫です。
+今日は「見て、納得して、再現できる」ことを優先します。
+<p>もしターミナル操作が不安な人は、今のうちに隣の人と確認しておいてください。
+では次に、そもそも乱数が何の役に立つのか、目的から入ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>乱数は「シミュレーションの道具」</h2>
+<ul>
+<li>シミュレーション：現象をコンピュータで再現して調べる方法</li>
+<li>乱数：毎回同じにならない「ゆらぎ」を作るための材料</li>
+<li>ただし多くは <strong>疑似乱数</strong>（プログラムで生成・再現可能）</li>
+</ul>
+<p><strong>ポイント</strong></p>
+<ol>
+<li>多数回試すと「傾向（分布の形）」が見える</li>
+<li>ヒストグラムで形を目で確認する</li>
+</ol>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+乱数の役割は「ゆらぎ」を作ることです。現実はいつも同じ条件で起きませんよね。
+だから、コンピュータ上で「ゆらぐ世界」を作って、何が起きるかを確かめます。
+<p>ここで重要なのが2点です。1回の結果はブレます。でも多数回やると形が見えてきます。
+そして、その形をまずはヒストグラムで目で確認します。今日はこの筋トレをします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>seed（タネ）と再現性</h2>
+<ul>
+<li>seed を固定すると「同じ乱数列」を再現できる</li>
+<li>授業・レポート・検証では <strong>再現性が最重要</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>言語</th>
+<th>seedの例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td><code>rng = np.random.default_rng(2025)</code></td>
+</tr>
+<tr>
+<td>R</td>
+<td><code>set.seed(2025)</code></td>
+</tr>
+</tbody>
+</table>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+乱数なのに再現できる、というのが最初は不思議に見えるかもしれません。
+でも授業や研究では、同じ入力から同じ結果が出ることが大事です。これが再現性です。
+<p>Pythonは最近の流儀として、乱数生成器 rng を作ってから <a href="http://rng.xxx">rng.xxx</a> を呼びます。
+Rは set.seed() が定番です。今日は両方とも seed を 2025 にそろえて進めます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ヒストグラムで「形」を見る</h2>
+<ul>
+<li>ヒストグラム：値の出現回数（頻度）を棒で表す</li>
+<li>目的：<strong>均一っぽい</strong>／<strong>山がある</strong>／<strong>釣鐘型</strong> を直感で掴む</li>
+</ul>
+<p>今日見る形（予告）</p>
+<ul>
+<li>離散一様：棒がだいたい同じ高さ</li>
+<li>二項：真ん中付近に山</li>
+<li>正規：釣鐘型</li>
+</ul>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+ヒストグラムは、分布の形をつかむ最短ルートです。
+数学で厳密に理解するのは後でもできますが、まずは「こんな形になるんだ」を体に入れます。
+<p>今から見る形を先に言っておきます。サイコロはだいたい均一、コインの成功回数は真ん中に山、
+正規分布は釣鐘型です。これを目で見て確認していきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python/R：図は「表示」より「保存」</h2>
+<p>WSL2環境では、図の「画面表示」が詰まりやすい<br>
+→ まずは <strong>PNGに保存</strong> して VS Code で開く（確実）</p>
+<table>
+<thead>
+<tr>
+<th>言語</th>
+<th>保存の定番</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td><code>plt.savefig(&quot;x.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)</code></td>
+</tr>
+<tr>
+<td>R</td>
+<td><code>png(&quot;x.png&quot;); ...; dev.off()</code></td>
+</tr>
+</tbody>
+</table>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+WSL2では、plt.show() やRの通常プロットが表示できないことがよくあります。
+そこでこの回は「保存」を基本にします。PNGとして保存して、VS Codeで開いて確認します。
+<p>Pythonは savefig、Rは png() と dev.off() のセットです。
+このやり方は環境差に強いので、今後も使えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>表4.5：RとPythonの関数対応</h2>
+<div style="font-size: 0.5em;">
+<table>
+<thead>
+<tr>
+<th>種類</th>
+<th>R</th>
+<th>Python（その1）</th>
+<th>Python（その2：推奨）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一様（離散）</td>
+<td><code>sample</code></td>
+<td><code>np.random.choice</code> / <code>np.random.randint</code></td>
+<td><code>rng.integers</code></td>
+</tr>
+<tr>
+<td>一様（連続）</td>
+<td><code>runif</code></td>
+<td><code>np.random.random</code></td>
+<td><code>rng.random</code></td>
+</tr>
+<tr>
+<td>二項</td>
+<td><code>rbinom</code></td>
+<td><code>np.random.binomial</code></td>
+<td><code>rng.binomial</code></td>
+</tr>
+<tr>
+<td>正規</td>
+<td><code>rnorm</code></td>
+<td><code>np.random.normal</code></td>
+<td><code>rng.normal</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+この表が今日の地図です。Rは関数名が規則的で、runif, rbinom, rnorm のように覚えやすいです。
+Pythonは歴史的に書き方が複数ありますが、今日は「その2」の default_rng() を推奨として使います。
+<p>今後の授業やレポートでも、この表の対応が頭に入っていると迷いません。
+では、まず環境チェックを済ませて、実際に乱数を作っていきましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>環境チェック（WSL2 + venvc）</h2>
+<ol>
+<li>作業ディレクトリへ移動
+<ul>
+<li><code>cd /home/datasci/work</code></li>
+</ul>
+</li>
+<li>仮想環境を有効化
+<ul>
+<li><code>venvc</code></li>
+</ul>
+</li>
+<li>バージョン確認
+<ul>
+<li><code>python -V</code> / <code>Rscript --version</code></li>
+</ul>
+</li>
+<li>Pythonパッケージ確認
+<ul>
+<li><code>python -c &quot;import numpy, matplotlib; print('OK')&quot;</code></li>
+</ul>
+</li>
+</ol>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで一度、全員で環境チェックをします。ターミナルを開いて、スライドの順に打ってください。
+（教室を見回して）(class) が出ているか、PythonとRが動くかを確認します。
+<p>もし matplotlib でエラーが出たら、後のトラブルシュートで手順を示すので、いったんメモしておいてください。
+では次に、最初の乱数として「サイコロ」をやります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>乱数①：離散一様（サイコロ）</h2>
+<p>目的：1〜6が「だいたい同じ回数」出るかを見る</p>
+<ul>
+<li>1回1回はバラつく</li>
+<li>でも 1万回 くらい集めると <strong>均一っぽさ</strong> が見える</li>
+</ul>
+<p>期待する形：棒がだいたい同じ高さ（完全一致ではない）</p>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+サイコロを考えると直感がつかみやすいです。
+1回振った結果は当たり前に1つだけですが、1万回やると「出目の回数」が見えます。
+<p>ここで大事なのは、完全に同じ回数にはならないことです。乱数なのでブレます。
+でも、だいたい同じくらい、という“均一っぽさ”が見えればOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：サイコロ（1〜6）を1万回</h2>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(2025)
+x = rng.integers(low=1, high=7, size=10000)  # highは最大+1
+plt.hist(x, bins=6)
+plt.savefig(&quot;./figures/fig4-3-01_dice.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)
+</code></pre>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonのポイントは high=7 です。integers(low, high) の high は「含まない」ので最大値+1にします。
+ここを 6 にすると 1〜5 になってしまうので注意です。
+<p>みなさん、今このコードを my4-3-01_dice.py に保存して実行して、PNGができるか確認しましょう。
+できたら VS Code で画像を開いて、棒がだいたい均一かを見てください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-01: サイコロ（Python）</h2>
+<p><img src="./figures/fig4-3-01_dice.png" alt="fig4-3-01: サイコロ（Python）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-01: サイコロ（R）</h2>
+<p><img src="./figures/fig4-3-01_dice_R.png" alt="fig4-3-01: サイコロ（R）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：サイコロ（1〜6）を1万回</h2>
+<pre><code class="language-r">set.seed(2025)
+x &lt;- sample(x = 1:6, size = 10000, replace = TRUE)
+
+png(&quot;./figures/fig4-3-01_dice_R.png&quot;, width = 900, height = 650)
+hist(x, breaks = 0:6)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rは sample() を使います。replace=TRUE を忘れると「重複なし」になってしまうので、ここも注意です。
+hist() の breaks は区切りの指定で、サイコロは0:6のように整数の境界を置くと見やすいです。
+<p>今、R側も my4-3-01_dice.R で実行して、PNGができるか確認してください。
+PythonとRで棒の形がだいたい似ていればOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-01R: サイコロ（R）</h2>
+<p><img src="./figures/fig4-3-01_dice_R.png" alt="fig4-3-01R: サイコロ（R）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ここまでの確認（ミニ質問）</h2>
+<ul>
+<li>サイコロの棒は「完全に同じ」でしたか？<br>
+→ ならないのが普通（ブレがある）</li>
+<li>seed を変えたら形はどう変わりますか？<br>
+→ “違う乱数列”になるので棒の高さが少し変わる</li>
+</ul>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで30秒だけ考えてください。完全に同じ回数にならないのはなぜでしょう？
+（少し待って）そう、乱数だからです。むしろ完全一致していたら不自然です。
+<p>次に、seedを変えるとどうなるか。これは実験してみるのが一番早いです。
+手が早い人は seed を 2026 に変えて再実行し、画像が変わることを確認してみてください。
+では次に、0〜1の連続一様に進みます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>乱数②：連続一様（0〜1）</h2>
+<p>目的：0〜1の連続値が「だいたい均一」に出るかを見る</p>
+<ul>
+<li>離散と違って値は小数</li>
+<li>ヒストグラムの bins（区切り数）で見え方が変わる</li>
+</ul>
+<p>期待する形：0〜1でだいたい平ら</p>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+次は連続一様です。0から1までの小数が出ます。
+離散と違って、同じ値が出るとは限らないので「どの範囲に何個入ったか」をヒストグラムで見ます。
+<p>ここで重要なのが bins（区切り数）です。区切りを細かくするとギザギザに見えやすいです。
+今日は20くらいで、形を掴みます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：0〜1の一様乱数を1000個</h2>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(2025)
+x = rng.random(1000)
+plt.hist(x, bins=20)
+plt.savefig(&quot;./figures/fig4-3-02_uniform01.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)
+</code></pre>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonでは rng.random(n) が「0〜1の一様（連続）」です。シンプルですね。
+まずはこのコードを実行してPNGを確認してください。
+<p>棒が完全に平らでなくてもOKです。1000個しかないのでブレます。
+もし 10万個に増やしたら、もっと平らに近づくはずです。余裕があれば試してみてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-02: 一様(0-1)（Python）</h2>
+<p><img src="./figures/fig4-3-02_uniform01.png" alt="fig4-3-02: 一様(0-1)（Python）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-02: 一様(0-1)（R）</h2>
+<p><img src="./figures/fig4-3-02_uniform01_R.png" alt="fig4-3-02: 一様(0-1)（R）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：0〜1の一様乱数を1000個</h2>
+<pre><code class="language-r">set.seed(2025)
+x &lt;- runif(n = 1000, min = 0, max = 1)
+
+png(&quot;./figures/fig4-3-02_uniform01_R.png&quot;, width = 900, height = 650)
+hist(x, breaks = 20)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rは runif、名前がそのままですね。min と max も指定できます。
+こちらも実行して、Pythonと似た形になることを確認しましょう。
+<p>ここで質問です。breaksを 5 にしたらどう見えると思いますか？</p>
+<p>そう、もっと粗くなって「だいたい平ら」しかわからなくなります。
+bins/breaks は目的に合わせて調整します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-02R: 一様(0-1)（R）</h2>
+<p><img src="./figures/fig4-3-02_uniform01_R.png" alt="fig4-3-02R: 一様(0-1)（R）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>離散一様 vs 連続一様</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>離散一様（サイコロ）</th>
+<th>連続一様（0〜1）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>値</td>
+<td>整数（カテゴリ）</td>
+<td>小数（連続）</td>
+</tr>
+<tr>
+<td>ヒストグラム</td>
+<td>binsは少なめでOK</td>
+<td>binsで見え方が変わる</td>
+</tr>
+<tr>
+<td>直感</td>
+<td>「出目が均等」</td>
+<td>「範囲が均等」</td>
+</tr>
+</tbody>
+</table>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで整理します。離散一様はカテゴリが有限なので、棒の本数も決まっています。
+連続一様は値が連続なので、区切り方で見え方が変わります。
+<p>でも目的は同じで、「均一っぽいか」を確認することです。
+ここまでで、乱数の基本とヒストグラムの使い方が掴めてきたはずです。
+次は、より“統計っぽい”二項乱数に進みます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>乱数③：二項乱数</h2>
+<h3>（コイン投げ）</h3>
+<p>二項分布は「成功回数」を表す分布</p>
+<ul>
+<li>1回の実験：コインを100回投げる</li>
+<li>成功：表（確率 p=0.5）</li>
+<li>記録する値：表が出た回数（0〜100の整数）</li>
+</ul>
+<p>これを 1万回 繰り返すと、分布の形が見える</p>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+二項分布は「成功回数」です。コイン投げが典型例です。
+100回投げたら、表はだいたい50回前後になりますよね。でも毎回ぴったり50ではありません。
+<p>この「ブレ」を、1万回くらい繰り返して集めると、真ん中に山がある形が出ます。
+ここでRとPythonの引数が混乱ポイントなので、次のスライドで整理します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size: 0.6em;">
+<h2>RとPythonで引数の意味が違って見える</h2>
+<ul>
+<li><strong>やりたいこと</strong>:「100回投げたときの表の回数」を、1万回ぶん作りたい
+<br /><br /></li>
+</ul>
+<h3>変数名を分ける（重要）</h3>
+<ul>
+<li><code>trials</code>：1回の実験の試行回数（=100回投げる）</li>
+<li><code>repeats</code>：実験を何回繰り返すか（=1万回）
+<br /><br /></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>言語</th>
+<th>呼び方</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td><code>rng.binomial(n=trials, p=p, size=repeats)</code></td>
+<td><code>size</code> が“乱数の個数”</td>
+</tr>
+<tr>
+<td>R</td>
+<td><code>rbinom(n=repeats, size=trials, prob=p)</code></td>
+<td><code>n</code> が“乱数の個数”</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここが今日の最大の落とし穴です。Rの rbinom は rbinom(n, size, prob) で、
+n が「乱数の個数」、size が「試行回数」です。
+<p>一方、Pythonは binomial(n=試行回数, p=…, size=乱数の個数) という並びです。
+言葉で言うと、Rは「何個作る？」が先、Pythonは「1回の実験は何回？」が先、という感じです。</p>
+<p>混乱しないコツは、変数名を trials と repeats に分けること。これだけでバグが減ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：コイン投げ（100回の表の回数）を1万回</h2>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(2025)
+
+trials = 100
+p = 0.5
+repeats = 10000
+
+x = rng.binomial(n=trials, p=p, size=repeats)
+plt.hist(x, bins=40)
+plt.savefig(&quot;./figures/fig4-3-03_binom_coin.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)
+</code></pre>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python側はこれです。実行してPNGを確認してください。
+期待する形は、50付近が一番高くなって、左右に向かって低くなる山型です。
+<p>ここで確認質問です。山の頂点が必ず50になると思いますか？
+（少し待って）必ずではありません。試行回数や乱数のブレで少しズレます。
+でも中心がだいたい50付近ならOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-03: 二項（Python）</h2>
+<p><img src="./figures/fig4-3-03_binom_coin.png" alt="fig4-3-03: 二項（Python）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-03: 二項（R）</h2>
+<p><img src="./figures/fig4-3-03_binom_coin_R.png" alt="fig4-3-03: 二項（R）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：コイン投げ（100回の表の回数）を1万回</h2>
+<pre><code class="language-r">set.seed(2025)
+
+trials &lt;- 100
+p &lt;- 0.5
+repeats &lt;- 10000
+
+x &lt;- rbinom(n = repeats, size = trials, prob = p)
+
+png(&quot;./figures/fig4-3-03_binom_coin_R.png&quot;, width = 900, height = 650)
+hist(x, breaks = 40)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+R側も同じ形になるはずです。n=repeats で「乱数を1万個作る」、
+size=trials で「1個の乱数は100回投げた成功回数」を意味します。
+<p>PythonとRで似たヒストグラムになったでしょうか。
+ここで詰まった人は、引数の意味が入れ替わっていないかをまず疑ってください。
+次に、二項が正規に近づく直感に少し触れます（発展です）。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-03R: 二項（R）</h2>
+<p><img src="./figures/fig4-3-03_binom_coin_R.png" alt="fig4-3-03R: 二項（R）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>（発展）二項 → 正規に近づく直感</h2>
+<ul>
+<li>trials（試行回数）が大きいほど、分布は「釣鐘型」に近づく</li>
+<li>これは中心極限定理（CLT）につながる入口</li>
+</ul>
+<p>今日の立ち位置：</p>
+<ul>
+<li>証明はしない</li>
+<li>「試行回数を増やすと形が滑らかで釣鐘っぽい」を言葉で説明できればOK</li>
+</ul>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+これは発展です。二項分布は、試行回数が大きくなると正規分布に近づく、という有名な話があります。
+今日の段階では、証明は不要です。実験で体感できれば十分です。
+<p>手が早い人は、trialsを 1000 にして同じことをやってみてください。
+ヒストグラムがより滑らかで釣鐘っぽく見えるはずです。
+では次に、正規乱数そのものを生成してみます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>乱数④：正規乱数（平均と標準偏差で形が決まる）</h2>
+<p>正規分布（釣鐘型）は、主に2つで決まる</p>
+<ul>
+<li>平均（中心）</li>
+<li>標準偏差（散らばり）</li>
+</ul>
+<p>例：平均50、標準偏差5 の正規乱数を1万個</p>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+正規分布は、統計で最もよく出てくる分布の一つです。
+形は「平均」と「標準偏差」で決まる、というのが大事なポイントです。
+<p>今日は平均50、標準偏差5で生成して、ヒストグラムが釣鐘型になることを確認します。
+二項で見た「釣鐘っぽさ」とつながる感覚も持てると良いです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：正規乱数（mean=50, sd=5）を1万個</h2>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(2025)
+x = rng.normal(loc=50, scale=5, size=10000)  # loc=平均, scale=標準偏差
+plt.hist(x, bins=40)
+plt.savefig(&quot;./figures/fig4-3-04_normal_hist.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)
+</code></pre>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonは normal(loc, scale, size) です。scale が標準偏差で、分散ではありません。
+ここも混乱ポイントなので注意してください。
+<p>実行してPNGを開くと、釣鐘型が見えるはずです。
+余裕があれば scale=10 にして、散らばりが広がることも確認してみてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-04: 正規（Python）</h2>
+<p><img src="./figures/fig4-3-04_normal_hist.png" alt="fig4-3-04: 正規（Python）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-04: 正規（R）</h2>
+<p><img src="./figures/fig4-3-04_normal_hist_R.png" alt="fig4-3-04: 正規（Python）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：正規乱数（mean=50, sd=5）を1万個</h2>
+<pre><code class="language-r">set.seed(2025)
+x &lt;- rnorm(n = 10000, mean = 50, sd = 5)
+
+png(&quot;./figures/fig4-3-04_normal_hist_R.png&quot;, width = 900, height = 650)
+hist(x, breaks = 40)
+dev.off()
+</code></pre>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rは rnorm(n, mean, sd) と非常に素直です。こちらも釣鐘型になっているはずです。
+PythonとRの図を見比べて、中心が50付近、散らばりがだいたい同じくらいになっているかを確認しましょう。
+<p>ここまでで、4種類の乱数を作って、分布の形を目で確認する、という流れを一通りやりました。
+次に、差分をまとめて「混乱しやすい点」を固定します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>fig4-3-04R: 正規（R）</h2>
+<p><img src="./figures/fig4-3-04_normal_hist_R.png" alt="fig4-3-04R: 正規（R）"></p>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>PythonとRの差分まとめ</h2>
+<div style="font-size: 0.4em;">
+<table>
+<thead>
+<tr>
+<th>やりたいこと</th>
+<th>Python（推奨）</th>
+<th>R</th>
+<th>つまずきやすい点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>seed固定</td>
+<td><code>np.random.default_rng(2025)</code></td>
+<td><code>set.seed(2025)</code></td>
+<td>再現したいときは固定</td>
+</tr>
+<tr>
+<td>サイコロ</td>
+<td><code>rng.integers(1, 7, size=...)</code></td>
+<td><code>sample(1:6, size=..., replace=TRUE)</code></td>
+<td>Pythonの<code>high</code>は最大+1</td>
+</tr>
+<tr>
+<td>0〜1一様</td>
+<td><code>rng.random(n)</code></td>
+<td><code>runif(n, 0, 1)</code></td>
+<td>Pythonの<code>random</code>は0〜1</td>
+</tr>
+<tr>
+<td>二項</td>
+<td><code>rng.binomial(n=trials, p=p, size=repeats)</code></td>
+<td><code>rbinom(n=repeats, size=trials, prob=p)</code></td>
+<td><strong>Rの<code>n</code>は乱数の個数</strong></td>
+</tr>
+<tr>
+<td>正規</td>
+<td><code>rng.normal(loc=mean, scale=sd, size=...)</code></td>
+<td><code>rnorm(n=..., mean=..., sd=...)</code></td>
+<td><code>scale</code>は標準偏差</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+この表を見て、今日の混乱ポイントを固定しましょう。
+一番多い事故は、二項の引数を取り違えることと、Pythonの integers の high を間違えることです。
+<p>もう一度言います。Rの rbinom の n は「何個作る？」です。試行回数ではありません。
+Pythonの integers は high を含まないので最大+1にします。</p>
+<p>ここを押さえれば、かなり安定します。次は図の保存やヒストグラムの細かい差です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ヒストグラムと図保存：差分</h2>
+<div style="font-size: 0.7em;">
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>Python</th>
+<th>R</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ヒストグラム</td>
+<td><code>plt.hist(x, bins=...)</code></td>
+<td><code>hist(x, breaks=...)</code></td>
+</tr>
+<tr>
+<td>図保存</td>
+<td><code>plt.savefig(&quot;x.png&quot;, ...)</code></td>
+<td><code>png(&quot;x.png&quot;); ...; dev.off()</code></td>
+</tr>
+<tr>
+<td>よくあるミス</td>
+<td><code>plt.show()</code> に頼って表示できない</td>
+<td><code>dev.off()</code> を忘れて空画像</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+ヒストグラム自体は両方とも簡単ですが、引数名が違います。
+Pythonは bins、Rは breaks。どちらも「区切り方」です。
+<p>Rで一番多いのは dev.off() の書き忘れです。これを忘れると、画像が保存されなかったり空になったりします。
+Pythonは plt.show() で詰まりがちなので、この授業では保存に寄せます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>よくあるつまずき</h2>
+<ul>
+<li>Python：<code>ModuleNotFoundError: No module named 'matplotlib'</code><br>
+→ <code>python -m pip install -U matplotlib numpy</code></li>
+<li>WSL2で図が表示されない<br>
+→ <code>savefig()</code> で保存してVS Codeで開く（推奨）</li>
+<li>R：画像が空／更新されない<br>
+→ <code>dev.off()</code> を忘れていないか確認</li>
+<li>二項の引数が混乱<br>
+→ <code>trials</code>（試行回数）と <code>repeats</code>（実験回数）に分ける</li>
+<li>毎回結果が違う<br>
+→ seed を固定する（再現性）</li>
+</ul>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは実務でも役に立つチェックリストです。
+エラーが出たら、まずは最小例に戻って動かす。その上で1つずつ条件を変える、が基本です。
+<p>特に、毎回結果が違うのは「バグ」ではなく乱数の性質です。
+比較したいなら seed を固定する。この発想は今後ずっと使います。
+次に、Copilotをどう使うと効率が上がるかも軽く触れます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>GitHub Copilot活用（方針）</h2>
+<p>Copilotは「答え」ではなく <strong>実装速度を上げる相棒</strong></p>
+<ul>
+<li>まず「最小で動く例」を作らせる</li>
+<li>自分で短く削って、変数名を整える</li>
+<li>実行して結果（PNG/数値）で検証する</li>
+</ul>
+<p>今日の鉄則</p>
+<ul>
+<li>期待する形を先に文章で書く（均一／山／釣鐘）</li>
+<li>結果が違ったら、seed・引数・保存先を疑う</li>
+</ul>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotは便利ですが、出てきたコードをそのまま信じると危険です。
+最小例を作らせて、あなたが理解できる形に削って整える、という使い方が一番安全で速いです。
+<p>特に乱数は、引数が1つずれるだけで意味が変わります。
+だから「期待する形」を先に言語化して、結果と照合する、という習慣をつけてください。
+ではここから演習に入ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>演習：サイコロ平均は回数で安定するか</h2>
+<p>目的：<br>
+「1回はブレるが、多数回で安定する」感覚を <strong>平均値</strong> で確かめる</p>
+<p>やること：<br>
+サイコロ（1〜6）を N 回振り、平均を計算する</p>
+<ul>
+<li>N = 100, 1000, 10000</li>
+<li>seed を固定（Python/R両方）</li>
+</ul>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に演習です。ヒストグラムだけでなく、数値でも「多数回で安定」を体験します。
+サイコロの理論平均は 3.5 です。Nが増えると、平均が3.5に近づく傾向が見えるはずです。
+<p>ここから5分、隣の人と相談しながら進めてください。
+終わった人は、結果をMarkdown表にまとめるところまでやってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>演習</h2>
+<p>作業フォルダ：<code>ex4-3/</code> を作る</p>
+<ul>
+<li><code>ex4-3-01_dice_mean.py</code></li>
+<li><code>ex4-3-01_dice_mean.R</code></li>
+<li><code>ex4-3-01_result.md</code>（Markdown表＋考察3〜6行）</li>
+</ul>
+<p>評価の観点</p>
+<ul>
+<li>Python/R両方で動く</li>
+<li>seed固定、変数名が読みやすい</li>
+<li>平均が3.5付近へ近づく傾向が説明できる</li>
+</ul>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+提出物は3つです。PythonとRのコード、それから結果をまとめたMarkdownです。
+考察は短くてOKですが、「期待と一致した点」と「ブレが残る理由」を書けると満点です。
+<p>時間が足りない場合は、まずコードが動くことを最優先にしてください。
+表と考察は宿題としても構いません。では、解答例の雛形を示します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>解答例（雛形）：Python</h2>
+<pre><code class="language-python">import numpy as np
+
+rng = np.random.default_rng(2025)
+
+Ns = [100, 1000, 10000]
+for N in Ns:
+    x = rng.integers(low=1, high=7, size=N)
+    print(&quot;N =&quot;, N, &quot;mean =&quot;, float(x.mean()))
+</code></pre>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonの雛形です。ポイントは、Nごとに乱数を作って平均を出すだけ。
+ここでは簡単にprintしていますが、必要なら小数点の桁数を整えても良いです。
+<p>注意点は2つ。high=7、そして seed を固定していることです。
+出力が出たら、Nが大きいほど3.5に近づくかを確認してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>解答例（雛形）：R</h2>
+<pre><code class="language-r">set.seed(2025)
+
+Ns &lt;- c(100, 1000, 10000)
+for (N in Ns) {
+  x &lt;- sample(x = 1:6, size = N, replace = TRUE)
+  cat(&quot;N =&quot;, N, &quot;mean =&quot;, mean(x), &quot;\n&quot;)
+}
+</code></pre>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rの雛形です。こちらも同様にNごとに平均を出します。
+`replace=TRUE` と seed 固定を忘れないでください。
+<p>この演習の狙いは、平均が理論値3.5に近づくという“傾向”を確認することです。
+完全一致を期待しない、というのが乱数リテラシーです。
+では最後にまとめます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日のまとめ</h2>
+<ul>
+<li>乱数は「シミュレーションの道具」</li>
+<li>1回はブレるが、多数回で分布の形が見える</li>
+<li>seed固定で再現性を作る（授業・研究・実務の基本）</li>
+<li>4種類をPython/Rで生成できた
+<ul>
+<li>離散一様、連続一様、二項、正規</li>
+</ul>
+</li>
+<li>つまずきポイントは「引数の意味」と「図の保存」</li>
+</ul>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後にまとめです。乱数は怖いものではなく、シミュレーションの道具です。
+多数回集めると形が見える。再現したいときは seed を固定する。これが今日の核です。
+<p>次回以降、この「分布の形」を前提にして、確率や統計の話に入っていきます。
+今日作ったコードと画像は、復習にそのまま使えるので保存しておいてください。
+質問があればここで受け付けます。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
