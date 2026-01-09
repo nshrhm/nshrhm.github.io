@@ -106,18 +106,52 @@ rng = np.random.default_rng(2025)  # 乱数のタネ（再現性のため）
 x = rng.integers(low=1, high=7, size=10000)  # 1〜6（highは「最大+1」）
 plt.hist(x, bins=6)
 
-plt.savefig("fig4-3-01_dice.png", dpi=150, bbox_inches="tight")
-print("saved: fig4-3-01_dice.png")
+plt.savefig("my4-3-01_dice.png", dpi=150, bbox_inches="tight")
+print("saved: my4-3-01_dice.png")
 ```
 
 #### 実行
 ```bash
 python my4-3-01_dice.py
-#> saved: fig4-3-01_dice.png
+#> saved: my4-3-01_dice.png
 ```
 
 > 補足：`np.random.randint(...)` や `np.random.choice(...)` でも作れます。  
 > ただし初心者のうちは、まず `rng = np.random.default_rng()` から始めると迷いにくいです。
+
+---
+
+## Rでやってみる
+Pythonと同じ学習目標・同じ難易度で進めます。  
+Rは「乱数の関数名が規則的」なのが特徴です（`runif`, `rbinom`, `rnorm` など）。
+
+### サンプル1：一様乱数（離散）でサイコロ（1〜6）を1万回
+- ファイル名：`my4-3-01_dice.R`
+
+#### ファイル作成
+```bash
+touch my4-3-01_dice.R
+code my4-3-01_dice.R
+```
+
+#### コード（R）
+```r
+set.seed(2025)  # 乱数のタネ（再現性のため）
+
+x <- sample(x = 1:6, size = 10000, replace = TRUE)
+
+png("my4-3-01_dice_R.png", width = 900, height = 650)
+hist(x, breaks = 0:6)
+dev.off()
+
+cat("saved: my4-3-01_dice_R.png\n")
+```
+
+#### 実行
+```bash
+Rscript my4-3-01_dice.R
+#> saved: my4-3-01_dice_R.png
+```
 
 ---
 
@@ -141,14 +175,44 @@ rng = np.random.default_rng(2025)
 x = rng.random(1000)  # 0〜1の一様乱数（連続）
 plt.hist(x, bins=20)
 
-plt.savefig("fig4-3-02_uniform01.png", dpi=150, bbox_inches="tight")
-print("saved: fig4-3-02_uniform01.png")
+plt.savefig("my4-3-02_uniform01.png", dpi=150, bbox_inches="tight")
+print("saved: my4-3-02_uniform01.png")
 ```
 
 #### 実行
 ```bash
 python my4-3-02_uniform01.py
-#> saved: fig4-3-02_uniform01.png
+#> saved: my4-3-02_uniform01.png
+```
+
+---
+
+### サンプル2：一様乱数（連続）で0〜1を1000個
+- ファイル名：`my4-3-02_uniform01.R`
+
+#### ファイル作成
+```bash
+touch my4-3-02_uniform01.R
+code my4-3-02_uniform01.R
+```
+
+#### コード（R）
+```r
+set.seed(2025)
+
+x <- runif(n = 1000, min = 0, max = 1)
+
+png("my4-3-02_uniform01_R.png", width = 900, height = 650)
+hist(x, breaks = 20)
+dev.off()
+
+cat("saved: my4-3-02_uniform01_R.png\n")
+```
+
+#### 実行
+```bash
+Rscript my4-3-02_uniform01.R
+#> saved: my4-3-02_uniform01_R.png
 ```
 
 ---
@@ -179,117 +243,19 @@ repeats = 10000   # 実験の繰り返し回数（乱数の数）
 x = rng.binomial(n=trials, p=p, size=repeats)  # 「表の回数」がrepeats個
 plt.hist(x, bins=40)
 
-plt.savefig("fig4-3-03_binom_coin.png", dpi=150, bbox_inches="tight")
+plt.savefig("my4-3-03_binom_coin.png", dpi=150, bbox_inches="tight")
 print("min, mean, max:", int(x.min()), float(x.mean()), int(x.max()))
-print("saved: fig4-3-03_binom_coin.png")
+print("saved: my4-3-03_binom_coin.png")
 ```
 
 #### 実行
 ```bash
 python my4-3-03_binom_coin.py
 #> min, mean, max: ... ... ...
-#> saved: fig4-3-03_binom_coin.png
+#> saved: my4-3-03_binom_coin.png
 ```
 
 > 数値（min/mean/max）は乱数なので環境で多少変わります。大事なのは、ヒストグラムが中央（だいたい50付近）で山になることです。
-
----
-
-### サンプル4：正規乱数（平均50、標準偏差5）を1万個
-- ファイル名：`my4-3-04_normal_hist.py`
-- ねらい：平均と標準偏差を指定すると、釣鐘型の分布が得られることを確認
-
-#### ファイル作成
-```bash
-touch my4-3-04_normal_hist.py
-code my4-3-04_normal_hist.py
-```
-
-#### コード（Python）
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-
-rng = np.random.default_rng(2025)
-
-x = rng.normal(loc=50, scale=5, size=10000)  # 平均=50, 標準偏差=5
-plt.hist(x, bins=40)
-
-plt.savefig("fig4-3-04_normal_hist.png", dpi=150, bbox_inches="tight")
-print("mean, std:", float(x.mean()), float(x.std(ddof=0)))
-print("saved: fig4-3-04_normal_hist.png")
-```
-
-#### 実行
-```bash
-python my4-3-04_normal_hist.py
-#> mean, std: ... ...
-#> saved: fig4-3-04_normal_hist.png
-```
-
----
-
-## Rでやってみる
-Pythonと同じ学習目標・同じ難易度で進めます。  
-Rは「乱数の関数名が規則的」なのが特徴です（`runif`, `rbinom`, `rnorm` など）。
-
-### サンプル1：一様乱数（離散）でサイコロ（1〜6）を1万回
-- ファイル名：`my4-3-01_dice.R`
-
-#### ファイル作成
-```bash
-touch my4-3-01_dice.R
-code my4-3-01_dice.R
-```
-
-#### コード（R）
-```r
-set.seed(2025)  # 乱数のタネ（再現性のため）
-
-x <- sample(x = 1:6, size = 10000, replace = TRUE)
-
-png("fig4-3-01_dice_R.png", width = 900, height = 650)
-hist(x, breaks = 0:6)
-dev.off()
-
-cat("saved: fig4-3-01_dice_R.png\n")
-```
-
-#### 実行
-```bash
-Rscript my4-3-01_dice.R
-#> saved: fig4-3-01_dice_R.png
-```
-
----
-
-### サンプル2：一様乱数（連続）で0〜1を1000個
-- ファイル名：`my4-3-02_uniform01.R`
-
-#### ファイル作成
-```bash
-touch my4-3-02_uniform01.R
-code my4-3-02_uniform01.R
-```
-
-#### コード（R）
-```r
-set.seed(2025)
-
-x <- runif(n = 1000, min = 0, max = 1)
-
-png("fig4-3-02_uniform01_R.png", width = 900, height = 650)
-hist(x, breaks = 20)
-dev.off()
-
-cat("saved: fig4-3-02_uniform01_R.png\n")
-```
-
-#### 実行
-```bash
-Rscript my4-3-02_uniform01.R
-#> saved: fig4-3-02_uniform01_R.png
-```
 
 ---
 
@@ -317,19 +283,53 @@ repeats <- 10000  # 実験の繰り返し回数（n）
 
 x <- rbinom(n = repeats, size = trials, prob = p)
 
-png("fig4-3-03_binom_coin_R.png", width = 900, height = 650)
+png("my4-3-03_binom_coin_R.png", width = 900, height = 650)
 hist(x, breaks = 40)
 dev.off()
 
 cat("min, mean, max:", min(x), mean(x), max(x), "\n")
-cat("saved: fig4-3-03_binom_coin_R.png\n")
+cat("saved: my4-3-03_binom_coin_R.png\n")
 ```
 
 #### 実行
 ```bash
 Rscript my4-3-03_binom_coin.R
 #> min, mean, max: ... ... ...
-#> saved: fig4-3-03_binom_coin_R.png
+#> saved: my4-3-03_binom_coin_R.png
+```
+
+---
+
+### サンプル4：正規乱数（平均50、標準偏差5）を1万個
+- ファイル名：`my4-3-04_normal_hist.py`
+- ねらい：平均と標準偏差を指定すると、釣鐘型の分布が得られることを確認
+
+#### ファイル作成
+```bash
+touch my4-3-04_normal_hist.py
+code my4-3-04_normal_hist.py
+```
+
+#### コード（Python）
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(2025)
+
+x = rng.normal(loc=50, scale=5, size=10000)  # 平均=50, 標準偏差=5
+plt.hist(x, bins=40)
+
+plt.savefig("my4-3-04_normal_hist.png", dpi=150, bbox_inches="tight")
+print("mean, std:", float(x.mean()), float(x.std(ddof=0)))
+print("saved: my4-3-04_normal_hist.png")
+```
+
+#### 実行
+```bash
+python my4-3-04_normal_hist.py
+#> mean, std: ... ...
+#> saved: my4-3-04_normal_hist.png
 ```
 
 ---
@@ -349,19 +349,19 @@ set.seed(2025)
 
 x <- rnorm(n = 10000, mean = 50, sd = 5)
 
-png("fig4-3-04_normal_hist_R.png", width = 900, height = 650)
+png("my4-3-04_normal_hist_R.png", width = 900, height = 650)
 hist(x, breaks = 40)
 dev.off()
 
 cat("mean, sd:", mean(x), sd(x), "\n")
-cat("saved: fig4-3-04_normal_hist_R.png\n")
+cat("saved: my4-3-04_normal_hist_R.png\n")
 ```
 
 #### 実行
 ```bash
 Rscript my4-3-04_normal_hist.R
 #> mean, sd: ... ...
-#> saved: fig4-3-04_normal_hist_R.png
+#> saved: my4-3-04_normal_hist_R.png
 ```
 
 ---
