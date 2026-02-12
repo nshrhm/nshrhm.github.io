@@ -1,0 +1,1186 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>大学事務のための生成AI（LLM）</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="./css/style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="./images/logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h3>SD研修</h3>
+<h2>大学事務のための生成AI</h2>
+<h3>基礎と安全活用</h3>
+<br />
+<h4>Microsoft Copilot 365で「安全に」仕事を速くする</h4>
+<p>2026年2月20日(金) 14:00–15:00<br />
+<br /></p>
+<p>下関市立大学 データサイエンス学部<br />
+データサイエンス学科<br />
+白濵 成希</p>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+みなさんこんにちは。講師の白濵です。本日は「大学事務のための生成AI基礎と安全活用」と題しましてセミナーを実施します。今日の狙いは、生成AIを魔法としてではなく、業務の道具として速く・安全に使うための共通理解を持ち帰っていただくことです。前提として、実演は Microsoft Copilot 365 の Copilot Chat 中心で進めます。
+<p>途中で「それ、うちの部署だとどう使える？」が浮かんだらメモしておいてください。自部署のタスクに落とし込めればと思います。</p>
+<p>なお本研修は録画し、後日オンデマンド配信の予定です。では始めます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>今日のゴール（持ち帰り）</h2>
+<ol>
+<li>AIの得意/不得意を知る</li>
+<li>事故を防ぐ： <strong>入力・検証・責任分担</strong></li>
+<li>すぐ使える： <strong>プロンプトの型</strong></li>
+<li>事務の <strong>具体例</strong> を自部署に移植できる</li>
+</ol>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでの「AIを使える」は、1回うまくいくことではなく、再現できる型を持つことです。今日の持ち帰りは4つです。1. AIの得意不得意、2. 事故を防ぐ最小ルール（入力・検証・責任分担）、3. すぐ使えるプロンプトの型、4. 自分の部署での具体例への置き換えです。
+<p>重要なのは全部AIに任せるではなく、ひとが目的と判断を持って、AIに下書き・整理を手伝わせるという役割分担です。</p>
+<p>特に安全性は重要です。禁止入力（個人情報・機密・未公開情報）と、出力の検証（一次情報・原本・規程で確認）をセットで覚えてください。</p>
+<p>では、この流れに沿って進めます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>今日の流れ</h2>
+<ol>
+<li>生成AI(LLM)とは</li>
+<li>AIの得意と不得意</li>
+<li>安全活用</li>
+<li>プロンプト</li>
+<li>活用例</li>
+<li>業務活用を考える</li>
+<li>Q&amp;A</li>
+</ol>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+まず最初に生成AI(LLM)の正体を押さえましょう。ここを誤解しないのが一番の近道です。次に「できる/できない」を整理して、みなさんと期待値を合わせます。そのうえで、安全活用の最小ルール（入力NG・検証・責任分担）を先に固めます。
+<p>後半は再現できるプロンプトの型を持ち帰るパートです。研修受講後には、ぜひ「自部署の1タスク」を題材にプロンプトを作ってみてください。今のうちに題材候補を1つメモしておくとよいでしょう。簡単な質問は途中でもOKです。深掘りが必要なものは最後のQ&amp;Aでまとめて扱います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>LLMをひと言でいうと</h2>
+<ul>
+<li>大量の文章から学んだパターンで<br>
+<strong>「次に来そうな言葉」を確率的に並べて生成</strong>する道具</li>
+<li>だから得意：<strong>文章の下書き・整理・言い換え</strong></li>
+<li>だから苦手：<strong>事実保証・最終判断</strong></li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+LLMは「文章を理解して正解を返す機械」というより、学習した文章パターンを使って「次に来そうな言葉」を作る仕組みです。なので強いのは、文章の下書き・言い換え・要約・箇条書き化・観点出しなど、文章作業の前半戦です。
+<p>逆に弱いのは、事実の保証や最終判断です。自信たっぷりに間違えること（もっともらしい嘘）があります。ここを押さえると、使い方がシンプルになります。LLMに「下書き・整理」を任せて、ひとが「確認・判断」を担当します。</p>
+<p>このあと安全活用で、確認のやり方（一次情報・原本・規程での検証）を具体的に扱います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot 365（今日の前提）</h2>
+<ul>
+<li>
+<p><strong>Copilot Chat中心</strong> で使い方を体験</p>
+</li>
+<li>
+<p>成果物は最終的には <strong>Word / Excel / PowerPoint / Outlook / Teams</strong> に移すとより効果的</p>
+</li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の実演は Copilot Chat を中心に進めます。まず「チャットで下書き」を作る体験を優先します。実務の成果物は最終的に Word/Excel/PowerPoint/Outlook/Teams に置くと、共有・体裁調整がしやすくなります。イメージは「チャットで叩き台をつくり、アプリで整える」。アプリでも Copilot は使用できますが、今回は省略します。どの出力も、そのまま送らず、最後は人が確認してから使いましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>“時短”が出やすいタスク</h2>
+<ul>
+<li>案内メールの下書き／トーン調整</li>
+<li>要約・箇条書きの作成（規程、通知、議事メモ）</li>
+<li>FAQ・返信テンプレの叩き台</li>
+<li>手順書・チェックリストの骨子</li>
+<li>リスク・抜け漏れ観点の洗い出し</li>
+</ul>
+<br />
+<p>完成品を作るのではなく、たたき台を速くつくる</p>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+最初に取り掛かるお試しは「文章の下書き」「要約」「箇条書きの作成」です。ここは部署を問わず効果が出やすいです。いきなり複雑な判断や個別対応から入ると事故りやすいので、まずは型がある作業から始めるのがおすすめです。
+<p>後半の演習では、この中から自部署のタスクに近いものを1つ選んで、プロンプトに落とし込みます。「完成品を作らせる」というより、「叩き台を速く作る」感覚で使いましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>苦手：事故りやすい領域</h2>
+<ul>
+<li><strong>個別対応 × 個人情報</strong>（成績、奨学金など）</li>
+<li><strong>合否・採否・評価</strong>（入試判定、人事評価…）</li>
+<li><strong>規程の断定</strong>（条文適用の可否を断言させない）</li>
+<li><strong>著作権・契約</strong>（そのまま外部発信しない）</li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+この領域は、AIに「判断」させないのが原則です。下書きや観点整理に留めます。個人情報・機密が絡むときは、入力しない／匿名化が前提です。規程や契約は「断言させない」。必ず一次情報（条文・要項・公式サイト）で確認します。対外発信や重要メールは、AIの文章をそのまま出さず、最終責任者のチェックを通しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>最重要：役割分担</h2>
+<ul>
+<li>Copilot：<strong>下書き・整理・観点出し</strong></li>
+<li>人：<strong>事実確認・判断・承認・対外責任</strong></li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotは「下書き・整理・観点出し」が得意です。ひとは「事実確認・判断・承認・対外責任」を持つ、が基本です。役割を分けると、うまくいかなかったときの立て直しも簡単になります。
+<p>「AIが言ったから」は理由になりません。最終成果ぶつは私たちの責任です。以降のスライドは、この役割分担を前提に「安全に使う型」を作ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>安全活用1：入力の最小ルール</h2>
+<p><strong>原則：個人情報・機密は入力しない</strong></p>
+<p>削除／置換（（学生名）（学籍番号））</p>
+<ul>
+<li>個人情報：氏名、学籍番号、成績、相談内容、医療・障がい など</li>
+<li>機密：入試未公開、採点基準、人事、懲戒、契約交渉、未公表研究 など</li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+原則は「個人情報・機密は入力しない。迷ったらいれない」です。使いたいときは「削除／置換」で匿名化します。（学生名）・（学籍番号）のようにプレースホルダにしましょう。これは、いれたい情報が「公開情報かどうか」を判断基準にします。公開されていない情報は基本NGです。迷ったら「一般的なテンプレ」「観点」「文章構造」だけ作らせる、に切り替えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>安全活用2：検証の基本動作</h2>
+<h3>出力を無条件に信用しない</h3>
+<ol>
+<li>一次情報確認（規程・要項・公式サイト・通知）</li>
+<li>出典要求（根拠箇所を言わせる）</li>
+<li>比較（3案出す → 差分を見る）</li>
+<li>レビュー（正確性/明確性/リスク）</li>
+<li>最終承認は人（外部発信は必ず）</li>
+</ol>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotの出力は「仮説」扱いです。必ず検証してから使います。コツは「一次情報に戻る」「根拠箇所を言わせる」「複数案を出させて比較する」の3つです。重要なメールや対外文書は、レビュー観点（正確性・明確性・リスク）で見直します。外に出す前の最終承認は ひと です。ここだけは絶対に省略しないでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>プロンプト3点セット</h2>
+<ol>
+<li><strong>目的</strong>：何を、誰に、何のために</li>
+<li><strong>材料</strong>：前提、対象、貼り付ける文章</li>
+<li><strong>制約</strong>：禁止、トーン、文字数、出力形式、要確認表示</li>
+</ol>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+プロンプトは長さより構造です。「目的」「材料」「制約」が揃うと再現性が上がります。
+目的：誰に何をしてほしいか。材料：前提や原文。制約：禁止・トーン・形式・要確認などです。
+制約に「勝手に補完しない」、「不明は［要確認］で残す」をいれると、安全性が上がります。
+後半のデモと演習は、この3点セットを基本型として使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>部署別の使いどころ（例）</h2>
+<ul>
+<li><strong>教務</strong>：諸連絡、シラバス変更通知の要点整理</li>
+<li><strong>学生支援</strong>：FAQ叩き台、窓口導線の案内</li>
+<li><strong>入試</strong>：要項要点、返信テンプレ</li>
+<li><strong>総務</strong>：アジェンダ、議事メモ→ToDo表</li>
+<li><strong>財務</strong>：手順書→チェックリスト</li>
+<li><strong>研究支援</strong>：ルール要点、迷う点の整理</li>
+<li><strong>広報</strong>：プレスリリース構成、要約、トーン調整</li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+どの部署でも共通して効くのは「文章の下書き」「要点整理」「テンプレ化」です。受講後に、ここから自分の部署の1タスクに置き換えて考えてみてください。ここにある例ですが、日付・窓口・規程などの「事実」は必ず一次情報で確認する前提です。「これなら明日から使えるかも」というものを参考に、自分の部署のタスクに落とし込んでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>365 Copilot</h2>
+<ul>
+<li><a href="https://m365.cloud.microsoft/">https://m365.cloud.microsoft/</a></li>
+</ul>
+<img src="./images/fig01.png" width="90%" alt ="Microsoft 365 Copilot（職場・学校向け）のホーム／新しいチャット画面" />
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+業務で使う Copilot の入口がこの画面です。左側に「検索」「ライブラリ」「作成」などのメニューがあり、ここを起点にチャットやエージェントを使います。真ん中の入力欄に普通の日本語で指示を書くと、下書き作成・要約・言い換えなどができます。右上に「自動」とあるプルダウンは、回答のスピードや深さ（考える長さ）を切り替える場所です。後ほど「安全に使えている状態か」の見分け方も説明します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot</h2>
+<img src="./images/fig02.png" width="70%" alt ="Microsoft Copilot（一般向け）の初期画面：Microsoft 365 Copilot とは別サービス" />
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+次に、こちらは Microsoft Copilot の画面です。名前が似ているので混同しやすいのですが、業務用である Microsoft 365 Copilot とは別物です。
+見分け方としては、まず「どこにログインしているか／どの入口か」が重要で、業務で扱う文面作成や要約などは 基本的に 365 Copilot 側で行う、というルールにしておくのが安全です。特に、業務情報を扱うときは「緑の盾（エンタープライズ データ保護）」が出る側を使う、という点を押さえてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>緑の盾</h2>
+<h3>エンタープライズ データ保護</h3>
+<h4>学習に使われない</h4>
+<img src="./images/fig03.png" width="40%" alt="緑の盾（エンタープライズ データ保護）：このチャットは保護された状態で動作" />
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは「安全に使えているか」を見分ける重要ポイントです。右上の緑の盾にマウスを合わせると、『このチャットにはエンタープライズ データ保護が適用されます』と出ます。
+この表示がある状態では、入力した内容と生成結果が、Microsoft 365 の業務向けの保護（暗号化やテナント分離など）の枠組みで扱われ、さらに「学習に使われない」ことが明記されています。
+<p>ただし、安全＝何でもいれてよいではありません。大学としてのルール（個人情報・機密はいれない／匿名化する／最終確認は「ひと」が行う）は、この表示があっても守る、というのが運用の基本です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>応答モード／モデルの切替</h2>
+<ul>
+<li><strong>応答モード</strong>: 考える長さ</li>
+<li><strong>モデル</strong>: 標準モデルか、最新モデル(GPT-5.2)か</li>
+</ul>
+<img src="./images/fig04.png" width="40%" alt="応答モード／モデルの切替（自動・クイック応答・Think Deeper・GPT-5.2）"/>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+応答モードは「考える長さ」であり、モデルは「頭脳の種類」です。迷ったらまずは「自動」でOK。短い下書きはクイック、論点整理はThink Deeperが向きます。
+<p>GPT5.2が選べる環境では、重要な文面や複雑な整理は GPT5.2とThink Deeper の組み合わせが無難です。ただし、モードより大事なのはプロンプトの目的・材料・制約です。後半でおすすめのテンプレを紹介します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>モデル／応答の深さ</h2>
+<ol>
+<li><strong>自動</strong>: 質問内容に応じて、Copilot が使うモデル
+<ul>
+<li>応答の深さを自動判断（迷ったら基本はこれ）</li>
+</ul>
+</li>
+<li><strong>クイック応答</strong>: シンプルで即時の回答を返す
+<ul>
+<li>短い下書きや要約など、スピード重視の場合</li>
+</ul>
+</li>
+<li><strong>Think Deeper</strong>: より思考時間を使って、丁寧な回答を作る
+<ul>
+<li>最大で数秒程度かかる</li>
+<li>複雑な整理や多段の検討用</li>
+</ul>
+</li>
+</ol>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+同じ Copilot でも、答え方を切り替えられます。右上のメニュー、自動が標準です。自動は、質問の難しさに応じて、Copilot が「さっと返すか／少し考えて返すか」を決めます。
+<p>急いでいるときは クイック応答にすると、短くテンポよく返ってきます。逆に、論点整理や手順の組み立てなど、丁寧さが欲しいときは Think Deeperに切り替えます。少し待ちますが、より考えた回答になりやすいです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>GPT‑5.2</h2>
+<ol start="4">
+<li><strong>クイック応答/Think Deeper</strong>
+<ul>
+<li>［さらに表示］から <strong>GPT‑5.2</strong> を明示的に選択</li>
+<li>指示追従、説明の明瞭さなどが改善</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><strong>速さ優先</strong>: クイック</li>
+<li><strong>品質優先</strong>: Think Deeper</li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+GPT5.2 が表示されている場合は、モデルを明示できます。GPT5.2は指示追従や推論面の改善が挙げられているので、重要な文面の下書きや、複雑な整理は GPT5.2とThink Deeper、叩き台は GPT5.2とクイック、という使い分けがよいでしょう。もちろん、どのモードでも最終確認は「ひと」が行ってください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>一時チャット</h2>
+<h3>履歴に残さず、メモリを使わない</h3>
+<img src="./images/fig05.png" width="50%" alt="一時チャット（Temporary Chat）：履歴に残さず、メモリを使わないチャット">
+<ul>
+<li>プロンプトを試してみるとき</li>
+<li>その場限りのアイデア出し</li>
+<li>(注) 完全に痕跡ゼロではない</li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+一時チャットは、自分の画面上の履歴を残さないで会話するモードです。ポイントは2つで、(1) チャット履歴に残らない／後で開けない、(2) メモリ（パーソナライズ）にも使われない、ということです。
+<p>なので、たとえば、その場限りのブレスト、試しにプロンプトを当ててみる、のように、会話スレッドを残す必要がないときに便利です。</p>
+<p>一方で、重要な注意として完全に痕跡ゼロではありません。組織の保持ポリシーに従って保持され、管理者がアクセスできる可能性がある、と明記されています。だからこそ、一時チャットでも、個人情報・機密はいれない／必要なら匿名化する、という基本ルールは同じにする方が無難です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>コンテンツの追加</h2>
+<div style="font-size: 1.0em;">
+<ul>
+<li>コンテンツ添付で、より具体的・詳細に回答</li>
+<li>画像やファイルについても質問可能
+<ul>
+<li>Word/PowerPoint 内の画像を含む</li>
+</ul>
+</li>
+</ul>
+<img src="./images/fig06.png" width="50%" alt="＋（コンテンツの追加）」から、作業コンテンツ／画像・ファイル／クラウドファイルを追加する">
+</div>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+「コンテンツの追加」が、Copilot に根拠に基づいて使うための重要なボタンです。入力欄の左下にある「作業コンテンツの追加」を押すと、Copilot に見せたい資料を追加できます。資料を添えると、より具体的で詳細な回答になりやすく、添付したファイルや画像について、そのまま質問できます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業コンテンツの追加</h2>
+<div style="font-size: 0.7em;">
+<ul>
+<li>Microsoft 365 上の <strong>作業コンテンツ</strong> を検索して選択
+<ul>
+<li>ファイル/メール/会議/人物など、関連する項目を挿入</li>
+<li><strong>どの資料を根拠にしてほしいかを明示</strong></li>
+</ul>
+</li>
+</ul>
+</div>
+<p><img src="./images/fig07.png" alt="作業コンテンツの追加"></p>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotを「当てずっぽう」にしないコツがこれです。根拠にしてほしい資料を明示して渡します。ファイルだけでなく、メール・会議・「ひと」も選べます。何を根拠にしたかが明確になると、回答のブレが減ります。添付したら「この資料のどこを見て」「どんな形式で出すか」をセットで指示すると実務レベルになります。添付する資料にも個人情報・機密はいれない／匿名化するのが原則です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>画像/ファイル/クラウド利用</h2>
+<div style="font-size: 0.6em;">
+<ul>
+<li>
+<p><strong>画像とファイルのアップロード</strong> : 端末のファイル選択画面を開いて、画像やファイルを複数アップロード</p>
+<ul>
+<li><strong>(注意) 選択したファイルのコピーが OneDrive for Business に送信される</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>クラウド ファイルを添付</strong>: OneDrive 上のファイルを選択して添付</p>
+<ul>
+<li>自分のファイルだけでなく、共有されたファイルや Teams 会議で共有されたファイルも選択できる</li>
+</ul>
+</li>
+<li>
+<p><strong>運用上の注意</strong>: 添付・アップロードする資料、個人情報や機密情報は入れない</p>
+<ul>
+<li>または匿名化</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+PCの中にあるPDFや画像などを、端末から直接アップロードできます。複数まとめてアップできます。ただし公式の案内では、ローカルファイルは参照のためにコピーが OneDrive for Business に送られるとされています。つまり、その場だけのつもりで上げても、扱いとしてはクラウド側にコピーができるので、アップしてよい資料かを必ず確認してください。
+<p>こちらは OneDrive から選んで添付します。自分の OneDrive だけでなく、共有されたファイルや Teams 会議で共有されたファイルも選べます。すでに OneDrive/Teams 上にある資料なら、基本はこちらがスムーズです。</p>
+<p>最後にコツです。資料を添付したら、プロンプトで「この資料のどこを見てほしいか（章・観点など）」「出力形式（箇条書き、表、メール文など）」をセットで指定すると、実務で使える出力が得られるでしょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Designerとエージェント</h2>
+<ul>
+<li><strong>Designer</strong>: 文章からAI生成画像を作成
+<ul>
+<li>画像の種類/サイズを選択、生成後に編集可能</li>
+</ul>
+</li>
+<li><strong>エージェント</strong>: Copilot の機能を拡張する仕組み</li>
+</ul>
+<p><img src="./images/fig08.png" alt="ツール」メニュー：Designer（説明から画像生成）／その他のエージェントを探す（エージェント ストア）"></p>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+このツールは、Copilot に「何をやらせたいか」をはっきり切り替えるための入口です。普通にチャットするだけでも動きますが、ツールを選ぶと 用途特化のモードで動いてくれます。
+<p>まず Designer。これは「説明から画像を作る」機能です。例えば、研修資料や学内案内で使うイメージ（概念図っぽい挿絵、背景画像など）が必要なときに、文章で指示して画像を生成できます。生成前にスタイルやサイズも選べるので、「用途に合う形」に寄せやすいのがポイントです。</p>
+<p>次に その他のエージェントを探す。これは Copilot を拡張する仕組みで、エージェント ストアから業務に合うエージェントを追加できます。エージェントは、検索やアクションなどを組み合わせて Copilot の機能を強化する、と説明されています。なお、どのエージェントが使えるかは組織の設定（管理者の許可）に依存するので、「使える範囲の中で選ぶ」という理解で大丈夫です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>演習</h1>
+<aside class="notes">
+これまでCopilotの基礎を学んできました。ここからは演習をはじめましょう。
+</aside>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>大学事務想定利用例</h2>
+<h3>(配布資料より)</h3>
+<ol>
+<li>【教務】履修登録・試験の案内メール下書き</li>
+<li>【教務】シラバス変更通知の要点整理</li>
+<li>【学生支援】奨学金/支援制度のFAQ叩き台</li>
+<li>【学生支援】相談受付の案内（窓口導線）</li>
+<li>【入試】募集要項の要点抜粋（広報用）</li>
+<li>【入試】問い合わせ返信テンプレ案</li>
+<li>【総務】会議議事メモ整理</li>
+<li>【総務】研修案内文・参加募集文の作成</li>
+<li>【財務】旅費精算手順の手順書たたき台</li>
+</ol>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+配布資料の例をもとにして、自分の部署のタスクに置き換えます。まずはこの中から「自分の業務に一番近いもの」を1つ選びます。迷ったら「メール下書き」か「要点整理」にしましょう。
+<p>実際に入力するのは、公開情報と一般ルールだけにしてください。個別学生・個別案件はいれません。目的は完成品を作ることではなく、再現できるプロンプトの型を持ち帰ることです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>1. プロンプトもAIに作成させる</h2>
+<h3>最強のプロンプトが得られる</h3>
+<pre><code class="language-text">大学事務職員として振舞ってください。
+以下のプロンプトを、365 Copilot (GPT-5.2 Thinking) の性能を
+最大限に発揮するように修正してください。
+
+履修登録・試験の案内メール下書き
+- 入力してよい情報（OK）: 制度説明、締切（公開情報）
+- 入力してはいけない情報（NG）: 個別学生の履修状況
+- 期待できる成果: 丁寧な案内文、箇条書き化
+- 注意点: 日付・窓口・URLは人が最終確認
+</code></pre>
+<ul>
+<li>前半：最強プロンプトをつくるおまじない</li>
+<li>後半：配布資料(大学事務想定利用例)からコピペ</li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+まず「プロンプトの下書き」をAIに作らせます。これが一番手堅く、品質が上がりやすいです。前半の「大学事務職員として振舞ってください〜」は、役割と目的を固定するためのおまじないです。後半に、OK/NGの入力や注意点（最終確認など）を必ず書きます。ここが安全運用の重要ポイントです。出てきた改善案は、そのまま採用せず、部署の実情（公開範囲など）に合わせて微調整します。
+<p>準備が整ったら、改善されたプロンプトを実際に投入して、出力を作ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>2. 入力確認・微調整</h2>
+<pre><code class="language-text">あなたは大学の教務課（学部教務・履修/試験担当）の事務職員です。
+以下の条件に従い、学生向けの「履修登録・試験」に関する案内メールの下書きを作成してください。
+
+# 目的
+学生が期限までに必要手続きを迷わず実行できるよう、丁寧で簡潔な案内メールを作る。
+
+# 入力してよい情報（OK）
+- 制度説明（一般的なルール、手続き手順、注意事項）
+- 締切・期間（公開情報として与えられたもの）
+- 手続き先（窓口名、場所、問い合わせ先：公開情報として与えられたもの）
+- 公式URL（公開情報として与えられたもの）
+
+# 入力してはいけない情報（NG）
+- 個別学生の履修状況・成績・出欠・学籍情報など、特定個人に紐づく情報
+- 推測による個別判断（「あなたは単位が足りないはず」等）
+- 未確認の締切・URL・窓口情報を“断定”して書くこと（不明ならプレースホルダで残す）
+
+# 文章トーン・品質基準
+- 丁寧（です・ます調）、事務連絡として過不足なく
+- 重要事項（締切・対象者・手順・注意点・問い合わせ）を明確化
+- 箇条書きを多用し、読みやすい構造にする
+- 可能なら「やることチェックリスト」を付ける
+- 1通のメールとして自然（件名・宛名・本文・署名まで）
+
+# 出力形式（必須）
+1) 件名（候補を2つ）
+2) 本文（以下の章立て）
+   - 冒頭：挨拶＋要旨（何の案内か）
+   - 対象者（例：〇年次/全学生/該当者 等。曖昧なら「対象者：［要確認］」）
+   - 手続き・試験の概要（短く）
+   - 期限・期間（太字で強調）
+   - 手順（番号付き）
+   - 注意事項（箇条書き）
+   - 問い合わせ先（窓口/メール/受付時間：不明なら［要確認］）
+   - 結び（協力依頼・締切再掲）
+   - 署名（教務課としての定型）
+3) 最終確認が必要な項目リスト（人が必ず確認すべき箇所を列挙）
+   - 日付／締切、窓口情報、URL、対象者条件、提出方法 など
+
+# 不足情報がある場合の扱い（必須）
+- 不足や曖昧な情報は勝手に補完せず、本文中に［要確認：◯◯］の形で残す
+- 併せて、作成後に「確認したい質問」を最大5つまで箇条書きで提示する
+
+# 入力（私が与える情報）
+- 送信対象：［例：全学部生／◯年次／該当者のみ 等］
+- 履修登録：［期間・方法（Web/窓口）・注意点］
+- 試験：［試験期間・追試/再試の扱い・持込可否の一般方針（ある場合）］
+- 公式URL：［あれば］
+- 窓口：［教務課、場所、受付時間、連絡先（あれば）］
+- 補足：［例：システム停止、エラー時対応、よくある質問 等］
+
+# ここから作成
+上記条件に従って、案内メール下書きを作成してください。
+</code></pre>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+これが「安全に書かせるための完成形プロンプト」です。テンプレとして使える形にしています。ポイントは3つです。1. OK/NG入力を明示していること、2. 不明な部分は勝手に補完せず「要確認」で残している点、3. 出力形式を固定している点です。
+<p>「入力（私が与える情報）」の部分は、公開情報だけをいれてください。個別学生の情報はいれないでください。Copilotの出力を見て、長すぎる/固すぎる/抜けがあるなどは、制約を足して改善します。次のスライドは出力結果です。出力結果はうのみにせず「出力の確認と微調整」を行いましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3. アウトプット確認・微調整</h2>
+<pre><code class="language-text">学生の皆さん
+
+教務課（履修・試験担当）です。
+「履修登録（履修申告）」および「試験」に関する重要な手続き・日程についてご案内します。
+期限を過ぎると受付できない場合がありますので、必ず期間内に対応してください。
+
+────────────────────────
+■ 対象者
+対象者：［要確認：送信対象（全学部生／○年次／該当者のみ 等）］
+※該当条件がある場合は、本メール末尾の注意事項も併せてご確認ください。
+
+■ 手続き・試験の概要（要点）
+・履修登録：［要確認：Web（システム名）／窓口／その他］にて、当該学期の履修科目を登録します。
+・試験：試験期間中に、各科目の試験（定期試験）を受験します。科目ごとの日時・教室等は別途案内（またはシラバス/掲示）をご確認ください。［要確認：周知方法（LMS/掲示/ポータル 等）］
+
+■ 期限・期間（重要）
+【履修登録期間】**［要確認：開始日］（［要確認：曜日］）～［要確認：終了日］（［要確認：曜日］）［要確認：締切時刻］**
+【試験期間】**［要確認：開始日］（［要確認：曜日］）～［要確認：終了日］（［要確認：曜日］）**
+※システム利用（または窓口受付）の可否は時間帯により異なる場合があります。必ず余裕をもって手続きを行ってください。
+
+────────────────────────
+■ 手順（履修登録）
+1. ［要確認：ポータル／履修登録システム］にログインします。
+2. 履修登録画面から、今学期に履修する科目を選択・登録します。
+3. 登録内容を確認し、確定（登録完了）します。
+4. 登録後、時間割や登録結果（受付番号/完了表示）を必ず保存・確認してください。
+5. 必要に応じて、修正期間内に科目の追加・削除を行います。［要確認：修正期間の有無・期間］
+
+■ 手順（試験）
+1. 試験期間・各科目の試験情報（日時・教室・形式）を確認します。［要確認：確認先（LMS/ポータル/掲示 等）］
+2. 受験に必要な持ち物（学生証等）を準備します。
+3. 当日は時間に余裕をもって指定の教室へ入室してください。
+4. 欠席や不具合が生じた場合は、速やかに教務課へ連絡してください。
+
+────────────────────────
+■ 注意事項（必ず確認）
+【履修登録】
+・登録内容の不備（未確定、登録漏れ等）があると、成績評価の対象外になる場合があります。
+・履修上限（CAP制）や履修条件（履修要件/前提科目）がある場合は、事前に確認してください。［要確認：周知先（履修要項/学生便覧 等）］
+・システム混雑が予想されるため、締切直前の操作は避けてください。
+
+【試験】
+・学生証は必携です（忘れた場合の対応：［要確認］）。
+・追試験/再試験の扱い：［要確認：追試・再試の有無、申請条件、手続き期限、必要書類］
+・持込可否（資料・電卓等）は科目により異なります。各科目の案内に従ってください。［要確認：一般方針がある場合は追記］
+・体調不良等で受験できない場合の連絡・手続き：［要確認：連絡先と手順］
+
+【補足】
+・システム停止（メンテナンス）予定：［要確認：日時／有無］
+・エラー等が発生した場合：画面のスクリーンショットを保存のうえ、［要確認：連絡先］へご連絡ください。
+
+────────────────────────
+■ やることチェックリスト（簡易）
+□ 履修登録期間を確認した  
+□ 履修科目を登録し「確定」まで完了した  
+□ 登録結果（完了表示/受付番号/時間割）を保存した  
+□ 試験期間・科目別試験情報を確認した  
+□ 追試/再試の条件・申請手順を確認した（該当者）  
+□ 当日の持ち物（学生証等）を準備した  
+
+────────────────────────
+■ 問い合わせ先
+［要確認：窓口名（教務課／学部教務係 等）］
+場所：［要確認：キャンパス名・建物・階・窓口番号］
+受付時間：［要確認：平日○:○○～○:○○］（※土日祝：［要確認］）
+メール：［要確認：メールアドレス］
+電話：［要確認：電話番号］
+参考URL：［要確認：公式URL］
+
+────────────────────────
+以上です。
+期限内の手続きにご協力をお願いいたします。
+【履修登録締切】**［要確認：終了日］［要確認：締切時刻］**（再掲）
+
+――――――――――――――――
+［要確認：大学名］［要確認：学部名］ 教務課（履修・試験担当）
+住所：［要確認］
+TEL：［要確認］　E-mail：［要確認］
+受付時間：［要確認］
+――――――――――――――――
+</code></pre>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+出力例はこんな形になりますが、重要なのは人間が確認しなければならない「確認ポイント」が残っていることですね。［要確認］と書かれている箇所が安全弁になります。最初に見るのは、締切・対象者・窓口・URLなど、事故が起きやすい事実、情報です。ここは必ず一次情報で確認します。次に、文章の読みやすさ（長さ、箇条書き、見出しなど）を整えます。ここはAIが得意ですね。仕上げとして、Copilotに「最終確認が必要な項目リスト」を出させます。このチェックリストがあると、最終チェックをやりやすいです。
+<p>最後に、学内の正式な署名・表記ルールに合わせて整えたら完成です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>宿題：自分の業務で1本作る</h2>
+<ol>
+<li>「文章化が面倒」な業務を1つ選ぶ</li>
+<li>テンプレに従って、最強プロンプトを作るプロンプトを書く</li>
+<li>最強プロンプトを入力する</li>
+<li>出力を見て、微調整して改善</li>
+<li>レビュー（正確性/明確性/リスク）</li>
+</ol>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからは、今日やった型を「自分の業務」に持ち帰るための宿題です。いきなり難しい案件に行かず、まずはリスクが低くて文章化が面倒なもの（案内文、FAQ、手順メモなど）を1つ選んでください。
+<p>テンプレに従って「目的・材料・制約・出力形式」を書くと、再現性が出ます。出力が出たら、1回で完璧を狙わず「ここだけ直したい」を1〜2点に絞ってプロンプトを改善していきましょう。</p>
+<p>最後に、日付・窓口・URL・規程の断定などは必ず一次情報で確認し、個人情報や機密は入力しない（必要なら匿名化）を守ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h3>演習テンプレ（コピペ）</h3>
+<pre><code class="language-text">大学事務職員として振舞ってください。
+以下のプロンプトを、365 Copilot (GPT-5.2 Thinking) の性能を
+最大限に発揮するように修正してください。
+
+目的：
+背景：
+材料：
+制約：
+出力形式：
+</code></pre>
+<ul>
+<li>制約に「NG入力」「不明は［要確認］」「です・ます」「文字数」「箇条書き」などを入れると安定</li>
+</ul>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからは各自の題材で作ります。まず「自分の部署の1タスク」を1つ決めてください。テンプレの 目的/背景/材料/制約/出力形式 を埋めるだけで、プロンプト3点セットが自然に揃います。制約には「NG入力」「不明は［要確認］」「です・ます」「文字数」「箇条書き」などをいれると安定します。
+<p>まずは出力を1回出して、次に「ここだけ直したい」を1〜2点に絞ってプロンプトを改善してください。最後に、事実情報（期限・窓口・URLなど）は必ず確認してから使ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>まとめ：今日の3つだけ</h2>
+<ol>
+<li>Copilotは <strong>下書き・整理・観点出し</strong></li>
+<li>事故を防ぐ：<strong>入力NG</strong>＋<strong>検証</strong>＋<strong>最終承認は人</strong></li>
+<li>再現性：<strong>目的/材料/制約/出力形式</strong> を書く</li>
+</ol>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+まとめです。最後に3つだけ覚えてください。1. Copilotは下書き・整理・観点出し、2. 入力NG、検証、および最終承認は必ず「ひと」が担当する、3. 目的/材料/制約/形式を書く、です。
+<p>今日やったメール下書き以外にも、要約・FAQ・手順書・チェックリストなどに同じ型が使えます。まずは明日、リスクの低い文面から1本試して、うまくいったプロンプトを自分のテンプレにしてください。不安なときは「一般化して聞く」「一次情報に戻る」「ひとのレビュー」をセットにすれば大抵は安全に運用できます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>Q&amp;A</h1>
+<h2>質問をどうぞ</h2>
+<hr width="80%" />
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+質問はなんでもかまいません。「業務を一般化した形式」で質問していただけると助かります。「うちの部署だと何が効く？」は大歓迎です。題材を言い換えながら、プロンプトに落とし込む支援をします。規程・期限・窓口などの断定が必要なものは、一次情報確認が前提です。ここでは確認の仕方/型を中心に答えます。
+<p>本日はご清聴ありがとうございました。AIを活用して、安全に業務の効率化に取り組みましょう。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
