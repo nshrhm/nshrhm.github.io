@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感性データ処理</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>感性データ処理</h1>
+<h2>第1回 ガイダンス</h2>
+<h3>データサイエンス学部</h3>
+<h4>白濵 成希</h4>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+初回はオリエンテーション回です。今日は個別手法を深く使うよりも、この科目が何を扱い、なぜ感性をデータとして扱うのか、全15回の中でどこへ向かうのかをつかむことを重視します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.8em">
+<h2>この科目で身につけること</h2>
+<ul>
+<li>
+<p><strong>感性を定量化する評価方法</strong>を理解する</p>
+<ul>
+<li>アンケート、SD法、VAS など</li>
+</ul>
+</li>
+<li>
+<p><strong>感性データを整理・可視化・解釈する基礎</strong>を身につける</p>
+<ul>
+<li>多次元尺度法、主成分分析、因子分析 など</li>
+</ul>
+</li>
+<li>
+<p>最終的に、<strong>感性評価 → 分析 → 考察 → 報告</strong>までを経験する</p>
+</li>
+</ul>
+<p><strong>到達目標</strong>：感性データを理解し、評価法を理解し、分析してレポートにまとめる</p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドはシラバス全体の到達目標に対応しています。初回では「何ができるようになる授業なのか」を最初に共有し、個々の手法がばらばらではなく、最終的にレポート作成までつながることを示します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>授業全体の中での位置づけ</h2>
+<table>
+<thead>
+<tr>
+<th>フェーズ</th>
+<th style="text-align:right">回</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>導入</td>
+<td style="text-align:right">1〜3</td>
+<td>用語、感性工学、評価の見取り図</td>
+</tr>
+<tr>
+<td>基礎設計</td>
+<td style="text-align:right">4〜8</td>
+<td>変数・尺度、MDS、数量化Ⅲ類、アンケート、SD法</td>
+</tr>
+<tr>
+<td>分析</td>
+<td style="text-align:right">9〜13</td>
+<td>PCA、因子分析、VAS の評価・可視化・分析</td>
+</tr>
+<tr>
+<td>統合</td>
+<td style="text-align:right">14〜15</td>
+<td>ワークフロー整理、総合演習</td>
+</tr>
+</tbody>
+</table>
+<p><strong>今回</strong>：第1回 ガイダンス</p>
+<p><strong>次回</strong>：第2回「感性工学」— 感じ方を設計へ返す枠組みを学ぶ</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+第1回は全体の入口です。前提知識の確認と、今後の学習の地図を作ることが目的です。次回からは「感性工学」という枠組みに入り、感じ方をどう設計へ返すかを具体化していきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.8em">
+<h2>第1回の到達目標</h2>
+<ol>
+<li>
+<p><strong>感性データ処理</strong>が何を扱う授業か説明できる</p>
+</li>
+<li>
+<p><strong>感性 / 感性データ / 感性データ処理</strong>を自分の言葉で言い換えられる</p>
+</li>
+<li>
+<p>感性を扱う面白さと難しさ</p>
+<ul>
+<li><strong>曖昧さ</strong></li>
+<li><strong>文脈依存</strong></li>
+<li><strong>主観性</strong>
+を具体例で理解する</li>
+</ul>
+</li>
+<li>
+<p>今後15回のロードマップをつかみ、次回へつなげる</p>
+</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日は「定義を覚える」だけでなく、感性がなぜ難しいのかを具体例で理解することが重要です。同じ対象でも人や状況で評価が変わるため、測る前の設計が本質になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.8em">
+<h2>今日の進め方（90分の見取り図）</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">時間</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0〜15分</td>
+<td>科目の概要、成績評価、授業の進め方</td>
+</tr>
+<tr>
+<td style="text-align:right">15〜35分</td>
+<td>なぜ今「感性データ処理」なのか</td>
+</tr>
+<tr>
+<td style="text-align:right">35〜55分</td>
+<td>基本用語（感性／感性データ／感性データ処理）</td>
+</tr>
+<tr>
+<td style="text-align:right">55〜75分</td>
+<td>事例紹介とミニ活動</td>
+</tr>
+<tr>
+<td style="text-align:right">75〜90分</td>
+<td>今後15回のロードマップ、確認、課題説明</td>
+</tr>
+</tbody>
+</table>
+<p>初回は<strong>内容を詰め込みすぎず、全体像をつかむ</strong>ことを優先します。</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+この回は手法の詳細回ではありません。全体像をつかみ、各要素が後の回でどう深まるかが見えれば成功です。学生には「今日は理解の地図を作る日」と伝えるとよいです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.8em">
+<h2>授業の進め方と成績評価</h2>
+<ul>
+<li><strong>成績評価</strong>：レポート 70% + 毎回の課題 30%</li>
+<li>「説明を聞いて終わり」ではなく、<strong>小演習・ミニ討論・課題</strong>で進める</li>
+<li>プログラムや分析手順が提示された場合は、<strong>自分で実行して結果を確認する</strong></li>
+<li>予習：前回の指示資料を読む</li>
+<li>復習：提示された分析プログラムは必ず自分で試す</li>
+</ul>
+<p><strong>この授業の基本姿勢</strong>：感性を「面白い話題」で終わらせず、扱えるデータにする</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで履修上の期待値をそろえます。分析プログラムが出たら実行まで行うこと、毎回の小課題が重要であること、レポートが最終到達点であることを明確にします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.8em">
+<h2>なぜ今「感性データ処理」なのか</h2>
+<h3>機能価値が中心の見方</h3>
+<ul>
+<li>使える</li>
+<li>速い</li>
+<li>壊れにくい</li>
+</ul>
+<h3>今、差が出る体験価値</h3>
+<ul>
+<li>心地よい</li>
+<li>安心できる</li>
+<li>高級感がある / かわいい</li>
+<li>没入できる / 疲れない</li>
+<li>自分に合っていると感じる</li>
+</ul>
+<p>この<strong>体験としての価値</strong>を扱うのが「感性」です。</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+スマホ、家電、EC、ゲームなど、多くの領域で基本機能の差だけでは選ばれにくくなっています。そこで差になるのが心地よさ、安心感、高級感、没入感といった体験価値です。ここから感性の重要性へつなげます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>デジタル化で「感性」は扱いやすくなった</h2>
+<ul>
+<li>行動ログ: クリック、滞在、離脱、リピート</li>
+<li>主観評価: アンケート、感性ワード、自由記述</li>
+<li>生理・身体指標: 心拍、視線、皮膚電気反応 など</li>
+</ul>
+<p>重要なのは、単に数字を集めることではなく、</p>
+<ul>
+<li><strong>何を感じるものとして定義するか</strong></li>
+<li><strong>どのデータで表すか</strong></li>
+<li><strong>分析結果をどう意思決定につなげるか</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+感性は曖昧ですが、デジタル化によってログ、アンケート、生理指標を組み合わせやすくなりました。ただし、何を測るかが曖昧なままでは分析しても解釈できません。ここで「人間中心のデータサイエンス」という言い方につなげます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.5em">
+<h2>ミニ活動1：最近の「なんか良い」を言葉にする</h2>
+<ol>
+<li>
+<p><strong>Think（2分）</strong></p>
+<ul>
+<li>最近使った製品・サービスを1つ挙げる</li>
+<li>「なんか良い」「気持ちいい」と感じた理由を<strong>感性ワード 2〜3 個</strong>で書く</li>
+</ul>
+</li>
+<li>
+<p><strong>Pair（2〜3分）</strong></p>
+<ul>
+<li>2人で共有する</li>
+<li>その感性が何から来ていそうかを1つ話す</li>
+</ul>
+</li>
+<li>
+<p><strong>Share（2分）</strong></p>
+<ul>
+<li>全体共有し、感性ワードと対象要素の結びつきを確認する</li>
+</ul>
+</li>
+</ol>
+<p><strong>ポイント</strong>：正解を当てる活動ではなく、感じ方の多様さを確認する活動</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは「同じ対象でも感じ方が分かれる」ことが分かれば十分です。製品やサービスはアプリでも構いません。感性ワードが出にくい学生には、安心、軽快、落ち着く、かわいい、信頼できる、といった例を補助的に出します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.7em">
+<h2>感性とは何か</h2>
+<blockquote>
+<p><strong>感性</strong>：モノやコトに対する刺激を感覚器官で受けた時に、
+印象や感情を抱く心の働き</p>
+</blockquote>
+<ul>
+<li><strong>主観的</strong>である</li>
+<li><strong>曖昧</strong>である</li>
+<li>ただし、<strong>工学的アプローチで定量化できる</strong></li>
+</ul>
+<p><strong>要点</strong>：感性は「気分一般」ではなく、対象への反応として現れる</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+定義はそのまま押さえつつ、感性が単なる気分やセンスの話ではないことを強調します。対象から刺激を受けたときの印象や感情であり、だからこそ設計や評価の対象になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>感性は「対象 × 人 × 文脈」で変わる</h2>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>人</th>
+<th>文脈</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>同じ BGM</td>
+<td>集中したい人 / リラックスしたい人</td>
+<td>図書館 / カフェ / 自宅</td>
+</tr>
+<tr>
+<td>同じ UI</td>
+<td>初心者 / 熟練者</td>
+<td>急いでいるとき / 余裕があるとき</td>
+</tr>
+</tbody>
+</table>
+<p>したがって、感性を扱うときは<strong>平均値だけで終わらず</strong>、</p>
+<p><strong>「誰が」「どんな状況で」感じたのか</strong>を意識する必要があります。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドは、今日の目標の一つである「感性の難しさと面白さ」を具体化するためのものです。後の回で扱う実験設計、尺度、分散、群差の話につながることも予告します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>感性データとは何か</h2>
+<table>
+<thead>
+<tr>
+<th>種類</th>
+<th>例</th>
+<th>強み</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主観評価</td>
+<td>5段階評価、SD法、VAS</td>
+<td>感じ方そのものに近い</td>
+<td>質問の作り方で変わる</td>
+</tr>
+<tr>
+<td>言語データ</td>
+<td>感性ワード、自由記述、レビュー</td>
+<td>体験のニュアンスが出る</td>
+<td>ばらつき・解釈が難しい</td>
+</tr>
+<tr>
+<td>行動ログ</td>
+<td>クリック、滞在、購買、離脱</td>
+<td>大量・客観的に取れる</td>
+<td>なぜそう感じたかは直接わからない</td>
+</tr>
+<tr>
+<td>生理・身体指標</td>
+<td>心拍、視線、皮膚電気反応</td>
+<td>無意識の反応に近い</td>
+<td>計測条件・倫理・解釈が難しい</td>
+</tr>
+</tbody>
+</table>
+<p>この授業では、まず <strong>主観評価（アンケート）</strong> を軸に考えます。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+感性データは「数値だけ」ではないことを明確にします。ただし本講義では、扱いやすく実務でも頻出な主観評価を中心に学び、必要に応じて言語・行動・生理も視野に入れるという立場です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.8em">
+<h2>感性データ処理とは何か</h2>
+<p><strong>感性データ処理</strong>：感性データの分析・可視化・解釈を行い、
+製品設計やサービス改善に活用するプロセス</p>
+<p><strong>基本の流れ</strong></p>
+<ol>
+<li>対象（製品・UI・体験）</li>
+<li>→ 刺激提示（使う / 見る / 触れる）</li>
+<li>→ 言語化・数値化（アンケート、SD法、VAS など）</li>
+<li>→ データ分析（平均・分散・相関・多変量解析）</li>
+<li>→ 解釈（印象の軸、群差、特徴）</li>
+<li>→ 活用（設計変更、改善、検証）</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+この授業で一貫して扱うプロセスを示します。分析そのものが目的ではなく、設計や改善へ返すことが目的です。第14回のワークフロー、第15回の総合演習までこの流れが貫かれます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>この授業で後に扱う代表的な評価法</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>何を測るか</th>
+<th>例</th>
+<th>扱う回</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SD法</strong></td>
+<td>言葉による印象の軸</td>
+<td>明るい–暗い、洗練–野暮ったい</td>
+<td>第8回</td>
+</tr>
+<tr>
+<td><strong>VAS</strong></td>
+<td>感じ方の強さ</td>
+<td>快適でない–非常に快適</td>
+<td>第11-13回</td>
+</tr>
+</tbody>
+</table>
+<p><strong>今日の段階での理解</strong></p>
+<ul>
+<li>SD法：<strong>言葉の軸</strong>で印象を整理する</li>
+<li>VAS：<strong>強さの軸</strong>で微妙な差を表す</li>
+</ul>
+<p>初回では、<strong>「感性を測る方法には種類がある」</strong> と分かれば十分です。</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+初回で尺度設計や統計に踏み込まないことを明言します。学生には、後の回で詳細を扱うという見通しを持たせるのが狙いです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>感性工学とは何か</h2>
+<p><strong>感性工学</strong>：生活者が製品やサービスに対して抱く「感性」を把握し、
+それを設計・改善に活かす学問・技術の体系</p>
+<ul>
+<li>心理・デザイン・工学・情報が交わる</li>
+<li>「感じ方」を設計へ返すための枠組み</li>
+<li>本講義の中心である感性データ処理は、
+<strong>測る・整理する・解釈する</strong>部分を担う</li>
+</ul>
+<p><strong>次回の主題</strong>：感性工学の成り立ち、意義、実務での使われ方</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは次回への橋渡しです。感性工学全体の中で、本講義が「感じ方をデータ化し、整理し、設計へ返す」部分を位置づけます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.5em">
+<h2>産業応用の見取り図</h2>
+<table>
+<thead>
+<tr>
+<th>分野</th>
+<th>対象</th>
+<th>感性・主観体験</th>
+<th>データと活用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自動車・交通</td>
+<td>EV の警告音</td>
+<td>危険度、気づきやすさ、不快感</td>
+<td>主観評価から音設計を検討</td>
+</tr>
+<tr>
+<td>家電</td>
+<td>掃除機の動作音</td>
+<td>不快さ、静かさ、力強さ</td>
+<td>心理音響指標 + 主観評価で比較</td>
+</tr>
+<tr>
+<td>UI / UX</td>
+<td>Web デザイン案</td>
+<td>美しい、明るい、信頼できる、分かりやすい</td>
+<td>感性ワード + SD法 → 改善仕様</td>
+</tr>
+<tr>
+<td>ゲーム</td>
+<td>バイオフィードバック</td>
+<td>緊張、ストレス、没入</td>
+<td>生理反応で難易度を動的調整</td>
+</tr>
+<tr>
+<td>医療・ヘルスケア</td>
+<td>PARO との触れ合い</td>
+<td>痛み、落ち着き、幸福感</td>
+<td>VAS + 生理指標で介入効果を見る</td>
+</tr>
+</tbody>
+</table>
+<p><strong>読み方</strong>：事例は <strong>対象 / 感性 / データ / 活用</strong> に分けると理解しやすい</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+5件を細かく暗記させる必要はありません。重要なのは、感性データ処理が製品、サービス、音、UI、医療など多様な対象に使えること、そして事例を「対象・感性・データ・活用」で分解して読めるようにすることです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>ミニ活動2：事例を「対象／感性／データ」で仕分ける</h2>
+<ol>
+<li>
+<p><strong>Think（3分）</strong></p>
+<ul>
+<li>先ほどの事例から1つ選ぶ</li>
+<li>ノートに「対象」「感性」「データ」を一言ずつ書く</li>
+</ul>
+</li>
+<li>
+<p><strong>Pair（4分）</strong></p>
+<ul>
+<li>2人で見せ合う</li>
+<li>どこが一番測りにくそうかを1つ話す</li>
+</ul>
+</li>
+<li>
+<p><strong>Share（2〜3分）</strong></p>
+<ul>
+<li>全体共有し、同じ対象でも何を感じるものとして取るかで設計が変わることを確認する</li>
+</ul>
+</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+この活動の目的は、事例の細部理解ではなく「主観をそのままではなく、データの形にする必要がある」と実感させることです。測りにくさの理由に、曖昧さ、文脈依存、個人差などが出ればよい流れです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>データサイエンスとの接点</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>この授業での捉え方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>正解が1つではない</td>
+<td>個人差・文脈依存・状態依存がある</td>
+</tr>
+<tr>
+<td>それでも統計は効く</td>
+<td>可視化、平均・分散・相関、多変量解析が役立つ</td>
+</tr>
+<tr>
+<td>機械学習との関係</td>
+<td>まずは測定と解釈の基礎を固める</td>
+</tr>
+</tbody>
+</table>
+<p><strong>この回で特に大事なこと</strong></p>
+<p>分析手法を使いこなす前に、 <strong>「測る前の設計が大事」</strong> という感覚を持つこと</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+感性データは主観的だから統計が無意味、という誤解を解きます。同時に、いきなり機械学習へ飛ぶのではなく、何をどう測ったか、どう解釈するかを固めることが先だと伝えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.5em">
+<h2>今後15回のロードマップ</h2>
+<table>
+<thead>
+<tr>
+<th>フェーズ</th>
+<th>回</th>
+<th>ねらい</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>導入</td>
+<td>1</td>
+<td>科目の全体像と用語の土台を作る</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>感性を設計に活かす型を知る</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>感性ワード、五感、官能評価の考え方をつかむ</td>
+</tr>
+<tr>
+<td>基礎設計</td>
+<td>4</td>
+<td>感性データの数字の意味を理解する</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>「似ている / 違う」を地図にする</td>
+</tr>
+<tr>
+<td></td>
+<td>6</td>
+<td>カテゴリの関係を可視化する</td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>質問紙データを扱う基本を身につける</td>
+</tr>
+<tr>
+<td></td>
+<td>8</td>
+<td>形容詞ペアで印象を測り、読み解く</td>
+</tr>
+<tr>
+<td>分析</td>
+<td>9</td>
+<td>印象の主要な軸を見つける</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>背後にある構造を仮説として捉える</td>
+</tr>
+<tr>
+<td></td>
+<td>11〜13</td>
+<td>VAS の評価・可視化・分析を学ぶ</td>
+</tr>
+<tr>
+<td>統合</td>
+<td>14</td>
+<td>分析の進め方と説明の仕方を整える</td>
+</tr>
+<tr>
+<td></td>
+<td>15</td>
+<td>感性評価〜分析〜レポートをまとめる</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは全15回の流れを学生目線で再整理します。導入、基礎設計、分析、統合という流れを見せることで、各回がばらばらではなく、一つの学習プロセスになっていることを共有します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>今日のまとめ</h2>
+<ul>
+<li>
+<p><strong>感性</strong>：対象に対して印象・感情を抱く心の働き</p>
+</li>
+<li>
+<p><strong>感性データ</strong>：その感じ方を表すデータ</p>
+<ul>
+<li>主観評価だけでなく、言語・行動・生理も含む</li>
+</ul>
+</li>
+<li>
+<p><strong>感性データ処理</strong>：分析・可視化・解釈を通じて設計・改善に活かすプロセス</p>
+</li>
+<li>
+<p>事例は <strong>対象 / 感性 / データ / 活用</strong> に分けると理解しやすい</p>
+</li>
+<li>
+<p>第1回は、<strong>手法を使う回ではなく、科目全体の見取り図をつかむ回</strong></p>
+</li>
+</ul>
+<p><strong>持ち帰る主メッセージ</strong>：感性は曖昧だが、設計とデータの工夫で扱える</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後は、用語の整理と初回の位置づけを再確認します。ここで「曖昧だから扱えない」ではなく、「曖昧だからこそ設計が重要」というメッセージに着地させます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>確認問題</h2>
+<ol>
+<li>本講義での「感性」の定義を、自分の言葉で言い換えられるか</li>
+<li>「感性データ」として扱えるものを、主観評価・言語・行動から1つずつ挙げられるか</li>
+<li>SD法と VAS は、それぞれ何を捉えやすいか説明できるか</li>
+<li>「感性データは主観的なので統計分析しても意味がない」という文に反論できるか</li>
+<li>任意の事例を1つ選び、対象 / 感性 / データ / 活用 で整理できるか</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+小テストや口頭確認に使えるスライドです。定義の丸暗記ではなく、自分の言葉で説明できるか、事例を構造化して読めるかを見ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.6em">
+<h2>授業後課題と次回予告</h2>
+<h3>ミニレポート課題</h3>
+<p><strong>身近な体験を「対象 / 感性 / データ」で整理する</strong></p>
+<ul>
+<li>対象：普段使う製品・サービスを1つ選ぶ</li>
+<li>書くこと
+<ol>
+<li>その対象を選んだ理由</li>
+<li>大事だと思う感性を <strong>3つ</strong> 挙げる</li>
+<li>その感性を確かめるなら、どんなデータを集めたいかを書く</li>
+<li>扱うときに難しそうな点・迷いそうな点を1つ挙げる
+<br /><br /></li>
+</ol>
+</li>
+</ul>
+<h3>次回予告</h3>
+<ul>
+<li>テーマ：<strong>感性工学</strong></li>
+<li>キーワード：感性価値、評価実験、設計要素への落とし込み</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+課題では分析手法の正確さよりも、「対象・感性・データ」を筋道立てて考えられているかを重視します。次回は感性工学の枠組みに入り、感じ方をどう設計へ返すかを整理します。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
