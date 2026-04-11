@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感性データ処理</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>感性データ処理</h1>
+<h2>第11回 Visual Analog Scale 1：連続尺度で「感じ方の強さ」を測る</h2>
+<h3>データサイエンス学部</h3>
+<h4>白濵 成希</h4>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日のねらいと到達目標 -->
+<div style="font-size:0.8em">
+<h2>今日のねらいと到達目標</h2>
+<ul>
+<li><strong>VAS の役割</strong>：1つの感覚・感情・状態の<strong>強さ</strong>を連続的に測る尺度として理解する</li>
+<li><strong>他尺度との違い</strong>：<strong>Likert 型評定・SD法・VAS</strong> の役割分担を説明できるようにする</li>
+<li><strong>適用判断</strong>：VAS が<strong>向く場面／向きにくい場面</strong>を判断できるようにする</li>
+<li><strong>実務上の注意</strong>：メリットと限界を、<strong>尺度の性質</strong>と<strong>実装</strong>の両面から押さえる</li>
+<li><strong>事例読解</strong>：事例を <strong>対象／主観体験／データと活用</strong> で整理できるようにする</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+第11回は、VASユニットの導入回です。第8〜10回では、SD法データを主成分分析や因子分析で整理し、「どんな印象軸があるか」を見てきました。今回はそこから視点を切り替え、すでに定めた1つの状態の「強さ」をどう測るかを扱います。
+<p>科目全体の到達目標との関係では、とくに「感性データを得るための評価方法について理解できる」に直結し、次回以降の実施・分析の前提をつくる回です。実装や統計計算に深入りする前に、まず尺度としての役割と限界をつかみます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 90分の見取り図 -->
+<div style="font-size:0.8em">
+<h2>90分の見取り図</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">時間</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0〜15分</td>
+<td>なぜ今 VAS を学ぶのか／SD法との違い</td>
+</tr>
+<tr>
+<td style="text-align:right">15〜40分</td>
+<td>VAS の基本概念（定義、典型形、向き・不向き）</td>
+</tr>
+<tr>
+<td style="text-align:right">40〜60分</td>
+<td>Likert・SD法との比較、メリット・注意点</td>
+</tr>
+<tr>
+<td style="text-align:right">60〜75分</td>
+<td>事例を「対象／主観体験／データ」で読む</td>
+</tr>
+<tr>
+<td style="text-align:right">75〜90分</td>
+<td>ミニ活動、確認問題、次回への橋渡し</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日は大きく5つのまとまりで進めます。最初に、なぜこのタイミングでVASを扱うのかを確認し、そのあとで定義と基本概念を押さえます。中盤では他の尺度との違い、メリット、限界を整理します。
+<p>後半は、VASが実際にどのような対象に使われているかを事例で見て、最後に活動と確認問題で理解を固めます。第11回は「まず尺度を理解する回」であり、実装や統計の詳細は第12回・第13回に送ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 授業全体での位置づけ -->
+<div style="font-size:0.78em">
+<h2>授業全体での位置づけ</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">回</th>
+<th>テーマ</th>
+<th>この回との関係</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">8</td>
+<td>SD法による評価</td>
+<td>印象を<strong>複数の言葉の軸</strong>で測る</td>
+</tr>
+<tr>
+<td style="text-align:right">9</td>
+<td>主成分分析</td>
+<td>SD法データの主要な軸を読む</td>
+</tr>
+<tr>
+<td style="text-align:right">10</td>
+<td>因子分析</td>
+<td>SD法データの背後構造を読む</td>
+</tr>
+<tr>
+<td style="text-align:right"><strong>11</strong></td>
+<td><strong>VAS 1</strong></td>
+<td><strong>1つの状態の強さを連続尺度で捉える</strong></td>
+</tr>
+<tr>
+<td style="text-align:right">12</td>
+<td>VAS 2</td>
+<td>VAS の実施方法と可視化</td>
+</tr>
+<tr>
+<td style="text-align:right">13</td>
+<td>VAS 3</td>
+<td>VAS データの統計分析</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>今回の位置づけ</strong>：SD法の学習から、VAS による<strong>強さの測定</strong>へ切り替わる回</li>
+<li><strong>科目全体との接続</strong>：評価法を理解し、後半の可視化・分析・レポート作成につなげる</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+シラバスでは、第11回から第13回までがVASユニットです。第8〜10回で扱ったSD法は、複数の形容詞対を使って印象の構造を読む道具でした。そこから今回は、すでに定めた1つの状態を連続的に測る道具へと視点を移します。
+<p>この位置づけを押さえておくと、SD法とVASを対立的に見るのではなく、授業全体の中で役割分担として理解できます。今回が概念理解、第12回が実施と可視化、第13回が分析です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- なぜ今 VAS なのか -->
+<div style="font-size:0.78em">
+<h2>なぜ今 VAS なのか</h2>
+<table>
+<thead>
+<tr>
+<th>ここまで学んだこと</th>
+<th>これから学ぶこと</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SD法</strong>：複数の形容詞対で印象を測る</td>
+<td><strong>VAS</strong>：1つの状態の強さを連続的に測る</td>
+</tr>
+<tr>
+<td>「どんな印象の次元があるか」を読む</td>
+<td>「どの程度強いか」の差を読む</td>
+</tr>
+<tr>
+<td>例：高級感、洗練、親しみやすさ</td>
+<td>例：不快さ、スムーズさ、臨場感、痛みの軽減</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>SD法</strong>は、印象の<strong>構造</strong>を知るのに向く</li>
+<li><strong>VAS</strong>は、定めた構成概念の<strong>強度</strong>を知るのに向く</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでのポイントは、SD法が不要になるわけではないということです。SD法は、対象が与える印象を多面的に見るのに向いています。一方で実務や研究では、「どの程度不快か」「どの程度快適か」のように、1つの状態の強さだけを取りたい場面も多くあります。
+<p>第11回は、この切り替えを理解する回です。言い換えると、「印象の構造を見る道具」と「強さを測る道具」を使い分ける入口になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 「4と5の間」を取りたい場面 -->
+<div style="font-size:0.8em">
+<h2>「4 と 5 の間」を取りたい場面がある</h2>
+<p><strong>Likert 型評定</strong></p>
+<p>1 ─ 2 ─ 3 ─ 4 ─ 5</p>
+<p><strong>VAS</strong></p>
+<p>全くない ──────────── × ──────────── 最大</p>
+<ul>
+<li>「<strong>4 よりは高いが 5 ほどではない</strong>」を表したい</li>
+<li>「<strong>0 ではないが、ほとんど感じない</strong>」を表したい</li>
+<li>「<strong>改善はしたが、ごくわずか</strong>」を表したい</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+Likert型評定は回答しやすく、集計もしやすい方法です。ただしカテゴリに分かれているため、細かな差を表しにくいことがあります。VASは、こうした「カテゴリのすき間」を取りたいときに候補になります。
+<p>近年の研究でも、LikertとVASの差は一様ではないものの、尺度端付近の変動や感情状態の細かな変化を捉えたい場面では、VASに利点がある可能性が示されています。ここでは、VASは「より細かく取れそうな場面がある」と押さえてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- VAS とは何か -->
+<div style="font-size:0.78em">
+<h2>VAS とは何か</h2>
+<ul>
+<li><strong>Visual Analog Scale（視覚的アナログ尺度）</strong></li>
+<li>両端に <strong>アンカー（端点ラベル）</strong> を置いた直線上の位置で、主観状態の強さを表してもらう方法</li>
+<li>紙では、<strong>100 mm 線</strong>が典型的</li>
+<li>電子版では、<strong>スライダー</strong>として実装することが多い</li>
+</ul>
+<p><strong>典型形</strong></p>
+<p><code>全くない ───────────────── 最大</code></p>
+<ul>
+<li>回答者：自分の感覚に合う位置に印を付ける</li>
+<li>研究者：左端からの距離を測って数値化する</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+VASの核は、両端に意味を持たせた1本の直線です。Likert型のようにカテゴリを並べるのではなく、連続した位置で答えてもらうところが特徴です。紙では100mm線が古典的な形式で、電子版では0〜100に対応づけたスライダー実装が一般的です。
+<p>ここで用語として「アンカー」が出てきます。アンカーとは端点ラベルのことで、回答の意味づけを支える重要な要素です。途中に数値や形容語を追加すると、厳密にはグラフィック・レーティング・スケールに近づくという整理もあります。第12回では紙と電子の実装差を詳しく扱いますが、今日はまず概念を押さえます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 1本の VAS は 1つの構成概念を測る -->
+<div style="font-size:0.76em">
+<h2>1本の VAS は 1つの構成概念を測る</h2>
+<table>
+<thead>
+<tr>
+<th>向いている問い</th>
+<th>向きにくい問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>痛みの<strong>強さ</strong></td>
+<td>「この製品は<strong>良い</strong>か」</td>
+</tr>
+<tr>
+<td>不快さの<strong>強さ</strong></td>
+<td>高級感・安心感・使いやすさを<strong>1本に混ぜる</strong></td>
+</tr>
+<tr>
+<td>空腹感の<strong>強さ</strong></td>
+<td>複数の意味が入った曖昧な質問</td>
+</tr>
+<tr>
+<td>臨場感の<strong>強さ</strong></td>
+<td>「全体として好きか」をそのまま1本で測る</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>1本で1つのことだけを測る</strong> のが原則</li>
+<li>VAS は、<strong>多面的な印象構造を探索する道具ではない</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは非常に重要です。VASは1本の線で1つの構成概念を測る道具です。たとえば「不快さ」や「空腹感」のように、何の強さを聞いているかが明確であるほど使いやすくなります。
+<p>逆に、「この製品は良いか」のような問いには、高級感、安心感、使いやすさ、好みなど複数の意味が混ざりやすいです。このような多面的な問いは、SD法や複数項目の質問紙の方が向くことがあります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Likert 型評定・SD法・VAS の違い -->
+<div style="font-size:0.74em">
+<h2>Likert 型評定・SD法・VAS の違い</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>主に測るもの</th>
+<th>形式</th>
+<th>向いていること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Likert 型評定</strong></td>
+<td>同意・満足・頻度など</td>
+<td>離散的なカテゴリ（5件法・7件法など）</td>
+<td>手早い質問紙、概況把握</td>
+</tr>
+<tr>
+<td><strong>SD法</strong></td>
+<td>印象の構造</td>
+<td>両極表現のペアを多数並べる</td>
+<td>どんな印象軸があるかを知る</td>
+</tr>
+<tr>
+<td><strong>VAS</strong></td>
+<td>強さ・程度</td>
+<td>連続的な直線／スライダー</td>
+<td>1つの状態の強さを細かくとる</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>SD法</strong>：言葉の構造を見る</li>
+<li><strong>VAS</strong>：強さの差を見る</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+同じ主観評価でも、何を測りたいかで道具を変える必要があります。Likert型評定は、同意や満足度のような概況把握に向きます。SD法は、対象の印象を複数の言葉の軸で読み解く方法です。VASは、すでに定めた1つの状態の強度を細かく取りたいときに向きます。
+<p>この授業では、SD法とVASを競合関係ではなく役割分担として理解します。どちらが優れているかではなく、「何を測りたいか」によって選ぶのが基本です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- VAS のメリット -->
+<div style="font-size:0.8em">
+<h2>VAS のメリット</h2>
+<ol>
+<li>
+<p><strong>微妙な差を表現しやすい</strong>
+カテゴリのどこかを選ぶのではなく、連続線上の位置で答えられる</p>
+</li>
+<li>
+<p><strong>時間変化を追いやすい</strong>
+痛み、空腹、疲労、快適さなど、変動する状態の反復測定に向く</p>
+</li>
+<li>
+<p><strong>紙・デジタルの両方で使いやすい</strong>
+紙の 100 mm 線だけでなく、スマホやタブレットのスライダー実装にもつながる</p>
+</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+VASの長所は、まず細かな差を取りやすいことです。回答者が「4か5か」ではなく、もっと細かな位置で表現できるので、微妙な変化を捉えやすくなります。
+<p>また、時間とともに変わる主観状態を繰り返し測るのに向いています。さらに現在はeVASとしてデジタル実装しやすく、紙と電子で概ね同等の結果が得られることを整理したレビューもあります。ただし、実装差に注意が必要であることは次のスライドで扱います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- VAS の注意点と限界 -->
+<div style="font-size:0.76em">
+<h2>VAS の注意点と限界</h2>
+<ol>
+<li>
+<p><strong>連続に見える ≠ 無条件に比率尺度</strong>
+0〜100 に見えても、心理的に等間隔・比率的とは限らない</p>
+</li>
+<li>
+<p><strong>アンカーの解釈が揺れる</strong>
+「最大」「全くない」の受け取り方は、個人差や経験差の影響を受ける</p>
+</li>
+<li>
+<p><strong>実装が測定に影響する</strong>
+線の長さ、初期位置、数字表示の有無、画面上の見せ方に注意が必要</p>
+</li>
+<li>
+<p><strong>対象者によっては扱いにくい</strong>
+一部の小児、高齢者、視覚・運動上の困難がある人では使いにくい場合がある</p>
+</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+VASは見た目には0〜100の連続量のようですが、それだけで比率尺度だと決め打ちしてはいけません。見た目の連続性と、心理的な等間隔性・線形性は別問題です。この点は痛みVASの分析でも慎重な立場が示されています。
+<p>また、アンカーの言い方や実装の仕方がデータに影響します。特に電子版では、初期位置や数字表示の有無が回答傾向に関わることがあります。さらに、誰にでも同じように使いやすいわけではないことも意識しておく必要があります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第11回で押さえる最小限の設計ルール -->
+<div style="font-size:0.76em">
+<h2>第11回で押さえる最小限の設計ルール</h2>
+<ol>
+<li><strong>1本の VAS では 1つのことだけを測る</strong></li>
+<li><strong>両端ラベルは具体的に書く</strong></li>
+<li><strong>対象と時間枠を質問文で固定する</strong></li>
+<li><strong>紙かデジタルかで起こりうる誤差を意識する</strong></li>
+</ol>
+<p><strong>項目例</strong></p>
+<p>「このイヤホンを<strong>今この場で 5 分装着したとき</strong>、どの程度快適でしたか」</p>
+<p>左端：<strong>全く快適でない</strong>
+右端：<strong>非常に快適である</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは第11回の段階で最低限押さえる設計ルールを整理します。まず1本で1つのことだけを測ること。次に、アンカーを具体的に書くこと。さらに、「何を体験した後なのか」「どの時間範囲について答えるのか」を質問文で固定することが重要です。
+<p>例では「今この場で5分装着したとき」と、対象と時間枠を入れています。こうすることで回答の文脈が揃いやすくなります。詳細な実装条件は第12回で扱いますが、設計の考え方はここでつかんでおいてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 事例をどう読むか 1 -->
+<div style="font-size:0.7em">
+<h2>事例をどう読むか（1）</h2>
+<h3>医療・介入・食行動</h3>
+<table>
+<thead>
+<tr>
+<th>事例</th>
+<th>対象</th>
+<th>主観体験</th>
+<th>データと活用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>痛み評価</strong></td>
+<td>治療前後の痛み</td>
+<td>痛みの強度</td>
+<td>100 mm 線上の位置を測り、治療効果や経過観察に使う</td>
+</tr>
+<tr>
+<td><strong>遠隔 VR 介入</strong></td>
+<td>慢性痛への遠隔 VR</td>
+<td>痛み強度、不安、気分、睡眠</td>
+<td>0〜100 の VAS を反復測定し、介入前後や条件差を比較する</td>
+</tr>
+<tr>
+<td><strong>食行動研究</strong></td>
+<td>摂食実験</td>
+<td>空腹、満腹、食べたい気持ち</td>
+<td>食前・食後・経時で繰り返し測り、摂取量や食行動との関係を見る</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは、VASがどのような対象に使われているかを、「対象」「主観体験」「データと活用」で読みます。まず古典的なのは痛み評価です。VASは痛み強度の代表的な評価法として広く使われてきました。
+<p>また、遠隔VR介入のように、介入による日ごとの変化を追いたい場面でも使われます。食行動研究では、空腹や満腹の変化を食前・食後・経時で繰り返し測るために使われます。どの事例にも共通するのは、「1つの状態の強さ」を追っていることです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 事例をどう読むか 2 -->
+<div style="font-size:0.72em">
+<h2>事例をどう読むか（2）</h2>
+<h3>感情・音環境・感性研究</h3>
+<table>
+<thead>
+<tr>
+<th>事例</th>
+<th>対象</th>
+<th>主観体験</th>
+<th>データと活用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>感情研究</strong></td>
+<td>画像や刺激</td>
+<td>快−不快、覚醒</td>
+<td>2本の連続スライダーで自己報告し、感情反応を捉える</td>
+</tr>
+<tr>
+<td><strong>音環境評価</strong></td>
+<td>音楽・交通騒音など</td>
+<td>音に対する主観印象</td>
+<td>Web ベースの VAS と 11 段階尺度を比較し、使いやすさや感度を検討する</td>
+</tr>
+</tbody>
+</table>
+<p><strong>読む観点</strong>
+<strong>対象 → 主観体験 → データの取り方 → 何に活用するか</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+VASは医療だけの道具ではありません。感情研究では、快−不快や覚醒のような主観状態を、連続スライダーで自己報告する方法が使われています。スライドの「2本の連続スライダー」に当たるのがAffective Sliderで、VAS型の連続評定が感情研究でも使われている例です。
+<p>また、音環境評価のように、感性工学やUXに近い領域でも活用されています。ここで大切なのは、事例をただ覚えるのではなく、「何を対象にし、何の強さを、どのように測り、どう使うのか」という4点で整理することです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- データサイエンスとの接点 -->
+<div style="font-size:0.76em">
+<h2>データサイエンスとの接点</h2>
+<ul>
+<li>
+<p><strong>VAS は連続量として扱いやすい</strong>
+平均・分散・相関・検定などに接続しやすい形式で得られる</p>
+</li>
+<li>
+<p><strong>ただし、前提確認が必要</strong>
+端への集中、10刻みなどの丸め、実装の影響を見ないまま処理しない</p>
+</li>
+<li>
+<p><strong>SD法と競合ではなく、役割分担</strong></p>
+<ul>
+<li><strong>SD法</strong>：印象の構造を知る</li>
+<li><strong>VAS</strong>：定めた状態の強さを知る</li>
+</ul>
+</li>
+<li>
+<p><strong>第11回の優先事項</strong>
+まず尺度を理解し、その後に実施・可視化・分析へ進む</p>
+</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+データサイエンスの観点から見ると、VASは数値として扱いやすい形式です。そのため平均や分散、相関、群間比較などに進みやすいという利点があります。
+<p>ただし、見た目が数値だからといって、そのまま機械的に処理してよいわけではありません。分布が端に張り付いていないか、回答者がキリのよい数字に寄せる傾向（10刻みの丸め）が起きていないか、実装による偏りがないかを確認する必要があります。第12回ではまず可視化、第13回では統計的比較を扱います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 授業内ミニ活動 -->
+<div style="font-size:0.74em">
+<h2>授業内ミニ活動（Think–Pair–Share）</h2>
+<ol>
+<li>
+<p><strong>どの方法が向くかを選ぶ</strong>
+高級感／不快さ／信頼感に対して、SD法・Likert 型評定・VAS のどれが向くか考える</p>
+</li>
+<li>
+<p><strong>VAS 項目を 1 本だけ設計する</strong>
+例：イヤホンの装着感、動画の臨場感、通知音の不快さ</p>
+</li>
+<li>
+<p><strong>事例を 4 点で読む</strong>
+<strong>対象／主観体験／データの取り方／活用</strong> を1行ずつまとめる</p>
+</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+この回の活動は、知識をただ受け取るのではなく、尺度選択と項目設計の感覚をつかむためのものです。最初の活動では、何を測りたいのかによって道具を変える必要があることを体感します。
+<p>2つ目では、1本で1つのことだけを測れているか、アンカーが具体的か、文脈が固定されているかを確認します。3つ目では、事例を「対象・主観体験・データ・活用」に分解して説明できるかを見ます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 確認問題と授業後課題 -->
+<div style="font-size:0.72em">
+<h2>確認問題と授業後課題</h2>
+<h3>確認ポイント</h3>
+<ol>
+<li><strong>VAS とは何か</strong>を、<strong>両端アンカー</strong>と<strong>直線上の位置</strong>という語を使って説明できるか</li>
+<li><strong>SD法と VAS の違い</strong>を、「何を測るか」の観点から言えるか</li>
+<li><strong>向く場面／向きにくい場面</strong>を1つずつ挙げられるか</li>
+<li><strong>メリット</strong>と<strong>注意点</strong>を1つずつ説明できるか</li>
+<li><strong>0〜100 だから比率尺度と言い切れない理由</strong>を説明できるか</li>
+</ol>
+<h3>ミニレポート案</h3>
+<p>身近な対象に対して、<strong>VAS 項目を 1 本だけ設計する</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+確認問題では、この回で最低限説明できてほしい内容を整理しています。定義、他尺度との違い、適用判断、メリットと注意点、そして尺度解釈の慎重さが中心です。
+<p>授業後課題では、身近な対象を1つ選び、以下の4観点を口頭で伝えたうえでまとめてもらう想定です。①何の強さを測るのか、②どんな質問文と両端ラベルにするのか、③なぜVASを選ぶのか、④どんな注意点があるのか。第11回では、実施や統計までではなく、設計の明確さを重視します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まとめと次回への橋渡し -->
+<div style="font-size:0.76em">
+<h2>まとめと次回への橋渡し</h2>
+<h3>この回で持ち帰ってほしいこと</h3>
+<ol>
+<li><strong>VAS は、1つの構成概念の強さを連続的に測る方法</strong>である</li>
+<li><strong>SD法は印象の構造、VAS は強度差</strong>という役割分担で考える</li>
+<li><strong>連続に見えても、解釈と実装には注意</strong>が必要である</li>
+<li>VAS は、<strong>医療・食・感情・音・UX</strong> など幅広い文脈で使われる</li>
+</ol>
+<h3>次回（第12回）</h3>
+<ul>
+<li><strong>pVAS／eVAS</strong></li>
+<li><strong>紙から電子への実装</strong></li>
+<li><strong>ヒストグラム・箱ひげ図・バイオリンプロット</strong></li>
+<li><strong>実装上の誤差とデータ品質</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、この回の核心を4点で整理します。VASは1つの構成概念の強さを測る道具であること、SD法とは役割が違うこと、連続に見えても解釈と実装には注意が必要なこと、そして応用範囲が広いことです。
+<p>次回は、概念理解から一歩進めて、実際にどう実施し、どう可視化するかを扱います。紙の100mm線と電子スライダーでは、線の長さ、初期位置、数字表示の有無、入力誤差、保存方法などの論点が変わります。第11回の理解が、そのまま第12回の設計判断につながります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- NotebookLM -->
+<div style="font-size:0.8em">
+<h2>NotebookLM</h2>
+<ol>
+<li><a href="https://notebooklm.google.com/notebook/f2cef8c5-aa1a-468a-a5a1-a08528e8c4e4">VAS測定における紙と電子媒体の互換性検証</a></li>
+<li><a href="https://notebooklm.google.com/notebook/f2644c2c-2fd5-4fe7-88ba-7d07d7702813">デジタル痛覚評価アプリの信頼性と臨床的展望</a></li>
+<li><a href="https://notebooklm.google.com/notebook/40a2cbf0-42ca-41f7-8848-15b978a24815">痛みの多角的な評価指標とその分類</a></li>
+<li><a href="https://notebooklm.google.com/notebook/9cc8b20d-33ca-4185-84fc-bcc690af69e2">VASの線形性と妥当性</a></li>
+<li><a href="https://notebooklm.google.com/notebook/675acd86-cb9a-4370-b842-a4d27b7b8b4b">VASとリッカート尺度の比較検証：感情測定の優位性</a></li>
+<li><a href="https://notebooklm.google.com/notebook/21135810-2bfc-40f3-b48a-ba9a2119e204">VASによる食欲測定の信頼性と食事摂取への影響評価</a></li>
+<li><a href="https://notebooklm.google.com/notebook/fb509947-6194-4732-8040-90e45f2222d5">感情測定の近代化：Affective Sliderの開発と検証</a></li>
+<li><a href="https://notebooklm.google.com/notebook/0ce1c9a3-378f-43c2-b496-cad18cc997e8">VASを用いた音環境評価の有用性と信頼性検証</a></li>
+<li><a href="https://notebooklm.google.com/notebook/79a6e4fe-714c-48de-bf70-f8cbf38a72bb">VRが切り拓く慢性疼痛管理の未来</a></li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドには、第11回で参照した NotebookLM の整理リンクをまとめています。痛み評価、紙と電子の比較、感情、食行動、音環境、VR 介入など、VAS の適用例を分野横断で振り返れるように並べています。
+<p>授業中は各リンク先の細部を追う必要はありませんが、VAS がどのような対象の「強さ」を測る道具として使われているかを見直す入口として使ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 主な参考資料 -->
+<div style="font-size:0.68em">
+<h2>主な参考資料</h2>
+<ol>
+<li>Haefeli, M., &amp; Elfering, A. (2006). <em>Pain assessment</em>.
+URL: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3454549/">https://pmc.ncbi.nlm.nih.gov/articles/PMC3454549/</a>
+DOI: <a href="https://doi.org/10.1007/s00586-005-1044-x">https://doi.org/10.1007/s00586-005-1044-x</a></li>
+<li>Kersten, P., White, P. J., &amp; Tennant, A. (2014). <em>Is the Pain Visual Analogue Scale Linear and Responsive to Change?</em>
+DOI: <a href="https://doi.org/10.1371/journal.pone.0099485">https://doi.org/10.1371/journal.pone.0099485</a></li>
+<li>Byrom, B., Elash, C. A., Eremenco, S., et al. (2022). <em>Measurement Comparability of Electronic and Paper Administration of Visual Analogue Scales</em>.
+DOI: <a href="https://doi.org/10.1007/s43441-022-00376-2">https://doi.org/10.1007/s43441-022-00376-2</a></li>
+<li>Escalona-Marfil, C., Coda, A., Ruiz-Moreno, J., et al. (2020). <em>Validation of an Electronic Visual Analog Scale mHealth Tool for Acute Pain Assessment</em>.
+DOI: <a href="https://doi.org/10.2196/13468">https://doi.org/10.2196/13468</a></li>
+<li>Haslbeck, J. M. B., Martínez, A. J., Roefs, A. J., et al. (2025). <em>Comparing Likert and visual analogue scales in ecological momentary assessment</em>.
+DOI: <a href="https://doi.org/10.3758/s13428-025-02706-2">https://doi.org/10.3758/s13428-025-02706-2</a></li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+参考資料は配布原稿に挙がっているものを中心に示しています。第11回では、痛み評価の古典的な解説、VASの線形性に関する検討、紙と電子の比較、食行動や感情、音環境、VR介入の事例を参照しています。
+<p>授業では文献の細部を暗記する必要はありませんが、「VASがどのような領域でどう使われているか」を知る手がかりとして位置づけてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 主な参考資料 -->
+<div style="font-size:0.68em">
+<h2>主な参考資料(続き)</h2>
+<ol start="6">
+<li>Douglas, S. M., &amp; Leidy, H. J. (2019). <em>Novel Methodological Considerations Regarding the Use of Visual Analog Scale (VAS) Appetite Questionnaires</em>.
+DOI: <a href="https://doi.org/10.1093/cdn/nzz061">https://doi.org/10.1093/cdn/nzz061</a></li>
+<li>Betella, A., &amp; Verschure, P. F. M. J. (2016). <em>The Affective Slider</em>.
+DOI: <a href="https://doi.org/10.1371/journal.pone.0148037">https://doi.org/10.1371/journal.pone.0148037</a></li>
+<li>Yang, W., &amp; Jeon, J. Y. (2021). <em>Usability of Visual Analogue Scales in Assessing Human Perception of Sound</em>.
+DOI: <a href="https://doi.org/10.3390/su13169207">https://doi.org/10.3390/su13169207</a></li>
+<li>Colloca, L., Han, A., Massalee, R., et al. (2025). <em>Telehealth virtual reality intervention reduces chronic pain in a randomized crossover study</em>.
+DOI: <a href="https://doi.org/10.1038/s41746-025-01553-x">https://doi.org/10.1038/s41746-025-01553-x</a></li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+こちらは参考資料の続きです。前半が VAS の基礎的な論点や紙と電子の比較だったのに対し、ここでは食欲、感情、音環境、VR 介入といった応用事例を補っています。
+<p>文献名を暗記することよりも、どの対象に対して、どの主観状態を、どのように連続尺度で測っているかに注目して見てください。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
