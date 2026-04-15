@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感性データ処理</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>感性データ処理</h1>
+<h2>第2回 感性工学</h2>
+<h3>データサイエンス学部</h3>
+<h4>白濵 成希</h4>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+こんにちは。感性データ処理の講義へようこそ。第2回では、感性工学とは何かを、授業全体の中で位置づけながら見ていきます。前回は用語や授業の見取り図を確認しましたが、今回はその中心にある「人がどう感じるかを、どう設計に返すか」という問題を扱います。感性というと主観的で曖昧なものに聞こえるかもしれませんが、感性工学はそれを曖昧なままで終わらせず、評価し、整理し、設計へつなげようとする考え方です。今日はSD法やVASの細かな実施手順に入る前に、まず大きな地図をつかむことを目標にしてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- この回でつかむこと -->
+<div style="font-size:0.8em">
+<h2>この回でつかむこと</h2>
+<ol>
+<li><strong>感性工学</strong>が何を扱う学問・技術か説明できる</li>
+<li><strong>感じ方を設計へつなぐ基本プロセス</strong>を説明できる</li>
+<li>事例を <strong>対象 / 感性・主観体験 / データと活用</strong> で整理できる</li>
+<li>第3回以降の評価法・分析法が <strong>なぜ必要なのか</strong> を説明できる</li>
+</ol>
+<p><strong>今日の位置づけ</strong>：細かな手法よりも、まずは概念の地図をつかむ</p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+この回のゴールは、個別手法の名前を覚えることではありません。まず、感性工学が何を扱う学問・技術なのかを、自分の言葉で説明できるようになることです。次に、感じ方がどのように設計へ返されるのか、その基本プロセスを理解すること。さらに、事例を見たときに、対象、感性・主観体験、データと活用、という三つの観点で整理できるようになること。そして最後に、次回以降に学ぶ評価法や分析法が、なぜ必要なのかを見通せるようになることです。今日は細部ではなく、全体像を頭の中に作る回だと捉えてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 授業全体の中での位置づけ -->
+<div style="font-size:0.6em">
+<h2>授業全体の中での位置づけ</h2>
+<table>
+<thead>
+<tr>
+<th>フェーズ</th>
+<th style="text-align:right">回</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>導入</td>
+<td style="text-align:right">1〜3</td>
+<td>用語、感性工学、評価の見取り図</td>
+</tr>
+<tr>
+<td>基礎設計</td>
+<td style="text-align:right">4〜8</td>
+<td>変数・尺度、MDS、数量化Ⅲ類、アンケート、SD法</td>
+</tr>
+<tr>
+<td>分析</td>
+<td style="text-align:right">9〜13</td>
+<td>主成分分析、因子分析、VAS の評価・可視化・分析</td>
+</tr>
+<tr>
+<td>統合</td>
+<td style="text-align:right">14〜15</td>
+<td>ワークフロー整理、総合演習</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>前回</strong>：第1回 ガイダンス - 用語と全体像の確認</li>
+<li><strong>今回</strong>：第2回 感性工学 - 感じ方を設計へ返す枠組み</li>
+<li><strong>次回</strong>：第3回 感性工学における評価 - 何をどう測るかを考える</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+授業全体の中で見ると、第2回は導入フェーズのちょうど真ん中にあります。前回は、感性データ処理という授業でどんな内容を扱うのか、用語レベルで確認しました。今回は、その用語を単独で覚えるのではなく、「感じ方を設計につなぐ」という一本の流れの中に置き直します。そして次回、第3回では、その入口にあたる「評価」、つまり何をどう測るかに進みます。第4回以降の尺度水準、アンケート、SD法、主成分分析、因子分析、VAS も、すべて今日の枠組みのどこかを支える道具です。ですから今日は、今後の各回をばらばらの知識としてではなく、一つのワークフローとして見るための土台作りだと思ってください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日の進め方 -->
+<div style="font-size:0.6em">
+<h2>今日の進め方（90分の見取り図）</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">時間</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0〜15分</td>
+<td>第1回の復習と、なぜ今「感性工学」なのか</td>
+</tr>
+<tr>
+<td style="text-align:right">15〜40分</td>
+<td>感性工学の定義・基本プロセス・歴史の概観</td>
+</tr>
+<tr>
+<td style="text-align:right">40〜65分</td>
+<td>産業応用の事例を読む</td>
+</tr>
+<tr>
+<td style="text-align:right">65〜80分</td>
+<td>本講義との接続：なぜ次回から「評価」を学ぶのか</td>
+</tr>
+<tr>
+<td style="text-align:right">80〜90分</td>
+<td>まとめ、確認問題、課題説明</td>
+</tr>
+</tbody>
+</table>
+<p>今日は <strong>地図を見る回</strong> です。個別ツールの詳細は次回以降で扱います。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の90分は、大きく三つのブロックで進めます。前半では、前回の復習も兼ねて、なぜ今あらためて感性工学を学ぶのかを確認します。中盤では、感性工学の定義、基本プロセス、歴史的な広がりを整理します。後半では、産業応用の事例を読みながら、対象が違っても共通する骨格があることを見ていきます。最後に、本講義の次回以降とどうつながるかを確認して終わります。今日はいわば地図を見る回です。個別の道具を使いこなす前に、どの場面で何が必要になるのかを見通せるようにしていきましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- なぜ今「感性工学」なのか -->
+<div style="font-size:0.6em">
+<h2>なぜ今「感性工学」なのか</h2>
+<table>
+<thead>
+<tr>
+<th>基本性能が満たされやすい市場</th>
+<th>差が出る体験価値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>使える</td>
+<td>触って <strong>気持ちいい</strong></td>
+</tr>
+<tr>
+<td>速い</td>
+<td>見て <strong>高級感がある</strong></td>
+</tr>
+<tr>
+<td>壊れにくい</td>
+<td>使って <strong>迷いにくい</strong></td>
+</tr>
+<tr>
+<td>機能差だけでは選ばれにくい</td>
+<td>聴いて <strong>不快ではない</strong> / <strong>自分に合っている</strong></td>
+</tr>
+</tbody>
+</table>
+<p>これらは数値化しにくく個人差も大きい一方で、<strong>選ばれる理由</strong> に強く関わります。</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+では、なぜ今「感性工学」なのかを考えてみます。多くの製品やサービスでは、基本性能だけで大きな差がつきにくくなっています。使える、速い、壊れにくい、といった条件はもちろん重要ですが、それだけでは「選ばれる理由」になりにくい場面が増えています。そこで効いてくるのが、触って気持ちいい、見て高級感がある、操作して迷いにくい、聴いて不快ではない、といった体験としての価値です。こうした価値は数値化しにくく、個人差もありますが、実際の選好や満足度に強く関わります。感性工学は、その扱いにくい部分を対象化し、設計へ返すための枠組みだと捉えると分かりやすいです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 「感性」を設計の言葉に翻訳する -->
+<div style="font-size:0.6em">
+<h2>「感性」を設計の言葉に翻訳する</h2>
+<p><strong>感性工学で見る観点</strong></p>
+<ul>
+<li><strong>どの対象が</strong></li>
+<li><strong>どんな人に</strong></li>
+<li><strong>どんな状況で</strong></li>
+<li><strong>どんな印象や感情を生むのか</strong></li>
+</ul>
+<p><strong>例：</strong> 「安心できる」は何から生まれるか</p>
+<ul>
+<li>色や形の落ち着き</li>
+<li>表示の分かりやすさ</li>
+<li>音の大きさや質感</li>
+<li>触ったときの手触り</li>
+<li>ブランドへの既有知識</li>
+</ul>
+<p><strong>要点</strong>：感性工学は、関係を「なんとなく」で終わらせず、<strong>設計の言葉に翻訳する</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで重要なのは、感性を単なる「好き嫌い」で終わらせないことです。たとえば「安心できる」という一つの印象を考えても、その背景には、落ち着いた色、読みやすい表示、耳障りでない音、手触り、ブランドへの信頼など、複数の要因が重なっている可能性があります。しかも、その関係は人や状況によって変わります。初めて使う人と慣れた人では、同じデザインでも受け取り方が違うかもしれません。感性工学の役割は、その複雑な関係を、設計の観点から整理し、どの要素がどんな印象に関係しそうかを議論できる形にすることです。つまり、感性を設計の言葉に翻訳することが核心になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ミニ活動1：身近な製品は、どんな「感じ方」を狙っていそうか -->
+<div style="font-size:0.5em">
+<h2>ミニ活動1：身近な製品は、どんな「感じ方」を狙っていそうか</h2>
+<ol>
+<li>
+<p><strong>Think（2分）</strong></p>
+<ul>
+<li>最近使った製品・サービスを1つ選ぶ</li>
+<li>ユーザーに感じてほしそうなことを <strong>2つ</strong> 書く</li>
+<li>例：安心、軽快、かわいい、落ち着く、信頼できる</li>
+</ul>
+</li>
+<li>
+<p><strong>Pair（2〜3分）</strong></p>
+<ul>
+<li>2人で共有する</li>
+<li>その感じ方を生みそうな設計要素を <strong>1つ</strong> 挙げる</li>
+</ul>
+</li>
+<li>
+<p><strong>Share（2分）</strong></p>
+<ul>
+<li>全体共有し、「感じ方」と「設計要素」が結びつきうることを確認する</li>
+</ul>
+</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで一度、身近な例で考えてみましょう。最近使った製品やサービスを一つ思い浮かべて、その製品がユーザーにどんな感じ方をしてほしそうかを二つ書いてみてください。たとえば、安心、軽快、かわいい、落ち着く、信頼できる、楽しい、といった言葉です。対面授業であれば、このあと近くの人と共有して、その感じ方を生みそうな設計要素を一つ挙げてもらいます。オンデマンドで視聴している場合も、ここでいったん一時停止してメモを取ると理解が深まります。大切なのは正解を当てることではなく、感じ方と設計要素が結びついて考えられることを体感することです。配色、形、余白、音、素材感、操作の流れなど、思いつくもので十分です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 感性工学とは何か -->
+<div style="font-size:0.7em">
+<h2>感性工学とは何か</h2>
+<blockquote>
+<p><strong>feeling や image を設計要素へ翻訳する技術</strong></p>
+</blockquote>
+<p>本講義での捉え方</p>
+<ul>
+<li><strong>人が対象に対して抱く印象・感情・体験価値</strong>を捉える</li>
+<li>それを <strong>設計・改善</strong> に結びつける</li>
+<li>分析のための分析ではなく、<strong>設計のための方法論</strong> として考える</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+あらためて、感性工学とは何かを言葉にしてみます。古典的には、feeling や image を設計要素へ翻訳する技術と説明されます。つまり、人が対象に対して抱く印象や感情を、そのまま「なんとなく」で終わらせず、設計や改善に使える形へ落とし込もうとするわけです。本講義でも、この考え方を引き継ぎます。ただし対象は、伝統的な工業製品だけに限りません。サービス、UI、UX、音、空間なども含めて、人の主観体験をどう捉え、どう設計へ返すかを考えます。ここで大切なのは、分析のための分析ではなく、最終的に設計や改善へつなげるための方法論として感性工学を理解することです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 感性工学が扱う問い -->
+<div style="font-size:0.7em">
+<h2>感性工学が扱う問い</h2>
+<ul>
+<li>どんな人に、どんな感じ方をしてほしいのか</li>
+<li>その感じ方は、どの言葉で表せるのか</li>
+<li>その感じ方は、どの設計要素に関係していそうか</li>
+<li>実際に評価すると、どの要素が効いているのか</li>
+<li>その知見を、どう設計変更に返すのか</li>
+</ul>
+<p><strong>ポイント</strong>：<strong>「感じ方を測る」こと</strong> と <strong>「設計へ返す」こと</strong> を切り離さない</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドの問いは、そのまま感性工学の流れになっています。まず、誰に、どんな感じ方をしてほしいのかを考える。次に、その感じ方をどんな言葉で表すのかを決める。そして、その感じ方がどの設計要素に関係しそうかを整理する。さらに、実際に評価や実験を行って、どの要素がどの程度効いているのかを確かめる。最後に、その知見を設計変更や改善提案へ返す。重要なのは、「感じ方を測ること」と「設計へ返すこと」を切り離さないことです。ここが、単なる印象調査に終わらない感性工学の特徴です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 感性工学の基本プロセス -->
+<div style="font-size:0.6em">
+<h2>感性工学の基本プロセス</h2>
+<ol>
+<li><strong>対象を決める</strong>
+何を改善・設計したいのか</li>
+<li><strong>狙う感じ方を定める</strong>
+安心感、高級感、楽しさ など</li>
+<li><strong>言葉や評価方法を決める</strong>
+感性ワード、質問紙、実験条件 など</li>
+<li><strong>評価してデータを集める</strong>
+主観評価、行動ログ、生理指標 など</li>
+<li><strong>設計要素との関係を読む</strong>
+どの要素がどの感じ方に結びつくかを整理する</li>
+<li><strong>設計へ反映する</strong>
+色、形、素材、音、レイアウト、手順を見直す</li>
+</ol>
+<p><strong>要約</strong>：狙う感じ方 → 評価・データ化 → 設計要素との対応づけ → 改善案の作成</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここが今回の中心となるスライドです。感性工学の基本プロセスは、対象を決める、狙う感じ方を定める、言葉や評価方法を決める、評価してデータを集める、設計要素との関係を読む、設計へ反映する、という流れで整理できます。たとえば、あるアプリを「安心して使える」ものにしたいのであれば、まず対象はそのアプリです。次に、安心感をどの言葉や尺度で測るかを決めます。そのうえで、配色や表示の分かりやすさ、操作ステップなどとの関係を評価し、どこを直せばよいかを考えます。今後の授業で扱うアンケート、SD法、VAS、主成分分析、因子分析は、すべてこの流れのどこかを支える道具です。個別の手法を学ぶときも、必ずこの全体プロセスの中で位置づけて理解してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 成り立ちと広がり -->
+<div style="font-size:0.6em">
+<h2>成り立ちと広がり</h2>
+<table>
+<thead>
+<tr>
+<th>節目</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1970年代以降</td>
+<td>日本で感性工学の考え方が体系化される</td>
+</tr>
+<tr>
+<td>1996年</td>
+<td>古典的整理が広く参照される</td>
+</tr>
+<tr>
+<td>1998年</td>
+<td>日本感性工学会（JSKE）設立</td>
+</tr>
+<tr>
+<td>2007年</td>
+<td>KEER 会議シリーズ開始</td>
+</tr>
+<tr>
+<td>2020年代</td>
+<td>デジタル技術、オンライン調査、AI、レビュー分析との接続が進展</td>
+</tr>
+</tbody>
+</table>
+<p>現在は、製品だけでなく <strong>サービス、UX、VR、医療、教育</strong> などへ対象が広がっています。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+感性工学の歴史は、細かな年号を暗記する必要はありません。ここで押さえたいのは、感性工学が日本で体系化され、製品設計の文脈から発展してきたこと、そして現在では対象が大きく広がっていることです。もともとは形や色、素材など、比較的具体的な設計要素との関係がよく議論されてきましたが、近年ではサービス体験、UX、VR、医療、教育など、より広い領域に応用が広がっています。また、オンライン調査、レビュー分析、AI などのデジタル技術とも接続しやすくなっています。つまり感性工学は、古い概念ではなく、現在のデータ活用とも結びつく、発展中の領域だと理解してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日押さえること -->
+<div style="font-size:0.6em">
+<h2>今日押さえること / まだ詳しく扱わないこと</h2>
+<table>
+<thead>
+<tr>
+<th>今日押さえること</th>
+<th>まだ詳しく扱わないこと</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>感性工学は <strong>感じ方を設計へつなぐ方法論</strong> である</td>
+<td>どの尺度をどう作るか</td>
+</tr>
+<tr>
+<td>感じ方は <strong>対象・人・状況</strong> の組合せで変わる</td>
+<td>SD法やVASの実施手順</td>
+</tr>
+<tr>
+<td>評価と分析は <strong>設計へ返すため</strong> に必要になる</td>
+<td>主成分分析や因子分析の計算方法</td>
+</tr>
+</tbody>
+</table>
+<p><strong>位置づけ</strong>：今日は <strong>地図を見る回</strong>、道具の使い方を細かく学ぶ回ではない</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで、今日押さえることと、まだ詳しく扱わないことを切り分けておきます。今日理解してほしいのは、感性工学が感じ方を設計へつなぐ方法論だということ、そして感じ方は対象・人・状況の組み合わせで変わるということです。また、評価や分析はそれ自体が目的ではなく、設計へ返すために必要になるという点も重要です。一方で、どの尺度をどう作るか、SD法や VAS を具体的にどう実施するか、主成分分析や因子分析をどう計算するか、といった細部はこれから順番に扱います。今日は地図をつかむ回です。まだ道具の細かい使い方が分からなくても問題ありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 事例を読むときの見方 -->
+<div style="font-size:0.8em">
+<h2>事例を読むときの見方</h2>
+<ol>
+<li><strong>対象</strong>
+何を評価・設計したのか</li>
+<li><strong>感性・主観体験</strong>
+何を「感じるもの」として扱ったのか</li>
+<li><strong>データと活用</strong>
+どう測り、どう設計へ返したのか</li>
+</ol>
+<p><strong>まずはこの3点で読む</strong> と、分野が違っても事例の骨格が見えやすい</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+これから事例を見るときには、まず三つの観点で読む癖をつけてください。一つ目は対象です。何を評価し、何を設計しようとしているのか。二つ目は感性・主観体験です。研究や実務の中で、何を「感じるもの」として扱っているのか。三つ目はデータと活用です。どう測り、その結果をどう設計へ返したのか。分野が違うと専門用語や方法は変わって見えますが、この三点で読むと骨格はかなり共通しています。第2回では、手法名を細かく覚えるよりも、まずこの読み方を身につけることを重視してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 産業応用の概観 -->
+<div style="font-size:0.4em">
+<h2>産業応用の概観</h2>
+<table>
+<thead>
+<tr>
+<th>分野</th>
+<th>対象</th>
+<th>感性・主観体験</th>
+<th>データと活用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>パッケージ</td>
+<td>サフラン包装</td>
+<td>情緒的印象、好ましさ</td>
+<td>要素整理と評価から設計提案へつなげる</td>
+</tr>
+<tr>
+<td>照明・空間</td>
+<td>壁付け照明</td>
+<td>夜の雰囲気、昼間の見え方の魅力</td>
+<td>要素-印象関係を整理し、照明設計に使う</td>
+</tr>
+<tr>
+<td>製品音</td>
+<td>掃除機の動作音</td>
+<td>不快さ、音の印象</td>
+<td>心理音響指標 + 聴取実験で音設計に活かす</td>
+</tr>
+<tr>
+<td>外観 × レビュー分析</td>
+<td>家庭用ポータブルエアコン</td>
+<td>外観に対する感性語</td>
+<td>レビューから語を抽出し、評価モデルに活用する</td>
+</tr>
+<tr>
+<td>HCI / UX</td>
+<td>コンピュータマウス</td>
+<td>emotional user response、使い心地</td>
+<td>リモートUX調査で主観データを収集する</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+産業応用の概観を見ると、対象はとても多様です。パッケージ、照明や空間、製品音、製品外観、そして HCI や UX まで含まれています。それぞれ扱う感性語やデータの取り方は違いますが、共通しているのは、何らかの主観体験を捉え、それを設計や改善へ返そうとしている点です。たとえば音であれば不快さや心地よさ、パッケージであれば好ましさや情緒的印象、UX であれば使い心地や感情的反応が問題になります。ここで大切なのは、対象が変わっても「感性を測る → 関係を読む → 設計へ返す」という基本構造は共通していると見抜くことです。事例の細部よりも、その共通構造に注目してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 事例から見える共通パターン -->
+<div style="font-size:0.7em">
+<h2>事例から見える共通パターン</h2>
+<ul>
+<li>まず <strong>狙う感じ方</strong> を言葉にする</li>
+<li>次に <strong>設計要素</strong> を候補として整理する</li>
+<li>評価実験やレビュー、主観評定で <strong>データを集める</strong></li>
+<li>その関係を根拠に <strong>設計変更や改善提案</strong> を行う</li>
+</ul>
+<p><strong>核心</strong>：<strong>「感じ方」と「設計要素」の関係を、議論できる形にすること</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+事例から見える共通パターンを、ここで一度抽象化しておきます。まず、狙う感じ方を言葉にすることから始まります。次に、その感じ方に関係しそうな設計要素を整理します。そして、評価実験やレビュー分析、主観評定などを通じてデータを集め、その関係を読み取ります。最後に、その結果を根拠として設計変更や改善提案を行います。感性工学の核心は、「感じ方」と「設計要素」の関係を、個人の感想のままにせず、共有・議論・改善できる形にすることです。ここまで来ると、感性工学が単なる感想集めではないことが見えてくるはずです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ミニ活動2：事例を「設計の言葉」に言い換える -->
+<div style="font-size:0.5em">
+<h2>ミニ活動2：事例を「設計の言葉」に言い換える</h2>
+<ol>
+<li>
+<p><strong>Think（3分）</strong></p>
+<ul>
+<li>
+<p>表の事例から1つ選ぶ</p>
+</li>
+<li>
+<p>次の3点を一文ずつで書く</p>
+<ol>
+<li>狙っている感じ方</li>
+<li>それに関係しそうな設計要素</li>
+<li>次に確かめるべきこと</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Pair（3〜4分）</strong></p>
+<ul>
+<li>互いのメモを見せ合い、つながりが自然かを確認する</li>
+</ul>
+</li>
+<li>
+<p><strong>Share（2〜3分）</strong></p>
+<ul>
+<li>同じ対象でも、狙う感じ方によって見るべき要素が変わることを確認する</li>
+</ul>
+</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは、事例を受け身で読むのではなく、設計の言葉に言い換える練習をします。表の事例から一つ選んで、狙っている感じ方、それに関係しそうな設計要素、次に確かめるべきこと、の三点をそれぞれ一文で書いてみてください。対面授業なら近くの人と見せ合って、つながりが自然かどうかを確認します。オンデマンドの場合も、ここで少し立ち止まって文章にしてみると、理解が定着します。同じ対象でも、狙う感じ方が「高級感」なのか「親しみやすさ」なのかで、注目すべき要素は変わります。その違いに気づければ、感性工学的な読み方ができています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 分析の前に、何をどう測るかを設計する -->
+<div style="font-size:0.6em">
+<h2>分析の前に、何をどう測るかを設計する</h2>
+<p><strong>データサイエンスの見え方</strong></p>
+<ul>
+<li>説明変数（X）：色、形、素材、音、配置などの設計要素</li>
+<li>目的変数（y）：安心感、高級感、楽しさなどの感性評価</li>
+</ul>
+<p><strong>ただし難しさがある</strong></p>
+<ul>
+<li>そもそも <strong>何を感じ方として測るのか</strong> を決める必要がある</li>
+<li>同じ言葉でも、人によって意味がずれる</li>
+<li>文脈や経験によって評価が変わる</li>
+<li>質問の仕方や提示順序でも結果が変わる</li>
+</ul>
+<p><strong>だから</strong>：分析の前に <strong>「何を、どう測るか」</strong> を設計する必要がある</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから次回への橋渡しに入ります。データサイエンスの言葉で言えば、色、形、素材、音、配置などの設計要素が説明変数 X にあたり、安心感や高級感、楽しさなどの感性評価が目的変数 y にあたります。ただし、ここで難しいのは、目的変数である「感じ方」が最初から自明ではないことです。何をどんな言葉で測るかを決めなければなりませんし、同じ言葉でも人によって意味がずれることがあります。さらに、文脈や経験、提示順序、質問の仕方によって結果が変わることもあります。だからこそ、分析の前段階として、「何を、どう測るか」を丁寧に設計する必要があるのです。次回以降に学ぶ評価法は、そのための基盤になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 分析の前に、何をどう測るかを設計する -->
+<div style="font-size:0.55em">
+<h2>今後の回が担う役割</h2>
+<table>
+<thead>
+<tr>
+<th>今後の回</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第3回 感性工学における評価</td>
+<td>どんな感覚・感性ワードで評価するかを考える</td>
+</tr>
+<tr>
+<td>第4回 変数の種類と尺度水準</td>
+<td>データの「数字の意味」を正しく理解する</td>
+</tr>
+<tr>
+<td>第7回 アンケート手法</td>
+<td>良い主観データを取るための質問紙を設計する</td>
+</tr>
+<tr>
+<td>第8回 SD法による評価</td>
+<td>印象を言葉の軸で測る</td>
+</tr>
+<tr>
+<td>第9〜10回 主成分分析・因子分析</td>
+<td>SD法データを要約し、印象軸を読む</td>
+</tr>
+<tr>
+<td>第11〜13回 Visual Analog Scale</td>
+<td>強さの差を連続量として測る・分析する</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第2回の役割</strong>：なぜその道具が必要なのかを理解するための土台を作る</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+この表は、今後の各回がどこを担うのかを示しています。第3回では、どんな感覚や感性ワードで評価するのかを考えます。第4回では、データの数字が何を意味するのか、つまり尺度水準の理解を固めます。第7回のアンケート手法は、良い主観データを取るための設計に関わります。第8回の SD 法は印象を言葉の軸で測る方法、第9回と第10回の主成分分析・因子分析は、そのデータから印象軸を読む方法です。第11回から第13回の VAS は、強さの差をより連続的に捉えるための方法として位置づけられます。つまり第2回の役割は、これらの道具をなぜ学ぶのか、その必然性を理解するための土台を作ることにあります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日のまとめ -->
+<div style="font-size:0.7em">
+<h2>今日のまとめ</h2>
+<ul>
+<li>感性工学は、<strong>人の感じ方を設計へつなぐ方法論</strong> である</li>
+<li>ポイントは、感じ方を「気分の話」で終わらせず、<strong>設計要素と関係づける</strong> ことにある</li>
+<li>産業応用では、製品、空間、音、UI / UX など、さまざまな対象で使われている</li>
+<li>次回以降の評価法や分析法は、感性工学を実際に動かすための道具である</li>
+</ul>
+<p><strong>持ち帰る主メッセージ</strong>：感性工学は、感じ方を設計に活かすための翻訳の枠組み</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の内容を一つの線でまとめると、感性工学は、人の感じ方を設計に活かすための翻訳の枠組みだと言えます。感じ方を気分や好みの話だけで終わらせず、設計要素との関係にまで踏み込むことが重要でした。そしてその考え方は、製品、空間、音、UI、UX など、さまざまな対象に応用されています。さらに、次回以降に学ぶ評価法や分析法は、その翻訳を実際に行うための具体的な道具です。今日の時点で完璧に説明できなくても構いませんが、「感じ方を設計に返す」という一本の筋が見えていれば十分です。そこを持ち帰ってください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 確認問題 -->
+<div style="font-size:0.6em">
+<h2>確認問題</h2>
+<ol>
+<li>感性工学とはどのような学問・技術か、1〜2文で説明できるか</li>
+<li>感性工学を「翻訳」と表現できるのはなぜか説明できるか</li>
+<li>事例を読むときの3点セット
+<strong>対象 / 感性・主観体験 / データと活用</strong> を説明できるか</li>
+<li>感性工学で、分析の前に「何を、どう測るか」を決める必要があるのはなぜか</li>
+<li>興味のある製品・サービスを1つ挙げ、その対象で狙えそうな感じ方を2つ書けるか</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+確認問題では、定義の丸暗記よりも、自分の言葉で説明できるかを確かめてください。感性工学とは何か、なぜ翻訳と表現できるのか、事例を読むときの三点セットは何か、なぜ分析の前に何をどう測るかを決める必要があるのか。このあたりが説明できれば、今日の理解はかなり整理できています。最後の設問では、自分の興味のある製品やサービスを一つ挙げ、そこで狙えそうな感じ方を二つ考えてみてください。次回以降の学習は、その感じ方を実際にどう評価するか、という話につながっていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 授業後課題 -->
+<div style="font-size:0.55em">
+<h2>授業後課題</h2>
+<h3>身近な製品・サービスを「感性工学の視点」で読む</h3>
+<p><strong>A4 1枚程度（目安：600〜800字）</strong> にまとめる</p>
+<ul>
+<li>
+<p>対象：普段使う製品・サービスを1つ選ぶ</p>
+</li>
+<li>
+<p>必須で書くこと</p>
+<ol>
+<li><strong>誰にとって</strong> の対象か（自分でもよい）</li>
+<li>狙っていそうな <strong>感じ方を2〜3個</strong></li>
+<li>その感じ方に関係しそうな <strong>設計要素を2〜3個</strong></li>
+<li>実際に確かめるなら、<strong>何を評価する必要がありそうか</strong> を1つ</li>
+</ol>
+</li>
+</ul>
+<p>※ この段階では、尺度や統計手法を詳しく書く必要はない</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+授業後課題では、身近な製品やサービスを一つ選び、それを感性工学の視点で読んでみます。ここで重視したいのは、立派な統計手法を書くことではなく、誰にとっての対象なのか、どんな感じ方を狙っていそうか、その感じ方に関係しそうな設計要素は何か、もし確かめるなら何を評価すべきか、という流れを自分で組み立てることです。たとえばスマートフォンのアプリ、飲料のパッケージ、イヤホン、Web サイト、家電など、身近なもので構いません。良いレポートは、感じ方の言葉と設計要素の対応が具体的で、読む人に納得感があるものです。この段階では尺度や統計手法を詳しく書けなくても問題ありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 次回予告：感性工学における評価 -->
+<div style="font-size:0.7em">
+<h2>次回予告：感性工学における評価</h2>
+<p><strong>次回のテーマ</strong></p>
+<ul>
+<li>人は何を手がかりに感じるのか</li>
+<li>その感じ方を、どんな言葉や尺度で表すのか</li>
+</ul>
+<p><strong>キーワード</strong></p>
+<ul>
+<li>五感（視覚・聴覚・触覚・味覚・嗅覚）</li>
+<li>感性ワード</li>
+<li>主観評価</li>
+<li>「何をどう聞けば、感じ方をデータにできるか」</li>
+</ul>
+<p><strong>今日とのつながり</strong>：感性工学の入口である <strong>評価</strong> を、次回から具体的に学ぶ</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+次回は、感性工学の入口である「評価」を具体的に扱います。人は何を手がかりに感じるのか、五感を通してどのように対象を受け取るのか、そしてその感じ方をどんな言葉や尺度で表現すればデータとして扱えるのかを考えます。今日の話で、感じ方を設計に返すには、まず感じ方を適切に捉えなければならないことが分かったと思います。次回はその最初の一歩として、感性ワードや主観評価の考え方を学びます。今日の内容を思い出しながら、どんな言葉なら自分の感じ方をうまく表せるかを意識しておいてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- NotebookLM -->
+<div style="font-size:0.7em">
+<h2>NotebookLM</h2>
+<ol>
+<li><a href="https://notebooklm.google.com/notebook/7a0ed405-84e2-49e6-a103-e1911d08e273">サフランのパッケージデザイン</a></li>
+<li><a href="https://notebooklm.google.com/notebook/45bd05ed-4bb5-4a2f-8618-b986b78b1f5a">室内照明</a></li>
+<li><a href="https://notebooklm.google.com/notebook/49545016-b2dc-41d9-ad59-fac196c01497">掃除機の騒音</a></li>
+<li><a href="https://notebooklm.google.com/notebook/56cfa5eb-dc12-4d28-b2b6-9238db12e235">コンピューターマウスのクリック感</a></li>
+<li><a href="https://notebooklm.google.com/notebook/70d1ae50-ad53-48b9-92ff-e495bfbcf0aa">感性工学と感情的デザイン手法の系統的分析</a></li>
+<li><a href="https://notebooklm.google.com/notebook/07ee6cec-9619-4284-9c1d-b46f69144533">感性工学：心を形にする製品開発の体系論</a></li>
+<li><a href="https://notebooklm.google.com/notebook/23b78923-8427-4169-8d96-0ff53c47b079">感性工学：デジタル社会における人間中心設計の未来</a></li>
+<li><a href="https://notebooklm.google.com/notebook/c3a583a4-0a57-40be-a5ed-a09ec5ff9692">講義スライド</a></li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、補助資料として NotebookLM のリンクを載せています。授業で扱った事例や関連文献を、もう少し詳しく追いたいときに使ってください。見るときは、ただ要約を読むのではなく、「対象は何か」「どんな感性・主観体験を扱っているか」「どのようにデータを取り、どう活用しているか」という三点で整理しながら読むと理解しやすくなります。課題を考えるときのヒント集として使うのも有効です。ただし、そのまま写すのではなく、自分の言葉で要点をまとめることが大切です。復習としては、今日のまとめと確認問題を見返したうえで、興味のある事例を一つ読んでみると、次回の評価の話につながりやすくなります。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
