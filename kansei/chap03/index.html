@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感性データ処理 第3回</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="s">
+  
+  <link rel="stylesheet" href="t">
+  
+  <link rel="stylesheet" href="y">
+  
+  <link rel="stylesheet" href="l">
+  
+  <link rel="stylesheet" href="e">
+  
+  <link rel="stylesheet" href=".">
+  
+  <link rel="stylesheet" href="c">
+  
+  <link rel="stylesheet" href="s">
+  
+  <link rel="stylesheet" href="s">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>感性データ処理</h1>
+<h2>第3回 感性工学における評価</h2>
+<p>五感・感性ワード・主観／客観データの見取り図</p>
+<h3>データサイエンス学部</h3>
+<h4>白濵 成希</h4>
+
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 本講のねらい -->
+<div style="font-size:0.75em">
+<h2>本講のねらい</h2>
+<ul>
+<li>今回の中心は、<strong>人が何を手がかりに感じ、その感じ方をどのような言葉やデータで表すか</strong> を捉えること</li>
+<li>第3回は、SD法やVASの詳細に入る前に、<strong>感性評価の見取り図</strong> をそろえる回
+<br /><br /></li>
+</ul>
+<h3>今日の到達目標</h3>
+<ol>
+<li>五感が感性評価の入口になる理由を説明できる</li>
+<li>多感覚統合（クロスモーダル）を身近な例で説明できる</li>
+<li>感性ワードの「集める → 整理する → 絞る」を説明できる</li>
+<li>主観評価・行動データ・生理データの違いを整理できる</li>
+<li>次回の「変数の種類と尺度水準」が必要な理由を説明できる</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドでは、第3回の到達点を共有します。今回の「評価」は、単に点数を付けることではありません。人の感じ方を、設計や分析に返せる形へ整理することが中心です。したがって本講では、評価法の細かな運用より前に、五感、多感覚統合、感性ワード、主観データと客観データという入口の考え方を押さえます。最後に、なぜ次回の尺度水準が必要になるのかまで見通せるようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 授業全体での位置づけ -->
+<div style="font-size:0.5em">
+<h2>授業全体での位置づけ</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">回</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">第1回</td>
+<td>「感性」「感性データ」「感性データ処理」の基本用語を確認</td>
+</tr>
+<tr>
+<td style="text-align:right">第2回</td>
+<td>感性工学が「感じ方を設計へ返す」考え方であることを学ぶ</td>
+</tr>
+<tr>
+<td style="text-align:right"><strong>第3回</strong></td>
+<td><strong>評価の入口を整理する</strong> ← 今回</td>
+</tr>
+<tr>
+<td style="text-align:right">第4回</td>
+<td>変数の種類と尺度水準を学ぶ</td>
+</tr>
+<tr>
+<td style="text-align:right">第7〜8回</td>
+<td>アンケート手法・SD法へ展開</td>
+</tr>
+<tr>
+<td style="text-align:right">第11〜13回</td>
+<td>VASの設計・可視化・分析へ展開</td>
+</tr>
+<tr>
+<td style="text-align:right">第14〜15回</td>
+<td>分析ワークフローと総合演習へ接続</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li>到達目標:、<strong>感性データを理解する／評価方法を理解する／分析してレポートを作成する</strong></li>
+</ul>
+<blockquote>
+<p>本科目全体では、<strong>感性データを理解する → <br />評価法を設計する → 分析する → 報告する</strong> <br />という流れで学ぶ。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+シラバスに沿ってみると、今回の第3回は、授業後半の評価法や分析法に入るための土台づくりにあたります。第1回と第2回で概念を学び、第3回で評価の考え方を整え、第4回でデータの型を学ぶ。その後にアンケート手法、SD法、VAS、分析手法へ進みます。つまり今回は、後の手法を個別に覚える前に、何をどう測るかを考える軸をそろえる位置づけです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- なぜ今評価を学ぶのか -->
+<div style="font-size:0.70em">
+<h2>なぜ今「評価」を学ぶのか</h2>
+<blockquote>
+<p>体験価値を議論するには、<br /><strong>「感じ方」を言葉とデータにする必要</strong> がある。</p>
+</blockquote>
+<ul>
+<li>
+<p>基本機能だけでは差がつきにくい製品・サービス、<strong>体験の質が重要</strong></p>
+</li>
+<li>
+<p>(例)以下のような印象はそのままでは比較が困難、設計にも返しにくい</p>
+<ul>
+<li>「心地よい」「高級感がある」「安心できる」「不快ではない」「自分に合っている」</li>
+</ul>
+</li>
+<li>
+<p>ひとつの体験は、しばしば <strong>複数の感覚</strong> の組み合わせで成立する</p>
+</li>
+<li>
+<p>したがって、後の分析より前に <strong>評価設計</strong> が重要になる</p>
+</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+心地よい、高級感がある、安心できるといった印象は、日常では自然に使っていますが、そのままでは研究や設計で比較できません。基本機能だけでは差がつきにくい製品やサービスでは、体験の質が重要になります。しかし、その体験は視覚、聴覚、触覚など複数の感覚の組み合わせで成立することが多く、どこに注目するかを決めないと、後の分析結果も設計へ返しにくくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 評価設計で決めること -->
+<div style="font-size:0.9em">
+<h2>評価設計で決めること</h2>
+<blockquote>
+<p>評価設計は、後の分析で扱うデータの定義になる。</p>
+</blockquote>
+<ul>
+<li>何を「感じるもの」として扱うか</li>
+<li>どの感覚に注目するか</li>
+<li>どんな言葉や項目で尋ねるか</li>
+<li>主観だけで取るか、行動や生理も補助的に使うか</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでのポイントは、評価設計そのものがデータの定義だということです。何を評価対象として扱うか、どの感覚に注目するか、どんな言葉や項目で尋ねるかを決めてはじめて、後の統計や多変量解析が意味を持ちます。さらに、主観評価だけで見るのか、行動データや生理データも補助的に使うのかによって、得られるデータの性質も変わります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ミニ活動1 -->
+<div style="font-size:0.8em">
+<h2>ミニ活動1</h2>
+<h3>最近の体験を「どの感覚が効いていたか」で見る</h3>
+<ol>
+<li><strong>Think（2分）</strong>
+最近「使いやすい」「心地よい」と感じた製品・サービスを1つ選ぶ</li>
+<li><strong>Think（続き）</strong>
+その体験に関わっていそうな感覚を挙げる</li>
+<li><strong>Pair（2〜3分）</strong>
+2人で共有し、特に効いていそうな感覚を1つ選んで理由を話す</li>
+<li><strong>Share（1〜2分）</strong>
+全体で数例共有し、同じ対象でも注目する感覚が割れることを確認する</li>
+</ol>
+<blockquote>
+<p>正解探しではない<br /><strong>感じ方を感覚に分解して考えること</strong> が目的</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+この活動では、評価設計の第一歩として、日常の体験を感覚の観点から捉え直します。同じスマホやアプリでも、見た目を重視する人もいれば、操作音や触覚フィードバックを重視する人もいます。ここでは答えを一致させる必要はありません。むしろ、どの感覚が効いているとみなすかが人によって変わりうることを確認し、評価対象の切り分けが必要だと実感してもらうことが狙いです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 五感を入口として整理する -->
+<div style="font-size:0.56em">
+<h2>五感を「刺激の入口」として整理する</h2>
+<table>
+<thead>
+<tr>
+<th>感覚</th>
+<th>着目する特徴</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>視覚</td>
+<td>色、形、明るさ、動き、配置</td>
+<td>UI、パッケージ、ポスター、空間</td>
+</tr>
+<tr>
+<td>聴覚</td>
+<td>音量、音高、音色、リズム</td>
+<td>通知音、機械音、BGM、操作音</td>
+</tr>
+<tr>
+<td>触覚</td>
+<td>硬さ、粗さ、温度、重さ、振動</td>
+<td>スマホ背面、ボタン、素材感</td>
+</tr>
+<tr>
+<td>嗅覚</td>
+<td>香り、におい</td>
+<td>店舗空間、化粧品、食品</td>
+</tr>
+<tr>
+<td>味覚</td>
+<td>甘味、酸味、塩味、苦味、うま味</td>
+<td>飲料、食品、薬</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li>第3回では、五感を <strong>「どの感覚から刺激が入るか」を考える入口</strong> として用いる</li>
+<li>厳密には知覚はもっと多様だが、導入としては五感で整理すると見通しがよい</li>
+<li>まずは <strong>対象のどの感覚的特徴が体験に効いていそうか</strong> を押さえる</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+この回では、五感を知覚の全体像として厳密に扱うというより、評価設計の入口として使います。たとえば同じUIでも、色や配置といった視覚だけでなく、操作音や振動が安心感や分かりやすさに関わることがあります。評価の最初の整理として、対象のどの感覚的特徴が体験に効いていそうかを考えることが重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 多感覚統合 -->
+<div style="font-size:0.6em">
+<h2>多感覚統合：体験は組み合わせで変わる</h2>
+<ul>
+<li><strong>多感覚統合</strong>
+複数の感覚情報が組み合わさり、ひとつの体験として知覚されること</li>
+<li><strong>クロスモーダル</strong>
+ある感覚が、別の感覚の感じ方を変えること
+<br /><br /></li>
+</ul>
+<h3>身近な例</h3>
+<ul>
+<li>同じ飲み物でも、BGMで味の印象が変わる</li>
+<li>同じ画面でも、操作音や振動で「反応が良い／悪い」の印象が変わる</li>
+<li>同じ空間でも、照明や香りで「落ち着く／落ち着かない」が変わる</li>
+</ul>
+<blockquote>
+<p>評価実験では、<strong>単独で切り出すか／利用状況に近い組み合わせで提示するか</strong> で、結果の意味が変わる。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+重要なのは、体験は感覚の単純な足し算ではないということです。飲み物のおいしさは味覚だけでは決まらず、見た目、香り、温度、食感、音などが組み合わさって成り立ちます。この考え方が多感覚統合であり、ある感覚が別の感覚の印象を変える現象をクロスモーダルと呼びます。文献では、多感覚体験の整理として Velasco と Obrist のレビュー、食体験における sonic seasoning の事例として Spence らの報告が挙げられています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 感性ワードとは何か -->
+<div style="font-size:1.0em">
+<h2>感性ワードとは何か</h2>
+<blockquote>
+<p><strong>曖昧な印象を測れる形に<br />近づけるための言葉</strong></p>
+</blockquote>
+<ul>
+<li>「かわいい」「落ち着く」「軽快だ」</li>
+<li>「高級感がある」</li>
+<li>「信頼できそうだ」</li>
+<li>「爽快だ」</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+感性評価では、感じ方を言葉にしないと測れません。そのときに使うのが感性ワードです。かわいい、落ち着く、軽快だ、高級感がある、といった言葉は日常的には曖昧ですが、評価設計では印象を測れる形に近づける入口になります。まずは、感じ方を表す語が評価設計の中核にあると捉えてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 感性ワードの役割 -->
+<div style="font-size:0.8em">
+<h2>感性ワードの役割</h2>
+<blockquote>
+<p>感性ワードは、印象を評価項目へ<br />変換するための足場になる。</p>
+</blockquote>
+<ul>
+<li>後の <strong>評価項目</strong> の材料になる</li>
+<li>後の <strong>質問文</strong> の材料になる</li>
+<li>「何を感じたか」を受講者・被験者・設計者の間で共有しやすくする</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで大事なのは、感性ワードが単なる雰囲気の表現ではなく、後の評価項目や質問文の材料になることです。どの言葉を使うかによって、被験者に何を尋ねるのか、設計者と何を共有するのかが変わります。したがって、感性ワードの選び方がそのまま評価の質に影響します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 感性ワードの基本手順：集める・整理する -->
+<div style="font-size:0.8em">
+<h2>感性ワードの基本手順</h2>
+<h3>1. 集める</h3>
+<ul>
+<li>インタビュー、自由記述、レビュー、広告文、既存研究
+<br /><br /></li>
+</ul>
+<h3>2. 整理する</h3>
+<ul>
+<li>類似語をまとめる</li>
+<li>意味が近すぎる語を整理する</li>
+</ul>
+<blockquote>
+<p>まずは候補を広く出し、<br />似た意味の語をまとめる。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+感性ワードは、最初から完成した評価項目として出てくるわけではありません。まずはインタビュー、自由記述、レビュー、広告文、既存研究などから候補語を幅広く集めます。その後、類似語をまとめたり、意味が近すぎる語を整理したりして、評価に使いやすい候補へ整えていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 感性ワードの基本手順：絞る -->
+<div style="font-size:0.8em">
+<h2>感性ワードの基本手順</h2>
+<h3>3. 絞る</h3>
+<ul>
+<li>対象に合っているか</li>
+<li>回答者が理解しやすいか</li>
+<li>後で評価項目にしやすいか</li>
+<li>似た役割の語が重なりすぎていないか</li>
+</ul>
+<blockquote>
+<p>「思いついた語を並べる」だけでなく、<br />目的に合う語へ絞り込む。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+集めて整理した感性ワードは、最後に対象や目的に合う語へ絞り込みます。たとえば、椅子の評価に「おいしい」は通常使いにくいですし、「洗練されている」と「上品だ」が同じ役割を果たしていないかも確認する必要があります。最近では、オンラインレビューから感性語を抽出し、評価語を組み立てる研究も報告されています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ミニ活動2 -->
+<div style="font-size:0.6em">
+<h2>ミニ活動2</h2>
+<h3>感性ワードを「集める → 整理する」</h3>
+<ol>
+<li><strong>Think（3分）</strong>
+「スマホのホーム画面」または「学食の雰囲気」を対象に、印象語を8個程度書く</li>
+<li><strong>Pair（3〜4分）</strong>
+互いの語を見比べ、意味が近い語をまとめる</li>
+<li><strong>Share（2〜3分）</strong>
+全体で「残したい語」と「まとめてよさそうな語」を共有する
+<br /><br /></li>
+</ol>
+<h3>見るポイント</h3>
+<ul>
+<li>対象に合っている語か</li>
+<li>似た語が重なりすぎていないか</li>
+<li>後で質問項目にしやすい語か</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+この活動の目的は、正しい感性ワードを一発で決めることではありません。むしろ、印象語は集めただけでは重複や曖昧さが多く、そのままでは測りにくいことを体験してもらいます。対象に合うか、互いに重なりすぎていないか、後で質問に変換しやすいかという観点で整理することが重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 主観評価と客観評価 -->
+<div style="font-size:0.53em">
+<h2>主観評価と客観評価</h2>
+<table>
+<thead>
+<tr>
+<th>系統</th>
+<th>例</th>
+<th>分かること</th>
+<th>強み</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主観評価</td>
+<td>評定、順位づけ、自由記述</td>
+<td>本人がどう感じたか</td>
+<td>感じ方を直接たずねられる</td>
+<td>質問文や文脈の影響を受ける</td>
+</tr>
+<tr>
+<td>行動データ</td>
+<td>クリック、操作時間、視線遷移、エラー数</td>
+<td>迷い、探索、行動のしやすさ</td>
+<td>実際の行動として残る</td>
+<td>感情や印象そのものは直接は分からない</td>
+</tr>
+<tr>
+<td>生理データ</td>
+<td>心拍、皮膚電気反応、脳波など</td>
+<td>緊張、覚醒、負荷の変化の手がかり</td>
+<td>言語化しにくい反応を補える</td>
+<td>機材・倫理・解釈が難しい</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li><strong>客観データの方が常に正しいわけではない</strong></li>
+<li>基本は <strong>主観評価を中心</strong> に、必要に応じて行動・生理を補助的に組み合わせる</li>
+<li>重要なのは「どれが上か」ではなく、<strong>それぞれが何を示し、何を直接は示さないか</strong> を見極めること</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは、感性評価で使うデータを三つの系統に分けて整理します。主観評価は本人の感じ方を直接たずねられる点が強みです。一方、行動データは迷いや探索のような実際の行動の痕跡を残し、生理データは言語化しにくい反応を補えます。ただし、たとえば視線データから「よく見られている」ことは分かっても、それが好ましさなのか迷いなのかは主観評価や文脈がないと決めにくいことがあります。したがって、主観評価を軸にしつつ、必要な範囲で客観データを補助的に組み合わせるのが基本です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今回の射程 -->
+<div style="font-size:1.0em">
+<h2>今回の射程</h2>
+<ul>
+<li>五感は評価設計の入口になる</li>
+<li>体験は多感覚で成立する</li>
+<li>感性ワードには整理の手順が必要である</li>
+<li>主観評価と客観評価は役割が違う</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドでは、今回の到達範囲を明確にします。第3回では、評価の土台となる視点をそろえることが目的です。五感を評価設計の入口として見ること、体験が多感覚で成立すること、感性ワードには整理の手順が必要であること、主観評価と客観評価の役割が違うことを押さえます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まだ詳しく扱わないこと -->
+<div style="font-size:1.0em">
+<h2>まだ詳しく扱わないこと</h2>
+<ul>
+<li>第7回：質問紙の具体的な作り方</li>
+<li>第8回：SD法の設計と運用</li>
+<li>第11〜13回：VASの設計・可視化・分析</li>
+</ul>
+<blockquote>
+<p>第3回は、<strong>評価法を完成させる回ではなく、評価を考える視点をそろえる回</strong>。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+質問紙の具体的な書き方、SD法の実施、VASの分析といった詳細は後続回で扱います。今回の第3回は、評価法を完成させる回ではなく、評価を考える視点をそろえる回です。いま重要なのは、何を、どの感覚で、どんな言葉やデータで捉えるかを整理できるようになることです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 事例からみる評価の使われ方 -->
+<div style="font-size:0.52em">
+<h2>事例からみる「評価」の使われ方</h2>
+<table>
+<thead>
+<tr>
+<th>事例</th>
+<th>対象</th>
+<th>主に関わる感覚</th>
+<th>主なデータ</th>
+<th>今日の観点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>食体験デザイン</td>
+<td>音楽・環境音と飲食体験</td>
+<td>聴覚 × 味覚</td>
+<td>官能評価、主観評定</td>
+<td>多感覚統合の例</td>
+</tr>
+<tr>
+<td>パッケージ評価</td>
+<td>サフラン包装や製品外観</td>
+<td>視覚</td>
+<td>感性ワード、印象評価、設計要素との対応づけ</td>
+<td>感性ワードを設計へ返す例</td>
+</tr>
+<tr>
+<td>製品音評価</td>
+<td>掃除機の音</td>
+<td>聴覚</td>
+<td>主観評価 + サイコアコースティクス指標</td>
+<td>主観と物理指標の併用例</td>
+</tr>
+<tr>
+<td>Web/UI評価</td>
+<td>WebインターフェイスのA/B比較</td>
+<td>視覚</td>
+<td>主観評定 + 視線計測 + 専門家評価</td>
+<td>主観／客観の組み合わせ例</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>分野が違っても、<strong>どの感覚に注目し、どんな言葉やデータで取るか</strong> という設計の考え方は共通している。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは四つの事例を通して、評価の考え方がどのように使われるかを見ます。食体験では聴覚と味覚の組み合わせが重要になり、パッケージ評価では視覚印象を感性ワードで整理して設計要素と結びつけます。製品音評価では主観評価とサイコアコースティクス指標を併用し、Web/UI評価では主観評定と視線計測、専門家評価を組み合わせます。対象は違っても、感覚・言葉・データの対応づけが共通パターンとして見えてきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 共通パターンとミニ活動3 -->
+<div style="font-size:0.7em">
+<h2>事例から見える共通パターン</h2>
+<ol>
+<li><strong>対象を決める</strong>
+何を評価するかを明確にする</li>
+<li><strong>感じ方を定義する</strong>
+どんな印象や体験を扱うか決める</li>
+<li><strong>データの取り方を選ぶ</strong>
+主観、行動、生理のどれを使うか考える</li>
+<li><strong>設計へ返す</strong>
+どの要素を変えると感じ方が変わりそうかを読む
+<br /><br /></li>
+</ol>
+<h3>ミニ活動3（8〜10分）</h3>
+<p>次のうち1つを選び、<strong>主観評価で1つ／客観データで1つ</strong> 候補を挙げる。</p>
+<ul>
+<li>このアプリは信頼できそうか</li>
+<li>この掃除機の音は不快ではないか</li>
+<li>このパッケージは高級感があるか</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+活動では、方法名を正確に答えることよりも、なぜそのデータが必要なのかを説明できることを重視します。たとえば「信頼できそうか」であれば、主観評価として安心感の評定を取り、客観データとして視線の停留や操作の迷いを見るという案が考えられます。対象、感じ方、データという三つの対応関係を意識することが重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 次回への橋渡し -->
+<div style="font-size:0.58em">
+<h2>次回への橋渡し</h2>
+<h3>同じ感じ方でも、取り方でデータの型が変わる</h3>
+<table>
+<thead>
+<tr>
+<th>取り方</th>
+<th>データの型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自由記述で書いてもらう</td>
+<td>言語データ</td>
+</tr>
+<tr>
+<td>5段階で答えてもらう</td>
+<td>順序的な評定データ</td>
+</tr>
+<tr>
+<td>0〜100の線上で答えてもらう</td>
+<td>連続量に近いデータ</td>
+</tr>
+<tr>
+<td>クリック数や操作時間を測る</td>
+<td>行動ログ</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li><strong>何を感じるか</strong> だけでなく、<strong>どう取るか</strong> によって使える分析方法が変わる</li>
+<li>後半で扱う平均、相関、多次元尺度法、主成分分析、因子分析、検定は、データの型と無関係ではない</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここが次回への橋渡しです。同じ「使いやすい」という感じ方でも、自由記述で取るのか、5段階評定で取るのか、VASのような連続量に近い形で取るのか、あるいは操作時間のようなログで取るのかによって、得られるデータの性質は変わります。つまり、何を感じるかだけでなく、どう取るかによって使える分析方法が変わります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 次回のキーワード -->
+<div style="font-size:1.0em">
+<h2>次回のキーワード</h2>
+<ul>
+<li>質的変数／量的変数</li>
+<li>名義尺度・順序尺度・間隔尺度・比率尺度</li>
+<li>「平均してよいか」をどう考えるか</li>
+</ul>
+<blockquote>
+<p>どの分析が使えるかは、<br /><strong>どう測ったか</strong> に依存する。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+だから次回は、変数の種類と尺度水準を学びます。質的変数と量的変数、名義尺度、順序尺度、間隔尺度、比率尺度を区別し、平均を出してよいか、どの分析が使えるかを判断するための土台を作ります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まとめ -->
+<div style="font-size:0.6em">
+<h2>まとめ</h2>
+<ul>
+<li>感性評価の入口は、まず <strong>どの感覚が効いているか</strong> を整理すること</li>
+<li>実際の体験は、しばしば <strong>多感覚統合</strong> として成立すること</li>
+<li>感性ワードは、感じ方を測れる形に近づけるための重要な材料であること</li>
+<li>主観評価と客観評価は対立ではなく、<strong>役割が違う</strong> こと</li>
+<li>次回は、ここで得たデータを <strong>変数の種類と尺度水準</strong> の観点から扱うこと</li>
+</ul>
+<blockquote>
+<p>今回の要点は、<strong>評価法の詳細を覚えることではなく、評価を設計する視点をつくること</strong>。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に要点を確認します。まず感性評価では、対象のどの感覚的特徴が体験に効いているかを整理することが出発点です。次に、体験は多感覚で成立するため、単一感覚だけでは見落とすものがあります。さらに、感性ワードは測定の材料であり、整理の手順が必要です。そして、主観評価と客観データは役割が異なるので、目的に応じて組み合わせます。次回は、このデータをどう扱うかを尺度水準の観点から学びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 確認問題 -->
+<div style="font-size:0.56em">
+<h2>確認問題</h2>
+<ol>
+<li>五感をすべて挙げ、それぞれが関わりそうな評価対象を1つずつ書きなさい。</li>
+<li>多感覚統合とは何か。身近な例を1つ挙げて説明しなさい。</li>
+<li>感性ワードを絞るときの基準を3つ書きなさい。</li>
+<li>主観評価、行動データ、生理データの違いを簡潔に説明しなさい。</li>
+<li>「このWebサイトは安心できそうか」を評価したいとき、主観評価と客観データの候補を1つずつ挙げなさい。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+確認問題では、今日扱った内容を言い換えて説明できるかを見ます。単語だけ暗記するのではなく、五感、感性ワード、主観評価と客観評価、そしてそれらの使い分けを、自分の言葉で説明できることを目指してください。特に最後の問題では、対象、感じ方、データの対応を意識して答えると整理しやすくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 授業後課題 -->
+<div style="font-size:0.58em">
+<h2>授業後課題</h2>
+<h3>身近な対象を「感性評価の入口」から整理する</h3>
+<ul>
+<li><strong>分量</strong>：A4 1枚程度（目安 600〜800字）</li>
+<li><strong>対象</strong>：普段使う製品・サービスを1つ選ぶ
+<br /><br /></li>
+</ul>
+<h3>必須で書くこと</h3>
+<ol>
+<li>その対象で効いていそうな感覚を <strong>2〜3個</strong></li>
+<li>その対象を表す感性ワード候補を <strong>6〜8個</strong></li>
+<li>そのうち特に重要そうな感性を <strong>2つ</strong></li>
+<li>それを確かめるためのデータ候補を、<strong>主観評価で1つ、客観データで1つ</strong>
+<br /><br /></li>
+</ol>
+<h3>この段階で求めないこと</h3>
+<ul>
+<li>具体的な尺度設計の細部</li>
+<li>統計手法の詳細な選定</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+課題では、今日学んだ考え方を身近な対象に適用します。ここでは、尺度や分析法まで厳密に決める必要はありません。どの感覚が効いていそうか、どんな感性ワードが候補になるか、何を主観で取り、何を客観で補うかという入口の整理ができていれば十分です。次回以降の授業で、ここに尺度や分析の考え方をつないでいきます。参考として、今日の内容には多感覚体験、sonic seasoning、感性ワード抽出、製品音評価、視線計測によるUX評価に関するオープンアクセス文献が含まれています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- NotebookLM -->
+<div style="font-size:0.8em">
+<h2>NotebookLM</h2>
+<ul>
+<li><a href="https://notebooklm.google.com/notebook/2ee25269-466b-4f82-9b41-a84c72d3afc7">多感覚エクスペリエンス：設計の原則と未来展望</a></li>
+<li><a href="https://notebooklm.google.com/notebook/969ec238-fbc2-46d2-8919-6b8e19bd38b8">音の調味料：ソニック・シーズニングと感覚設計の未来</a></li>
+<li><a href="https://notebooklm.google.com/notebook/4bf3f258-dced-4f69-b2ff-74b28b32b2c5">感性工学とFAHPによるエアコン外観デザインの評価手法</a></li>
+<li><a href="https://notebooklm.google.com/notebook/582096f8-fded-422e-90ef-58db8cd3305c">アイトラッキングによるUX評価とデザイン改善の科学</a></li>
+<li><a href="https://notebooklm.google.com/notebook/b41fbd05-e01d-4ea6-9601-c6665aa86797">第3回講義資料</a></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、復習と深掘り用の補助資料として NotebookLM のリンクを示しています。多感覚体験、sonic seasoning、感性ワード、製品評価や UI 評価に関する文献理解を補うために使ってください。授業後課題では、リンク先の内容を丸写しするのではなく、自分が選んだ対象に合わせて、どの感覚が効いていそうか、どんな感性ワードが候補になるか、どのような主観評価や客観データで確かめられそうかを整理することを重視してください。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
