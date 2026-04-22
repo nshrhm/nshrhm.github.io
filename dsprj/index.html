@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DSプロジェクト演習 VAS評価 実験協力リンク</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5b6472;
+      --paper: #ffffff;
+      --wash: #f4f7f5;
+      --navy: #10213b;
+      --green: #1f7a5a;
+      --green-soft: #dceee7;
+      --red: #b64234;
+      --gold: #b8871f;
+      --line: #dbe2e6;
+      --shadow: 0 18px 42px rgba(17, 32, 59, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, #fbfcfb 0%, #f1f6f3 48%, #ffffff 100%);
+      font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+      line-height: 1.75;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: grid;
+      align-items: center;
+      padding: 26px 18px 52px;
+      background:
+        linear-gradient(120deg, rgba(16, 33, 59, 0.96), rgba(20, 59, 70, 0.9)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='620' viewBox='0 0 900 620'%3E%3Crect width='900' height='620' fill='%2310213b'/%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.16'%3E%3Cpath d='M76 78h748v465H76z'/%3E%3Cpath d='M450 78v465'/%3E%3Ccircle cx='450' cy='310' r='78'/%3E%3Cpath d='M76 202h86v216H76M824 202h-86v216h86'/%3E%3C/g%3E%3Cg fill='%23ffffff' fill-opacity='.14'%3E%3Ccircle cx='166' cy='178' r='7'/%3E%3Ccircle cx='288' cy='255' r='7'/%3E%3Ccircle cx='392' cy='228' r='7'/%3E%3Ccircle cx='526' cy='358' r='7'/%3E%3Ccircle cx='646' cy='300' r='7'/%3E%3Ccircle cx='735' cy='414' r='7'/%3E%3C/g%3E%3Cpath d='M166 178l122 77 104-27 134 130 120-58 89 114' fill='none' stroke='%23d9b45d' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' stroke-opacity='.85'/%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: center;
+      color: #ffffff;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 140px;
+      background: linear-gradient(180deg, rgba(244, 247, 245, 0), var(--wash));
+      pointer-events: none;
+    }
+
+    .hero-inner,
+    .section-inner {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 34px;
+      grid-template-columns: minmax(0, 1.08fr) minmax(270px, 0.72fr);
+      align-items: center;
+    }
+
+    .hero-inner > *,
+    .brief > *,
+    .grid > *,
+    .data-row > * {
+      min-width: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      padding: 7px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #53d39c;
+      box-shadow: 0 0 0 5px rgba(83, 211, 156, 0.16);
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 0;
+      font-size: 3.7rem;
+      line-height: 1.12;
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .hero-copy {
+      max-width: 720px;
+      margin: 22px 0 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 1.04rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .primary-link,
+    .secondary-link,
+    .card-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      border-radius: 8px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .primary-link {
+      padding: 13px 18px;
+      background: #ffffff;
+      color: var(--navy);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+    }
+
+    .secondary-link {
+      padding: 12px 17px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .primary-link:hover,
+    .secondary-link:hover,
+    .card-cta:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-panel {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 28px 72px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 0.94rem;
+      font-weight: 800;
+    }
+
+    .panel-badge {
+      flex: 0 0 auto;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(83, 211, 156, 0.18);
+      color: #ceffe8;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .field-map {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+    }
+
+    .data-row {
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 0.9rem;
+    }
+
+    .data-index {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.14);
+      font-weight: 900;
+    }
+
+    .data-line {
+      min-width: 0;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      overflow: hidden;
+    }
+
+    .data-line span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #53d39c, #d9b45d);
+    }
+
+    .data-count {
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .intro-band {
+      padding: 44px 18px 18px;
+      background: var(--wash);
+    }
+
+    .brief {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: start;
+      padding-bottom: 20px;
+    }
+
+    .brief h2 {
+      margin: 0;
+      font-size: 2.15rem;
+      line-height: 1.24;
+    }
+
+    .brief p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .trust-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .trust-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .trust-list li::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 10px;
+      height: 10px;
+      margin-top: 10px;
+      border-radius: 2px;
+      background: var(--green);
+    }
+
+    .experiments {
+      padding: 22px 18px 64px;
+      background: #ffffff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      display: flex;
+      min-height: 100%;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: 0 10px 24px rgba(23, 32, 51, 0.07);
+      overflow: hidden;
+    }
+
+    .card-top {
+      padding: 18px 18px 0;
+    }
+
+    .card-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      color: var(--green);
+      font-size: 0.82rem;
+      font-weight: 900;
+    }
+
+    .card-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.14rem;
+      line-height: 1.42;
+    }
+
+    .card p {
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .meta li {
+      min-width: 0;
+      padding: 9px 8px;
+      border-radius: 8px;
+      background: #f5f8f7;
+      text-align: center;
+    }
+
+    .meta strong,
+    .meta span {
+      display: block;
+    }
+
+    .meta strong {
+      color: var(--navy);
+      font-size: 0.98rem;
+      line-height: 1.2;
+    }
+
+    .meta span {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .target {
+      margin: 18px;
+      padding: 13px 14px;
+      border-left: 4px solid var(--gold);
+      background: #fff9ec;
+      color: #4d3b17;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .target.restricted {
+      border-left-color: var(--red);
+      background: #fff3f1;
+      color: #683026;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      padding: 0 18px 18px;
+    }
+
+    .card-cta {
+      width: 100%;
+      padding: 13px 14px;
+      background: var(--navy);
+      color: #ffffff;
+      box-shadow: 0 12px 24px rgba(16, 33, 59, 0.18);
+    }
+
+    .card-cta:hover {
+      background: #18345d;
+    }
+
+    .card-cta span {
+      margin-left: 8px;
+      font-size: 1.05rem;
+    }
+
+    .footer {
+      padding: 28px 18px 34px;
+      border-top: 1px solid var(--line);
+      background: #f8faf9;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        min-height: auto;
+        padding-top: 24px;
+      }
+
+      .hero-inner,
+      .brief {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel {
+        max-width: 520px;
+      }
+
+      h1 {
+        font-size: 3.2rem;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      html,
+      body {
+        overflow-x: hidden;
+      }
+
+      body {
+        line-height: 1.7;
+      }
+
+      .hero {
+        padding: 20px 16px 46px;
+      }
+
+      .hero-inner,
+      .section-inner {
+        width: 100%;
+        max-width: 22rem;
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .hero-panel {
+        max-width: 22rem;
+      }
+
+      .hero-copy {
+        font-size: 0.98rem;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+
+      h1 {
+        font-size: 2.05rem;
+      }
+
+      .brief h2 {
+        font-size: 1.55rem;
+      }
+
+      .hero-actions {
+        display: grid;
+      }
+
+      .primary-link,
+      .secondary-link {
+        width: 100%;
+      }
+
+      .data-row {
+        grid-template-columns: 34px 1fr auto;
+        font-size: 0.82rem;
+      }
+
+      .data-index {
+        width: 34px;
+        height: 34px;
+      }
+
+      .intro-band {
+        padding: 34px 16px 14px;
+      }
+
+      .experiments {
+        padding: 18px 16px 48px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .meta {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .target {
+        border-left: 0;
+        border-top: 4px solid var(--gold);
+      }
+
+      .target.restricted {
+        border-top-color: var(--red);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .primary-link,
+      .secondary-link,
+      .card-cta {
+        transition: none;
+      }
+
+      .primary-link:hover,
+      .secondary-link:hover,
+      .card-cta:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">3年生前期 DSプロジェクト演習</p>
+          <h1 id="page-title">DSプロジェクト演習<br>VAS評価<br>実験協力リンク</h1>
+          <p class="hero-copy">
+            6人の学生が設計したVAS評価実験です。いずれか1件だけの参加でも研究の質を高める貴重なデータになります。回答は任意で、途中で中止できます。
+          </p>
+          <div class="hero-actions" aria-label="ページ内移動">
+            <a class="primary-link" href="#experiments">実験一覧を見る</a>
+            <a class="secondary-link" href="#participation">参加時の確認事項</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="実験の概要">
+          <div class="panel-header">
+            <p class="panel-title">VAS response map</p>
+            <span class="panel-badge">6 studies</span>
+          </div>
+          <div class="field-map">
+            <div class="data-row">
+              <span class="data-index">01</span>
+              <span class="data-line" aria-hidden="true"><span style="width: 62%"></span></span>
+              <span class="data-count">8映像</span>
+            </div>
+            <div class="data-row">
+              <span class="data-index">02</span>
+              <span class="data-line" aria-hidden="true"><span style="width: 92%"></span></span>
+              <span class="data-count">12場面</span>
+            </div>
+            <div class="data-row">
+              <span class="data-index">03</span>
+              <span class="data-line" aria-hidden="true"><span style="width: 68%"></span></span>
+              <span class="data-count">8動画</span>
+            </div>
+            <div class="data-row">
+              <span class="data-index">04</span>
+              <span class="data-line" aria-hidden="true"><span style="width: 52%"></span></span>
+              <span class="data-count">6場面</span>
+            </div>
+            <div class="data-row">
+              <span class="data-index">05</span>
+              <span class="data-line" aria-hidden="true"><span style="width: 70%"></span></span>
+              <span class="data-count">8条件</span>
+            </div>
+            <div class="data-row">
+              <span class="data-index">06</span>
+              <span class="data-line" aria-hidden="true"><span style="width: 55%"></span></span>
+              <span class="data-count">6種目</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="intro-band" id="participation" aria-labelledby="participation-title">
+      <div class="section-inner brief">
+        <div>
+          <h2 id="participation-title">一人ひとりの主観的な反応を、データとして丁寧に扱います。</h2>
+          <p>
+            各実験では、映像・文章・条件を見た直後の感じ方を0から100のスライダーで回答します。正解や不正解はありません。短時間で参加できる実験から選んでください。
+          </p>
+        </div>
+        <ul class="trust-list">
+          <li>氏名や学籍番号など、個人を特定する情報は収集しません。</li>
+          <li>参加は任意で、負担を感じた場合はいつでも中止できます。</li>
+          <li>回答は授業内の集計例・分析例として利用する場合があります。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="experiments" id="experiments" aria-labelledby="experiments-title">
+      <div class="section-inner">
+        <div class="brief">
+          <div>
+            <h2 id="experiments-title">実験一覧</h2>
+            <p>内容を確認し、協力できる実験のボタンから開始してください。複数の実験に参加していただいても構いません。</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-top">
+              <div class="card-kicker">
+                <span>実験 01</span>
+                <span class="card-icon" aria-hidden="true">VAS</span>
+              </div>
+              <h3>サッカー映像に対する主観的反応の探索的比較</h3>
+              <p>サッカー映像を見た直後に、自分の心がどの程度高ぶったか、快い反応か不快な反応か、判断への自信を評価します。</p>
+              <ul class="meta" aria-label="実験01の概要">
+                <li><strong>約10-15分</strong><span>所要時間</span></li>
+                <li><strong>8</strong><span>刺激数</span></li>
+                <li><strong>3</strong><span>VAS項目</span></li>
+              </ul>
+            </div>
+            <div class="target">回答対象: 映像を見終わった直後のあなた自身の反応</div>
+            <div class="card-footer">
+              <a class="card-cta" href="https://vaspad.web.app/excite" target="_blank" rel="noopener noreferrer">実験に参加する <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div class="card-kicker">
+                <span>実験 02</span>
+                <span class="card-icon" aria-hidden="true">VAS</span>
+              </div>
+              <h3>スポーツ観戦場面が喚起する感情（興奮・緊張・癒し）と観戦意欲の関連</h3>
+              <p>スポーツ観戦場面を描いた文章を読み、興奮・緊張・癒しと、その場面を現地で観戦したい気持ちを評価します。</p>
+              <ul class="meta" aria-label="実験02の概要">
+                <li><strong>約7-9分</strong><span>所要時間</span></li>
+                <li><strong>12</strong><span>刺激数</span></li>
+                <li><strong>5</strong><span>VAS項目</span></li>
+              </ul>
+            </div>
+            <div class="target">回答対象: 文章で描かれた場面を現地で観戦するとしたときの印象</div>
+            <div class="card-footer">
+              <a class="card-cta" href="https://vaspad.web.app/ball" target="_blank" rel="noopener noreferrer">実験に参加する <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div class="card-kicker">
+                <span>実験 03</span>
+                <span class="card-icon" aria-hidden="true">VAS</span>
+              </div>
+              <h3>サッカー動画場面に対する自己想像時の感情反応調査</h3>
+              <p>サッカー動画の各場面について、自分がその場面の主役だったと想像したときの感情反応を評価します。</p>
+              <ul class="meta" aria-label="実験03の概要">
+                <li><strong>約8-10分</strong><span>所要時間</span></li>
+                <li><strong>8</strong><span>刺激数</span></li>
+                <li><strong>5</strong><span>VAS項目</span></li>
+              </ul>
+            </div>
+            <div class="target">回答対象: その場面を自分が経験したと仮定したときの反応</div>
+            <div class="card-footer">
+              <a class="card-cta" href="https://vaspad.web.app/football" target="_blank" rel="noopener noreferrer">実験に参加する <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div class="card-kicker">
+                <span>実験 04</span>
+                <span class="card-icon" aria-hidden="true">VAS</span>
+              </div>
+              <h3>球場観戦場面におけるビール選択要因の主観評価</h3>
+              <p>球場で野球を観戦している複数の場面を読み、その場面でどの程度ビールを選びたいと感じるかを評価します。</p>
+              <ul class="meta" aria-label="実験04の概要">
+                <li><strong>約6-8分</strong><span>所要時間</span></li>
+                <li><strong>6</strong><span>刺激数</span></li>
+                <li><strong>5</strong><span>VAS項目</span></li>
+              </ul>
+            </div>
+            <div class="target restricted">回答対象: 法定飲酒年齢以上の方。飲酒を勧める調査ではありません。</div>
+            <div class="card-footer">
+              <a class="card-cta" href="https://vaspad.web.app/beer" target="_blank" rel="noopener noreferrer">実験に参加する <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div class="card-kicker">
+                <span>実験 05</span>
+                <span class="card-icon" aria-hidden="true">VAS</span>
+              </div>
+              <h3>サッカー日本代表戦チケット価格と購入判断の主観評価調査</h3>
+              <p>サッカー日本代表戦の試合条件を読み、チケット価格の受け止め方、購入を検討したい程度、価値の感じ方を評価します。</p>
+              <ul class="meta" aria-label="実験05の概要">
+                <li><strong>約5-7分</strong><span>所要時間</span></li>
+                <li><strong>8</strong><span>刺激数</span></li>
+                <li><strong>5</strong><span>VAS項目</span></li>
+              </ul>
+            </div>
+            <div class="target">回答対象: 提示された試合条件に対する価格の受け止め方</div>
+            <div class="card-footer">
+              <a class="card-cta" href="https://vaspad.web.app/tic" target="_blank" rel="noopener noreferrer">実験に参加する <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-top">
+              <div class="card-kicker">
+                <span>実験 06</span>
+                <span class="card-icon" aria-hidden="true">VAS</span>
+              </div>
+              <h3>スポーツ種目と観戦条件による観戦形式選好調査</h3>
+              <p>6種類のスポーツについて、提示された観戦条件のもとで、現地観戦とパブリックビューイングのどちらを選びたいかを評価します。</p>
+              <ul class="meta" aria-label="実験06の概要">
+                <li><strong>約6-10分</strong><span>所要時間</span></li>
+                <li><strong>6</strong><span>刺激数</span></li>
+                <li><strong>7</strong><span>VAS項目</span></li>
+              </ul>
+            </div>
+            <div class="target">回答対象: 各条件を独立に考えたときの観戦形式の選好</div>
+            <div class="card-footer">
+              <a class="card-cta" href="https://vaspad.web.app/dekopin" target="_blank" rel="noopener noreferrer">実験に参加する <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="section-inner">
+      <p>DSプロジェクト演習 VAS評価リンクページ。各実験の詳細な同意説明は、実験開始後の画面で確認できます。</p>
+    </div>
+  </footer>
+</body>
+</html>
