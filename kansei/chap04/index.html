@@ -1,0 +1,1244 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感性データ処理</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="s">
+  
+  <link rel="stylesheet" href="t">
+  
+  <link rel="stylesheet" href="y">
+  
+  <link rel="stylesheet" href="l">
+  
+  <link rel="stylesheet" href="e">
+  
+  <link rel="stylesheet" href=".">
+  
+  <link rel="stylesheet" href="c">
+  
+  <link rel="stylesheet" href="s">
+  
+  <link rel="stylesheet" href="s">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>感性データ処理</h1>
+<h2>第4回 変数の種類と尺度水準</h2>
+<p>感性データを「どう扱えるか」を決める前提</p>
+<h3>データサイエンス学部</h3>
+<h4>白濵 成希</h4>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+第4回では、感性データを分析するときの前提として、変数の種類と尺度水準を扱います。今日は、数字があるからすぐに平均や相関を計算するのではなく、その数字が何を意味しているのかを先に確認する視点を身につけます。後半では、SD法、リッカート、VASのような感性評価でよく使うデータの扱いにもつなげていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 本講のねらい -->
+<div style="font-size:0.58em">
+<h2>本講のねらい</h2>
+<blockquote>
+<p><strong>分析手法を増やす回</strong>ではなく、<strong>データ列を見る目をつくる回</strong></p>
+</blockquote>
+<h3>到達目標</h3>
+<ul>
+<li><strong>質的変数／量的変数</strong>の違いを説明できる</li>
+<li><strong>名義・順序・間隔・比率</strong>の4つの尺度水準を具体例に当てはめられる</li>
+<li><strong>SD法・リッカート・VAS</strong>の扱いの違いを整理できる</li>
+<li>データに応じて、<strong>平均・中央値・向く図</strong>を考えられる</li>
+<li>次回の<strong>多次元尺度法（MDS）</strong> に向けて、尺度水準と分析法選択の関係を説明できる</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+この回の中心は、数字を見たらすぐ計算するのではなく、まずその数字の意味を確かめる習慣を身につけることです。到達目標は、変数の種類、尺度水準、代表値や図の選び方、そして次回のMDSとの接続まで含めて確認します。最初に、今日は分析手法そのものを増やす回ではなく、分析の前提をそろえる回だと明確に伝えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 本講の進め方 -->
+<div style="font-size:1.0em">
+<h2>本講の進め方</h2>
+<ol>
+<li>なぜ尺度水準を学ぶのか</li>
+<li>4つの尺度水準を整理する</li>
+<li>頻出の評価法を見分ける</li>
+<li>事例で扱い方を考える</li>
+<li>まとめと次回への橋渡し</li>
+</ol>
+<blockquote>
+<p>まず「数字の意味」を確認、そのあと分析法の選び方につなげる。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+90分の流れは、尺度水準がなぜ必要かを確認し、4つの尺度水準、頻出の評価法、事例、まとめの順に進みます。学生には、個別の分析手法を暗記する前に、データの列が何を表しているかを判断することが出発点になると伝えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 授業全体での位置づけ -->
+<div style="font-size:0.56em">
+<h2>授業全体での位置づけ</h2>
+<table>
+<thead>
+<tr>
+<th>これまで（第1〜3回）</th>
+<th>今回（第4回）</th>
+<th>これから（第5回以降）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>感性工学の考え方<br>五感<br>感性ワード<br>主観評価と客観評価</td>
+<td><strong>変数の種類</strong><br><strong>尺度水準</strong><br>数字の意味の見分け方</td>
+<td>MDS<br>数量化Ⅲ類<br>主成分分析<br>因子分析<br>VAS分析</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>後続の分析法を理解するための<strong>土台づくり</strong></p>
+</blockquote>
+<ul>
+<li>ここで尺度水準を押さえると、後の回で「<strong>なぜその手法なのか</strong>」が理解しやすくなる</li>
+<li>特に次回の<strong>MDS</strong>では、類似度データをどの尺度として見るかが重要になる</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+前半の講義では感性工学の見取り図を作ってきましたが、ここからは集めたデータを統計的に扱う段階に入ります。第4回は独立した小話ではなく、分析法選択の前提をそろえる回です。学生には、今日の内容が次回以降のMDSや主成分分析の理解を支える基礎であることを強調します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- なぜ今、尺度水準を学ぶのか -->
+<div style="font-size:0.6em">
+<h2>なぜ今、尺度水準を学ぶのか</h2>
+<blockquote>
+<p>感性データ<br />最初から<strong>異なる種類の列が混ざっている</strong> 事が多い。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>データの列</th>
+<th>例</th>
+<th>尺度の候補</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>属性</td>
+<td>学年、性別、経験の有無、使用歴</td>
+<td>名義尺度が多い</td>
+</tr>
+<tr>
+<td>主観評価</td>
+<td>5段階評定、SD法、VAS</td>
+<td>順序〜比率寄り</td>
+</tr>
+<tr>
+<td>行動ログ</td>
+<td>クリック回数、操作時間、離脱率</td>
+<td>比率尺度が多い</td>
+</tr>
+<tr>
+<td>生理データ</td>
+<td>心拍、皮膚電気反応、視線時間</td>
+<td>比率尺度が多い</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li><strong>数字に見えるものを全部同じように平均する</strong>と、解釈を誤りやすい</li>
+<li>まず必要なのは、各列が<strong>何を表しているか</strong>を見分けること</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+感性評価では、属性、主観評価、ログ、生理指標が同じ表の中に並びます。ここでの主張は単純で、数字の見た目が似ていても意味は同じではないということです。実務でありがちな誤りは、列ごとの尺度を見ずに一括して同じ処理をかけてしまうことだと伝えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 典型的な事故は数字の意味の取り違え -->
+<div style="font-size:0.54em">
+<h2>典型的な事故は数字の意味の取り違え</h2>
+<blockquote>
+<p><strong>数字に見える</strong>ことと、<strong>量として扱ってよい</strong> ことは同じではない。</p>
+</blockquote>
+<ul>
+<li>好きな色を <strong>赤=1、青=2、緑=3</strong> と記録して平均が <strong>2.0</strong>
+<ul>
+<li>→ これは「青」を意味しない。単なる<strong>ラベル</strong></li>
+</ul>
+</li>
+<li>5段階評価で <strong>A=3.8、B=3.6</strong>
+<ul>
+<li>→ 差は <strong>0.2</strong> だが、その差をどこまで量として読めるかは<strong>尺度の仮定次第</strong></li>
+</ul>
+</li>
+<li>VAS が <strong>80</strong> と <strong>40</strong>
+<ul>
+<li>→ 数値上は2倍に見えても、心理的な強さまで素直に「2倍」と言えるとは限らない</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>数値化された後の数字</strong>をそのまま信じず、<br /><strong>測定の仕方</strong>に戻って考えることが重要</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドでは、学生が引っかかりやすい典型例を短く見せます。色コードの平均、5段階評価の差、VASの倍数解釈の3つを並べることで、同じ数字でも意味が違うことを直感的に理解させます。以後のスライドでは、この違いを体系的に整理していく流れです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 変数とは何か -->
+<div style="font-size:0.56em">
+<h2>変数とは何か</h2>
+<blockquote>
+<p>変数とは、対象や参加者の状態、<br />あるいは反応を表す<strong>変わりうる値</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>対象側の変数</th>
+<th>人側の変数</th>
+<th>反応の変数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>デザイン案、色、素材、音、刺激条件</td>
+<td>年代、経験、好み、使用歴、体調</td>
+<td>心地よさ、安心感、高級感、没入感、痛み、疲労</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li>感性データは、<strong>対象・人・反応</strong>の3層で整理すると見通しがよい</li>
+<li>同じ「数値」でも、<strong>どの層の変数か</strong>で意味が変わることがある</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+変数という言葉自体を、まず学習者の頭の中で揃えます。感性データ処理では、対象の条件、人の属性、そして反応の評価という三つの層で整理すると混乱しにくくなります。ここで、数値になっているかどうかではなく、何を表した列なのかを見る癖をつけさせます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 質的変数と量的変数 -->
+<div style="font-size:0.56em">
+<h2>質的変数と量的変数</h2>
+<table>
+<thead>
+<tr>
+<th>質的変数（カテゴリカル変数）</th>
+<th>量的変数（数値変数）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>分類や種類</strong>を表す</td>
+<td><strong>量としての意味</strong>をもつ</td>
+</tr>
+<tr>
+<td>例：性別、出身地、UI案A/B/C、香りタイプ、好きな色</td>
+<td>例：クリック回数、購入回数、時間、身長、音圧、VASの長さ</td>
+</tr>
+<tr>
+<td>数字を付けても、その数字自体に大きさの意味はない</td>
+<td>数字そのものに計算可能な意味がある</td>
+</tr>
+</tbody>
+</table>
+<h3>量的変数の見方</h3>
+<ul>
+<li><strong>離散変数</strong>：数えられる値（クリック回数、エラー数など）</li>
+<li><strong>連続変数</strong>：連続的に測れる値（時間、長さ、音圧など）</li>
+</ul>
+<blockquote>
+<p>数字を振っていても、<strong>大きさの意味がなければ質的変数</strong>です。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+最初の大きな分岐は、質的か量的かです。ここでは、見た目が数字かどうかではなく、その数字に量としての意味があるかどうかで区別します。量的変数の中では、回数のような離散変数と、時間や長さのような連続変数があることも合わせて確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4つの尺度水準 -->
+<div style="font-size:0.58em">
+<h2>4つの尺度水準</h2>
+<table>
+<thead>
+<tr>
+<th>尺度水準</th>
+<th>何が意味をもつか</th>
+<th>まずできること</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>名義尺度</strong></td>
+<td>分類（同じ／違う）</td>
+<td>度数、割合、最頻値</td>
+<td>平均は不可</td>
+</tr>
+<tr>
+<td><strong>順序尺度</strong></td>
+<td>順序（高い／低い）</td>
+<td>中央値、順位相関</td>
+<td>差の大きさは保証されない</td>
+</tr>
+<tr>
+<td><strong>間隔尺度</strong></td>
+<td>差（間隔の等しさ）</td>
+<td>平均、分散、相関</td>
+<td>0が「無」を意味しない</td>
+</tr>
+<tr>
+<td><strong>比率尺度</strong></td>
+<td>差と比（絶対0あり）</td>
+<td>平均、比の比較</td>
+<td>0の意味が重要</td>
+</tr>
+</tbody>
+</table>
+<p>※ 教科書によっては<strong>比尺度</strong>と書くこともありますが、本講では<strong>比率尺度</strong>と表記します。</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+尺度水準の4分類は、この回の中心です。名義は分類、順序は並び順、間隔は差、比率は差と比まで意味があるという順に整理します。ここでは特に、0の意味と、差や比をどこまで読めるかが尺度を分けるポイントだと強調してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4つの尺度水準の例 -->
+<div style="font-size:0.8em">
+<h2>4つの尺度水準の例</h2>
+<ul>
+<li><strong>名義尺度</strong>
+<ul>
+<li><strong>色、血液型、UI案A/B</strong></li>
+<li>分類名やラベルとして読む</li>
+</ul>
+</li>
+<li><strong>順序尺度</strong>
+<ul>
+<li><strong>5段階評価、順位、好みの順番</strong></li>
+<li>大小関係は読めるが、差の大きさは慎重に扱う</li>
+</ul>
+</li>
+<li><strong>間隔尺度</strong>
+<ul>
+<li><strong>摂氏温度、偏差値、実務上の尺度得点</strong></li>
+<li>差は読めるが、0を「ない」とは読まない</li>
+</ul>
+</li>
+<li><strong>比率尺度</strong>
+<ul>
+<li><strong>時間、回数、金額、長さ、重さ</strong></li>
+<li>0が「ない」を表し、比の比較もできる</li>
+</ul>
+</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは、前の表から外した具体例を確認します。名義尺度は分類の名前、順序尺度は並び順、間隔尺度は差が読める数値、比率尺度は絶対的な0を持つ数値として説明します。例を暗記するのではなく、何が意味をもつかに戻って判断することを強調します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 尺度を見分ける3つの質問 -->
+<div style="font-size:0.7em">
+<h2>尺度を見分ける3つの質問</h2>
+<h3>迷ったら、この順で考える</h3>
+<ol>
+<li><strong>その数値はラベルか？</strong>
+<ul>
+<li>例：赤=1、青=2 のような符号づけなら <strong>名義尺度</strong></li>
+</ul>
+</li>
+<li><strong>順序だけが意味か？</strong>
+<ul>
+<li>例：5は4より高いが、差が等しいとは限らないなら <strong>順序尺度</strong></li>
+</ul>
+</li>
+<li><strong>0は「何もない」を意味するか？</strong>
+<ul>
+<li>例：0秒、0回、0円のように絶対0があるなら <strong>比率尺度</strong> に近い</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>どの計算まで安心して許せるか</strong>で考えると実務的</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+学生は4分類を暗記しても、実際のデータを前にすると迷います。そこで、ラベルか、順序だけか、0が無を意味するか、という三つの問いで見分ける方法を示します。最後の一文として、迷ったときはどの計算まで安全に許せるかで考えるという実務的な見方を補ってください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 頻出の評価法の整理① -->
+<div style="font-size:0.6em">
+<h2>頻出の評価法の整理①</h2>
+<table>
+<thead>
+<tr>
+<th>評価法</th>
+<th>理論上の位置づけ</th>
+<th>実務上の扱い</th>
+<th>押さえる点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SD法</strong></td>
+<td>各項目は<strong>順序尺度</strong>が基本</td>
+<td>平均、相関、主成分分析、因子分析などで<strong>間隔尺度に近い</strong>ものとして扱うことが多い</td>
+<td>理論と実務のあいだに<strong>ギャップ</strong>がある</td>
+</tr>
+<tr>
+<td><strong>リッカート項目</strong></td>
+<td>1つの質問文への回答なので<strong>順序尺度</strong></td>
+<td>平均を使う場面はあるが、まずは慎重に考える</td>
+<td><strong>単一項目</strong>であることが重要</td>
+</tr>
+<tr>
+<td><strong>リッカート尺度</strong></td>
+<td>複数項目を合計・平均した尺度得点</td>
+<td><strong>間隔尺度に近い</strong>ものとして扱われることが多い</td>
+<td><strong>項目</strong>と<strong>尺度</strong>を混同しない</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>まず区別すべきなのは、<strong>1項目なのか、複数項目の合成得点なのか</strong></p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドでは、SD法とリッカートを分けて整理します。特に重要なのは、リッカート項目とリッカート尺度を同じものとして話さないことです。単一項目はまず順序尺度として慎重に見つつ、複数項目から作った尺度得点は実務上、間隔尺度に近いものとして扱われることが多いと説明します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 頻出の評価法の整理② -->
+<div style="font-size:0.6em">
+<h2>頻出の評価法の整理②</h2>
+<table>
+<thead>
+<tr>
+<th>データ</th>
+<th>尺度に近い見方</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VAS</strong></td>
+<td>測定された長さそのものは<strong>比率尺度の性質</strong>をもちやすい</td>
+<td>心理的な強さが本当に<strong>線形</strong>に並ぶかは別問題</td>
+</tr>
+<tr>
+<td><strong>クリック回数・利用時間・視線停留時間</strong></td>
+<td>比較的<strong>比率尺度</strong>として扱いやすい</td>
+<td>0の意味や単位を確認する</td>
+</tr>
+<tr>
+<td><strong>音圧・長さ・重さなどの物理量</strong></td>
+<td>比率尺度として扱いやすい</td>
+<td>主観評定と同じ感覚で読まない</td>
+</tr>
+<tr>
+<td><strong>イベント種別・<br />ページ種別</strong></td>
+<td><strong>名義尺度</strong></td>
+<td>ログデータでもカテゴリ列は量ではない</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>同じデータセットの中でも、<br /><strong>列ごとに尺度が違う</strong>と考える必要がある。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+VASは連続的な値として扱いやすい一方で、心理量そのものの線形性までは自動的に保証されません。また、ログデータは全部が量的だと思いがちですが、イベント種別やページ種別のように名義尺度の列もあります。列ごとに扱いが変わるという視点をここで定着させます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 代表値・図・分析の入口 -->
+<div style="font-size:0.6em">
+<h2>代表値・図・分析の入口</h2>
+<table>
+<thead>
+<tr>
+<th>尺度水準</th>
+<th>まず見る代表値</th>
+<th>向きやすい図</th>
+<th>よくある分析の入口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名義尺度</td>
+<td>最頻値、割合</td>
+<td>棒グラフ、クロス集計表</td>
+<td>クロス集計、χ²検定</td>
+</tr>
+<tr>
+<td>順序尺度</td>
+<td>中央値、四分位範囲</td>
+<td>箱ひげ図、順位プロット</td>
+<td>順位相関、U検定</td>
+</tr>
+<tr>
+<td>間隔尺度</td>
+<td>平均、標準偏差</td>
+<td>ヒストグラム、散布図</td>
+<td>相関、t検定、ANOVA</td>
+</tr>
+<tr>
+<td>比率尺度</td>
+<td>平均、標準偏差、比</td>
+<td>ヒストグラム、散布図</td>
+<td>回帰、相関、時系列</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>これは<strong>絶対の禁止表</strong>ではなく、<br />迷ったときに戻るための<strong>基本対応表</strong>です。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+尺度水準は、何を計算してよいかだけでなく、最初に何の図を描くかにも関わります。名義なら割合と棒グラフ、順序なら中央値と箱ひげ図、間隔・比率なら平均や散布図といった基本対応を押さえます。学生には、迷ったときはまずこの表に戻るという使い方を勧めてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 事例① SUSと痛みVAS -->
+<div style="font-size:0.8em">
+<h2>事例① SUSと痛みVAS</h2>
+<table>
+<thead>
+<tr>
+<th>UI/UX評価：<strong>SUS</strong></th>
+<th>医療・ヘルスケア：<strong>痛みVAS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10項目の<strong>5件法</strong>で回答する</td>
+<td><strong>100mm線</strong>上の位置を長さとして測る</td>
+</tr>
+<tr>
+<td>1項目ずつ見るか、<strong>総合スコア</strong>で見るかで扱いが変わる</td>
+<td>治療前後や経時での<strong>変化量</strong>を追いやすい</td>
+</tr>
+<tr>
+<td>「5件法の集合」を<strong>スコア化</strong>して比較する</td>
+<td>同じ50でも、人によって意味がずれる可能性がある</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>数字の形</strong>ではなく、<strong>どう測り、どう集約したか</strong>を見ることが大切です。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+同じ主観評価でも、SUSとVASでは扱い方が異なります。SUSでは、各項目は5件法ですが、実務では総合スコアとして比較することが多い。一方でVASは長さとして測りやすいですが、主観量の意味づけには注意が必要です。ここでは、測定法と集約法を見る視点を強調してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 事例② 製品音評価と食品評価 -->
+<div style="font-size:0.8em">
+<h2>事例② 製品音評価と食品評価</h2>
+<table>
+<thead>
+<tr>
+<th>家電の製品音評価</th>
+<th>食品の9点嗜好尺度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主観評価：不快さ、うるささ、煩わしさ</td>
+<td>好ましさを<strong>カテゴリ付きの尺度</strong>で答える</td>
+</tr>
+<tr>
+<td>物理指標：ラウドネス、シャープネスなど</td>
+<td>数値化されていても、<strong>言語ラベル</strong>の意味を無視しない</td>
+</tr>
+<tr>
+<td>主観評定は<strong>順序〜間隔寄り</strong>、物理指標は<strong>比率尺度寄り</strong></td>
+<td>カテゴリ数やラベル表現で受け取り方が変わりうる</td>
+</tr>
+</tbody>
+</table>
+<br />
+<h3>この事例から分かること</h3>
+<ul>
+<li>同じ「1〜5」「0〜100」でも意味が違う</li>
+<li><strong>主観評定</strong>と<strong>物理量</strong>を同じ感覚で扱うと危ない</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+製品音の例では、主観評定と物理指標が同じ表に並びますが、両者は同じ意味の数字ではありません。食品評価の9点嗜好尺度では、言語ラベル付きのカテゴリであることを忘れてはいけません。事例を通して、数値だけでなく、背後にある測定構造を見る必要性を再確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- データサイエンスとの接点 -->
+<div style="font-size:0.66em">
+<h2>データサイエンスとの接点</h2>
+<h3>尺度水準は、前処理と分析法選択に直結する</h3>
+<ul>
+<li><strong>名義尺度</strong>：one-hot など、<strong>順序を持たない</strong>形で表現する</li>
+<li><strong>順序尺度</strong>：順序は保つが、<strong>差を過信しない</strong></li>
+<li><strong>間隔・比率尺度</strong>：標準化、相関、回帰などへつなぎやすい</li>
+<li>感性データは、<strong>主観評価（順序）＋ログ（比率）＋属性（名義）</strong> が混ざりやすい</li>
+</ul>
+<blockquote>
+<p>例：<strong>赤=1、青=2、緑=3</strong> をそのままモデルに入れると、
+モデルは「<strong>緑 &gt; 青 &gt; 赤</strong>」と誤解するかもしれない。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは統計や機械学習との接点を示します。学生は、数値になっていれば何でもモデルに入れられると思いがちですが、尺度水準によって前処理の設計が変わります。特に名義尺度をそのまま整数化して入れる誤りは典型なので、色コードの例で注意喚起をしてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 順序尺度に平均を使ってよいか -->
+<div style="font-size:0.6em">
+<h2>順序尺度に平均を使ってよいか</h2>
+<h3>本講義での実務的スタンス</h3>
+<ul>
+<li><strong>単一のリッカート項目</strong>や<strong>SD法の1項目</strong>は、まず<strong>順序尺度</strong>として慎重に考える</li>
+<li><strong>複数項目をまとめた尺度得点</strong>や、<strong>5件法以上</strong>のデータでは、連続量近似で扱う場面もある</li>
+<li>迷ったときは、次のような<strong>より保守的な見方</strong>に戻る
+<ul>
+<li>中央値</li>
+<li>箱ひげ図</li>
+<li>カテゴリの度数分布</li>
+<li>順位相関</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>大切なのは、<strong>平均を使うかどうか</strong>そのものではなく、
+<strong>何を仮定して平均しているかを説明できること</strong>です。</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+この論点は白黒で割り切らず、前提の問題として扱います。単一項目はまず順序尺度として慎重に考え、複数項目から作った尺度得点では実務上、連続量近似を使うことがあると整理します。学生には「平均は禁止」と暗記させるのではなく、平均の前提を説明できることを目標にさせます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ミニ活動：尺度判定クイック練習 -->
+<div style="font-size:0.58em">
+<h2>ミニ活動：尺度判定クイック練習</h2>
+<h3>次の各項目について考える</h3>
+<ol>
+<li><strong>質的か量的か</strong></li>
+<li><strong>4つの尺度水準のどれに近いか</strong></li>
+<li><strong>そう判断した理由は何か</strong>
+<br /><br /></li>
+</ol>
+<h3>判定する項目</h3>
+<ul>
+<li>学部（情報／デザイン／経営）</li>
+<li>「安心感」5段階評価</li>
+<li>1週間のアプリ起動回数</li>
+<li>1日の利用時間（分）</li>
+<li>VASで測った「疲れ」</li>
+</ul>
+<blockquote>
+<p>まず1人で考え、その後ペアで<strong>理由を言葉にして</strong>説明する</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは厳密な正解当てよりも、なぜそう判断したかを言葉にさせることが重要です。特に、安心感5段階評価とVASの扱いでは迷いが出やすいので、理由づけを聞きます。ペアで説明させることで、尺度判定を単なる暗記ではなく、判断として定着させます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ミニ活動：平均と図を考える -->
+<div style="font-size:0.7em">
+<h2>ミニ活動：平均と図を考える</h2>
+<h3>1. 「平均してよいか？」を考える</h3>
+<ul>
+<li>5段階評価の「分かりやすさ」で <strong>UI案A と B</strong> を比較したい</li>
+<li>VASで測った「不快感」で <strong>音A と B</strong> を比較したい</li>
+<li>好きな色（<strong>赤=1、青=2、緑=3</strong>）の<strong>平均</strong>を出したい
+<br /><br /></li>
+</ul>
+<h3>2. 最初に何の図を描くかを考える</h3>
+<ul>
+<li><strong>名義尺度</strong>のカテゴリ割合</li>
+<li><strong>5段階評定</strong>の条件比較</li>
+<li><strong>VAS</strong>と<strong>利用時間</strong>の関係</li>
+</ul>
+<blockquote>
+<p>必要なら、<strong>中央値・度数分布・箱ひげ図・散布図</strong>など別の見方も提案する</p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+活動の狙いは、尺度判定を代表値や図の選択につなげることです。色コードの平均は不適切だと気づけるか、5段階評定では平均以外の見方を提案できるか、VASと利用時間なら散布図が候補に上がるかを見ます。時間に余裕があれば、なぜその図を選んだのかまで発表させてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 確認問題と授業後課題 -->
+<div style="font-size:0.52em">
+<h2>確認問題と授業後課題</h2>
+<h3>確認問題</h3>
+<ol>
+<li><strong>質的変数</strong>と<strong>量的変数</strong>の違いを、例を1つずつ挙げて説明できるか</li>
+<li><strong>名義・順序・間隔・比率</strong>を、それぞれ1例つきで言えるか</li>
+<li><strong>リッカート項目</strong>と<strong>リッカート尺度</strong>の違いを説明できるか</li>
+<li><strong>VAS</strong>を連続量として扱いやすい理由と、注意点を1つずつ言えるか</li>
+<li>「好きな色（赤=1、青=2、緑=3）の平均が2.1だから、やや青寄り」と言ってよいか
+<br /><br /></li>
+</ol>
+<h3>授業後課題（軽めのミニレポート）</h3>
+<ul>
+<li>身の回りのアンケートを1つ選ぶ</li>
+<li>各質問項目を <strong>質的／量的</strong>、<strong>尺度水準</strong> に分類する</li>
+<li>その<strong>判断理由</strong>を書く</li>
+<li>その尺度なら、<strong>向く代表値・図・分析</strong>を1つ提案する</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+確認問題では、この回の最低限の到達点を確かめます。最後の色コードの問いは、数字に見えるものを量として扱ってしまう誤りを再確認するための設問です。授業後課題では、絶対の正解探しではなく、尺度判定の根拠を言語化することを重視すると伝えてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まとめと次回への橋渡し -->
+<div style="font-size:0.8em">
+<h2>まとめと次回への橋渡し</h2>
+<blockquote>
+<p><strong>感性データでは、数字そのものより先に、<br />その数字の意味を確認する。</strong></p>
+</blockquote>
+<h3>今日の持ち帰り</h3>
+<ul>
+<li>変数は <strong>質的変数／量的変数</strong> に大きく分けられる</li>
+<li>尺度水準は <strong>名義・順序・間隔・比率</strong> の4つで整理できる</li>
+<li><strong>SD法・リッカート・VAS</strong> は、理論上の位置づけと実務上の扱いが必ずしも一致しない</li>
+<li><strong>代表値・図・分析法</strong>は、データの意味を確かめてから選ぶ</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドでは、今日の内容を一文に圧縮して確認します。感性データでは、数字があるからといってすぐに平均や相関を計算するのではなく、その数字が分類なのか、順序なのか、差まで読めるのか、比まで読めるのかを先に見る必要があります。
+<p>今日の持ち帰りとして、まず変数を質的変数と量的変数に分けること、次に尺度水準を名義、順序、間隔、比率の4つで整理することを再確認します。そのうえで、SD法、リッカート、VASのような感性評価でよく出る形式は、理論上の位置づけと実務上の扱いがずれることもあると補足してください。</p>
+<p>最後に、代表値、図、分析法はデータの意味を確認した後に選ぶものだと強調します。特に「見た目が数字でも、量として読めるとは限らない」という点を、色コードや順位の例に戻して確認すると理解が定着しやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まとめと次回への橋渡し -->
+<div style="font-size:0.8em">
+<h2>次回（第5回）：多次元尺度法（MDS）</h2>
+<ul>
+<li>類似度／非類似度</li>
+<li>距離行列</li>
+<li>計量MDS／非計量MDS</li>
+<li>ポジショニングマップ</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+次回は多次元尺度法、MDSを扱います。MDSは、対象同士がどれくらい似ているか、または似ていないかというデータをもとに、対象の関係を地図のように配置する方法です。感性工学では、製品、音、画像、食品、ブランドなどの印象の近さを可視化するときに使われます。
+<p>ここで今日の内容とつながるのは、類似度や非類似度の数値をどのような尺度として扱うかです。たとえば、7段階で「似ている」と答えたデータを、順序として見るのか、間隔がそろった得点として扱うのかによって、選ぶMDSの考え方が変わります。</p>
+<p>次回は、類似度、非類似度、距離行列、計量MDS、非計量MDS、ポジショニングマップという順に見ていきます。今日学んだ「数値の意味を先に確認する」という姿勢を、そのままMDSの入口に持ち込むと伝えて締めてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- NotebookLM -->
+<div style="font-size:0.8em">
+<h2>NotebookLM</h2>
+<ul>
+<li><a href="https://notebooklm.google.com/notebook/813f267c-692b-4b4f-b469-8063ed4377fa">意識調査のデータ化と変数の尺度水準</a></li>
+<li><a href="https://notebooklm.google.com/notebook/11f27176-daaa-48f1-8fa8-d6a3162fa47b">リッカート尺度の統計的分析：順序尺度と検定の妥当性</a></li>
+<li><a href="https://notebooklm.google.com/notebook/b8b2ef81-8df9-407a-974b-a5ff4d97d283">VASの限界：ラッシュ分析による痛み評価の再定義</a></li>
+<li><a href="https://notebooklm.google.com/notebook/d4f7d733-349e-474d-857f-0dbfe78f189d">SUS：低コストで迅速なシステムユーザビリティ評価尺度</a></li>
+<li><a href="https://notebooklm.google.com/notebook/7edb3b26-0635-41b1-83f1-1fa8859208fd">痛みの評価尺度と客観的測定の体系</a></li>
+<li><a href="https://notebooklm.google.com/notebook/699ce399-6fe3-40dc-842e-dfba472266da">ガーナにおける食品嗜好尺度の最適化と消費者行動分析</a></li>
+<li><a href="https://notebooklm.google.com/notebook/7d0720e5-efde-49c7-9e5c-106f8e23cdcd">リッカート尺度の解析指針と統計的手法</a></li>
+<li><a href="https://notebooklm.google.com/notebook/f3797a6e-2d67-4818-8513-3aca48f34232">運動科学における順序尺度の統計的妥当性とVASの推奨</a></li>
+<li><a href="https://notebooklm.google.com/notebook/9a47549b-2822-4378-910e-c39ceb7f9a84">リッカート尺度の連続変数化：統計的妥当性の検証と指針</a></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、復習用のNotebookLM資料を紹介します。今日扱った尺度水準、リッカート尺度、VAS、SUSなどは、講義中だけで完全に整理するよりも、あとから自分のペースで問い直すことで理解が深まります。
+<p>ここに挙げたノートブックは、それぞれ今回の内容と関連する補助資料です。まずは「意識調査のデータ化と変数の尺度水準」を見て、質的変数、量的変数、名義、順序、間隔、比率の区別を復習してください。リッカート尺度やVASについて迷った場合は、関連するノートブックを使って、どのような扱い方があり得るのかを確認するとよいです。</p>
+<p>NotebookLMを使うときは、答えをそのまま写すのではなく、「なぜこの尺度として扱うのか」「その分析法を選ぶ根拠は何か」と質問しながら使ってください。授業後課題でも、分類結果そのものより、判断理由を説明できることを重視します。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
