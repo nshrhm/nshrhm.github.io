@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感性データ処理 第05回</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>感性データ処理</h1>
+<h2>第5回 多次元尺度法（MDS）</h2>
+<h3>感性の「似ている／似ていない」を地図にする</h3>
+<h4>2026年度 春学期</h4>
+<h4>白濵 成希</h4>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+第5回では、多次元尺度法（MDS）を扱います。これまでの回で学んだ感性、感性ワード、評価、尺度水準を踏まえ、今回は対象どうしの関係を地図として可視化する考え方へ進みます。計算手順を細かく追う回というより、MDS が何を入力にして何を返し、その地図をどう読むかを理解する回として進めます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 本講の到達目標 -->
+<div style="font-size:0.8em">
+<h2>本講の到達目標</h2>
+<ul>
+<li><strong>MDS の入力と出力</strong>を説明できる</li>
+<li><strong>類似度・非類似度・距離行列</strong>の基本を説明できる</li>
+<li><strong>直接法／間接法</strong>の違いを説明できる</li>
+<li><strong>計量MDS／非計量MDS</strong>を尺度水準と結びつけて説明できる</li>
+<li>地図を見て、<strong>近い対象・かたまり・軸らしさ</strong>を言語化できる</li>
+<li>次回の<strong>数量化Ⅲ類（対応分析）</strong> との違いを説明できる</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+この回の到達目標は、MDS の定義を覚えることだけではありません。入力データの作り方、尺度水準との関係、地図の読み方、そして次回手法との違いまで含めて説明できる状態を目指します。授業後には、MDS は「距離から地図を作る手法」であると、自分の言葉で言えることが最低ラインです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 本講の進め方 -->
+<div style="font-size:0.6em">
+<h2>本講の進め方</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">時間</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0〜15分</td>
+<td>なぜ今 MDS を学ぶのか</td>
+</tr>
+<tr>
+<td style="text-align:right">15〜45分</td>
+<td>MDS の基本概念（距離行列・直接法／間接法・計量／非計量）</td>
+</tr>
+<tr>
+<td style="text-align:right">45〜65分</td>
+<td>ストレスと地図の読み方</td>
+</tr>
+<tr>
+<td style="text-align:right">65〜80分</td>
+<td>事例で MDS の使いどころをつかむ</td>
+</tr>
+<tr>
+<td style="text-align:right">80〜90分</td>
+<td>まとめ、確認問題、次回への橋渡し</td>
+</tr>
+</tbody>
+</table>
+<p><strong>今日は「距離行列 → 地図 → 解釈」の流れをつかむことを優先</strong>します。</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+90分の授業では、まず MDS を学ぶ意味を確認し、その後に基本概念へ入ります。後半では、ストレスの考え方、地図の読み方、事例、他手法との違いを扱います。実装は深追いせず、あとで自分で試すときの入口が分かるところまでを目標にします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 授業全体での位置づけ -->
+<div style="font-size:0.6em">
+<h2>授業全体での位置づけ</h2>
+<table>
+<thead>
+<tr>
+<th>これまで</th>
+<th><strong>今回</strong></th>
+<th>次回</th>
+<th>この先</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>感性、感性工学、評価、尺度水準</td>
+<td><strong>MDS：対象間の関係を地図にする</strong></td>
+<td>数量化Ⅲ類：対象とカテゴリーを同時にみる</td>
+<td>アンケート、SD法、PCA、因子分析、VAS、分析ワークフロー</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li>第4回で学んだ<strong>尺度水準</strong>を、分析法の選択に結びつける</li>
+<li>第6回の<strong>数量化Ⅲ類</strong>へ向けて、「地図で読む」感覚を身につける</li>
+<li>後の<strong>主成分分析・因子分析</strong>と比べながら、<strong>入力が違うと手法も変わる</strong>ことを理解する</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+シラバス上、第5回は多変量解析に入る最初の可視化回です。前回の尺度水準の理解が、計量 MDS と非計量 MDS の選択につながります。また次回の数量化Ⅲ類は、今回と同じく地図を作る手法ですが、入力データの形が異なります。この違いを意識しながら学ぶと、授業全体の流れがつかみやすくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- なぜ今 MDS なのか -->
+<div style="font-size:0.8em">
+<h2>なぜ今 MDS なのか</h2>
+<ul>
+<li><strong>どの対象どうしが似て見えるのか</strong>を俯瞰したい</li>
+<li>競合の中で、<strong>自分の案がどこに位置するか</strong>を知りたい</li>
+<li>評価対象の全体像を、<strong>一覧で直感的に見たい</strong></li>
+<li>主成分分析や因子分析の前に、まず<strong>対象どうしの関係</strong>をつかみたい</li>
+</ul>
+<blockquote>
+<p><strong>MDS は「良い／悪い」を判定する手法ではない。</strong>
+<strong>対象どうしの関係の構造を見える化する手法である。</strong></p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+感性データを扱うとき、最初に知りたいのは「何が似ていて、何が離れているのか」という全体構造であることが多くあります。MDS はこの問いに強い手法です。ここで大事なのは、MDS は優劣判定の機械ではなく、関係を整理して議論しやすくするための可視化だという点です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 「似ている」は何で決まるか -->
+<div style="font-size:0.6em">
+<h2>「似ている」は何で決まるか</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>見た目</td>
+<td>このアプリは、あのアプリに似ている</td>
+</tr>
+<tr>
+<td>目的</td>
+<td>このサービスは、別のサービスと使う場面が近い</td>
+</tr>
+<tr>
+<td>操作感</td>
+<td>この UI は、他の UI と流れが似ている</td>
+</tr>
+<tr>
+<td>雰囲気</td>
+<td>この店や車は、別の対象に近い印象がある</td>
+</tr>
+</tbody>
+</table>
+<p><strong>同じ「似ている」でも、基準は1つではない。</strong></p>
+<h3>ミニ活動</h3>
+<p>最近よく使うアプリを 2 つ挙げ、<strong>何の観点で似ているか</strong>を 1 つ書く。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+日常の「似ている」という判断は、見た目、目的、操作感、雰囲気など複数の観点を含みます。MDS を使う前には、何を「似ている」とみなすのかを明確にしなければなりません。ミニ活動では、観点を言葉にすること自体が分析設計の第一歩であることを確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- MDS とは何か -->
+<div style="font-size:0.6em">
+<h2>MDS とは何か</h2>
+<p><strong>多次元尺度法（MDS）</strong></p>
+<ul>
+<li>対象の<strong>近さ／遠さ</strong>をもとに、2次元や3次元の空間に配置して構造を可視化する手法
+<br /><br /></li>
+</ul>
+<h3>基本の対応</h3>
+<ul>
+<li><strong>入力</strong>：対象間の類似度・非類似度・距離</li>
+<li><strong>出力</strong>：対象を配置したマップ（2D / 3D）
+<br /><br /></li>
+</ul>
+<h3>地図の読み方の出発点</h3>
+<ul>
+<li><strong>近い点どうし</strong>は「似ている」</li>
+<li><strong>遠い点どうし</strong>は「似ていない」</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+MDS は日本語では多次元尺度構成法と呼ばれることもありますが、この授業ではシラバスに合わせて多次元尺度法と呼びます。重要なのは、入力が「対象×対象の近さ」であり、出力が「点の配置」になることです。ここでの空間は物理空間ではなく、関係を表すための空間です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 距離行列の考え方：基本 -->
+<div style="font-size:0.8em">
+<h2>距離行列の考え方</h2>
+<h3>類似度と非類似度</h3>
+<ul>
+<li><strong>類似度</strong>：値が大きいほど似ている</li>
+<li><strong>非類似度（距離）</strong>：値が大きいほど似ていない
+<br /><br /></li>
+</ul>
+<h3>距離行列（非類似度行列）の基本</h3>
+<ul>
+<li><strong>正方行列</strong>である</li>
+<li><strong>対角成分は 0</strong>（自分と自分の距離）</li>
+<li><strong>左右対称</strong>である</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+MDS の最も基本的な入力は距離行列です。類似度を集めた場合でも、分析では「遠さ」の形にそろえることがよくあります。距離行列では、自分自身との距離は 0 になり、A から B への距離と B から A への距離は同じ値になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 距離行列の考え方：例 -->
+<div style="font-size:0.62em">
+<h2>距離行列の例</h2>
+<h3>4つの音刺激 A〜D の非類似度</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:right">A</th>
+<th style="text-align:right">B</th>
+<th style="text-align:right">C</th>
+<th style="text-align:right">D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">6</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">5</td>
+</tr>
+<tr>
+<td>C</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">3</td>
+</tr>
+<tr>
+<td>D</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">5</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">0</td>
+</tr>
+</tbody>
+</table>
+<h3>読み取り</h3>
+<ul>
+<li><strong>A と B は近い</strong></li>
+<li><strong>C と D も近い</strong></li>
+<li><strong>A と C は遠い</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+この例では、値が小さい組ほど近く、値が大きい組ほど遠いと読みます。A-B は 2、C-D は 3 なので近い関係です。一方、A-C は 7 なので遠い関係です。MDS では、この関係が地図上でも再現されるように配置を求めます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 距離の集め方：直接法と間接法 -->
+<div style="font-size:0.58em">
+<h2>距離の集め方：直接法と間接法</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>何をするか</th>
+<th>例</th>
+<th>強み</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>直接法</strong></td>
+<td>人に「似ている／違う」を直接たずねる</td>
+<td>一対比較、ソーティング、順位づけ</td>
+<td>感じた近さをそのまま入れやすい</td>
+<td>対象数が増えると負担が大きい</td>
+</tr>
+<tr>
+<td><strong>間接法</strong></td>
+<td>属性データから距離を計算する</td>
+<td>SD法平均、ログ、物理量から距離計算</td>
+<td>対象数が多くても扱いやすい</td>
+<td>どの属性を使うかで結果が変わる</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+直接法は、人が感じた近さそのものを入力にできる点が強みです。間接法は、SD 法の平均プロフィール、行動ログ、物理量などから距離を計算する方法です。どちらを使うかは、知りたい距離が主観的な近さなのか、測定済みの属性から計算した近さなのかによって変わります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 直接法の負担：一対比較の数 -->
+<div style="font-size:0.7em">
+<h2>直接法の負担</h2>
+<h3>一対比較の数</h3>
+<p><strong>k(k−1)/2</strong></p>
+<ul>
+<li>6 個 → 15 通り</li>
+<li>10 個 → 45 通り</li>
+<li>20 個 → 190 通り
+<br /><br /></li>
+</ul>
+<h3>ミニ確認</h3>
+<ul>
+<li>対象が 6 個、10 個、15 個のときの比較数を計算する</li>
+<li>例題を、<strong>直接法</strong>か<strong>間接法</strong>かに分ける</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+直接法は、人が感じた近さを扱いやすい一方で、対象が増えると比較数が急増します。6 個なら 15 通りですが、20 個では 190 通りになります。授業中の確認として、対象数ごとの比較数を計算し、さらに例題を直接法と間接法に分類してみましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 計量MDSと非計量MDS -->
+<div style="font-size:0.6em">
+<h2>計量MDSと非計量MDS</h2>
+<table>
+<thead>
+<tr>
+<th>種類</th>
+<th>何をできるだけ保とうとするか</th>
+<th>向きやすいデータ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>計量MDS</strong></td>
+<td>距離の<strong>量そのもの</strong></td>
+<td>間隔尺度・比率尺度に近い距離データ</td>
+</tr>
+<tr>
+<td><strong>非計量MDS</strong></td>
+<td>距離の<strong>順序関係</strong></td>
+<td>「A は B より C に近い」などの順序的データ</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li>第4回で学んだ<strong>尺度水準</strong>が選択に関わる</li>
+<li>感性評価の「似ている／似ていない」は、<strong>順序的</strong>に扱う方が自然な場面が多い</li>
+<li>そのため、<strong>非計量MDS</strong>は心理的距離データと相性がよい</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+計量 MDS は距離の大きさ自体をできるだけ保つ考え方で、数値の差に意味がある場合に向きます。非計量 MDS は順序関係を重視するため、感性評価のように「こちらの方が近い」といった相対的判断が中心のデータで使いやすい方法です。ここで前回の尺度水準の復習が効いてきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ストレスと次元数 -->
+<div style="font-size:0.8em">
+<h2>ストレスと次元数</h2>
+<ul>
+<li><strong>ストレス（stress）</strong>
+元の距離関係と、地図上の距離関係の<strong>ずれ</strong>を表す指標</li>
+<li><strong>小さいほど</strong>、元の距離関係をよく再現している</li>
+<li><strong>次元数を増やす</strong>と、一般にはストレスは下がる</li>
+<li>ただし、<strong>次元数が増えるほど地図は読みにくい</strong></li>
+</ul>
+<blockquote>
+<p><strong>大事なのは、ストレス最小だけではない。</strong>
+<strong>再現性と読みやすさのバランスをとることが重要である。</strong></p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+MDS では、できるだけ入力の距離関係を保つように配置を探します。そのときのずれを表す代表的な指標がストレスです。次元を増やせば再現性は上がりやすい一方、人が図として理解しやすいのは通常 2 次元か 3 次元です。実際にはストレスの推移を見て肘を探したり、2 次元で解釈可能かを確認したりして次元数を決めます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- MDS の地図をどう読むか：手順 -->
+<div style="font-size:1.0em">
+<h2>MDS の地図をどう読むか</h2>
+<h3>まず見ること</h3>
+<ol>
+<li><strong>近い点どうし</strong>を見る</li>
+<li><strong>離れた点や端の点</strong>を見る</li>
+<li><strong>かたまり</strong>がありそうかを見る</li>
+<li>軸の意味を<strong>後から言語化</strong>する</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+MDS の地図は、散らばった点を何となく眺めるだけでは読めません。まず近い点どうしを見て、次に離れた点や端にある点を確認します。そのうえで、かたまりがありそうかを見て、最後に軸らしさを言語化します。軸の意味は、配置を読んだ後に付けるものです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- MDS の地図をどう読むか：注意 -->
+<div style="font-size:0.7em">
+<h2>MDS の地図を読むときの注意</h2>
+<h3>解釈の注意</h3>
+<ul>
+<li>軸は最初から「高級感」「使いやすさ」と決まっているわけではない</li>
+<li><strong>回転や反転</strong>に本質的な意味はない</li>
+<li><strong>原点や軸の単位</strong>に過度な意味を置かない
+<br /><br /></li>
+</ul>
+<h3>ミニ活動</h3>
+<ul>
+<li>教員が示した簡単な MDS 図について、<strong>近い対象</strong>と<strong>軸らしさ</strong>をペアで相談する</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+たとえば「軽快↔重厚」「日常↔特別」のような表現は、配置を見た後に付けるものです。図が左右反転しても、距離関係が同じなら本質は同じです。原点や軸の単位を読み込みすぎず、近さ、遠さ、まとまりを中心に解釈しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 小さな例で読む MDS：設定 -->
+<div style="font-size:0.8em">
+<h2>小さな例で読む MDS</h2>
+<blockquote>
+<p>4つの動画配信サービス A〜D について、<br />「雰囲気の似ている度合い」<br />を評定して地図化したとする。</p>
+</blockquote>
+<ul>
+<li><strong>A と B が近い</strong></li>
+<li><strong>C と D が近い</strong></li>
+<li><strong>A/B と C/D が大きく離れている</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+この例では、4つの動画配信サービスを対象にして、雰囲気の似ている度合いを地図化したと考えます。まず確実に読めるのは、A と B が近く、C と D も近く、A/B と C/D の二つの群が大きく離れているという構造です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 小さな例で読む MDS：解釈 -->
+<div style="font-size:0.8em">
+<h2>小さな例で読む MDS：解釈</h2>
+<table>
+<thead>
+<tr>
+<th>読めること</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>近い点</td>
+<td>A と B は近い印象のグループ</td>
+</tr>
+<tr>
+<td>別のかたまり</td>
+<td>C と D も別の近い印象グループ</td>
+</tr>
+<tr>
+<td>軸らしさ</td>
+<td>例：<strong>落ち着いた ↔ 派手</strong></td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li><strong>MDS は軸を自動で命名しない。</strong></li>
+<li>解釈は、対象に関する知識と文脈をもって行う。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+各サービスの特徴を知っていれば、「落ち着いた対派手」「大人向け対エンタメ色が強い」といった軸らしさを考えられます。ただし、その命名は自動的に与えられるものではありません。解釈は、対象に関する知識と文脈をもって行います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- MDS が効く事例① -->
+<div style="font-size:0.54em">
+<h2>MDS が効く事例①：デザイン・空間</h2>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>感性・主観体験</th>
+<th>データと活用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自動車外観デザイン</td>
+<td>スポーティー、上質、親しみやすいなどの印象</td>
+<td>印象評価項目の類似関係を整理し、評価項目の選定やセグメント理解に活かす</td>
+</tr>
+<tr>
+<td>触覚インタフェースの形状</td>
+<td>押す、選ぶ、増減するなどの機能的印象</td>
+<td>形状どうしの関連を可視化し、直感的な haptic UI 設計に活かす</td>
+</tr>
+<tr>
+<td>オフィス内装の写真</td>
+<td>温かい、落ち着く、明るい、親しみやすい印象</td>
+<td>写真の印象類似を地図化し、木質内装と非木質内装の印象差を整理する</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+事例を見るときは、必ず「何を評価したか」「何を感じるものとして扱ったか」「どのように活用したか」の三点を確認してください。ここでは、自動車デザイン、触覚インタフェース、オフィス内装という異なる領域でも、主観的な近さを地図にして設計や評価に活用している点が共通しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- MDS が効く事例② -->
+<div style="font-size:0.6em">
+<h2>MDS が効く事例②：音・味覚</h2>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>感性・主観体験</th>
+<th>データと活用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>音刺激（音色・音質など）</td>
+<td>この音は、あの音に似ている／違うという知覚的類似</td>
+<td>心理実験の非類似度データから、音知覚の主要な次元を探索する</td>
+</tr>
+<tr>
+<td>コーヒーの苦味</td>
+<td>「苦い」の中の下位品質の違い</td>
+<td>グループ化と配置の結果を地図化し、代表刺激の選定や追加実験設計に活かす</td>
+</tr>
+</tbody>
+</table>
+<br />
+<h3>共通点</h3>
+<p><strong>主観的な近さを地図にし、設計・分類・評価の議論に使う</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+音や味覚のように、物理量だけでは説明しにくい主観体験でも MDS は有効です。非類似度データから知覚空間を見える化することで、どのような違いが主要な軸になっていそうかを探索できます。ここでも MDS は予測のためというより、構造理解のために使われています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- MDS と他手法の違い -->
+<div style="font-size:0.6em">
+<h2>MDS と他手法の違い</h2>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>入力</th>
+<th>何を保とうとするか / 何を見るか</th>
+<th>典型的な出力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MDS</strong></td>
+<td>対象 × 対象の距離</td>
+<td>対象間の近さ・遠さ</td>
+<td>ポジショニングマップ、知覚マップ</td>
+</tr>
+<tr>
+<td><strong>PCA</strong></td>
+<td>対象 × 変数のデータ表</td>
+<td>分散の大きい方向</td>
+<td>主成分軸</td>
+</tr>
+<tr>
+<td><strong>数量化Ⅲ類 / 対応分析</strong></td>
+<td>対象 × カテゴリーのクロス表</td>
+<td>行と列の関係</td>
+<td>同時布置図</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li>MDS は、<strong>対象どうしの関係が最初から与えられているとき</strong>に強い</li>
+<li>予測よりも、<strong>構造理解・探索的分析</strong>に向く</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+MDS は「次元削減」の一種として紹介されることがありますが、PCA と同じものではありません。MDS の入口は距離行列、PCA の入口はデータ表、数量化Ⅲ類の入口はクロス集計表です。見た目はどれも散布図のような出力になりますが、何を入力にし、何を読みたいのかで使い分けます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- MDS を使うときの注意点 -->
+<div style="font-size:0.7em">
+<h2>MDS を使うときの注意点</h2>
+<ul>
+<li>結果は、<strong>距離行列の質</strong>に強く依存する</li>
+<li><strong>直接法</strong>では、参加者が<strong>何を基準に「似ている」と答えたか</strong>が重要</li>
+<li><strong>間接法</strong>では、<strong>どの属性で距離を作ったか</strong>が重要</li>
+<li>複数人データでは、<strong>平均するか、個人差を見るか</strong>を考える必要がある</li>
+<li>「ボタンを押せば客観的な地図が出る」と考えない</li>
+</ul>
+<blockquote>
+<p><strong>距離の設計そのものが、分析設計である。</strong></p>
+</blockquote>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+MDS ではアルゴリズム選択も大事ですが、それ以上に入力の作り方が結果を左右します。何を似ているとみなしたのか、どの属性を距離に使ったのか、複数人の違いをどう扱うのか、といった設計上の判断がそのまま地図に反映されます。実装に進むときは Python の scikit-learn や R の cmdscale、smacof が入口になりますが、この回ではコードより設計と解釈を優先します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まとめ -->
+<div style="font-size:0.8em">
+<h2>まとめ</h2>
+<ul>
+<li><strong>MDS は、対象どうしの距離から地図を作る手法</strong>である</li>
+<li>距離の集め方には、<strong>直接法</strong>と<strong>間接法</strong>がある</li>
+<li>感性評価では、<strong>非計量MDS</strong>が自然な場面が多い</li>
+<li>ストレスは再現性の指標だが、<strong>読みやすさとのバランス</strong>が重要である</li>
+<li>地図は、<strong>近い点・かたまり・端の点・軸らしさ</strong>を読みながら解釈する</li>
+<li><strong>軸は自動で意味づけされない</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日のポイントは、MDS を「距離から地図を作る手法」として捉えることです。さらに、距離の作り方、尺度水準との関係、ストレスの見方、地図の読み方までが一つの流れになっています。ここが理解できていれば、次回の数量化Ⅲ類との違いも見えやすくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 確認問題 -->
+<div style="font-size:0.8em">
+<h2>確認問題</h2>
+<ol>
+<li>MDS の基本入力は何か</li>
+<li>対象が <strong>8 個</strong>あるとき、一対比較は何通りか
+→ <strong>8 × 7 / 2 = 28</strong></li>
+<li>計量MDS と非計量MDS の違いを、尺度水準と結びつけて説明できるか</li>
+<li>「MDS の軸は最初から意味が決まっている」
+→ <strong>×</strong></li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、確認問題で理解を点検します。特に、入力が距離行列であること、一対比較の数え方、計量と非計量の違い、軸の意味づけが自動ではないことは押さえてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 次回への橋渡しと授業後課題 -->
+<div style="font-size:0.6em">
+<h2>次回への橋渡し</h2>
+<h3>次回扱うこと</h3>
+<ul>
+<li><strong>MDS</strong>：対象 × 対象の<strong>距離行列</strong>から地図を作る</li>
+<li><strong>数量化Ⅲ類</strong>：対象 × カテゴリーの<strong>クロス集計表</strong>から地図を作る
+<br /><br /></li>
+</ul>
+<h3>授業後課題</h3>
+<ul>
+<li>自分なら<strong>何を MDS で地図にしたいか</strong>を、
+<strong>対象・観点・データの取り方・活用目的</strong>で 1 枚に整理する</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+次回は同じく地図を作る手法ですが、今度は対象とカテゴリーの関係を同時に扱う数量化Ⅲ類に進みます。MDS では対象どうしの距離行列を入口にしましたが、数量化Ⅲ類では対象とカテゴリーのクロス集計表を入口にします。授業後課題では、自分なら何を地図化したいかを設計してみてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- NotebookLM -->
+<div style="font-size:0.9em">
+<h2>NotebookLM</h2>
+<ul>
+<li><a href="https://notebooklm.google.com/notebook/f1eeefc6-eaad-4d14-8746-ac456165bdbf">多次元尺度構成法：類似性の空間的視覚化</a></li>
+<li><a href="https://notebooklm.google.com/notebook/bcc740f9-6160-4ee9-aeb3-18ef7311fd86">音響知覚の解明：多次元尺度法による分析の軌跡</a></li>
+<li><a href="https://notebooklm.google.com/notebook/470ec6e8-2b13-4775-a13d-f733bc4b1aba">自動車外観デザインの感性セグメントと購買心理</a></li>
+<li><a href="https://notebooklm.google.com/notebook/14cb1574-990f-430e-9080-278aaf005098">触覚言語と形状の心理学：直感的インターフェースの設計指針</a></li>
+<li><a href="https://notebooklm.google.com/notebook/b599767f-3f22-47fb-baa8-21103fbac98f">オフィス木質化がもたらす視覚的印象と心理的効果</a></li>
+<li><a href="https://notebooklm.google.com/notebook/f8cc6c8d-2fc9-45ee-8bc8-90bca1152fc1">苦味の質と香りの認知統合：コーヒー風味の神経科学</a></li>
+<li><a href="https://notebooklm.google.com/notebook/3ce5e226-cd0c-428b-93db-1166e4f79fff">第5回講義資料</a></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、復習用の NotebookLM ノートを示します。上の二つは MDS の基本と音響知覚の例を確認するための資料です。続くノートは、授業内で扱った応用事例に対応しています。自動車外観デザイン、触覚インタフェース、オフィス内装、コーヒー風味のように、対象は異なっていても、主観的な近さや印象の関係を整理するという考え方は共通しています。必要に応じて、自分の授業後課題のテーマに近いノートから読み、対象、観点、データの取り方、活用目的を確認してください。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
