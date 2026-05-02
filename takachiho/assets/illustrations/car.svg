@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" role="img" aria-label="軽自動車でのドライブ">
+<rect width="420" height="300" rx="28" fill="#fff1d6"/>
+<circle cx="338" cy="62" r="38" fill="#f4a261"/>
+<path d="M0 192 C82 158 138 204 226 172 C302 144 356 174 420 152 V300 H0Z" fill="#e9c46a"/>
+<path d="M38 232 C112 202 184 238 250 216 C304 198 358 212 420 198" fill="none" stroke="#fffaf0" stroke-width="34" stroke-linecap="round"/>
+<path d="M70 232 C148 210 216 238 282 216 C330 200 374 208 420 198" fill="none" stroke="#20302d" stroke-width="4" stroke-dasharray="16 18" opacity=".6"/>
+<g transform="translate(104 128)">
+<path d="M32 62 C44 22 76 6 128 6 C174 6 204 22 226 62 H246 C260 62 272 74 272 88 V122 H12 V88 C12 74 22 62 32 62Z" fill="#2d8c7a"/>
+<path d="M72 28 h78 c26 0 43 11 56 34 H48 C58 44 60 35 72 28Z" fill="#eaf7f3"/>
+<circle cx="68" cy="122" r="20" fill="#20302d"/><circle cx="214" cy="122" r="20" fill="#20302d"/>
+<circle cx="68" cy="122" r="8" fill="#fffaf0"/><circle cx="214" cy="122" r="8" fill="#fffaf0"/>
+</g>
+</svg>

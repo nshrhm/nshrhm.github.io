@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" role="img" aria-label="青島の海と鬼の洗濯板">
+<rect width="420" height="300" rx="28" fill="#d8f3ef"/>
+<circle cx="330" cy="60" r="38" fill="#f4a261"/>
+<path d="M0 170 C80 135 120 190 200 158 C280 126 335 156 420 138 V300 H0Z" fill="#2a9d8f"/>
+<path d="M0 212 C65 188 120 225 196 202 C270 180 344 206 420 190 V300 H0Z" fill="#f0c987"/>
+<g stroke="#8a6f43" stroke-width="8" stroke-linecap="round" opacity=".65">
+<path d="M36 235 H388"/><path d="M62 258 H360"/><path d="M92 280 H332"/>
+</g>
+<path d="M68 132 h120" stroke="#fff" stroke-width="9" stroke-linecap="round" opacity=".8"/>
+</svg>

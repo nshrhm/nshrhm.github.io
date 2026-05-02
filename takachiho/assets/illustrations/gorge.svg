@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" role="img" aria-label="高千穂峡と真名井の滝">
+<rect width="420" height="300" rx="28" fill="#eaf7f3"/>
+<path d="M0 78 C58 58 112 88 160 72 C232 48 272 72 420 48 V300 H0Z" fill="#b4dfd7"/>
+<path d="M0 126 C70 100 106 120 166 104 C244 84 310 118 420 86 V300 H0Z" fill="#315851"/>
+<path d="M146 108 C128 154 122 214 94 300 H0 V120Z" fill="#254743"/>
+<path d="M292 86 C314 148 312 210 342 300 H420 V88Z" fill="#254743"/>
+<path d="M206 96 C206 132 196 164 196 204 C196 238 212 262 210 300" stroke="#f7ffff" stroke-width="24" stroke-linecap="round" opacity=".95"/>
+<path d="M0 236 C88 216 150 248 226 224 C298 202 356 230 420 212 V300 H0Z" fill="#2a9d8f" opacity=".9"/>
+</svg>

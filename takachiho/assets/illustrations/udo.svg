@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" role="img" aria-label="鵜戸神宮の洞窟と海">
+<rect width="420" height="300" rx="28" fill="#d7f1ec"/>
+<path d="M0 210 C80 170 116 218 198 188 C278 160 330 188 420 170 V300 H0Z" fill="#2a9d8f"/>
+<path d="M44 248 C120 216 208 238 292 218 C342 206 378 216 420 204 V300 H44Z" fill="#f0c987"/>
+<path d="M90 104 C126 42 206 24 275 54 C338 82 365 146 352 220 H72 C60 176 66 144 90 104Z" fill="#4d5144"/>
+<path d="M150 122 C170 86 222 78 254 104 C288 132 286 178 260 210 H126 C120 178 128 146 150 122Z" fill="#251f1b"/>
+<path d="M162 178 h96 v44 h-96z" fill="#b43b2d"/><path d="M148 166 h124" stroke="#fff7e4" stroke-width="12" stroke-linecap="round"/><path d="M174 142 h68" stroke="#b43b2d" stroke-width="10" stroke-linecap="round"/>
+</svg>

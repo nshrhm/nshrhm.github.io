@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" role="img" aria-label="天岩戸神社と天安河原">
+<rect width="420" height="300" rx="28" fill="#f6ecd8"/>
+<path d="M62 238 C72 104 154 42 232 54 C320 66 380 152 372 238Z" fill="#4f5548"/>
+<path d="M120 238 C122 150 174 104 230 108 C290 112 326 168 318 238Z" fill="#27231f"/>
+<circle cx="230" cy="166" r="52" fill="#e9c46a" opacity=".24"/>
+<path d="M68 238 h318 v62 H68Z" fill="#2a9d8f" opacity=".28"/>
+<path d="M164 230 C184 210 212 212 234 226 C260 242 286 238 310 218" fill="none" stroke="#fffaf0" stroke-width="10" stroke-linecap="round" opacity=".82"/>
+<g fill="#d7c7a4">
+<circle cx="154" cy="228" r="8"/><circle cx="178" cy="216" r="6"/><circle cx="292" cy="220" r="7"/><circle cx="318" cy="206" r="5"/>
+</g>
+</svg>

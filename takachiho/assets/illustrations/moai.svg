@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" role="img" aria-label="サンメッセ日南のモアイ像">
+<rect width="420" height="300" rx="28" fill="#ffe9c7"/>
+<circle cx="342" cy="60" r="36" fill="#f4a261"/>
+<path d="M0 214 C70 178 146 218 216 196 C282 176 340 184 420 168 V300 H0Z" fill="#e9c46a"/>
+<g transform="translate(38 86)">
+<rect x="0" y="42" width="76" height="138" rx="24" fill="#6f6251"/><circle cx="25" cy="88" r="6" fill="#222"/><path d="M24 122 h32" stroke="#222" stroke-width="7" stroke-linecap="round"/>
+<rect x="94" y="10" width="92" height="170" rx="28" fill="#81715b"/><circle cx="128" cy="68" r="7" fill="#222"/><circle cx="158" cy="68" r="7" fill="#222"/><path d="M124 102 h48" stroke="#222" stroke-width="8" stroke-linecap="round"/>
+<rect x="206" y="52" width="78" height="128" rx="24" fill="#6f6251"/><circle cx="235" cy="100" r="6" fill="#222"/><path d="M230 130 h36" stroke="#222" stroke-width="7" stroke-linecap="round"/>
+</g>
+</svg>
