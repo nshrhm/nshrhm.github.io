@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mojiko-shiori-v1';
+const CACHE_NAME = 'mojiko-shiori-v2';
 const APP_SHELL = [
   './', './index.html', './plans.html', './map.html', './restaurants.html', './story.html', './links.html', './offline.html',
   './assets/css/style.css', './assets/js/app.js', './assets/img/retro-wave.svg', './assets/img/map-illustration.svg', './assets/img/curry-pudding.svg',
