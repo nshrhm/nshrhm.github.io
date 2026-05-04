@@ -87,7 +87,7 @@
   }
 
   function tagClass(priority){
-    if(/必須|宿になし|酒飲み/.test(priority)) return 'orange';
+    if(/必須|宿になし|お酒/.test(priority)) return 'orange';
     if(/おすすめ|お土産|大分/.test(priority)) return 'gold';
     return '';
   }
