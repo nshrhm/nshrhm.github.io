@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="t d">
+<title id="t">由布岳と湯布院の朝</title><desc id="d">由布岳、田園、朝霧をモチーフにしたイラスト</desc>
+<defs>
+<linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b9d7d9"/><stop offset=".55" stop-color="#f3e6cd"/><stop offset="1" stop-color="#f7f1e8"/></linearGradient>
+<linearGradient id="m1" x1="0" x2="1"><stop stop-color="#2f5d57"/><stop offset="1" stop-color="#5f7f67"/></linearGradient>
+<linearGradient id="m2" x1="0" x2="1"><stop stop-color="#75936b"/><stop offset="1" stop-color="#32534f"/></linearGradient>
+<filter id="blur"><feGaussianBlur stdDeviation="12"/></filter>
+</defs>
+<rect width="960" height="560" fill="url(#sky)"/>
+<circle cx="780" cy="116" r="58" fill="#f7c979" opacity=".95"/>
+<path d="M0 385 C160 270 231 330 350 230 C462 136 541 208 650 120 C776 20 858 106 960 66 L960 560 L0 560Z" fill="url(#m2)" opacity=".94"/>
+<path d="M100 410 C190 310 255 342 354 248 C464 142 572 158 670 298 C746 408 850 321 960 398 L960 560 L100 560Z" fill="url(#m1)"/>
+<path d="M510 198 L556 154 L590 214 L560 200 L540 228Z" fill="#f7f1e8" opacity=".78"/>
+<path d="M0 470 C170 430 280 505 470 452 C640 402 726 445 960 410 L960 560 L0 560Z" fill="#8ba98f"/>
+<path d="M0 490 C180 468 246 520 410 493 C574 466 670 500 960 462 L960 560 L0 560Z" fill="#d6dbc8"/>
+<g opacity=".55" filter="url(#blur)"><ellipse cx="450" cy="392" rx="380" ry="50" fill="#fff"/><ellipse cx="220" cy="422" rx="210" ry="30" fill="#fff"/></g>
+<path d="M0 520 H960 V560 H0Z" fill="#dbc69d"/>
+<path d="M70 525 C150 505 240 505 320 525" stroke="#c2aa7a" stroke-width="8" fill="none" opacity=".6"/>
+<path d="M520 520 C620 495 710 502 830 526" stroke="#c2aa7a" stroke-width="8" fill="none" opacity=".6"/>
+</svg>

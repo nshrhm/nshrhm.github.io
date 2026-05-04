@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f5d57">
+  <meta name="description" content="2026年11月 湯布院AMBER Yufuin Villa1で三世代BBQを楽しむ旅のしおり。">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="湯布院BBQしおり">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="icon" href="assets/icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>湯布院三世代BBQ旅のしおり</title>
+</head>
+<body class="show-plan-a">
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="topbar no-print">
+    <div class="topbar-inner">
+      <img class="logo" src="assets/icons/icon-192.png" alt="湯布院BBQしおりアイコン">
+      <div class="brand">
+        <small>YUFUIN FAMILY BBQ</small>
+        <strong>湯布院三世代BBQ旅のしおり</strong>
+      </div>
+      <div class="top-actions">
+        <span class="status-pill"><i id="offline-dot" class="status-dot"></i><span id="offline-label">確認中</span></span>
+        <a class="btn ghost" href="links.html"><span>🔗</span><span class="text">リンク集</span></a>
+        <button class="icon-btn" type="button" data-print aria-label="印刷">🖨️</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav no-print" aria-label="主要メニュー">
+    <a href="#plan" class="active"><span>🗓️</span>計画</a>
+    <a href="#routes"><span>🗺️</span>地図</a>
+    <a href="#shopping"><span>🛒</span>買出し</a>
+    <a href="#tourism"><span>⛰️</span>観光</a>
+    <a href="#links"><span>🔗</span>リンク</a>
+  </nav>
+
+  <main id="main" class="app-shell">
+    <section class="hero" id="top">
+      <div class="hero-card">
+        <img class="hero-art" src="assets/illust/yufu-mountain.svg" alt="由布岳と湯布院の朝のイラスト">
+        <div class="hero-content">
+          <div>
+            <span class="kicker">2026.11.07 SAT — 11.08 SUN</span>
+            <h1>湯布院で、<br>三世代BBQ。</h1>
+            <p class="lead">八代・北九州から集まる8名の家族旅行。AMBER Yufuin【Villa1】で、温泉・BBQ・家族写真・朝の湯布院を楽しむための共有しおりです。</p>
+          </div>
+          <div class="hero-stats" aria-label="旅行概要">
+            <div class="stat"><small>宿泊</small><strong>1泊2日</strong></div>
+            <div class="stat"><small>人数</small><strong>8名</strong></div>
+            <div class="stat"><small>車</small><strong>3台</strong></div>
+            <div class="stat"><small>方針</small><strong>17時BBQ</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side-stack">
+        <div class="countdown-card" id="countdown">
+          <h2 style="font-size:1.25rem;margin:0">チェックインまで</h2>
+          <div class="countdown-grid" aria-live="polite">
+            <div><strong id="cd-days">--</strong><small>日</small></div>
+            <div><strong id="cd-hours">--</strong><small>時間</small></div>
+            <div><strong id="cd-mins">--</strong><small>分</small></div>
+            <div><strong id="cd-secs">--</strong><small>秒</small></div>
+          </div>
+          <p class="muted">チェックイン：2026年11月7日（土）15:00。遅れる場合は宿へ連絡。</p>
+          <div class="quick-actions">
+            <a class="btn primary" data-url="amberSearch" target="_blank" rel="noopener">宿を地図で開く</a>
+            <a class="btn gold" href="tel:0977759238">宿へ電話</a>
+            <button class="btn ghost" type="button" data-print>印刷する</button>
+            <a class="btn ghost" href="print.html">印刷専用</a>
+          </div>
+        </div>
+        <div class="note-card">
+          <h2 style="font-size:1.25rem;margin:0 0 .4rem">大事な合言葉</h2>
+          <p class="quote">「観光を詰め込まない。早めに着いて、温泉・BBQ・会話をゆっくり。」</p>
+          <div class="alert">11月上旬の湯布院は朝晩が冷えます。全員、上着・ひざ掛け・厚手靴下を準備。</div>
+        </div>
+        <div class="weather-card">
+          <h2 style="font-size:1.25rem;margin:0 0 .4rem">前日メモ</h2>
+          <div class="grid two">
+            <label class="field"><span>4桁暗証番号</span><input data-save-key="door-pin" placeholder="前日に届いたら入力"></label>
+            <label class="field"><span>チェックインコード</span><input data-save-key="checkin-code" placeholder="前日に届いたら入力"></label>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="plan">
+      <div class="section-head">
+        <div>
+          <h2>全体計画</h2>
+          <p>通常はプランA。雨・渋滞・体調優先時はプランBへ切替。</p>
+        </div>
+        <div class="section-actions">
+          <div class="plan-switch" role="group" aria-label="プラン切替">
+            <button type="button" data-plan-button="a" class="active">プランA</button>
+            <button type="button" data-plan-button="b">プランB</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <article class="card plan-content" data-plan="a">
+          <h3>プランA：通常・晴れ/曇り</h3>
+          <p class="muted">高速道路に大きなトラブルがなく、体調も問題ない場合。13:45にイオン湯布院店で三台合流し、不足分だけ買い出します。</p>
+          <div class="timeline" aria-label="プランAタイムライン">
+            <div class="time-item"><div class="time-dot">10:00</div><div class="time-body"><strong>八代2台 出発</strong><small>福正町／田中東町。途中2回休憩。</small></div></div>
+            <div class="time-item"><div class="time-dot">12:00</div><div class="time-body"><strong>小倉南区葉山町 出発</strong><small>70代母同乗。出発前に軽昼食。</small></div></div>
+            <div class="time-item"><div class="time-dot">13:45</div><div class="time-body"><strong>イオン湯布院店で合流</strong><small>持ち寄り量を確認し、不足分のみ購入。</small></div></div>
+            <div class="time-item"><div class="time-dot">15:00</div><div class="time-body"><strong>AMBER Yufuin チェックイン</strong><small>荷物、部屋割り、冷蔵庫、温泉導線を確認。</small></div></div>
+            <div class="time-item"><div class="time-dot">17:00</div><div class="time-body"><strong>BBQ開始</strong><small>暗く寒くなる前に開始。焼き係は30分交代。</small></div></div>
+            <div class="time-item"><div class="time-dot">20:30</div><div class="time-body"><strong>温泉・家族時間</strong><small>写真、近況報告、飲み直しはほどほどに。</small></div></div>
+          </div>
+        </article>
+
+        <article class="card plan-content" data-plan="b">
+          <h3>プランB：雨・渋滞・体調優先</h3>
+          <p class="muted">1台が30分以上遅れる、強い雨、寒さ、または高齢者の疲れが強い場合。買い出しを短縮し、宿での休憩を最優先します。</p>
+          <div class="timeline" aria-label="プランBタイムライン">
+            <div class="time-item"><div class="time-dot">09:30</div><div class="time-body"><strong>八代2台 早め出発</strong><small>休憩を増やせるよう余白を確保。</small></div></div>
+            <div class="time-item"><div class="time-dot">11:30</div><div class="time-body"><strong>小倉南区 早め出発</strong><small>別府湾SAなどでゆっくり休憩。</small></div></div>
+            <div class="time-item"><div class="time-dot">14:00</div><div class="time-body"><strong>買い出し短縮</strong><small>氷・水・朝食・不足肉だけ。買い物は若手と50代だけ。</small></div></div>
+            <div class="time-item"><div class="time-dot">15:30</div><div class="time-body"><strong>チェックイン優先</strong><small>遅れそうなら宿へ電話。高齢者は先に座る。</small></div></div>
+            <div class="time-item"><div class="time-dot">17:30</div><div class="time-body"><strong>短縮BBQ</strong><small>ホイル焼き・汁物・温かい飲み物を増やす。</small></div></div>
+            <div class="time-item"><div class="time-dot">20:00</div><div class="time-body"><strong>室内中心</strong><small>写真・温泉・会話。屋外滞在は無理しない。</small></div></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="grid three" style="margin-top:14px">
+        <article class="card">
+          <h3>参加家族</h3>
+          <dl class="data-list">
+            <div class="data-row"><dt>八代1号車</dt><dd>50代後半息子運転、80代母</dd></div>
+            <div class="data-row"><dt>八代2号車</dt><dd>50代娘運転、20代孫娘2名</dd></div>
+            <div class="data-row"><dt>北九州車</dt><dd>50代夫婦運転、70代母同乗</dd></div>
+            <div class="data-row"><dt>合計</dt><dd>8名。酒飲み4名。</dd></div>
+          </dl>
+        </article>
+        <article class="card">
+          <h3>宿泊情報</h3>
+          <dl class="data-list">
+            <div class="data-row"><dt>宿</dt><dd>AMBER Yufuin【Villa1】</dd></div>
+            <div class="data-row"><dt>住所</dt><dd>由布市湯布院町川南839-12</dd></div>
+            <div class="data-row"><dt>駐車</dt><dd>3台まで。今回ちょうど3台。</dd></div>
+            <div class="data-row"><dt>予約番号</dt><dd>家族内共有メモで確認</dd></div>
+          </dl>
+        </article>
+        <article class="card">
+          <h3>分岐判断</h3>
+          <ul class="subtle-list">
+            <li>高速の事故・規制がある：プランB</li>
+            <li>高齢者が疲れている：買い物隊だけ動く</li>
+            <li>強雨・寒さ：BBQ短縮、室内時間を増やす</li>
+            <li>全車順調：プランAで17:00 BBQ</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="routes">
+      <div class="section-head">
+        <div>
+          <h2>ルートとGoogleマップ</h2>
+          <p>三台それぞれの出発地から、イオン湯布院店で合流。出発前にNEXCOとGoogleマップで最終確認。</p>
+        </div>
+        <div class="section-actions">
+          <a class="btn ghost" data-url="nexco" target="_blank" rel="noopener">NEXCO確認</a>
+          <a class="btn ghost" data-url="aeonSearch" target="_blank" rel="noopener">合流地図</a>
+        </div>
+      </div>
+
+      <div class="grid three">
+        <article class="card route-card">
+          <div class="route-title"><div class="route-badge">八1</div><div><h3>八代市福正町</h3><p class="muted">50代後半息子＋80代母</p></div></div>
+          <p>10:00出発目安。休憩2回。母の乗降・トイレ・冷え対策を優先。</p>
+          <div class="route-mini">
+            <a data-url="fukumashoToAeon" target="_blank" rel="noopener">出発地→イオン</a>
+            <a data-url="kusuSa" target="_blank" rel="noopener">玖珠SA</a>
+            <a data-url="yamadaSa" target="_blank" rel="noopener">山田SA</a>
+          </div>
+        </article>
+        <article class="card route-card">
+          <div class="route-title"><div class="route-badge">八2</div><div><h3>八代市田中東町</h3><p class="muted">50代娘＋20代孫娘2名</p></div></div>
+          <p>10:00出発目安。買い出し実働と写真係の中心。合流後は不足分確認。</p>
+          <div class="route-mini">
+            <a data-url="tanakahigashiToAeon" target="_blank" rel="noopener">出発地→イオン</a>
+            <a data-url="kusuSa" target="_blank" rel="noopener">玖珠SA</a>
+            <a data-url="aeonToAmber" target="_blank" rel="noopener">イオン→宿</a>
+          </div>
+        </article>
+        <article class="card route-card">
+          <div class="route-title"><div class="route-badge">北</div><div><h3>小倉南区葉山町</h3><p class="muted">50代夫婦＋70代母</p></div></div>
+          <p>12:00出発目安。昼食は出発前に軽く。別府湾SA・由布岳PAで休憩候補。</p>
+          <div class="route-mini">
+            <a data-url="hayamaToAeon" target="_blank" rel="noopener">出発地→イオン</a>
+            <a data-url="beppuwanSa" target="_blank" rel="noopener">別府湾SA</a>
+            <a data-url="yufudakePa" target="_blank" rel="noopener">由布岳PA</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="map-grid" style="margin-top:14px">
+        <div class="map-list">
+          <button class="map-card" type="button" data-map-embed="amberEmbed" data-map-open="amberSearch"><span><strong>AMBER Yufuin</strong><small>宿泊先。チェックイン・駐車・BBQ。</small></span><span>🏡</span></button>
+          <button class="map-card" type="button" data-map-embed="aeonEmbed" data-map-open="aeonSearch"><span><strong>イオン湯布院店</strong><small>13:45集合。不足分買い出し。</small></span><span>🛒</span></button>
+          <button class="map-card" type="button" data-map-embed="kinrinEmbed" data-map-open="kinrinSearch"><span><strong>金鱗湖</strong><small>朝霧・散策。翌朝候補。</small></span><span>🌫️</span></button>
+          <button class="map-card" type="button" data-map-embed="sagiridaiEmbed" data-map-open="sagiridaiSearch"><span><strong>狭霧台</strong><small>車で景色を見る候補。</small></span><span>⛰️</span></button>
+          <div class="callout success"><strong>Googleマップ活用ルール</strong><br>当日朝は各車で「出発地→イオン湯布院店」を開き、13:45集合に間に合うか確認。遅れそうなら家族LINEに共有。</div>
+        </div>
+        <div class="map-frame-wrap">
+          <iframe id="map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Googleマップ"></iframe>
+        </div>
+      </div>
+      <div style="margin-top:12px" class="section-actions no-print"><a id="map-open-current" class="btn primary" target="_blank" rel="noopener">選択中の場所をGoogleマップで開く</a></div>
+    </section>
+
+    <section class="section" id="stay">
+      <div class="section-head">
+        <div>
+          <h2>宿での過ごし方</h2>
+          <p>温泉・BBQ・睡眠導線を先に整えると、年配の方が安心して楽しめます。</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>チェックイン</h3>
+          <ul class="subtle-list">
+            <li>直接宿へ。室内端末でセルフチェックイン。</li>
+            <li>到着前日に届く4桁暗証番号とチェックインコードを代表者が管理。</li>
+            <li>現地払いの場合もクレジットカード決済限定の案内。代表者カードを準備。</li>
+            <li>15:00予定。遅れる場合は宿へ連絡。</li>
+          </ul>
+          <div class="chips"><span class="chip">予約番号は非公開</span><span class="chip">代表者名は家族内共有</span></div>
+        </article>
+        <article class="card">
+          <h3>BBQと温泉</h3>
+          <ul class="subtle-list">
+            <li>BBQスペースはリビング横の屋根付きバルコニー。</li>
+            <li>器材は電気式コンロ、トング、食器・カトラリー類など。食材・調味料は自前。</li>
+            <li>酒を飲む前に高齢者の短め温泉を先に済ませる。</li>
+            <li>夜間の足元、段差、濡れた床に注意。</li>
+          </ul>
+          <div class="chips"><span class="chip warn">浴衣・パジャマなし</span><span class="chip warn">11月は防寒必須</span></div>
+        </article>
+      </div>
+      <div class="grid three" style="margin-top:14px">
+        <div class="illustration"><img src="assets/illust/onsen.svg" alt="温泉イラスト"></div>
+        <div class="illustration"><img src="assets/illust/bbq.svg" alt="BBQイラスト"></div>
+        <div class="illustration"><img src="assets/illust/family.svg" alt="家族イラスト"></div>
+      </div>
+    </section>
+
+    <section class="section" id="shopping">
+      <div class="section-head">
+        <div>
+          <h2>買い出しチェックリスト</h2>
+          <p>持ち寄りで楽しく、不足分は現地で補充。チェック状態はスマホ内に保存されます。</p>
+        </div>
+        <div class="section-actions"><a class="btn ghost" data-url="aeon" target="_blank" rel="noopener">イオン公式</a><a class="btn ghost" data-url="acoop" target="_blank" rel="noopener">Aコープ公式</a></div>
+      </div>
+      <div class="card">
+        <div class="shopping-toolbar">
+          <input id="shopping-search" class="search-input" type="search" placeholder="食材・担当・カテゴリで検索">
+          <div><div id="shopping-progress" class="progress" style="width:160px"><i></i></div><div id="shopping-progress-label" class="progress-label">0/0 完了</div></div>
+          <button id="shopping-reset" class="btn ghost small" type="button">リセット</button>
+        </div>
+        <div class="callout"><strong>量の目安</strong> 肉2.4〜2.7kg、魚介700g〜1kg、酒はビール16〜18本＋缶ハイボール等8本＋焼酎/日本酒など1本が基準。高齢者向けに汁物・ホイル焼き・柔らかい肉を入れる。</div>
+        <div id="shopping-list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section" id="roles">
+      <div class="section-head">
+        <div>
+          <h2>役割分担</h2>
+          <p>「誰か一人が頑張る」ではなく、30分ごとに交代する設計。</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>役割</th><th>担当候補</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td>総合代表</td><td>宿泊代表者または50代後半息子</td><td>暗証番号、チェックインコード、宿連絡、支払い管理。</td></tr>
+            <tr><td>八代隊列管理</td><td>50代後半息子・50代娘</td><td>休憩場所と出発時刻を合わせる。無理な隊列走行はしない。</td></tr>
+            <tr><td>北九州車管理</td><td>50代夫婦</td><td>70代母の休憩、魚介・飲料担当。</td></tr>
+            <tr><td>買い出し隊長</td><td>50代娘</td><td>イオンで持ち寄り量を確認し、不足分だけ購入。</td></tr>
+            <tr><td>実働・写真</td><td>20代孫娘2名</td><td>買い出し、写真、BGM、家族LINE共有。</td></tr>
+            <tr><td>焼き係</td><td>50代男性2名中心</td><td>30分交代。焼きっぱなしにしない。</td></tr>
+            <tr><td>高齢者サポート</td><td>50代女性2名中心</td><td>椅子、防寒、温泉、夜間移動、体調確認。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid two" style="margin-top:14px">
+        <article class="card editable-note">
+          <h3>家族LINE共有メモ</h3>
+          <textarea id="family-memo" class="memo" data-save-key="family-memo" placeholder="例：八代1号車は焼酎と果物、北九州車は明太子と魚介、八代2号車は牛肉とデザートを持参予定。"></textarea>
+          <div class="section-actions" style="margin-top:10px"><button id="copy-update" class="btn primary" type="button">LINE共有文をコピー</button></div>
+        </article>
+        <article class="card">
+          <h3>安全ルール</h3>
+          <ul class="subtle-list">
+            <li>生肉用トングと食べる箸は分ける。</li>
+            <li>運転手3名は、宿到着後に運転が完全に終わってから飲酒。</li>
+            <li>翌朝運転する人は夜の飲み終わりを早めに。</li>
+            <li>温泉前後は水分補給。飲酒後の長湯は避ける。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="tourism">
+      <div class="section-head">
+        <div>
+          <h2>観光・歴史・伝説</h2>
+          <p>翌朝は一か所だけ。晴れなら狭霧台、歩けそうなら金鱗湖、疲れていれば観光なし。</p>
+        </div>
+      </div>
+
+      <div class="photo-grid no-print" aria-label="湯布院の写真">
+        <figure class="photo-card wide"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Lake_Kinrin_in_Yufuin%2C_Oita_-_Aug_24%2C_2018_%281%29.jpg" alt="金鱗湖"><figcaption>金鱗湖 / HyunJae Park / Public Domain Mark</figcaption></figure>
+        <figure class="photo-card tall"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/b/bf/View_of_Mount_Yufudake_from_Yufuin_Station.jpg" alt="由布院駅方面から望む由布岳"><figcaption>由布岳 / Tekannan / CC BY-SA 4.0</figcaption></figure>
+        <figure class="photo-card"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Panorama_view_of_Yufuin.jpg" alt="狭霧台からの湯布院遠望"><figcaption>狭霧台からの遠望 / STA3816 / CC BY-SA 3.0</figcaption></figure>
+        <figure class="photo-card"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Mount_Yufudake_and_Yufuin_Showa_Museum.JPG" alt="湯布院の街並みと由布岳"><figcaption>湯布院の街並み / そらみみ / CC BY-SA 4.0</figcaption></figure>
+      </div>
+
+      <div class="grid two" style="margin-top:14px">
+        <article class="card story-card">
+          <div class="story-icon">🌫️</div>
+          <div><h3>金鱗湖の朝霧</h3><p>金鱗湖は由布院を代表するスポット。湖底からの温泉と清水の温度差により、秋から冬の冷え込んだ早朝には湖面から湯気・朝霧が立ちのぼることがあります。名前は、魚の鱗が夕日に金色に輝いたことに由来すると伝わります。</p><a class="btn ghost small" data-url="kinrin" target="_blank" rel="noopener">詳しく見る</a></div>
+        </article>
+        <article class="card story-card">
+          <div class="story-icon">⛰️</div>
+          <div><h3>狭霧台と由布院盆地</h3><p>狭霧台は由布岳のふもと、由布院盆地を見渡せる展望台。秋から冬にかけて、朝霧が盆地を包む様子のビュースポットとして知られます。歩くより車で景色を楽しみたい場合の第一候補です。</p><a class="btn ghost small" data-url="sagiridai" target="_blank" rel="noopener">詳しく見る</a></div>
+        </article>
+        <article class="card story-card">
+          <div class="story-icon">🐍</div>
+          <div><h3>盆地は湖だったという伝説</h3><p>由布院の朝霧は、まるで白い湖のように盆地を覆うことがあります。大分県の読み物でも、かつて由布院盆地は本当の湖だったという伝説が紹介されています。朝霧を見る時の話題にぴったりです。</p><a class="btn ghost small" data-url="oitaMorningMist" target="_blank" rel="noopener">読み物へ</a></div>
+        </article>
+        <article class="card story-card">
+          <div class="story-icon">⛩️</div>
+          <div><h3>宇奈岐日女神社「六所様」</h3><p>宇奈岐日女神社は通称「六所様」。由布院は古くは沼で、動物のうなぎを沢沼の精霊として祀ったのが古来の祭神ではないか、と公式旅ガイドで紹介されています。</p><a class="btn ghost small" data-url="unagihime" target="_blank" rel="noopener">詳しく見る</a></div>
+        </article>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>2日目の観光分岐</h3>
+        <div class="grid three">
+          <div class="callout success"><strong>A-1 晴れ・車で景色</strong><br>チェックアウト後、狭霧台へ。歩行負担が少なく、写真だけでも満足度が高い。</div>
+          <div class="callout"><strong>A-2 歩けそう</strong><br>金鱗湖へ。周囲の散策は短めにし、混雑時は無理に一周しない。</div>
+          <div class="callout danger"><strong>B 疲労・寒さ・雨</strong><br>観光なし。10:00チェックアウト後、SAや道の駅で休憩しながら帰路へ。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="links">
+      <div class="section-head">
+        <div>
+          <h2>リンク集・QR</h2>
+          <p>スマホではボタン、紙ではQRコード。年配の方にも渡しやすいページです。</p>
+        </div>
+        <div class="section-actions"><a class="btn primary" href="links.html">リンク集ページ</a><a class="btn ghost" href="print.html">印刷専用ページ</a></div>
+      </div>
+      <div class="qr-grid">
+        <div class="qr-card"><img src="assets/qrcode/qr-amber-map.png" alt="AMBER Yufuin地図QR"><strong>宿の地図</strong></div>
+        <div class="qr-card"><img src="assets/qrcode/qr-aeon-map.png" alt="イオン湯布院店地図QR"><strong>集合地図</strong></div>
+        <div class="qr-card"><img src="assets/qrcode/qr-nexco.png" alt="NEXCO交通情報QR"><strong>高速情報</strong></div>
+        <div class="qr-card"><img src="assets/qrcode/qr-yufuin-info.png" alt="YUFUINFO QR"><strong>観光公式</strong></div>
+        <div class="qr-card"><img src="assets/qrcode/qr-kinrin-map.png" alt="金鱗湖地図QR"><strong>金鱗湖</strong></div>
+      </div>
+      <div class="grid two" style="margin-top:14px">
+        <article class="card"><h3>前日チェック</h3><ul class="subtle-list"><li>暗証番号・チェックインコード受信</li><li>高速道路の規制・天気確認</li><li>各車の持ち寄りを家族LINEに投稿</li><li>クーラーボックス・保冷剤・薬・防寒具</li></ul></article>
+        <article class="card"><h3>当日チェック</h3><ul class="subtle-list"><li>ガソリン・ETCカード</li><li>携帯充電・モバイルバッテリー</li><li>80代・70代の休憩と防寒</li><li>13:45にイオン湯布院店で合流</li></ul></article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>このしおりは家族共有用です。公開版では予約番号・代表者名を伏せています。写真クレジットと情報源は<a href="links.html#sources">リンク集ページ</a>に掲載しています。</p>
+    </footer>
+  </main>
+
+  <div id="install-tip" class="install-tip no-print">
+    <div><strong>スマホに追加できます</strong><br><small>Webサーバー上で開くとPWAとしてホーム画面追加が使えます。</small></div>
+    <div class="section-actions"><button id="install-button" class="btn small" type="button">追加</button><button id="install-close" class="btn ghost small" type="button">閉じる</button></div>
+  </div>
+
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

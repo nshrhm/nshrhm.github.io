@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="t d">
+<title id="t">温泉イラスト</title><desc id="d">露天風呂の湯けむり</desc>
+<defs><linearGradient id="b" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#d6eeeb"/><stop offset="1" stop-color="#fff0d5"/></linearGradient></defs>
+<rect width="640" height="420" rx="34" fill="url(#b)"/>
+<circle cx="502" cy="94" r="50" fill="#f1bb72" opacity=".9"/>
+<path d="M0 260 C96 196 144 232 236 164 C342 86 428 178 520 126 C586 88 620 85 640 78 V420 H0Z" fill="#3c665f" opacity=".92"/>
+<path d="M66 306 C120 250 191 275 255 242 C330 202 384 244 450 222 C540 192 590 220 640 190 V420 H66Z" fill="#789b82"/>
+<ellipse cx="320" cy="303" rx="235" ry="72" fill="#f7f4e9" opacity=".95"/>
+<ellipse cx="320" cy="302" rx="202" ry="50" fill="#89c2bd" opacity=".82"/>
+<path d="M226 214 C184 170 246 150 206 105" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity=".9"/><path d="M330 212 C282 166 362 142 318 90" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity=".9"/><path d="M430 218 C390 174 455 154 414 112" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity=".9"/>
+<path d="M150 324 C220 345 285 340 350 323 C424 304 488 319 536 333" fill="none" stroke="#f7f4e9" stroke-width="7" opacity=".78"/>
+</svg>
