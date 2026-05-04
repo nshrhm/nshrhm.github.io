@@ -1,7 +1,7 @@
 {
-  "name": "湯布院三世代BBQ旅のしおり",
+  "name": "湯布院お泊りBBQ 旅のしおり",
   "short_name": "湯布院BBQ",
-  "description": "AMBER Yufuin Villa1での三世代BBQ旅行しおり",
+  "description": "AMBER Yufuin Villa1でのお泊りBBQ旅行しおり",
   "lang": "ja",
   "start_url": "./index.html",
   "scope": "./",
