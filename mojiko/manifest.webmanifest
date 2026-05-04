@@ -1,0 +1,26 @@
+{
+  "name": "門司港レトロ旅のしおり",
+  "short_name": "門司港しおり",
+  "description": "小倉南区葉山町発・門司港レトロ日帰りドライブ用PWAしおり",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf8f2",
+  "theme_color": "#0f4c5c",
+  "lang": "ja-JP",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
