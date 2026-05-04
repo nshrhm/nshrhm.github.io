@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#24362b">
+<meta name="description" content="小倉南区葉山町発、秋月ドライブ旅のしおり。スマートフォン向けPWA風Webページ。">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="assets/css/styles.css">
+<title>秋月ドライブ旅のしおり</title>
+</head>
+<body data-page="home">
+<a class="skip-link" href="#main">本文へスキップ</a>
+<div class="scrollbar" aria-hidden="true"><span id="scrollProgress"></span></div>
+<header class="topbar">
+  <a class="brand" href="#home" aria-label="秋月ドライブ旅のしおり ホーム">
+    <img src="assets/icons/icon-192.png" alt="" width="36" height="36">
+    <span>秋月しおり</span>
+  </a>
+  <button id="installBtn" class="ghost-button" hidden>アプリ風に追加</button>
+</header>
+
+<main id="main">
+  <section id="home" class="hero section-anchor">
+    <picture>
+      <img src="assets/images/hero-meganebashi.jpg" alt="秋月目鏡橋と野鳥川" class="hero-img">
+    </picture>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="eyebrow">小倉南区葉山町 → 秋月 / 8:00–16:00</p>
+      <h1>歴史と自然をゆっくり味わう<br>秋月ドライブ旅のしおり</h1>
+      <p class="lead">国道322号・八丁峠道路で秋月へ。車は秋月駐車場に置き、目鏡橋、杉の馬場、池田屋の蒸し雑煮、黒門・長屋門、古心寺を徒歩でめぐります。</p>
+      <div class="hero-actions">
+        <a class="primary-button" href="https://www.google.com/maps/dir/?api=1&origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&destination=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&waypoints=%E9%A6%99%E6%98%A5%E7%94%BA%7C%E7%94%B0%E5%B7%9D%E5%B8%82%7C%E5%98%89%E9%BA%BB%E5%B8%82&travelmode=driving" target="_blank" rel="noopener">Google Mapsで行き</a>
+        <a class="secondary-button" href="https://www.google.com/maps/dir/?api=1&origin=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&destination=%E5%8F%A4%E5%BF%83%E5%AF%BA%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88757&waypoints=%E7%A7%8B%E6%9C%88%E7%9B%AE%E9%8F%A1%E6%A9%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%7C%E7%A7%8B%E6%9C%88%E6%9D%89%E3%81%AE%E9%A6%AC%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5%7C%E8%95%8E%E9%BA%A6%E5%87%A6%20%E7%A7%8B%E6%9C%88%E6%B1%A0%E7%94%B0%E5%B1%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88574%7C%E7%A7%8B%E6%9C%88%E5%9F%8E%E6%9C%AC%E9%96%80%20%E9%BB%92%E9%96%80%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5%7C%E7%A7%8B%E6%9C%88%E5%9F%8E%E8%B7%A1%20%E9%95%B7%E5%B1%8B%E9%96%80%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5%7C%E5%9E%82%E8%A3%95%E7%A5%9E%E7%A4%BE%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&travelmode=walking" target="_blank" rel="noopener">徒歩ループ</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="quick-grid" aria-label="旅の要点">
+    <article class="quick-card">
+      <span class="quick-icon">🚗</span>
+      <h2>運転</h2>
+      <p>軽自動車向けに、秋月の細道へ入り込まず、秋月駐車場を起点にします。</p>
+    </article>
+    <article class="quick-card">
+      <span class="quick-icon">🍲</span>
+      <h2>昼食</h2>
+      <p>本命は池田屋の筑前朝倉蒸し雑煮。11:00入店を狙います。</p>
+    </article>
+    <article class="quick-card">
+      <span class="quick-icon">🏯</span>
+      <h2>優先</h2>
+      <p>名所旧跡、城下町、石橋、水路、神社仏閣を中心に構成。</p>
+    </article>
+    <article class="quick-card">
+      <span class="quick-icon">🌿</span>
+      <h2>分岐</h2>
+      <p>雨・暑さ・混雑・臨時休業時はプランBへ切り替え。</p>
+    </article>
+  </section>
+
+  <section id="plan" class="section section-anchor">
+    <div class="section-title">
+      <p class="eyebrow">Plan</p>
+      <h2>8:00–16:00 タイムライン</h2>
+      <p>各カードのチェックはスマホに保存されます。現地では「次に行く場所」と「地図」を押すだけで進めます。</p>
+    </div>
+
+    <div class="branch-card">
+      <img src="assets/images/route-illustration.svg" alt="国道322号ドライブのイラスト">
+      <div>
+        <h3>分岐の考え方</h3>
+        <p><strong>池田屋が営業中で待ちが短い場合はプランA。</strong> 火曜・臨時休業・長い行列・雨や猛暑の場合は、博物館や代替ランチを使うプランBに切り替えます。16:00帰着を守るため、14:25を帰路出発の基準時刻にします。</p>
+        <div class="chips"><span>火曜は要注意</span><span>14:25帰路</span><span>町中は徒歩</span></div>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="旅行プラン切り替え">
+      <button class="tab active" role="tab" aria-selected="true" aria-controls="planA" data-plan-tab="A">プランA 標準</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="planB" data-plan-tab="B">プランB 雨・混雑</button>
+    </div>
+
+    <div id="planA" class="plan-panel active" data-plan-panel="A" role="tabpanel">
+      <ol class="timeline">
+        <li class="check-card"><input id="a1" type="checkbox"><label for="a1"><time>8:00</time><span><strong>葉山町を出発</strong><small>国道322号を南下。香春・田川・嘉麻方面へ。</small></span></label><a href="https://www.google.com/maps/dir/?api=1&origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&destination=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&waypoints=%E9%A6%99%E6%98%A5%E7%94%BA%7C%E7%94%B0%E5%B7%9D%E5%B8%82%7C%E5%98%89%E9%BA%BB%E5%B8%82&travelmode=driving" target="_blank" rel="noopener">行きルート</a></li>
+        <li class="check-card"><input id="a2" type="checkbox"><label for="a2"><time>9:20–9:35</time><span><strong>秋月駐車場</strong><small>普通車400円目安。ここから車を動かさず徒歩で回る。</small></span></label><a href="https://www.google.com/maps/search/?api=1&query=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5" target="_blank" rel="noopener">地図</a></li>
+        <li class="check-card"><input id="a3" type="checkbox"><label for="a3"><time>9:35–10:05</time><span><strong>秋月の目鏡橋</strong><small>1810年完成の石造アーチ橋。城下町の入口として写真向き。</small></span></label><a href="https://www.google.com/maps/search/?api=1&query=%E7%A7%8B%E6%9C%88%E7%9B%AE%E9%8F%A1%E6%A9%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88" target="_blank" rel="noopener">地図</a></li>
+        <li class="check-card"><input id="a4" type="checkbox"><label for="a4"><time>10:05–10:45</time><span><strong>杉の馬場・城下町</strong><small>水路、白壁、石垣、古い町割りをゆっくり歩く。</small></span></label><a href="https://www.google.com/maps/search/?api=1&query=%E7%A7%8B%E6%9C%88%E6%9D%89%E3%81%AE%E9%A6%AC%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5" target="_blank" rel="noopener">地図</a></li>
+        <li class="check-card highlight"><input id="a5" type="checkbox"><label for="a5"><time>11:00–12:05</time><span><strong>昼食：秋月池田屋</strong><small>蒸し雑煮。駐車場なしのため徒歩入店。火曜定休。</small></span></label><a href="https://www.google.com/maps/search/?api=1&query=%E8%95%8E%E9%BA%A6%E5%87%A6%20%E7%A7%8B%E6%9C%88%E6%B1%A0%E7%94%B0%E5%B1%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88574" target="_blank" rel="noopener">地図</a></li>
+        <li class="check-card"><input id="a6" type="checkbox"><label for="a6"><time>12:05–13:25</time><span><strong>秋月城跡・黒門・長屋門・垂裕神社</strong><small>秋月の歴史の核。黒門と石段は紅葉期も名所。</small></span></label><a href="https://www.google.com/maps/search/?api=1&query=%E7%A7%8B%E6%9C%88%E5%9F%8E%E6%9C%AC%E9%96%80%20%E9%BB%92%E9%96%80%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5" target="_blank" rel="noopener">地図</a></li>
+        <li class="check-card"><input id="a7" type="checkbox"><label for="a7"><time>13:25–14:05</time><span><strong>古心寺</strong><small>黒田家ゆかりの静かな寺。人混みを避けた締めに最適。</small></span></label><a href="https://www.google.com/maps/search/?api=1&query=%E5%8F%A4%E5%BF%83%E5%AF%BA%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88757" target="_blank" rel="noopener">地図</a></li>
+        <li class="check-card"><input id="a8" type="checkbox"><label for="a8"><time>14:05–14:25</time><span><strong>駐車場へ戻る</strong><small>トイレ、飲み物、土産を短時間で。遅くとも14:30前に発。</small></span></label><a href="https://www.google.com/maps/dir/?api=1&origin=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&destination=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&waypoints=%E5%98%89%E9%BA%BB%E5%B8%82%7C%E7%94%B0%E5%B7%9D%E5%B8%82%7C%E9%A6%99%E6%98%A5%E7%94%BA&travelmode=driving" target="_blank" rel="noopener">帰りルート</a></li>
+        <li class="check-card"><input id="a9" type="checkbox"><label for="a9"><time>16:00</time><span><strong>葉山町へ帰着</strong><small>渋滞時は帰路出発を前倒し。</small></span></label></li>
+      </ol>
+    </div>
+
+    <div id="planB" class="plan-panel" data-plan-panel="B" role="tabpanel" hidden>
+      <ol class="timeline alt">
+        <li class="check-card"><input id="b1" type="checkbox"><label for="b1"><time>8:00</time><span><strong>出発は同じ</strong><small>混雑・雨ほど、8:00厳守で余裕を作る。</small></span></label><a href="https://www.google.com/maps/dir/?api=1&origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&destination=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&waypoints=%E9%A6%99%E6%98%A5%E7%94%BA%7C%E7%94%B0%E5%B7%9D%E5%B8%82%7C%E5%98%89%E9%BA%BB%E5%B8%82&travelmode=driving" target="_blank" rel="noopener">行きルート</a></li>
+        <li class="check-card"><input id="b2" type="checkbox"><label for="b2"><time>9:25–9:55</time><span><strong>目鏡橋だけ先に短く見る</strong><small>雨・猛暑なら写真だけ撮り、屋内へ。</small></span></label><a href="https://www.google.com/maps/search/?api=1&query=%E7%A7%8B%E6%9C%88%E7%9B%AE%E9%8F%A1%E6%A9%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88" target="_blank" rel="noopener">地図</a></li>
+        <li class="check-card"><input id="b3" type="checkbox"><label for="b3"><time>10:00–10:50</time><span><strong>朝倉市秋月博物館</strong><small>雨天・暑い日用。秋月藩の理解を先に入れる。</small></span></label><a href="https://www.google.com/maps/search/?api=1&query=%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E5%8D%9A%E7%89%A9%E9%A4%A8%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5532" target="_blank" rel="noopener">地図</a></li>
+        <li class="check-card highlight"><input id="b4" type="checkbox"><label for="b4"><time>11:00–12:05</time><span><strong>昼食分岐</strong><small>池田屋が無理なら黒門茶屋、いろり蔵、ろまんの道へ。</small></span></label><a href="#food">代替ランチ</a></li>
+        <li class="check-card"><input id="b5" type="checkbox"><label for="b5"><time>12:15–13:15</time><span><strong>黒門・長屋門だけ確実に見る</strong><small>雨でも短時間で秋月らしさを回収。</small></span></label><a href="https://www.google.com/maps/dir/?api=1&origin=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&destination=%E7%A7%8B%E6%9C%88%E5%9F%8E%E6%9C%AC%E9%96%80%20%E9%BB%92%E9%96%80%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&waypoints=%E7%A7%8B%E6%9C%88%E7%9B%AE%E9%8F%A1%E6%A9%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%7C%E8%95%8E%E9%BA%A6%E5%87%A6%20%E7%A7%8B%E6%9C%88%E6%B1%A0%E7%94%B0%E5%B1%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88574&travelmode=walking" target="_blank" rel="noopener">徒歩短縮</a></li>
+        <li class="check-card"><input id="b6" type="checkbox"><label for="b6"><time>13:20–14:05</time><span><strong>軽い甘味・土産</strong><small>月の峠、黒門茶屋、ろまんの道から体調と天候で選ぶ。</small></span></label><a href="https://www.google.com/maps/search/?api=1&query=%E6%9C%88%E3%81%AE%E5%B3%A0%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88380" target="_blank" rel="noopener">月の峠</a></li>
+        <li class="check-card"><input id="b7" type="checkbox"><label for="b7"><time>14:15–14:25</time><span><strong>帰路へ</strong><small>古心寺は次回へ。16:00帰着を優先。</small></span></label><a href="https://www.google.com/maps/dir/?api=1&origin=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&destination=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&waypoints=%E5%98%89%E9%BA%BB%E5%B8%82%7C%E7%94%B0%E5%B7%9D%E5%B8%82%7C%E9%A6%99%E6%98%A5%E7%94%BA&travelmode=driving" target="_blank" rel="noopener">帰りルート</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="maps" class="section section-anchor">
+    <div class="section-title">
+      <p class="eyebrow">Google Maps</p>
+      <h2>地図とルート</h2>
+      <p>スマホではGoogle Mapsを開き、出発地を「現在地」に差し替えると精度が上がります。</p>
+    </div>
+    <div class="map-frame">
+      <iframe title="秋月駐車場周辺のGoogleマップ" src="https://www.google.com/maps?q=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="map-grid">
+      <a class="map-card" href="https://www.google.com/maps/dir/?api=1&origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&destination=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&waypoints=%E9%A6%99%E6%98%A5%E7%94%BA%7C%E7%94%B0%E5%B7%9D%E5%B8%82%7C%E5%98%89%E9%BA%BB%E5%B8%82&travelmode=driving" target="_blank" rel="noopener"><strong>行き：葉山町 → 秋月駐車場</strong><span>R322 / 香春・田川・嘉麻経由</span></a>
+      <a class="map-card" href="https://www.google.com/maps/dir/?api=1&origin=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&destination=%E5%8F%A4%E5%BF%83%E5%AF%BA%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88757&waypoints=%E7%A7%8B%E6%9C%88%E7%9B%AE%E9%8F%A1%E6%A9%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%7C%E7%A7%8B%E6%9C%88%E6%9D%89%E3%81%AE%E9%A6%AC%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5%7C%E8%95%8E%E9%BA%A6%E5%87%A6%20%E7%A7%8B%E6%9C%88%E6%B1%A0%E7%94%B0%E5%B1%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88574%7C%E7%A7%8B%E6%9C%88%E5%9F%8E%E6%9C%AC%E9%96%80%20%E9%BB%92%E9%96%80%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5%7C%E7%A7%8B%E6%9C%88%E5%9F%8E%E8%B7%A1%20%E9%95%B7%E5%B1%8B%E9%96%80%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5%7C%E5%9E%82%E8%A3%95%E7%A5%9E%E7%A4%BE%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&travelmode=walking" target="_blank" rel="noopener"><strong>徒歩一筆書きループ</strong><span>駐車場→目鏡橋→池田屋→黒門→古心寺</span></a>
+      <a class="map-card" href="https://www.google.com/maps/dir/?api=1&origin=%E7%A7%8B%E6%9C%88%E9%A7%90%E8%BB%8A%E5%A0%B4%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5&destination=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&waypoints=%E5%98%89%E9%BA%BB%E5%B8%82%7C%E7%94%B0%E5%B7%9D%E5%B8%82%7C%E9%A6%99%E6%98%A5%E7%94%BA&travelmode=driving" target="_blank" rel="noopener"><strong>帰り：秋月駐車場 → 葉山町</strong><span>16:00帰着優先。14:25出発目安</span></a>
+      <a class="map-card" href="https://www.qsr.mlit.go.jp/fukkoku/doro_p/doro_p01/hachoutouge/index.html" target="_blank" rel="noopener"><strong>八丁峠道路の情報</strong><span>国道322号のトンネル道路。事前確認用</span></a>
+    </div>
+
+    <details class="note" open>
+      <summary>軽自動車・秋月市街地の運転メモ</summary>
+      <p>Google Mapsは細い道へ誘導することがあります。秋月では店舗横へ寄せず、秋月駐車場を拠点に徒歩で回る方針にしてください。杉の馬場通りは歩行者専用ではないため、歩行中も車に注意します。</p>
+    </details>
+  </section>
+
+  <section id="food" class="section section-anchor">
+    <div class="section-title">
+      <p class="eyebrow">Lunch & Cafe</p>
+      <h2>食事候補</h2>
+      <p>本命は池田屋。混雑・休業時にすぐ切り替えられるよう、城下町内と周辺の候補を用意しました。</p>
+    </div>
+    <div class="food-grid">
+      <article class="food-card main-food">
+        <img src="assets/images/mushi-zouni.svg" alt="蒸し雑煮のイラスト">
+        <div><span class="badge">本命</span><h3>蕎麦処 秋月池田屋</h3><p>筑前朝倉蒸し雑煮。営業時間11:00–15:00、火曜定休、駐車場なし。11:00入店が最優先。</p><div class="card-actions"><a href="https://www.google.com/maps/search/?api=1&query=%E8%95%8E%E9%BA%A6%E5%87%A6%20%E7%A7%8B%E6%9C%88%E6%B1%A0%E7%94%B0%E5%B1%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88574" target="_blank" rel="noopener">地図</a><a href="tel:08052707555">電話</a><a href="https://amagiasakura.net/gourmet_post/%E8%95%8E%E9%BA%A6%E5%87%A6-%E7%A7%8B%E6%9C%88%E6%B1%A0%E7%94%B0%E5%B1%8B/" target="_blank" rel="noopener">観光協会</a></div></div>
+      </article>
+      <article class="food-card"><span class="badge">代替A</span><h3>黒門茶屋</h3><p>古民家茶屋。蒸し雑煮、川茸料理、葛餅など。黒門周辺の散策と相性がよい候補。</p><div class="card-actions"><a href="https://www.google.com/maps/search/?api=1&query=%E9%BB%92%E9%96%80%E8%8C%B6%E5%B1%8B%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5684-2" target="_blank" rel="noopener">地図</a><a href="tel:0946250492">電話</a><a href="https://kuromonchaya.com/" target="_blank" rel="noopener">公式</a></div></article>
+      <article class="food-card"><span class="badge">代替B</span><h3>梟の響キ 秋月いろり蔵</h3><p>地元食材・鶏料理系。しっかり昼食を取りたい時の候補。水曜定休目安。</p><div class="card-actions"><a href="https://www.google.com/maps/search/?api=1&query=%E6%A2%9F%E3%81%AE%E9%9F%BF%E3%82%AD%20%E7%A7%8B%E6%9C%88%20%E3%81%84%E3%82%8D%E3%82%8A%E8%94%B5%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88679-6" target="_blank" rel="noopener">地図</a><a href="tel:0946250020">電話</a><a href="https://www.crossroadfukuoka.jp/cycle/14394" target="_blank" rel="noopener">情報</a></div></article>
+      <article class="food-card"><span class="badge">軽食</span><h3>ろまんの道</h3><p>庭園喫茶とアジア民芸。ベトナムコーヒーや軽食、骨董散策を組み合わせたい時に。</p><div class="card-actions"><a href="https://www.google.com/maps/search/?api=1&query=%E3%82%8D%E3%81%BE%E3%82%93%E3%81%AE%E9%81%93%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88283" target="_blank" rel="noopener">地図</a><a href="tel:0946251160">電話</a><a href="https://www.akizukiromannomichi.com/" target="_blank" rel="noopener">公式</a></div></article>
+      <article class="food-card"><span class="badge">土産</span><h3>天然酵母パン 月の峠</h3><p>秋月ドライブの定番寄り道。カレーパンなど。売り切れや営業時間に注意。</p><div class="card-actions"><a href="https://www.google.com/maps/search/?api=1&query=%E6%9C%88%E3%81%AE%E5%B3%A0%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88380" target="_blank" rel="noopener">地図</a><a href="tel:0946251115">電話</a><a href="https://www.tsukino-toge.com/" target="_blank" rel="noopener">公式</a></div></article>
+      <article class="food-card"><span class="badge">自然</span><h3>だんごあん</h3><p>渓流沿いの季節感ある立ち寄り候補。悪天候・冬期営業に注意して確認。</p><div class="card-actions"><a href="https://www.google.com/maps/search/?api=1&query=%E3%81%A0%E3%82%93%E3%81%94%E3%81%82%E3%82%93%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E6%9C%9D%E5%80%89%E5%B8%82%E7%A7%8B%E6%9C%88%E9%87%8E%E9%B3%A5196-2" target="_blank" rel="noopener">地図</a><a href="tel:0946250506">電話</a><a href="https://www.crossroadfukuoka.jp/spot/10327" target="_blank" rel="noopener">情報</a></div></article>
+    </div>
+  </section>
+
+  <section id="history" class="section section-anchor">
+    <div class="section-title">
+      <p class="eyebrow">History & Nature</p>
+      <h2>見どころ・歴史・伝承</h2>
+      <p>現地で読むために、短く要点化しています。気になった項目は「詳しく」を開いてください。</p>
+    </div>
+    <div class="story-grid">
+      <article class="story-card large"><img src="assets/images/photo-nagayamon.jpg" alt="秋月城跡の長屋門"><div><h3>秋月城下町</h3><p>古処山の麓、三方を山に囲まれた守りやすい盆地。中世は秋月氏、近世は黒田氏の城下町として発展し、現在の町割りは黒田氏の時代に形づくられました。</p><a href="https://www.city.asakura.lg.jp/site/kanko/1139.html" target="_blank" rel="noopener">朝倉市の観光マップ</a></div></article>
+      <article class="story-card"><img src="assets/images/hero-meganebashi.jpg" alt="秋月目鏡橋"><div><h3>目鏡橋の物語</h3><p>文化7年（1810）完成。長崎警備で石橋の堅牢さを見た秋月藩が、財政難のなか木橋に代わる橋として築いた石造アーチ橋です。</p><a href="https://www.city.asakura.lg.jp/soshiki/33/2886.html" target="_blank" rel="noopener">詳しく</a></div></article>
+      <article class="story-card"><img src="assets/images/photo-kuro-mon.jpg" alt="秋月城本門の黒門"><div><h3>黒門と伝承</h3><p>黒門はもとは秋月城の大手門。明治期に垂裕神社参道へ移築されました。中世・古処山城の搦手門だったという伝承も残ります。</p><a href="https://amagiasakura.net/sightseeing_post/akizuki_kuromon_nagayamon/" target="_blank" rel="noopener">詳しく</a></div></article>
+      <article class="story-card"><img src="assets/images/photo-notori-river.jpg" alt="野鳥川沿いの紅葉"><div><h3>野鳥川と水路</h3><p>城下町の道路網・水路網、武家屋敷、町家、田園景観が自然と調和するのが秋月の魅力。歩く速度でこそ見えてきます。</p><a href="https://www.city.asakura.lg.jp/site/kanko/1139.html" target="_blank" rel="noopener">町並み情報</a></div></article>
+      <article class="story-card"><img src="assets/images/history-scroll.svg" alt="歴史巻物のイラスト"><div><h3>秋月種実と恵利暢堯</h3><p>豊臣秀吉の九州征伐時、秋月種実は徹底抗戦を決断。和睦を進言した重臣・恵利暢堯の悲話が、殉節碑として伝わります。</p><a href="https://www.city.asakura.lg.jp/site/kanko/1139.html" target="_blank" rel="noopener">関連解説</a></div></article>
+    </div>
+
+    <div class="photo-strip" aria-label="秋月フォトギャラリー">
+      <figure><img src="assets/images/photo-sakura.jpg" alt="桜と長屋門"><figcaption>春：長屋門と桜</figcaption></figure>
+      <figure><img src="assets/images/photo-notori-river.jpg" alt="秋の野鳥川"><figcaption>秋：野鳥川の紅葉</figcaption></figure>
+      <figure><img src="assets/images/photo-kuro-mon.jpg" alt="黒門"><figcaption>黒門：垂裕神社参道</figcaption></figure>
+      <figure><img src="assets/images/photo-nagayamon.jpg" alt="長屋門"><figcaption>長屋門：原位置に残る門</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="prep" class="section section-anchor">
+    <div class="section-title">
+      <p class="eyebrow">Checklist</p>
+      <h2>出発前チェック</h2>
+    </div>
+    <div class="prep-grid">
+      <label class="mini-check"><input type="checkbox" data-persist="prep-call">池田屋の営業・臨時休業を確認</label>
+      <label class="mini-check"><input type="checkbox" data-persist="prep-weather">朝倉市の天気・警報を確認</label>
+      <label class="mini-check"><input type="checkbox" data-persist="prep-road">Google MapsでR322の渋滞を確認</label>
+      <label class="mini-check"><input type="checkbox" data-persist="prep-cash">駐車場・小店用の現金を準備</label>
+      <label class="mini-check"><input type="checkbox" data-persist="prep-shoes">歩きやすい靴・雨具・飲み物</label>
+      <label class="mini-check"><input type="checkbox" data-persist="prep-battery">スマホ充電・モバイルバッテリー</label>
+    </div>
+  </section>
+
+  <section class="section sources">
+    <h2>写真クレジット</h2>
+    <p>写真はWikimedia Commons掲載の画像を、旅行しおり用にリサイズ・一部トリミングして使用しています。詳細はZIP内の <code>LICENSES.md</code> を参照してください。</p>
+  </section>
+</main>
+
+<nav class="bottom-nav" aria-label="主要ナビゲーション">
+  <a href="index.html#home" data-nav="home"><span>旅</span></a>
+  <a href="index.html#plan" data-nav="plan"><span>計画</span></a>
+  <a href="index.html#maps" data-nav="maps"><span>地図</span></a>
+  <a href="index.html#food" data-nav="food"><span>食</span></a>
+  <a href="links.html" data-nav="links"><span>リンク</span></a>
+</nav>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

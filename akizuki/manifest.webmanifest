@@ -1,0 +1,25 @@
+{
+  "name": "秋月ドライブ旅のしおり",
+  "short_name": "秋月しおり",
+  "description": "小倉南区葉山町発、秋月ドライブ旅のスマートフォン向けPWA風しおり。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f2e8",
+  "theme_color": "#24362b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
