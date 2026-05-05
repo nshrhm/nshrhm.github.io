@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Googleマップ活用｜巌流島×門司港レトロ旅のしおり｜2026年5月9日</title>
+<meta name="description" content="小倉南区葉山町発・門司港レトロと巌流島をめぐる日帰りドライブのスマホ用PWAしおり">
+<meta name="theme-color" content="#0f4c5c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="巌流島しおり">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head><body>
+<a class="skip" href="#main">本文へ移動</a>
+<div class="progress" aria-hidden="true"></div>
+<header class="app-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="巌流島と門司港しおり ホームへ">
+      <img src="assets/icons/icon-192.png" alt="" width="38" height="38"><span>巌流島しおり<small>May 9, 2026</small></span>
+    </a>
+    <div class="header-actions">
+      <button class="pill install-btn" type="button">ホーム画面に追加</button>
+      <a class="pill" href="https://www.google.com/maps/dir/?api=1&origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&destination=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4&travelmode=driving" target="_blank" rel="noopener">出発ルート</a>
+    </div>
+  </div>
+</header>
+<div class="offline-banner">オフラインです。地図・外部リンク・写真の一部はオンライン接続時に表示されます。</div>
+<nav class="bottom-nav" aria-label="主要メニュー"><a class="" href="index.html"><span class="nav-ico">🏠</span><span>しおり</span></a><a class="" href="plans.html"><span class="nav-ico">🗓️</span><span>プラン</span></a><a class="active" href="map.html"><span class="nav-ico">🗺️</span><span>地図</span></a><a class="" href="restaurants.html"><span class="nav-ico">🍛</span><span>グルメ</span></a><a class="" href="links.html"><span class="nav-ico">🔗</span><span>リンク</span></a></nav>
+
+<main id="main" class="container stack">
+  <section class="hero hero-mini" style="--hero:url('https://commons.wikimedia.org/wiki/Special:FilePath/Mojiko_station.jpg?width=1400')">
+    <div class="hero-content"><span class="eyebrow">🗺️ Google Maps Ready</span><h1>地図とルート</h1><p>車、徒歩、船乗り場、巌流島、帰路をスマホですぐ開けるようにまとめています。</p></div>
+  </section>
+
+  <section class="card pad reveal">
+    <h2>現在地確認用マップ</h2>
+    <iframe class="map-embed" src="https://www.google.com/maps?q=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%20%E9%96%A2%E9%96%80%E6%B1%BD%E8%88%B9%20%E9%96%80%E5%8F%B8%E6%B8%AF%E6%A1%9F%E6%A9%8B%20%E3%83%96%E3%83%AB%E3%83%BC%E3%82%A6%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%82%E3%81%98&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="門司港レトロ周辺地図"></iframe>
+    <div class="map-buttons" style="margin-top:12px">
+      <a class="btn dark" href="https://www.google.com/maps/search/?api=1&query=%E9%96%A2%E9%96%80%E6%B1%BD%E8%88%B9%20%E9%96%80%E5%8F%B8%E6%B8%AF%E6%A1%9F%E6%A9%8B" target="_blank" rel="noopener">関門汽船 門司港桟橋</a>
+      <a class="btn outline" href="https://www.google.com/maps/search/?api=1&query=%E5%B7%8C%E6%B5%81%E5%B3%B6%20%E5%B1%B1%E5%8F%A3%E7%9C%8C%E4%B8%8B%E9%96%A2%E5%B8%82" target="_blank" rel="noopener">巌流島</a>
+      <a class="btn outline" href="https://www.google.com/maps/search/?api=1&query=%E3%83%97%E3%83%AA%E3%83%B3%E3%82%BB%E3%82%B9%E3%83%94%E3%83%94%20%E9%96%80%E5%8F%B8%E6%B8%AF" target="_blank" rel="noopener">プリンセスピピ</a>
+      <a class="btn outline" href="https://www.google.com/maps/search/?api=1&query=%E3%83%9F%E3%83%AB%E3%82%AF%E3%83%9B%E3%83%BC%E3%83%AB%E9%96%80%E5%8F%B8%E6%B8%AF" target="_blank" rel="noopener">ミルクホール</a>
+    </div>
+  </section>
+
+  <section class="grid">
+    <article class="card pad span-8 reveal"><h2>ルートボタン</h2><div class="stack"><article class="route-card reveal"><div class="num">1</div><div><h3>葉山町 → 門司港レトロ駐車場</h3><p>8:00出発。9:20の船に間に合うよう、まず駐車場へ直行。</p><div class="actions"><a class="btn dark small" href="https://www.google.com/maps/dir/?api=1&origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&destination=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4&travelmode=driving" target="_blank" rel="noopener">出発ルート</a><a class="btn outline small" href="https://www.google.com/maps/search/?api=1&query=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4" target="_blank" rel="noopener">駐車場検索</a></div></div></article><article class="route-card reveal"><div class="num">2</div><div><h3>駐車場 → 関門汽船 門司港桟橋</h3><p>駐車後は徒歩で桟橋へ。門司港駅周辺にあるため、地図で現在地からの徒歩を確認。</p><div class="actions"><a class="btn dark small" href="https://www.google.com/maps/search/?api=1&query=%E9%96%A2%E9%96%80%E6%B1%BD%E8%88%B9%20%E9%96%80%E5%8F%B8%E6%B8%AF%E6%A1%9F%E6%A9%8B" target="_blank" rel="noopener">桟橋</a><a class="btn outline small" href="https://www.google.com/maps/dir/?api=1&origin=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4&destination=%E9%96%A2%E9%96%80%E6%B1%BD%E8%88%B9%20%E9%96%80%E5%8F%B8%E6%B8%AF%E6%A1%9F%E6%A9%8B&travelmode=walking" target="_blank" rel="noopener">徒歩検索</a></div></div></article><article class="route-card reveal"><div class="num">3</div><div><h3>門司港 ⇄ 巌流島</h3><p>Googleマップでは正確な船便が出ないことがあります。地図は位置確認、時刻は関門汽船公式で確認。</p><div class="actions"><a class="btn dark small" href="https://www.google.com/maps/search/?api=1&query=%E5%B7%8C%E6%B5%81%E5%B3%B6%20%E5%B1%B1%E5%8F%A3%E7%9C%8C%E4%B8%8B%E9%96%A2%E5%B8%82" target="_blank" rel="noopener">巌流島</a><a class="btn outline small" href="https://www.kanmon-kisen.co.jp/route/ganryujima.html" target="_blank" rel="noopener">公式ダイヤ</a></div></div></article><article class="route-card reveal"><div class="num">4</div><div><h3>Plan A 徒歩ルート</h3><p>桟橋、跳ね橋、プリンセスピピ、ミルクホール、レトロ建築、海峡プラザを一筆書きで確認。</p><div class="actions"><a class="btn dark small" href="https://www.google.com/maps/dir/?api=1&origin=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4&destination=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4&travelmode=walking&waypoints=%E9%96%A2%E9%96%80%E6%B1%BD%E8%88%B9%20%E9%96%80%E5%8F%B8%E6%B8%AF%E6%A1%9F%E6%A9%8B%7C%E3%83%96%E3%83%AB%E3%83%BC%E3%82%A6%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%82%E3%81%98%7C%E3%83%97%E3%83%AA%E3%83%B3%E3%82%BB%E3%82%B9%E3%83%94%E3%83%94%20%E9%96%80%E5%8F%B8%E6%B8%AF%7C%E3%83%9F%E3%83%AB%E3%82%AF%E3%83%9B%E3%83%BC%E3%83%AB%E9%96%80%E5%8F%B8%E6%B8%AF%7CJR%E9%96%80%E5%8F%B8%E6%B8%AF%E9%A7%85%7C%E6%97%A7%E5%A4%A7%E9%98%AA%E5%95%86%E8%88%B9%7C%E6%97%A7%E9%96%80%E5%8F%B8%E4%B8%89%E4%BA%95%E5%80%B6%E6%A5%BD%E9%83%A8%7C%E6%97%A7%E9%96%80%E5%8F%B8%E7%A8%8E%E9%96%A2%7C%E6%B5%B7%E5%B3%A1%E3%83%97%E3%83%A9%E3%82%B6" target="_blank" rel="noopener">Plan A徒歩</a></div></div></article><article class="route-card reveal"><div class="num">5</div><div><h3>Plan B 徒歩ルート</h3><p>島を早めに戻り、門司港駅・旧大阪商船→プリンセスピピ→ミルクホール→13:00橋へ。</p><div class="actions"><a class="btn dark small" href="https://www.google.com/maps/dir/?api=1&origin=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4&destination=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4&travelmode=walking&waypoints=%E9%96%A2%E9%96%80%E6%B1%BD%E8%88%B9%20%E9%96%80%E5%8F%B8%E6%B8%AF%E6%A1%9F%E6%A9%8B%7CJR%E9%96%80%E5%8F%B8%E6%B8%AF%E9%A7%85%7C%E6%97%A7%E5%A4%A7%E9%98%AA%E5%95%86%E8%88%B9%7C%E3%83%97%E3%83%AA%E3%83%B3%E3%82%BB%E3%82%B9%E3%83%94%E3%83%94%20%E9%96%80%E5%8F%B8%E6%B8%AF%7C%E3%83%9F%E3%83%AB%E3%82%AF%E3%83%9B%E3%83%BC%E3%83%AB%E9%96%80%E5%8F%B8%E6%B8%AF%7C%E3%83%96%E3%83%AB%E3%83%BC%E3%82%A6%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%82%E3%81%98%7C%E6%97%A7%E9%96%80%E5%8F%B8%E4%B8%89%E4%BA%95%E5%80%B6%E6%A5%BD%E9%83%A8%7C%E6%97%A7%E9%96%80%E5%8F%B8%E7%A8%8E%E9%96%A2%7C%E3%83%AC%E3%83%88%E3%83%AD%E4%B8%AD%E5%A4%AE%E5%BA%83%E5%A0%B4%20%E9%96%80%E5%8F%B8%E6%B8%AF" target="_blank" rel="noopener">Plan B徒歩</a></div></div></article><article class="route-card reveal"><div class="num">6</div><div><h3>門司港 → 葉山町</h3><p>15:10〜15:15出発。道路状況を見て帰路を調整。</p><div class="actions"><a class="btn dark small" href="https://www.google.com/maps/dir/?api=1&origin=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4&destination=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&travelmode=driving" target="_blank" rel="noopener">帰りルート</a><a class="btn outline small" href="https://www.jartic.or.jp/" target="_blank" rel="noopener">JARTIC</a></div></div></article></div></article>
+    <aside class="card pad span-4 reveal">
+      <h3>地図の使い分け</h3>
+      <p class="note"><b>船の時刻はGoogleマップではなく公式ダイヤを優先。</b> Googleマップは「乗り場まで」「島内の場所確認」「徒歩ルート」に使うのが安全です。</p>
+      <div class="source-list">
+        <a href="https://www.kanmon-kisen.co.jp/route/ganryujima.html" target="_blank" rel="noopener"><b>関門汽船 巌流島連絡船</b><span>時刻・運賃・運航確認</span></a>
+        <a href="https://mojiko-retoro9.jp/spot/mojiko_retro_parking/" target="_blank" rel="noopener"><b>門司港レトロ駐車場</b><span>料金・台数</span></a>
+        <a href="https://www.mojiko.info/spot/bluewing.html" target="_blank" rel="noopener"><b>ブルーウィングもじ</b><span>開橋時刻</span></a>
+        <a href="https://www.fk-tosikou.or.jp/douro/now/rekita.shtml" target="_blank" rel="noopener"><b>北九州都市高速 交通情報</b><span>当日の道路確認</span></a>
+      </div>
+    </aside>
+  </section>
+
+  <section class="card pad reveal">
+    <h2>スポット別ショートカット</h2>
+    <div class="source-list two-col">
+      <a href="https://www.google.com/maps/search/?api=1&query=%E9%96%80%E5%8F%B8%E6%B8%AF%E3%83%AC%E3%83%88%E3%83%AD%E9%A7%90%E8%BB%8A%E5%A0%B4" target="_blank" rel="noopener"><b>門司港レトロ駐車場</b><span>まずここへ</span></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%E9%96%A2%E9%96%80%E6%B1%BD%E8%88%B9%20%E9%96%80%E5%8F%B8%E6%B8%AF%E6%A1%9F%E6%A9%8B" target="_blank" rel="noopener"><b>関門汽船 門司港桟橋</b><span>9:20発の船</span></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%E5%B7%8C%E6%B5%81%E5%B3%B6%E6%B8%AF" target="_blank" rel="noopener"><b>巌流島港</b><span>上陸地点</span></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%E6%AD%A6%E8%94%B5%20%E5%B0%8F%E6%AC%A1%E9%83%8E%20%E5%83%8F%20%E5%B7%8C%E6%B5%81%E5%B3%B6" target="_blank" rel="noopener"><b>武蔵・小次郎像</b><span>島の主役</span></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%E3%83%96%E3%83%AB%E3%83%BC%E3%82%A6%E3%82%A3%E3%83%B3%E3%82%B0%E3%82%82%E3%81%98" target="_blank" rel="noopener"><b>ブルーウィングもじ</b><span>11:00または13:00</span></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%E3%83%97%E3%83%AA%E3%83%B3%E3%82%BB%E3%82%B9%E3%83%94%E3%83%94%20%E9%96%80%E5%8F%B8%E6%B8%AF" target="_blank" rel="noopener"><b>プリンセスピピ門司港</b><span>焼きカレー</span></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%E3%83%9F%E3%83%AB%E3%82%AF%E3%83%9B%E3%83%BC%E3%83%AB%E9%96%80%E5%8F%B8%E6%B8%AF" target="_blank" rel="noopener"><b>ミルクホール門司港</b><span>プリン</span></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%E6%97%A7%E9%96%80%E5%8F%B8%E4%B8%89%E4%BA%95%E5%80%B6%E6%A5%BD%E9%83%A8" target="_blank" rel="noopener"><b>旧門司三井倶楽部</b><span>歴史建築</span></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%E6%97%A7%E9%96%80%E5%8F%B8%E7%A8%8E%E9%96%A2" target="_blank" rel="noopener"><b>旧門司税関</b><span>赤レンガ建築</span></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E5%B3%A1%E3%83%97%E3%83%A9%E3%82%B6" target="_blank" rel="noopener"><b>海峡プラザ</b><span>お土産・休憩</span></a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p><b>作成メモ：</b>このしおりは2026年5月5日に確認した公式・観光情報と、ご指定の条件をもとにした静的Webページです。船・橋・店舗・イベント・道路状況は変更される場合があります。出発前にリンク集から最新情報を確認してください。</p>
+    <p class="credit">PWA風のホーム画面追加、オフライン用アプリシェル、チェックリスト保存、プラン切替、現在時刻に応じた次の予定表示に対応しています。</p>
+  </div>
+</footer>
+<script src="assets/js/app.js"></script>
+</body></html>
