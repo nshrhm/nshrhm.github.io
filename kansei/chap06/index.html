@@ -1,0 +1,1737 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感性データ処理 第6回</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+
+
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+
+
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+
+
+
+
+
+  <!-- Revealjs Theme -->
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+
+
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+  <link rel="stylesheet" href="libs/styles/iota.css">
+  <link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+
+
+   <!-- css list -->
+
+  <link rel="stylesheet" href="style.css">
+
+
+
+
+</head>
+
+<body>
+
+
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+
+
+
+
+        <section >
+
+            <h1>感性データ処理</h1>
+<h2>第6回 数量化Ⅲ類（対応分析）</h2>
+<h3>カテゴリの関係を「同じ地図」で読む</h3>
+<h4>データサイエンス学部</h4>
+<h5>白濵 成希</h5>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+今回は、カテゴリデータの関係を地図として読む方法である、数量化Ⅲ類を扱います。対応分析と呼ばれる方法と非常に近い考え方として説明します。計算式を細かく追うことよりも、どのような表を作り、どのように地図を読み、感性データの分析にどう活かすかを理解することが目標です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 本講の概要 -->
+<div style="font-size:0.6em">
+<h2>本講の概要</h2>
+<p>第6回は、<strong>カテゴリを地図にする回</strong></p>
+<ul>
+<li>第5回：対象どうしの近さを <strong>MDS</strong> で地図にする</li>
+<li>第6回：対象とカテゴリの関係を <strong>数量化Ⅲ類（対応分析）</strong> で地図にする</li>
+<li>目的：カテゴリの偏りや結びつきを、少数の軸に要約して読む</li>
+</ul>
+<div style="border:1px solid #aaa; padding:0.6em; margin-top:0.8em">
+本講では、数量化Ⅲ類を機械的に計算するよりも、
+<strong>表をどう作るか・地図をどう読むか・何に活かすか</strong>を重視する。
+</div>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+前回の多次元尺度法では、対象どうしの距離や類似度をもとに地図を作りました。今回は、対象とカテゴリの対応関係を表にして、その関係を地図として読みます。たとえば、どの店舗がどの印象語と結びつきやすいか、どの食品サンプルがどの記述語で語られやすいか、といった関係を扱います。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- この回の到達目標 -->
+<div style="font-size:0.6em">
+<h2>この回の到達目標</h2>
+<p>授業後に、次のことを説明できる状態を目指す。</p>
+<ol>
+<li>数量化Ⅲ類（対応分析）がどんなデータに向くか</li>
+<li>クロス集計表・プロファイル・同時布置図の基本</li>
+<li>MDS と数量化Ⅲ類の違い</li>
+<li>同時布置図における、対象どうし／カテゴリどうしの近さ</li>
+<li>原点からの方向・距離の読み方</li>
+<li>行点と列点の距離を読みすぎない注意点</li>
+<li>カテゴリ設計が分析結果を左右すること</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+この回では、数量化Ⅲ類を使って何ができるのかを理解します。特に、クロス集計表を作る、プロファイルを見る、同時布置図を読む、という流れを押さえます。また、地図上で点が近いからといって、すぐに強い関係があると断定できるわけではありません。読み方の注意点も重要です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 90分の見取り図 -->
+<div style="font-size:0.6em">
+<h2>90分の見取り図</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">時間</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0〜15分</td>
+<td>なぜ今、数量化Ⅲ類（対応分析）を学ぶのか</td>
+</tr>
+<tr>
+<td style="text-align:right">15〜45分</td>
+<td>基本概念：クロス集計表、プロファイル、χ²距離、同時布置図</td>
+</tr>
+<tr>
+<td style="text-align:right">45〜65分</td>
+<td>地図の読み方と注意点</td>
+</tr>
+<tr>
+<td style="text-align:right">65〜80分</td>
+<td>事例で使いどころをつかむ</td>
+</tr>
+<tr>
+<td style="text-align:right">80〜90分</td>
+<td>まとめ、確認問題、次回への橋渡し</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+授業の前半では、数量化Ⅲ類がどのような場面で使えるのかを確認します。その後、クロス集計表やプロファイル、軸、同時布置図といった基本概念を扱います。後半では、図の読み方の注意点を確認し、実際の感性工学や産業応用の事例を見ていきます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 授業全体での位置づけ -->
+<div style="font-size:0.6em">
+<h2>授業全体での位置づけ</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">回</th>
+<th>内容</th>
+<th>第6回との関係</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">第4回</td>
+<td>変数の種類と尺度水準</td>
+<td>質的変数・カテゴリデータを扱う前提</td>
+</tr>
+<tr>
+<td style="text-align:right">第5回</td>
+<td>多次元尺度法</td>
+<td>「地図で読む」感覚を受け継ぐ</td>
+</tr>
+<tr>
+<td style="text-align:right"><strong>第6回</strong></td>
+<td><strong>数量化Ⅲ類</strong></td>
+<td><strong>対象×カテゴリの関係を地図にする</strong></td>
+</tr>
+<tr>
+<td style="text-align:right">第7回</td>
+<td>アンケート手法</td>
+<td>良いカテゴリ表を作る質問設計へつなぐ</td>
+</tr>
+</tbody>
+</table>
+<p>本講は、感性データの<strong>取得方法</strong>と<strong>分析方法</strong>を結びつける位置にある。</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+授業全体の流れの中で、第6回はカテゴリデータを本格的な分析手法に結びつける回です。第4回で学んだ質的変数の考え方を使い、第5回で学んだ地図化の考え方と比較しながら、対象とカテゴリの関係を読みます。そして次回のアンケート手法では、分析に使えるカテゴリや選択肢をどう設計するかを学びます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- なぜカテゴリを地図にするのか -->
+<div style="font-size:0.6em">
+<h2>なぜカテゴリを地図にするのか</h2>
+<p>感性データには、数値だけでなく<strong>カテゴリ型の情報</strong>が多く含まれる。</p>
+<ul>
+<li>当てはまる理由を選ぶ</li>
+<li>印象語に Yes / No で答える</li>
+<li>自由記述から語の出現頻度を数える</li>
+<li>群ごとに、どのカテゴリが多いかを比べる</li>
+</ul>
+<p>このようなデータでは、平均値だけでは構造が見えにくい。</p>
+<div style="border:1px solid #aaa; padding:0.6em; margin-top:0.8em">
+数量化Ⅲ類は、カテゴリの偏りや結びつきを地図として見せる。
+</div>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+感性評価では、必ずしも最初から連続的な数値が得られるとは限りません。むしろ、印象語を選ぶ、理由を選ぶ、自由記述から語を数えるといった形で、カテゴリとして情報が集まることが多くあります。数量化Ⅲ類は、そうしたカテゴリ型の情報を、関係の構造として読みやすくする方法です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 感性データに多いカテゴリ情報 -->
+<div style="font-size:0.6em">
+<h2>感性データに多いカテゴリ情報</h2>
+<table>
+<thead>
+<tr>
+<th>場面</th>
+<th>カテゴリとして扱える情報</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>店舗評価</td>
+<td>価格、安心感、立地、雰囲気</td>
+</tr>
+<tr>
+<td>パッケージ評価</td>
+<td>かわいい、健康的、親しみやすい</td>
+</tr>
+<tr>
+<td>自由記述分析</td>
+<td>落ち着く、見やすい、ごちゃごちゃ、速い</td>
+</tr>
+<tr>
+<td>オンライン診療</td>
+<td>共感が高かった群に多い応答パターン</td>
+</tr>
+</tbody>
+</table>
+<p>ポイントは、これらを
+<strong>「どの対象に、どのカテゴリが多いか」</strong>
+という表にできることである。</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+数量化Ⅲ類を使うためには、まず対象とカテゴリの関係を表にできる必要があります。たとえば、店舗と選択理由、製品と印象語、文章群と単語、グループと発話カテゴリのような組み合わせです。どの対象にどのカテゴリが多いかを表にできれば、数量化Ⅲ類の対象になり得ます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 平均ではなく組合せの偏りを見る -->
+<div style="font-size:0.6em">
+<h2>平均ではなく組合せの偏りを見る</h2>
+<p>たとえば、店舗評価で次のような情報がある。</p>
+<ul>
+<li>A店は「安心」が多い</li>
+<li>B店は「楽しさ」が多い</li>
+<li>C店は「かわいい」が多い</li>
+</ul>
+<p>本当に知りたいのは、単独の多さだけではない。</p>
+<ul>
+<li>A店とC店はどのくらい違うのか</li>
+<li>「安心」と「作業しやすい」は似た位置に出るのか</li>
+<li>ある店は平均的か、何かに特化しているのか</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+カテゴリごとの人数や回数を見るだけでは、全体の関係構造は見えにくいことがあります。数量化Ⅲ類では、対象とカテゴリの組合せの偏りを見ます。つまり、どの対象とどのカテゴリが一緒に出やすいのか、どの対象どうしが似たパターンを持つのかを、地図で考えることができます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- ミニ活動1：このデータは向いているか -->
+<div style="font-size:0.6em">
+<h2>ミニ活動1：このデータは向いているか</h2>
+<p>次の例について、<strong>行・列・セル</strong>をどう置けるか考える。</p>
+<table>
+<thead>
+<tr>
+<th>例</th>
+<th>考えること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>コンビニ3店舗 × 選ばれた理由</td>
+<td>価格・安心・近い・品揃え</td>
+</tr>
+<tr>
+<td>カフェ5店舗 × 印象語</td>
+<td>落ち着く・にぎやか・作業向き</td>
+</tr>
+<tr>
+<td>自由記述レビュー3群 × よく出る語</td>
+<td>群ごとの特徴語</td>
+</tr>
+</tbody>
+</table>
+<p>ペアで共有するときは、
+<strong>「平均ではなく、どの組合せを見たいか」</strong> を一言で加える。</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは、数量化Ⅲ類に向いているデータかどうかを考えます。大事なのは、行に何を置くか、列に何を置くか、セルに何を入れるかです。まずは、クロス集計表にできるかどうかを確認してください。その上で、平均値ではなく、どの対象とどのカテゴリの組合せを見たいのかを言葉にしてみます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 数量化Ⅲ類に向くデータ -->
+<div style="font-size:0.6em">
+<h2>数量化Ⅲ類に向くデータ</h2>
+<p>数量化Ⅲ類（対応分析）が向くのは、
+<strong>二元のクロス集計表</strong>として表現できるデータである。</p>
+<table>
+<thead>
+<tr>
+<th>行に置くもの</th>
+<th>列に置くもの</th>
+<th>セルに入る値の例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>店舗</td>
+<td>UX項目</td>
+<td>Yes と答えた人数</td>
+</tr>
+<tr>
+<td>製品サンプル</td>
+<td>記述語</td>
+<td>その語が選ばれた回数</td>
+</tr>
+<tr>
+<td>グループ</td>
+<td>発話内容カテゴリ</td>
+<td>出現頻度</td>
+</tr>
+<tr>
+<td>文章群</td>
+<td>単語</td>
+<td>出現回数</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+数量化Ⅲ類では、基本的に二元のクロス集計表を扱います。行には対象やグループを置き、列にはカテゴリを置き、セルには人数、回数、出現頻度などを入れます。同じデータでも、行と列の置き方を変えると、見える関係も変わります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 行・列・セルの設計 -->
+<div style="font-size:0.6em">
+<h2>行・列・セルの設計</h2>
+<p>最初に決めることは、<strong>何と何の関係を見たいか</strong>である。</p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>役割</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行</td>
+<td>比較したい対象</td>
+<td>店舗、製品、群、文章群</td>
+</tr>
+<tr>
+<td>列</td>
+<td>関係を見たいカテゴリ</td>
+<td>印象語、理由、発話内容、単語</td>
+</tr>
+<tr>
+<td>セル</td>
+<td>関係の強さを表す値</td>
+<td>人数、選択回数、出現頻度</td>
+</tr>
+</tbody>
+</table>
+<div style="border:1px solid #aaa; padding:0.6em; margin-top:0.8em">
+第6回では、まず「1つの二元表を地図にする」ところに絞って理解する。
+</div>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+数量化Ⅲ類を始める前に、行、列、セルを明確にする必要があります。行は比較したい対象、列は対象との関係を見たいカテゴリ、セルはその関係の強さを表す数です。実務や研究では個票レベルのデータや複数カテゴリ変数を扱う拡張もありますが、この回ではまず二元表に集中します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 数量化Ⅲ類と対応分析 -->
+<div style="font-size:0.6em">
+<h2>数量化Ⅲ類と対応分析</h2>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数量化Ⅲ類</td>
+<td>林知己夫によって提案された質的データの解析法</td>
+</tr>
+<tr>
+<td>対応分析</td>
+<td>クロス集計表を可視化する方法として発展した手法</td>
+</tr>
+</tbody>
+</table>
+<p>理論的な説明の仕方には違いがあるが、
+どちらも <strong>二元表を少数軸に要約して図にする</strong> 点で非常に近い。</p>
+<div style="border:1px solid #aaa; padding:0.6em; margin-top:0.8em">
+この講義では、両者を
+<strong>カテゴリの関係を地図にする同種の方法</strong>として扱う。
+</div>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+数量化Ⅲ類と対応分析は、歴史的な背景や説明の仕方に違いがあります。しかし、この授業では、どちらもカテゴリの関係を地図にする方法としてまとめて扱います。重要なのは、クロス集計表を少数の軸で要約し、対象とカテゴリの関係を視覚的に読むことです。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- プロファイルという考え方 -->
+<div style="font-size:0.6em">
+<h2>プロファイルという考え方</h2>
+<p>数量化Ⅲ類は、単に「数が多い・少ない」を並べるのではない。</p>
+<p>各行や各列が持つ、<strong>比率パターン</strong>を見る。
+これを <strong>プロファイル</strong> と呼ぶ。</p>
+<p>例：店舗Aで選ばれた理由</p>
+<table>
+<thead>
+<tr>
+<th>理由</th>
+<th style="text-align:right">比率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>安心</td>
+<td style="text-align:right">40%</td>
+</tr>
+<tr>
+<td>近い</td>
+<td style="text-align:right">30%</td>
+</tr>
+<tr>
+<td>安い</td>
+<td style="text-align:right">20%</td>
+</tr>
+<tr>
+<td>かわいい</td>
+<td style="text-align:right">10%</td>
+</tr>
+</tbody>
+</table>
+<p>A店の「理由の出方のパターン」が、A店の行プロファイルである。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+プロファイルは、数量化Ⅲ類を理解するうえで重要な考え方です。単純な人数や回数ではなく、どのカテゴリがどのような比率で出ているかを見ます。A店とB店のプロファイルが似ていれば、地図上でも近い位置に出やすくなります。つまり、数量化Ⅲ類は、数そのものよりも、出方のパターンの似かたを見ていると考えると理解しやすくなります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- χ²距離と軸 -->
+<div style="font-size:0.6em">
+<h2>χ²距離と軸</h2>
+<p>対応分析では、プロファイルの違いを
+<strong>χ²距離（カイ二乗距離）</strong> という考え方で測る。</p>
+<p>ここで押さえる直感：</p>
+<ul>
+<li>平均的な出方と大きく違うカテゴリほど、地図の中で効いてくる</li>
+<li>似た出方をする行どうし、列どうしは近くなる</li>
+<li>表の偏りを最もよく説明する方向が <strong>第1軸</strong></li>
+<li>その次に大きな偏りを説明する方向が <strong>第2軸</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは、数式を詳しく扱うよりも、直感を押さえます。対応分析では、平均的な出方からどのくらい違うかが重要です。表の偏りを最もよく説明する方向が第1軸で、その次が第2軸です。軸には最初から安心感軸やかわいさ軸といった名前が付いているわけではありません。地図を見たあとで、どのカテゴリがどの方向に並んでいるかを見て解釈します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 同時布置図とは -->
+<div style="font-size:0.6em">
+<h2>同時布置図とは</h2>
+<p>対応分析の結果は、しばしば <strong>同時布置図</strong> として示される。</p>
+<p>同時布置図では、<strong>行の点</strong>と<strong>列の点</strong>が同じ図に描かれる。</p>
+<table>
+<thead>
+<tr>
+<th>行の点</th>
+<th>列の点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>店舗 A, B, C</td>
+<td>安心、楽しい、かわいい、安い</td>
+</tr>
+<tr>
+<td>食品サンプル</td>
+<td>甘い、フルーティ、しっとり</td>
+</tr>
+<tr>
+<td>文章群</td>
+<td>特徴語、頻出語</td>
+</tr>
+</tbody>
+</table>
+<p>これにより、対象とカテゴリの関係を1枚の図で考えられる。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+同時布置図では、行に置いた対象と、列に置いたカテゴリが同じ平面上に表されます。たとえば、店舗と印象語を同じ図に置くことで、どの店舗がどの印象語と関係しそうかを視覚的に考えられます。ただし、同じ図に描かれているからといって、すべての距離をそのまま厳密に読めるわけではありません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 読み方1：行どうし・列どうし -->
+<div style="font-size:0.6em">
+<h2>読み方1：行どうし・列どうし</h2>
+<p>まずは、<strong>同じ種類の点どうし</strong>を見る。</p>
+<table>
+<thead>
+<tr>
+<th>見る対象</th>
+<th>基本的な読み方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行点どうし</td>
+<td>カテゴリの出方のパターンが似ている</td>
+</tr>
+<tr>
+<td>列点どうし</td>
+<td>似た対象に出やすいカテゴリである</td>
+</tr>
+</tbody>
+</table>
+<p>例：</p>
+<ul>
+<li>A店とC店が近い
+→ 選ばれる理由の構成が似ている可能性</li>
+<li>「安心」と「作業しやすい」が近い
+→ 似た店舗群に多い可能性</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+同時布置図を読むときは、まず行点どうし、列点どうしの近さを見ます。行点どうしが近ければ、カテゴリの出方のパターンが似ていると考えます。列点どうしが近ければ、似た対象に出やすいカテゴリであると考えます。最初は、この同じ種類の点どうしの読み方をしっかり押さえます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 読み方2：行点と列点 -->
+<div style="font-size:0.6em">
+<h2>読み方2：行点と列点</h2>
+<p>行点と列点の近さは、<strong>手がかり</strong>として読む。</p>
+<p>ただし、</p>
+<div style="border:1px solid #aaa; padding:0.6em; margin:0.8em 0">
+<strong>行点と列点の距離を、そのまま厳密に読むのは危険</strong>
+</div>
+<p>より安全な読み方：</p>
+<ul>
+<li>原点から見て、同じ方向にあるか</li>
+<li>原点からどれくらい離れているか</li>
+<li>度数表と合わせて確認できるか</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+初学者が間違えやすいのは、行点と列点が近いから、その対象ではそのカテゴリが最も多いと断定してしまうことです。行点と列点の距離は、読み方に注意が必要です。特に対称マップでは、距離そのものよりも、原点から見て同じ方向にあるか、どのくらい原点から離れているかを見る方が安全です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 読み方3：原点と度数表 -->
+<div style="font-size:0.6em">
+<h2>読み方3：原点と度数表</h2>
+<p>原点からの位置も重要である。</p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>読み方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原点に近い点</td>
+<td>全体の平均的なプロファイルに近い</td>
+</tr>
+<tr>
+<td>原点から遠い点</td>
+<td>その対象やカテゴリに特有の偏りを持つことが多い</td>
+</tr>
+</tbody>
+</table>
+<p>注意：</p>
+<ul>
+<li>まれなカテゴリは、地図の端に出ることがある</li>
+<li>端にある理由が「重要」なのか「不安定」なのかは、地図だけでは判断できない</li>
+<li><strong>度数表や出現数の確認を必ず併用する</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+原点に近い点は、全体の平均的な出方に近いことが多く、特徴が弱いと読めます。反対に、原点から遠い点は、特徴的な偏りを持つことが多いです。ただし、出現数が非常に少ないカテゴリも端に出ることがあります。そのため、地図だけで判断せず、もとの度数表も必ず確認します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 小さな例：カフェと印象語 -->
+<div style="font-size:0.6em">
+<h2>小さな例：カフェと印象語</h2>
+<p>3つのカフェ A・B・C について、来店者が選んだ印象語の人数を考える。</p>
+<table>
+<thead>
+<tr>
+<th>カフェ</th>
+<th style="text-align:right">落ち着く</th>
+<th style="text-align:right">にぎやか</th>
+<th style="text-align:right">かわいい</th>
+<th style="text-align:right">作業しやすい</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align:right">12</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">10</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">11</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right">2</td>
+</tr>
+<tr>
+<td>C</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">12</td>
+</tr>
+</tbody>
+</table>
+<p>この表から、地図が出る前にどのような関係を予想できるか。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでは、実際の地図を見る前に、表から関係を予想してみます。Aは落ち着くと作業しやすいが多く、Bはにぎやかとかわいいが多く、Cは作業しやすいが多いという特徴があります。このように、数量化Ⅲ類は地図を見るだけではなく、表を読む視点を鍛える手法でもあります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 小さな例から構造を読む -->
+<div style="font-size:0.6em">
+<h2>小さな例から構造を読む</h2>
+<p>表から予想できること：</p>
+<ul>
+<li>A は「落ち着く」「作業しやすい」と同じ方向に出やすい</li>
+<li>B は「にぎやか」「かわいい」と近い方向に出やすい</li>
+<li>C は「作業しやすい」には近いが、Aほど「落ち着く」には寄らないかもしれない</li>
+<li>「落ち着く」と「作業しやすい」は近い位置に出る可能性がある</li>
+</ul>
+<div style="border:1px solid #aaa; padding:0.6em; margin-top:0.8em">
+地図は、表の偏りを読みやすくするための要約である。
+</div>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+地図が出てから初めて考えるのではなく、表を見た時点で、ある程度の構造を予想することが大切です。AとCはどちらも作業しやすいが多いので、ある程度似る可能性があります。しかし、Aは落ち着くも多く、Cとは完全に同じではありません。このように、表と地図を往復して読むことが重要です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 事例を見る観点 -->
+<div style="font-size:0.6em">
+<h2>事例を見る観点</h2>
+<p>数量化Ⅲ類（対応分析）の事例では、次の3点を確認する。</p>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>確認すること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>対象</td>
+<td>何を評価したのか</td>
+</tr>
+<tr>
+<td>感性・主観体験</td>
+<td>何を「感じるもの」として扱ったのか</td>
+</tr>
+<tr>
+<td>データと活用</td>
+<td>どんな表を作り、何に活かしたのか</td>
+</tr>
+</tbody>
+</table>
+<p>事例の目的は、
+<strong>数量化Ⅲ類がどのような感性データの整理に使えるか</strong>をつかむことである。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからは、数量化Ⅲ類や対応分析がどのような場面で使われるのかを見ます。事例を見るときは、何を対象にしたのか、どのような感性や主観体験を扱ったのか、どのような表を作ってどのように活用したのかに注目します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 事例1：日常利用店舗のUX -->
+<div style="font-size:0.6em">
+<h2>事例1：日常利用店舗のUX</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>対象</td>
+<td>日本の20店舗（日常使いの店舗）</td>
+</tr>
+<tr>
+<td>感性・主観体験</td>
+<td>満足、安心、楽しさ、雰囲気、かわいさ、再利用意図など</td>
+</tr>
+<tr>
+<td>データと活用</td>
+<td>「店舗×UX項目」の関係を可視化し、クラスタリングへつなげる</td>
+</tr>
+</tbody>
+</table>
+<p>読み取るポイント：</p>
+<ul>
+<li>店舗と UX 項目の結びつきを見る</li>
+<li>店舗群の特徴を整理する</li>
+<li>可視化を次の分析につなげる</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+この事例では、日常利用される店舗と、満足、安心、楽しさ、雰囲気、かわいさ、再利用意図などのUX項目との関係を扱います。対応分析によって店舗とUX項目の関係を可視化し、さらにクラスタリングへつなげることで、店舗群の特徴を整理しています。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 事例2：食品の官能評価 -->
+<div style="font-size:0.6em">
+<h2>事例2：食品の官能評価</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>対象</td>
+<td>市販・伝統的パネトーネの複数サンプル</td>
+</tr>
+<tr>
+<td>感性・主観体験</td>
+<td>甘い、フルーティ、しっとり、繊維っぽい、強い香りなど</td>
+</tr>
+<tr>
+<td>データと活用</td>
+<td>「サンプル×記述語」の関係を対応分析で整理</td>
+</tr>
+</tbody>
+</table>
+<p>読み取るポイント：</p>
+<ul>
+<li>どのサンプルが、どの記述語で特徴づけられるか</li>
+<li>官能的印象を、サンプル間の関係として読む</li>
+<li>受容性や品質理解につなげる</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+食品の官能評価では、サンプルと記述語の関係を扱うことがあります。たとえば、どのサンプルが甘い、フルーティ、しっとりといった語で特徴づけられるのかを、対応分析で整理できます。これは、単に平均点を見るだけではなく、サンプルと感覚語の関係を同時に読む例です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 事例3・4：応答と自由記述 -->
+<div style="font-size:0.6em">
+<h2>事例3・4：応答と自由記述</h2>
+<table>
+<thead>
+<tr>
+<th>事例</th>
+<th>対象</th>
+<th>データと活用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>オンライン診療</td>
+<td>医療者の応答パターン・発話内容</td>
+<td>共感の高低群との関係を可視化する</td>
+</tr>
+<tr>
+<td>自由記述分析</td>
+<td>アンケート自由記述・インタビュー記録</td>
+<td>グループと語の出現を表にし、特徴語を読む</td>
+</tr>
+</tbody>
+</table>
+<p>共通点：</p>
+<ul>
+<li>発話や文章をカテゴリ化する</li>
+<li>群と語・応答の関係を見る</li>
+<li>同時布置図の読み方そのものが重要になる</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+オンライン診療の事例では、医療者の応答パターンや発話内容と、患者が感じた共感の高さとの関係を扱います。自由記述分析では、グループと語の出現を表にして、どの群がどの語と結びつきやすいかを見ます。いずれも、言葉をカテゴリとして整理し、その関係を地図で読む事例です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 事例5：水辺空間の主観評価 -->
+<div style="font-size:0.6em">
+<h2>事例5：水辺空間の主観評価</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>対象</td>
+<td>石川県の水辺空間に対する住民評価</td>
+</tr>
+<tr>
+<td>感性・主観体験</td>
+<td>水質や水辺の印象、感じ方に関する主観評価</td>
+</tr>
+<tr>
+<td>データと活用</td>
+<td>住民アンケートのソフトデータに数量化Ⅲ類を適用</td>
+</tr>
+</tbody>
+</table>
+<p>読み取るポイント：</p>
+<ul>
+<li>ハードデータだけでは見えにくい「感じ方の構造」を扱う</li>
+<li>主観評価のカテゴリを整理する</li>
+<li>評価に効いている項目を考える</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+水辺空間の事例では、住民の主観評価を数量化Ⅲ類で整理しています。水辺に対する感じ方や印象は、物理的なハードデータだけでは十分に表せないことがあります。そこで、アンケートから得られるソフトデータを用いて、感じ方の構造を把握します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- MDS・PCA・数量化Ⅲ類の違い -->
+<div style="font-size:0.6em">
+<h2>MDS・PCA・数量化Ⅲ類の違い</h2>
+<p>見た目はどれも「2次元の地図」に見えることがある。
+しかし、入力と守ろうとしている情報が違う。</p>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>主な入力</th>
+<th>何を可視化するか</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MDS</strong></td>
+<td>対象×対象の距離</td>
+<td>対象どうしの近さ・遠さ</td>
+</tr>
+<tr>
+<td><strong>数量化Ⅲ類（対応分析）</strong></td>
+<td>対象×カテゴリのクロス集計表</td>
+<td>対象とカテゴリの関係構造</td>
+</tr>
+<tr>
+<td><strong>PCA</strong></td>
+<td>対象×量的変数のデータ表</td>
+<td>量的変数の分散構造</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+MDS、数量化Ⅲ類、PCAはいずれも二次元の図として結果が示されることがあります。しかし、入力データが違います。MDSは対象どうしの距離、数量化Ⅲ類は対象とカテゴリのクロス集計表、PCAは量的変数のデータ表を扱います。見た目が似ていても、読み方は同じではありません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 数量化Ⅲ類は構造理解に向く -->
+<div style="font-size:0.6em">
+<h2>数量化Ⅲ類は構造理解に向く</h2>
+<p>数量化Ⅲ類（対応分析）の主な役割は、予測ではなく<strong>構造理解</strong>である。</p>
+<p>整理したいこと：</p>
+<ul>
+<li>どの対象とどのカテゴリが結びつきやすいか</li>
+<li>どの対象群が似たプロファイルを持つか</li>
+<li>何が平均的で、何が特徴的か</li>
+</ul>
+<div style="border:1px solid #aaa; padding:0.6em; margin-top:0.8em">
+教師あり学習というより、探索的分析の性格が強い。
+</div>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+数量化Ⅲ類は、何かを高精度に予測するための手法というより、関係の構造を理解するための手法です。対象とカテゴリの結びつき、対象群の類似性、平均的な点と特徴的な点を整理します。そのため、探索的分析として使うと理解しやすくなります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 次の一手につなげる -->
+<div style="font-size:0.6em">
+<h2>次の一手につなげる</h2>
+<p>対応分析で分かるのは、あくまで<strong>構造の見取り図</strong>である。</p>
+<p>そこから、次の分析や改善につなげる。</p>
+<ul>
+<li>対応分析で見えたまとまりをもとに、クラスタリングを行う</li>
+<li>特徴的なカテゴリに注目して、質問紙や評価項目を見直す</li>
+<li>特定の群差がありそうなら、次に検定や詳細分析を行う</li>
+</ul>
+<div style="border:1px solid #aaa; padding:0.6em; margin-top:0.8em">
+数量化Ⅲ類は、結論そのものではなく、仮説を作るための地図として使う。
+</div>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+対応分析の図は、最終結論そのものではありません。むしろ、次に何を見るべきか、どの仮説を立てるべきかを考えるための地図です。見えたまとまりをクラスタリングにつなげたり、特徴的なカテゴリをもとに質問紙を見直したり、必要に応じて検定や詳細分析を行ったりします。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- カテゴリ設計が結果を左右する -->
+<div style="font-size:0.6em">
+<h2>カテゴリ設計が結果を左右する</h2>
+<p>数量化Ⅲ類の結果は、アルゴリズムだけで決まるわけではない。</p>
+<p>地図に反映される設計：</p>
+<ul>
+<li>どのカテゴリを用意したか</li>
+<li>類似カテゴリをどうまとめたか</li>
+<li>自由記述をどうコード化したか</li>
+<li>複数回答をどう集計したか</li>
+<li>まれなカテゴリを残すか、まとめるか</li>
+</ul>
+<div style="border:1px solid #aaa; padding:0.6em; margin-top:0.8em">
+数量化Ⅲ類は、カテゴリ設計のチェック装置でもある。
+</div>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+数量化Ⅲ類では、どのカテゴリを用意するかが結果に大きく影響します。似たカテゴリを分けるのかまとめるのか、自由記述をどのようにコード化するのか、まれなカテゴリを残すのかまとめるのかによって、地図の形は変わります。この点は、次回のアンケート手法と強くつながります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 今後のロードマップ -->
+<div style="font-size:0.6em">
+<h2>今後のロードマップ</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">回</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">第1〜3回</td>
+<td>感性・感性工学・評価の考え方</td>
+</tr>
+<tr>
+<td style="text-align:right">第4回</td>
+<td>変数の種類と尺度水準</td>
+</tr>
+<tr>
+<td style="text-align:right">第5回</td>
+<td>MDS：対象どうしの近さを地図にする</td>
+</tr>
+<tr>
+<td style="text-align:right"><strong>第6回</strong></td>
+<td><strong>数量化Ⅲ類：対象とカテゴリの関係を地図にする</strong></td>
+</tr>
+<tr>
+<td style="text-align:right">第7回</td>
+<td>アンケート手法</td>
+</tr>
+<tr>
+<td style="text-align:right">第8回</td>
+<td>SD法</td>
+</tr>
+<tr>
+<td style="text-align:right">第9〜10回</td>
+<td>主成分分析・因子分析</td>
+</tr>
+<tr>
+<td style="text-align:right">第11〜13回</td>
+<td>VAS</td>
+</tr>
+<tr>
+<td style="text-align:right">第14回</td>
+<td>分析ワークフロー</td>
+</tr>
+<tr>
+<td style="text-align:right">第15回</td>
+<td>総合演習</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで、授業全体の中で第6回がどこにあるかをもう一度確認します。第6回は、第5回の地図で読む考え方を受け継ぎつつ、カテゴリデータを扱う最初の本格的な回です。第7回では、良いカテゴリ表を作るための質問設計、つまりアンケート手法を扱います。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 第6回で持ち帰ってほしいこと -->
+<div style="font-size:0.6em">
+<h2>第6回で持ち帰ってほしいこと</h2>
+<p>最低到達ラインは、次の4点である。</p>
+<ol>
+<li>数量化Ⅲ類（対応分析）は、
+<strong>クロス集計表から関係構造を地図にする手法</strong>である</li>
+<li>行どうし・列どうしの近さは、
+それぞれ<strong>プロファイルの似かた</strong>を表す</li>
+<li>行点と列点の距離は読みすぎず、
+<strong>原点からの方向と距離</strong>も見る</li>
+<li>良い地図を得るには、
+<strong>カテゴリ設計と集計の仕方</strong>が重要である</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+この回で最低限持ち帰ってほしいことは、数量化Ⅲ類がクロス集計表を地図にする手法であることです。そして、行どうし、列どうしの近さは、それぞれプロファイルの似かたを表します。一方で、行点と列点の距離は読みすぎないようにします。最後に、良い分析結果を得るためには、カテゴリ設計と集計の仕方が重要です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 確認問題 -->
+<div style="font-size:0.55em">
+<h2>確認問題</h2>
+<ol>
+<li>
+<p>数量化Ⅲ類（対応分析）の入力として、最も基本的なのは何か。
+a) 距離行列　b) クロス集計表　c) 回帰係数　d) 教師ラベル</p>
+</li>
+<li>
+<p>行点どうしが近いとき、どのように解釈できるか。</p>
+</li>
+<li>
+<p>同時布置図で、行点と列点が近いときに注意すべきことを1つ書きなさい。</p>
+</li>
+<li>
+<p>MDS と数量化Ⅲ類の違いを、<strong>入力データ</strong>の観点から説明しなさい。</p>
+</li>
+<li>
+<p>出現数が極端に少ないカテゴリが地図の端に出たとき、何を追加確認すべきか。</p>
+</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+確認問題では、今日の基本概念を振り返ります。特に、数量化Ⅲ類の入力がクロス集計表であること、行点どうしの近さの意味、行点と列点の距離を読みすぎないこと、MDSとの違い、そして度数表を確認する必要があることを押さえてください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 授業内ミニ活動 -->
+<div style="font-size:0.55em">
+<h2>授業内ミニ活動</h2>
+<h3>活動1：行・列・セルを決める</h3>
+<ul>
+<li><strong>Think（2分）</strong>：身近なサービスを1つ選び、行・列・セルを決める</li>
+<li><strong>Pair（3分）</strong>：その表で本当に見たい関係が読めるかを確認する</li>
+<li><strong>Share（2分）</strong>：1〜2組が共有する</li>
+</ul>
+<h3>活動2：小さな表から地図を予想する</h3>
+<ul>
+<li><strong>Think（3分）</strong>：カフェ A/B/C の表を見て、近づきそうな点を予想する</li>
+<li><strong>Pair（4分）</strong>：A と C はどこまで似ているか、B は何と離れそうかを話す</li>
+<li><strong>Share（2分）</strong>：全体で予想を確認する</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
+<aside class="notes">
+授業内活動では、まず自分の身近なサービスを使って、対象とカテゴリの表を設計します。その後、カフェの小さな表を見て、地図上でどの点が近づきそうかを予想します。ここでは、正解を急ぐよりも、表を見て関係を言葉にすることを重視します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- この解釈は妥当か -->
+<div style="font-size:0.6em">
+<h2>この解釈は妥当か</h2>
+<p>次の解釈を読み、どこに注意が必要かを考える。</p>
+<div style="border:1px solid #aaa; padding:0.8em; margin:1em 0">
+「カテゴリX が店舗Bの近くにあるので、
+B では X が最も多いと断言できる」
+</div>
+<p>考えること：</p>
+<ul>
+<li>何が読みすぎなのか</li>
+<li>原点からの方向・距離はどうか</li>
+<li>度数表では本当に多いのか</li>
+<li>他カテゴリとの比較はどうか</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
+<aside class="notes">
+この活動では、同時布置図の読み違いを防ぐことを目的にします。カテゴリXが店舗Bの近くにあるからといって、BでXが最も多いと断言できるとは限りません。原点からの方向や距離、もとの度数表、他カテゴリとの比較を合わせて確認する必要があります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 授業後課題 -->
+<div style="font-size:0.55em">
+<h2>授業後課題</h2>
+<h3>テーマ：身近な「対象×カテゴリ」表を設計する</h3>
+<p>A4 1枚程度（800〜1200字）でまとめる。</p>
+<p>条件：</p>
+<ul>
+<li>
+<p>対象を1つ選ぶ
+例：カフェ3店舗、アプリ3案、動画サービス3種類など</p>
+</li>
+<li>
+<p>行と列を決める</p>
+<ul>
+<li>行：対象</li>
+<li>列：印象語、選択理由、特徴語など</li>
+</ul>
+</li>
+<li>
+<p>5〜10カテゴリ程度の表を作る</p>
+</li>
+<li>
+<p>数量化Ⅲ類をしたときに、次を文章で説明する</p>
+<ul>
+<li>何と何が近づきそうか</li>
+<li>どの対象が平均的か／特徴的か</li>
+<li>結果から何を改善・比較・提案できそうか</li>
+</ul>
+</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
+<aside class="notes">
+授業後課題では、自分の身近な対象を選び、対象とカテゴリの表を設計します。表は架空でもかまいませんが、行、列、セルの意味が分かるようにしてください。その表を数量化Ⅲ類で分析したと仮定して、どの点が近づきそうか、どの対象が平均的または特徴的か、そこから何を提案できそうかを文章で説明します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 次回への橋渡し -->
+<div style="font-size:0.6em">
+<h2>次回への橋渡し</h2>
+<p>数量化Ⅲ類は、アンケートや自由記述から作った
+<strong>カテゴリ表</strong>を地図にする手法である。</p>
+<p>したがって、</p>
+<div style="border:1px solid #aaa; padding:0.8em; margin:1em 0">
+<strong>質問文や選択肢の作り方が悪いと、地図も悪くなる。</strong>
+</div>
+<p>次回は、次の内容を扱う。</p>
+<ul>
+<li>リッカート尺度</li>
+<li>質問文のワーディング</li>
+<li>ダブルバーレル質問</li>
+<li>バイアスと順序効果</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" />
+<aside class="notes">
+次回はアンケート手法を扱います。数量化Ⅲ類は、アンケートや自由記述から作ったカテゴリ表を地図にする方法です。そのため、質問文や選択肢の作り方が悪いと、分析結果としての地図も読みにくくなります。次回は、良い表を作るための質問設計を学びます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- まとめ -->
+<div style="font-size:0.6em">
+<h2>まとめ</h2>
+<ul>
+<li>数量化Ⅲ類（対応分析）は、<strong>カテゴリデータのクロス集計表</strong>を少数軸に要約する</li>
+<li>行どうし、列どうしの近さは、それぞれ<strong>似たプロファイル</strong>を意味する</li>
+<li>同時布置図では、行点と列点の距離をそのまま読み切らない</li>
+<li><strong>原点からの方向と距離</strong>、および<strong>度数表</strong>を併読する</li>
+<li>カテゴリ設計の質が、そのまま分析結果の質に影響する</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日のまとめです。数量化Ⅲ類は、カテゴリデータのクロス集計表を要約し、関係構造を地図として可視化する方法です。行どうし、列どうしの近さはプロファイルの似かたを表します。一方で、行点と列点の距離は読みすぎず、原点からの方向や距離、そしてもとの度数表を合わせて確認します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 参考資料 -->
+<div style="font-size:0.7em">
+<h2>参考資料</h2>
+<ul>
+<li><a href="https://doi.org/10.4993/acrt1992.1.17">Hayashi, C. (1992). <em>Quantification Method III or Correspondence Analysis in Medical Science</em>.</a></li>
+<li><a href="https://doi.org/10.14949/konpyutariyoukyouiku.47.18">樋口耕一（2019）「計量テキスト分析における対応分析の活用―同時布置の仕組みと読み取り方を中心に―」</a></li>
+<li><a href="https://doi.org/10.11221/jima.76.79">Luo, L., &amp; Takanokura, M. (2025). <em>Clustering Daily Shopping Experiences in Japanese Stores</em>.</a></li>
+<li><a href="https://doi.org/10.3390/foods13101508">Silva-Paz, R. J., et al. (2024). <em>Sensory Evaluation through RATA and Sorting Task of Commercial and Traditional Panettones Sold in Peru</em>.</a></li>
+<li><a href="https://doi.org/10.11331/jjbm.29.60">冨澤政也ほか（2024）「オンライン診療における医療者の共感的態度：医療者の応答と発話内容に関するテキスト解析」</a></li>
+<li><a href="https://doi.org/10.5057/jjske2001.2.2_33">河野小夜子・中森義輝（2002）「あいまい性を考慮した数量化III類手法による感性データの分析」</a></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" />
+<aside class="notes">
+このスライドには、今回の講義内容で参照した資料をまとめています。数量化Ⅲ類と対応分析の関係、同時布置図の読み方、感性工学や官能評価、テキスト解析、主観評価への応用を確認するときに参照してください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- NotebookLM -->
+<div style="font-size:0.8em">
+<h2>NotebookLM</h2>
+<ol>
+<li><a href="https://notebooklm.google.com/notebook/d948103a-2967-41ec-addf-92f6af74c910">数量化Ⅲ類による質的データの幾何学的解析</a></li>
+<li><a href="https://notebooklm.google.com/notebook/b9dafc24-3920-466b-802f-abcf92f138ed">計量テキスト分析における対応分析の活用</a></li>
+<li><a href="https://notebooklm.google.com/notebook/9f09a803-27ba-416a-8be7-2c6e6ae5c9cf">日本の小売店における購買体験の定量分類とUX分析</a></li>
+<li><a href="https://notebooklm.google.com/notebook/fdca00d6-c7ee-4cef-81c3-29c5261163f0">ペルー産パネトーネの官能特性と消費者受容性の比較研究</a></li>
+<li><a href="https://notebooklm.google.com/notebook/50e1fdec-e82a-4dae-8079-6296d3937eea">オンライン診療における共感と信頼の対話術</a></li>
+<li><a href="https://notebooklm.google.com/notebook/4d43bd49-e752-4b0f-8548-947ec544ee45">住民の感性が映し出す水辺環境の定量的評価研究</a></li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に、復習用の NotebookLM 資料を紹介します。今回のノートブックは、数量化Ⅲ類と対応分析の基本、計量テキスト分析での同時布置図の読み方、食品、購買体験、オンライン診療、水辺環境評価への応用に対応しています。
+<p>まずは数量化Ⅲ類と対応分析の基本を確認し、次に自分の関心に近い応用事例を一つ選んで、対象、カテゴリ、表の作り方、図の読み取り方を見てください。特に、行と列の距離をそのまま読みすぎないこと、原点からの方向や度数表と合わせて解釈することを意識すると、今日の内容の復習になります。</p>
+<p>NotebookLMを使うときは、要約をそのまま写すのではなく、「この研究では何を行にし、何を列にしているか」「近い点をどのように解釈しているか」「自分の授業後課題ならどんなカテゴリ表を作れるか」と質問しながら使ってください。</p>
+</aside>
+            </section>
+
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--  <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--  <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--  <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard,
+      RevealEmbedTweet,
+      RevealChart,
+    ];
+
+    const plugins =  [...printPlugins,
+    RevealZoom,
+    RevealSearch,
+        RevealMarkdown,
+        RevealMenu,
+        RevealFullscreen,
+        RevealAnything,
+        //RevealAudioSlideshow,
+        //RevealAudioRecorder,
+        RevealCustomControls,
+        // poll
+        // question
+        // seminar
+        Verticator
+         ]
+
+
+    // Also available as an ES module, see:
+    // https://revealjs.com/initialization/
+    Reveal.initialize({
+      controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+      height: 700,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+      customcontrols: {
+          controls: [
+                  {
+              id: 'toggle-overview',
+              title: 'Toggle overview (O)',
+              icon: '<i class="fa fa-th"></i>',
+              action: 'Reveal.toggleOverview();'
+            }
+            ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+        ]
+      },
+      chart: {
+          defaults: {
+            color: 'lightgray', // color of labels
+            scale: {
+              beginAtZero: true,
+              ticks: { stepSize: 1 },
+              grid: { color: "lightgray" } , // color of grid lines
+            },
+          },
+          line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+          bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+          pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+          radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+      },
+      math: {
+        mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+        config: 'TeX-AMS_HTML-full',
+        // pass other options into `MathJax.Hub.Config()`
+        TeX: { Macros: { RR: "{\\bf R}" } }
+        },
+        anything: [
+        {
+    className: "plot",
+    defaults: {width:500, height: 500, grid:true},
+    initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+   },
+   {
+    className: "chart",
+    initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+   },
+   {
+    className: "anything",
+    initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+   },
+          ],
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+    });
+
+
+
+      // Change chalkboard theme :
+    function changeTheme(input) {
+      var config = {};
+      config.theme = input.value;
+      Reveal.getPlugin("RevealChalkboard").configure(config);
+      input.blur();
+    }
+
+    // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+    if (window.location.search.match(/print-pdf-now/gi)) {
+          setTimeout(() => {
+        window.print();
+        }, 2500);
+
+    }
+</script>
+
+</body>
+
+</html>
