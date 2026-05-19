@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>感性データ処理 第8回</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png" alt="" width="316" height="316" style="height:100%" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h1>感性データ処理</h1>
+                    <h2>第8回 SD法による評価</h2>
+                    <h3>両極表現・評価シート・プロフィール曲線で印象を測る</h3>
+                    <h4>データサイエンス学部</h4>
+                    <h4>白濵 成希</h4>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回は、感性データを取得する代表的な方法である SD法を扱います。SD法は、対象に対して抱いた印象を、言葉の軸と段階尺度によって数値化する方法です。第7回のアンケート手法を受けて、今回は実際に評価シートを設計し、得られたデータをプロフィール曲線で読むところまでを目標にします。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 本講のゴール -->
+                    <div style="font-size:0.6em">
+                        <h2>本講のゴール</h2>
+                        <p>第8回では、SD法を</p>
+                        <p>
+                            <strong>「感性ワードを、分析できる形のデータへ変換する評価法」</strong>
+                        </p>
+                        <p>として理解する。</p>
+                        <p>今日の到達目標：</p>
+                        <ol>
+                            <li>SD法が何を測る方法かを説明できる</li>
+                            <li>対象に応じて両極表現のペアを設計できる</li>
+                            <li>評価シート設計の要点を説明できる</li>
+                            <li>SDデータをプロフィール曲線で読み取れる</li>
+                            <li>主成分分析・因子分析へのつながりを説明できる</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の授業では、SD法を単なる用語として覚えるのではなく、実際に小さな評価実験として実施できる形で理解することを目指します。特に、どのような言葉のペアを作るのか、評価シートをどう設計するのか、得られた平均値をどう読むのかが重要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 授業全体での位置づけ -->
+                    <div style="font-size:0.6em">
+                        <h2>授業全体での位置づけ</h2>
+                        <p>
+                            この授業では、人間の感覚・感情・印象を
+                            <strong>感性データとして取得し、分析し、報告する方法</strong>を学ぶ。
+                        </p>
+                        <p>第8回は、評価法の中核にあたる回。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">回</th>
+                                    <th>内容</th>
+                                    <th>第8回との関係</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">第7回</td>
+                                    <td>アンケート手法</td>
+                                    <td>質問紙設計の前提</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <strong>第8回</strong>
+                                    </td>
+                                    <td>
+                                        <strong>SD法による評価</strong>
+                                    </td>
+                                    <td>
+                                        <strong>印象を多面的に測る</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">第9回</td>
+                                    <td>主成分分析</td>
+                                    <td>SDデータを少数の軸へ要約</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">第10回</td>
+                                    <td>因子分析</td>
+                                    <td>潜在因子として解釈</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第8回は、第7回で学んだアンケート手法と、第9回以降の主成分分析・因子分析をつなぐ回です。ここで、印象を複数の評価項目としてデータ化できるようになると、次回以降、そのデータを分析する意味が見えてきます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 90分の見取り図 -->
+                    <div style="font-size:0.6em">
+                        <h2>90分の見取り図</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">時間</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">0〜15分</td>
+                                    <td>なぜ今 SD法を学ぶのか</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">15〜35分</td>
+                                    <td>SD法の基本</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">35〜55分</td>
+                                    <td>尺度・評価シート・実施手順</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">55〜75分</td>
+                                    <td>ミニSD実験とプロフィール曲線</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">75〜90分</td>
+                                    <td>まとめ、確認問題、次回への橋渡し</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>今日の重点：</p>
+                        <p>
+                            <strong>SD法を「知る」だけでなく、「小さく実施できる形」にする。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        授業の前半では、SD法が何を測る方法なのかを確認します。中盤では、両極表現のペア、段階数、中央選択肢、左右反転など、評価シートを作るときの注意点を見ます。後半では、ミニ実験とプロフィール曲線を通して、SDデータの読み方を確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- なぜ今 SD法なのか -->
+                    <div style="font-size:0.6em">
+                        <h2>なぜ今 SD法なのか</h2>
+                        <p>製品やサービスの差別化は、機能や性能だけでは語りにくい。</p>
+                        <p>現場で問われるのは、たとえば次のような印象：</p>
+                        <ul>
+                            <li>
+                                使っていて <strong>気持ちいい</strong>
+                            </li>
+                            <li>
+                                見た目に <strong>高級感がある</strong>
+                            </li>
+                            <li>
+                                画面が <strong>分かりやすい</strong>
+                            </li>
+                            <li>
+                                音が <strong>不快ではない</strong>
+                            </li>
+                            <li>
+                                空間が <strong>落ち着く</strong>
+                            </li>
+                        </ul>
+                        <p>しかし、このままでは対象間で比較しにくい。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        感性評価では、機能や性能だけでなく、人がどのように感じるかが重要になります。ただし、「気持ちいい」「高級感がある」「落ち着く」といった言葉は、そのままでは比較や分析が難しい情報です。そこで、印象を比較可能な形に整える必要があります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 印象を比較可能な形にする -->
+                    <div style="font-size:0.6em">
+                        <h2>印象を比較可能な形にする</h2>
+                        <p>自由記述だけでは：</p>
+                        <ul>
+                            <li>言葉は集まる</li>
+                            <li>しかし、対象間の差は見えにくい</li>
+                            <li>集計や比較に手間がかかる</li>
+                        </ul>
+                        <p>単一質問だけでは：</p>
+                        <ul>
+                            <li>総合評価は分かる</li>
+                            <li>しかし、なぜそう感じたかは分かりにくい</li>
+                        </ul>
+                        <p>そこで役立つのが、</p>
+                        <p>
+                            <strong>複数の印象軸をそろえて比較する SD法</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        自由記述は、感性ワードを集めるには有効ですが、対象Aと対象Bのどこが違うのかを定量的に比較するには不便です。また、「好きですか」とだけ聞いても、好きの理由は分かりません。SD法では、複数の印象軸をそろえることで、対象ごとの差を読みやすくします。
+                    </aside>
+                </section>
+                <section>
+                    <!-- SD法が向いている場面 -->
+                    <div style="font-size:0.6em">
+                        <h2>SD法が向いている場面</h2>
+                        <p>SD法が向いているのは：</p>
+                        <ul>
+                            <li>
+                                2案以上の対象を、<strong>複数の印象軸で比較</strong>したい
+                            </li>
+                            <li>
+                                「好き／嫌い」だけでなく、<strong>好きの内訳</strong>を知りたい
+                            </li>
+                            <li>後で主成分分析や因子分析につなげたい</li>
+                        </ul>
+                        <p>例：</p>
+                        <ul>
+                            <li>UI案 A/B の見やすさ・安心感・高級感</li>
+                            <li>通知音 3種類の印象</li>
+                            <li>パッケージ案 4種類の購買意欲につながる印象</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法は、複数の対象を同じ評価軸で比較したいときに向いています。たとえば、UI案AとBで、どちらが見やすいか、安心できるか、高級感があるかを同じ項目で評価すれば、対象間の印象差を見やすくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- SD法が向きにくい場面 -->
+                    <div style="font-size:0.6em">
+                        <h2>SD法が向きにくい場面</h2>
+                        <p>SD法が必ず最適とは限らない。</p>
+                        <p>向きにくい場面：</p>
+                        <ul>
+                            <li>
+                                <p>
+                                    「痛み」「疲労」「酔い」など、
+                                    <strong>1つの強さ</strong>を連続量で細かく取りたいとき
+                                </p>
+                                <ul>
+                                    <li>この場合は VAS の方が向くことが多い</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p>評価語がまだ整理されていないとき</p>
+                                <ul>
+                                    <li>先に自由記述やインタビューで感性ワードを集める</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>SD法は、</p>
+                        <p>
+                            <strong>感性ワードがある程度整理され、複数の印象軸で比較したいときに強い。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法は便利ですが、すべての感性評価に向いているわけではありません。痛みや疲労のように、1つの強さを細かく測りたい場合は、VASの方が向くことがあります。また、どの言葉で評価すればよいかが分からない段階では、まず感性ワードを集める必要があります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 導入ミニ活動 -->
+                    <div style="font-size:0.6em">
+                        <h2>導入ミニ活動：印象の軸を考える</h2>
+                        <p>問い：</p>
+                        <p>
+                            <strong>最近使ったアプリ・製品・空間のうち、
+                            2案を比べるとしたら、何を「印象の軸」として見たいか。</strong>
+                        </p>
+                        <p>手順：</p>
+                        <ol>
+                            <li>1人で考える：1分</li>
+                            <li>ペアで共有する：3分</li>
+                            <li>2〜3個の言葉をメモする</li>
+                        </ol>
+                        <p>ポイント：</p>
+                        <ul>
+                            <li>好き／嫌いだけで終わらせない</li>
+                            <li>どの言葉で比べたいかを考える</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここでは、まず身近な対象を思い浮かべてください。たとえば、アプリの画面、イヤホン、カフェ、駅の案内表示などです。2つの案を比べるとしたら、どのような印象の軸で比較したいでしょうか。好きか嫌いかだけでなく、見やすい、安心できる、親しみやすいなど、具体的な言葉を考えてみましょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- SD法とは何か -->
+                    <div style="font-size:0.6em">
+                        <h2>SD法とは何か</h2>
+                        <p>
+                            SD法
+                            Semantic Differential method：意味微分法
+                        </p>
+                        <p>対象に対して感じた印象を、</p>
+                        <p>
+                            <strong>両極表現のペア × 段階尺度</strong>
+                        </p>
+                        <p>で評価してもらう方法。</p>
+                        <p>例：</p>
+                        <ul>
+                            <li>明るい — 暗い</li>
+                            <li>洗練されている — 野暮ったい</li>
+                            <li>安心できる — 不安だ</li>
+                            <li>かわいい — かわいくない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法は、対象に対して感じた印象を、両極表現のペアと段階尺度で評価してもらう方法です。たとえば、「明るい—暗い」という軸を用意し、その間を5段階や7段階で回答してもらいます。これにより、印象を多面的な数値データとして扱えるようになります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- SD法で得られるもの -->
+                    <div style="font-size:0.6em">
+                        <h2>SD法で得られるもの</h2>
+                        <p>SD法では、ペアごとに 5段階や 7段階で回答する。</p>
+                        <p>その結果、対象の印象を</p>
+                        <ul>
+                            <li>複数の評価軸で</li>
+                            <li>同じ形式で</li>
+                            <li>数値データとして</li>
+                        </ul>
+                        <p>扱えるようになる。</p>
+                        <p>重要：</p>
+                        <p>
+                            <strong>SD法は、単なる総合点ではなく、印象のどこに差があるかを見る方法である。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法で得られるのは、単なる好き嫌いの総合点ではありません。対象Aは見やすいが高級感は低い、対象Bは高級感はあるが直感的ではない、というように、印象のどこに差があるのかを見るためのデータが得られます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 好みではなく印象の構造を見る -->
+                    <div style="font-size:0.6em">
+                        <h2>好みではなく印象の構造を見る</h2>
+                        <p>同じ「好き」でも、理由は異なる。</p>
+                        <ul>
+                            <li>高級感があるから好き</li>
+                            <li>親しみやすいから好き</li>
+                            <li>落ち着くから好き</li>
+                            <li>信頼できそうだから好き</li>
+                        </ul>
+                        <p>SD法では、こうした背景を複数の項目で分けて見る。</p>
+                        <p>つまり、</p>
+                        <p>
+                            <strong>好き／嫌いの背後にある印象の構造を読む。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        「好き」という評価は一見分かりやすいですが、その理由は人や対象によって違います。高級感があるから好きなのか、親しみやすいから好きなのか、落ち着くから好きなのか。SD法では、このような印象の内訳を複数の項目で分けて見ることができます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 形容詞対より両極表現のペア -->
+                    <div style="font-size:0.6em">
+                        <h2>形容詞対より「両極表現のペア」</h2>
+                        <p>SD法は「反対語の形容詞対」と説明されることが多い。</p>
+                        <p>しかし、本講では少し広く、</p>
+                        <p>
+                            <strong>両極表現のペア</strong>
+                        </p>
+                        <p>として考える。</p>
+                        <p>理由：</p>
+                        <ul>
+                            <li>すべての感性語に自然な反対語があるとは限らない</li>
+                            <li>強い反対語では回答が偏る場合がある</li>
+                            <li>否定形の方が安定する場合もある</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法では、形容詞対という言い方がよく使われます。しかし、実際にはすべての感性語に自然な反対語があるわけではありません。たとえば「かわいい」に対して「かっこいい」を置くと、反対語というより別の印象軸になってしまうことがあります。そこで今回は、より広く両極表現のペアとして考えます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 両極表現のタイプ -->
+                    <div style="font-size:0.6em">
+                        <h2>両極表現のタイプ</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>タイプ</th>
+                                    <th>例</th>
+                                    <th>向いている場面</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>自然な反対語</td>
+                                    <td>明るい — 暗い</td>
+                                    <td>日常語として定着している軸</td>
+                                </tr>
+                                <tr>
+                                    <td>否定形</td>
+                                    <td>かわいい — かわいくない</td>
+                                    <td>きれいな反対語が作りにくい軸</td>
+                                </tr>
+                                <tr>
+                                    <td>対比的なフレーズ</td>
+                                    <td>安心できる — 不安だ</td>
+                                    <td>文として示した方が自然な軸</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>大事なのは、</p>
+                        <p>
+                            <strong>1つの意味軸を両端から表せているか。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        両極表現のペアには、いくつかのタイプがあります。「明るい—暗い」のように自然な反対語がある場合もあれば、「かわいい—かわいくない」のように否定形にした方がよい場合もあります。また、「安心できる—不安だ」のように、文として表した方が自然な場合もあります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 両極表現を作る基準 -->
+                    <div style="font-size:0.6em">
+                        <h2>両極表現を作る基準</h2>
+                        <p>ペアを作るときの基本基準：</p>
+                        <ol>
+                            <li>
+                                <strong>1つの意味軸になっているか</strong>
+                            </li>
+                            <li>
+                                <strong>対象に自然に使える言葉か</strong>
+                            </li>
+                            <li>
+                                <strong>回答者がすぐ理解できるか</strong>
+                            </li>
+                            <li>
+                                <strong>他の項目と役割が重なりすぎていないか</strong>
+                            </li>
+                        </ol>
+                        <p>設計の合言葉：</p>
+                        <p>
+                            <strong>「反対語っぽいか」より、「評価軸として機能するか」。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        両極表現のペアを作るときには、まず1つの意味軸になっているかを確認します。次に、その対象に自然に使える言葉か、回答者がすぐに理解できるかを見ます。また、似た意味の項目を増やしすぎると、後で解釈しづらくなるため注意が必要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- よくある失敗 -->
+                    <div style="font-size:0.55em">
+                        <h2>よくある失敗</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>失敗例</th>
+                                    <th>何が問題か</th>
+                                    <th>修正の方向</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>かわいい — かっこいい</td>
+                                    <td>反対語ではなく別軸</td>
+                                    <td>かわいい — かわいくない</td>
+                                </tr>
+                                <tr>
+                                    <td>使いやすい — 高性能</td>
+                                    <td>2つの概念が混ざっている</td>
+                                    <td>
+                                        操作しやすい — しにくい
+                                        <br>
+                                        性能が高い — 低い
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>安心 — スピード感がある</td>
+                                    <td>軸がずれている</td>
+                                    <td>安心できる — 不安だ</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        おいしい — まずい
+                                        <br>
+                                        椅子の評価
+                                    </td>
+                                    <td>対象に不適切</td>
+                                    <td>対象に自然な語へ置換</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD項目でよくある失敗は、反対語に見えて実は別の軸になっていることです。「かわいい—かっこいい」は、どちらも肯定的な印象として成立することがあり、単純な反対語ではありません。また、「使いやすい—高性能」のように、操作性と性能が混ざっている場合は、項目を分ける必要があります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 似た意味の項目を増やしすぎない -->
+                    <div style="font-size:0.6em">
+                        <h2>似た意味の項目を増やしすぎない</h2>
+                        <p>たとえば、次の語は近い印象軸になる場合がある。</p>
+                        <ul>
+                            <li>高級感がある</li>
+                            <li>上品だ</li>
+                            <li>洗練されている</li>
+                        </ul>
+                        <p>本格評価では重なりが出ることもある。</p>
+                        <p>ただし授業レベルでは、</p>
+                        <p>
+                            <strong>似た役割の語を増やしすぎると、プロフィール曲線も解釈しづらくなる。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        評価項目は多ければよいわけではありません。高級感、上品さ、洗練性は、対象によってはかなり近い印象として回答されることがあります。似た項目が多すぎると、回答負荷が増えるだけでなく、プロフィール曲線を見たときにも何を読めばよいか分かりにくくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 何対くらい用意するか -->
+                    <div style="font-size:0.6em">
+                        <h2>何対くらい用意するか</h2>
+                        <p>目的に応じて項目数を決める。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>用途</th>
+                                    <th style="text-align:right">目安</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>授業内の小演習</td>
+                                    <td style="text-align:right">6〜8対程度</td>
+                                </tr>
+                                <tr>
+                                    <td>小規模な比較実験</td>
+                                    <td style="text-align:right">8〜12対程度</td>
+                                </tr>
+                                <tr>
+                                    <td>本格的な研究・レポート</td>
+                                    <td style="text-align:right">10〜20対程度</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>重要：</p>
+                        <p>
+                            <strong>対象数 × 項目数</strong> で回答負荷を見積もる。
+                        </p>
+                        <p>例：</p>
+                        <ul>
+                            <li>3案 × 12対 = 36評定</li>
+                            <li>5案 × 15対 = 75評定</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        項目数は、評価の目的と回答負荷のバランスで決めます。授業内の演習であれば6から8対程度でも十分です。小規模な比較実験では8から12対程度、本格的な研究やレポートでは10から20対程度が目安になります。ただし、対象数が増えると回答数も一気に増える点に注意してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 5段階と7段階 -->
+                    <div style="font-size:0.6em">
+                        <h2>5段階と7段階</h2>
+                        <p>SD法では、5段階または7段階がよく使われる。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>段階数</th>
+                                    <th>特徴</th>
+                                    <th>向いている場面</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>5段階</td>
+                                    <td>
+                                        迷いが少ない
+                                        <br>
+                                        集計しやすい
+                                    </td>
+                                    <td>
+                                        授業内演習
+                                        <br>
+                                        短い調査
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>7段階</td>
+                                    <td>より細かな差を取りやすい</td>
+                                    <td>
+                                        レポート
+                                        <br>
+                                        既存尺度との整合
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>実務的な目安：</p>
+                        <ul>
+                            <li>
+                                授業内では <strong>5段階</strong> を基本にする
+                            </li>
+                            <li>
+                                既存尺度との整合を重視するなら <strong>7段階</strong> も有力
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法では、5段階や7段階がよく使われます。5段階は短い調査や授業内演習に向いています。7段階は、より細かな差を取りたい場合や、既存の標準化質問紙との整合を重視する場合に使われます。今日のミニ実験では、扱いやすさを重視して5段階を基本にします。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 中央選択肢とわからない -->
+                    <div style="font-size:0.6em">
+                        <h2>中央選択肢と「わからない」</h2>
+                        <p>5段階の中央「3」には、複数の意味が混ざりやすい。</p>
+                        <ul>
+                            <li>どちらとも言えない</li>
+                            <li>差を感じない</li>
+                            <li>よく分からない</li>
+                            <li>興味がない</li>
+                        </ul>
+                        <p>区別したい場合：</p>
+                        <p>
+                            <strong>「わからない／判断できない」を別扱いにする。</strong>
+                        </p>
+                        <p>
+                            ただし、授業内ミニ実験では複雑にしすぎず、
+                            まずは中央の意味を意識する。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        中央選択肢には注意が必要です。5段階評価の3は、どちらとも言えないという意味かもしれませんし、よく分からないという意味かもしれません。本当に中立なのか、判断できないのかを区別したい場合は、「わからない」を別の選択肢として用意することもあります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 評価シート設計1：項目順と左右の向き -->
+                    <div style="font-size:0.6em">
+                        <h2>評価シート設計1：項目順と左右の向き</h2>
+                        <h3>項目順</h3>
+                        <ul>
+                            <li>本格調査ではランダム化が望ましい</li>
+                            <li>授業内演習では、理解しやすい順にまとめてもよい</li>
+                        </ul>
+                        <h3>左右の向き</h3>
+                        <ul>
+                            <li>すべて同じ向きだと、惰性回答が起きやすい</li>
+                            <li>途中で左右を入れ替えるのは有効</li>
+                            <li>
+                                ただし、集計前に <strong>逆転処理</strong> が必要
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        評価シートでは、項目順と左右の向きがデータ品質に影響します。本格的な調査では項目順をランダム化することが望ましい場合があります。一方、授業内演習では、まず理解しやすさを優先して項目をまとめても構いません。左右の向きを反転させる場合は、必ず集計前に逆転処理を行います。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 評価シート設計2：提示条件と予備実施 -->
+                    <div style="font-size:0.6em">
+                        <h2>評価シート設計2：提示条件と予備実施</h2>
+                        <h3>対象提示を統一する</h3>
+                        <ul>
+                            <li>画像の大きさ</li>
+                            <li>表示順</li>
+                            <li>評価時間</li>
+                            <li>画面の明るさや距離</li>
+                        </ul>
+                        <p>提示条件がばらつくと、印象差ではなく提示条件の差を拾う。</p>
+                        <h3>予備実施する</h3>
+                        <ul>
+                            <li>言葉が分かるか</li>
+                            <li>回答時間が長すぎないか</li>
+                            <li>同じ意味の項目が多すぎないか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法では、対象の提示条件も重要です。画像の大きさや表示時間が違うと、対象そのものの印象ではなく、提示条件の違いを測ってしまう可能性があります。また、本番前に少人数で試しておくと、言葉が分かりにくい、回答時間が長い、似た項目が多いといった問題を見つけやすくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- SDデータの形 -->
+                    <div style="font-size:0.6em">
+                        <h2>SDデータの形</h2>
+                        <p>SD法で得られるデータは、基本的に次の形になる。</p>
+                        <p>
+                            <strong>評価対象 × 項目 × 回答者</strong>
+                        </p>
+                        <p>例：</p>
+                        <ul>
+                            <li>評価対象：画面A、画面B</li>
+                            <li>項目：見やすい、直感的、高級感、安心感</li>
+                            <li>回答者：学生、利用者、実験参加者</li>
+                        </ul>
+                        <p>授業内ではまず、</p>
+                        <p>
+                            <strong>対象ごとの平均値をとり、プロフィール曲線で読む。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法で得られるデータは、評価対象、項目、回答者の3方向を持ちます。授業内では、まず各対象について項目ごとの平均値を出し、それをプロフィール曲線で読みます。ここでは、複雑な統計分析の前に、項目ごとの差を丁寧に見ることが大切です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- プロフィール曲線の例 -->
+                    <div style="font-size:0.55em">
+                        <h2>プロフィール曲線の例</h2>
+                        <p>5段階評価の平均値を比べる。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th style="text-align:right">画面A</th>
+                                    <th style="text-align:right">画面B</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>見やすい — 見にくい</td>
+                                    <td style="text-align:right">4.3</td>
+                                    <td style="text-align:right">2.8</td>
+                                </tr>
+                                <tr>
+                                    <td>直感的 — 分かりにくい</td>
+                                    <td style="text-align:right">4.1</td>
+                                    <td style="text-align:right">3.0</td>
+                                </tr>
+                                <tr>
+                                    <td>高級感がある — 安っぽい</td>
+                                    <td style="text-align:right">3.0</td>
+                                    <td style="text-align:right">4.2</td>
+                                </tr>
+                                <tr>
+                                    <td>安心できる — 不安だ</td>
+                                    <td style="text-align:right">4.0</td>
+                                    <td style="text-align:right">3.2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>読み取り例：</p>
+                        <ul>
+                            <li>画面A：見やすさ・直感性・安心感が高い</li>
+                            <li>画面B：高級感が高い</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この表では、画面Aと画面Bの平均値を項目ごとに比べています。画面Aは、見やすさ、直感性、安心感で高く、画面Bは高級感で高いと読めます。プロフィール曲線では、このような項目ごとの差を視覚的に確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- プロフィール曲線を読む注意 -->
+                    <div style="font-size:0.6em">
+                        <h2>プロフィール曲線を読む注意</h2>
+                        <ol>
+                            <li>
+                                <strong>左右の向きは必ずそろえてから平均する</strong>
+                            </li>
+                            <li>
+                                線で結ばれていても、
+                                <strong>隣り合う項目どうしが連続した意味をもつとは限らない</strong>
+                            </li>
+                            <li>
+                                大切なのは、線の傾きよりも、
+                                <strong>各項目でどの対象が高いか</strong>
+                            </li>
+                        </ol>
+                        <p>まずは、</p>
+                        <p>
+                            <strong>項目ごとの差を見る。</strong>
+                        </p>
+                        <p>この姿勢が、次回の PCA につながる。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        プロフィール曲線を読むときは、線の形だけに引きずられないようにします。項目の順番は、時間や距離のような連続軸ではありません。したがって、隣り合う点の傾きよりも、各項目でどの対象の平均値が高いかを読むことが重要です。また、左右反転した項目は、平均する前に必ず向きをそろえます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 産業応用の読み方 -->
+                    <div style="font-size:0.6em">
+                        <h2>産業応用の読み方</h2>
+                        <p>SD法や semantic differential 形式の質問紙は、さまざまな対象で使われる。</p>
+                        <p>事例を見るときの観点：</p>
+                        <ol>
+                            <li>
+                                <strong>対象</strong>
+                                何を評価しているか
+                            </li>
+                            <li>
+                                <strong>感性・主観体験</strong>
+                                何を感じるものとして扱っているか
+                            </li>
+                            <li>
+                                <strong>データと活用</strong>
+                                得た評価をどう使っているか
+                            </li>
+                        </ol>
+                        <p>この3点で読むと、分野が違っても整理しやすい。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここからは、SD法がどのような対象に使われているかを見ます。分野ごとの詳細を覚えることが目的ではありません。対象、感性・主観体験、データと活用という3つの観点で見ると、応用事例を整理しやすくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例1：UX評価 -->
+                    <div style="font-size:0.6em">
+                        <h2>事例1：UX評価</h2>
+                        <p>対象：</p>
+                        <ul>
+                            <li>Web</li>
+                            <li>アプリ</li>
+                            <li>XR などのユーザー体験</li>
+                        </ul>
+                        <p>感性・主観体験：</p>
+                        <ul>
+                            <li>魅力</li>
+                            <li>分かりやすさ</li>
+                            <li>効率</li>
+                            <li>刺激性</li>
+                            <li>新規性</li>
+                        </ul>
+                        <p>データと活用：</p>
+                        <p>
+                            <strong>7点の semantic differential を並べた標準化質問紙で、主観印象を測定し、製品比較や改善に活用する。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        UX評価では、Webやアプリ、XRなどのユーザー体験を対象に、魅力、分かりやすさ、効率、刺激性、新規性などを評価します。AttrakDiffやUEQのような標準化質問紙では、semantic differential形式の項目が使われています。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例2：VR提示と静止画像提示 -->
+                    <div style="font-size:0.6em">
+                        <h2>事例2：VR提示と静止画像提示</h2>
+                        <p>対象：</p>
+                        <ul>
+                            <li>ゲームコントローラの仮想プロトタイプ</li>
+                        </ul>
+                        <p>感性・主観体験：</p>
+                        <ul>
+                            <li>製品に対する主観印象</li>
+                            <li>評価への確信度</li>
+                        </ul>
+                        <p>データと活用：</p>
+                        <ul>
+                            <li>Semantic Differential による印象評価</li>
+                            <li>視線計測</li>
+                        </ul>
+                        <p>これらを組み合わせて、</p>
+                        <p>
+                            <strong>VR提示とフォトリアル画像提示で評価がどう変わるかを比較する。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この事例では、同じ製品をどのように提示するかによって、評価が変わるかを見ています。VRで提示した場合と、フォトリアル画像で提示した場合を比較し、semantic differentialによる印象評価と視線計測を組み合わせています。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例3：製品音の印象評価 -->
+                    <div style="font-size:0.6em">
+                        <h2>事例3：製品音の印象評価</h2>
+                        <p>対象：</p>
+                        <ul>
+                            <li>家電の動作音</li>
+                            <li>
+                                製品音
+                                例：ヘアドライヤー、シェーバー、掃除機など
+                            </li>
+                        </ul>
+                        <p>感性・主観体験：</p>
+                        <ul>
+                            <li>不快さ</li>
+                            <li>力強さ</li>
+                            <li>機械らしさ</li>
+                            <li>心地よさ</li>
+                            <li>品質感</li>
+                        </ul>
+                        <p>データと活用：</p>
+                        <p>
+                            <strong>製品音に共通する意味次元を整理し、音の設計や評価語選定に活かす。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法は、見た目だけでなく音の印象評価にも使われます。製品音を、不快さ、力強さ、機械らしさ、心地よさ、品質感などの観点から評価し、どのような意味次元があるかを整理します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例4：デザイン・パッケージ・空間 -->
+                    <div style="font-size:0.55em">
+                        <h2>事例4：デザイン・パッケージ・空間</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>対象</th>
+                                    <th>感性・主観体験</th>
+                                    <th>データと活用</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>自動車フロントグリル</td>
+                                    <td>special, luxury, aggressive, advanced など</td>
+                                    <td>形状要素が印象をどう強めるかを比較</td>
+                                </tr>
+                                <tr>
+                                    <td>食品パッケージ</td>
+                                    <td>成熟した、健康的、明るい、軽い、新しい、買いたい など</td>
+                                    <td>印象と購買意向の関係を読む</td>
+                                </tr>
+                                <tr>
+                                    <td>診療所の待合室</td>
+                                    <td>安心、落ち着き、入りやすさ、リラックス など</td>
+                                    <td>空間要素と印象の関係を検討</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法は、自動車デザイン、食品パッケージ、医療・ヘルスケア空間など、さまざまな対象に応用できます。対象は違っても、共通しているのは、印象を言葉の軸で評価し、対象や設計要素との関係を読むという点です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- データサイエンスとの接点 -->
+                    <div style="font-size:0.6em">
+                        <h2>データサイエンスとの接点</h2>
+                        <p>感性工学では、最初に現れるのは言葉。</p>
+                        <ul>
+                            <li>かわいい</li>
+                            <li>使いやすい</li>
+                            <li>安心できる</li>
+                            <li>高級感がある</li>
+                        </ul>
+                        <p>SD法は、これらの感性ワードを、</p>
+                        <ul>
+                            <li>対象ごとに</li>
+                            <li>同じ形式で</li>
+                            <li>比較可能な数値として</li>
+                        </ul>
+                        <p>整理する入口である。</p>
+                        <p>
+                            <strong>言語データと数値データの橋渡し。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        感性工学では、最初に得られる情報が言葉であることが多くあります。SD法は、その言葉を評価項目として整理し、対象ごとに同じ形式で回答してもらうことで、比較可能な数値データへ変換します。この意味で、SD法は言語データと数値データをつなぐ入口です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 尺度水準の注意 -->
+                    <div style="font-size:0.6em">
+                        <h2>尺度水準の注意</h2>
+                        <p>
+                            SD法の各回答は、厳密には <strong>順序尺度</strong> の性質を持つ。
+                        </p>
+                        <p>一方、実務では、</p>
+                        <ul>
+                            <li>平均値を計算する</li>
+                            <li>プロフィール曲線を描く</li>
+                            <li>主成分分析や因子分析に使う</li>
+                        </ul>
+                        <p>
+                            ために、<strong>間隔尺度に近いものとして扱う</strong>ことが多い。
+                        </p>
+                        <p>注意：</p>
+                        <ul>
+                            <li>実務的な仮定を自覚する</li>
+                            <li>分布やばらつきも確認する</li>
+                            <li>左右反転項目は逆転処理する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第4回で学んだ尺度水準と関連します。SD法の回答は、厳密には順序尺度の性質を持ちます。しかし、感性工学や心理学の実務では、平均値や多変量解析を行うために、間隔尺度に近いものとして扱うことが多くあります。その仮定を自覚して分析することが重要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第8回で確実にする流れ -->
+                    <div style="font-size:0.6em">
+                        <h2>第8回で確実にする流れ</h2>
+                        <p>今日の授業で押さえる流れ：</p>
+                        <ol>
+                            <li>評価語を設計する</li>
+                            <li>評価シートを作る</li>
+                            <li>データをとる</li>
+                            <li>プロフィール曲線で比較する</li>
+                        </ol>
+                        <p>次回の主成分分析では、</p>
+                        <p>
+                            <strong>複数項目を少数の軸へ要約する。</strong>
+                        </p>
+                        <p>その前提として、今日は</p>
+                        <p>
+                            <strong>データを理解した形で作ること</strong>
+                        </p>
+                        <p>を重視する。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第8回では、予測や高度な統計モデルよりも、まず評価語を設計し、評価シートを作り、得られたデータを記述的に読むところを確実にします。次回の主成分分析は、今日作るような複数項目のデータを少数の軸に要約する方法です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 演習1：両極表現のペアを作る -->
+                    <div style="font-size:0.6em">
+                        <h2>演習1：両極表現のペアを作る</h2>
+                        <p>対象を1つ選ぶ。</p>
+                        <ul>
+                            <li>スマホアプリのログイン画面</li>
+                            <li>イヤホンの外観</li>
+                            <li>カフェのトップページ</li>
+                        </ul>
+                        <p>手順：</p>
+                        <ol>
+                            <li>
+                                <strong>Think（3分）</strong>
+                                印象を表す感性ワードを6〜8個書く
+                            </li>
+                            <li>
+                                <strong>Pair（4分）</strong>
+                                互いの語を見比べ、4〜6個の両極表現のペアにする
+                            </li>
+                            <li>
+                                <strong>Share（3分）</strong>
+                                1ペアだけ全体共有する
+                            </li>
+                        </ol>
+                        <p>確認：</p>
+                        <p>
+                            <strong>1つの意味軸になっているか。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここでは、実際に両極表現のペアを作ります。まず対象を1つ選び、印象を表す感性ワードを出してください。その後、ペアで見比べて、4から6個の両極表現のペアにします。最後に、1つのペアを共有し、本当に1つの意味軸になっているかを確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 演習2：ミニSD実験 -->
+                    <div style="font-size:0.55em">
+                        <h2>演習2：ミニSD実験</h2>
+                        <p>2種類の対象 A/B を、5段階で評価する。</p>
+                        <p>使用するペアの例：</p>
+                        <ul>
+                            <li>見やすい — 見にくい</li>
+                            <li>直感的 — 分かりにくい</li>
+                            <li>洗練されている — 野暮ったい</li>
+                            <li>安心できる — 不安だ</li>
+                            <li>親しみやすい — とっつきにくい</li>
+                            <li>好き — 嫌い</li>
+                        </ul>
+                        <p>手順：</p>
+                        <ol>
+                            <li>各自が A/B を評価する</li>
+                            <li>4人グループで平均を出す</li>
+                            <li>平均値からプロフィール曲線を手書きする</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次に、ミニSD実験を行います。提示された2種類の対象AとBについて、例に示した6項目を5段階で評価します。その後、4人グループで平均値を出し、プロフィール曲線を手書きします。ここでは正確な統計分析よりも、項目ごとの差を読むことを重視します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 演習2の読み取り -->
+                    <div style="font-size:0.6em">
+                        <h2>演習2の読み取り</h2>
+                        <p>プロフィール曲線を見て考える。</p>
+                        <ol>
+                            <li>差が大きい項目を2つ挙げる</li>
+                            <li>どちらの対象が高いかを確認する</li>
+                            <li>その差に関係しそうな設計要素を1つ提案する</li>
+                        </ol>
+                        <p>読み取りの型：</p>
+                        <p>
+                            <strong>「Aは〇〇で高く、Bは△△で高い。
+                            その理由として、□□という設計要素が関係しそうである。」</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        プロフィール曲線を見たら、まず差が大きい項目を探します。そのうえで、どちらの対象が高いのかを確認し、その差に関係しそうな設計要素を考えます。たとえば、Aは見やすさで高く、Bは高級感で高い。その理由として、色使いや余白、文字の大きさが関係しそうだ、というように説明します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 演習3：次回への伏線 -->
+                    <div style="font-size:0.6em">
+                        <h2>演習3：次回への伏線</h2>
+                        <p>
+                            活動2の6項目を眺めて、
+                            2〜3個のまとまりに分けられそうか考える。
+                        </p>
+                        <p>例：</p>
+                        <ul>
+                            <li>操作性</li>
+                            <li>安心感</li>
+                            <li>雰囲気</li>
+                        </ul>
+                        <p>問い：</p>
+                        <p>
+                            <strong>複数の項目は、どのような印象のまとまりとして読めそうか。</strong>
+                        </p>
+                        <p>これは次回の</p>
+                        <p>
+                            <strong>主成分分析</strong>
+                        </p>
+                        <p>につながる発想である。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最後に、評価項目を2から3個のまとまりに分けられそうか考えます。たとえば、見やすい、直感的という項目は操作性に近いかもしれません。安心できる、親しみやすいという項目は安心感や雰囲気に近いかもしれません。このように、複数の項目を少数のまとまりとして読む考え方が、次回の主成分分析につながります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 確認問題 -->
+                    <div style="font-size:0.6em">
+                        <h2>確認問題</h2>
+                        <ol>
+                            <li>
+                                SD法とは何か。
+                                <strong>「両極表現」と「段階尺度」</strong> という語を使って説明しなさい。
+                            </li>
+                            <li>「かわいい — かっこいい」が SD項目として危ういのはなぜか。</li>
+                            <li>5段階の中央選択肢には、どのような意味が混ざりやすいか。</li>
+                            <li>プロフィール曲線は、何の平均をどのように並べた図か。</li>
+                            <li>SD法で得たデータが、次回どのように扱われるかを1〜2文で説明しなさい。</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここでは、今日の内容を確認します。SD法の定義、両極表現の設計、中央選択肢の意味、プロフィール曲線の読み方、次回の主成分分析へのつながりを、自分の言葉で説明できるか確認してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 授業後課題 -->
+                    <div style="font-size:0.55em">
+                        <h2>授業後課題：SD法による評価計画</h2>
+                        <p>身近な対象1つについて、SD法による評価計画を立てる。</p>
+                        <p>A4 1枚程度を目安に、次を含める。</p>
+                        <ol>
+                            <li>
+                                <strong>評価対象</strong>：何を比較するか
+                            </li>
+                            <li>
+                                <strong>感性・主観体験</strong>：何を感じるものとして扱うか
+                            </li>
+                            <li>
+                                <strong>両極表現のペア</strong>：8〜12対
+                            </li>
+                            <li>
+                                <strong>尺度設計</strong>：5段階か7段階か、その理由
+                            </li>
+                            <li>
+                                <strong>評価シート上の工夫</strong>：項目順、左右反転、「わからない」の扱い
+                            </li>
+                            <li>
+                                <strong>分析の入口</strong>：プロフィール曲線で何を見たいか
+                            </li>
+                            <li>
+                                <strong>次回への伏線</strong>：項目のまとまりの仮説
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        授業後課題では、身近な対象についてSD法の評価計画を立てます。実際にデータを取る前の計画として、評価対象、感性・主観体験、両極表現のペア、尺度設計、評価シートの工夫、プロフィール曲線で見たい点を整理してください。次回に向けて、項目がどのようなまとまりになりそうかも考えておきます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 次回への橋渡し -->
+                    <div style="font-size:0.6em">
+                        <h2>次回への橋渡し：主成分分析</h2>
+                        <p>次回は、SD法で得られた多数の項目を、</p>
+                        <p>
+                            <strong>少数の軸、すなわち主成分へ要約する</strong>
+                        </p>
+                        <p>主成分分析を学ぶ。</p>
+                        <p>第8回のプロフィール曲線は、</p>
+                        <ul>
+                            <li>項目ごとの差を見るには強い</li>
+                            <li>しかし、項目数が増えると全体像が読みにくい</li>
+                        </ul>
+                        <p>そこで PCA が必要になる。</p>
+                        <p>次回のキーワード：</p>
+                        <ul>
+                            <li>次元縮約</li>
+                            <li>主成分</li>
+                            <li>寄与率・累積寄与率</li>
+                            <li>主成分負荷量・主成分得点</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次回は主成分分析を扱います。プロフィール曲線は、少数の項目であれば分かりやすい方法ですが、項目数が増えると全体像が読みづらくなります。そこで、複数の項目を少数の軸に要約する主成分分析が必要になります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日のまとめ -->
+                    <div style="font-size:0.6em">
+                        <h2>今日のまとめ</h2>
+                        <ul>
+                            <li>
+                                SD法は、<strong>両極表現のペア × 段階尺度</strong> で対象の印象を測る方法である
+                            </li>
+                            <li>
+                                大切なのは、「反対語っぽい」ことより、
+                                <strong>1つの意味軸として自然に機能するか</strong> である
+                            </li>
+                            <li>
+                                評価シートでは、
+                                <strong>項目数、段階数、中央選択肢、左右反転、提示条件</strong> がデータ品質を左右する
+                            </li>
+                            <li>
+                                得られたデータは、まず <strong>プロフィール曲線</strong> で読む
+                            </li>
+                            <li>次回以降は、PCA・因子分析で要約する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のまとめです。SD法は、両極表現のペアと段階尺度を使って、対象の印象を測る方法です。重要なのは、自然な評価軸として機能するペアを作ることです。評価シートの設計では、項目数、段階数、中央選択肢、左右反転、提示条件がデータ品質に関わります。得られたデータは、まずプロフィール曲線で読み、次回以降の主成分分析や因子分析へつなげます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 参考資料 -->
+                    <div style="font-size:0.5em">
+                        <h2>参考資料</h2>
+                        <ul>
+                            <li>
+                                <p>
+                                    市原 茂 (2009)
+                                    <a href="https://doi.org/10.5100/jje.45.263">セマンティック・ディファレンシャル法（SD法）の可能性と今後の課題</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Schütte et al. (2024)
+                                    <a href="https://doi.org/10.5057/ijae.IJAE-D-23-00003">Kansei for the Digital Era</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Díaz-Oreiro et al. (2019)
+                                    <a href="https://doi.org/10.3390/proceedings2019031014">Standardized Questionnaires for User Experience Evaluation: A Systematic Literature Review</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Palacios-Ibáñez et al. (2024)
+                                    <a href="https://doi.org/10.1007/s10055-024-01048-2">Exploring the user’s gaze during product evaluation through the semantic differential</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Özcan &amp; van Egmond (2012)
+                                    <a href="https://www.ijdesign.org/index.php/IJDesign/article/view/957/473">Basic Semantics of Product Sounds</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        参考資料です。市原論文はSD法の全体像をつかむのに向いています。Schütteらの論文は、感性工学全体の中でSD法をどう位置づけるかを確認するのに役立ちます。UX評価、製品評価、製品音などの応用事例も、必要に応じて参照してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 参考資料：応用事例と次回予習 -->
+                    <div style="font-size:0.5em">
+                        <h2>参考資料：応用事例と次回予習</h2>
+                        <p>応用事例：</p>
+                        <ul>
+                            <li>
+                                <p>
+                                    川澄未来子・黄峻 (2021)
+                                    <a href="https://doi.org/10.5057/jjske.TJSKE-D-20-00032">タイ向け自動車フロントグリルの3DCGデザインに対する感性評価</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    吉田崇花ほか (2021)
+                                    <a href="https://doi.org/10.5057/jjske.TJSKE-D-20-00015">SD法を用いたグルテンフリー食品の製品パッケージデザイン</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    陶真裕・羽生和紀 (2012)
+                                    <a href="https://doi.org/10.5057/jjske.11.357">診療所の待合室の視覚的特性と感情的評価の構造に関する研究</a>
+                                </p>
+                            </li>
+                        </ul>
+                        <p>次回予習：</p>
+                        <ul>
+                            <li>
+                                <a href="https://www.itl.nist.gov/div898/handbook/pmc/section5/pmc55.htm">NIST Engineering Statistics Handbook: Principal Components</a>
+                            </li>
+                            <li>
+                                <a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">scikit-learn: PCA</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        このスライドには、応用事例と次回予習の資料をまとめています。応用事例は、デザイン、食品パッケージ、空間評価など、SD法がさまざまな対象に使われることを確認するための資料です。次回の主成分分析に向けて、NISTの解説やscikit-learnのPCAページにも目を通しておくとよいでしょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- NotebookLM -->
+                    <div style="font-size:0.5em">
+                        <h2>NotebookLM</h2>
+                        <ul>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/9cabb725-ad7a-4f87-9ad3-54aa46e239e9">SD法の史的展開と共感覚的分析の展望</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/57dee88e-5156-4ae9-a59a-fc3eb5d3236f">感性工学：科学が解き明かす人の心と製品設計の未来</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/16d5050f-70bf-4676-8b77-9fd6f35dec8c">UX評価質問票の利用動向：主要3手法の系統的分析</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/e010b0da-474e-436d-a364-15f03e95df42">VRと静止画像による製品評価の心理生理学的比較研究</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/6945e728-d97b-4d6e-b33e-61bba22ec77a">製品音響における意味的印象とデザイン理論の構築</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最後に、NotebookLM で作成した補助ノートブックを示しています。SD法の基本、感性工学の位置づけ、UX評価、VRや静止画像による製品評価、製品音の印象評価など、今回扱った内容を別の角度から復習できます。授業後課題で評価対象や両極表現のペアを考えるときは、これらのノートブックを入口として、どのような感性語や評価軸が使われているかを確認してください。ただし、NotebookLM の出力は最終的な根拠ではなく、必ず元論文や資料に戻って確認するための補助として使います。
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard,
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom,
+		RevealSearch,
+				RevealMarkdown,
+				RevealMenu,
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls,
+				// poll
+				// question
+				// seminar
+				Verticator
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+			customcontrols: {
+					controls: [
+						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+				]
+			},
+			chart: {
+					defaults: {
+						color: 'lightgray', // color of labels
+						scale: {
+							beginAtZero: true,
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+		});
+
+
+
+	    // Change chalkboard theme :
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+		setTimeout(() => {
+				window.print();
+			  }, 2500);
+
+    }
+        </script>
+    </body>
+</html>
