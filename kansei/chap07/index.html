@@ -1,0 +1,1750 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感性データ処理 第7回</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+
+
+
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+
+
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+
+
+
+
+
+  <!-- Revealjs Theme -->
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+
+
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+
+
+   <!-- css list -->
+
+  <link rel="stylesheet" href="s">
+
+  <link rel="stylesheet" href="t">
+
+  <link rel="stylesheet" href="y">
+
+  <link rel="stylesheet" href="l">
+
+  <link rel="stylesheet" href="e">
+
+  <link rel="stylesheet" href=".">
+
+  <link rel="stylesheet" href="c">
+
+  <link rel="stylesheet" href="s">
+
+  <link rel="stylesheet" href="s">
+
+
+
+
+</head>
+
+<body>
+
+
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+
+
+
+
+        <section >
+
+            <h1>感性データ処理</h1>
+<h2>第7回 アンケート手法</h2>
+<h3>質問紙を「測定器」として設計する</h3>
+<h4>データサイエンス学部</h4>
+<h4>白濵 成希</h4>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回は、感性データを得るためのアンケート手法を扱います。ポイントは、質問紙を単なる書類ではなく、感性や主観体験を測るための測定器として考えることです。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 今日のテーマ -->
+<div style="font-size:0.6em">
+<h2>今日のテーマ</h2>
+<p><strong>良い分析は、良い測定からしか生まれない</strong></p>
+<p>今日扱うこと</p>
+<ul>
+<li>なぜアンケート設計が分析結果を左右するのか</li>
+<li>質問紙の基本構成と質問形式</li>
+<li>リッカート項目とリッカート尺度</li>
+<li>ワーディング、順序、回答負荷</li>
+<li>標準化質問紙と予備調査</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+感性データ処理では、平均、相関、主成分分析、因子分析などを使ってデータを分析します。しかし、入力となる質問紙が不適切であれば、どれだけ高度な分析をしても結論は弱くなります。今日は、分析の前にある「測定の設計」を学びます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 本講の到達目標 -->
+<div style="font-size:0.6em">
+<h2>本講の到達目標</h2>
+<p>授業後に、次を説明・判断できることを目指します。</p>
+<ol>
+<li>アンケート設計が分析結果の信頼性を左右する理由</li>
+<li>質問紙の基本構成と質問形式の使い分け</li>
+<li>リッカート項目とリッカート尺度の違い</li>
+<li>中央選択肢と「わからない／該当しない」の違い</li>
+<li>ワーディングの典型的な失敗と改善案</li>
+<li>予備調査・認知的プリテストの必要性</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この回では、統計手法そのものを増やすのではなく、質問紙をどう設計するかを重視します。とくに、何を測りたいのか、どう聞けば回答者が迷わないのか、既存尺度を使うべきか、配布前に何を確認すべきかを学びます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 授業全体での位置づけ -->
+<div style="font-size:0.6em">
+<h2>授業全体での位置づけ</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">回</th>
+<th>内容</th>
+<th>第7回との関係</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">1〜3</td>
+<td>感性工学・評価・感性ワード</td>
+<td>何を評価するかを知る</td>
+</tr>
+<tr>
+<td style="text-align:right">4</td>
+<td>変数の種類と尺度水準</td>
+<td>回答データの性質を知る</td>
+</tr>
+<tr>
+<td style="text-align:right">5〜6</td>
+<td>MDS・数量化Ⅲ類</td>
+<td>取得済みデータを可視化する</td>
+</tr>
+<tr>
+<td style="text-align:right"><strong>7</strong></td>
+<td><strong>アンケート手法</strong></td>
+<td><strong>どう測るかを設計する</strong></td>
+</tr>
+<tr>
+<td style="text-align:right">8</td>
+<td>SD法による評価</td>
+<td>質問紙設計を評価実験へ展開する</td>
+</tr>
+<tr>
+<td style="text-align:right">9〜10</td>
+<td>主成分分析・因子分析</td>
+<td>SDデータを要約・解釈する</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回から第6回までは、感性工学の考え方、感性ワード、尺度水準、MDS、数量化Ⅲ類を扱いました。第7回は、後半の評価実験と分析に入る前の土台です。第8回のSD法、第9回と第10回の主成分分析・因子分析、第11回以降のVASにも接続します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 今日の流れ -->
+<div style="font-size:0.6em">
+<h2>今日の流れ</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">時間</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0〜15分</td>
+<td>なぜ今、アンケート手法を学ぶのか</td>
+</tr>
+<tr>
+<td style="text-align:right">15〜45分</td>
+<td>質問紙設計の基本</td>
+</tr>
+<tr>
+<td style="text-align:right">45〜65分</td>
+<td>ワーディング、順序、回答負荷、予備調査</td>
+</tr>
+<tr>
+<td style="text-align:right">65〜80分</td>
+<td>標準化質問紙の事例</td>
+</tr>
+<tr>
+<td style="text-align:right">80〜90分</td>
+<td>まとめ、確認問題、次回への橋渡し</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+前半では、なぜアンケート設計が重要なのかを確認します。中盤では、質問紙の構成、質問形式、リッカート尺度を整理します。後半では、よくある失敗、予備調査、標準化質問紙の事例を扱い、最後に次回のSD法へ接続します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- なぜ今アンケート手法なのか -->
+<div style="font-size:0.6em">
+<h2>なぜ今「アンケート手法」なのか</h2>
+<p>後で使う分析手法：</p>
+<ul>
+<li>平均</li>
+<li>相関</li>
+<li>主成分分析</li>
+<li>因子分析</li>
+<li>可視化</li>
+</ul>
+<p>しかし、質問紙が壊れていれば、後の分析も不安定になる。</p>
+<p><strong>分析が間違う前に、測定が壊れている場合がある。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+感性データ処理では、後でさまざまな分析手法を使います。しかし、分析の入力となる質問紙が曖昧だったり、回答しにくかったり、選択肢が偏っていたりすると、分析結果も信頼しにくくなります。つまり、分析の前に測定の品質を考える必要があります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- GIGO -->
+<div style="font-size:0.6em">
+<h2>GIGO：Garbage In, Garbage Out</h2>
+<p><strong>悪い入力からは、悪い出力しか得られない</strong></p>
+<p>質問紙で起こる例：</p>
+<ul>
+<li>測りたい概念が曖昧</li>
+<li>質問文が分かりにくい</li>
+<li>選択肢が偏っている</li>
+<li>答えたくても答えられない項目がある</li>
+<li>質問順序の影響で回答が歪む</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+GIGOは、Garbage In, Garbage Outの略です。入力データの質が悪ければ、出力される分析結果の質も悪くなるという考え方です。質問紙では、測りたい概念が曖昧なまま項目を作ることや、回答者が理解しにくい質問文を書くことが、データの質を低下させます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- オンライン調査の注意 -->
+<div style="font-size:0.6em">
+<h2>オンライン調査は設計の影響を拡大する</h2>
+<p>Google Forms や Qualtrics により、アンケートは簡単に配布できる。</p>
+<p>ただし：</p>
+<ul>
+<li>良い設計は効率よく再現できる</li>
+<li>悪い設計も同じ速度で量産される</li>
+<li>大量に回収しても、測定が悪ければ結論は弱い</li>
+</ul>
+<p><strong>手軽に配れるからこそ、配布前の設計が重要になる。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+オンライン調査は非常に便利です。一方で、悪い質問紙でもすぐに大量配布できてしまいます。回収数が多くても、質問紙そのものが不適切であれば、分析結果は信頼できません。したがって、一問一義、曖昧な語を避ける、順序やレイアウトを意識する、配布前にテストすることが重要です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- ミニ活動1 -->
+<div style="font-size:0.6em">
+<h2>ミニ活動1：その問いは「何を測りたい」のか</h2>
+<p>次の問いを、そのまま質問紙に入れてよいでしょうか。</p>
+<blockquote>
+<p>このアプリは良いか？</p>
+</blockquote>
+<p>考える観点：</p>
+<ul>
+<li>何が「良い」のか
+例：使いやすい、安心できる、楽しい</li>
+<li>誰にとってか
+例：初学者、日常ユーザー</li>
+<li>どんな場面でか
+例：初回利用、急いでいるとき</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+まず1分間、自分で考えてください。その後、ペアで共有します。「このアプリは良いか」という問いは、日常会話としては自然ですが、質問紙としては曖昧です。良さの中身、対象者、利用場面を具体化することで、測りたい概念が明確になります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 質問紙は測定器 -->
+<div style="font-size:0.6em">
+<h2>質問紙は「測定器」である</h2>
+<p>体重計の目盛りが壊れていたら、平均体重を計算しても意味がない。</p>
+<p>質問紙も同じ。</p>
+<ul>
+<li>感性や主観体験を測るための測定器</li>
+<li>測定器が壊れていれば、後の分析も壊れる</li>
+<li>文面づくりではなく、測定設計として考える</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問紙は、単に質問文を並べた書類ではありません。感性や主観体験を測るための測定器です。測定器として考えると、何を測るか、誰に答えてもらうか、どの形式で答えてもらうか、回答者が迷わず理解できるかが重要になります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 質問紙設計の流れ -->
+<div style="font-size:0.8em">
+<h2>質問紙設計の流れ</h2>
+<ol>
+<li><strong>測りたい概念を明確にする</strong></li>
+<li><strong>既存尺度を確認する</strong></li>
+<li><strong>回答者と状況を決める</strong></li>
+<li><strong>質問形式と尺度を決める</strong></li>
+<li><strong>質問文・順序・レイアウトを整える</strong></li>
+<li><strong>予備調査をして修正する</strong></li>
+</ol>
+<p><strong>いきなり質問文を書き始めない。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問紙設計では、まず測りたい概念を明確にします。安心感、使いやすさ、負担感、親しみやすさなど、どの感性や主観体験を扱うのかを決めます。そのうえで、既存尺度、回答者、場面、形式、文面、順序、レイアウトを考え、最後に予備調査で修正します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 既存尺度を先に探す -->
+<div style="font-size:0.6em">
+<h2>「ゼロから作る」前に既存尺度を探す</h2>
+<p>独自質問紙を作る前に確認すること</p>
+<ul>
+<li>似た概念を測る標準化質問紙はないか</li>
+<li>自分の対象や文脈に合うか</li>
+<li>そのまま使うか、一部だけ参考にするか</li>
+<li>属性項目や自由記述を補う必要があるか</li>
+</ul>
+<p>例</p>
+<ul>
+<li>使いやすさ → SUS</li>
+<li>広めの UX → UEQ、AttrakDiff</li>
+<li>作業負荷 → NASA-TLX</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問紙設計というと、すべて自分で項目を書くことを想像しがちです。しかし実務では、まず既存の標準化質問紙を確認します。既存尺度を使うと、先行研究との比較がしやすく、項目設計の失敗を減らせる場合があります。足りない部分があるときは、既存尺度の考え方を参考にして必要な項目を追加します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 質問紙の基本構成 -->
+<div style="font-size:0.6em">
+<h2>質問紙の基本構成</h2>
+<table>
+<thead>
+<tr>
+<th>構成</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>タイトル</strong></td>
+<td>調査内容を一目で示す</td>
+</tr>
+<tr>
+<td><strong>説明文</strong></td>
+<td>目的、所要時間、任意参加、個人情報の扱いなど</td>
+</tr>
+<tr>
+<td><strong>属性質問</strong></td>
+<td>年齢、学年、経験、利用頻度など</td>
+</tr>
+<tr>
+<td><strong>本調査</strong></td>
+<td>主観評価の本体。必要に応じて自由記述を加える</td>
+</tr>
+</tbody>
+</table>
+<p>属性項目は、<strong>「取れるから取る」ではなく「解釈に必要だから取る」</strong>。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問紙は、タイトル、説明文、属性質問、本調査の4つで考えると整理しやすくなります。属性項目は、後で使うかもしれないから増やすのではなく、分析や解釈に必要な最小限にします。必要のない属性情報を集めると、回答者の負担や倫理的な問題が増えます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 質問形式の使い分け -->
+<div style="font-size:0.48em">
+<h2>質問形式の使い分け</h2>
+<table>
+<thead>
+<tr>
+<th>形式</th>
+<th>例</th>
+<th>強み</th>
+<th>弱み</th>
+<th>使いどころ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>自由回答</strong></td>
+<td>良かった点を書く</td>
+<td>予想外の気づき</td>
+<td>集計に手間</td>
+<td>感性ワード収集</td>
+</tr>
+<tr>
+<td><strong>単一回答</strong></td>
+<td>理由を1つ選ぶ</td>
+<td>集計しやすい</td>
+<td>多面性が落ちる</td>
+<td>主因の把握</td>
+</tr>
+<tr>
+<td><strong>複数回答</strong></td>
+<td>当てはまるもの全て</td>
+<td>多面性を残せる</td>
+<td>選択肢が多いと疲れる</td>
+<td>印象語・理由の収集</td>
+</tr>
+<tr>
+<td><strong>評定尺度</strong></td>
+<td>5段階で答える</td>
+<td>比較・集計しやすい</td>
+<td>設計が悪いと歪む</td>
+<td>満足度、安心感、好み</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問形式にはそれぞれ向き不向きがあります。感性評価では、自由回答だけでも評定尺度だけでも不十分なことがあります。たとえば、主な評価は評定尺度で取り、最後に理由を自由記述で1問だけ入れると、数値結果の解釈がしやすくなります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- リッカート項目 -->
+<div style="font-size:0.6em">
+<h2>リッカート項目</h2>
+<p><strong>1つの文に対して、同意の程度を段階で答える形式</strong></p>
+<blockquote>
+<p>例：このアプリは操作が分かりやすい</p>
+</blockquote>
+<h3>回答例</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9034985"><label class="task-list-item-label" for="task-item-9034985"> 強くそう思う</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4676618"><label class="task-list-item-label" for="task-item-4676618"> ややそう思う</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7675617"><label class="task-list-item-label" for="task-item-7675617"> どちらともいえない</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4321303"><label class="task-list-item-label" for="task-item-4321303"> あまりそう思わない</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5625348"><label class="task-list-item-label" for="task-item-5625348"> まったくそう思わない</label></li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+リッカート項目とは、1つの文に対して同意の程度を段階で答える形式です。ここでは、「このアプリは操作が分かりやすい」という1つの文に対して、どの程度そう思うかを答えます。重要なのは、これは1項目であるという点です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- リッカート尺度 -->
+<div style="font-size:0.6em">
+<h2>リッカート尺度</h2>
+<p><strong>同じ概念を測る複数のリッカート項目をまとめたもの</strong></p>
+<p>例：使いやすさを測る6項目の平均得点</p>
+<h3>区別すべき点</h3>
+<ul>
+<li><strong>1項目</strong>
+基本的には順序尺度として見る</li>
+<li><strong>複数項目をまとめた尺度得点</strong>
+実務上、間隔尺度に近いものとして扱うことがある</li>
+</ul>
+<p><strong>リッカート項目 ≠ リッカート尺度</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+リッカート尺度は、同じ概念を測る複数のリッカート項目をまとめ、合計や平均として扱うものです。たとえば、使いやすさを測る複数項目の平均点が尺度得点になります。1つの項目と、複数項目をまとめた尺度得点は、データとしての扱いが異なる点に注意します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 段階数の選び方 -->
+<div style="font-size:0.6em">
+<h2>段階数の選び方</h2>
+<table>
+<thead>
+<tr>
+<th>段階数</th>
+<th>使いやすい場面</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>5段階</strong></td>
+<td>一般的。回答負荷が低く、中央選択肢を置きやすい</td>
+</tr>
+<tr>
+<td><strong>7段階</strong></td>
+<td>もう少し細かく差を取りたいとき</td>
+</tr>
+<tr>
+<td><strong>4段階・6段階</strong></td>
+<td>中央を置かず、方向を選ばせたいとき</td>
+</tr>
+</tbody>
+</table>
+<h3>注意</h3>
+<ul>
+<li>細かい方が常に優れているわけではない</li>
+<li>段階が増えるほど、回答者が迷うことがある</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+段階数は目的と回答負荷のバランスで決めます。5段階は一般的で、回答者が答えやすい形式です。7段階はより細かな差を取りたい場合に使いやすいです。4段階や6段階は、中央選択肢を置かずに方向を選ばせたい場合に使います。ただし、段階を増やせば必ず良くなるわけではありません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 中央選択肢とわからない -->
+<div style="font-size:0.6em">
+<h2>中央選択肢と「わからない」は違う</h2>
+<table>
+<thead>
+<tr>
+<th>選択肢</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>どちらともいえない</strong></td>
+<td>本当に中立、または両方向に同程度</td>
+</tr>
+<tr>
+<td><strong>わからない</strong></td>
+<td>判断材料が足りない、意味が分からない</td>
+</tr>
+<tr>
+<td><strong>該当しない</strong></td>
+<td>経験していない、質問が自分に当てはまらない</td>
+</tr>
+</tbody>
+</table>
+<p>1つの中間選択肢にまとめると、解釈が崩れる。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+「どちらともいえない」「わからない」「該当しない」は同じではありません。本当に中立なのか、判断材料が足りないのか、そもそも経験がないのかを区別しないと、後で回答を解釈しにくくなります。中立がありうるなら中央選択肢を置き、判断不能や非該当がありうるなら別に用意します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- ワーディング -->
+<div style="font-size:0.6em">
+<h2>ワーディングの典型的失敗</h2>
+<p>第7回では、まず「致命傷」を避ける。</p>
+<ul>
+<li>専門用語を使う</li>
+<li>ダブルバーレル質問にする</li>
+<li>誘導的・評価語入りにする</li>
+<li>期間や文脈が曖昧</li>
+<li>否定が重なる</li>
+<li>質問文と回答選択肢が噛み合わない</li>
+</ul>
+<p><strong>回答者が迷う質問は、測定器として不安定になる。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ワーディングとは質問文の書き方です。専門用語、複数の内容を1つにまとめた質問、誘導的な表現、曖昧な期間指定、二重否定、質問文と選択肢の不一致は、回答の質を下げます。高度なテクニック以前に、まずこうした致命的な失敗を避けることが重要です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- ワーディング例 -->
+<div style="font-size:0.56em">
+<h2>ワーディング改善の例</h2>
+<table>
+<thead>
+<tr>
+<th>悪い例</th>
+<th>問題</th>
+<th>改善の方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>このUIのアフォーダンスは高いですか？</td>
+<td>専門用語</td>
+<td>次に何をすればよいか分かりやすいですか？</td>
+</tr>
+<tr>
+<td>このサービスは便利で安心できますか？</td>
+<td>ダブルバーレル</td>
+<td>便利さと安心感を別項目に分ける</td>
+</tr>
+<tr>
+<td>この素晴らしい機能に満足していますか？</td>
+<td>誘導的</td>
+<td>この機能にどの程度満足していますか？</td>
+</tr>
+<tr>
+<td>最近よく使いますか？</td>
+<td>期間が曖昧</td>
+<td>この1週間でどのくらい使いましたか？</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この表は、典型的な失敗と改善の方向を示しています。特にダブルバーレル質問は注意が必要です。「便利で安心できる」と聞くと、便利だが安心ではない人、安心だが便利ではない人が答えにくくなります。1つの項目では1つの内容を聞く、という原則を徹底します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 質問順序 -->
+<div style="font-size:0.6em">
+<h2>質問順序の基本</h2>
+<p>「何を聞くか」だけでなく、<strong>どの順で聞くか</strong>も重要。</p>
+<h3>基本方針</h3>
+<ul>
+<li>まず答えやすい一般的な質問から始める</li>
+<li>同じ話題はまとめる</li>
+<li>センシティブな質問は後半に置く</li>
+<li>総合評価は、詳細項目の後に置くことが多い</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問順序は回答に影響します。最初から難しい質問や答えにくい質問を置くと、回答者の負担が増えます。一般的には、答えやすい質問から入り、同じ話題をまとめ、センシティブな質問は後半に置きます。総合評価は、詳細項目を答えた後に置くことが多いです。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- レイアウトと回答負荷 -->
+<div style="font-size:0.6em">
+<h2>レイアウトと回答負荷</h2>
+<p>オンライン質問紙では、見た目も測定品質に関わる。</p>
+<h3>注意点</h3>
+<ul>
+<li>1画面に情報を詰め込みすぎない</li>
+<li>スマホでも読める行長・文字量にする</li>
+<li>選択肢ラベルは左右対称にする</li>
+<li>長すぎる質問紙は、後半で回答が雑になりやすい</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+回答者は、研究者や設計者が思っているほど長い質問紙を丁寧に読んでくれるとは限りません。画面に情報を詰め込みすぎると、特にスマートフォンでは読みにくくなります。回答負荷が高いと、後半の回答が雑になる可能性があります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 逆転項目 -->
+<div style="font-size:0.6em">
+<h2>逆転項目は慎重に使う</h2>
+<ul>
+<li>同じ方向に丸を付け続けることを防ぐ目的で使う</li>
+<li>ただし、理解負担を増やす</li>
+<li>否定表現が複雑になると、誤回答を招く</li>
+</ul>
+<p>今回は：<strong>「入れれば良い」ではなく「慎重に使う」と理解する。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+逆転項目は、回答者が同じ方向に機械的に回答し続けることを防ぐ目的で使われることがあります。しかし、逆転項目は回答者の理解負担を増やします。複雑な否定文になると、むしろ誤回答の原因になります。したがって、逆転項目は慎重に使う必要があります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 予備調査 -->
+<div style="font-size:0.6em">
+<h2>予備調査：配る前に必ず試す</h2>
+<p>予備調査では、小規模に配って確認する。</p>
+<h3>確認すること</h3>
+<ul>
+<li>回答時間は長すぎないか</li>
+<li>欠損が多い項目はないか</li>
+<li>分布が片寄りすぎていないか</li>
+<li>自由記述がまったく書かれていないか</li>
+<li>回答者が迷う箇所はないか</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問紙は、本番配布の前に必ず試します。予備調査では、回答時間、欠損、分布の偏り、自由記述の反応、回答者が迷う箇所などを確認します。いきなり本番に出すと、後から質問紙の問題に気づいても修正が難しくなります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 認知的プリテスト -->
+<div style="font-size:0.6em">
+<h2>認知的プリテスト</h2>
+<p>回答者が、質問をどう理解しているかを確認する方法。</p>
+<h3>確認すること</h3>
+<ul>
+<li>質問文をどう理解したか</li>
+<li>どんな経験を思い出そうとしたか</li>
+<li>選択肢をどう判断したか</li>
+<li>書き手の意図と読み手の理解がずれていないか</li>
+</ul>
+<p><strong>読む側の理解を確認する。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+認知的プリテストでは、回答者が質問文をどう理解したか、どのような経験を思い出して答えたか、選択肢をどう対応づけたかを確認します。書いた側には明快でも、読む側が別の意味で理解していることがあります。そのずれを見つけるのが目的です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 倫理的配慮 -->
+<div style="font-size:0.6em">
+<h2>倫理的配慮</h2>
+<p>人を対象にする質問紙では、最低限の説明が必要。</p>
+<h3>説明すべきこと</h3>
+<ul>
+<li>調査目的</li>
+<li>所要時間</li>
+<li>任意参加であること</li>
+<li>途中でやめられること</li>
+<li>匿名化・記名の扱い</li>
+<li>データの保存方法</li>
+<li>問い合わせ先</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問紙は人を対象にするため、倫理的配慮が必要です。調査目的、所要時間、任意参加、途中でやめられること、個人情報の扱い、データ保存、問い合わせ先を説明します。属性質問も、解釈に必要な最小限にすることが大切です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 標準化質問紙の見方 -->
+<div style="font-size:0.6em">
+<h2>標準化質問紙の見方</h2>
+<p>事例を見るときは、次の3点を確認する。</p>
+<ol>
+<li><strong>対象</strong>
+何を評価するための質問紙か</li>
+<li><strong>感性・主観体験</strong>
+何を測ろうとしているか</li>
+<li><strong>データと活用</strong>
+どんな形式で答え、何に使うか</li>
+</ol>
+<p><strong>独自質問紙を作る前に、既存尺度を検討する。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここからは、標準化質問紙の事例を確認します。目的は、各尺度の細かい採点方法を覚えることではなく、独自質問紙を作る前に既存尺度を検討するという考え方を身につけることです。対象、測る体験、データと活用の3点で整理します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- SUS -->
+<div style="font-size:0.6em">
+<h2>事例1：SUS</h2>
+<p><strong>System Usability Scale</strong></p>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>対象</td>
+<td>Webサイト、アプリ、業務システムなど</td>
+</tr>
+<tr>
+<td>測るもの</td>
+<td>主観的ユーザビリティ</td>
+</tr>
+<tr>
+<td>データ</td>
+<td>10項目の5件法</td>
+</tr>
+<tr>
+<td>活用</td>
+<td>バージョン比較、改善前後比較</td>
+</tr>
+</tbody>
+</table>
+<p>短時間で、全体的な使いやすさを見たい場面で使いやすい。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+SUSは、主観的ユーザビリティ、つまり使いやすさを素早く把握するための質問紙です。Webサイト、アプリ、業務システムなど幅広い対象に使われます。全体の使いやすさを短時間で見たい場合に有用です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- UEQ -->
+<div style="font-size:0.6em">
+<h2>事例2：UEQ</h2>
+<p><strong>User Experience Questionnaire</strong></p>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>対象</td>
+<td>アプリ、Webサービス、対話システムなど</td>
+</tr>
+<tr>
+<td>測るもの</td>
+<td>分かりやすさ、効率、刺激性、魅力など</td>
+</tr>
+<tr>
+<td>データ</td>
+<td>複数の形容詞対による評定</td>
+</tr>
+<tr>
+<td>活用</td>
+<td>UXの複数側面を比較する</td>
+</tr>
+</tbody>
+</table>
+<p>使いやすさだけでなく、情緒的側面も見たいときに向く。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+UEQは、ユーザー体験を複数の側面から評価する質問紙です。使いやすさに加えて、楽しさ、魅力、新規性のような情緒的側面も扱います。形容詞対を用いる点は、次回扱うSD法とも関係します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- AttrakDiff -->
+<div style="font-size:0.6em">
+<h2>事例3：AttrakDiff</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>対象</td>
+<td>インタラクティブ製品、Web、アプリなど</td>
+</tr>
+<tr>
+<td>測るもの</td>
+<td>実用的品質と快楽的品質</td>
+</tr>
+<tr>
+<td>データ</td>
+<td>形容詞対の評定</td>
+</tr>
+<tr>
+<td>活用</td>
+<td>プロダクトの位置づけや改善方向を議論する</td>
+</tr>
+</tbody>
+</table>
+<p><strong>「使える」と「惹かれる」は同じではない。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AttrakDiffは、実用的品質と快楽的品質を分けて見る質問紙です。実用的品質は、使えるか、目的を達成できるかに関わります。快楽的品質は、魅力的か、楽しいか、惹かれるかに関わります。感性評価では、このように複数の側面を区別することが重要です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- NASA-TLX -->
+<div style="font-size:0.6em">
+<h2>事例4：NASA-TLX</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>対象</td>
+<td>作業タスク、操作手順、UIによる作業</td>
+</tr>
+<tr>
+<td>測るもの</td>
+<td>主観的ワークロード</td>
+</tr>
+<tr>
+<td>側面</td>
+<td>精神的負担、時間的圧迫、努力、フラストレーションなど</td>
+</tr>
+<tr>
+<td>活用</td>
+<td>UI改善や作業設計に活かす</td>
+</tr>
+</tbody>
+</table>
+<p>「楽しいか」ではなく、<strong>どれだけ負担だったか</strong>を測る。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+NASA-TLXは、作業の主観的な負担を測るための尺度です。UIや作業手順を評価するとき、楽しいか、好きかだけでなく、どれだけ負担があったかを見ることがあります。そのような場面で、精神的負担、時間的圧迫、努力、フラストレーションなどを整理できます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- UEQ-S -->
+<div style="font-size:0.6em">
+<h2>事例5：UEQ-S</h2>
+<p><strong>UEQの短縮版</strong></p>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>対象</td>
+<td>短時間の評価、繰り返し測定</td>
+</tr>
+<tr>
+<td>測るもの</td>
+<td>UXの大まかな良し悪し</td>
+</tr>
+<tr>
+<td>強み</td>
+<td>回答負荷を下げられる</td>
+</tr>
+<tr>
+<td>注意</td>
+<td>診断の細かさは落ちる</td>
+</tr>
+</tbody>
+</table>
+<p><strong>短い質問紙は便利だが、情報量は減る。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+UEQ-SはUEQの短縮版です。短時間で評価したい場合や、繰り返し測定が必要な場合に便利です。ただし、質問紙を短くすると回答負荷は下がりますが、得られる情報の細かさも落ちます。短ければ常に良いわけではありません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- データサイエンスとの接点 -->
+<div style="font-size:0.6em">
+<h2>データサイエンスとの接点</h2>
+<p>データ分析では、欠損値処理や外れ値除外などの前処理が重要。</p>
+<p>しかし質問紙では、そのさらに前に</p>
+<ul>
+<li>欲しい概念を測れていない</li>
+<li>選択肢が壊れている</li>
+<li>質問順序で回答が偏る</li>
+</ul>
+<p>という問題が起こる。</p>
+<p><strong>前処理の前に、測定設計がある。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+データサイエンスでは、前処理が重要だと言われます。しかし質問紙では、前処理以前に測定器そのものの問題が起こります。欲しい概念を測れていない、選択肢が不適切、質問順序で回答が歪むといった問題です。これは単なるノイズではなく、測定器の不具合です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 項目レベルと尺度レベル -->
+<div style="font-size:0.6em">
+<h2>項目レベルと尺度レベル</h2>
+<p>第4回の尺度水準とも接続する。</p>
+<table>
+<thead>
+<tr>
+<th>単位</th>
+<th>扱い方の基本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1つのリッカート項目</strong></td>
+<td>順序尺度として考える</td>
+</tr>
+<tr>
+<td><strong>複数項目をまとめた尺度得点</strong></td>
+<td>実務上、平均や相関に用いられることがある</td>
+</tr>
+</tbody>
+</table>
+<p>大切なのは</p>
+<ul>
+<li>何をどの単位で扱っているか</li>
+<li>どの仮定の上で分析しているか</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第4回で学んだ尺度水準と関係します。1つのリッカート項目は、厳密には順序尺度として考えるのが基本です。一方、複数項目をまとめた尺度得点は、実務上、間隔尺度に近いものとして平均や相関を扱うことがあります。分析するときは、どの単位でデータを扱っているかを自覚する必要があります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 特徴量設計 -->
+<div style="font-size:0.6em">
+<h2>良い質問紙は「特徴量設計」に近い</h2>
+<p>質問紙の各項目は、機械学習で言えば <strong>特徴量</strong> に近い。</p>
+<p>例</p>
+<ul>
+<li>「安心感」を雑に聞く
+→ 安心感という特徴量が壊れる</li>
+<li>同じことを聞く項目を増やしすぎる
+→ 冗長な特徴量になる</li>
+<li>必要な側面を聞かない
+→ 重要な特徴量が欠ける</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問紙の各項目は、感性データを構成する特徴量のような役割を持ちます。測りたい概念に対応していない項目は、壊れた特徴量になります。同じ内容ばかり聞けば冗長になります。逆に、重要な側面を聞いていなければ、分析に必要な情報が欠けます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- ミニ活動2 -->
+<div style="font-size:0.56em">
+<h2>ミニ活動2：悪い質問文を直す</h2>
+<p>次の質問文の問題点を指摘し、改善案を書いてください。</p>
+<ol>
+<li>このアプリはデザインが良く、使いやすいと思いますか？</li>
+<li>この UI はアフォーダンスが高いですか？</li>
+<li>最近よく使いますか？</li>
+</ol>
+<h3>確認</h3>
+<ul>
+<li>一問一義になっているか</li>
+<li>専門用語が残っていないか</li>
+<li>期間や文脈が明確か</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+まず個人で3分考えます。その後、ペアで4分共有し、最後に全体で2〜3例を確認します。目的は、良い質問文をいきなり作ることではなく、悪い質問文のどこが問題なのかを言語化できるようにすることです。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- ミニ活動3 -->
+<div style="font-size:0.56em">
+<h2>ミニ活動3：尺度を選ぶ</h2>
+<p>次の対象から1つ選び、どの尺度を使うか考えてください。</p>
+<ul>
+<li>学食の満足度</li>
+<li>動画配信アプリの使いやすさ</li>
+<li>スマホの通知音の不快感</li>
+</ul>
+<h3>考えること</h3>
+<ul>
+<li>5段階・7段階・4/6段階のどれにするか</li>
+<li>中央選択肢を入れるか</li>
+<li>「わからない／該当しない」を別に置くか</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+尺度選択には唯一の正解があるわけではありません。重要なのは、対象、回答者、測りたい概念、回答負荷を踏まえて理由を説明できることです。中央選択肢が必要かどうか、「わからない」や「該当しない」を別に置くべきかを考えてください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- ミニ活動4 -->
+<div style="font-size:0.56em">
+<h2>ミニ活動4：ミニ質問紙の骨格を作る</h2>
+<p>身近な対象を1つ選び、次の5点を書き出す。</p>
+<ol>
+<li>タイトル</li>
+<li>測りたい概念 1つ</li>
+<li>属性質問 2つ</li>
+<li>本調査の評定項目 3つ</li>
+<li>本番前に確かめたいこと 1つ</li>
+</ol>
+<p>ペアで、概念と項目が対応しているかを確認する。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この活動では、質問紙全体を完成させる必要はありません。タイトル、測りたい概念、属性質問、本調査項目、予備調査で確認したいことを整理します。ペアでは、本当にその概念を測れそうか、項目が重複していないか、予備調査で何を確認すべきかをコメントしてください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- まとめ -->
+<div style="font-size:0.6em">
+<h2>まとめ</h2>
+<h3>今日の要点</h3>
+<ul>
+<li>良い分析より前に、良い測定が必要</li>
+<li>質問紙は、感性や主観体験を測る測定器</li>
+<li>まず測りたい概念を明確にする</li>
+<li>既存尺度を確認してから独自項目を考える</li>
+<li>リッカート項目とリッカート尺度を区別する</li>
+<li>中央選択肢と「わからない／該当しない」は別物</li>
+<li>本番前に予備調査を行う</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第7回では、質問紙を測定器として設計する考え方を学びました。分析の質は、入力データの質に左右されます。したがって、測りたい概念を明確にし、適切な形式と尺度を選び、質問文、順序、レイアウトを整え、本番前に必ず試すことが重要です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 確認問題 -->
+<div style="font-size:0.6em">
+<h2>確認問題</h2>
+<ol>
+<li>GIGOとは何か。質問紙設計とどう関係するか。</li>
+<li>質問紙の基本構成要素を4つ挙げよ。</li>
+<li>リッカート項目とリッカート尺度の違いを説明せよ。</li>
+<li>「どちらともいえない」と「わからない／該当しない」を分けるべき理由を述べよ。</li>
+<li>認知的プリテストとは何を確かめる方法か。</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+確認問題です。用語を暗記するだけでなく、なぜそれが質問紙設計にとって重要なのかを説明できるようにしてください。特に、リッカート項目とリッカート尺度の違い、中央選択肢と「わからない」「該当しない」の違いは、次回以降の評価法にも関係します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 授業後課題 -->
+<div style="font-size:0.52em">
+<h2>授業後課題：質問紙設計メモ</h2>
+<p><strong>テーマ：身近な対象の感性を測る質問紙を設計する</strong></p>
+<p>条件</p>
+<ol>
+<li>対象：製品・サービス・UI・体験を1つ選ぶ</li>
+<li>目的：何を明らかにしたいかを書く</li>
+<li>既存尺度の確認：使えそうかを調べる</li>
+<li>質問紙構成：タイトル、説明文、属性質問、本調査</li>
+<li>尺度の選択理由：5段階・7段階・4/6段階</li>
+<li>自由記述：1問</li>
+<li>予備調査の計画</li>
+<li>倫理的配慮</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+授業後課題では、身近な対象を1つ選び、その感性を測る質問紙設計メモを作成します。評価では、明確さ、概念と項目の対応、尺度選択の妥当性、予備調査への自覚を重視します。既存尺度を確認したうえで、自分の文脈に必要な項目を考えてください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 次回への橋渡し -->
+<div style="font-size:0.6em">
+<h2>次回への橋渡し：SD法による評価</h2>
+<p>次回は、<strong>SD法（意味微分法）</strong> を扱う。</p>
+<p>SD法は、形容詞対を用いて印象を測る方法。</p>
+<p>第7回との接続</p>
+<ul>
+<li>どんな言葉を選ぶか</li>
+<li>どんな段階で答えさせるか</li>
+<li>順序や左右反転をどう工夫するか</li>
+</ul>
+<p><strong>SD法は、質問紙設計を具体化した代表的手法である。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+次回は、感性評価の代表的手法であるSD法を扱います。SD法では、形容詞対を用いて印象を測ります。その本質は、今日学んだ質問紙設計とつながっています。評価したい対象を1つ決め、その対象の印象を表す言葉を集めておくと、次回の内容に入りやすくなります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 質問紙設計・リッカート尺度法 -->
+<div style="font-size:0.8em">
+<h2>質問紙設計・リッカート尺度法</h2>
+<ul>
+<li><a href="https://aapor.org/wp-content/uploads/2022/11/AAPOR-Standards-best-practices_March-2022.pdf">AAPOR (2022) Standards Best Practices</a></li>
+<li><a href="https://www.stats.govt.nz/methods/a-guide-to-good-survey-design/">Stats NZ, A guide to good survey design</a></li>
+<li><a href="https://doi.org/10.3390/encyclopedia5010018">Koo &amp; Yang (2025) Likert-Type Scale</a></li>
+<li><a href="https://doi.org/10.3389/fpsyg.2021.637547">Jebb, Ng, &amp; Tay (2021) A Review of Key Likert Scale Development Advances</a></li>
+<li><a href="https://jalt-publications.org/sites/default/files/pdf-article/jalt2013_001.pdf">Nemoto &amp; Beglar (2014) Developing Likert-Scale Questionnaires</a></li>
+<li><a href="https://doi.org/10.1002/pfi.21727">Chyung et al. (2017) Evidence-Based Survey Design: The Use of a Midpoint on the Likert Scale</a></li>
+<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1323316/">Choi &amp; Pak (2005) A Catalog of Biases in Questionnaires</a></li>
+<li><a href="https://doi.org/10.15465/gesis-sg_en_049">Lenzner, Hadler, &amp; Neuert (2024) Cognitive Pretesting</a></li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+このスライドには、質問紙設計とリッカート尺度法に関する基礎資料をまとめています。質問紙をどう設計するか、質問文のバイアスをどう避けるか、リッカート項目や尺度をどう作るか、中央選択肢や認知的プリテストをどう考えるかを確認したいときに参照してください。授業後課題では、独自の質問項目を作る前に、ここにある資料を手がかりに既存の考え方や尺度を確認することが重要です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 標準化質問紙・UX・SD -->
+<div style="font-size:0.8em">
+<h2>標準化質問紙・UX・SD</h2>
+<ul>
+<li><a href="https://doi.org/10.3390/proceedings2019031014">Díaz-Oreiro et al. (2019) Standardized Questionnaires for User Experience Evaluation</a></li>
+<li><a href="https://digital.ahrq.gov/sites/default/files/docs/survey/systemusabilityscale%2528sus%2529_comp%255B1%255D.pdf">Brooke (1996) SUS: A quick and dirty usability scale</a></li>
+<li><a href="https://www.ueq-online.org/Material/Handbook.pdf">UEQ Handbook</a></li>
+<li><a href="https://www.attrakdiff.de/index-en.html">AttrakDiff 公式サイト</a></li>
+<li><a href="https://www.digitalzentrum-fokus-mensch.de/kos/WNetz?art=File.download&amp;id=1296&amp;name=AttrakDiff_EN_UID.pdf">AttrakDiff Questionnaire 公式PDF</a></li>
+<li><a href="https://www.nasa.gov/human-systems-integration-division/nasa-task-load-index-tlx/">NASA Task Load Index 公式ページ</a></li>
+<li><a href="https://humansystems.arc.nasa.gov/groups/tlx/downloads/TLX_pappen_manual.pdf">NASA TLX Paper and Pencil Manual</a></li>
+<li><a href="https://doi.org/10.9781/ijimai.2024.08.005">Kollmorgen, Hinderks, &amp; Thomaschewski (2025) UEQ Family</a></li>
+<li><a href="https://doi.org/10.5100/jje.45.263">市原 茂（2009）セマンティック・ディファレンシャル法（SD法）の可能性と今後の課題</a></li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+このスライドには、標準化質問紙、UX評価、SD法に関する資料をまとめています。SUS、UEQ、AttrakDiff、NASA-TLX のような標準化質問紙は、目的に合えば一から項目を作るよりも有力な選択肢になります。また、SD法は次回扱う内容なので、形容詞対で印象を測る考え方に注目しておいてください。課題で対象に合う尺度を探すときは、まずこれらの資料から用途と測定概念を確認します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- NotebookLMD -->
+<div style="font-size:0.8em">
+<h2>NotebookLM</h2>
+<ol>
+<li><a href="https://notebooklm.google.com/notebook/d8bcfc82-0191-48d3-bacf-57f72c995ea6">世論調査の質を高める科学的ガイドライン</a></li>
+<li><a href="https://notebooklm.google.com/notebook/9738bfea-db55-44fe-b50e-0deb6917d0b4">ニュージーランド統計局による調査設計の標準指針</a></li>
+<li><a href="https://notebooklm.google.com/notebook/d34ad4b0-8fca-4924-bcdb-c084926b71e5">リッカート尺度の設計と統計解析の指針</a></li>
+<li><a href="https://notebooklm.google.com/notebook/b6474a9c-a4cf-4eab-8e1a-5cbfc19d5179">心理測定尺度の革新と構築ガイドライン</a></li>
+<li><a href="https://notebooklm.google.com/notebook/6193ac56-55e4-4ea1-b059-4734fe63bd9d">第二言語習得における質問紙調査の構築指針</a></li>
+<li><a href="https://notebooklm.google.com/notebook/d84859ce-09f0-4b19-9da2-d76f177cf7bb">公衆衛生調査における質問票バイアス完全分類ガイド</a></li>
+<li><a href="https://notebooklm.google.com/notebook/0b5d976d-c0b5-48c8-94b8-952f90aa83c9">社会調査の信頼性を高めるプリテストの実践手法</a></li>
+<li><a href="https://notebooklm.google.com/notebook/16d5050f-70bf-4676-8b77-9fd6f35dec8c">UX評価質問票の利用動向：主要3手法の系統的分析</a></li>
+<li><a href="https://notebooklm.google.com/notebook/9cabb725-ad7a-4f87-9ad3-54aa46e239e9">SD法の史的展開と共感覚的分析の展望</a></li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、NotebookLM で作成した補助ノートブックを示しています。各ノートブックには、今回参照した資料をもとにした要約や確認用の論点が入っています。授業後に質問紙設計メモを作るときは、ここから関係するテーマを選び、質問文の作り方、リッカート尺度の設計、バイアス、プリテスト、標準化質問紙、SD法の観点を再確認してください。ただし、NotebookLM の出力は最終的な根拠そのものではなく、元資料を読み直すための入口として使うことが大切です。
+</aside>
+            </section>
+
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard,
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom,
+		RevealSearch,
+				RevealMarkdown,
+				RevealMenu,
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls,
+				// poll
+				// question
+				// seminar
+				Verticator
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+			customcontrols: {
+					controls: [
+						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+				]
+			},
+			chart: {
+					defaults: {
+						color: 'lightgray', // color of labels
+						scale: {
+							beginAtZero: true,
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+		});
+
+
+
+	    // Change chalkboard theme :
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+		setTimeout(() => {
+				window.print();
+			  }, 2500);
+
+    }
+</script>
+
+</body>
+
+</html>
