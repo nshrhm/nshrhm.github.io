@@ -1,1717 +1,1667 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-
-  <title>感性データ処理 第9回</title>
-
-  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-  <meta name="author" content="Hakim El Hattab">
-
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
-  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
-  <!-- highlight Theme -->
-
-  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
-
-
-
-	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
-
-
-
-  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
-
-
-
-
-
-  <!-- Revealjs Theme -->
-
-  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
-
-
-
-  <link rel="stylesheet" href="libs/styles/tasklist.css">
-	<link rel="stylesheet" href="libs/styles/iota.css">
-	<link rel="stylesheet" href="libs/styles/layout.css">
-
-
-  <!-- Revealjs Theme -->
-
-
-   <!-- css list -->
-
-  <link rel="stylesheet" href="style.css">
-
-
-
-
-</head>
-
-<body>
-
-
-    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
-        <img src="logo.png" style="height:100%"/>
-    </div>
-
-
-  <div class="reveal">
-
-    <!-- Any section element inside of this container is displayed as a slide -->
-    <div class="slides">
-
-
-
-
-
-        <section >
-
-            <h1>感性データ処理</h1>
-<h2>第9回 主成分分析（PCA）</h2>
-<h3>SD法データを「少数の軸」で読み解く</h3>
-<h4>データサイエンス学部</h4>
-<h4>白濵 成希</h4>
-<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-今回は、主成分分析、PCAを扱います。前回のSD法では、対象の印象を複数の形容詞対で測定しました。今回は、その多項目の印象データを、少数の軸に要約し、対象の違いを地図のように読む方法を学びます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 今日の位置づけ -->
-<div style="font-size:0.6em">
-<h2>今日の位置づけ</h2>
-<p>第8回から第10回への流れ</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:right">回</th>
-<th>テーマ</th>
-<th>役割</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right">第8回</td>
-<td>SD法による評価</td>
-<td>印象を測る</td>
-</tr>
-<tr>
-<td style="text-align:right"><strong>第9回</strong></td>
-<td><strong>主成分分析</strong></td>
-<td><strong>印象データを要約し、地図として読む</strong></td>
-</tr>
-<tr>
-<td style="text-align:right">第10回</td>
-<td>因子分析</td>
-<td>背後の潜在因子として解釈する</td>
-</tr>
-</tbody>
-</table>
-<p><strong>今日は「測った印象」を、少数の軸で読みやすくする回</strong></p>
-</div>
-<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-授業全体では、感性データを取得し、分析し、レポートとして説明できるようになることを目指しています。前回はSD法で印象を測る方法を扱いました。今回は、そのSD法データを主成分分析で要約します。次回の因子分析とは似て見える部分がありますが、今日のPCAはまず「要約して読む」ための方法として理解します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- この回でできるようになること -->
-<div style="font-size:0.6em">
-<h2>この回でできるようになること</h2>
-<p>授業後に説明・実行できること</p>
-<ol>
-<li>PCA が何をする手法か説明できる</li>
-<li>SD法データで、何を入力表にするか説明できる</li>
-<li>寄与率・累積寄与率・スクリープロットを読める</li>
-<li>主成分負荷量と主成分得点を区別できる</li>
-<li>PCA の結果をポジショニングマップとして解釈できる</li>
-<li>因子分析との違いを、目的の違いとして説明できる</li>
-</ol>
-</div>
-<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-今日は、PCAを厳密な数式で導出することよりも、何を入力し、何が出力され、結果をどのように読むかを重視します。特に重要なのは、負荷量は項目側の情報、得点は対象側の情報だと分けて理解することです。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 90分の見取り図 -->
-<div style="font-size:0.6em">
-<h2>90分の見取り図</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align:right">時間</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right">0〜15分</td>
-<td>なぜ今 PCA が必要か／第8回の復習</td>
-</tr>
-<tr>
-<td style="text-align:right">15〜40分</td>
-<td>PCA の基本概念：直感、入力、出力、標準化</td>
-</tr>
-<tr>
-<td style="text-align:right">40〜60分</td>
-<td>主成分数、負荷量、得点の読み方</td>
-</tr>
-<tr>
-<td style="text-align:right">60〜75分</td>
-<td>事例を「対象／感性／活用」で読む</td>
-</tr>
-<tr>
-<td style="text-align:right">75〜90分</td>
-<td>ミニ活動、確認問題、次回への橋渡し</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-まず、なぜSD法の次にPCAが必要になるのかを確認します。その後、PCAの基本的な考え方、入力表、出力の読み方を学びます。後半では、感性工学や産業応用の事例を見て、最後にミニ活動と確認問題で理解を整理します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- なぜ今 PCA なのか -->
-<div style="font-size:0.6em">
-<h2>なぜ今 PCA なのか</h2>
-<p>SD法は印象を多面的に記述できる</p>
-<p>しかし、形容詞対が増えると……</p>
-<ul>
-<li>各項目の平均差は見える</li>
-<li>でも、全体としての印象軸が見えにくい</li>
-<li>似た意味の項目が重なる</li>
-<li>「結局、この案の強みは何か」を説明しにくい</li>
-</ul>
-<p><strong>プロフィール曲線だけでは、全体像が読みにくくなる</strong></p>
-</div>
-<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-SD法では、対象を多くの形容詞対で評価できます。これは大きな強みですが、項目が10個、15個、20個と増えると、プロフィール曲線を見ても、全体として何が起きているのかを説明しにくくなります。そこで、多くの項目を少数の軸にまとめる方法が必要になります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 似た項目を少数の軸にまとめる -->
-<div style="font-size:0.6em">
-<h2>似た項目を少数の軸にまとめる</h2>
-<p>たとえば、次の項目が同じ方向に動くことがある</p>
-<ul>
-<li>高級感がある</li>
-<li>洗練されている</li>
-<li>上品だ</li>
-<li>しっかりしている</li>
-</ul>
-<p>この場合、個別項目を全部読むよりも</p>
-<blockquote>
-<p>これらをまとめる「上質さ」のような軸を考える</p>
-</blockquote>
-<p>方が、設計議論では使いやすい</p>
-</div>
-<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-似た意味の項目が同じ方向に動くなら、それらは別々に読むよりも、代表的な印象軸としてまとめた方が分かりやすくなります。PCAは、このような「まとまり」をデータから見つけるための方法として使えます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- PCA の役割 -->
-<div style="font-size:0.6em">
-<h2>PCA の役割</h2>
-<p>PCA は</p>
-<blockquote>
-<p>多いけれど読みにくい
-印象項目のデータを
-少ないけれど話しやすい
-新しい軸に変える方法</p>
-</blockquote>
-<p>その結果</p>
-<ul>
-<li>2軸・3軸の地図で対象の位置関係を示せる</li>
-<li>軸の意味を言語化しやすくなる</li>
-<li>企画・デザイン・改善の議論で共通の見取り図を持てる</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAの目的は、情報をなるべく保ちながら、少数の新しい軸に要約することです。特に感性データでは、分析結果をそのまま数値として示すだけでなく、対象の位置関係や印象軸として説明できることが重要です。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- PCA とは何か -->
-<div style="font-size:0.6em">
-<h2>PCA とは何か</h2>
-<p><strong>主成分分析（PCA: Principal Component Analysis）</strong></p>
-<p>多数の変数から、互いに直交する少数の新しい変数を作り、
-データのばらつきを少数軸で説明しやすくする手法</p>
-<p>基本的な考え方</p>
-<ul>
-<li>第1主成分：最も大きな分散を説明する軸</li>
-<li>第2主成分：第1主成分と直交し、次に大きな分散を説明する軸</li>
-<li>第3主成分以降も同様</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAでは、元の変数をそのまま使うのではなく、元の変数を組み合わせた新しい軸を作ります。第1主成分は、データのばらつきが最も大きく見える方向です。第2主成分は、第1主成分と直交しながら、次に大きなばらつきを説明します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- この講義での PCA の言い換え -->
-<div style="font-size:0.6em">
-<h2>この講義での PCA の言い換え</h2>
-<p>数学的には</p>
-<blockquote>
-<p>分散を最大化する直交軸を順に求める方法</p>
-</blockquote>
-<p>感性データ処理では</p>
-<blockquote>
-<p>似た動きをする複数項目を、
-少数の「代表的な印象軸」にまとめる方法</p>
-</blockquote>
-<p>今日の重点</p>
-<ul>
-<li>厳密な導出よりも、入力・出力・読み方</li>
-<li>SD法データをどう地図として読むか</li>
-<li>設計上の示唆にどう言い換えるか</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-この講義では、PCAを「代表的な印象軸を作る方法」として理解します。ただし、単なる感覚的な分類ではなく、データの分散に基づいて軸を作る方法です。したがって、結果の読み方には一定のルールがあります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- PCA に入れる表 -->
-<div style="font-size:0.6em">
-<h2>PCA に入れる表</h2>
-<p>第9回では、SD法で得た評定データを PCA に入れる</p>
-<table>
-<thead>
-<tr>
-<th>方向</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>行</td>
-<td>対象：製品案、UI案、音刺激、パッケージ案など</td>
-</tr>
-<tr>
-<td>列</td>
-<td>形容詞対：高級感、安心感、親しみやすさなど</td>
-</tr>
-<tr>
-<td>値</td>
-<td>各対象の評定値。しばしば被験者平均</td>
-</tr>
-</tbody>
-</table>
-<p>基本は</p>
-<blockquote>
-<p><strong>対象 × 項目</strong> の表</p>
-</blockquote>
-</div>
-<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAに入れる表を明確にすることは非常に重要です。この回では、行を対象、列をSD項目、値を評定値とする表を基本にします。特に、対象ごとの平均評定を使うと、対象間の位置関係を読みやすくなります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 対象 × 項目の例 -->
-<div style="font-size:0.6em">
-<h2>対象 × 項目の例</h2>
-<table>
-<thead>
-<tr>
-<th>対象</th>
-<th style="text-align:right">高級感</th>
-<th style="text-align:right">安心感</th>
-<th style="text-align:right">親しみやすさ</th>
-<th style="text-align:right">軽快さ</th>
-<th>…</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A案</td>
-<td style="text-align:right">5.8</td>
-<td style="text-align:right">5.1</td>
-<td style="text-align:right">3.2</td>
-<td style="text-align:right">4.0</td>
-<td>…</td>
-</tr>
-<tr>
-<td>B案</td>
-<td style="text-align:right">3.4</td>
-<td style="text-align:right">4.8</td>
-<td style="text-align:right">5.7</td>
-<td style="text-align:right">5.9</td>
-<td>…</td>
-</tr>
-<tr>
-<td>C案</td>
-<td style="text-align:right">6.1</td>
-<td style="text-align:right">5.9</td>
-<td style="text-align:right">2.9</td>
-<td style="text-align:right">3.1</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p>この表から知りたいこと</p>
-<ul>
-<li>どの項目がまとまって動くか</li>
-<li>対象どうしは、どの軸で違うか</li>
-<li>2次元の地図にすると、どう配置されるか</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-このような表を作ると、各対象は複数の印象項目を持つ点として考えられます。PCAは、この多次元の点の集まりを、少数の軸で見やすくする手法です。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 平均値ベースと個票ベース -->
-<div style="font-size:0.6em">
-<h2>平均値ベースと個票ベース</h2>
-<p>PCA に入れるデータで問いが変わる</p>
-<table>
-<thead>
-<tr>
-<th>入力データ</th>
-<th>見やすいこと</th>
-<th>注意点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>対象ごとの平均値</td>
-<td>対象間の位置関係</td>
-<td>個人差は見えにくい</td>
-</tr>
-<tr>
-<td>被験者ごとの個票</td>
-<td>回答者間の違いも含む構造</td>
-<td>問いが複雑になる</td>
-</tr>
-</tbody>
-</table>
-<p>第9回ではまず</p>
-<blockquote>
-<p><strong>対象の印象構造を読むために、平均値ベースの表を基本にする</strong></p>
-</blockquote>
-</div>
-<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-被験者ごとの個票データをそのままPCAに入れることもあります。ただし、その場合は対象の違いだけでなく、回答者間の違いも含まれます。今回は、まず対象の印象構造を分かりやすく読むことを優先します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- データの雲と新しい軸 -->
-<div style="font-size:0.6em">
-<h2>データの雲と新しい軸</h2>
-<p>PCA の直感</p>
-<ol>
-<li>各対象を点として見る</li>
-<li>点の集まりが最も伸びている方向を探す</li>
-<li>その方向を第1主成分にする</li>
-<li>第1主成分に直交する方向で、次によくばらつく方向を第2主成分にする</li>
-</ol>
-<p>重要な見方</p>
-<blockquote>
-<p>データのばらつきを、少数の新しい軸で説明する</p>
-</blockquote>
-</div>
-<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-2項目だけで考えると、対象は散布図上の点になります。点の雲が斜めに細長く伸びているなら、その伸びている方向が第1主成分になります。実際には項目数がもっと多くても、同じ考え方で新しい軸を求めます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- PCA は単なる軸の回転ではない -->
-<div style="font-size:0.6em">
-<h2>PCA は単なる軸の回転ではない</h2>
-<blockquote>
-<p>2次元の図では <strong>軸を回転して、データの雲に合わせる</strong> と説明されることがある。ただし、正確には <strong>分散を最大化する直交軸を順に求める方法</strong>　として理解する</p>
-</blockquote>
-<h3>覚え方</h3>
-<ul>
-<li>「回転」は直感としては有効</li>
-<li>でも定義は「分散を説明する新しい軸」</li>
-<li>第1主成分、第2主成分は互いに直交する</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAを説明するとき、軸を回転するという表現は便利です。しかし、それだけで覚えると誤解が生じます。PCAの本質は、データの分散をよく説明する直交軸を順番に求めることです。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 共分散行列と相関行列 -->
-<div style="font-size:0.6em">
-<h2>共分散行列と相関行列</h2>
-<p>PCA は、どの情報をもとにするかで結果が変わる</p>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>特徴</th>
-<th>注意点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>共分散行列ベース</td>
-<td>ばらつきの大きい項目が強く効く</td>
-<td>単位や分散差の影響を受ける</td>
-</tr>
-<tr>
-<td>相関行列ベース</td>
-<td>各項目を平均0・分散1にそろえる</td>
-<td>標準化した関係を見る</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>SD法データでは <strong>相関行列ベース、つまり標準化ありの方が解釈しやすい場面が多い</strong></p>
-</blockquote>
-</div>
-<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-SD法の項目は同じ段階数で測られることが多いですが、項目によって分散が大きく異なることがあります。そのため、項目間の分散差をならして見る相関行列ベース、つまり標準化ありのPCAが解釈しやすい場面があります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 標準化の実務上の注意 -->
-<div style="font-size:0.6em">
-<h2>標準化の実務上の注意</h2>
-<blockquote>
-<p>標準化とは <strong>各項目を平均0・分散1にそろえること</strong></p>
-</blockquote>
-<h3>注意点</h3>
-<ul>
-<li>ソフトウェアによって標準化の扱いが違う</li>
-<li>自動で標準化されるとは限らない</li>
-<li>scikit-learn の <code>PCA</code> は中心化は行うが、標準化は別途必要</li>
-</ul>
-<blockquote>
-<p>実務では <strong>分析前に「標準化したのか」を必ず確認する</strong></p>
-</blockquote>
-</div>
-<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-同じPCAという名前でも、標準化したデータで実行したのか、していないデータで実行したのかによって結果が変わります。レポートや分析メモでは、標準化の有無を明記できるようにしておく必要があります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- PCA の主な出力 -->
-<div style="font-size:0.6em">
-<h2>PCA の主な出力</h2>
-<table>
-<thead>
-<tr>
-<th>出力</th>
-<th>何を見るか</th>
-<th>使い方</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>寄与率</td>
-<td>各主成分が説明するばらつき</td>
-<td>軸の重要度を見る</td>
-</tr>
-<tr>
-<td>累積寄与率</td>
-<td>寄与率の合計</td>
-<td>何軸まで見るか考える</td>
-</tr>
-<tr>
-<td>主成分負荷量</td>
-<td>項目と主成分の関係</td>
-<td>軸に名前を付ける</td>
-</tr>
-<tr>
-<td>主成分得点</td>
-<td>対象の主成分上の位置</td>
-<td>対象を地図に配置する</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAの結果を見るときは、この4つを分けて理解します。寄与率と累積寄与率は、どの主成分まで見るかを考える手がかりです。負荷量は項目側の情報で、得点は対象側の情報です。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 寄与率と累積寄与率 -->
-<div style="font-size:0.6em">
-<h2>寄与率と累積寄与率</h2>
-<ul>
-<li><strong>寄与率</strong>: 各主成分が、元データのばらつきをどれだけ説明しているか</li>
-<li><strong>累積寄与率</strong>: 第1主成分から順に寄与率を足したもの</li>
-</ul>
-<h3>例</h3>
-<table>
-<thead>
-<tr>
-<th>主成分</th>
-<th style="text-align:right">寄与率</th>
-<th style="text-align:right">累積寄与率</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PC1</td>
-<td style="text-align:right">0.48</td>
-<td style="text-align:right">0.48</td>
-</tr>
-<tr>
-<td>PC2</td>
-<td style="text-align:right">0.22</td>
-<td style="text-align:right">0.70</td>
-</tr>
-<tr>
-<td>PC3</td>
-<td style="text-align:right">0.11</td>
-<td style="text-align:right">0.81</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-寄与率は各主成分の説明力です。累積寄与率は、そこまでの主成分でどの程度の情報を説明できるかを示します。この例では、PC1とPC2で70%、PC3まで入れると81%になります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 主成分数はどう決めるか -->
-<div style="font-size:0.6em">
-<h2>主成分数はどう決めるか</h2>
-<p>万能の正解はない。組み合わせて考える。</p>
-<ol>
-<li><strong>累積寄与率</strong>
-70〜80%程度を目安にすることはあるが、厳密なルールではない</li>
-<li><strong>スクリープロット</strong>
-固有値や寄与率の落ち方から「肘」を見る</li>
-<li><strong>解釈しやすさ</strong>
-軸に意味が付くか</li>
-<li><strong>可視化の都合</strong>
-2次元で議論したいか、3軸以上が必要か</li>
-</ol>
-</div>
-<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-主成分数は機械的に決めるものではありません。累積寄与率だけでなく、スクリープロット、軸の解釈しやすさ、可視化の目的を組み合わせて判断します。特に感性データでは、少し情報が落ちても、2軸で説明できることに価値がある場合があります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 負荷量は項目側の情報 -->
-<div style="font-size:0.6em">
-<h2>負荷量は項目側の情報</h2>
-<p><strong>主成分負荷量（loadings）</strong></p>
-<ul>
-<li>各項目が、各主成分とどの程度関係しているか</li>
-<li>軸の意味づけに使う</li>
-</ul>
-<p>例：PC1 の負荷量</p>
-<table>
-<thead>
-<tr>
-<th>項目</th>
-<th style="text-align:right">負荷量</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>高級感がある</td>
-<td style="text-align:right">0.82</td>
-</tr>
-<tr>
-<td>洗練されている</td>
-<td style="text-align:right">0.79</td>
-</tr>
-<tr>
-<td>上品だ</td>
-<td style="text-align:right">0.75</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>この場合、PC1 は <strong>「上質さ」の軸</strong> と読めそう</p>
-</blockquote>
-</div>
-<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-負荷量は、どの項目がその主成分に強く関係しているかを示します。軸の名前を付けるときは、負荷量の大きい項目を根拠にします。軸名は自由作文ではなく、負荷量に基づいて付ける必要があります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 得点は対象側の情報 -->
-<div style="font-size:0.6em">
-<h2>得点は対象側の情報</h2>
-<p><strong>主成分得点（scores）</strong></p>
-<ul>
-<li>各対象が、各主成分上でどこに位置するか</li>
-<li>ポジショニングマップに使う</li>
-</ul>
-<p>得点から読めること</p>
-<ul>
-<li>どの対象が似ているか</li>
-<li>どの対象が離れているか</li>
-<li>競合とどの軸で差があるか</li>
-<li>改善したい方向はどこか</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-得点は対象側の情報です。たとえばA案、B案、C案がPC1とPC2の平面上でどこに配置されるかを見ることで、対象どうしの近さや違いを考えることができます。負荷量と得点を組み合わせることで、軸の意味と対象の位置を結びつけられます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 負荷量と得点を混同しない -->
-<div style="font-size:0.6em">
-<h2>負荷量と得点を混同しない</h2>
-<table>
-<thead>
-<tr>
-<th>見るもの</th>
-<th>対象</th>
-<th>読み方</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>負荷量</td>
-<td>項目</td>
-<td>この軸は何を意味するか</td>
-</tr>
-<tr>
-<td>得点</td>
-<td>対象</td>
-<td>この対象はどこに位置するか</td>
-</tr>
-</tbody>
-</table>
-<p>読み方の流れ</p>
-<ol>
-<li>負荷量で、軸の意味を読む</li>
-<li>得点で、対象の位置を読む</li>
-<li>得点と負荷量を往復して、設計示唆に言い換える</li>
-</ol>
-</div>
-<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAの解釈で重要なのは、負荷量と得点を混同しないことです。負荷量は項目側、得点は対象側です。軸名を付けるには負荷量を見ます。対象の特徴を説明するには得点を見ます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- バイプロットの注意 -->
-<div style="font-size:0.6em">
-<h2>バイプロットの注意</h2>
-<p>バイプロット <strong>負荷量と得点を1つの図に重ねたもの</strong></p>
-<p>便利な点</p>
-<ul>
-<li>項目と対象を同時に見られる</li>
-<li>ポジショニングの説明に使いやすい</li>
-</ul>
-<p>注意点</p>
-<ul>
-<li>1枚の図ですべての関係を完全に保存できるわけではない</li>
-<li>見やすさのための妥協を含む</li>
-<li>図だけでなく、数値も確認する</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-バイプロットは非常に便利ですが、図を過信しすぎないことが大切です。項目の関係、対象の関係、項目と対象の関係を、すべて完全に1枚の図に保存することはできません。図は読み取りの補助として使います。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 実務での注意点 -->
-<div style="font-size:0.6em">
-<h2>実務での注意点</h2>
-<p>PCA の前後で確認すること</p>
-<ul>
-<li><strong>逆向き項目の符号統一</strong>
-ポジティブ方向が混ざると軸の解釈が壊れる</li>
-<li><strong>主成分の符号は任意</strong>
-PC1 が反転しても数学的には同じ解</li>
-<li><strong>SD評定は順序尺度に近い</strong>
-間隔尺度近似として扱うことを明記する</li>
-<li><strong>対象数・項目数に注意</strong>
-項目数が多く対象数が少ないと不安定になりやすい</li>
-<li><strong>平均化すると個人差は見えにくい</strong></li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAを実務で使うときは、分析前の確認が重要です。特に、項目の向きが混ざっていると、軸の意味づけが壊れます。また、主成分の符号は任意なので、プラスとマイナスの向きそのものではなく、相対的な関係で読みます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 事例の読み方 -->
-<div style="font-size:0.6em">
-<h2>事例の読み方</h2>
-<p>PCA の応用事例は、次の3点で読む</p>
-<table>
-<thead>
-<tr>
-<th>観点</th>
-<th>読むこと</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>対象</td>
-<td>何を評価したのか</td>
-</tr>
-<tr>
-<td>感性・主観体験</td>
-<td>どのような印象や感覚を扱ったのか</td>
-</tr>
-<tr>
-<td>データと活用</td>
-<td>PCA の結果を何に使ったのか</td>
-</tr>
-</tbody>
-</table>
-<h3>今回の事例</h3>
-<ul>
-<li>自動車内装、パッケージ、ECサイト、加速音、官能評価</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-ここからは、PCAが感性工学や産業応用でどのように使われるかを見ます。細かい論文内容をすべて読むのではなく、対象、感性・主観体験、データと活用という3つの観点で整理します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 事例1 自動車内装 -->
-<div style="font-size:0.6em">
-<h2>事例1：自動車内装の印象</h2>
-<table>
-<thead>
-<tr>
-<th>観点</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>対象</td>
-<td>自動車内装の CMF デザイン案</td>
-</tr>
-<tr>
-<td>感性・主観体験</td>
-<td>若年消費者が内装に抱く印象</td>
-</tr>
-<tr>
-<td>データと活用</td>
-<td>Kansei ワードで評定し、主要なスタイル軸を抽出する</td>
-</tr>
-</tbody>
-</table>
-<br />
-<ul>
-<li><strong>ポイント</strong>: 多数の印象語を、内装デザインの方向性を議論できる軸にまとめる</li>
-<li><strong>参考</strong>: Song et al. (2023)</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-自動車内装では、色、素材、仕上げなどに対する印象を評価します。PCAを使うことで、多数のKanseiワードを少数のスタイル軸に整理し、デザイン案の方向性を比較しやすくできます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 事例2 パッケージデザイン -->
-<div style="font-size:0.6em">
-<h2>事例2：パッケージ印象を設計要素へ返す</h2>
-<table>
-<thead>
-<tr>
-<th>観点</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>対象</td>
-<td>サフラン製品のパッケージデザイン案</td>
-</tr>
-<tr>
-<td>感性・主観体験</td>
-<td>消費者の感情的印象・好ましさ</td>
-</tr>
-<tr>
-<td>データと活用</td>
-<td>主要な印象軸を読み、背景色・封止方法・<br />エコラベル表示などの提案につなげる</td>
-</tr>
-</tbody>
-</table>
-<br />
-<ul>
-<li><strong>ポイント</strong>: PCA の結果を、設計改善の言葉に戻す</li>
-<li><strong>参考</strong>: Papantonopoulos et al. (2021)</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAは、分析結果を出して終わりではありません。パッケージデザインの事例では、印象軸を読み取り、それを背景色や封止方法などの具体的な設計要素に返すことが重要です。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 事例3 ECサイトの画面印象 -->
-<div style="font-size:0.6em">
-<h2>事例3：ECサイトの画面印象</h2>
-<table>
-<thead>
-<tr>
-<th>観点</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>対象</td>
-<td>複数の中国系 EC プラットフォームのインターフェイス</td>
-</tr>
-<tr>
-<td>感性・主観体験</td>
-<td>整然／雑然、調和／不調和などの画面印象</td>
-</tr>
-<tr>
-<td>データと活用</td>
-<td>SD評価を PCA で整理し、改善指針に結びつける</td>
-</tr>
-</tbody>
-</table>
-<br />
-<ul>
-<li><strong>整理された次元の例</strong>:
-<ul>
-<li>レイアウト、情報提示、ユーザー選好</li>
-</ul>
-</li>
-<li><strong>参考</strong>: Chen et al. (2025)</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-ECサイトの画面印象では、見た目の整然さや情報提示の印象が重要になります。PCAによって、複数の評価項目をレイアウトや情報提示などの次元に整理できれば、UI改善の方向性を議論しやすくなります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 事例4 加速音の印象 -->
-<div style="font-size:0.6em">
-<h2>事例4：加速音の印象空間</h2>
-<table>
-<thead>
-<tr>
-<th>観点</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>対象</td>
-<td>スポーツタイプ二輪車の加速音</td>
-</tr>
-<tr>
-<td>感性・主観体験</td>
-<td>音に対する affective properties</td>
-</tr>
-<tr>
-<td>データと活用</td>
-<td>SD法で評定した音印象を主成分で整理し、<br />音設計や評価モデルに活用する</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><strong>軸の例</strong>:
-<ul>
-<li>roughness</li>
-<li>activity</li>
-</ul>
-</li>
-<li><strong>参考</strong>: Tanaka et al. (2025)</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-感性データは視覚的なデザインだけではありません。音に対する印象も、SD法で測定し、PCAで主要な印象軸として整理できます。加速音の印象空間を読むことで、音設計の意図を整理できます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 事例5 官能評価 -->
-<div style="font-size:0.6em">
-<h2>事例5：官能評価の多属性データ</h2>
-<table>
-<thead>
-<tr>
-<th>観点</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>対象</td>
-<td>発泡性栄養補助食品の複数サンプル</td>
-</tr>
-<tr>
-<td>感性・主観体験</td>
-<td>味、渋み、金属感、後味などの官能属性</td>
-</tr>
-<tr>
-<td>データと活用</td>
-<td>多属性の官能評価を PCA で整理し、<br />サンプルの特徴と改善方向を読む</td>
-</tr>
-</tbody>
-</table>
-<br />
-<ul>
-<li><strong>ポイント</strong>: 多くの感覚属性を、比較しやすい図にする</li>
-<li><strong>参考</strong>: Delompré et al. (2025)</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-官能評価では、味、渋み、後味など、多くの属性を扱います。PCAを使うと、サンプルごとの特徴を地図のように比較でき、どのサンプルがどの感覚属性で特徴づけられるかを読みやすくなります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- データサイエンスとの接点 -->
-<div style="font-size:0.8em">
-<h2>データサイエンスとの接点</h2>
-<ul>
-<li>PCA は <strong>教師なし学習の代表的手法</strong></li>
-<li>教師なし学習とは
-<ul>
-<li>正解ラベルがない</li>
-<li>データの内部構造からパターンを探す</li>
-<li>探索的に構造を理解する</li>
-</ul>
-</li>
-<li>感性データとの相性
-<ul>
-<li>「正解」が1つに決まらないことが多い</li>
-<li>印象のまとまりや対象の関係を探索できる</li>
-</ul>
-</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAは、正解ラベルを使わずにデータの構造を探す手法です。感性データでは、何が正解かが明確でないことが多いため、PCAのような探索的手法が役立ちます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- MDS・数量化III類・PCA の違い -->
-<div style="font-size:0.6em">
-<h2>MDS・数量化III類・PCA の違い</h2>
-<table>
-<thead>
-<tr>
-<th>手法</th>
-<th>主な入力</th>
-<th>守ろうとする情報</th>
-<th>典型的な読み方</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>多次元尺度法</td>
-<td>対象間の類似度・距離</td>
-<td>対象間の近さ</td>
-<td>心理的距離の地図</td>
-</tr>
-<tr>
-<td>数量化III類</td>
-<td>対象 × カテゴリ</td>
-<td>行と列の関係構造</td>
-<td>同時布置図</td>
-</tr>
-<tr>
-<td><strong>PCA</strong></td>
-<td><strong>対象 × 量的変数</strong></td>
-<td><strong>分散と相関の構造</strong></td>
-<td><strong>項目のまとまりと<br />対象の位置</strong></td>
-</tr>
-</tbody>
-</table>
-<p>同じ「地図」でも、入力が違えば意味が違う</p>
-</div>
-<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-MDS、数量化III類、PCAはいずれも地図のような図を作ることがあります。しかし、何を入力して、何を守ろうとしているかが違います。PCAでは、対象と量的変数の表を入力し、分散や相関の構造を見ます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- PCA と因子分析の違い -->
-<div style="font-size:0.6em">
-<h2>PCA と因子分析の違い</h2>
-<p>次回への重要な橋渡し</p>
-<table>
-<thead>
-<tr>
-<th>手法</th>
-<th>目的</th>
-<th>見方</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>PCA</strong></td>
-<td>観測変数を少数の軸に要約する</td>
-<td>要約</td>
-</tr>
-<tr>
-<td><strong>因子分析</strong></td>
-<td>背後に潜在因子があると仮定して説明する</td>
-<td>潜在構造の説明</td>
-</tr>
-</tbody>
-</table>
-<br />
-<ul>
-<li>見た目は似ていても、目的が違う</li>
-<li>今日の理解: <strong>PCA は「まず要約して読む」ための手法</strong></li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-PCAと因子分析は、負荷量のような似た用語が出てくるため混同しやすいです。しかし、PCAは観測変数を少数の軸に要約する方法です。因子分析は、背後の潜在因子で観測変数を説明する方法です。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- ミニ活動1 プロフィール曲線の読みにくさ -->
-<div style="font-size:0.8em">
-<h2>ミニ活動1：読みにくさを言葉にする</h2>
-<p>第8回の SD法を思い出す</p>
-<ul>
-<li><strong>Think（2分）</strong>: 形容詞対が12〜15項目あるとき、<br />プロフィール曲線だけでは読みにくくなる理由を1つ書く</li>
-<li><strong>Pair（2分）</strong>:
-<ul>
-<li>2人で共有する</li>
-<li>何がまとまって動いていそうかを推測する</li>
-</ul>
-</li>
-<li><strong>Share（1分）</strong>
-<ul>
-<li>「項目のまとまり」を見たいことを確認する</li>
-</ul>
-</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-この活動では、PCAを使う前の問題意識を確認します。プロフィール曲線は便利ですが、項目が増えると読みにくくなります。その読みにくさを自分の言葉で説明できることが、PCAの必要性を理解する入口になります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- ミニ活動2 主成分数をどう決めるか -->
-<div style="font-size:0.6em">
-<h2>ミニ活動2：主成分数をどう決めるか</h2>
-<p>次の寄与率が得られたとする</p>
-<table>
-<thead>
-<tr>
-<th>主成分</th>
-<th style="text-align:right">寄与率</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PC1</td>
-<td style="text-align:right">0.48</td>
-</tr>
-<tr>
-<td>PC2</td>
-<td style="text-align:right">0.22</td>
-</tr>
-<tr>
-<td>PC3</td>
-<td style="text-align:right">0.11</td>
-</tr>
-<tr>
-<td>PC4</td>
-<td style="text-align:right">0.07</td>
-</tr>
-<tr>
-<td>PC5</td>
-<td style="text-align:right">0.05</td>
-</tr>
-<tr>
-<td>PC6</td>
-<td style="text-align:right">0.04</td>
-</tr>
-</tbody>
-</table>
-<p>考えること</p>
-<ul>
-<li>累積寄与率を計算する</li>
-<li>2軸まで採用する理由を考える</li>
-<li>3軸まで残す理由を考える</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-この例では、PC1とPC2で累積寄与率は0.70になります。PC3まで入れると0.81になります。2軸で分かりやすく説明するのか、3軸まで残して情報量を増やすのか、目的に応じて判断します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- ミニ活動3 負荷量から軸名を付ける -->
-<div style="font-size:0.8em">
-<h2>ミニ活動3：負荷量から軸名を付ける</h2>
-<p>PC1 の負荷量の例</p>
-<table>
-<thead>
-<tr>
-<th>項目</th>
-<th style="text-align:right">負荷量</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>高級感がある—安っぽい</td>
-<td style="text-align:right">0.83</td>
-</tr>
-<tr>
-<td>洗練されている—野暮ったい</td>
-<td style="text-align:right">0.79</td>
-</tr>
-<tr>
-<td>上品だ—下品だ</td>
-<td style="text-align:right">0.74</td>
-</tr>
-<tr>
-<td>親しみやすい—近寄りがたい</td>
-<td style="text-align:right">0.18</td>
-</tr>
-<tr>
-<td>かわいい—かわいくない</td>
-<td style="text-align:right">0.05</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>問い: この軸にどんな名前を付けるか</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-軸名を付けるときは、負荷量の大きい項目を根拠にします。この例では、高級感、洗練、上品といった項目が大きいため、「上質さ」「高級感」「洗練」などの軸名が候補になります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- ミニ活動4 得点から改善方針を考える -->
-<div style="font-size:0.6em">
-<h2>ミニ活動4：得点から改善方針を考える</h2>
-<ul>
-<li>A案：PC1 正、PC2 正</li>
-<li>B案：PC1 負、PC2 正</li>
-<li>C案：PC1 負、PC2 負</li>
-</ul>
-<blockquote>
-<p><strong>B案をA案に近づけたいとき、どの項目を動かせばよいか</strong></p>
-</blockquote>
-<p>考える流れ</p>
-<ol>
-<li>A案とB案の違いを見る</li>
-<li>関係する主成分を確認する</li>
-<li>その主成分の負荷量が高い項目を見る</li>
-<li>設計変更案に言い換える</li>
-</ol>
-</div>
-<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-この活動では、得点と負荷量を往復する練習をします。B案をA案に近づけたいなら、まずどの軸で差があるかを見ます。次に、その軸に強く関係する項目を負荷量から確認し、具体的な設計変更案に変換します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 確認問題 -->
-<div style="font-size:0.6em">
-<h2>確認問題</h2>
-<ol>
-<li>主成分分析とは何か。
-「少数の軸」という言葉を使って説明しなさい。</li>
-<li>第1主成分と第2主成分の関係を、
-「直交」という言葉を使って説明しなさい。</li>
-<li>寄与率と累積寄与率の違いを説明しなさい。</li>
-<li>主成分負荷量と主成分得点は、それぞれ何を表すか説明しなさい。</li>
-<li>SD法データに PCA を適用する前に必要な確認を2つ挙げなさい。</li>
-</ol>
-</div>
-<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-確認問題では、今日の重要語を自分の言葉で説明できるかを確認します。特に、負荷量と得点の違い、標準化や逆向き項目の確認は、実際の分析でも重要です。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 授業後課題 -->
-<div style="font-size:0.6em">
-<h2>授業後課題：PCA でどう読みたいかを設計する</h2>
-<p>A4 1枚程度、目安800〜1200字</p>
-<ol>
-<li><strong>対象</strong>
-比較したい対象を3〜5個選ぶ</li>
-<li><strong>感性・主観体験</strong>
-SD法で測りたい印象を8〜12項目程度挙げる</li>
-<li><strong>分析方針</strong>
-PCAで何を見たいかを書く</li>
-<li><strong>主成分数の考え方</strong>
-2軸にしたいか、3軸まで残したいかを書く</li>
-<li><strong>注意点</strong>
-逆向き項目、標準化、サンプル数、平均化などから2つ以上</li>
-</ol>
-</div>
-<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-この課題では、実データの分析そのものよりも、PCAで何を読みたいのかを設計することを重視します。対象、SD項目、分析方針、主成分数の考え方、注意点を整理してください。第10回の因子分析との比較にもつながります。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 今日の一言まとめ -->
-<div style="font-size:0.6em">
-<h2>今日の一言まとめ</h2>
-<blockquote>
-<p>PCA は、SD法で得た多項目の印象データを、
-少数の印象軸に要約し、
-対象の違いを話しやすくする方法である。</p>
-</blockquote>
-<p>自分で説明できるようにしたいこと</p>
-<ul>
-<li>PCA は何を入力にするか</li>
-<li>第1主成分と第2主成分はどう決まるか</li>
-<li>寄与率と累積寄与率は何を見る指標か</li>
-<li>負荷量と得点の違いは何か</li>
-<li>PCA の図から、どう設計示唆に言い換えるか</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-今日の中心は、多項目の印象データを少数の軸に要約して読むことでした。PCAの結果は、寄与率、負荷量、得点を分けて読む必要があります。そして最後には、分析結果を対象の特徴や設計改善の言葉に戻すことが大切です。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 次回への橋渡し -->
-<div style="font-size:0.6em">
-<h2>次回への橋渡し</h2>
-<p>次回は <strong>因子分析</strong> を扱う</p>
-<p>違いのキーワード</p>
-<table>
-<thead>
-<tr>
-<th>PCA</th>
-<th>因子分析</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>要約</td>
-<td>潜在因子による説明</td>
-</tr>
-<tr>
-<td>軸を作る</td>
-<td>背後の構造を仮定する</td>
-</tr>
-<tr>
-<td>観測変数の情報を圧縮する</td>
-<td>観測変数の共通部分を説明する</td>
-</tr>
-</tbody>
-</table>
-<p>第9回で <strong>負荷量と得点を読む感覚</strong> をつかんでおくと、第10回が理解しやすい</p>
-</div>
-<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-次回は因子分析です。PCAと因子分析は、出力の見た目が似ていることがあります。しかし、PCAは要約、因子分析は潜在因子による説明です。今回のPCAの読み方を基礎として、次回はその違いをさらに整理します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 参考資料 -->
-<div style="font-size:0.8em">
-<h2>参考資料</h2>
-<ul>
-<li>
-<p><a href="https://doi.org/10.1098/rsta.2015.0202">Jolliffe, I. T., &amp; Cadima, J. (2016). <em>Principal component analysis: a review and recent developments</em>. <em>Philosophical Transactions of the Royal Society A</em>, 374(2065), 20150202.</a></p>
-</li>
-<li>
-<p><a href="https://doi.org/10.1039/C3AY41907J">Bro, R., &amp; Smilde, A. K. (2014). <em>Principal component analysis</em>. <em>Analytical Methods</em>, 6, 2812–2831.</a></p>
-</li>
-<li>
-<p><a href="https://www.itl.nist.gov/div898/handbook/pmc/section5/pmc55.htm">NIST/SEMATECH e-Handbook of Statistical Methods: Principal Components</a></p>
-</li>
-<li>
-<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">scikit-learn PCA documentation</a></p>
-</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-このスライドには、PCAの基本的な理解に役立つ参考資料を示しています。Jolliffe and Cadima、Bro and SmildeはPCAの解説として参照できます。NISTとscikit-learnの公式資料は、実際に分析を行うときの確認にも役立ちます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 応用事例の参考資料 -->
-<div style="font-size:0.55em">
-<h2>応用事例の参考資料</h2>
-<ul>
-<li>
-<p><a href="https://doi.org/10.3390/app131910674">Song et al. (2023). <em>The Design of Automotive Interior for Chinese Young Consumers Based on Kansei Engineering and Eye-Tracking Technology</em>. <em>Applied Sciences</em>, 13(19), 10674.</a></p>
-</li>
-<li>
-<p><a href="https://doi.org/10.5057/ijae.IJAE-D-21-00006">Papantonopoulos et al. (2021). <em>A Kansei Engineering Study of Saffron Packaging Design</em>. <em>International Journal of Affective Engineering</em>, 20(4), 237–245.</a></p>
-</li>
-<li>
-<p><a href="https://doi.org/10.54941/ahfe1006688">Chen et al. (2025). <em>User Preference in Chinese E-commerce Interface Design: A Semantic Differential Approach</em>. <em>AHFE Open Access</em>.</a></p>
-</li>
-<li>
-<p><a href="https://doi.org/10.5057/ijae.IJAE-D-24-00046">Tanaka et al. (2025). <em>Impressions of Acceleration Sound of Sports-type Motorcycle</em>. <em>International Journal of Affective Engineering</em>, 24(3), 235–244.</a></p>
-</li>
-<li>
-<p><a href="https://doi.org/10.3390/molecules30040854">Delompré et al. (2025). <em>Sensory Evaluation of Effervescent Nutritional Supplements: Identification and Characterisation of Off-Tastes</em>. <em>Molecules</em>, 30(4), 854.</a></p>
-</li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-このスライドには、授業内で紹介した応用事例の参考資料を示しています。PCAが、製品デザイン、パッケージ、ユーザーインターフェイス、音、官能評価など、さまざまな感性データに応用されていることを確認できます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- NotebookLM -->
-<div style="font-size:0.8em">
-<h2>NotebookLM</h2>
-<ul>
-<li><a href="https://notebooklm.google.com/notebook/81fe1e8a-c68c-4c81-b254-5b7b3f018a81">主成分分析の理論体系と応用展開</a></li>
-<li><a href="https://notebooklm.google.com/notebook/e47deaa4-f72d-4efa-a67a-969d4156c2a7">主成分分析の基礎：ワインデータで学ぶ多次元解析</a></li>
-<li><a href="https://notebooklm.google.com/notebook/61100f0c-3ba9-4c3a-a38f-6faf29a4217d">主成分分析による多変量データの次元削減と構造化</a></li>
-</ul>
-</div>
-<p><audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg"></audio></p>
-<aside class="notes">
-最後に、復習用のNotebookLMを紹介します。授業スライドだけで理解が不安な場合は、ここにあるノートブックを使って、PCAの考え方、ワインデータでの具体例、多変量データの次元削減という3つの角度から確認してください。大切なのは、NotebookLMの説明をそのまま覚えることではなく、自分の言葉で「何を要約しているのか」「どの軸をどう読むのか」を説明できるようにすることです。
-</aside>
-            </section>
-
-
-
-    </div>
-
-
-  </div>
-
-  <div class="line top"></div>
-  <div class="line bottom"></div>
-  <div class="line left"></div>
-  <div class="line right"></div>
-
-  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
-
-<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
-<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
-
-<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
-<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
-<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
-
-
-
-<script>
+    <head>
+        <meta charset="utf-8">
+        <title>感性データ処理 第9回</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png" style="height:100%" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h1>感性データ処理</h1>
+                    <h2>第9回 主成分分析（PCA）</h2>
+                    <h3>SD法データを「少数の軸」で読み解く</h3>
+                    <h4>データサイエンス学部</h4>
+                    <h4>白濵 成希</h4>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回は、主成分分析、PCAを扱います。前回のSD法では、対象の印象を複数の形容詞対で測定しました。今回は、その多項目の印象データを、少数の軸に要約し、対象の違いを地図のように読む方法を学びます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の位置づけ -->
+                    <div style="font-size:0.6em">
+                        <h2>今日の位置づけ</h2>
+                        <p>第8回から第10回への流れ</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">回</th>
+                                    <th>テーマ</th>
+                                    <th>役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">第8回</td>
+                                    <td>SD法による評価</td>
+                                    <td>印象を測る</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <strong>第9回</strong>
+                                    </td>
+                                    <td>
+                                        <strong>主成分分析</strong>
+                                    </td>
+                                    <td>
+                                        <strong>印象データを要約し、地図として読む</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">第10回</td>
+                                    <td>因子分析</td>
+                                    <td>背後の潜在因子として解釈する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            <strong>今日は「測った印象」を、少数の軸で読みやすくする回</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        授業全体では、感性データを取得し、分析し、レポートとして説明できるようになることを目指しています。前回はSD法で印象を測る方法を扱いました。今回は、そのSD法データを主成分分析で要約します。次回の因子分析とは似て見える部分がありますが、今日のPCAはまず「要約して読む」ための方法として理解します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- この回でできるようになること -->
+                    <div style="font-size:0.6em">
+                        <h2>この回でできるようになること</h2>
+                        <p>授業後に説明・実行できること</p>
+                        <ol>
+                            <li>PCA が何をする手法か説明できる</li>
+                            <li>SD法データで、何を入力表にするか説明できる</li>
+                            <li>寄与率・累積寄与率・スクリープロットを読める</li>
+                            <li>主成分負荷量と主成分得点を区別できる</li>
+                            <li>PCA の結果をポジショニングマップとして解釈できる</li>
+                            <li>因子分析との違いを、目的の違いとして説明できる</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日は、PCAを厳密な数式で導出することよりも、何を入力し、何が出力され、結果をどのように読むかを重視します。特に重要なのは、負荷量は項目側の情報、得点は対象側の情報だと分けて理解することです。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 90分の見取り図 -->
+                    <div style="font-size:0.6em">
+                        <h2>90分の見取り図</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">時間</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">0〜15分</td>
+                                    <td>なぜ今 PCA が必要か／第8回の復習</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">15〜40分</td>
+                                    <td>PCA の基本概念：直感、入力、出力、標準化</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">40〜60分</td>
+                                    <td>主成分数、負荷量、得点の読み方</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">60〜75分</td>
+                                    <td>事例を「対象／感性／活用」で読む</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">75〜90分</td>
+                                    <td>ミニ活動、確認問題、次回への橋渡し</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        まず、なぜSD法の次にPCAが必要になるのかを確認します。その後、PCAの基本的な考え方、入力表、出力の読み方を学びます。後半では、感性工学や産業応用の事例を見て、最後にミニ活動と確認問題で理解を整理します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- なぜ今 PCA なのか -->
+                    <div style="font-size:0.6em">
+                        <h2>なぜ今 PCA なのか</h2>
+                        <p>SD法は印象を多面的に記述できる</p>
+                        <p>しかし、形容詞対が増えると……</p>
+                        <ul>
+                            <li>各項目の平均差は見える</li>
+                            <li>でも、全体としての印象軸が見えにくい</li>
+                            <li>似た意味の項目が重なる</li>
+                            <li>「結局、この案の強みは何か」を説明しにくい</li>
+                        </ul>
+                        <p>
+                            <strong>プロフィール曲線だけでは、全体像が読みにくくなる</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法では、対象を多くの形容詞対で評価できます。これは大きな強みですが、項目が10個、15個、20個と増えると、プロフィール曲線を見ても、全体として何が起きているのかを説明しにくくなります。そこで、多くの項目を少数の軸にまとめる方法が必要になります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 似た項目を少数の軸にまとめる -->
+                    <div style="font-size:0.6em">
+                        <h2>似た項目を少数の軸にまとめる</h2>
+                        <p>たとえば、次の項目が同じ方向に動くことがある</p>
+                        <ul>
+                            <li>高級感がある</li>
+                            <li>洗練されている</li>
+                            <li>上品だ</li>
+                            <li>しっかりしている</li>
+                        </ul>
+                        <p>この場合、個別項目を全部読むよりも</p>
+                        <blockquote>
+                            <p>これらをまとめる「上質さ」のような軸を考える</p>
+                        </blockquote>
+                        <p>方が、設計議論では使いやすい</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        似た意味の項目が同じ方向に動くなら、それらは別々に読むよりも、代表的な印象軸としてまとめた方が分かりやすくなります。PCAは、このような「まとまり」をデータから見つけるための方法として使えます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- PCA の役割 -->
+                    <div style="font-size:0.6em">
+                        <h2>PCA の役割</h2>
+                        <p>PCA は</p>
+                        <blockquote>
+                            <p>
+                                多いけれど読みにくい
+                                印象項目のデータを
+                                少ないけれど話しやすい
+                                新しい軸に変える方法
+                            </p>
+                        </blockquote>
+                        <p>その結果</p>
+                        <ul>
+                            <li>2軸・3軸の地図で対象の位置関係を示せる</li>
+                            <li>軸の意味を言語化しやすくなる</li>
+                            <li>企画・デザイン・改善の議論で共通の見取り図を持てる</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAの目的は、情報をなるべく保ちながら、少数の新しい軸に要約することです。特に感性データでは、分析結果をそのまま数値として示すだけでなく、対象の位置関係や印象軸として説明できることが重要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- PCA とは何か -->
+                    <div style="font-size:0.6em">
+                        <h2>PCA とは何か</h2>
+                        <p>
+                            <strong>主成分分析（PCA: Principal Component Analysis）</strong>
+                        </p>
+                        <p>
+                            多数の変数から、互いに直交する少数の新しい変数を作り、
+                            データのばらつきを少数軸で説明しやすくする手法
+                        </p>
+                        <p>基本的な考え方</p>
+                        <ul>
+                            <li>第1主成分：最も大きな分散を説明する軸</li>
+                            <li>第2主成分：第1主成分と直交し、次に大きな分散を説明する軸</li>
+                            <li>第3主成分以降も同様</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAでは、元の変数をそのまま使うのではなく、元の変数を組み合わせた新しい軸を作ります。第1主成分は、データのばらつきが最も大きく見える方向です。第2主成分は、第1主成分と直交しながら、次に大きなばらつきを説明します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- この講義での PCA の言い換え -->
+                    <div style="font-size:0.6em">
+                        <h2>この講義での PCA の言い換え</h2>
+                        <p>数学的には</p>
+                        <blockquote>
+                            <p>分散を最大化する直交軸を順に求める方法</p>
+                        </blockquote>
+                        <p>感性データ処理では</p>
+                        <blockquote>
+                            <p>
+                                似た動きをする複数項目を、
+                                少数の「代表的な印象軸」にまとめる方法
+                            </p>
+                        </blockquote>
+                        <p>今日の重点</p>
+                        <ul>
+                            <li>厳密な導出よりも、入力・出力・読み方</li>
+                            <li>SD法データをどう地図として読むか</li>
+                            <li>設計上の示唆にどう言い換えるか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この講義では、PCAを「代表的な印象軸を作る方法」として理解します。ただし、単なる感覚的な分類ではなく、データの分散に基づいて軸を作る方法です。したがって、結果の読み方には一定のルールがあります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- PCA に入れる表 -->
+                    <div style="font-size:0.6em">
+                        <h2>PCA に入れる表</h2>
+                        <p>第9回では、SD法で得た評定データを PCA に入れる</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>方向</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>行</td>
+                                    <td>対象：製品案、UI案、音刺激、パッケージ案など</td>
+                                </tr>
+                                <tr>
+                                    <td>列</td>
+                                    <td>形容詞対：高級感、安心感、親しみやすさなど</td>
+                                </tr>
+                                <tr>
+                                    <td>値</td>
+                                    <td>各対象の評定値。しばしば被験者平均</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>基本は</p>
+                        <blockquote>
+                            <p>
+                                <strong>対象 × 項目</strong> の表
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAに入れる表を明確にすることは非常に重要です。この回では、行を対象、列をSD項目、値を評定値とする表を基本にします。特に、対象ごとの平均評定を使うと、対象間の位置関係を読みやすくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 対象 × 項目の例 -->
+                    <div style="font-size:0.6em">
+                        <h2>対象 × 項目の例</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>対象</th>
+                                    <th style="text-align:right">高級感</th>
+                                    <th style="text-align:right">安心感</th>
+                                    <th style="text-align:right">親しみやすさ</th>
+                                    <th style="text-align:right">軽快さ</th>
+                                    <th>…</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A案</td>
+                                    <td style="text-align:right">5.8</td>
+                                    <td style="text-align:right">5.1</td>
+                                    <td style="text-align:right">3.2</td>
+                                    <td style="text-align:right">4.0</td>
+                                    <td>…</td>
+                                </tr>
+                                <tr>
+                                    <td>B案</td>
+                                    <td style="text-align:right">3.4</td>
+                                    <td style="text-align:right">4.8</td>
+                                    <td style="text-align:right">5.7</td>
+                                    <td style="text-align:right">5.9</td>
+                                    <td>…</td>
+                                </tr>
+                                <tr>
+                                    <td>C案</td>
+                                    <td style="text-align:right">6.1</td>
+                                    <td style="text-align:right">5.9</td>
+                                    <td style="text-align:right">2.9</td>
+                                    <td style="text-align:right">3.1</td>
+                                    <td>…</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>この表から知りたいこと</p>
+                        <ul>
+                            <li>どの項目がまとまって動くか</li>
+                            <li>対象どうしは、どの軸で違うか</li>
+                            <li>2次元の地図にすると、どう配置されるか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        このような表を作ると、各対象は複数の印象項目を持つ点として考えられます。PCAは、この多次元の点の集まりを、少数の軸で見やすくする手法です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 平均値ベースと個票ベース -->
+                    <div style="font-size:0.6em">
+                        <h2>平均値ベースと個票ベース</h2>
+                        <p>PCA に入れるデータで問いが変わる</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>入力データ</th>
+                                    <th>見やすいこと</th>
+                                    <th>注意点</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象ごとの平均値</td>
+                                    <td>対象間の位置関係</td>
+                                    <td>個人差は見えにくい</td>
+                                </tr>
+                                <tr>
+                                    <td>被験者ごとの個票</td>
+                                    <td>回答者間の違いも含む構造</td>
+                                    <td>問いが複雑になる</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>第9回ではまず</p>
+                        <blockquote>
+                            <p>
+                                <strong>対象の印象構造を読むために、平均値ベースの表を基本にする</strong>
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        被験者ごとの個票データをそのままPCAに入れることもあります。ただし、その場合は対象の違いだけでなく、回答者間の違いも含まれます。今回は、まず対象の印象構造を分かりやすく読むことを優先します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- データの雲と新しい軸 -->
+                    <div style="font-size:0.6em">
+                        <h2>データの雲と新しい軸</h2>
+                        <p>PCA の直感</p>
+                        <ol>
+                            <li>各対象を点として見る</li>
+                            <li>点の集まりが最も伸びている方向を探す</li>
+                            <li>その方向を第1主成分にする</li>
+                            <li>第1主成分に直交する方向で、次によくばらつく方向を第2主成分にする</li>
+                        </ol>
+                        <p>重要な見方</p>
+                        <blockquote>
+                            <p>データのばらつきを、少数の新しい軸で説明する</p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        2項目だけで考えると、対象は散布図上の点になります。点の雲が斜めに細長く伸びているなら、その伸びている方向が第1主成分になります。実際には項目数がもっと多くても、同じ考え方で新しい軸を求めます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- PCA は単なる軸の回転ではない -->
+                    <div style="font-size:0.6em">
+                        <h2>PCA は単なる軸の回転ではない</h2>
+                        <blockquote>
+                            <p>
+                                2次元の図では <strong>軸を回転して、データの雲に合わせる</strong> と説明されることがある。ただし、正確には <strong>分散を最大化する直交軸を順に求める方法</strong>　として理解する
+                            </p>
+                        </blockquote>
+                        <h3>覚え方</h3>
+                        <ul>
+                            <li>「回転」は直感としては有効</li>
+                            <li>でも定義は「分散を説明する新しい軸」</li>
+                            <li>第1主成分、第2主成分は互いに直交する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAを説明するとき、軸を回転するという表現は便利です。しかし、それだけで覚えると誤解が生じます。PCAの本質は、データの分散をよく説明する直交軸を順番に求めることです。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 共分散行列と相関行列 -->
+                    <div style="font-size:0.6em">
+                        <h2>共分散行列と相関行列</h2>
+                        <p>PCA は、どの情報をもとにするかで結果が変わる</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>方法</th>
+                                    <th>特徴</th>
+                                    <th>注意点</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>共分散行列ベース</td>
+                                    <td>ばらつきの大きい項目が強く効く</td>
+                                    <td>単位や分散差の影響を受ける</td>
+                                </tr>
+                                <tr>
+                                    <td>相関行列ベース</td>
+                                    <td>各項目を平均0・分散1にそろえる</td>
+                                    <td>標準化した関係を見る</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                SD法データでは <strong>相関行列ベース、つまり標準化ありの方が解釈しやすい場面が多い</strong>
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法の項目は同じ段階数で測られることが多いですが、項目によって分散が大きく異なることがあります。そのため、項目間の分散差をならして見る相関行列ベース、つまり標準化ありのPCAが解釈しやすい場面があります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 標準化の実務上の注意 -->
+                    <div style="font-size:0.6em">
+                        <h2>標準化の実務上の注意</h2>
+                        <blockquote>
+                            <p>
+                                標準化とは <strong>各項目を平均0・分散1にそろえること</strong>
+                            </p>
+                        </blockquote>
+                        <h3>注意点</h3>
+                        <ul>
+                            <li>ソフトウェアによって標準化の扱いが違う</li>
+                            <li>自動で標準化されるとは限らない</li>
+                            <li>
+                                scikit-learn の <code>PCA</code> は中心化は行うが、標準化は別途必要
+                            </li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                実務では <strong>分析前に「標準化したのか」を必ず確認する</strong>
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        同じPCAという名前でも、標準化したデータで実行したのか、していないデータで実行したのかによって結果が変わります。レポートや分析メモでは、標準化の有無を明記できるようにしておく必要があります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- PCA の主な出力 -->
+                    <div style="font-size:0.6em">
+                        <h2>PCA の主な出力</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>出力</th>
+                                    <th>何を見るか</th>
+                                    <th>使い方</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>寄与率</td>
+                                    <td>各主成分が説明するばらつき</td>
+                                    <td>軸の重要度を見る</td>
+                                </tr>
+                                <tr>
+                                    <td>累積寄与率</td>
+                                    <td>寄与率の合計</td>
+                                    <td>何軸まで見るか考える</td>
+                                </tr>
+                                <tr>
+                                    <td>主成分負荷量</td>
+                                    <td>項目と主成分の関係</td>
+                                    <td>軸に名前を付ける</td>
+                                </tr>
+                                <tr>
+                                    <td>主成分得点</td>
+                                    <td>対象の主成分上の位置</td>
+                                    <td>対象を地図に配置する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAの結果を見るときは、この4つを分けて理解します。寄与率と累積寄与率は、どの主成分まで見るかを考える手がかりです。負荷量は項目側の情報で、得点は対象側の情報です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 寄与率と累積寄与率 -->
+                    <div style="font-size:0.6em">
+                        <h2>寄与率と累積寄与率</h2>
+                        <ul>
+                            <li>
+                                <strong>寄与率</strong>: 各主成分が、元データのばらつきをどれだけ説明しているか
+                            </li>
+                            <li>
+                                <strong>累積寄与率</strong>: 第1主成分から順に寄与率を足したもの
+                            </li>
+                        </ul>
+                        <h3>例</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>主成分</th>
+                                    <th style="text-align:right">寄与率</th>
+                                    <th style="text-align:right">累積寄与率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PC1</td>
+                                    <td style="text-align:right">0.48</td>
+                                    <td style="text-align:right">0.48</td>
+                                </tr>
+                                <tr>
+                                    <td>PC2</td>
+                                    <td style="text-align:right">0.22</td>
+                                    <td style="text-align:right">0.70</td>
+                                </tr>
+                                <tr>
+                                    <td>PC3</td>
+                                    <td style="text-align:right">0.11</td>
+                                    <td style="text-align:right">0.81</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        寄与率は各主成分の説明力です。累積寄与率は、そこまでの主成分でどの程度の情報を説明できるかを示します。この例では、PC1とPC2で70%、PC3まで入れると81%になります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 主成分数はどう決めるか -->
+                    <div style="font-size:0.6em">
+                        <h2>主成分数はどう決めるか</h2>
+                        <p>万能の正解はない。組み合わせて考える。</p>
+                        <ol>
+                            <li>
+                                <strong>累積寄与率</strong>
+                                70〜80%程度を目安にすることはあるが、厳密なルールではない
+                            </li>
+                            <li>
+                                <strong>スクリープロット</strong>
+                                固有値や寄与率の落ち方から「肘」を見る
+                            </li>
+                            <li>
+                                <strong>解釈しやすさ</strong>
+                                軸に意味が付くか
+                            </li>
+                            <li>
+                                <strong>可視化の都合</strong>
+                                2次元で議論したいか、3軸以上が必要か
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        主成分数は機械的に決めるものではありません。累積寄与率だけでなく、スクリープロット、軸の解釈しやすさ、可視化の目的を組み合わせて判断します。特に感性データでは、少し情報が落ちても、2軸で説明できることに価値がある場合があります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 負荷量は項目側の情報 -->
+                    <div style="font-size:0.6em">
+                        <h2>負荷量は項目側の情報</h2>
+                        <p>
+                            <strong>主成分負荷量（loadings）</strong>
+                        </p>
+                        <ul>
+                            <li>各項目が、各主成分とどの程度関係しているか</li>
+                            <li>軸の意味づけに使う</li>
+                        </ul>
+                        <p>例：PC1 の負荷量</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th style="text-align:right">負荷量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>高級感がある</td>
+                                    <td style="text-align:right">0.82</td>
+                                </tr>
+                                <tr>
+                                    <td>洗練されている</td>
+                                    <td style="text-align:right">0.79</td>
+                                </tr>
+                                <tr>
+                                    <td>上品だ</td>
+                                    <td style="text-align:right">0.75</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                この場合、PC1 は <strong>「上質さ」の軸</strong> と読めそう
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        負荷量は、どの項目がその主成分に強く関係しているかを示します。軸の名前を付けるときは、負荷量の大きい項目を根拠にします。軸名は自由作文ではなく、負荷量に基づいて付ける必要があります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 得点は対象側の情報 -->
+                    <div style="font-size:0.6em">
+                        <h2>得点は対象側の情報</h2>
+                        <p>
+                            <strong>主成分得点（scores）</strong>
+                        </p>
+                        <ul>
+                            <li>各対象が、各主成分上でどこに位置するか</li>
+                            <li>ポジショニングマップに使う</li>
+                        </ul>
+                        <p>得点から読めること</p>
+                        <ul>
+                            <li>どの対象が似ているか</li>
+                            <li>どの対象が離れているか</li>
+                            <li>競合とどの軸で差があるか</li>
+                            <li>改善したい方向はどこか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        得点は対象側の情報です。たとえばA案、B案、C案がPC1とPC2の平面上でどこに配置されるかを見ることで、対象どうしの近さや違いを考えることができます。負荷量と得点を組み合わせることで、軸の意味と対象の位置を結びつけられます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 負荷量と得点を混同しない -->
+                    <div style="font-size:0.6em">
+                        <h2>負荷量と得点を混同しない</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>見るもの</th>
+                                    <th>対象</th>
+                                    <th>読み方</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>負荷量</td>
+                                    <td>項目</td>
+                                    <td>この軸は何を意味するか</td>
+                                </tr>
+                                <tr>
+                                    <td>得点</td>
+                                    <td>対象</td>
+                                    <td>この対象はどこに位置するか</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>読み方の流れ</p>
+                        <ol>
+                            <li>負荷量で、軸の意味を読む</li>
+                            <li>得点で、対象の位置を読む</li>
+                            <li>得点と負荷量を往復して、設計示唆に言い換える</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAの解釈で重要なのは、負荷量と得点を混同しないことです。負荷量は項目側、得点は対象側です。軸名を付けるには負荷量を見ます。対象の特徴を説明するには得点を見ます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- バイプロットの注意 -->
+                    <div style="font-size:0.6em">
+                        <h2>バイプロットの注意</h2>
+                        <p>
+                            バイプロット <strong>負荷量と得点を1つの図に重ねたもの</strong>
+                        </p>
+                        <p>便利な点</p>
+                        <ul>
+                            <li>項目と対象を同時に見られる</li>
+                            <li>ポジショニングの説明に使いやすい</li>
+                        </ul>
+                        <p>注意点</p>
+                        <ul>
+                            <li>1枚の図ですべての関係を完全に保存できるわけではない</li>
+                            <li>見やすさのための妥協を含む</li>
+                            <li>図だけでなく、数値も確認する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        バイプロットは非常に便利ですが、図を過信しすぎないことが大切です。項目の関係、対象の関係、項目と対象の関係を、すべて完全に1枚の図に保存することはできません。図は読み取りの補助として使います。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 実務での注意点 -->
+                    <div style="font-size:0.6em">
+                        <h2>実務での注意点</h2>
+                        <p>PCA の前後で確認すること</p>
+                        <ul>
+                            <li>
+                                <strong>逆向き項目の符号統一</strong>
+                                ポジティブ方向が混ざると軸の解釈が壊れる
+                            </li>
+                            <li>
+                                <strong>主成分の符号は任意</strong>
+                                PC1 が反転しても数学的には同じ解
+                            </li>
+                            <li>
+                                <strong>SD評定は順序尺度に近い</strong>
+                                間隔尺度近似として扱うことを明記する
+                            </li>
+                            <li>
+                                <strong>対象数・項目数に注意</strong>
+                                項目数が多く対象数が少ないと不安定になりやすい
+                            </li>
+                            <li>
+                                <strong>平均化すると個人差は見えにくい</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAを実務で使うときは、分析前の確認が重要です。特に、項目の向きが混ざっていると、軸の意味づけが壊れます。また、主成分の符号は任意なので、プラスとマイナスの向きそのものではなく、相対的な関係で読みます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例の読み方 -->
+                    <div style="font-size:0.6em">
+                        <h2>事例の読み方</h2>
+                        <p>PCA の応用事例は、次の3点で読む</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>読むこと</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>何を評価したのか</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>どのような印象や感覚を扱ったのか</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>PCA の結果を何に使ったのか</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>今回の事例</h3>
+                        <ul>
+                            <li>自動車内装、パッケージ、ECサイト、加速音、官能評価</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここからは、PCAが感性工学や産業応用でどのように使われるかを見ます。細かい論文内容をすべて読むのではなく、対象、感性・主観体験、データと活用という3つの観点で整理します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例1 自動車内装 -->
+                    <div style="font-size:0.6em">
+                        <h2>事例1：自動車内装の印象</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>自動車内装の CMF デザイン案</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>若年消費者が内装に抱く印象</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>Kansei ワードで評定し、主要なスタイル軸を抽出する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>
+                                <strong>ポイント</strong>: 多数の印象語を、内装デザインの方向性を議論できる軸にまとめる
+                            </li>
+                            <li>
+                                <strong>参考</strong>: Song et al. (2023)
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        自動車内装では、色、素材、仕上げなどに対する印象を評価します。PCAを使うことで、多数のKanseiワードを少数のスタイル軸に整理し、デザイン案の方向性を比較しやすくできます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例2 パッケージデザイン -->
+                    <div style="font-size:0.6em">
+                        <h2>事例2：パッケージ印象を設計要素へ返す</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>サフラン製品のパッケージデザイン案</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>消費者の感情的印象・好ましさ</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>
+                                        主要な印象軸を読み、背景色・封止方法・
+                                        <br />
+                                        エコラベル表示などの提案につなげる
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>
+                                <strong>ポイント</strong>: PCA の結果を、設計改善の言葉に戻す
+                            </li>
+                            <li>
+                                <strong>参考</strong>: Papantonopoulos et al. (2021)
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAは、分析結果を出して終わりではありません。パッケージデザインの事例では、印象軸を読み取り、それを背景色や封止方法などの具体的な設計要素に返すことが重要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例3 ECサイトの画面印象 -->
+                    <div style="font-size:0.6em">
+                        <h2>事例3：ECサイトの画面印象</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>複数の中国系 EC プラットフォームのインターフェイス</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>整然／雑然、調和／不調和などの画面印象</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>SD評価を PCA で整理し、改善指針に結びつける</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>
+                                <strong>整理された次元の例</strong>:
+                                <ul>
+                                    <li>レイアウト、情報提示、ユーザー選好</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>参考</strong>: Chen et al. (2025)
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ECサイトの画面印象では、見た目の整然さや情報提示の印象が重要になります。PCAによって、複数の評価項目をレイアウトや情報提示などの次元に整理できれば、UI改善の方向性を議論しやすくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例4 加速音の印象 -->
+                    <div style="font-size:0.6em">
+                        <h2>事例4：加速音の印象空間</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>スポーツタイプ二輪車の加速音</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>音に対する affective properties</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>
+                                        SD法で評定した音印象を主成分で整理し、
+                                        <br />
+                                        音設計や評価モデルに活用する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul>
+                            <li>
+                                <strong>軸の例</strong>:
+                                <ul>
+                                    <li>roughness</li>
+                                    <li>activity</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>参考</strong>: Tanaka et al. (2025)
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        感性データは視覚的なデザインだけではありません。音に対する印象も、SD法で測定し、PCAで主要な印象軸として整理できます。加速音の印象空間を読むことで、音設計の意図を整理できます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例5 官能評価 -->
+                    <div style="font-size:0.6em">
+                        <h2>事例5：官能評価の多属性データ</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>発泡性栄養補助食品の複数サンプル</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>味、渋み、金属感、後味などの官能属性</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>
+                                        多属性の官能評価を PCA で整理し、
+                                        <br />
+                                        サンプルの特徴と改善方向を読む
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>
+                                <strong>ポイント</strong>: 多くの感覚属性を、比較しやすい図にする
+                            </li>
+                            <li>
+                                <strong>参考</strong>: Delompré et al. (2025)
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        官能評価では、味、渋み、後味など、多くの属性を扱います。PCAを使うと、サンプルごとの特徴を地図のように比較でき、どのサンプルがどの感覚属性で特徴づけられるかを読みやすくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- データサイエンスとの接点 -->
+                    <div style="font-size:0.8em">
+                        <h2>データサイエンスとの接点</h2>
+                        <ul>
+                            <li>
+                                PCA は <strong>教師なし学習の代表的手法</strong>
+                            </li>
+                            <li>
+                                教師なし学習とは
+                                <ul>
+                                    <li>正解ラベルがない</li>
+                                    <li>データの内部構造からパターンを探す</li>
+                                    <li>探索的に構造を理解する</li>
+                                </ul>
+                            </li>
+                            <li>
+                                感性データとの相性
+                                <ul>
+                                    <li>「正解」が1つに決まらないことが多い</li>
+                                    <li>印象のまとまりや対象の関係を探索できる</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAは、正解ラベルを使わずにデータの構造を探す手法です。感性データでは、何が正解かが明確でないことが多いため、PCAのような探索的手法が役立ちます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- MDS・数量化III類・PCA の違い -->
+                    <div style="font-size:0.6em">
+                        <h2>MDS・数量化III類・PCA の違い</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>手法</th>
+                                    <th>主な入力</th>
+                                    <th>守ろうとする情報</th>
+                                    <th>典型的な読み方</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>多次元尺度法</td>
+                                    <td>対象間の類似度・距離</td>
+                                    <td>対象間の近さ</td>
+                                    <td>心理的距離の地図</td>
+                                </tr>
+                                <tr>
+                                    <td>数量化III類</td>
+                                    <td>対象 × カテゴリ</td>
+                                    <td>行と列の関係構造</td>
+                                    <td>同時布置図</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>PCA</strong>
+                                    </td>
+                                    <td>
+                                        <strong>対象 × 量的変数</strong>
+                                    </td>
+                                    <td>
+                                        <strong>分散と相関の構造</strong>
+                                    </td>
+                                    <td>
+                                        <strong>項目のまとまりと
+                                            <br />
+                                        対象の位置</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>同じ「地図」でも、入力が違えば意味が違う</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        MDS、数量化III類、PCAはいずれも地図のような図を作ることがあります。しかし、何を入力して、何を守ろうとしているかが違います。PCAでは、対象と量的変数の表を入力し、分散や相関の構造を見ます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- PCA と因子分析の違い -->
+                    <div style="font-size:0.6em">
+                        <h2>PCA と因子分析の違い</h2>
+                        <p>次回への重要な橋渡し</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>手法</th>
+                                    <th>目的</th>
+                                    <th>見方</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>PCA</strong>
+                                    </td>
+                                    <td>観測変数を少数の軸に要約する</td>
+                                    <td>要約</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>因子分析</strong>
+                                    </td>
+                                    <td>背後に潜在因子があると仮定して説明する</td>
+                                    <td>潜在構造の説明</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>見た目は似ていても、目的が違う</li>
+                            <li>
+                                今日の理解: <strong>PCA は「まず要約して読む」ための手法</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAと因子分析は、負荷量のような似た用語が出てくるため混同しやすいです。しかし、PCAは観測変数を少数の軸に要約する方法です。因子分析は、背後の潜在因子で観測変数を説明する方法です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- ミニ活動1 プロフィール曲線の読みにくさ -->
+                    <div style="font-size:0.8em">
+                        <h2>ミニ活動1：読みにくさを言葉にする</h2>
+                        <p>第8回の SD法を思い出す</p>
+                        <ul>
+                            <li>
+                                <strong>Think（2分）</strong>: 形容詞対が12〜15項目あるとき、
+                                <br />
+                                プロフィール曲線だけでは読みにくくなる理由を1つ書く
+                            </li>
+                            <li>
+                                <strong>Pair（2分）</strong>:
+                                <ul>
+                                    <li>2人で共有する</li>
+                                    <li>何がまとまって動いていそうかを推測する</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Share（1分）</strong>
+                                <ul>
+                                    <li>「項目のまとまり」を見たいことを確認する</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この活動では、PCAを使う前の問題意識を確認します。プロフィール曲線は便利ですが、項目が増えると読みにくくなります。その読みにくさを自分の言葉で説明できることが、PCAの必要性を理解する入口になります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- ミニ活動2 主成分数をどう決めるか -->
+                    <div style="font-size:0.6em">
+                        <h2>ミニ活動2：主成分数をどう決めるか</h2>
+                        <p>次の寄与率が得られたとする</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>主成分</th>
+                                    <th style="text-align:right">寄与率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PC1</td>
+                                    <td style="text-align:right">0.48</td>
+                                </tr>
+                                <tr>
+                                    <td>PC2</td>
+                                    <td style="text-align:right">0.22</td>
+                                </tr>
+                                <tr>
+                                    <td>PC3</td>
+                                    <td style="text-align:right">0.11</td>
+                                </tr>
+                                <tr>
+                                    <td>PC4</td>
+                                    <td style="text-align:right">0.07</td>
+                                </tr>
+                                <tr>
+                                    <td>PC5</td>
+                                    <td style="text-align:right">0.05</td>
+                                </tr>
+                                <tr>
+                                    <td>PC6</td>
+                                    <td style="text-align:right">0.04</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>考えること</p>
+                        <ul>
+                            <li>累積寄与率を計算する</li>
+                            <li>2軸まで採用する理由を考える</li>
+                            <li>3軸まで残す理由を考える</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この例では、PC1とPC2で累積寄与率は0.70になります。PC3まで入れると0.81になります。2軸で分かりやすく説明するのか、3軸まで残して情報量を増やすのか、目的に応じて判断します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- ミニ活動3 負荷量から軸名を付ける -->
+                    <div style="font-size:0.8em">
+                        <h2>ミニ活動3：負荷量から軸名を付ける</h2>
+                        <p>PC1 の負荷量の例</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th style="text-align:right">負荷量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>高級感がある—安っぽい</td>
+                                    <td style="text-align:right">0.83</td>
+                                </tr>
+                                <tr>
+                                    <td>洗練されている—野暮ったい</td>
+                                    <td style="text-align:right">0.79</td>
+                                </tr>
+                                <tr>
+                                    <td>上品だ—下品だ</td>
+                                    <td style="text-align:right">0.74</td>
+                                </tr>
+                                <tr>
+                                    <td>親しみやすい—近寄りがたい</td>
+                                    <td style="text-align:right">0.18</td>
+                                </tr>
+                                <tr>
+                                    <td>かわいい—かわいくない</td>
+                                    <td style="text-align:right">0.05</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul>
+                            <li>問い: この軸にどんな名前を付けるか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        軸名を付けるときは、負荷量の大きい項目を根拠にします。この例では、高級感、洗練、上品といった項目が大きいため、「上質さ」「高級感」「洗練」などの軸名が候補になります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- ミニ活動4 得点から改善方針を考える -->
+                    <div style="font-size:0.6em">
+                        <h2>ミニ活動4：得点から改善方針を考える</h2>
+                        <ul>
+                            <li>A案：PC1 正、PC2 正</li>
+                            <li>B案：PC1 負、PC2 正</li>
+                            <li>C案：PC1 負、PC2 負</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                <strong>B案をA案に近づけたいとき、どの項目を動かせばよいか</strong>
+                            </p>
+                        </blockquote>
+                        <p>考える流れ</p>
+                        <ol>
+                            <li>A案とB案の違いを見る</li>
+                            <li>関係する主成分を確認する</li>
+                            <li>その主成分の負荷量が高い項目を見る</li>
+                            <li>設計変更案に言い換える</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この活動では、得点と負荷量を往復する練習をします。B案をA案に近づけたいなら、まずどの軸で差があるかを見ます。次に、その軸に強く関係する項目を負荷量から確認し、具体的な設計変更案に変換します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 確認問題 -->
+                    <div style="font-size:0.6em">
+                        <h2>確認問題</h2>
+                        <ol>
+                            <li>
+                                主成分分析とは何か。
+                                「少数の軸」という言葉を使って説明しなさい。
+                            </li>
+                            <li>
+                                第1主成分と第2主成分の関係を、
+                                「直交」という言葉を使って説明しなさい。
+                            </li>
+                            <li>寄与率と累積寄与率の違いを説明しなさい。</li>
+                            <li>主成分負荷量と主成分得点は、それぞれ何を表すか説明しなさい。</li>
+                            <li>SD法データに PCA を適用する前に必要な確認を2つ挙げなさい。</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        確認問題では、今日の重要語を自分の言葉で説明できるかを確認します。特に、負荷量と得点の違い、標準化や逆向き項目の確認は、実際の分析でも重要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 授業後課題 -->
+                    <div style="font-size:0.6em">
+                        <h2>授業後課題：PCA でどう読みたいかを設計する</h2>
+                        <p>A4 1枚程度、目安800〜1200字</p>
+                        <ol>
+                            <li>
+                                <strong>対象</strong>
+                                比較したい対象を3〜5個選ぶ
+                            </li>
+                            <li>
+                                <strong>感性・主観体験</strong>
+                                SD法で測りたい印象を8〜12項目程度挙げる
+                            </li>
+                            <li>
+                                <strong>分析方針</strong>
+                                PCAで何を見たいかを書く
+                            </li>
+                            <li>
+                                <strong>主成分数の考え方</strong>
+                                2軸にしたいか、3軸まで残したいかを書く
+                            </li>
+                            <li>
+                                <strong>注意点</strong>
+                                逆向き項目、標準化、サンプル数、平均化などから2つ以上
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この課題では、実データの分析そのものよりも、PCAで何を読みたいのかを設計することを重視します。対象、SD項目、分析方針、主成分数の考え方、注意点を整理してください。第10回の因子分析との比較にもつながります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の一言まとめ -->
+                    <div style="font-size:0.6em">
+                        <h2>今日の一言まとめ</h2>
+                        <blockquote>
+                            <p>
+                                PCA は、SD法で得た多項目の印象データを、
+                                少数の印象軸に要約し、
+                                対象の違いを話しやすくする方法である。
+                            </p>
+                        </blockquote>
+                        <p>自分で説明できるようにしたいこと</p>
+                        <ul>
+                            <li>PCA は何を入力にするか</li>
+                            <li>第1主成分と第2主成分はどう決まるか</li>
+                            <li>寄与率と累積寄与率は何を見る指標か</li>
+                            <li>負荷量と得点の違いは何か</li>
+                            <li>PCA の図から、どう設計示唆に言い換えるか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の中心は、多項目の印象データを少数の軸に要約して読むことでした。PCAの結果は、寄与率、負荷量、得点を分けて読む必要があります。そして最後には、分析結果を対象の特徴や設計改善の言葉に戻すことが大切です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 次回への橋渡し -->
+                    <div style="font-size:0.6em">
+                        <h2>次回への橋渡し</h2>
+                        <p>
+                            次回は <strong>因子分析</strong> を扱う
+                        </p>
+                        <p>違いのキーワード</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>PCA</th>
+                                    <th>因子分析</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>要約</td>
+                                    <td>潜在因子による説明</td>
+                                </tr>
+                                <tr>
+                                    <td>軸を作る</td>
+                                    <td>背後の構造を仮定する</td>
+                                </tr>
+                                <tr>
+                                    <td>観測変数の情報を圧縮する</td>
+                                    <td>観測変数の共通部分を説明する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            第9回で <strong>負荷量と得点を読む感覚</strong> をつかんでおくと、第10回が理解しやすい
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次回は因子分析です。PCAと因子分析は、出力の見た目が似ていることがあります。しかし、PCAは要約、因子分析は潜在因子による説明です。今回のPCAの読み方を基礎として、次回はその違いをさらに整理します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 参考資料 -->
+                    <div style="font-size:0.8em">
+                        <h2>参考資料</h2>
+                        <ul>
+                            <li>
+                                <p>
+                                    <a href="https://doi.org/10.1098/rsta.2015.0202">Jolliffe, I. T., &amp; Cadima, J. (2016). <em>Principal component analysis: a review and recent developments</em>. <em>Philosophical Transactions of the Royal Society A</em>, 374(2065), 20150202.</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <a href="https://doi.org/10.1039/C3AY41907J">Bro, R., &amp; Smilde, A. K. (2014). <em>Principal component analysis</em>. <em>Analytical Methods</em>, 6, 2812–2831.</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <a href="https://www.itl.nist.gov/div898/handbook/pmc/section5/pmc55.htm">NIST/SEMATECH e-Handbook of Statistical Methods: Principal Components</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html">scikit-learn PCA documentation</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        このスライドには、PCAの基本的な理解に役立つ参考資料を示しています。Jolliffe and Cadima、Bro and SmildeはPCAの解説として参照できます。NISTとscikit-learnの公式資料は、実際に分析を行うときの確認にも役立ちます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 応用事例の参考資料 -->
+                    <div style="font-size:0.55em">
+                        <h2>応用事例の参考資料</h2>
+                        <ul>
+                            <li>
+                                <p>
+                                    <a href="https://doi.org/10.3390/app131910674">Song et al. (2023). <em>The Design of Automotive Interior for Chinese Young Consumers Based on Kansei Engineering and Eye-Tracking Technology</em>. <em>Applied Sciences</em>, 13(19), 10674.</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <a href="https://doi.org/10.5057/ijae.IJAE-D-21-00006">Papantonopoulos et al. (2021). <em>A Kansei Engineering Study of Saffron Packaging Design</em>. <em>International Journal of Affective Engineering</em>, 20(4), 237–245.</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <a href="https://doi.org/10.54941/ahfe1006688">Chen et al. (2025). <em>User Preference in Chinese E-commerce Interface Design: A Semantic Differential Approach</em>. <em>AHFE Open Access</em>.</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <a href="https://doi.org/10.5057/ijae.IJAE-D-24-00046">Tanaka et al. (2025). <em>Impressions of Acceleration Sound of Sports-type Motorcycle</em>. <em>International Journal of Affective Engineering</em>, 24(3), 235–244.</a>
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <a href="https://doi.org/10.3390/molecules30040854">Delompré et al. (2025). <em>Sensory Evaluation of Effervescent Nutritional Supplements: Identification and Characterisation of Off-Tastes</em>. <em>Molecules</em>, 30(4), 854.</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        このスライドには、授業内で紹介した応用事例の参考資料を示しています。PCAが、製品デザイン、パッケージ、ユーザーインターフェイス、音、官能評価など、さまざまな感性データに応用されていることを確認できます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- NotebookLM -->
+                    <div style="font-size:0.8em">
+                        <h2>NotebookLM</h2>
+                        <ul>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/81fe1e8a-c68c-4c81-b254-5b7b3f018a81">主成分分析の理論体系と応用展開</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/e47deaa4-f72d-4efa-a67a-969d4156c2a7">主成分分析の基礎：ワインデータで学ぶ多次元解析</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/61100f0c-3ba9-4c3a-a38f-6faf29a4217d">主成分分析による多変量データの次元削減と構造化</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最後に、復習用のNotebookLMを紹介します。授業スライドだけで理解が不安な場合は、ここにあるノートブックを使って、PCAの考え方、ワインデータでの具体例、多変量データの次元削減という3つの角度から確認してください。大切なのは、NotebookLMの説明をそのまま覚えることではなく、自分の言葉で「何を要約しているのか」「どの軸をどう読むのか」を説明できるようにすることです。
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
   const printPlugins = [
       RevealNotes,
       RevealHighlight,
@@ -1918,8 +1868,6 @@ PCAで何を見たいかを書く</li>
 			  }, 2500);
 
     }
-</script>
-
-</body>
-
+        </script>
+    </body>
 </html>
