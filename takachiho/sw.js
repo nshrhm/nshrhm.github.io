@@ -1,4 +1,4 @@
-const CACHE_NAME = 'miyazaki-takachiho-shiori-v1';
+const CACHE_NAME = 'miyazaki-takachiho-shiori-v2';
 const ASSETS = [
   './', './index.html', './links.html', './styles.css', './app.js', './manifest.webmanifest',
   './assets/icons/icon-192.png', './assets/icons/icon-512.png',
