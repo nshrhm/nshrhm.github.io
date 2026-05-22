@@ -7,11 +7,23 @@
   <meta name="description" content="2026年5月26日〜28日 宮崎・高千穂・熊本城ドライブ旅行のスマホ向け旅のしおり">
   <title>宮崎旅行・旅のしおり</title>
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16.png">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
+  <div class="update-banner" id="updateBanner" role="status" aria-live="polite" hidden>
+    <div>
+      <strong>更新があります</strong>
+      <span>最新版のしおりに切り替えられます。</span>
+    </div>
+    <div class="update-actions">
+      <button class="btn small" id="updateNowBtn" type="button">更新する</button>
+      <button class="btn small ghost" id="updateLaterBtn" type="button">あとで</button>
+    </div>
+  </div>
   <header class="site-header hero" id="top">
     <div class="hero-grid">
       <div>
@@ -19,12 +31,17 @@
         <h1>宮崎・高千穂・熊本城<br>旅のしおり</h1>
         <p class="lead">北九州市小倉南区から青島・日南へ。八代市福正町の実家と山都町のコテージを拠点に、高千穂と熊本城をめぐる3日間のドライブ旅。</p>
         <div class="hero-actions">
-          <a class="btn" href="#day1">旅程を見る</a>
+          <button class="btn install-primary" id="installBtn" type="button">アプリとして追加</button>
+          <a class="btn secondary" href="#day1">旅程を見る</a>
           <a class="btn secondary" href="./links.html">リンク集へ</a>
-          <button class="btn ghost" id="installBtn" type="button">ホーム画面に追加</button>
           <button class="btn ghost" id="printBtn" type="button">印刷</button>
         </div>
         <div class="offline-banner" id="offlineBanner">ZIP内のHTMLとして閲覧できます。PWAのインストール・オフラインキャッシュは、Webサーバー上で開いた時に有効になります。</div>
+        <div class="install-hint" id="installHint" hidden>
+          <strong>アプリとして追加</strong>
+          <p>iPhone/iPadは共有ボタンから「ホーム画面に追加」。Android/Chromeはブラウザの案内またはメニューから追加できます。</p>
+          <button class="btn small secondary" id="closeInstallHint" type="button">閉じる</button>
+        </div>
       </div>
       <div class="hero-illust"><img src="./assets/illustrations/hero.svg" alt="旅のイラスト"></div>
     </div>
@@ -205,7 +222,7 @@
             <li>青島出発が11:45以降、または昼食終了が13:00以降ならスキップ。</li>
             <li>にこにこショップから直接、鵜戸神宮へ向かう。<a href="https://www.google.com/maps/dir/?api=1&origin=%E3%81%AB%E3%81%93%E3%81%AB%E3%81%93%E3%82%B7%E3%83%A7%E3%83%83%E3%83%97+%E5%AE%AE%E5%B4%8E%E7%9C%8C%E6%97%A5%E5%8D%97%E5%B8%82%E9%A2%A8%E7%94%B03850-10&destination=%E9%B5%9C%E6%88%B8%E7%A5%9E%E5%AE%AE&travelmode=driving" target="_blank" rel="noopener">直接ルート</a></li>
             <li>鵜戸神宮の1時間を確保し、八代20:00〜21:00帰宅を優先。</li>
-            <li>チキン南蛮は、前日未達なら2日目の高千穂候補で検討。八代では食べません。</li>
+            <li>チキン南蛮は、前日未達なら2日目の高千穂候補で検討。</li>
           </ul>
         </article>
       </div>
@@ -352,7 +369,7 @@
             <li>あまてらす鉄道は長時間待たない。満席・運休なら、高千穂神社か道の駅高千穂へ切り替え。</li>
             <li>天安河原の足元が不安なら、天岩戸神社周辺で休む。ご夫婦だけ短時間往復も可。</li>
             <li>16時台の高千穂出発を優先し、道の駅や市街で夕食・朝食を買ってからHOTEL WINDYへ。</li>
-            <li>チキン南蛮を食べ損ねている場合は、高千穂内の候補で早めに判断。八代では食べません。</li>
+            <li>チキン南蛮を食べ損ねている場合は、高千穂内の候補で早めに判断。</li>
           </ul>
           <div class="card-actions">
             <a class="btn small secondary" href="https://takachiho-kanko.info/gourmet/14/" target="_blank" rel="noopener">道の駅高千穂</a>

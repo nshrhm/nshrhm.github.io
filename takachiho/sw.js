@@ -1,16 +1,23 @@
-const CACHE_NAME = 'miyazaki-takachiho-shiori-v2';
+const CACHE_NAME = 'miyazaki-takachiho-shiori-v4';
 const ASSETS = [
   './', './index.html', './links.html', './styles.css', './app.js', './manifest.webmanifest',
   './assets/icons/icon-192.png', './assets/icons/icon-512.png',
+  './assets/icons/icon-maskable-192.png', './assets/icons/icon-maskable-512.png',
+  './assets/icons/apple-touch-icon-180.png', './assets/icons/favicon-32.png', './assets/icons/favicon-16.png',
   './assets/illustrations/hero.svg', './assets/illustrations/ocean.svg', './assets/illustrations/moai.svg',
   './assets/illustrations/udo.svg', './assets/illustrations/gorge.svg', './assets/illustrations/train.svg',
   './assets/illustrations/cave.svg', './assets/illustrations/castle.svg', './assets/illustrations/car.svg'
 ];
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
 });
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(key => key === CACHE_NAME ? null : caches.delete(key)))).then(() => self.clients.claim()));
+});
+self.addEventListener('message', event => {
+  if (event.data?.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;

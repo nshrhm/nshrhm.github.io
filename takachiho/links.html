@@ -7,11 +7,23 @@
   <meta name="description" content="宮崎・高千穂・熊本城旅行の公式リンクとルート集">
   <title>リンク集 | 宮崎・高千穂 旅のしおり</title>
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16.png">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
+  <div class="update-banner" id="updateBanner" role="status" aria-live="polite" hidden>
+    <div>
+      <strong>更新があります</strong>
+      <span>最新版のしおりに切り替えられます。</span>
+    </div>
+    <div class="update-actions">
+      <button class="btn small" id="updateNowBtn" type="button">更新する</button>
+      <button class="btn small ghost" id="updateLaterBtn" type="button">あとで</button>
+    </div>
+  </div>
   <header class="site-header hero" id="top">
     <div class="hero-grid">
       <div>
@@ -115,7 +127,7 @@
       <div class="section-head">
         <div>
           <h2 class="section-title"><small>Food</small>食事・チキン南蛮候補</h2>
-          <p class="section-note">八代市ではチキン南蛮を食べない方針。旅情のある場所で判断。</p>
+          <p class="section-note">宮崎市内と高千穂の候補を中心に、時間・営業状況・疲れ具合で判断。</p>
         </div>
         <span class="day-badge">🍗</span>
       </div>

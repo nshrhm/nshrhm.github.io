@@ -78,21 +78,68 @@
 
   let deferredPrompt = null;
   const installBtn = $('#installBtn');
-  if (installBtn) installBtn.style.display = 'none';
+  const installHint = $('#installHint');
+  const closeInstallHint = $('#closeInstallHint');
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if (installBtn && isStandalone) {
+    installBtn.textContent = 'アプリとして表示中';
+    installBtn.disabled = true;
+  }
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    if (installBtn) installBtn.style.display = 'inline-flex';
   });
   installBtn?.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
+    if (isStandalone) return;
+    if (!deferredPrompt) {
+      installHint?.removeAttribute('hidden');
+      return;
+    }
     deferredPrompt.prompt();
     await deferredPrompt.userChoice;
     deferredPrompt = null;
-    installBtn.style.display = 'none';
   });
+  closeInstallHint?.addEventListener('click', () => installHint?.setAttribute('hidden', ''));
 
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-    window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+    const updateBanner = $('#updateBanner');
+    const updateNowBtn = $('#updateNowBtn');
+    const updateLaterBtn = $('#updateLaterBtn');
+    let waitingWorker = null;
+    let refreshing = false;
+
+    const showUpdate = (worker) => {
+      waitingWorker = worker;
+      updateBanner?.removeAttribute('hidden');
+    };
+
+    updateNowBtn?.addEventListener('click', () => {
+      if (!waitingWorker) return;
+      waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+    });
+    updateLaterBtn?.addEventListener('click', () => updateBanner?.setAttribute('hidden', ''));
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').then(registration => {
+        if (registration.waiting && navigator.serviceWorker.controller) {
+          showUpdate(registration.waiting);
+        }
+
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          newWorker?.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              showUpdate(newWorker);
+            }
+          });
+        });
+      }).catch(() => {});
+    });
   }
 })();
