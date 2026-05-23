@@ -44,9 +44,9 @@ const MAPS = {
   kinrinEmbed: 'https://www.google.com/maps?q=%E9%87%91%E9%B1%97%E6%B9%96%20%E7%94%B1%E5%B8%83%E9%99%A2&output=embed',
   sagiridaiSearch: 'https://www.google.com/maps/search/?api=1&query=%E7%8B%AD%E9%9C%A7%E5%8F%B0%20%E7%94%B1%E5%B8%83%E9%99%A2',
   sagiridaiEmbed: 'https://www.google.com/maps?q=%E7%8B%AD%E9%9C%A7%E5%8F%B0%20%E7%94%B1%E5%B8%83%E9%99%A2&output=embed',
-  fukumashoToAeon: 'https://www.google.com/maps/dir/?api=1&origin=%E5%85%AB%E4%BB%A3%E5%B8%82%E7%A6%8F%E6%AD%A3%E7%94%BA&destination=%E3%82%A4%E3%82%AA%E3%83%B3%E6%B9%AF%E5%B8%83%E9%99%A2%E5%BA%97&travelmode=driving',
-  tanakahigashiToAeon: 'https://www.google.com/maps/dir/?api=1&origin=%E5%85%AB%E4%BB%A3%E5%B8%82%E7%94%B0%E4%B8%AD%E6%9D%B1%E7%94%BA&destination=%E3%82%A4%E3%82%AA%E3%83%B3%E6%B9%AF%E5%B8%83%E9%99%A2%E5%BA%97&travelmode=driving',
-  hayamaToAeon: 'https://www.google.com/maps/dir/?api=1&origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&destination=%E3%82%A4%E3%82%AA%E3%83%B3%E6%B9%AF%E5%B8%83%E9%99%A2%E5%BA%97&travelmode=driving',
+  fukumashoToAmber: 'https://www.google.com/maps/dir/?api=1&origin=%E5%85%AB%E4%BB%A3%E5%B8%82%E7%A6%8F%E6%AD%A3%E7%94%BA&destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&travelmode=driving',
+  tanakahigashiToAmber: 'https://www.google.com/maps/dir/?api=1&origin=%E5%85%AB%E4%BB%A3%E5%B8%82%E7%94%B0%E4%B8%AD%E6%9D%B1%E7%94%BA&destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&travelmode=driving',
+  hayamaToAmber: 'https://www.google.com/maps/dir/?api=1&origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&travelmode=driving',
   aeonToAmber: 'https://www.google.com/maps/dir/?api=1&origin=%E3%82%A4%E3%82%AA%E3%83%B3%E6%B9%AF%E5%B8%83%E9%99%A2%E5%BA%97&destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&travelmode=driving',
   amberToKinrin: 'https://www.google.com/maps/dir/?api=1&origin=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&destination=%E9%87%91%E9%B1%97%E6%B9%96%20%E7%94%B1%E5%B8%83%E9%99%A2&travelmode=driving',
   amberToSagiridai: 'https://www.google.com/maps/dir/?api=1&origin=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&destination=%E7%8B%AD%E9%9C%A7%E5%8F%B0&travelmode=driving',
@@ -118,8 +118,8 @@ const LINK_GROUPS = [
     {label:'宿へ電話', url:'tel:0977759238', note:'受付9:00〜18:00／遅れる場合は連絡'}
   ]},
   {title:'買い出し', items:[
-    {label:'イオン湯布院店 公式', url:URLS.aeon, note:'9:00〜22:00。現地集合の第一候補'},
-    {label:'イオン湯布院店 Googleマップ', url:MAPS.aeonSearch, note:'三台合流と不足分補充'},
+    {label:'イオン湯布院店 公式', url:URLS.aeon, note:'9:00〜22:00。必要時の不足分補充候補'},
+    {label:'イオン湯布院店 Googleマップ', url:MAPS.aeonSearch, note:'チェックイン後、必要な場合のみ利用'},
     {label:'Aコープゆふいん店 公式', url:URLS.acoop, note:'10:00〜19:00。地元野菜候補'},
     {label:'Aコープゆふいん店 Googleマップ', url:MAPS.acoopSearch, note:'サブ候補'}
   ]},

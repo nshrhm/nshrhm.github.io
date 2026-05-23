@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yufuin-bbq-shiori-v1';
+const CACHE_NAME = 'yufuin-bbq-shiori-v2';
 const CORE_ASSETS = [
   './',
   './index.html',

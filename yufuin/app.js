@@ -162,7 +162,7 @@
     btn.addEventListener('click', async () => {
       const plan = store.get('trip-plan', 'a') === 'b' ? 'プランB（雨・渋滞・体調優先）' : 'プランA（通常）';
       const note = ($('#family-memo')?.value || '').trim();
-      const text = `湯布院BBQ旅行 共有メモ\n日程：2026/11/7(土)〜11/8(日)\n現在の方針：${plan}\n集合：13:45 イオン湯布院店 → 15:00 AMBER Yufuinチェックイン\nメモ：${note || '特になし'}\n`;
+      const text = `湯布院BBQ旅行 共有メモ\n日程：2026/11/7(土)〜11/8(日)\n現在の方針：${plan}\n集合：15:00 AMBER Yufuin集合・チェックイン\n買い出し：チェックイン後、必要な場合にのみ不足分を購入\n参加費：3,000円(持込別)\nメモ：${note || '特になし'}\n`;
       try{
         await navigator.clipboard.writeText(text);
         btn.textContent = 'コピーしました';
