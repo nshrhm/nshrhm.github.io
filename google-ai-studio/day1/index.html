@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>AIと対話してWebアプリを作ろう 第1回</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png" alt="" width="316" height="316" style="height:100%" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h4>
+                        生成AIで「動く」Webアプリを作る
+                        <br />
+                        超入門スキルアップコース（基礎編）
+                    </h4>
+                    <h2>第1回: 起動できたら勝ち</h2>
+                    <h3>AI Studioで動く画面を作る</h3>
+                    <p>講師：白濵 成希</p>
+                    <p>下関市立大学 データサイエンス学部</p>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日から、「AIと対話してWebアプリを作ろう」という講座を始めます。第1回のタイトルは「起動できたら勝ち」です。今日は、完成度の高いアプリを作ることが目標ではありません。Google Chromeを開き、Google AI Studioにログインし、Buildで日本語のプロンプトを入力して、簡単な画面とボタンが動くところまで確認します。ここまでできれば、第1回としては十分成功です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日のゴール -->
+                    <div style="font-size:0.8em">
+                        <h2>今日のゴール</h2>
+                        <p>
+                            <strong>Google AI Studioで、画面とボタンを作る。</strong>
+                        </p>
+                        <h3>できれば成功</h3>
+                        <ul>
+                            <li>Google AI Studioにログインできる</li>
+                            <li>Buildを開ける</li>
+                            <li>日本語でプロンプトを入力できる</li>
+                            <li>ボタンを押すと画面が変わる</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のゴールはとてもシンプルです。Google AI Studioに入り、Buildを開き、日本語で「こんな画面を作ってください」と頼みます。そして、画面にタイトルやボタンが出て、ボタンを押したときに表示が変われば成功です。今日は、保存機能やログイン機能、公開機能までは進みません。まずは、AIと対話して画面が作れるという感覚をつかみます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の大事なルール -->
+                    <div style="font-size:0.8em">
+                        <h2>今日の大事なルール</h2>
+                        <ul>
+                            <li>
+                                講座用の<strong>プライベートGmail</strong>で作業する
+                            </li>
+                            <li>画面にメールアドレスが出たら注意する</li>
+                            <li>課金・公開・APIキーには進まない</li>
+                            <li>分からない画面が出たら止まる</li>
+                        </ul>
+                        <blockquote>
+                            <p>今日は「AI Studio上で動く」ところまで。</p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最初に大事なルールを確認します。この講座では、原則として講座用のプライベートGmailを使います。勤務先や学校のGoogleアカウントでは、管理者設定によりAI Studioが使えない場合があります。また、画面にはメールアドレスが表示されることがあります。画面共有やスクリーンショットでは、個人情報が映らないように注意します。今日は、課金設定、アプリ公開、APIキー作成には進みません。分からない画面が出たら、そのまま進まず講師に確認してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の流れ -->
+                    <div style="font-size:0.8em">
+                        <h2>今日の流れ</h2>
+                        <ol>
+                            <li>Chromeを起動する</li>
+                            <li>Google AI Studioにログインする</li>
+                            <li>Buildを開く</li>
+                            <li>最初のプロンプトを入力する</li>
+                            <li>生成された画面を確認する</li>
+                            <li>小さく修正する</li>
+                            <li>今日できたことを確認する</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の流れです。まずChromeを起動します。次にGoogle AI Studioにログインします。ログインできたら、左側のメニューからBuildを開きます。Buildでは、作りたい画面を日本語で説明します。そのあと、生成された画面を確認し、ボタンを押して動作を見ます。最後に、追加の指示で少しだけ見た目を直します。今日は、ここまでできれば十分です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 1. Chromeを起動する -->
+                    <div style="font-size:0.8em">
+                        <h2>1. Chromeを起動する</h2>
+                        <p>
+                            今日使う入口は <strong>Google Chrome</strong> です。
+                        </p>
+                        <h3>確認すること</h3>
+                        <ul>
+                            <li>Chromeが開いている</li>
+                            <li>画面上部のアドレスバーが見える</li>
+                            <li>URLを直接入力できる</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        では、最初にGoogle Chromeを起動します。画面下にChromeのアイコンがある人は、それをクリックしてください。見つからない人は、スタートメニューから「Chrome」と検索してください。Chromeが開いたら、画面上部の細長い入力欄を見ます。ここがアドレスバーです。次の手順では、このアドレスバーにGoogle AI StudioのURLを直接入力します。検索して探すこともできますが、今日は迷子を減らすため、URLを直接入力する方法で進めます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 2. Google AI Studioにアクセスする -->
+                    <div style="font-size:0.8em">
+                        <h2>2. Google AI Studioにアクセスする</h2>
+                        <p>アドレスバーに入力します。</p>
+                        <p>
+                            <a href="https://aistudio.google.com/">https://aistudio.google.com/</a>
+                        </p>
+                        <p>
+                            入力したら <strong>Enter</strong> を押します。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Chromeのアドレスバーをクリックしてください。そこに、https://aistudio.google.com/ と入力します。入力できたらEnterキーを押してください。Google検索欄に「AI Studio」と入力して探してもたどり着く場合はありますが、今日は全員が同じ場所に行けるように、URLを直接入力します。URLを入力すると、Google AI Studioのページが開きます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 3. 講座用Gmailでログインする -->
+                    <div style="font-size:0.8em">
+                        <h2>3. 講座用Gmailでログインする</h2>
+                        <h3>確認すること</h3>
+                        <ul>
+                            <li>講座用のプライベートGmailを使う</li>
+                            <li>勤務先・学校・家族のアカウントでは進めない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Googleアカウントのログイン画面が出る場合があります。その場合は、講座用のプライベートGmailでログインしてください。すでにログイン済みの人は、そのままAI Studioが開くこともあります。複数のアカウントが表示される人は、どのアカウントを使うか確認します。勤務先、学校、家族のアカウントで進まないようにしてください。また、画面の右上や左下にメールアドレスが表示されることがあります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 4. AI Studioに入れたか確認する -->
+                    <div style="font-size:0.68em">
+                        <h2>4. AI Studioに入れたか確認する</h2>
+                        <p>入れていればOK</p>
+                        <ul>
+                            <li>
+                                左上に <strong>Google AI Studio</strong> が見える
+                            </li>
+                            <li>
+                                左側に <strong>Playground</strong> が見える
+                            </li>
+                            <li>
+                                左側に <strong>Build</strong> が見える
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ログインできると、Google AI Studioの画面が表示されます。画面左上にGoogle AI Studioと出ていれば、まずは大丈夫です。左側のメニューにPlaygroundやBuildが見えると思います。最初はPlaygroundが開いている場合がありますが、それは間違いではありません。AI Studioに入れています。今日は、このあとBuildを使います。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 5. Buildを開く -->
+                    <div style="font-size:0.8em">
+                        <h2>5. Buildを開く</h2>
+                        <p>
+                            左側メニューから <strong>Build</strong> を選びます。
+                        </p>
+                        <p>Buildは、AIと会話しながらWebアプリを作る場所です。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次に、左側メニューのBuildをクリックします。Buildは、AIと会話しながらアプリを作るための場所です。ここでは、最初からプログラムを書く必要はありません。「こういう画面を作ってください」と日本語で説明すると、AIが画面やコードを作ってくれます。今日は、コードを直接編集することは扱いません。日本語で頼んで、プレビューで確認するところに集中します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 6. Build画面の確認 -->
+                    <div style="font-size:0.8em">
+                        <h2>6. Build画面の確認</h2>
+                        <h3>見つけるもの</h3>
+                        <ul>
+                            <li>アプリの説明を入れる入力欄</li>
+                            <li>送信ボタン</li>
+                            <li>周辺に出る提案ボタン</li>
+                        </ul>
+                        <p>
+                            注意: <strong>Add database and auth</strong> は今日は押しません。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Build画面が開いたら、中央付近にアプリの説明を入れる入力欄があります。ここに、作りたいアプリの内容を書きます。周辺には、提案ボタンや連携ボタンが表示されることがあります。その中にAdd database and authのようなボタンが見える場合がありますが、今日は押しません。これはデータベースやログイン機能に進む導線です。第1回では使いません。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 7. 最初のプロンプト -->
+                    <div style="font-size:0.8em">
+                        <h2>7. 最初のプロンプト</h2>
+                        <pre><code class="language-text">初心者向けの簡単なWebアプリを作ってください。
+画面には、次の要素を入れてください。
+
+- タイトル：「はじめてのAIアプリ」
+- 説明文：「ボタンを押すとメッセージが変わります」
+- ボタン：「押してみる」
+- ボタンを押すと、「できました！」と表示される
+
+デザインはシンプルで、文字を大きめにしてください。
+まだログイン機能、データ保存、Firebase、APIキー、外部サービス連携は使わないでください。
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここで、最初のプロンプトを入力します。この文章をそのままコピーして、Buildの入力欄に貼り付けてください。内容は、タイトル、説明文、ボタン、ボタンを押した後のメッセージだけです。今日は、まだログイン機能、データ保存、Firebase、APIキー、外部サービス連携は使わない、と明記してあります。AIに頼むときは、作りたいものだけでなく、今日は使わないものも書いておくと、余計な方向に進みにくくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 8. プロンプトの読み方 -->
+                    <div style="font-size:0.8em">
+                        <h2>8. プロンプトの読み方</h2>
+                        <h3>このプロンプトで伝えているこ</h3>
+                        <ul>
+                            <li>何を作るか</li>
+                            <li>画面に何を置くか</li>
+                            <li>ボタンを押すと何が起きるか</li>
+                            <li>今日は何を使わないか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        プロンプトは、AIへの指示文です。ただし、難しく考える必要はありません。作りたい画面を、できるだけ具体的に説明すれば大丈夫です。今回のプロンプトでは、タイトル、説明文、ボタン、押した後のメッセージを指定しています。さらに、ログイン、データ保存、Firebase、APIキー、外部サービス連携は使わない、と指定しています。これは、第1回の範囲を守るために大事です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 9. 送信して待つ -->
+                    <div style="font-size:0.8em">
+                        <h2>9. 送信して待つ</h2>
+                        <p>プロンプトを貼り付けたら送信します。</p>
+                        <p>生成中は少し待ちます。</p>
+                        <ul>
+                            <li>画面が変わるまで待つ</li>
+                            <li>途中で別のボタンを押さない</li>
+                            <li>エラーが出たら講師に確認する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        プロンプトを貼り付けたら、送信ボタンを押します。AIがアプリを作り始めるので、少し待ちます。画面が変わるまで、別のボタンをいろいろ押さないようにしてください。生成には時間がかかることがあります。もしエラーが出たり、支払い方法やAPIキーのような画面が出たりした場合は、先に進まず講師に確認してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 10. 生成結果を確認する -->
+                    <div style="font-size:0.8em">
+                        <h2>10. 生成結果を確認する</h2>
+                        <h3>まず見るところ</h3>
+                        <ul>
+                            <li>タイトルがあるか</li>
+                            <li>説明文があるか</li>
+                            <li>ボタンがあるか</li>
+                            <li>ボタンを押した後の表示があるか</li>
+                        </ul>
+                        <p>見た目が違っても、まずはOKです。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        生成が終わったら、作られた画面を確認します。まず、細かい見た目ではなく、必要な部品があるかを見ます。タイトルがあるか、説明文があるか、ボタンがあるかを確認してください。文字の大きさや色、配置が隣の人と違っていても大丈夫です。AIが作るものは、毎回少し変わります。今日は、画面が出て、ボタンがあることが大事です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 11. ボタンを押してみる -->
+                    <div style="font-size:0.8em">
+                        <h2>11. ボタンを押してみる</h2>
+                        <p>
+                            <strong>「押してみる」</strong> をクリックします。
+                        </p>
+                        <h3>成功の目安</h3>
+                        <ul>
+                            <li>「できました！」が出る</li>
+                            <li>または、何かメッセージが変わる</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        では、ボタンを押してみましょう。「押してみる」というボタンをクリックします。ボタンを押して、「できました！」と表示されれば、とても分かりやすい成功です。少し違う言葉でも、ボタンを押したあとに何か表示が変われば、まずは成功と考えてください。今日は、プログラムの中身を読むことより、画面が反応することを確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 12. うまくいかないとき -->
+                    <div style="font-size:0.8em">
+                        <h2>12. うまくいかないとき</h2>
+                        <p>失敗ではなく、AIに相談する材料です。</p>
+                        <h3>よくある状態</h3>
+                        <ul>
+                            <li>ボタンがない</li>
+                            <li>押しても変わらない</li>
+                            <li>画面が複雑すぎる</li>
+                            <li>エラーが出た</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        うまくいかない場合もあります。ボタンが出ていない、ボタンを押しても何も変わらない、画面が複雑になりすぎた、エラーが出た、ということがあります。しかし、これは失敗ではありません。AIに相談する材料です。この講座では、エラーや想定と違う結果を、AIにもう一度説明して直していく練習をします。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 13. 困ったときのプロンプト -->
+                    <div style="font-size:0.8em">
+                        <h2>13. 困ったときのプロンプト</h2>
+                        <pre><code class="language-text">ボタンを押しても表示が変わりません。
+「押してみる」ボタンをクリックしたら、
+画面に「できました！」と表示されるように修正してください。
+ログイン機能、データ保存、Firebase、APIキーは使わないでください。
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ボタンを押しても表示が変わらない場合は、このようにAIに伝えます。大事なのは、今起きていることと、直してほしいことをはっきり書くことです。「ボタンを押しても表示が変わりません」と状況を説明し、「クリックしたら、できました！と表示されるように修正してください」と依頼します。そして、今日使わないもの、つまりログイン機能、データ保存、Firebase、APIキーは使わない、ともう一度書きます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 14. 小さく修正する -->
+                    <div style="font-size:0.8em">
+                        <h2>14. 小さく修正する</h2>
+                        <p>AIにもう一度お願いして、画面を整えます。</p>
+                        <h3>修正の例</h3>
+                        <ul>
+                            <li>タイトルを大きくする</li>
+                            <li>文字を中央に置く</li>
+                            <li>ボタンを押しやすくする</li>
+                            <li>メッセージを見やすくする</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次に、できた画面を少し修正します。AIでアプリを作るときは、一度で完成させるよりも、作って、見て、直す流れが大事です。今日は、見た目を少し整えるだけにします。タイトルを大きくする、中央に配置する、ボタンを押しやすくする、メッセージを見やすくする、といった小さな修正をAIに依頼します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 15. 修正プロンプト -->
+                    <div style="font-size:0.8em">
+                        <h2>15. 修正プロンプト</h2>
+                        <pre><code class="language-text">画面をもう少し見やすくしてください。
+次のように修正してください。
+
+- タイトルを大きくする
+- タイトルと説明文を中央ぞろえにする
+- ボタンを少し大きくする
+- ボタンの下に、結果メッセージが分かりやすく表示されるようにする
+
+ログイン機能、データ保存、Firebase、APIキー、外部サービス連携は使わないでください。
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この修正プロンプトを入力します。ここでは、タイトルを大きくする、中央ぞろえにする、ボタンを大きくする、結果メッセージを見やすくする、という修正だけを頼んでいます。機能は増やしません。ログイン機能、データ保存、Firebase、APIキー、外部サービス連携は使わない、と書いています。第1回では、見た目とボタンの反応だけに集中します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 16. 直ったか確認する -->
+                    <div style="font-size:0.8em">
+                        <h2>16. 直ったか確認する</h2>
+                        <h3>確認すること</h3>
+                        <ul>
+                            <li>画面が少し見やすくなったか</li>
+                            <li>ボタンが押しやすくなったか</li>
+                            <li>ボタンを押すと反応するか</li>
+                            <li>機能が増えすぎていないか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        修正が終わったら、もう一度プレビューを確認します。タイトルが大きくなったか、中央に配置されたか、ボタンが押しやすくなったかを見ます。そして、ボタンをもう一度押して、反応するか確認します。もしAIが勝手にログイン機能やデータ保存機能を追加してしまった場合は、今日はそこには進みません。機能が増えすぎていないかも確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 17. 今日は押さないもの -->
+                    <div style="font-size:0.8em">
+                        <h2>17. 今日は押さないもの</h2>
+                        <p>見えても押しません。</p>
+                        <ul>
+                            <li>Deploy / Publish</li>
+                            <li>Get API key</li>
+                            <li>Add database and auth</li>
+                            <li>Upgrade</li>
+                            <li>Set up billing / Link billing account</li>
+                            <li>Upgrade to Blaze</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここで、今日は押さないものを確認します。DeployやPublishは、公開につながる可能性があります。Get API keyは、APIキー作成につながります。Add database and authは、データベースやログイン機能の追加につながります。Upgrade、Set up billing、Link billing account、Upgrade to Blazeは、課金やプラン変更につながる可能性があります。これらの表示が見えても、今日は押しません。出てきた場合は、講師に確認してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 18. 今日やらないこと -->
+                    <div style="font-size:0.8em">
+                        <h2>18. 今日やらないこと</h2>
+                        <p>第1回では扱いません。</p>
+                        <ul>
+                            <li>アプリ公開</li>
+                            <li>APIキー作成</li>
+                            <li>Firebase / Firestore</li>
+                            <li>Googleログイン</li>
+                            <li>Cloud Billing</li>
+                            <li>クレジットカード登録</li>
+                            <li>外部サービス連携</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日やらないことをもう一度確認します。第1回では、アプリ公開、APIキー作成、Firebase、Firestore、Googleログイン、Cloud Billing、クレジットカード登録、外部サービス連携は扱いません。今日は、Google AI Studioの中で、簡単な画面とボタンが動くところまでです。ここをしっかり区切ることで、安全に講座を進められます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 21. 終了チェック -->
+                    <div style="font-size:0.8em">
+                        <h2>21. 第1回 終了チェック</h2>
+                        <ul class="contains-task-list">
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-1970357">
+                                <label class="task-list-item-label" for="task-item-1970357">Google Chromeを起動できた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-7819864">
+                                <label class="task-list-item-label" for="task-item-7819864">Google AI Studioにログインできた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-2357725">
+                                <label class="task-list-item-label" for="task-item-2357725">Buildを開けた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-2656395">
+                                <label class="task-list-item-label" for="task-item-2656395">プロンプトを入力できた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-9194442">
+                                <label class="task-list-item-label" for="task-item-9194442">画面にタイトル・説明文・ボタンが出た</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-699335">
+                                <label class="task-list-item-label" for="task-item-699335">ボタンを押して反応を確認できた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-8110608">
+                                追加の修正指示を1回試した
+                                <label class="task-list-item-label" for="task-item-8110608">
+                                    追加の修正指示を1回試した
+                                    <br />
+                                </label>
+                            </li>
+                        </ul>
+                        <h3>以下を押していない</h3>
+                        <p>Deploy / Get API key / Add database and auth / Upgrade</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最後に、第1回の終了チェックです。Google Chromeを起動できた、Google AI Studioにログインできた、Buildを開けた、プロンプトを入力できた、画面にタイトル、説明文、ボタンが出た、ボタンを押して反応を確認できた。ここまでできていれば、第1回は成功です。追加の修正指示を1回試せた人は、さらに良いです。Deploy、Get API key、Add database and auth、Upgradeは押していないことも確認してください。個人情報がスクリーンショットに映っていないことも確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 22. 今日のまとめ -->
+                    <div style="font-size:0.8em">
+                        <h2>22. 今日のまとめ</h2>
+                        <h3>今日できたこと</h3>
+                        <ul>
+                            <li>AI Studioに入れた</li>
+                            <li>Buildでプロンプトを入力した</li>
+                            <li>画面とボタンを作った</li>
+                            <li>追加指示で少し修正した</li>
+                        </ul>
+                        <blockquote>
+                            <p>起動できたら勝ち。</p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のまとめです。今日は、Google AI Studioに入り、Buildでプロンプトを入力し、画面とボタンを作りました。そして、追加の指示で少しだけ修正しました。これができれば、第1回の目標は達成です。完成度よりも、まず動いたことを大切にしてください。AIと対話してWebアプリを作る第一歩を踏み出しました。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 23. 次回への橋渡し -->
+                    <div style="font-size:0.8em">
+                        <h2>23. 次回への橋渡し</h2>
+                        <p>
+                            第2回:
+                            <strong>アプリの顔を作る — 入力フォームと見た目</strong>
+                        </p>
+                        <p>次回作るもの:</p>
+                        <ul>
+                            <li>「マイ記録帳」のタイトル</li>
+                            <li>タイトル入力欄</li>
+                            <li>本文入力欄</li>
+                            <li>保存ボタン</li>
+                            <li>一覧エリア</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次回は、第2回「アプリの顔を作る」です。今日作ったボタンが動く練習画面から一歩進めて、「マイ記録帳」というアプリらしい画面を作ります。タイトル入力欄、本文入力欄、保存ボタン、一覧エリアを作ります。ただし、第2回でもまだクラウド保存はしません。画面の中だけで仮に一覧表示するところまでです。FirestoreやGoogleログインは第3回以降で扱います。
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+        </script>
+    </body>
+</html>
