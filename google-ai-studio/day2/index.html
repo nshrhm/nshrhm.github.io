@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>生成AIで「動く」Webアプリを作る超入門スキルアップコース（基礎編）</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png" alt="下関市立大学ロゴ" style="height:100%" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h4>
+                        生成AIで「動く」Webアプリを作る
+                        <br />
+                        超入門スキルアップコース（基礎編）
+                    </h4>
+                    <br />
+                    <h2>
+                        第2回 アプリの顔を作る
+                        <br />
+                        入力フォームと見た目
+                    </h2>
+                    <p>講師：白濵 成希</p>
+                    <p>下関市立大学 データサイエンス学部</p>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        みなさん、こんにちは。
+                        第2回では、「マイ記録帳」という練習用Webアプリの画面を作ります。
+                        <p>
+                            前回は、Google AI Studioにログインして、Buildで簡単な画面とボタンを作りました。
+                            今日はそこから一歩進んで、タイトル入力欄、本文入力欄、気分を選ぶ欄、記録するボタン、一覧エリアを作ります。
+                        </p>
+                        <p>
+                            今日の合言葉は、「アプリの顔を作る」です。
+                            ただし、まだ本格的な保存には進みません。
+                            今日の保存は、画面の中だけの仮表示です。
+                            ブラウザを再読み込みしたら消えても問題ありません。
+                        </p>
+                        <p>
+                            Firestore、Firebase設定、Googleログイン、APIキー、課金設定には進みません。
+                            それでは始めましょう。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の位置づけ -->
+                    <div style="font-size:0.8em">
+                        <h2>今日の位置づけ</h2>
+                        <ul>
+                            <li>第1回：画面とボタンを動かした</li>
+                            <li>第2回：入力フォームを作る</li>
+                            <li>
+                                第3回：FirestoreとGoogleログインへ進む予定
+                                <br />
+                                <br />
+                            </li>
+                        </ul>
+                        <h3>今日はまだクラウド保存しません</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        まず、今日の位置づけを確認します。
+                        <p>
+                            第1回では、Google AI Studio Buildを開いて、簡単な画面とボタンを作りました。
+                            ボタンを押したらメッセージが変わる、という小さな動きを確認しました。
+                        </p>
+                        <p>
+                            第2回では、いよいよアプリらしい入力フォームに進みます。
+                            タイトル、本文、気分を入力し、記録するボタンを押すと、画面下の一覧にカードとして表示されるようにします。
+                        </p>
+                        <p>
+                            第3回では、FirestoreとGoogleログインを扱う予定です。
+                            ただし、第3回もSparkプランの範囲で進めます。
+                            今日の段階では、FirestoreにもGoogleログインにも進みません。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 前回の復習 -->
+                    <div style="font-size:0.8em">
+                        <h2>前回の復習</h2>
+                        <ul>
+                            <li>AI Studioに入れた</li>
+                            <li>Buildでプロンプトを送った</li>
+                            <li>画面とボタンが動いた</li>
+                            <li>公開・課金・APIキーには進まなかった</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        前回の復習です。
+                        <p>
+                            前回は、ChromeからGoogle AI Studioに入りました。
+                            そして、左側メニューのBuildを開き、日本語のプロンプトを入力しました。
+                        </p>
+                        <p>AIが画面を作り、ボタンを押すと表示が変わるところまで確認しました。</p>
+                        <p>
+                            ここで大事なのは、前回も公開や課金設定には進まなかったという点です。
+                            Get API key、Upgrade、Set up billing、Deployのような表示が出ても押しませんでした。
+                            今日も同じです。
+                            第2回では、入力フォームを作りますが、公開や課金やAPIキーには進みません。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 前回から今日への接続 -->
+                    <div style="font-size:0.8em">
+                        <h2>
+                            ボタンの練習から
+                            <br />
+                            アプリらしい画面へ
+                        </h2>
+                        <ul>
+                            <li>前回：ボタンを押す練習</li>
+                            <li>今日：メモを入力する練習</li>
+                            <li>画面を見て、AIに直してもらう</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第1回の練習用アプリは、とても小さいものでした。
+                        タイトル、説明文、ボタンだけの画面でした。
+                        <p>
+                            今日は、その練習をもとにして、アプリらしい画面に進みます。
+                            入力欄があり、ボタンがあり、入力した内容が一覧に表示されると、かなりアプリらしく見えます。
+                        </p>
+                        <p>
+                            ただし、今日も考え方は同じです。
+                            一度で完成させようとしません。
+                            小さく作り、見て、直します。
+                            AIに追加の指示を出しながら、少しずつ整えていきます。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日できるようになること -->
+                    <div style="font-size:0.8em">
+                        <h2>今日できるようになること</h2>
+                        <ul>
+                            <li>入力フォームを作る</li>
+                            <li>「記録する」ボタンを置く</li>
+                            <li>一覧エリアを作る</li>
+                            <li>画面内だけの仮保存を試す</li>
+                            <li>見た目を整える</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日できるようになることは、5つです。
+                        <p>
+                            まず、タイトルと本文を入れる入力フォームを作ります。
+                            次に、気分を選ぶ欄を作ります。
+                            そして、「記録する」ボタンを置きます。
+                        </p>
+                        <p>
+                            ボタンを押したら、入力内容が画面下の一覧エリアにカードとして出るようにします。
+                            これを、今日の授業では「画面内だけの仮保存」と呼びます。
+                        </p>
+                        <p>最後に、文字の大きさ、余白、入力欄、ボタン、カードの見た目を整えます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の完成イメージ -->
+                    <div style="font-size:0.8em">
+                        <h2>今日の完成イメージ</h2>
+                        <p>「マイ記録帳」に次を置きます。</p>
+                        <ul>
+                            <li>タイトル入力欄</li>
+                            <li>本文入力欄</li>
+                            <li>気分選択</li>
+                            <li>記録するボタン</li>
+                            <li>一覧エリア</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の完成イメージは、「マイ記録帳」という画面です。
+                        <p>
+                            画面の上にタイトルがあり、その下に説明文があります。
+                            次に、タイトルを入力する欄、本文を入力する欄、気分を選ぶ欄があります。
+                            そして、「記録する」ボタンがあります。
+                        </p>
+                        <p>
+                            ボタンの下には、一覧エリアがあります。
+                            最初は「ここに記録が表示されます」のような空状態メッセージが表示されます。
+                            入力してボタンを押すと、その場所に記録カードが追加されます。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第2回の保存の意味 -->
+                    <div style="font-size:0.8em">
+                        <h2>今日の「保存」は仮表示</h2>
+                        <ul>
+                            <li>入力内容を画面下に表示する</li>
+                            <li>ブラウザ再読み込みで消えてよい</li>
+                            <li>まだクラウドには保存しない</li>
+                            <li>Firestoreは第3回以降</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここは、とても大事な注意です。
+                        <p>
+                            今日の「保存」は、クラウド保存ではありません。
+                            入力した内容を、同じ画面の下に表示するだけです。
+                        </p>
+                        <p>
+                            ブラウザを再読み込みしたら、消えてもかまいません。
+                            むしろ、第2回では消えても正常です。
+                        </p>
+                        <p>
+                            本当にデータを残すには、Firestoreのようなデータベースが必要になります。
+                            それは第3回以降に扱います。
+                            今日は、アプリの顔と画面内の仮表示だけに集中します。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日やらないこと -->
+                    <div style="font-size:0.8em">
+                        <h2>今日やらないこと</h2>
+                        <ul>
+                            <li>Firestoreは使わない</li>
+                            <li>Firebase設定はしない</li>
+                            <li>Googleログインは入れない</li>
+                            <li>APIキーは作らない</li>
+                            <li>Cloud Billing、Blaze、Cloud Run、App Hostingには進まない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日やらないことを、はっきり確認します。
+                        <p>
+                            Firestoreは使いません。
+                            Firebase設定もしません。
+                            Googleログインも入れません。
+                            APIキーも作りません。
+                        </p>
+                        <p>Cloud Billing、Blazeプラン、Cloud Run、Firebase App Hostingにも進みません。</p>
+                        <p>
+                            今日は、画面の中だけで動く練習用アプリを作ります。
+                            もしAIがログイン機能やデータベースを追加しようとしても、今日は止めます。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 押さないボタン -->
+                    <div style="font-size:0.78em">
+                        <h2>表示されても今日は押さない</h2>
+                        <ul>
+                            <li>Deploy</li>
+                            <li>Get API key</li>
+                            <li>Add database and auth</li>
+                            <li>Upgrade</li>
+                            <li>Set up billing</li>
+                            <li>
+                                Link billing account
+                                <br />
+                                <br />
+                            </li>
+                        </ul>
+                        <h3>出たら講師に確認</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        操作中に、画面のどこかにボタンやリンクが表示されることがあります。
+                        <p>
+                            Deploy、Get API key、Add database and auth、Upgrade、Set up billing、Link billing account。
+                            これらは、今日は押しません。
+                        </p>
+                        <p>特に、billing、支払い、課金、Blaze、API key、Deployという言葉が出たら、先に進まず講師に声をかけてください。</p>
+                        <p>
+                            第2回の合格条件は、画面の中で入力と一覧表示ができることです。
+                            公開や課金設定に進む必要はありません。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 個人情報を入れない -->
+                    <div style="font-size:0.78em">
+                        <h2>個人情報を入れない</h2>
+                        <ul>
+                            <li>実名を入れない</li>
+                            <li>勤務先情報を入れない</li>
+                            <li>顧客情報を入れない</li>
+                            <li>学生番号やメールアドレスを入れない</li>
+                            <li>サンプル文は短い架空の文章にする</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        入力フォームを作ると、何かを書きたくなります。
+                        しかし、今日のサンプル入力には、実在する個人情報を入れないでください。
+                        <p>実名、住所、電話番号、勤務先名、顧客名、学生番号、メールアドレス、業務上の相談内容などは入れません。</p>
+                        <p>
+                            今日は練習です。
+                            「今日のメモ」「AI Studioで入力フォームを作れた」のような、短い架空の文章を使います。
+                        </p>
+                        <p>スクリーンショットを撮るときも、メールアドレスや個人情報が映らないように注意します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- AI Studio Buildを開く -->
+                    <div style="font-size:0.8em">
+                        <h2>AI Studio Buildを開く</h2>
+                        <ol>
+                            <li>ChromeでGoogle AI Studioを開く</li>
+                            <li>講座用のプライベートGmailを確認する</li>
+                            <li>左側メニューから Build を開く</li>
+                            <li>プロンプト入力欄を確認する</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        では、実際の操作に入ります。
+                        <p>
+                            ChromeでGoogle AI Studioを開いてください。
+                            ログイン画面が出た人は、講座用のプライベートGmailでログインします。
+                        </p>
+                        <p>
+                            すでにログインしている人は、右上のアイコンなどを見て、どのアカウントで作業しているか確認してください。
+                            勤務先アカウント、学校アカウント、家族のアカウントで進んでいないか注意します。
+                        </p>
+                        <p>
+                            Google AI Studioの画面が開いたら、左側メニューからBuildを開きます。
+                            プロンプトを入力できる欄が見えれば準備完了です。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 最初のプロンプト -->
+                    <div style="font-size:0.6em">
+                        <h2>最初のプロンプト</h2>
+                        <pre><code class="language-text">
+　「マイ記録帳」という練習用Webアプリの画面を作ってください。
+
+　今回は、まだクラウド保存はしません。
+　Firestore、Firebase、Googleログイン、APIキー、外部サービス連携は使わないでください。
+
+　画面には、次の要素を入れてください。
+
+　- タイトル：「マイ記録帳」
+　- 説明文：「今日の気づきやメモを残す練習アプリです」
+　- 1行入力欄：「タイトル」
+　- 複数行入力欄：「本文」
+　- 気分を選ぶ欄：「うれしい」「ふつう」「つかれた」
+　- ボタン：「記録する」
+　- 一覧エリア：「ここに記録が表示されます」
+
+　ボタンを押したら、入力したタイトル、本文、気分を、
+　画面下の一覧エリアにカードとして表示してください。
+　この記録は画面内だけの仮表示でよいです。
+　ブラウザを再読み込みしたら消えてもかまいません。
+
+　デザインはシンプルで、文字を大きめにしてください。
+　入力欄は縦に並べ、スマートフォンでも見やすい余白にしてください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        これが、第2回の最初のプロンプトです。
+                        <p>この文章を、Google AI Studio Buildの入力欄に貼り付けます。</p>
+                        <p>
+                            ポイントは3つあります。
+                            1つ目は、作りたいアプリ名を「マイ記録帳」と明記していることです。
+                            2つ目は、必要な画面部品を具体的に並べていることです。
+                            3つ目は、Firestore、Firebase、Googleログイン、APIキー、外部サービス連携を使わないと明記していることです。
+                        </p>
+                        <p>プロンプトを貼り付けたら、送信する前に、余計な個人情報が入っていないことを確認してください。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- プロンプトの読み方 -->
+                    <div style="font-size:0.8em">
+                        <h2>プロンプトの読み方</h2>
+                        <p>このプロンプトは、3つに分かれています。</p>
+                        <ol>
+                            <li>何を作るか</li>
+                            <li>何を画面に置くか</li>
+                            <li>何を使わないか</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        貼り付ける前に、プロンプトの読み方を確認します。
+                        <p>
+                            まず、「何を作るか」です。
+                            今回は、「マイ記録帳」という練習用Webアプリの画面を作ります。
+                        </p>
+                        <p>
+                            次に、「何を画面に置くか」です。
+                            タイトル、説明文、入力欄、気分選択、ボタン、一覧エリアを指定しています。
+                        </p>
+                        <p>
+                            最後に、「何を使わないか」です。
+                            Firestore、Firebase、Googleログイン、APIキー、外部サービス連携は使いません。
+                        </p>
+                        <p>AIへの指示では、作ってほしいものだけでなく、今日は使わないものも明記すると安全です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 送信前の確認 -->
+                    <div style="font-size:0.8em">
+                        <h2>送信前の確認</h2>
+                        <ul>
+                            <li>プロンプトを貼り付けた</li>
+                            <li>個人情報は入っていない</li>
+                            <li>「まだクラウド保存はしません」と書いてある</li>
+                            <li>Firestore、Firebase、APIキーを使わないと書いてある</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        送信前に、短く確認します。
+                        <p>
+                            プロンプトを貼り付けましたか。
+                            実名や勤務先情報など、個人情報は入っていませんか。
+                            「今回は、まだクラウド保存はしません」と書いてありますか。
+                            Firestore、Firebase、Googleログイン、APIキー、外部サービス連携を使わないと書いてありますか。
+                        </p>
+                        <p>
+                            確認できたら、送信します。
+                            送信後は、AIが画面を作るまで少し待ちます。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 生成中にすること -->
+                    <div style="font-size:0.8em">
+                        <h2>生成中にすること</h2>
+                        <ul>
+                            <li>画面が変わるまで待つ</li>
+                            <li>エラーが出てもあわてない</li>
+                            <li>DeployやGet API keyを押さない</li>
+                            <li>完成したらプレビューを見る</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        プロンプトを送信すると、AIがアプリを作り始めます。
+                        少し時間がかかることがあります。
+                        <p>
+                            生成中に、画面の中にいろいろな表示が出る場合があります。
+                            DeployやGet API keyのようなボタンが見えても、今日は押しません。
+                        </p>
+                        <p>
+                            もしエラーが出ても、あわてなくて大丈夫です。
+                            今日の目的は、エラーをゼロにすることではなく、AIに相談しながら直す流れを練習することです。
+                        </p>
+                        <p>生成が終わったら、プレビュー画面を見て、必要な部品があるか確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 生成結果の確認 -->
+                    <div style="font-size:0.8em">
+                        <h2>生成結果の確認</h2>
+                        <p>画面にありますか？</p>
+                        <ul>
+                            <li>「マイ記録帳」のタイトル</li>
+                            <li>タイトル入力欄</li>
+                            <li>本文入力欄</li>
+                            <li>気分選択</li>
+                            <li>「記録する」ボタン</li>
+                            <li>一覧エリア</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        画面ができたら、まず細かいデザインではなく、必要な部品があるかを確認します。
+                        <p>
+                            「マイ記録帳」というタイトルがありますか。
+                            タイトル入力欄がありますか。
+                            本文入力欄がありますか。
+                            気分を選ぶ欄がありますか。
+                            「記録する」ボタンがありますか。
+                            一覧エリアがありますか。
+                        </p>
+                        <p>
+                            色や配置が隣の人と違っていても大丈夫です。
+                            AIが作る画面は、毎回少し違います。
+                            まずは、必要な部品があるかを見ます。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 空状態メッセージ -->
+                    <div style="font-size:0.8em">
+                        <h2>空状態メッセージを確認</h2>
+                        <p>一覧エリアに、最初は何もありません。</p>
+                        <p>例：</p>
+                        <ul>
+                            <li>ここに記録が表示されます</li>
+                            <li>まだ記録がありません</li>
+                            <li>最初の記録を追加してみましょう</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次に、一覧エリアを確認します。
+                        <p>
+                            まだ何も入力していないので、一覧には記録カードがないはずです。
+                            その代わりに、「ここに記録が表示されます」や「まだ記録がありません」のようなメッセージが出ていればOKです。
+                        </p>
+                        <p>
+                            このような表示を、空状態メッセージと呼びます。
+                            空状態メッセージがあると、利用者は「ここに何が出るのか」を理解しやすくなります。
+                        </p>
+                        <p>第2回では、この空状態メッセージもアプリの顔の一部として扱います。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 入力して試す -->
+                    <div style="font-size:0.8em">
+                        <h2>入力して試す</h2>
+                        <p>次のサンプルを入れます。</p>
+                        <ul>
+                            <li>タイトル：今日のメモ</li>
+                            <li>本文：AI Studioで入力フォームを作れた。</li>
+                            <li>気分：うれしい</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        では、実際に入力して試します。
+                        <p>
+                            タイトル欄には、「今日のメモ」と入力してください。
+                            本文欄には、「AI Studioで入力フォームを作れた。」と入力してください。
+                            気分は、「うれしい」を選んでください。
+                        </p>
+                        <p>
+                            ここでも、実在する個人情報や勤務先情報は入れません。
+                            あくまで練習用の短いサンプル文を使います。
+                        </p>
+                        <p>入力できたら、「記録する」ボタンを押す準備をします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 記録するボタンを押す -->
+                    <div style="font-size:0.8em">
+                        <h2>「記録する」を押す</h2>
+                        <p>確認すること：</p>
+                        <ul>
+                            <li>一覧にカードが増えたか</li>
+                            <li>タイトルが表示されたか</li>
+                            <li>本文が表示されたか</li>
+                            <li>気分が表示されたか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        入力できたら、「記録する」ボタンを押します。
+                        <p>
+                            ボタンを押したあと、画面下の一覧エリアを見てください。
+                            カードが1つ増えていますか。
+                            カードの中に、「今日のメモ」というタイトルが表示されていますか。
+                            本文の「AI Studioで入力フォームを作れた。」が表示されていますか。
+                            気分の「うれしい」が表示されていますか。
+                        </p>
+                        <p>
+                            これらが出ていれば、今日の大事な動きは成功です。
+                            入力欄が空になるかどうかは、今日はどちらでも構いません。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 再読み込みで消えてよい -->
+                    <div style="font-size:0.8em">
+                        <h2>消えても問題ありません</h2>
+                        <p>第2回の記録は、画面内だけの仮表示です。</p>
+                        <ul>
+                            <li>再読み込みで消えてよい</li>
+                            <li>別の端末には残らない</li>
+                            <li>クラウド保存ではない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここで、もう一度確認します。
+                        <p>
+                            今日作った一覧表示は、画面内だけの仮表示です。
+                            ブラウザを再読み込みすると消えても問題ありません。
+                            別の端末で見ても、記録は残りません。
+                        </p>
+                        <p>
+                            これは失敗ではありません。
+                            第2回では、入力して一覧に出すところまでが目標です。
+                        </p>
+                        <p>
+                            クラウドに保存するには、Firestoreなどの準備が必要です。
+                            それは第3回以降に進みます。
+                            今日の段階で、保存できないことを無理に直そうとして、FirebaseやAPIキーに進まないようにしてください。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- うまくいったときの合格条件 -->
+                    <div style="font-size:0.8em">
+                        <h2>ここまでの合格条件</h2>
+                        <ul>
+                            <li>入力欄が表示されている</li>
+                            <li>気分を選べる</li>
+                            <li>ボタンを押せる</li>
+                            <li>入力内容が一覧に出る</li>
+                            <li>FirebaseやAPIキーに進んでいない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここまでの合格条件を確認します。
+                        <p>
+                            タイトル入力欄と本文入力欄が表示されている。
+                            気分を選ぶ欄がある。
+                            「記録する」ボタンを押せる。
+                            入力した内容が、画面下の一覧にカードとして表示される。
+                        </p>
+                        <p>そして、Firestore、Firebase、Googleログイン、APIキー、課金設定に進んでいない。</p>
+                        <p>
+                            この5つができていれば、第2回の中心部分はできています。
+                            見た目は、これから少し整えます。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 小さく修正する -->
+                    <div style="font-size:0.8em">
+                        <h2>小さく修正する</h2>
+                        <p>見た目を整えます。</p>
+                        <ul>
+                            <li>タイトルを大きくする</li>
+                            <li>入力欄を縦に並べる</li>
+                            <li>ボタンを押しやすくする</li>
+                            <li>一覧カードを見やすくする</li>
+                            <li>スマホでも見やすい余白にする</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここからは、見た目を少し整えます。
+                        <p>
+                            AIが最初に作った画面は、たたき台です。
+                            最初から完璧でなくて構いません。
+                        </p>
+                        <p>
+                            タイトルを大きくする、入力欄を縦に並べる、ボタンを押しやすくする、一覧カードを見やすくする、スマートフォンでも見やすい余白にする。
+                            このような修正は、AIに追加で頼むことができます。
+                        </p>
+                        <p>
+                            ただし、機能は増やしません。
+                            ログイン、データベース、APIキー、外部サービス連携は、今日は追加しません。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 見た目を整えるプロンプト -->
+                    <div style="font-size:0.8em">
+                        <h2>見た目を整えるプロンプト</h2>
+                        <pre><code class="language-text">
+　画面をもう少し見やすくしてください。
+
+　次のように修正してください。
+
+　- 全体の幅を少し狭くして、中央に配置する
+　- タイトルを大きくする
+　- 入力欄を縦にきれいに並べる
+　- 「記録する」ボタンを押しやすい大きさにする
+　- 一覧カードに余白と枠をつける
+　- 空状態メッセージをやさしい表現にする
+　- スマートフォンでも見やすい余白にする
+
+　機能は増やさないでください。
+　　Firestore、Firebase、Googleログイン、APIキー、外部サービス連携は使わないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        このプロンプトを使って、見た目を整えます。
+                        <p>
+                            ポイントは、見た目の修正だけを頼んでいることです。
+                            全体の幅、タイトルの大きさ、入力欄の並び、ボタンの大きさ、一覧カードの余白と枠、スマートフォンで見やすい余白を指定しています。
+                        </p>
+                        <p>
+                            最後に、「機能は増やさないでください」と書いています。
+                            これが重要です。
+                        </p>
+                        <p>
+                            AIは親切に、ログインやデータベースまで追加しようとすることがあります。
+                            今日はそれを止めます。
+                            第2回では、画面内だけで動く範囲に留めます。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 修正後の確認 -->
+                    <div style="font-size:0.8em">
+                        <h2>修正後の確認</h2>
+                        <ul>
+                            <li>タイトルは見やすいか</li>
+                            <li>入力欄は縦に並んでいるか</li>
+                            <li>ボタンは押しやすいか</li>
+                            <li>一覧カードは読みやすいか</li>
+                            <li>余計な機能が増えていないか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        修正プロンプトを送ったら、プレビューを見て確認します。
+                        <p>
+                            タイトルは見やすくなっていますか。
+                            入力欄は縦に並んでいますか。
+                            ボタンは押しやすい大きさですか。
+                            一覧カードは読みやすいですか。
+                            スマートフォンでも見やすそうな余白になっていますか。
+                        </p>
+                        <p>
+                            そして、余計な機能が増えていないかも確認します。
+                            ログイン画面が出ていないか。
+                            APIキーを求められていないか。
+                            FirebaseやFirestoreの設定に進んでいないか。
+                        </p>
+                        <p>見た目が整って、余計な機能が増えていなければ成功です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 早く終わった人 -->
+                    <div style="font-size:0.8em">
+                        <h2>早く終わった人</h2>
+                        <h3>できること</h3>
+                        <ul>
+                            <li>色をやさしくする</li>
+                            <li>余白を広げる</li>
+                            <li>ボタンを見やすくする</li>
+                            <li>
+                                カードの枠を整える
+                                <br />
+                                <br />
+                            </li>
+                        </ul>
+                        <h3>機能追加はしない</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        早く終わった人は、見た目の調整だけを試してください。
+                        <p>背景色をやさしくする、余白を広げる、ボタンを見やすくする、カードの枠を整える、といった修正はOKです。</p>
+                        <p>
+                            ただし、機能追加はしません。
+                            ログイン、クラウド保存、Firebase、Firestore、APIキー、画像アップロード、外部サービス連携には進みません。
+                        </p>
+                        <p>
+                            早く終わった人ほど、先に進みすぎることがあります。
+                            第2回では、見た目の改善に絞ってください。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- うまくいかないとき：入力欄が出ない -->
+                    <div style="font-size:0.8em">
+                        <h2>入力欄が出ない場合</h2>
+                        <pre><code class="language-text">
+　入力欄が表示されていません。
+　タイトル、本文、気分を入力できるフォームを画面に追加してください。
+　Firestore、Firebase、Googleログイン、APIキーは使わないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここからは、うまくいかないときのAIへの聞き方です。
+                        <p>
+                            まず、入力欄が出ない場合です。
+                            その場合は、「入力欄が表示されていません」と、今起きていることをそのまま伝えます。
+                        </p>
+                        <p>次に、「タイトル、本文、気分を入力できるフォームを画面に追加してください」と、直してほしい内容を書きます。</p>
+                        <p>最後に、Firestore、Firebase、Googleログイン、APIキーは使わないでください、ともう一度書きます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- うまくいかないとき：一覧に出ない -->
+                    <div style="font-size:0.8em">
+                        <h2>ボタンを押しても一覧に出ない場合</h2>
+                        <pre><code class="language-text">
+　「記録する」ボタンを押しても、入力した内容が一覧に表示されません。
+　ボタンを押したら、タイトル、本文、気分を
+　画面下の一覧エリアにカードとして追加するように修正してください。
+　クラウド保存はしないでください。
+　Firestore、Firebase、Googleログイン、APIキーは使わないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次は、ボタンを押しても一覧に出ない場合です。
+                        <p>
+                            この場合も、最初に今起きていることを書きます。
+                            「記録する」ボタンを押しても、入力した内容が一覧に表示されません。
+                        </p>
+                        <p>
+                            次に、どう直してほしいかを書きます。
+                            ボタンを押したら、タイトル、本文、気分を画面下の一覧エリアにカードとして追加するようにしてください。
+                        </p>
+                        <p>最後に、クラウド保存はしない、FirestoreやFirebaseやAPIキーは使わない、と明記します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- うまくいかないとき：FirebaseやAPIキー -->
+                    <div style="font-size:0.8em">
+                        <h2>FirebaseやAPIキーに進みそうな場合</h2>
+                        <pre><code class="language-text">
+　今回はFirebase、Firestore、Googleログイン、APIキーは使いません。
+　画面内だけで動く練習用アプリに戻してください。
+　入力した内容は、画面下の一覧に仮表示するだけでかまいません。
+　Deploy、Get API key、Add database and auth、Upgradeは使わないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        AIがFirebaseやAPIキーを使おうとしてしまう場合があります。
+                        その場合は、はっきり止めます。
+                        <p>
+                            今回はFirebase、Firestore、Googleログイン、APIキーは使いません。
+                            画面内だけで動く練習用アプリに戻してください。
+                            入力した内容は、画面下の一覧に仮表示するだけでかまいません。
+                        </p>
+                        <p>さらに、Deploy、Get API key、Add database and auth、Upgradeも使わないでください、と書いておきます。</p>
+                        <p>曖昧にせず、「今日は使わない」と明確に伝えることが大切です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- うまくいかないとき：複雑になりすぎた -->
+                    <div style="font-size:0.8em">
+                        <h2>画面が複雑になりすぎた場合</h2>
+                        <pre><code class="language-text">
+　画面が複雑になりすぎました。
+　初心者向けに、次の要素だけに整理してください。
+
+　- タイトル
+　- 説明文
+　- タイトル入力欄
+　- 本文入力欄
+　- 気分選択
+　- 記録するボタン
+　- 一覧エリア
+
+　ログイン、データベース、APIキー、外部サービス連携は使わないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        AIが作った画面が、複雑になりすぎることもあります。
+                        <p>たとえば、余計なメニューが増えたり、ログイン画面が出たり、画像アップロードのような機能が入ったりする場合です。</p>
+                        <p>
+                            そのときは、必要な要素だけに戻します。
+                            タイトル、説明文、タイトル入力欄、本文入力欄、気分選択、記録するボタン、一覧エリア。
+                            これだけで十分です。
+                        </p>
+                        <p>
+                            複雑になったら、減らす指示を出す。
+                            これも、AIと作るときの大事な技術です。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- うまくいかないとき：エラー -->
+                    <div style="font-size:0.8em">
+                        <h2>エラーや空白画面が出た場合</h2>
+                        <pre><code class="language-text">
+　エラーまたは空白画面になっています。
+　初心者向けに、もっとシンプルな形で作り直してください。
+
+　必要なものは、タイトル、説明文、タイトル入力欄、本文入力欄、気分選択、記録するボタン、一覧エリアだけです。
+　クラウド保存、ログイン、Firebase、Firestore、APIキーは使わないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        エラーや空白画面が出た場合も、あわてなくて大丈夫です。
+                        AIが作ったコードや画面が、うまく動かなかっただけです。
+                        <p>
+                            この場合は、原因を細かく調べるよりも、まずシンプルな形に戻してもらいます。
+                            必要なものを限定し、クラウド保存、ログイン、Firebase、Firestore、APIキーは使わないと明記します。
+                        </p>
+                        <p>
+                            それでも直らない場合は、画面をそのままにして講師に声をかけてください。
+                            勝手に課金設定やAPIキー作成に進まないようにします。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日のまとめ -->
+                    <div style="font-size:0.8em">
+                        <h2>今日のまとめ</h2>
+                        <ul>
+                            <li>「マイ記録帳」の顔を作った</li>
+                            <li>入力フォームを作った</li>
+                            <li>ボタンで一覧にカード表示した</li>
+                            <li>画面内だけの仮保存を確認した</li>
+                            <li>見た目を少し整えた</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のまとめです。
+                        <p>
+                            第2回では、「マイ記録帳」の顔を作りました。
+                            タイトル入力欄、本文入力欄、気分選択、記録するボタン、一覧エリアを作りました。
+                        </p>
+                        <p>ボタンを押すと、入力した内容が画面下の一覧にカードとして表示されることを確認しました。</p>
+                        <p>
+                            ただし、これは画面内だけの仮保存です。
+                            ブラウザを再読み込みすると消えても問題ありません。
+                        </p>
+                        <p>最後に、タイトル、入力欄、ボタン、カード、余白などの見た目を少し整えました。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第2回 終了チェック -->
+                    <div style="font-size:0.66em">
+                        <h2>第2回 終了チェック</h2>
+                        <ul class="contains-task-list">
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-4603168">
+                                <label class="task-list-item-label" for="task-item-4603168">Google AI Studio Buildを開けた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-8896882">
+                                <label class="task-list-item-label" for="task-item-8896882">「マイ記録帳」の画面を作れた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6119049">
+                                <label class="task-list-item-label" for="task-item-6119049">タイトル入力欄を作れた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-7890472">
+                                <label class="task-list-item-label" for="task-item-7890472">本文入力欄を作れた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-4494419">
+                                <label class="task-list-item-label" for="task-item-4494419">気分選択欄を作れた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6122188">
+                                <label class="task-list-item-label" for="task-item-6122188">「記録する」ボタンを作れた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-7409866">
+                                <label class="task-list-item-label" for="task-item-7409866">一覧エリアを作れた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6804836">
+                                <label class="task-list-item-label" for="task-item-6804836">入力内容を画面内の一覧に表示できた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-2616355">
+                                <label class="task-list-item-label" for="task-item-2616355">見た目を少し修正できた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-3856435">
+                                <label class="task-list-item-label" for="task-item-3856435">Firestore / Firebase / Googleログイン / APIキーは使っていない</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-3944311">
+                                <label class="task-list-item-label" for="task-item-3944311">
+                                    Deploy / Get API key / Add database and auth / Upgrade は押していない
+                                </label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-1244052">
+                                <label class="task-list-item-label" for="task-item-1244052">個人情報や勤務先情報を入力していない</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最後に、第2回の終了チェックをします。
+                        <p>
+                            Google AI Studio Buildを開けた。
+                            「マイ記録帳」の画面を作れた。
+                            タイトル入力欄、本文入力欄、気分選択欄、「記録する」ボタン、一覧エリアを作れた。
+                            入力内容を画面内の一覧に表示できた。
+                            見た目を少し修正できた。
+                        </p>
+                        <p>
+                            そして、Firestore、Firebase、Googleログイン、APIキーは使っていない。
+                            Deploy、Get API key、Add database and auth、Upgradeは押していない。
+                            個人情報や勤務先情報を入力していない。
+                        </p>
+                        <p>ここまで確認できれば、第2回は成功です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第3回への予告 -->
+                    <div style="font-size:0.8em">
+                        <h2>次回予告</h2>
+                        <p>第3回：クラウドDBの準備</p>
+                        <ul>
+                            <li>Firestore</li>
+                            <li>Googleログイン</li>
+                            <li>サンプルデータを読む</li>
+                            <li>Sparkプランの範囲で進める</li>
+                            <li>Cloud Billingには進まない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次回は、第3回です。
+                        テーマは「クラウドDBの準備」です。
+                        <p>
+                            第2回で作った一覧は、画面の中だけの仮表示でした。
+                            次回は、記録を残すための土台として、FirestoreとGoogleログインに進む予定です。
+                        </p>
+                        <p>
+                            ただし、次回もCloud BillingやBlazeプランには進みません。
+                            FirebaseはSparkプランの範囲で扱います。
+                        </p>
+                        <p>
+                            今日のアプリが再読み込みで消えても問題ありません。
+                            第2回の目的は、アプリの顔を作り、入力から一覧表示までの流れを体験することでした。
+                            おつかれさまでした。
+                        </p>
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+        </script>
+    </body>
+</html>
