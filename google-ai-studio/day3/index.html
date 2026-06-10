@@ -1,0 +1,1506 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>生成AIで「動く」Webアプリを作る超入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%" alt="logo" width="auto" height="auto" />
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h4>生成AIで「動く」Webアプリを作る<br />超入門スキルアップコース（基礎編）</h4>
+<br />
+<h3>第3回: クラウドDBに保存する</h3>
+<p>講師：白濵 成希</p>
+<p>下関市立大学 データサイエンス学部</p>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日は第3回です。講義日程上のタイトルは「クラウドDatabaseに保存する」です。これまで画面の中だけで動いていた「マイ記録帳」に、GoogleログインとFirestoreというクラウドDatabaseの入口を追加します。今日は、ログインした人の記録をFirestoreに保存し、保存した記録をもう一度読み込める状態を作ることに集中します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>今日の位置づけ</h2>
+<ul>
+<li>第2回: 画面内だけの仮表示</li>
+<li><strong>第3回: Firestoreへ保存して読む</strong></li>
+<li>第4回: 保存した記録をさらに扱う</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+前回は、入力フォームと一覧表示を作りました。ただし、前回の保存はクラウド保存ではありません。画面の中だけの仮表示でした。今日はその次の段階として、クラウドDatabaseであるFirestoreに記録を保存し、保存した記録を読み込みます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>前回の復習</h2>
+<ul>
+<li>入力フォームを作った</li>
+<li>「記録する」ボタンを置いた</li>
+<li>一覧エリアにカード表示した</li>
+<li>保存は画面内だけだった</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第2回では、「マイ記録帳」の画面を作りました。タイトル、本文、気分を入力し、「記録する」ボタンを押すと、画面下の一覧にカードとして表示されました。ただし、この表示はクラウド保存ではありませんでした。再読み込みで消えてもよい、画面内だけの仮表示です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>今日できるようになること</h2>
+<ul>
+<li>Googleログインの役割が分かる</li>
+<li>Firestoreの役割が分かる</li>
+<li>Sparkプランを確認できる</li>
+<li>記録を保存して読み込める</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の到達点は、GoogleログインとFirestoreの入口を作ることです。Googleログインは「誰が使っているか」を見分ける仕組み、Firestoreは「クラウド上にデータを置く箱」と考えてください。最後に、ログインした本人の記録をFirestoreへ保存し、アプリから読み込める状態を目指します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>今日の合格ライン</h2>
+<ul>
+<li>Google AI Studio Buildで前回のアプリを開ける</li>
+<li>講座用Gmailで作業している</li>
+<li>Firebaseプロジェクトを確認できる</li>
+<li><strong>Googleログインを有効にできる</strong></li>
+<li><strong>Firestoreへ記録を保存し、読み込める</strong></li>
+</ul>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の合格ラインは、画面を完璧に作り込むことではありません。前回のアプリを開き、講座用のプライベートGmailで作業していることを確認し、Firebaseプロジェクトを確認し、GoogleログインとFirestoreへの保存・読み取りができれば合格です。見た目の細かい調整は後回しでかまいません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>絶対に押さない表示</h2>
+<p>出たら、<strong>今日は押さない</strong>。</p>
+<ul>
+<li>Deploy / Publish</li>
+<li>Get API key</li>
+<li>Upgrade / Set up billing</li>
+<li>Link billing account</li>
+<li>Upgrade to Blaze</li>
+<li>Deploy to Cloud Run</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+これらの表示が出たら、今日は押しません。特に、Deploy、Publish、Get API key、Upgrade、Set up billing、Link billing account、Upgrade to Blaze、Deploy to Cloud Runは、今日の教材の導線ではありません。表示されたら作業を止め、講師に確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>自動設定っぽいボタンにも注意</h2>
+<p>出たら、<strong>講師に確認</strong>。</p>
+<ul>
+<li>Add database and auth</li>
+<li>Firebase App Hosting</li>
+<li>Cloud Storage bucket</li>
+<li>支払い方法登録</li>
+<li>クレジットカード登録</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AI StudioやFirebase Consoleでは、自動で便利そうに見えるボタンが出ることがあります。Add database and authのような表示も、受講生が勝手に押す導線にはしません。Firebase App Hosting、Cloud Storage bucket、支払い方法登録、クレジットカード登録が見えた場合も、必ず講師に確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>安全確認</h2>
+<ul>
+<li>講座用のプライベートGmailを使う</li>
+<li>Sparkプランの範囲で作業する</li>
+<li>メールアドレスを大きく表示しない</li>
+<li><strong>Database IDやプロジェクトIDを公開しない</strong></li>
+</ul>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日からログインやクラウドDatabaseを扱うので、安全確認が大切です。勤務先アカウント、学校アカウント、家族のアカウントは使わず、講座用のプライベートGmailで進めます。メールアドレス、Database ID、APIキー、プロジェクトID、請求情報を公開しないでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>今日のしくみ</h2>
+<ul>
+<li>Googleログイン、誰かを確認</li>
+<li>Firestore、記録を保存して読む</li>
+<li>画面の一覧</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日作る流れはシンプルです。まずGoogleログインで「誰が使っているか」を確認します。次に、そのログインユーザーの記録をFirestoreに保存します。そして、Firestoreから読み込んだ記録を画面の一覧に表示します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Googleログインとは</h2>
+<p><strong>誰が使っているかを確認する仕組み</strong></p>
+<ul>
+<li>講座用Gmailでログインする</li>
+<li>ユーザーを区別できる</li>
+<li>自分の記録だけを扱う入口になる</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Googleログインは、「このアプリを今使っているのは誰か」を確認する仕組みです。メールアドレスそのものを大きく表示する必要はありません。アプリの内部では、ログインしたユーザーを見分けるIDが使われます。今日は、そのIDを使ってFirestore上の記録を保存・読み取りできるようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Firestoreとは</h2>
+<p><strong>クラウド上にデータを置く箱</strong></p>
+<ul>
+<li>記録データを置ける</li>
+<li>ログインユーザーごとに分けられる</li>
+<li>今日のアプリは保存して読む</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firestoreは、Googleのクラウド上にデータを置くためのデータベースです。記録帳アプリなら、タイトル、本文、気分、作成日時などを置けます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業1: 連携画面を開く</h2>
+<img src="figures/SS-03-01.png" alt="Integrations" width="auto" height="auto" />
+<br />
+<ul>
+<li>右上歯車 ⇒ Integrations</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AI Studio Buildで作成中のアプリを開き、右上の設定からIntegrationsを開きます。そこにGoogle Calendar、Google Drive、Gmail、Firebaseなどの連携先が並びます。今回はFirebase Firestore & Authを使います。これは、アプリにログイン機能とデータ保存機能を追加するための入口です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Firebase Firestore &amp; Authを選ぶ</h2>
+<img src="figures/SS-03-02.png" alt="Firebase Firestore & Auth" width="auto" height="auto" />
+<br />
+<ul>
+<li>Firestore: データベース</li>
+<li>Auth: ログイン管理</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Integrationsの検索で「Fire」と入力するとFirebase Firestore & Authの設定ボタンが表示されます。Firestoreはデータ保存担当、Authはログイン担当です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業2: プロジェクトを作成</h2>
+<img src="figures/SS-03-03.png" alt="SS-03-03: Firebase Firestore &amp; Auth" width="auto" height="auto" />
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+まだ、プロジェクトはないので作成します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>プロジェクトに名前を付ける</h2>
+<img src="figures/SS-03-04.png" alt="SS-03-04: プロジェクトに名前を付ける" width="auto" height="auto" />
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+新しいプロジェクトを作る場合は、練習用だと分かる名前を付けます。たとえば、My DiaryやMy Noteのように、あとで見ても何のアプリ用か分かる名前がよいです。プロジェクト名に日本語が使えない場合があるため、英数字で分かりやすく付けると安全です。ここでは「My Diary」と入力して、「プロジェクト作成」をクリックします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>プロジェクト設定</h2>
+<img src="figures/SS-03-05.png" alt="SS-03-05: プロジェクト設定" width="auto" height="auto" />
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Google Cloud projectに今作成したプロジェクトが設定されました。データが保存されるサーバはasia-east1を選びましょう。選べない場合は講師にお尋ねください。App support emailは自動で入力されており、編集不可能です。Database IDを自分用に控えることは後々大切ですが、画面共有や教材では公開しないでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Firebaseプロジェクトの接続先を選ぶ -->
+<div style="font-size:0.8em">
+<h2>Firebaseプロジェクトの接続先を選ぶ</h2>
+<ul>
+<li>Firebase / Auth 機能は <strong>Firebaseプロジェクト</strong> に紐づける</li>
+<li>Firebase は <strong>Google Cloudプロジェクト</strong> を土台として動く</li>
+<li>既存プロジェクトがない場合は<br>
+<strong>No Cloud Projects Available</strong> と表示される</li>
+<li>新しいアプリでは、基本的に <strong>「プロジェクトを作成」</strong> を選ぶ</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面では、アプリに Firebase と Authentication、つまりログイン機能 を追加するために、接続先となるプロジェクトを選びます。
+<p>ここで出ている “Google Cloud project” という言葉が少し分かりにくいのですが、Firebase は Google Cloud のプロジェクトを土台として動きます。つまり、Firebase Authentication や Firestore などの機能は、アプリ単体に直接付くのではなく、Firebase プロジェクトに対して設定される と考えてください。</p>
+<p>画面上部に “No Cloud Projects Available” と表示されています。これは、現在のGoogleアカウントで選択できる既存のCloudプロジェクトが見つかっていない、またはまだ明示的に選ばれていない状態を示しています。エラーというより、これから接続先を決める段階です。</p>
+<p>選択肢としては、主に3つあります。
+既に使いたいプロジェクトがある場合は 「プロジェクトをインポート」 を選びます。
+新しくこのアプリ用にプロジェクトを作る場合は 「プロジェクトを作成」 を選びます。
+また、環境によっては “Default project” のような既定のプロジェクト候補が表示されることもあります。</p>
+<p>講義や演習では、設定が他のアプリと混ざらないように、基本的には アプリごとに新しいプロジェクトを作成する 方が分かりやすいです。プロジェクト名も、後でFirebase Consoleで見分けられるように、アプリ名や講義回が分かる名前にしておくとよいです。</p>
+<p>この操作で決めているのは、あくまで Firebase機能をどのプロジェクトに紐づけるか です。Googleログインなど、具体的な認証方法の有効化は、この後にFirebase側で設定していきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Firebase Console</h2>
+<p><strong>Firebaseの設定を確認・管理</strong></p>
+<h4><a href="https://console.firebase.google.com/">https://console.firebase.google.com/</a></h4>
+<ul>
+<li>プロジェクトを確認する</li>
+<li>Authenticationを設定する</li>
+<li>Firestoreを確認する</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firebase Consoleは、Firebaseの設定を確認・管理するための画面です。Googleログインの設定、Firestoreのデータ、Security Rulesなどを確認できます。AI Studio側でFirebaseを有効にした後、Firebase Consoleで同じプロジェクトを開いて、設定が正しいか確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>プロジェクト名の考え方</h2>
+<ul>
+<li>アプリ名とは別の管理用の名前</li>
+<li>英数字で分かりやすくする</li>
+<li>例: <code>My Diary</code>, <code>My Note</code></li>
+</ul>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Google Cloud Projectの名前は、アプリ画面に表示されるタイトルとは別です。アプリ名が「マイ記録帳」でも、プロジェクト名は英数字でMy DiaryやMy Noteとして構いません。大切なのは、あとでFirebase Consoleを開いたときに、どのアプリ用のプロジェクトか分かることです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業4: データ保存先を確認する</h2>
+<ul>
+<li>日本に近い地域が望ましい</li>
+<li>Tokyoが選べない場合も</li>
+<li>その場合は、講師指定にそろえる</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Your data will be stored inでは、Firestoreのデータをどの地域に保存するかを選びます。日本向けなら日本に近い地域が望ましいですが、画面上でTokyoが選べない場合があります。その場合は、講師指定にそろえて進めます。今日の教材では、受講生が独断で地域を選ばないようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>保存先の地域は慎重に扱う</h2>
+<ul>
+<li>迷ったら選ばない</li>
+<li>変更しづらい設定として扱う</li>
+<li>公開アプリでは慎重に選ぶ</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firestoreの保存先地域は、あとから簡単に変更できない場合がある重要な設定です。今日は練習用なので、講師が指定した地域にそろえます。もし画面に複数の地域が出て迷った場合は、勝手に選ばず講師に確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業5: App support email</h2>
+<ul>
+<li>アプリに関する問い合わせ先</li>
+<li>Googleログインなどの認証機能を使う場合に必要になることも</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+App support emailは、このアプリに関する問い合わせ先として使われるメールアドレスです。Googleログインなどの認証機能を使う場合に必要になることがあります。空欄で入力できる場合は、受講者自身が確認できるメールアドレスを入力します。すでに表示されて編集できない場合は、内容を確認して進みます。スクリーンショットではメールアドレスを必ず隠します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>App support emailの注意</h2>
+<ul>
+<li>空欄なら確認できるメールを入れる</li>
+<li>表示済みなら確認する</li>
+<li>教材画像では必ず隠す</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+App support emailはAPIキーではありませんが、個人のメールアドレスです。教材やスクリーンショットにはそのまま載せません。講義中も、画面共有でメールアドレスが大きく映らないように注意します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業6: Database IDの確認</h2>
+<ul>
+<li>Database IDはFirestoreのデータベースを見分けるための名前</li>
+<li>初心者が通常アプリに手入力する設定値ではない</li>
+<li>基本的にAI Studio側が準備</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Database IDはFirestoreのデータベースを見分けるための名前です。ただし、初心者が通常アプリに手入力する設定値ではありません。Google AI StudioのFirebase連携では、基本的にAI Studio側がこのデータベースを使えるように準備してくれます。教材では、確認用の項目として扱います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Database IDは控えても公開しない -->
+<div style="font-size:0.9em">
+<h2>Database IDは控えても公開しない</h2>
+<ul>
+<li>Firestoreの管理用の名前</li>
+<li>自分用に控えることは後々大切</li>
+<li>画面共有やスクリーンショットでは隠す</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Database IDは、Googleログインそのものに必要な値ではありません。Firestoreがデータを保存する場所、Authenticationがログインの仕組みです。Database IDを自分用に控えることは後々大切ですが、教材や画面共有で公開するのはよくありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業7: Included services の確認</h2>
+<ul>
+<li>Cloud Firestore: データベース</li>
+<li>Firebase Authentication: ログイン管理</li>
+</ul>
+<img src="figures/SS-03-06.png" alt="SS-03-06: Cloud FirestoreとFirebase Authenticationが含まれる画面" width="auto" height="auto" />
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Included servicesには、このFirebase連携で使えるようになる主要機能が表示されます。Cloud Firestoreはデータベース、Firebase Authenticationはログイン管理です。この2つを組み合わせることで、ログインしたユーザーごとにデータを扱うアプリを作れるようになります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業8: Enable Firebase 前確認</h2>
+<ul>
+<li>講座用Gmailか</li>
+<li>正しいプロジェクトか</li>
+<li>保存先地域は講師指定か</li>
+<li>課金導線ではないか</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Enable Firebaseを押す前に、必ず確認します。講座用Gmailで作業しているか、正しいプロジェクトか、保存先地域が講師指定に合っているか、課金やアップグレードの画面に進んでいないかを確認します。不安があれば、ここで止まって講師に確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Firebase追加前の注意画面 -->
+<div style="font-size:0.8em">
+<h2>Firebase追加前の注意画面</h2>
+<img src="figures/SS-03-07.png" alt="SS-03-07: Google CloudプロジェクトにFirebaseを追加する注意画面" width="400" height="auto" />
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面は、Google CloudプロジェクトにFirebaseを追加してよいかを確認する画面です。GoogleログインやFirestoreを使うには必要な手順ですが、プロジェクト名とアカウントが正しいことを確認してから進みます。削除や課金、権限に関する注意が出るため、ここを読み飛ばさず確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Google Analytics画面が出た場合 -->
+<div style="font-size:0.8em">
+<h2>Google Analytics画面が出た場合</h2>
+<img src="figures/SS-03-08.png" alt="SS-03-08: Google Analytics設定画面の例" width="400" height="auto" />
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+環境によっては、Google Analyticsに関する画面が出ることがあります。今日の主題はAnalyticsではありません。画面の文言にはCloud Functionsなどの言葉が含まれることがありますが、今日はCloud Functionsを使いません。講師の指定に合わせて進め、不明ならここで止まります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>準備中の画面</h2>
+<img src="figures/SS-03-09.png" alt="SS-03-09: Firebaseプロジェクトを準備中の画面" width="auto" height="auto" />
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firebaseプロジェクトの準備には少し時間がかかることがあります。この画面では、何度もボタンを押したり、別のプロジェクトを作り直したりせず、そのまま待ちます。失敗したように見えても、まずは画面の表示が変わるまで待ちます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>準備完了を確認する</h2>
+<img src="figures/SS-03-10.png" alt="SS-03-10: Firebaseプロジェクトが準備できた画面" width="auto" height="auto" />
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firebaseプロジェクトの準備ができると、準備完了の表示が出ます。ここまで来たら、Firebase Console側で同じプロジェクトを確認します。画面にプロジェクト名が表示される場合がありますが、教材化するスクリーンショットではプロジェクトIDや個人情報が出ていないか確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Enable Firebaseを押すと…</h2>
+<h3>Enable Firebase</h3>
+<p><img src="figures/SS-03-11.png" alt="SS-03-11: FirebaseEnable Firebase" width="auto" height="auto" /><br /></p>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Enable Firebaseを押すと、AI StudioがFirebase連携に必要な準備を始めます。ここで確認するのは、課金や公開の設定に進んでいないこと、そして対象のプロジェクトが正しいことです。ボタンを押した後は、すぐに別の操作を重ねず、画面の指示が変わるまで待ちます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>必要なプロンプトが渡される</h2>
+<p><strong>「Add Firebase to my app」</strong>
+<img src="figures/SS-03-12.png" alt="SS-03-12: FirebaseEnable Firebase" width="auto" height="auto" />
+<img src="figures/SS-03-13.png" alt="SS-03-13: Add Firebase to my app" width="auto" height="auto" />
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firebase連携を有効にすると、AI Studio側に「Add Firebase to my app」という内容のプロンプトが渡されます。これは、アプリにFirebaseの設定、Googleログイン、Firestoreを使うためのコードを追加してもらう指示です。初心者のうちは、ここで自分で設定値を細かく書き換えるよりも、まずAI Studioが何を追加したかを確認することを優先します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業9: Firebase Consoleで確認</h2>
+<img src="figures/SS-03-14.png" alt="SS-03-14: Firebase Consoleでプロジェクトを確認する画面" width="auto" height="auto" />
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firebase Consoleを開くと、Firebaseプロジェクトの一覧が表示されます。ここで、AI Studio側で使っているプロジェクトと対応しているかを確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Firebase Consoleで見ること</h2>
+<ul>
+<li>対象プロジェクトか</li>
+<li>AI Studio側と対応しているか</li>
+<li>Sparkプランの範囲か</li>
+<li>BillingやUpgradeに進んでいないか</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firebase Consoleでは、まず対象プロジェクトを確認します。AI Studio側で作成または選択したプロジェクトと対応していること、Sparkプランの範囲で作業していること、BillingやUpgrade、Blazeの導線に進んでいないことを確認します。ここは講師と一緒に確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>プロジェクトIDの扱い</h2>
+<ul>
+<li>自分用の確認メモにはよい</li>
+<li>画面共有では大きく映さない</li>
+<li>教材スクリーンショットでは隠す</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+プロジェクトIDは、同じプロジェクトを探すときに便利です。ただし、教材や共有画像にそのまま載せる必要はありません。個人情報や秘密鍵ではありませんが、不要な公開を避けましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 作業10: Googleログインを有効にする -->
+<div style="font-size:0.8em">
+<h2>作業10: Googleログインを有効にする</h2>
+<p>Firebase Consoleで設定します。</p>
+<ul>
+<li>Authentication
+<ul>
+<li>Sign-in method</li>
+<li>Google</li>
+<li>有効にする</li>
+<li>保存</li>
+</ul>
+</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+次に、Firebase AuthenticationでGoogleログインを有効にします。Firebase ConsoleでAuthenticationを開き、Sign-in methodからGoogleを有効にして保存します。今日はGoogle以外のログイン方法を増やしません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Googleログイン設定の注意</h2>
+<ul>
+<li>Googleだけを有効にする</li>
+<li>他のログイン方法は増やさない</li>
+<li>ユーザー一覧は撮影しない</li>
+<li>メールアドレスを写さない</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Authenticationの画面には、ユーザー一覧やメールアドレスが表示されることがあります。教材スクリーンショットでは、ユーザー一覧やメールアドレスを写しません。Googleログインの有効化ができていることだけを確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:0.8em">
+<h2>作業11: Cloud Firestoreを準備する</h2>
+<p>Firebase Consoleで進めます。
+<a href="https://console.firebase.google.com/">https://console.firebase.google.com/</a></p>
+<ul>
+<li>Cloud Firestoreを開く</li>
+<li>データベースを作成する</li>
+<li>ロケーションは講師指定</li>
+<li>公開書き込みにしない</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+次にCloud Firestoreを準備します。データベースを作成し、保存先ロケーションを講師指定にそろえます。テストモードや公開書き込みを漫然と選ばないようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Authentication の設定画面 -->
+<div style="font-size:0.8em">
+<h2>Authentication の設定画面</h2>
+<ul>
+<li>Firebase Console の左メニュー、[<strong>セキュリティ</strong>] [<strong>Authentication</strong>] を選択する
+<ul>
+<li>Authentication は、アプリのログイン方法を管理する機能</li>
+<li>Googleログインを使う場合も、ここから設定</li>
+<li>作業前に、対象プロジェクトが正しいか確認</li>
+</ul>
+</li>
+</ul>
+<img src="figures/SS-03-15.png" alt="SS-03-15: Firebase Console から Authentication の設定画面を開く" width="300" height="auto" />
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+この画面では、Firebase Console から Authentication の設定画面を開く手順を確認します。
+<p>左側のメニューには、Firebaseで利用できる機能がカテゴリごとに並んでいます。今回使いたいのは、ユーザーがGoogleアカウントなどでログインできるようにするための Authentication です。</p>
+<p>メニューの セキュリティ にカーソルを合わせる、または展開すると、関連する機能が表示されます。ここには App Check、Authentication、Phone Verification などがあります。</p>
+<p>この中で選ぶのは Authentication です。
+Authentication は、アプリのログイン方法を管理する機能です。今回の講義では、初心者が設定を混同しないようにGoogleログインだけを扱います。</p>
+<p>注意点として、Phone Verification は電話番号確認に関する機能であり、今回設定したいGoogleログインとは別の項目です。また、App Check はアプリやAPIの不正利用対策に関する機能です。ログイン方法を設定する場合は、まず Authentication を開きます。</p>
+<p>画面右上にはプロジェクト名 My Diary が表示されています。Firebaseの設定を行うときは、必ず自分が意図したプロジェクトを開いているか確認してください。別のプロジェクトで設定してしまうと、アプリ側からログイン機能が正しく使えない原因になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Googleログインを有効にする -->
+<div style="font-size:0.6em">
+<h2>Googleログインを有効にする</h2>
+<img src="figures/SS-03-16.png" alt="SS-03-16: Googleログインを有効にする" width="300" height="auto" />
+<ul>
+<li><strong>Authentication</strong> の <strong>ログイン方法</strong> タブ
+<ul>
+<li>ログイン方法は <strong>プロバイダ</strong> として管理される</li>
+<li><strong>Google</strong> のステータスが <strong>有効</strong> になっている</li>
+<li>未設定の場合は  <strong>「新しいプロバイダを追加」</strong> からGoogleを追加</li>
+<li>Firebase側の設定後、アプリ側にもログイン処理を追加する</li>
+</ul>
+</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面は、Firebase Authentication の ログイン方法 タブです。
+<p>ここでは、アプリで利用できるログイン方法、つまり ログインプロバイダ を確認・追加できます。ログインプロバイダとは、ユーザーがどの方法でログインできるかを表すものです。</p>
+<p>画面では、Googleのプロバイダだけを確認します。講義では初心者の混乱を防ぐため、Googleログインだけを有効にします。</p>
+<p>今回の目的はGoogleログイン認証ですので、特に確認するべきなのは Google の行です。Google のステータスが 有効 になっていれば、Firebase側ではGoogleログインを使う準備ができている状態です。</p>
+<p>まだGoogleが表示されていない場合や、無効になっている場合は、右側の 「新しいプロバイダを追加」 からGoogleを選び、有効化します。</p>
+<p>ただし、この画面でGoogleログインを有効にしただけでは、アプリ画面に自動でログインボタンが追加されるわけではありません。Firebase側でGoogleログインを許可したうえで、アプリ側にも「Googleでログインする」ボタンや、ログイン処理を追加する必要があります。</p>
+<p>この画面は、Firebase側の認証設定が正しくできているかを確認する場所だと考えてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- FirestoreとFirebase Authenticationの統合完了 -->
+<div style="font-size:0.8em">
+<h2>Firestore, Firebase Authentication 統合</h2>
+<img src="./figures/SS-03-17.png" alt="GeminiがFirestoreとFirebase Authenticationの統合完了を報告している画面" width="150" height="auto">
+<ul>
+<li>Gemini がアプリへの Firebase 統合完了を報告</li>
+<li>Firestore によるクラウド保存・同期を追加</li>
+<li>Googleアカウントによるログイン機能を追加</li>
+<li>セキュリティルールとエラーハンドリングも反映</li>
+<li>次は、実際にログインして動作確認する</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面では、Gemini がアプリに Firebase Firestore と Firebase Authentication を統合したことを報告しています。
+<p>Firestore は、アプリの記録データをクラウドに保存するためのデータベースです。これまではブラウザ上だけで扱っていた記録データを、Firebase のクラウドデータベースに保存できるようになった、ということです。</p>
+<p>また、Googleアカウントによるログイン認証も追加されています。これにより、誰が記録を書いたのかを Firebase 側で識別できるようになります。ログインしたユーザーごとに、自分専用の記録を保存・表示する構成になります。</p>
+<p>ここで重要なのは、AI が「実装が完了しました」と表示していても、まだ人間側での確認が必要だという点です。実際にログインできるか、記録が保存されるか、ログアウトできるか、別のユーザーの記録が見えないかを、順番に確認していきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- アプリのGoogleアカウントログイン画面 -->
+<div style="font-size:0.7em">
+<h2>Googleアカウントログイン画面</h2>
+<img src="./figures/SS-03-18.png" alt="マイ記録帳アプリのGoogleアカウントログイン画面" width="250" height="auto">
+<ul>
+<li>未ログイン状態では、ログイン画面が表示される</li>
+<li><strong>Googleアカウントでログイン</strong> ボタンを押す</li>
+<li>Firebase Authentication を使って認証する</li>
+<li>ログイン後、自分専用の記録画面に進む</li>
+<li>個人データはFirebaseのルールで保護する</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面は、アプリを開いた直後のログイン画面です。
+<p>まだユーザーがログインしていないため、記録の入力画面ではなく、Googleアカウントでログイン というボタンが表示されています。</p>
+<p>Firebase Authentication を使うと、このようにアプリにログイン機能を追加できます。今回のアプリでは、Googleアカウントを使ってログインします。ユーザーは新しいIDやパスワードを作る必要がなく、普段使っているGoogleアカウントでログインできます。</p>
+<p>この段階では、まだ記録データの入力や一覧表示は行いません。まずログインして、Firebase が「この人は誰か」を確認します。その後に、そのユーザー専用の記録画面が表示されます。</p>
+<p>画面下には、個人データがFirebaseの暗号化やセキュリティルールによって保護されることが示されています。ログイン機能を付ける目的は、単に画面をかっこよくすることではなく、ユーザーごとにデータを安全に分けて扱うためです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Googleアカウントを選択する -->
+<div style="font-size:0.8em">
+<h2>Googleアカウントを選択する</h2>
+<img src="./figures/SS-03-19.png" alt="Googleログインで使用するアカウントを選択する画面" width="auto" height="auto">
+</div>
+<p><audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面では、Googleログインに使用するアカウントを選択します。
+<p>アプリのログインボタンを押すと、ブラウザは Google のログイン画面に移動します。URLにも <a href="https://accounts.google.com">accounts.google.com</a> が表示されており、これはGoogle公式のログイン画面です。</p>
+<p>すでにブラウザでGoogleアカウントにログインしている場合は、このように候補のアカウントが表示されます。使用したいアカウントを選択すると、次の確認画面に進みます。</p>
+<p>表示されているアカウントとは別のアカウントを使いたい場合は、別のアカウントを使用 を選びます。講義や演習では、個人用アカウント、大学用アカウント、検証用アカウントなどを混同しないように注意が必要です。</p>
+<p>ここで重要なのは、パスワードをアプリに直接入力しているわけではないという点です。本人確認はGoogle側で行われ、アプリはFirebase Authenticationを通じて、ログイン結果を受け取ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- アプリへのログイン許可を確認する -->
+<div style="font-size:0.8em">
+<h2>アプリへのログイン許可を確認する</h2>
+<img src="./figures/SS-03-20.png" alt="Googleログインでアプリに許可する情報を確認する画面" width="200" height="auto">
+<ul>
+<li>ログイン先のアプリ名・ドメインを確認する</li>
+<li>アプリに共有される情報を確認する
+<ul>
+<li>名前とプロフィール写真</li>
+<li>メールアドレス</li>
+</ul>
+</li>
+<li>問題なければ <strong>次へ</strong> を押す</li>
+<li>不審なアプリ名やドメインならキャンセルする</li>
+<li>初回ログイン時に表示される確認画面</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面では、Googleアカウントでログインする前に、アプリへ共有される情報を確認します。
+<p>画面上部には、ログイン先のアプリまたはドメインが表示されています。FirebaseやAI Studioで作成したアプリの場合、<a href="https://firebaseapp.com">firebaseapp.com</a> のようなドメインが表示されることがあります。</p>
+<p>中央には、このアプリに共有される情報が示されています。今回の例では、名前とプロフィール写真、メールアドレスが対象です。これはFirebase AuthenticationでGoogleログインを行う際によく使われる基本情報です。</p>
+<p>ここで確認すべきポイントは、本当に自分が作成したアプリにログインしようとしているか です。見覚えのないアプリ名や不自然なドメインが表示された場合は、安易に進まず、キャンセルする方が安全です。</p>
+<p>問題がなければ 次へ を押します。これにより、Google側の認証が完了し、アプリ側にログイン状態が戻されます。</p>
+<p>Googleログインは便利ですが、ユーザーが「どのアプリに、どの情報を渡すのか」を確認する重要な場面でもあります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ログイン後の記録画面を確認する -->
+<div style="font-size:0.6em">
+<h2>ログイン後の記録画面を確認する</h2>
+<img src="./figures/SS-03-21.png" alt="Googleログイン後に表示されたマイ記録帳アプリの記録入力画面" width="200" height="auto">
+<ul>
+<li>ログイン後、自分専用の記録画面が表示される</li>
+<li>画面上部にユーザー情報とサインアウトボタンが表示される</li>
+<li>タイトル、本文、気分を入力して記録できる</li>
+<li>保存データはFirestoreに同期される</li>
+<li>ログインユーザーごとに記録を分けて管理する</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面は、Googleログインが完了した後のアプリ画面です。
+<p>画面上部には、ログイン中のユーザー情報が表示されています。また、右側には サインアウト ボタンがあります。これが表示されていれば、Googleログインが正常に完了し、アプリ側がログイン状態を認識できていることが分かります。</p>
+<p>アプリ本体には、記録のタイトル、本文、気分を入力する欄があります。入力した内容は、記録する ボタンを押すことで保存されます。</p>
+<p>このアプリでは、保存先として Firebase Firestore を使っています。つまり、記録はブラウザの一時的なデータではなく、クラウド上のデータベースに保存されます。画面上部にクラウド保存の状態が表示されている点も確認できます。</p>
+<p>また、Googleログインを使っているため、保存された記録はログインユーザーごとに分けて管理できます。自分のアカウントでログインした場合は自分の記録だけが表示され、別のユーザーの記録が見えないように、Firebaseのセキュリティルールで制御します。</p>
+<p>Googleログインが単なる入口ではなく、誰のデータかを判定し、安全にクラウド保存するための仕組みであることを理解してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 記録しようとするとエラーが出た -->
+<div style="font-size:0.8em">
+<h2>記録しようとするとエラーが出た</h2>
+<img src="./figures/SS-03-22.png" alt="記録作成時にセキュリティ規則の確認を求めるエラーが表示された画面" width="auto" height="auto">
+<ul>
+<li>「記録する」を押すとエラーが表示された</li>
+<li>原因は <strong>Firestore Security Rules</strong> の可能性が高い</li>
+<li>ログインできることと、書き込めることは別</li>
+<li>エラー画面を見ながら、AIに状況を具体的に伝える</li>
+<li>ルールを広げすぎず、最小限の修正にする</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_47.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面では、「記録する」ボタンを押したあとに、記録の作成に失敗したことが表示されています。
+<p>エラーメッセージには、セキュリティ規則を確認してください と書かれています。ここでいうセキュリティ規則とは、Firestore の Security Rules のことです。</p>
+<p>大事なポイントは、Googleログインに成功していること と、Firestoreに書き込めること は別だという点です。ログインできていても、Firestore側のルールで書き込みが許可されていなければ、記録は作成できません。</p>
+<p>このようなときは、やみくもにルールを変更するのではなく、まずAIに状況を具体的に伝えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 修正プロンプト1 -->
+<div style="font-size:1.0em">
+<h2>修正プロンプト1</h2>
+<pre><code class="language-text">
+記録する時に以下のエラーが出ました。セキュリティ規則を確認し、最小限の修正で対応してください。
+
+記録の作成に失敗しました。セキュリティ規則を確認してください。
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_48.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+指示の後にエラーメッセージを直接付記しているところがポイントです。与える情報が正確な方が、良好な結果が得られます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 修正プロンプト2 -->
+<div style="font-size:1.0em">
+<h2>修正プロンプト2</h2>
+<pre><code class="language-text">Googleログイン後に「記録する」を押すと、
+「記録の作成に失敗しました。セキュリティ規則を確認してください」
+というエラーが出ます。
+
+Firestoreの保存先は users/{ログインしたユーザーID}/entries です。
+
+Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、
+Deploy、Get API key は使わないでください。
+
+ログインした本人だけが、自分の記録を作成できるように、
+Firestore Security Rules とアプリ側の保存処理を最小限で確認・修正してください。
+
+公開書き込みや allow read, write: if true; のような広すぎるルールにはしないでください。
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_49.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firebase/Firestoreの体系的な知識を持っているならば、より詳細なプロンプトで、良好な結果を得られる可能性が高くなります。従ってAI時代でも勉強が不要というわけではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- AIに状況を伝えて修正する -->
+<div style="font-size:0.6em">
+<h2>AIに状況を伝えて修正する</h2>
+<img src="./figures/SS-03-23.png" alt="GeminiがFirestoreのセキュリティルールを修正しビルドを完了した画面" width="300" height="auto">
+<ul>
+<li>AIが <code>firestore.rules</code> を修正</li>
+<li>アプリのビルドも正常に完了</li>
+<li>認証条件とFirestoreルールのずれを調整</li>
+<li>自分の記録だけ操作できる条件を維持</li>
+<li>修正後も、人間が内容を確認する</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_50.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+画面の Action history には、firestore.rules を編集し、ビルドが完了したことが表示されています。つまり、アプリ側だけでなく、Firestore のアクセス制御にも変更が入ったということです。
+<p>ここで重要なのは、AIが修正してくれたからといって、そのまま無条件に信用するのではなく、何が変わったのかを確認する ことです。Security Rules は、データベースの入口を守るルールです。広げすぎると、他のユーザーからデータを読まれたり、書き換えられたりする危険があります。</p>
+<p>この画面では、「自分自身の記録を参照・追加・削除・更新できる」と説明されています。教材では、ここを次のように言い換えると分かりやすいです。</p>
+<p>「ログインしているユーザー本人だけが、自分の場所にある記録を扱えるようにした、という意味です。」</p>
+<p>ただし、削除や更新まで許可するかどうかは、授業回の到達点に合わせて判断します。記録の作成だけを扱う回であれば、削除や更新まで無理に入れる必要はありません。</p>
+<p>講義では、ここで次の注意をはっきり伝えます。</p>
+<p>Security Rules を修正するときは、公開書き込みにしない。
+テストモードに戻さない。
+課金、Deploy、Publish、Cloud Run、App Hosting には進まない。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 修正後、記録が表示された -->
+<div style="font-size:0.6em">
+<h2>修正後、記録が表示された</h2>
+<img src="./figures/SS-03-24.png" alt="修正後に記録の一覧へ作成した記録が表示された画面" width="300" height="auto">
+<ul>
+<li>記録の一覧に新しいカードが表示された</li>
+<li>タイトル、本文、気分が反映されている</li>
+<li>Firestoreへの書き込みと読み取りが通った</li>
+<li>再読み込み後も残るか確認する</li>
+<li><strong>別ユーザーの記録が見えないことも確認する</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_51.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+先ほどは「記録の作成に失敗しました」というエラーが出ていましたが、Firestore のルールとアプリ側の処理を調整したことで、記録が作成できるようになりました。
+<p>一覧の上には、記録数が 1 と表示されています。カードの中には、気分、タイトル、本文が表示されています。これにより、入力した内容がアプリ内で記録として扱われていることを確認できます。</p>
+<p>ただし、この画面だけで確認を終わらせないようにします。次の確認も行います。</p>
+<p>まず、ブラウザを再読み込みしても記録が残っているかを確認します。再読み込み後も表示されれば、画面内だけの一時的な表示ではなく、Firestoreから読み込めている可能性が高くなります。</p>
+<p>次に、サインアウトして再ログインしたときにも、自分の記録が表示されるかを確認します。さらに、別のアカウントでログインした場合に、この記録が見えないことも重要です。</p>
+<p>ここで伝えたいのは、アプリが動いたかどうかだけではありません。Firestoreを使う場合は、保存できること と 他人のデータが見えないこと の両方を確認する必要があります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>表示されないときに見る場所</h2>
+<ul>
+<li>ログインしているか</li>
+<li>UIDとデータの置き場所が合っているか</li>
+<li>Security Rulesが合っているか</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_52.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+保存した記録が表示されない場合は、順番に確認します。まずログインできているか。次に、Firestoreに置いた場所がログインユーザーのUIDと合っているか。最後にSecurity Rulesが正しいかを確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>AIへの聞き方: ボタンが出ない</h2>
+<pre><code class="language-text">Googleログインボタンが表示されていません。
+画面上部に「Googleでログイン」ボタンを追加してください。
+ログイン前とログイン後の状態が分かる表示も追加してください。
+Cloud Billing、Blaze、Cloud Run、App Hosting、Get API keyは使わないでください。
+</code></pre>
+<p><audio controls src="./voiceovers/slide_53.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+うまくいかないときは、画面に起きていることと、直してほしいことを具体的に伝えます。ここでは、Googleログインボタンが出ていないこと、画面上部に追加してほしいこと、使わないサービスを明記します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>AIへの聞き方: ログインできない</h2>
+<pre><code class="language-text">Googleログインボタンを押してもログインできません。
+Firebase AuthenticationのGoogleログインを使う前提で、原因を確認するために見るべき点を教えてください。
+Cloud BillingやBlazeへのアップグレードは行いません。
+</code></pre>
+<p><audio controls src="./voiceovers/slide_54.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ログインできない場合は、まずFirebase AuthenticationのGoogleログイン設定を確認します。AIには、原因を一つに決めつけさせず、確認すべき点を順番に聞くとよいです。課金やアップグレードには進まないことも明記します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>AIへの聞き方: 記録が出ない</h1>
+<pre><code class="language-text">Googleログイン後もFirestoreに保存した記録が表示されません。
+`users/{ログインしたユーザーID}/entries` から読み込む前提で、確認すべき点を順番に教えてください。
+第3回ではFirestoreへの保存と読み取りを確認します。
+</code></pre>
+<p><audio controls src="./voiceovers/slide_55.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Firestoreの記録が表示されない場合は、データの置き場所、UID、Security Rules、アプリの読み取りパスを確認します。AIには「順番に教えてください」と聞くと、確認作業が進めやすくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>AIへの聞き方: 複雑になりすぎた</h2>
+<pre><code class="language-text">画面が複雑になりすぎました。
+初心者向けに、次の要素だけに整理してください。
+
+- マイ記録帳のタイトル
+- Googleでログインボタン
+- ログイン状態の表示
+- 第2回で作った入力欄と気分選択
+- Firestoreに保存し、読み込んだ記録の一覧
+- 記録がない場合のメッセージ
+
+削除、画像アップロード、外部API、公開、課金設定は追加しないでください。
+</code></pre>
+<p><audio controls src="./voiceovers/slide_56.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AIは便利な機能を増やしがちです。画面が複雑になったら、必要な要素だけに整理してもらいます。初心者向けの授業では、一度で完成させるより、小さく作って確認することを優先します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>今日のまとめ</h2>
+<p><strong>クラウドDatabaseの入口ができました。</strong></p>
+<ul>
+<li>Googleログインでユーザーを見分ける</li>
+<li>Firestoreへ記録を保存し、読み込む</li>
+<li>セキュリティルールが誰が読めるか・書けるかを決めている</li>
+</ul>
+<p><audio controls src="./voiceovers/slide_57.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日のまとめです。Googleログインは誰が使っているかを確認する仕組み、Firestoreはクラウド上にデータを置く箱、Security Rulesは誰が読めるか・書けるかを決めるルールです。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
