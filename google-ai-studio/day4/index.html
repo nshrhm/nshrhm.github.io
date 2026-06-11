@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>生成AIで「動く」Webアプリを作る超入門スキルアップコース（基礎編）</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png"
+                 alt="course logo"
+                 width="316"
+                 height="316"
+                 style="height:100%" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h4>
+                        生成AIで「動く」Webアプリを作る
+                        <br />
+                        超入門スキルアップコース（基礎編）
+                    </h4>
+                    <br />
+                    <h3>
+                        第4回: 保存した記録を点検する
+                        <br />
+                        Firestore・ログイン・ルールの確認
+                    </h3>
+                    <p>講師：白濵 成希</p>
+                    <p>下関市立大学 データサイエンス学部</p>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日は第4回です。タイトルは「保存した記録を点検する」です。第3回では、Googleログイン、Firebase Authentication、Cloud Firestore、Firestoreへの保存、Firestoreからの読み込み、Security Rulesの確認まで進みました。したがって今日は、新しく保存機能を作る回ではありません。すでに作った「マイ記録帳」を開き、保存した記録がどこにあり、誰の記録として扱われ、どのルールで守られているかを確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日のゴール -->
+                    <div style="font-size:0.8em">
+                        <h2>今日のゴール</h2>
+                        <p>
+                            <strong>保存した記録を、自分で点検できるようになる。</strong>
+                        </p>
+                        <p>確認すること</p>
+                        <ul>
+                            <li>ログインした本人の記録か</li>
+                            <li>Firestoreに保存されているか</li>
+                            <li>再読み込み後も読めるか</li>
+                            <li>ルールで守られているか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のゴールは、保存機能を増やすことではなく、保存された記録を自分で点検できるようになることです。画面にカードが出ているだけでは、それが画面内だけの一時的な表示なのか、Firestoreに保存されたデータなのか、まだ分かりません。また、自分の記録だけが見えているのか、ほかの人の記録まで見えてしまう状態なのかも、確認しなければ分かりません。今日は、ログイン、Firestore、Security Rulesの関係を順番に見ます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の位置づけ -->
+                    <div style="font-size:0.8em">
+                        <h2>今日の位置づけ</h2>
+                        <ul>
+                            <li>第2回：画面内だけの仮表示</li>
+                            <li>第3回：Firestoreへ保存して読む</li>
+                            <li>
+                                <strong>第4回：保存・ログイン・ルールを点検する</strong>
+                            </li>
+                            <li>第5回：一覧をアプリらしく整える</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        講座全体の中で、今日の位置づけを確認します。第2回では、入力した内容を画面下に仮表示しました。第3回では、GoogleログインとFirestoreを使い、クラウドに保存して読み込むところまで進みました。第4回の今日は、その保存済みアプリを点検します。第5回では、空状態メッセージ、新しい順の表示、記録数、必要に応じた削除など、見た目と使いやすさを整えます。今日はその前に、安全に保存されているかを確認する回です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 前回できたこと -->
+                    <div style="font-size:0.8em">
+                        <h2>前回できたこと</h2>
+                        <ul>
+                            <li>Googleログイン</li>
+                            <li>Firebase Authentication</li>
+                            <li>Cloud Firestore</li>
+                            <li>Firestoreへの保存</li>
+                            <li>Firestoreからの読み込み</li>
+                            <li>Security Rulesの確認</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        前回できたことを確認します。第3回では、Googleログインを使いました。Firebase Authenticationでログイン状態を扱い、Cloud Firestoreに記録を保存し、保存した記録を一覧に読み込むところまで確認しました。途中で保存できないエラーが出た人もいると思います。そのときは、Security Rulesやアプリ側の保存処理を確認しました。今日の授業では、この前回の到達点を前提にします。新しくFirebaseを追加するのではなく、すでに作ったものを点検します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日やらないこと -->
+                    <div style="font-size:0.72em">
+                        <h2>今日やらないこと</h2>
+                        <ul>
+                            <li>削除・編集機能の新規追加</li>
+                            <li>複雑な検索・絞り込み</li>
+                            <li>複雑な権限管理</li>
+                            <li>画像アップロード / Cloud Storage</li>
+                            <li>外部API連携 / メール送信 / 決済機能</li>
+                            <li>Cloud Billing / Blaze / Cloud Run / App Hosting</li>
+                            <li>アプリ内Gemini API呼び出し / APIキー作成</li>
+                            <li>本番公開</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日やらないことを先に確認します。第4回では、削除機能や編集機能を新しく追加しません。複雑な検索や絞り込みも扱いません。Cloud Storage、画像アップロード、外部API連携、メール送信、決済機能にも進みません。Cloud Billing、Blazeプラン、Cloud Run、Firebase App Hosting、本番公開にも進みません。今日の目的は、すでに作った保存機能を理解することです。機能を増やすより、今あるログイン、保存先、ルールを正しく確認することを優先します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 押さない導線 -->
+                    <div style="font-size:0.76em">
+                        <h2>表示されても今日は押さない</h2>
+                        <ul>
+                            <li>Deploy / Publish</li>
+                            <li>Get API key</li>
+                            <li>Add database and auth</li>
+                            <li>Upgrade / Set up billing</li>
+                            <li>Link billing account / Upgrade to Blaze</li>
+                            <li>Deploy to Cloud Run</li>
+                            <li>Firebase App Hosting</li>
+                            <li>Cloud Storage bucket</li>
+                            <li>支払い方法登録 / クレジットカード登録</li>
+                        </ul>
+                        <h3>出たら講師に確認</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の操作中にも、便利そうなボタンや案内が表示されることがあります。しかし、ここに書いた表示は今日は押しません。DeployやPublishは公開につながる可能性があります。Get API keyはAPIキー作成につながります。Upgrade、Set up billing、Link billing account、Upgrade to Blazeは課金やプラン変更につながる可能性があります。Firebase App Hosting、Cloud Run、Cloud Storageも今日の範囲ではありません。表示されたら、先に進まず講師に確認してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 保存できた、だけでは終わらない -->
+                    <div style="font-size:0.8em">
+                        <h2>「保存できた」で終わらない</h2>
+                        <p>画面にカードが出ただけでは、まだ分かりません。</p>
+                        <ul>
+                            <li>画面内だけの表示か</li>
+                            <li>Firestoreに保存されたか</li>
+                            <li>自分の記録として保存されたか</li>
+                            <li>他人から見えないか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここが今日の大事な考え方です。画面に記録カードが出ると、保存できたように見えます。しかし、それだけでは十分ではありません。画面の中だけで一時的に表示しているだけかもしれません。Firestoreには保存されていないかもしれません。Firestoreには保存されていても、自分の記録として正しい場所に保存されているかは別の問題です。また、他の人から見えてしまう状態では困ります。今日は、この違いを一つずつ確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日確認する4つのこと -->
+                    <div style="font-size:0.8em">
+                        <h2>今日確認する4つのこと</h2>
+                        <ol>
+                            <li>アプリで保存できる</li>
+                            <li>再読み込み後も表示される</li>
+                            <li>Firebase Consoleで見つかる</li>
+                            <li>Security Rulesで守られている</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日確認することは4つです。まず、アプリで架空の記録を1件保存します。次に、ブラウザを再読み込みしても表示されるか確認します。さらに、Firebase Consoleを開いて、Firestoreの中にデータがあるか見ます。最後に、Security Rulesを確認し、ログインした本人だけが自分の記録を読める・作成できる状態になっているかを見ます。この4つがつながると、保存の仕組みが理解しやすくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- Googleログインの役割 -->
+                    <div style="font-size:0.8em">
+                        <h2>Googleログインの役割</h2>
+                        <p>
+                            <strong>誰が使っているかを確認する仕組み</strong>
+                        </p>
+                        <ul>
+                            <li>講座用Gmailでログインする</li>
+                            <li>ユーザーを区別する</li>
+                            <li>自分の保存場所を決める入口になる</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Googleログインは、単にログイン画面を付けるためのものではありません。このアプリを今使っているのが誰なのかを確認する仕組みです。Firestoreに保存するときは、ログインしているユーザーごとに保存場所を分けます。講座では講座用のプライベートGmailを使いますが、教材やスクリーンショットではメールアドレスを大きく表示しません。アプリ内部では、ログインしたユーザーを見分けるIDを使って保存場所を決めます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- Firestoreの役割 -->
+                    <div style="font-size:0.8em">
+                        <h2>Firestoreの役割</h2>
+                        <p>
+                            <strong>クラウド上に記録を置く箱</strong>
+                        </p>
+                        <ul>
+                            <li>タイトル、本文、気分を保存する</li>
+                            <li>ユーザーごとに分けて保存する</li>
+                            <li>再読み込み後も読み込める</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Firestoreは、クラウド上にデータを置くためのデータベースです。「マイ記録帳」では、タイトル、本文、気分、作成日時などを保存します。第2回の画面内だけの仮表示とは違い、Firestoreに保存されていれば、ブラウザを再読み込みしても読み込めます。さらに、Googleログインと組み合わせることで、ログインユーザーごとに保存場所を分けられます。今日は、その保存場所をFirebase Consoleで確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- Security Rulesの役割 -->
+                    <div style="font-size:0.8em">
+                        <h2>Security Rulesの役割</h2>
+                        <p>
+                            <strong>誰が読めるか・書けるかを決めるルール</strong>
+                        </p>
+                        <ul>
+                            <li>ログインしているか</li>
+                            <li>自分の場所か</li>
+                            <li>読み取り・作成を許可するか</li>
+                            <li>広すぎる公開設定にしない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Security Rulesは、Firestoreの入口を守るルールです。誰でも読める、誰でも書ける、という状態にしてはいけません。今日の基本は、ログインしている人だけ、そして自分のユーザーIDの場所だけを扱える、という考え方です。第4回では、実務用の複雑な権限設計までは扱いません。まずは、ログインしている本人の記録だけを読める・作成できるという最小限の考え方を理解します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第3回アプリを開く -->
+                    <div style="font-size:0.72em">
+                        <h2>第3回アプリを開く</h2>
+                        <img src="figures/SS-04-01.png"
+                             alt="SS-04-01: 第3回で作ったマイ記録帳を開いた画面"
+                             width="500"
+                             height="auto" />
+                        <ul>
+                            <li>「マイ記録帳」が開いている</li>
+                            <li>ログインボタンまたはログイン状態が見える</li>
+                            <li>余計な公開・課金画面ではない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここから実際の操作に入ります。まず、第3回で作った「マイ記録帳」を開きます。画面にログインボタンが出ている場合は、まだログインしていない状態です。すでにログイン済みの場合は、ログイン状態やサインアウトボタンが見えることがあります。ここで、Deploy、Publish、Get API key、Upgrade、Set up billingのような画面に進んでいないことも確認します。違うプロジェクトや別のアプリを開いている場合は、ここで戻ります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 講座用Gmailを確認する -->
+                    <div style="font-size:0.72em">
+                        <h2>講座用Gmailを確認する</h2>
+                        <img src="figures/SS-04-02.png"
+                             alt="SS-04-02: 講座用Gmailでログイン後のマイ記録帳"
+                             width="200"
+                             height="auto" />
+                        <ul>
+                            <li>講座用のプライベートGmailで作業する</li>
+                            <li>メールアドレスを大きく表示しない</li>
+                            <li>スクリーンショットでは隠す</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ログインするときは、講座用のプライベートGmailを使います。勤務先アカウント、学校アカウント、家族のアカウントで作業しないように注意してください。ログイン後、画面にメールアドレスやプロフィール画像が出ることがあります。講義中の画面共有や教材用スクリーンショットでは、メールアドレス、プロフィール画像、UIDが見えないようにします。今日の目的はログイン状態を確認することであって、個人情報を見せることではありません。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 記録を1件作る -->
+                    <div style="font-size:0.78em">
+                        <h2>記録を1件作る</h2>
+                        <p>架空のサンプルだけを使います。</p>
+                        <pre><code class="language-text">タイトル: 第4回の確認
+本文: 再読み込みしても記録が残るか確認した。
+気分: ふつう
+</code></pre>
+                        <p>実名・勤務先・顧客情報は入れません。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ログインできたら、架空のサンプル記録を1件作ります。タイトルは「第4回の確認」、本文は「再読み込みしても記録が残るか確認した。」、気分は「ふつう」にします。ここで大事なのは、実在する個人情報や勤務先情報を入れないことです。実名、メールアドレス、顧客名、学生番号、住所、電話番号、業務情報、請求情報は入力しません。今日は練習用の確認なので、短い架空の文章だけを使います。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 保存後を見る -->
+                    <div style="font-size:0.72em">
+                        <h2>保存後の画面を見る</h2>
+                        <img src="figures/SS-04-04.png"
+                             alt="SS-04-04: 保存後に記録カードと保存完了表示が出ている画面"
+                             width="400"
+                             height="auto" />
+                        <ul>
+                            <li>記録カードが表示された</li>
+                            <li>保存完了表示がある</li>
+                            <li>記録数が増えた</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        「記録する」を押したあと、画面を確認します。記録カードが表示されているか、保存完了の表示があるか、記録数が増えているかを見ます。ただし、この時点では、まだ画面に表示されただけです。Firestoreに保存されたかどうかを判断するには、再読み込みやFirebase Consoleでの確認が必要です。まずは、アプリ側で保存処理が通ったように見えるかを確認し、その次に本当に残るかを点検します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 再読み込みして確認する -->
+                    <div style="font-size:0.72em">
+                        <h2>再読み込みして確認する</h2>
+                        <img src="figures/SS-04-05.png"
+                             alt="SS-04-05: ブラウザ再読み込みアイコン"
+                             width="auto"
+                             height="auto" />
+                        <ul>
+                            <li>ブラウザを再読み込みする</li>
+                            <li>もう一度ログイン状態を見る</li>
+                            <li>記録が一覧に残っているか確認する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次に、ブラウザを再読み込みします。第2回の画面内だけの仮表示であれば、再読み込みすると消えていました。第3回でFirestoreに保存できていれば、再読み込み後もFirestoreから読み込まれて一覧に表示されるはずです。もし再読み込み後に記録が消えた場合は、保存できていない、読み込み処理が合っていない、ログイン状態が切れている、Security Rulesが読み取りを許可していない、といった可能性があります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- サインアウト・再ログインで確認する -->
+                    <div style="font-size:0.8em">
+                        <h2>サインアウト・再ログインで確認</h2>
+                        <ul>
+                            <li>一度サインアウトする</li>
+                            <li>同じ講座用Gmailで再ログインする</li>
+                            <li>自分の記録が表示されるか見る</li>
+                            <li>メールアドレスは撮影しない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        再読み込みで確認できたら、次はサインアウトと再ログインを確認します。一度サインアウトし、同じ講座用のプライベートGmailで再ログインします。そのあと、自分の記録が表示されるかを見ます。この確認で、ログイン状態とFirestoreの保存場所が結びついていることを確認できます。スクリーンショットを撮る場合は、メールアドレス、プロフィール画像、UIDが写らないようにします。サインアウトボタンが見つからない場合は、無理に探し続けず講師に確認してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- Firebase Consoleとは -->
+                    <div style="font-size:0.8em">
+                        <h2>Firebase Consoleとは</h2>
+                        <p>
+                            <strong>Firebaseの設定とデータを確認する画面</strong>
+                        </p>
+                        <p>見る場所</p>
+                        <ul>
+                            <li>対象プロジェクト</li>
+                            <li>Authentication</li>
+                            <li>Cloud Firestore</li>
+                            <li>Security Rules</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここからFirebase Consoleを確認します。Firebase Consoleは、Firebaseの設定やデータを確認するための管理画面です。アプリの画面だけを見ていると、Firestoreの中に実際にどのようなデータがあるかは分かりません。Firebase Consoleでは、対象プロジェクト、Authentication、Cloud Firestore、Security Rulesを確認できます。ただし、管理画面にはプロジェクトID、メールアドレス、UIDなどが表示されることがあります。教材画像に使う場合は必ず隠します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 対象プロジェクトを確認する -->
+                    <div style="font-size:0.72em">
+                        <h2>対象プロジェクトを確認する</h2>
+                        <p>
+                            <a href="https://console.firebase.google.com/">https://console.firebase.google.com/</a>
+                        </p>
+                        <img src="figures/SS-04-06.png"
+                             alt="SS-04-06: Firebase Consoleで対象プロジェクトを選ぶ画面"
+                             width="300"
+                             height="auto" />
+                        <ul>
+                            <li>第3回で使ったプロジェクトか</li>
+                            <li>Sparkプランの範囲か</li>
+                            <li>BillingやUpgradeに進んでいないか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Firebase Consoleを開いたら、まず対象プロジェクトを確認します。第3回でAI Studioから連携したプロジェクトと同じものを開いている必要があります。違うプロジェクトを見ていると、データが見つからず混乱します。また、Sparkプランの範囲で作業していること、Billing、Upgrade、Blaze、支払い方法登録の導線に進んでいないことを確認します。プロジェクトIDは画面に表示されることがありますが、共有しないでください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- Firestoreのデータ構造を見る -->
+                    <div style="font-size:0.72em">
+                        <h2>Firestoreのデータ構造を見る</h2>
+                        <img src="figures/SS-04-07.png"
+                             alt="SS-04-07: Firestore Consoleでusersとentriesの階層を確認する画面"
+                             width="auto"
+                             height="auto" />
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        左のサイドメニューから「DatabaseとStorage」「Firestore」の順にクリックすることでデータベースの記録や設定を確認することができます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- Firestoreで保存データを確認する -->
+                    <div style="font-size:0.7em">
+                        <h2>Firestoreで保存データを確認する</h2>
+                        <img src="figures/SS-04-08.png"
+                             alt="SS-04-08: Firebase Console の Cloud Firestore で records コレクション内の記録を確認する画面"
+                             width="300"
+                             height="auto" />
+                        <ul>
+                            <li>
+                                左メニューから <strong>Database と Storage</strong> を開く
+                            </li>
+                            <li>
+                                <strong>Firestore</strong> を選ぶ
+                            </li>
+                            <li>
+                                <strong>データ</strong> タブで保存された記録を見る
+                            </li>
+                            <li>
+                                <strong>セキュリティ</strong> タブでルールを確認する
+                            </li>
+                        </ul>
+                        <p>「プロジェクトをアップグレード」は押さない</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この画面は、Firebase ConsoleでCloud Firestoreを開いたところです。
+                        <p>Firebase Consoleの左側メニューから「Database と Storage」を開き、その中の「Firestore」を選ぶと、このようにデータベースの中身や設定を確認できます。</p>
+                        <p>
+                            画面上部には、「データ」「セキュリティ」「インデックス」などのタブがあります。
+                            今日まず見るのは「データ」タブです。
+                            ここでは、アプリから保存された記録がFirestoreの中に本当に作られているかを確認します。
+                        </p>
+                        <p>画面は、左から順に見ます。</p>
+                        <p>
+                            いちばん左にある records は、記録をまとめて入れる箱です。
+                            Firestoreでは、この箱のことをコレクションと呼びます。
+                        </p>
+                        <p>
+                            中央に並んでいる文字列は、記録1件ごとのドキュメントです。
+                            ドキュメントは、記録カード1枚ぶんのデータだと考えてください。
+                            アプリで「記録する」ボタンを押すと、この records コレクションの中に、記録1件ぶんのドキュメントが作られます。
+                        </p>
+                        <p>
+                            右側には、選択したドキュメントの中身が表示されています。
+                            この画像では、content、createdAt、mood、title、userId というフィールドが見えます。
+                        </p>
+                        <p>
+                            title は記録のタイトルです。
+                            content は記録の本文です。
+                            mood は気分です。
+                            createdAt は作成日時です。
+                            userId は、どのログインユーザーの記録かを見分けるための内部的な情報です。
+                        </p>
+                        <p>
+                            ここで確認したいことは、画面の一覧にカードが表示されたかどうかだけではありません。
+                            Firestoreの中にも、タイトル、本文、気分、作成日時、ログインユーザーを見分ける情報が保存されていることを確認します。
+                        </p>
+                        <p>
+                            今回のアプリでは、records というコレクションの中に記録が保存されます。
+                            そして、各記録の中に userId というフィールドがあり、それによって「これは誰の記録か」を判定します。
+                            そのため、教材では users、entries という階層構造では説明しません。
+                            実際の画面に合わせて、records コレクションと userId フィールドで説明します。
+                        </p>
+                        <p>
+                            ただし、この画面には、画面共有でそのまま見せない方がよい情報も含まれます。
+                            Database ID、ドキュメントID、userIdの値、プロジェクトに関係する文字列など、画面共有でそのまま見せない方がよい情報も含まれます。
+                        </p>
+                        <p>
+                            また、画面上部に「プロジェクトをアップグレード」のような表示があります。
+                            これは今日の作業には使いません。
+                            Cloud BillingやBlazeプランには進まないので、アップグレードのリンクやボタンは押しません。
+                        </p>
+                        <p>
+                            このあと、「セキュリティ」タブを開くと、Firestore Security Rulesを確認できます。
+                            データが保存されていることと、誰が読めるか・書けるかが適切に制限されていることは、別々に確認します。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Firestoreの保存場所 -->
+                    <div style="font-size:0.78em">
+                        <h2>保存場所の読み方</h2>
+                        <p>今回のアプリでは、記録はここに入ります。</p>
+                        <pre><code class="language-text">records
+  └─ 記録1件ごとのドキュメント
+      ├─ title
+      ├─ content
+      ├─ mood
+      ├─ createdAt
+      └─ userId
+</code></pre>
+                        <h3>userId で「誰の記録か」を見分ける</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回のアプリでは、記録は records というコレクションに保存されます。
+                        <p>
+                            records は、記録をまとめて入れる箱です。
+                            その中に、記録1件ごとのドキュメントが作られます。
+                        </p>
+                        <p>1件のドキュメントの中には、title、content、mood、createdAt、userId のようなフィールドがあります。</p>
+                        <p>
+                            title はタイトル、content は本文、mood は気分、createdAt は作成日時です。
+                            そして userId は、この記録がどのログインユーザーのものかを見分けるための情報です。
+                        </p>
+                        <p>
+                            ここで大事なのは、userId の実際の値を受講生が覚えたり、教材に載せたりする必要はないということです。
+                            アプリとFirebaseが内部で使う識別情報だと考えてください。
+                        </p>
+                        <p>今日の確認では、次のように理解できれば十分です。</p>
+                        <p>
+                            records は記録全体の箱。
+                            ドキュメントは記録1件。
+                            フィールドは、その記録の中身。
+                            userId は、誰の記録かを見分けるための印。
+                        </p>
+                        <p>この考え方で、Firestoreの画面を左から右へ読んでいきます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- フィールドを見る -->
+                    <div style="font-size:0.6em">
+                        <h2>1件の記録の中身を見る</h2>
+                        <img src="figures/SS-04-09.png"
+                             alt="SS-04-09: 1件のドキュメントでcontent, createAt, mood, title, userIDなどのフィールドを確認する画面"
+                             width="400"
+                             height="auto" />
+                        <p>確認するフィールド</p>
+                        <ul>
+                            <li>
+                                <code>content</code>, <code>createAt</code>, <code>mood, </code>title<code>, </code>userID`
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        1件の記録を開くと、フィールドが見えます。titleはタイトル、contentは本文、moodは気分、createdAtは作成日時に関する情報です。AI Studioが生成したアプリによって、フィールド名が少し違う場合があります。その場合は、講師が事前に確認した標準構造と照らし合わせます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- Security Rulesの変更画面 -->
+                    <div style="font-size:0.6em">
+                        <h2>Security Rulesの変更を確認する</h2>
+                        <img src="figures/SS-04-10.png"
+                             alt="SS-04-10: Cloud Firestore の Security Rules が初期ルールから更新された画面"
+                             width="700"
+                             height="auto" />
+                        <h3>今日は全部は読みません</h3>
+                        <p>見るところは3つだけです。</p>
+                        <ul>
+                            <li>
+                                最初は <strong>全部禁止</strong>
+                            </li>
+                            <li>
+                                <code>records</code> だけにルールを付ける
+                            </li>
+                            <li>ログイン本人の記録だけ読む・作る</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この画面は、Cloud FirestoreのSecurity Rulesが変更されたところです。
+                        <p>
+                            左側には、以前のルールが表示されています。
+                            右側には、現在の新しいルールが表示されています。
+                        </p>
+                        <p>
+                            ここで大事なのは、コードを1行ずつ全部読むことではありません。
+                            このルールは、初心者向けの授業で逐語的に説明するには長すぎます。
+                        </p>
+                        <p>今日見るポイントは3つだけです。</p>
+                        <p>
+                            1つ目は、最初のルールは「全部禁止」だったということです。
+                            最初の状態では、誰も読めない、誰も書けない、という安全側の設定になっています。
+                        </p>
+                        <p>
+                            2つ目は、現在のルールでは records というコレクションだけに、具体的な許可条件が付いているということです。
+                            Firestoreのすべてを自由に読めるようにしているわけではありません。
+                        </p>
+                        <p>
+                            3つ目は、ログインしている本人の記録だけを読める、作れるようにしているということです。
+                            そのために、ログイン状態と、記録の中にある userId を見ています。
+                        </p>
+                        <p>
+                            この画面では、英語のコメントや関数がたくさんあります。
+                            しかし、今日の授業では、細かい文法を覚える必要はありません。
+                            Security Rulesは、Firestoreの入口で「誰が読めるか、誰が書けるか」を決めるものだと理解できれば十分です。
+                        </p>
+                        <p>
+                            また、この画面にプロジェクトID、Database ID、メールアドレスなどが映る場合は、教材化する前に必ずぼかしてください。
+                            Security Rulesの内容自体は説明に使ってよいですが、個人やプロジェクトを特定できる情報は見せません。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 初期ルール -->
+                    <div style="font-size:0.8em">
+                        <h2>最初のルールは「全部禁止」</h2>
+                        <blockquote>
+                            <p>allow read, write: if false;</p>
+                        </blockquote>
+                        <ul>
+                            <li>
+                                これは、 <strong>誰も読めない・誰も書けない</strong> という意味です。
+                            </li>
+                            <li>安全だが、アプリから保存できません。</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        まず、初期ルールを見ます。
+                        <p>初期ルールの中には、allow read, write: if false; という行があります。</p>
+                        <p>これは、とても簡単に言うと、「読むことも、書くことも許可しない」という意味です。</p>
+                        <p>
+                            read は読むことです。
+                            write は書くことです。
+                            if false は、条件が常に成り立たない、という意味です。
+                        </p>
+                        <p>つまり、誰がアクセスしても、読み取りも書き込みもできません。</p>
+                        <p>
+                            これは、安全側の設定です。
+                            しかし、このままだと、アプリからFirestoreに記録を保存できません。
+                            第3回で「記録の作成に失敗しました。セキュリティ規則を確認してください」というエラーが出た理由は、このようにFirestore側が書き込みを止めていた可能性があります。
+                        </p>
+                        <p>
+                            ここで大切なのは、エラーが出たからといって、すぐに全員に開放するルールにしないことです。
+                            安全に止まっている状態から、必要な範囲だけを少し開ける、という考え方で進めます。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 現在のルールで見るところ -->
+                    <div style="font-size:0.8em">
+                        <h2>現在のルールで見るところ</h2>
+                        <p>長いルールの中で、今日見るのはここだけです。</p>
+                        <pre><code class="language-text">
+　match /records/{recordId} {
+　  allow read: if isSignedIn()
+　              &amp;&amp; resource.data.userId == request.auth.uid;
+
+　  allow create: if isEmailVerified()
+　                &amp;&amp; isValidRecord(request.resource.data);
+　}
+
+</code></pre>
+                        <h3>records の記録だけを対象にする</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        現在のルールは長く見えますが、今日見るところは records の部分だけです。
+                        <p>match /records/{recordId} というところは、Firestoreの records コレクションに入っている記録を対象にする、という意味です。</p>
+                        <p>
+                            今回のアプリでは、Firestoreの中に records というコレクションがあります。
+                            その中に、記録1件ごとのドキュメントが入っています。
+                        </p>
+                        <p>この records に対して、読むときの条件、作るときの条件、更新するときの条件、削除するときの条件が書かれています。</p>
+                        <p>
+                            第4回で中心に見るのは、read と create です。
+                            read は、Firestoreから記録を読むことです。
+                            create は、新しい記録を作ることです。
+                        </p>
+                        <p>
+                            このスライドでは、update や delete の細かい条件は扱いません。
+                            実際のルールには update や delete の行もありますが、第4回では編集機能や削除機能の新規追加はしません。
+                            削除は第5回以降で、必要な場合だけ扱います。
+                        </p>
+                        <p>今日の理解としては、records という記録の箱に対して、「誰が読めるか」「誰が新しく作れるか」を決めている、と考えてください。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- ログインしている人だけ -->
+                    <div style="font-size:0.8em">
+                        <h2>ログインしている人だけ</h2>
+                        <blockquote>
+                            <p>isSignedIn()</p>
+                        </blockquote>
+                        <p>中では、次のような確認をしています。</p>
+                        <blockquote>
+                            <p>request.auth != null</p>
+                        </blockquote>
+                        <p>
+                            これは、 <strong>Googleログイン済みならOK</strong> という意味です。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次に、ログインしている人だけ、という条件を見ます。
+                        <p>
+                            現在のルールでは、isSignedIn という関数が使われています。
+                            関数という言葉は難しく聞こえるかもしれませんが、ここでは「名前を付けた確認項目」くらいに考えてください。
+                        </p>
+                        <p>isSignedIn の中では、request.auth != null という確認をしています。</p>
+                        <p>
+                            request.auth は、今アクセスしている人のログイン情報です。
+                            これが null、つまり空っぽでないなら、誰かがログインしているという意味になります。
+                        </p>
+                        <p>初心者向けには、request.auth != null は「Googleログイン済みならOK」と説明します。</p>
+                        <p>
+                            ここで注意するのは、ログインしているだけでは、どの記録でも読めるわけではないということです。
+                            ログイン済みかどうかは、最初の確認です。
+                        </p>
+                        <p>
+                            このあと、もう1つ大事な確認があります。
+                            それが、「その記録が本当に本人のものか」という確認です。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 自分の記録だけ読む -->
+                    <div style="font-size:0.72em">
+                        <h2>自分の記録だけ読む</h2>
+                        <blockquote>
+                            <p>resource.data.userId == request.auth.uid</p>
+                        </blockquote>
+                        <blockquote>
+                            <p>保存済みの userId = 今ログインしている人のID</p>
+                        </blockquote>
+                        <p>のときだけ読む、という意味です。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次に、自分の記録だけ読むための条件を見ます。
+                        <p>resource.data.userId == request.auth.uid という行があります。</p>
+                        <p>少し長いですが、意味はシンプルです。</p>
+                        <p>
+                            resource.data は、すでにFirestoreに保存されている記録の中身です。
+                            その中の userId は、この記録が誰のものかを表す印です。
+                        </p>
+                        <p>request.auth.uid は、今ログインしている人のIDです。</p>
+                        <p>つまり、この行は、保存済みの記録の userId と、今ログインしている人のIDが一致するかを確認しています。</p>
+                        <p>
+                            一致すれば、自分の記録として読めます。
+                            一致しなければ、他人の記録なので読めません。
+                        </p>
+                        <p>この仕組みによって、records という同じコレクションの中に記録が入っていても、自分の記録だけを表示できます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 自分の記録だけ作る -->
+                    <div style="font-size:0.8em">
+                        <h2>自分の記録だけ作る</h2>
+                        <p>
+                            保存時も、<code>userId</code> を確認します。
+                        </p>
+                        <blockquote>
+                            <p>data.userId == request.auth.uid</p>
+                        </blockquote>
+                        <p>
+                            <strong>他人の userId では保存できない</strong> ということです。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        読み取りだけでなく、作成するときにも userId を確認しています。
+                        <p>
+                            ルールの中には isValidRecord という関数があります。
+                            この関数は、これから保存しようとしている記録の形が正しいかを確認しています。
+                        </p>
+                        <p>
+                            title があるか。
+                            content があるか。
+                            mood が決められた選択肢になっているか。
+                            createdAt が正しい時刻になっているか。
+                            そして、userId が今ログインしている人のIDと一致しているか。
+                        </p>
+                        <p>
+                            今日、細かい条件を全部覚える必要はありません。
+                            大事なのは、保存するときにも「これは本人の記録か」を確認していることです。
+                        </p>
+                        <p>たとえば、誰かが他人の userId を入れて記録を作ろうとしても、ルールで止める考え方です。</p>
+                        <p>
+                            アプリ画面で自分の記録だけを表示することも大切ですが、それだけでは不十分です。
+                            Firestore側のSecurity Rulesでも、本人の記録だけを作れるようにしておく必要があります。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 広すぎるルールにしない -->
+                    <div style="font-size:0.80em">
+                        <h2>広すぎるルールにしない</h2>
+                        <p>これは使いません。</p>
+                        <blockquote>
+                            <p>allow read, write: if true;</p>
+                        </blockquote>
+                        <p>
+                            これは、 <strong>誰でも読める・誰でも書ける</strong> に近い危険な設定です。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最後に、広すぎるルールにしないことを確認します。
+                        <p>Firestoreのエラーが出たときに、AIが allow read, write: if true; のようなルールを提案することがあります。</p>
+                        <p>これは、簡単に言うと、誰でも読める、誰でも書ける、に近い危険な設定です。</p>
+                        <p>
+                            たしかに、このようなルールにすると、エラーは消えるかもしれません。
+                            しかし、それは安全になったという意味ではありません。
+                            むしろ、Firestoreの入口を大きく開けすぎてしまいます。
+                        </p>
+                        <p>この講座では、公開読み書きのような広すぎるルールは使いません。</p>
+                        <p>今日の考え方は、次の3つです。</p>
+                        <p>
+                            まず、何も指定していない場所は閉じる。
+                            次に、records だけにルールを付ける。
+                            最後に、ログイン本人の記録だけを読める・作れるようにする。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 別アカウント確認 -->
+                    <div style="font-size:0.8em">
+                        <h2>別アカウント確認</h2>
+                        <p>講師の指示がある場合のみ確認します。</p>
+                        <ul>
+                            <li>別アカウントでは自分の記録が見えない</li>
+                            <li>空状態なら自然</li>
+                            <li>メールアドレスやUIDは写さない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        権限確認として、講師の指示がある場合のみ、別アカウントでの見え方を確認します。別のアカウントでログインしたときに、先ほど作った自分の記録が見えなければ、ユーザーごとに記録が分かれている可能性が高いです。まだ記録がないアカウントでは、空状態メッセージが出るのが自然です。この確認では、メールアドレス、UID、プロフィール画像をスクリーンショットに写さないようにしてください。受講生が無理に複数アカウントを作る必要はありません。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 保存できないときの聞き方 -->
+                    <div style="font-size:0.8em">
+                        <h2>保存できないときの聞き方</h2>
+                        <pre><code class="language-text">
+Googleログイン後に「記録する」を押してもFirestoreに保存できません。
+エラー内容は次のとおりです。
+
+（ここにエラー文を貼ります）
+
+ログインした本人だけが自分の記録を作成できる最小限の修正にしてください。
+
+Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Get API key は使わないでください。
+公開書き込みや allow read, write: if true; のような広すぎるルールにはしないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        保存できないときは、エラー文をAIに正確に伝えることが大切です。エラー文を貼り付けたうえで、「最小限の修正」で済ませるように明記します。そして、Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Get API keyは使わないこと、公開書き込みやallow read, write: if true;のような広すぎるルールにしないことを明記します。AIへの質問は、原因を当てさせるより、条件を守って最小限で直してもらう形にします。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 読み込めないときの聞き方 -->
+                    <div style="font-size:0.74em">
+                        <h2>再読み込み後に出ないとき</h2>
+                        <pre><code class="language-text">
+Firestoreに保存できたように見えますが、ブラウザを再読み込みすると記録が表示されません。
+ログイン状態、Firestoreの保存先、読み込み処理、Security Rulesの順に、確認すべき点を教えてください。
+
+Cloud BillingやBlazeへのアップグレードは行いません。
+
+</code></pre>
+                        <p>見る順番を指定すると、確認しやすくなります。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        再読み込み後に記録が表示されない場合は、いきなりルールだけを変えないようにします。まずログイン状態を確認します。次に、Firestoreの保存先がアプリの読み込み先と一致しているかを見ます。その次に、読み込み処理が動いているかを確認します。最後にSecurity Rulesを確認します。この順番をAIに指定すると、確認作業が整理されます。Cloud BillingやBlazeへのアップグレードは行わないことも、必ず書いておきます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- ConsoleやRulesで迷ったとき -->
+                    <div style="font-size:0.8em">
+                        <h2>ConsoleやRulesで迷ったとき</h2>
+                        <pre><code class="language-text">
+Firebase Consoleで、保存した記録がどこにあるか分かりません。
+Firestore Consoleで確認する手順を初心者向けに説明してください。
+
+</code></pre>
+                        <pre><code class="language-text">
+Firestore Security Rulesが広すぎないか確認したいです。
+ログインした本人だけが自分の記録を読める・作成できる、
+という条件になっているか確認してください。
+allow read, write: if true; のような公開設定にはしないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Firebase Consoleでデータが見つからないときは、保存場所の構造を前提にしてAIへ聞きます。users、ログインしたユーザーID、entries、記録IDという階層を指定すると、確認手順を説明してもらいやすくなります。また、Security Rulesが広すぎないか不安なときは、ログインした本人だけ、自分の記録だけ、読み取りと作成だけ、という条件になっているか確認してもらいます。allow read, write: if true;のような公開設定にはしない、と明確に伝えます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 終了チェック -->
+                    <div style="font-size:0.58em">
+                        <h2>第4回 終了チェック</h2>
+                        <ul class="contains-task-list">
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-2666558">
+                                <label class="task-list-item-label" for="task-item-2666558">第3回で作った「マイ記録帳」を開けた</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-5414193">
+                                <label class="task-list-item-label" for="task-item-5414193">講座用のプライベートGmailでログインしていることを確認した</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-5145619">
+                                <label class="task-list-item-label" for="task-item-5145619">架空のサンプル記録を1件作った</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-4270954">
+                                <label class="task-list-item-label" for="task-item-4270954">Firestoreに保存された記録が一覧に表示された</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6640919">
+                                <label class="task-list-item-label" for="task-item-6640919">ブラウザを再読み込みしても記録が表示された</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-8070520">
+                                <label class="task-list-item-label" for="task-item-8070520">Firebase Consoleで対象プロジェクトを確認した</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6433548">
+                                <label class="task-list-item-label" for="task-item-6433548">Security Rulesの役割を説明できる</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-5560072">
+                                <label class="task-list-item-label" for="task-item-5560072">request.auth != null の意味を説明できる</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-1033582">
+                                <label class="task-list-item-label" for="task-item-1033582">request.auth.uid == userId の意味を説明できる</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-4905165">
+                                <label class="task-list-item-label" for="task-item-4905165">allow read, write: if true; にしていない</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6709905">
+                                <label class="task-list-item-label" for="task-item-6709905">
+                                    Deploy / Publish / Get API key / Upgrade / Set up billing を押していない
+                                </label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6039432">
+                                <label class="task-list-item-label" for="task-item-6039432">
+                                    Cloud Billing / Blaze / Cloud Run / App Hosting に進んでいない
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最後に、第4回の終了チェックです。第3回で作った「マイ記録帳」を開けたか。講座用のプライベートGmailでログインしているか。架空のサンプル記録を1件作ったか。保存後に一覧に表示され、再読み込み後も表示されたか。Firebase Consoleで対象プロジェクトとFirestoreの構造を確認したか。Security Rulesが誰が読めるか・書けるかを決めるものだと説明できるか。request.auth != nullとrequest.auth.uid == userIdの意味を説明できるか。公開読み書きにしていないか。課金、公開、APIキー作成に進んでいないかを確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 次回への橋渡し -->
+                    <div style="font-size:0.8em">
+                        <h2>第5回への橋渡し</h2>
+                        <p>
+                            次回：<strong>アプリらしく整える</strong>
+                        </p>
+                        <p>扱うこと</p>
+                        <ul>
+                            <li>記録が0件のときの表示</li>
+                            <li>新しい順の並び替え</li>
+                            <li>記録数の表示</li>
+                            <li>保存中・保存完了の表示</li>
+                            <li>余裕があれば削除ボタン</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日は、保存した記録がどこにあり、ログインした本人だけが読めることを確認しました。次回は、第5回「アプリらしく整える」です。記録が0件のときに分かりやすいメッセージを出す、新しい記録を上に表示する、記録数を表示する、保存中や保存完了を分かりやすくする、といった改善を扱います。進度に余裕がある場合のみ、削除ボタンも扱います。ただし、次回もCloud Billing、Blaze、Cloud Run、Firebase App Hosting、本番公開には進みません。
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard,
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom,
+		RevealSearch,
+				RevealMarkdown,
+				RevealMenu,
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls,
+				// poll
+				// question
+				// seminar
+				Verticator
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+			customcontrols: {
+					controls: [
+						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+				]
+			},
+			chart: {
+					defaults: {
+						color: 'lightgray', // color of labels
+						scale: {
+							beginAtZero: true,
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+		});
+
+
+
+	    // Change chalkboard theme :
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+			setTimeout(() => {
+				window.print();
+			  }, 2500);
+
+    }
+        </script>
+    </body>
+</html>
