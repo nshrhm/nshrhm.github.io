@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>感性データ処理 第10回</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png"
+                 alt="Logo"
+                 width="316"
+                 height="316"
+                 style="height:100%" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h1>感性データ処理</h1>
+                    <h2>第10回 因子分析（FA）</h2>
+                    <h3>
+                        SD法データの背後にある
+                        <br />
+                        「潜在因子」を読む
+                    </h3>
+                    <h4>データサイエンス学部　白濵 成希</h4>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回は、SD法で得られた多項目データを、因子分析によって解釈する方法を学びます。前回の主成分分析が「少数の軸へ要約する」方法だったのに対して、因子分析では、観測された項目の背後にある「共通の因子」や「潜在因子」を読むことに重点を置きます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の到達目標 -->
+                    <div style="font-size:0.8em">
+                        <h2>今日の到達目標</h2>
+                        <p>授業後に、次のことを説明できることを目指します。</p>
+                        <ol>
+                            <li>
+                                <strong>因子分析</strong>が何をする手法かを説明できる
+                            </li>
+                            <li>
+                                <strong>PCA と因子分析の違い</strong>を説明できる
+                            </li>
+                            <li>因子分析の基本的な流れを説明できる</li>
+                            <li>
+                                <strong>因子負荷量・共通性・クロス負荷</strong>を読める
+                            </li>
+                            <li>
+                                <strong>Varimax と Promax</strong> の違いを説明できる
+                            </li>
+                            <li>
+                                結果を<strong>質問紙設計や設計改善</strong>へ言い換えられる
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日は数式による導出ではなく、因子分析を感性データ処理の道具としてどう理解し、どう読むかに重点を置きます。特に、SD法の項目群から「高級感」「安心感」「操作しやすさ」のような直接には見えない概念を読み取る考え方を押さえます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 授業全体での位置づけ -->
+                    <h2>授業全体での位置づけ</h2>
+                    <div style="font-size:0.6em">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">回</th>
+                                    <th>テーマ</th>
+                                    <th>今日との関係</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">第8回</td>
+                                    <td>SD法による評価</td>
+                                    <td>
+                                        印象を <strong>両極表現のペア × 段階評定</strong> として測る
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">第9回</td>
+                                    <td>主成分分析</td>
+                                    <td>
+                                        多項目データを少数の軸へ <strong>要約</strong> する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <strong>第10回</strong>
+                                    </td>
+                                    <td>
+                                        <strong>因子分析</strong>
+                                    </td>
+                                    <td>
+                                        項目の背後にある <strong>潜在構造</strong> を読む
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">第11回以降</td>
+                                    <td>VAS</td>
+                                    <td>1つまたは少数の感覚の強さを連続量として読む</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この授業では、感性データを取得し、分析し、レポートとしてまとめる力を身につけることを目標にしています。第8回でSD法を使って印象を測り、第9回でPCAによってデータを要約しました。第10回では、さらに一歩進んで、項目の背後にある意味構造を因子分析で読みます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 90分の見取り図 -->
+                    <div style="font-size:0.8em">
+                        <h2>90分の見取り図</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">時間</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">0〜15分</td>
+                                    <td>なぜ今、因子分析を学ぶのか／PCAの復習</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">15〜40分</td>
+                                    <td>潜在因子・独自因子・PCAとの違い</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">40〜60分</td>
+                                    <td>事前確認・因子数・回転・負荷量・共通性</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">60〜75分</td>
+                                    <td>感性工学・産業応用の事例</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">75〜90分</td>
+                                    <td>ミニ活動、確認問題、次回への橋渡し</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の前半では、因子分析の基本的な考え方を確認します。中盤では、因子分析の結果として出てくる負荷量表や共通性の読み方を扱います。後半では、感性工学やUX評価の事例を見たうえで、簡単な活動を通して理解を確認します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- なぜ因子分析なのか -->
+                    <div style="font-size:0.65em">
+                        <h2>なぜ因子分析なのか</h2>
+                        <p>SD法は、対象の印象を多面的に測れる。</p>
+                        <p>一方で、項目が増えるほど次が難しくなる。</p>
+                        <ul>
+                            <li>
+                                似た意味の項目が並ぶ
+                                <em>例：洗練されている／高級感がある／上品だ</em>
+                            </li>
+                            <li>プロフィール曲線だけでは、全体の印象軸を言いにくい</li>
+                            <li>企画・設計の議論で、強みを短く説明しにくい</li>
+                        </ul>
+                        <p>
+                            → 複数項目に共通する傾向を、<strong>少数の概念的な軸</strong>として読む必要がある。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法は、印象を細かく測れる点が強みです。しかし、項目が多くなると、どの項目がどの意味のまとまりを作っているのかが見えにくくなります。因子分析は、こうした項目群の背後にある共通した意味のまとまりを読み取るために使います。
+                    </aside>
+                </section>
+                <section>
+                    <!-- PCAだけでは弱いこと -->
+                    <div style="font-size:0.65em">
+                        <h2>PCAだけでは「軸の名前」が弱いことがある</h2>
+                        <blockquote>
+                            <p>
+                                第9回の PCA でも、軸に名前を付けた。ただし PCA の主眼は、 <strong>情報の損失を小さくして、少数の軸へ要約すること</strong> 一方、因子分析では最初から、 <strong>複数の観測項目の背後に、共通する見えない因子がある</strong> と考える。
+                            </p>
+                        </blockquote>
+                        <ul>
+                            <li>
+                                → <strong>概念としての軸を立てたい場面</strong>と相性がよい。
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        PCAでも、第1主成分や第2主成分に名前を付けることはあります。しかしPCAの目的は、あくまでデータの要約です。因子分析では、最初から「背後に共通する概念がある」と仮定して分析するため、心理測定や感性評価における概念の解釈と結びつけやすくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 因子分析は尺度づくりにも効く -->
+                    <div style="font-size:0.72em">
+                        <h2>因子分析は「尺度づくり」にも効く</h2>
+                        <ul>
+                            <li>結果を読むだけでなく、質問紙の質を見直すためにも使える。</li>
+                        </ul>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>結果の読み取り</th>
+                                    <th>考えられる意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>同じ因子に強く載る項目が多すぎる</td>
+                                    <td>項目が重複しているかもしれない</td>
+                                </tr>
+                                <tr>
+                                    <td>どの因子にもあまり載らない</td>
+                                    <td>項目が曖昧、または別概念を測っているかもしれない</td>
+                                </tr>
+                                <tr>
+                                    <td>1項目が複数因子に強く載る</td>
+                                    <td>二重意味の項目かもしれない</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul>
+                            <li>
+                                <strong>良い感性データを取るための設計フィードバック</strong>になる。
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子分析は、単に分析結果をきれいに整理するためだけの手法ではありません。どの項目が役に立っているのか、どの項目が曖昧なのか、どの項目が重複しているのかを検討できます。したがって、質問紙や評価語を改善するための道具としても重要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 因子分析とは何か -->
+                    <div style="font-size:0.6em">
+                        <h2>因子分析とは何か</h2>
+                        <blockquote>
+                            <p>
+                                多数の観測変数の相関関係を手がかりに、それらの背後にある少数の <strong>潜在因子</strong> を推定する手法
+                            </p>
+                        </blockquote>
+                        <h3>この講義では</h3>
+                        <blockquote>
+                            <p>似た動きをする項目群の背後にある「見えない概念」を、少数の因子として整理する方法</p>
+                        </blockquote>
+                        <ul>
+                            <li>
+                                <strong>探索的因子分析 (EFA)</strong>: どんな因子がありそうかを探る段階で使う。
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子分析では、観測された項目そのものではなく、項目同士の相関関係に注目します。似た動きをする項目があるなら、その背後には共通した見えない概念があるのではないか、と考えます。探索的因子分析は、あらかじめ因子構造が完全には決まっていない段階で、どのような因子がありそうかを探るために使います。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 観測値の考え方 -->
+                    <div style="font-size:0.8em">
+                        <h2>観測 = 共通因子 + 独自因子</h2>
+                        <p>因子分析では、各項目の値を大きく2つに分けて考える。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>成分</th>
+                                    <th>意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>共通因子</strong>
+                                    </td>
+                                    <td>複数項目に共通して効いている部分</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>独自因子</strong>
+                                    </td>
+                                    <td>その項目だけに固有な部分。個別性や誤差を含む</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>
+                                <p>
+                                    <strong>例</strong>: 「高級感がある」「洗練されている」「上品だ」
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    これらが一緒に動くなら、背後に <strong>上質さ</strong> のような共通因子があるかもしれない。
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子分析の大事な考え方は、観測された回答には、複数項目に共通している部分と、その項目だけに固有の部分が混ざっていると考える点です。語の解釈の揺れや、たまたまの回答のぶれは、独自因子や誤差の側に入ります。この共通部分に注目することが、因子分析の中心です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 因子分析に向くデータ -->
+                    <div style="font-size:0.8em">
+                        <h2>因子分析はどんなときに向いているか</h2>
+                        <p>
+                            <strong>項目どうしにある程度の相関がある</strong>ときに意味を持つ。
+                        </p>
+                        <h3>分析前に確認したいこと</h3>
+                        <ul>
+                            <li>相関行列を見て、項目がバラバラすぎないか</li>
+                            <li>
+                                <strong>KMO</strong>：項目間の相関が、因子分析でまとめやすい形か
+                            </li>
+                            <li>
+                                <strong>Bartlett の球面性検定</strong>：項目間に相関がない、とは言えないか
+                            </li>
+                            <li>項目数に対してサンプル数が少なすぎないか</li>
+                        </ul>
+                        <h3>今日押さえる姿勢</h3>
+                        <ul>
+                            <li>項目間に共通構造がありそうかを見る。</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        項目が互いにほとんど関係していない場合、共通因子を仮定しても意味のある結果は得にくくなります。本格的な分析では、KMOやBartlettの球面性検定などを使って、因子分析に適したデータかを確認します。KMOは、項目間の相関が共通因子で説明しやすいまとまりを持つかを見る目安です。Bartlettの球面性検定は、相関行列が単位行列、つまり項目同士に相関がほとんどない状態とみなせるかを確認する検定です。今回の授業では厳密な計算までは扱いませんが、事前確認をせずに結果だけ読むのは危険だという点を押さえます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- PCAと因子分析の違い -->
+                    <h2>PCA と因子分析の違い</h2>
+                    <div style="font-size:0.5em">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>主成分分析（PCA）</th>
+                                    <th>因子分析（FA）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>主目的</td>
+                                    <td>
+                                        情報をなるべく失わず少数軸へ<strong>要約</strong>する
+                                    </td>
+                                    <td>
+                                        背後にある共通因子を<strong>説明</strong>する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>何を作るか</td>
+                                    <td>観測変数の線形結合として主成分を作る</td>
+                                    <td>共通分散を説明する因子を推定する</td>
+                                </tr>
+                                <tr>
+                                    <td>扱う分散</td>
+                                    <td>
+                                        <strong>全分散</strong>
+                                        <br>
+                                        共通分散＋独自分散
+                                    </td>
+                                    <td>
+                                        主に<strong>共通分散</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>誤差の扱い</td>
+                                    <td>明示しない</td>
+                                    <td>独自因子・誤差を明示的に考える</td>
+                                </tr>
+                                <tr>
+                                    <td>向いている場面</td>
+                                    <td>圧縮、可視化、前処理</td>
+                                    <td>潜在構造の理解、尺度開発</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <strong>潜在構造を読みたいなら、
+                            <br />
+                        PCA をそのまま因子分析と呼ばない。</strong>
+                    </p>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この表は今日の最重要ポイントです。PCAは、観測変数が持つ情報をできるだけ失わずに要約する方法です。一方、因子分析は、観測変数の背後にある共通因子を推定する方法です。特に、PCAは全分散を扱うのに対し、因子分析は主に共通分散を扱うという違いがあります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 抽出法 -->
+                    <div style="font-size:0.62em">
+                        <h2>抽出法：何で因子を取り出すか</h2>
+                        <p>探索的因子分析では、因子の取り出し方にも選択肢がある。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>抽出法</th>
+                                    <th>初学者として押さえる点</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>主因子法</strong>
+                                        <br>
+                                        Principal Axis Factoring; PAF
+                                    </td>
+                                    <td>
+                                        共通分散を中心に見たいときに
+                                        <br />
+                                        使われることが多い
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>最尤法</strong>
+                                        <br>
+                                        Maximum Likelihood; ML
+                                    </td>
+                                    <td>
+                                        モデル適合の検討などもしやすく、
+                                        <br />
+                                        心理測定でも使われる
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <h3>今日のポイント</h3>
+                        <ul>
+                            <li>PCA は「主成分を作る」方法</li>
+                            <li>因子分析では PAF や ML のような「因子を抽出する」方法を使う</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここでは抽出法の細かい数式や使い分けを暗記する必要はありません。重要なのは、PCAと因子分析は出発点の考え方が異なり、因子分析では共通因子を推定するための抽出法を使うという点です。主因子法や最尤法という名前を、まずは代表的な選択肢として押さえてください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 因子数の決め方 -->
+                    <div style="font-size:0.6em">
+                        <h2>因子数はどう決めるか</h2>
+                        <p>因子数の決定は、因子分析で悩みやすい部分である。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>見るもの</th>
+                                    <th>考え方</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>スクリープロット</strong>
+                                    </td>
+                                    <td>固有値の落ち方を見て、折れ曲がる点を探す</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>解釈しやすさ</strong>
+                                    </td>
+                                    <td>その因子数で、意味のある軸名が付くか</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>項目数とのバランス</strong>
+                                    </td>
+                                    <td>各因子に十分な項目が載るか</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>並行分析などの補助基準</strong>
+                                    </td>
+                                    <td>固有値1以上だけに頼らない</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>
+                                重要: <strong>統計的な目安と、内容的な解釈可能性の両方で判断する。</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子数は、機械的に一つの基準だけで決めるものではありません。固有値1以上という基準だけでなく、スクリープロット、項目のまとまり、因子名の付けやすさ、必要に応じて並行分析などを組み合わせて考えます。統計的にもっともらしくても、内容的に説明できない因子数は実用上扱いにくくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 回転とは何か -->
+                    <div style="font-size:0.62em">
+                        <h2>回転：なぜ必要か</h2>
+                        <p>抽出直後の因子は、そのままだと解釈しづらいことがある。</p>
+                        <ul>
+                            <li>複数の項目が複数因子に中途半端に載る</li>
+                            <li>どの因子に何という名前を付けるか判断しにくい</li>
+                            <li>項目のまとまりが見えにくい</li>
+                        </ul>
+                        <p>
+                            そこで行うのが <strong>回転</strong>、回転の目的は、 <strong>解釈しやすい単純構造</strong> を得ること
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子分析では、因子を抽出しただけで終わりではありません。抽出直後の結果は、項目が複数の因子にまたがって載っていることがあり、解釈が難しい場合があります。回転は、因子の意味を読みやすくするために行う処理です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- VarimaxとPromax -->
+                    <div style="font-size:0.58em">
+                        <h2>Varimax と Promax</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>回転</th>
+                                    <th>種類</th>
+                                    <th>考え方</th>
+                                    <th>向いている場面</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Varimax</strong>
+                                    </td>
+                                    <td>直交回転</td>
+                                    <td>
+                                        因子どうしを
+                                        <br />
+                                        <strong>無相関</strong>のままにする
+                                    </td>
+                                    <td>
+                                        まず独立した軸として
+                                        <br />
+                                        整理したい
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Promax</strong>
+                                    </td>
+                                    <td>斜交回転</td>
+                                    <td>
+                                        因子どうしの
+                                        <br />
+                                        <strong>相関を許す</strong>
+                                    </td>
+                                    <td>
+                                        心理概念や感性概念が
+                                        <br />
+                                        関連しそう
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>
+                                (例1)「高級感」と「信頼感」が相関しそう
+                                <ul>
+                                    <li>→ Promax のような斜交回転が自然かもしれない</li>
+                                </ul>
+                            </li>
+                            <li>
+                                (例1)「まずは独立した軸として整理したい
+                                <ul>
+                                    <li>→ Varimax が使いやすい</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Varimaxは、因子同士が相関しないという前提を置く直交回転です。一方、Promaxは、因子同士に相関があってもよいと考える斜交回転です。感性や心理の概念は現実には関連していることが多いため、概念的に相関を許す方が自然な場合もあります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 因子負荷量表の読み方 -->
+                    <div style="font-size:0.58em">
+                        <h2>因子負荷量表の読み方</h2>
+                        <p>
+                            因子分析の中心資料は <strong>因子負荷量表</strong> である。読む順番は、
+                        </p>
+                        <ol>
+                            <li>
+                                <strong>因子ごとに高い負荷量の項目を拾う</strong>
+                                <ul>
+                                    <li>高級感がある：0.82</li>
+                                    <li>洗練されている：0.79</li>
+                                    <li>上品だ：0.75</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>正負の向きを確認する</strong>
+                                <ul>
+                                    <li>因子の符号そのものは反転しても本質は同じ</li>
+                                    <li>同じ因子の中で、同方向・逆方向を確認する</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>因子名を考える</strong>
+                                <ul>
+                                    <li>例：第1因子は「上質さ」に関係しそう</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子負荷量は、各項目が各因子とどの程度関係しているかを表す値です。まずは、因子ごとに負荷量の高い項目を集めます。その項目群に共通する意味を読み取り、因子名を付けます。符号については、因子全体の向きが反転しても本質は変わらないため、同じ因子の中でどの項目が同じ方向に載っているかを見ます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- クロス負荷 -->
+                    <div style="font-size:0.62em">
+                        <h2>クロス負荷を見る</h2>
+                        <p>
+                            <strong>クロス負荷</strong>とは、1つの項目が複数因子に似た大きさで載ること。
+                        </p>
+                        <h3>可能性として考えること</h3>
+                        <ul>
+                            <li>2つ以上の概念を同時に含んでいる</li>
+                            <li>言葉が曖昧で、回答者が複数の意味で受け取っている</li>
+                            <li>項目を残すか、修正するか、削除するか検討が必要</li>
+                        </ul>
+                        <p>(例)</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th style="text-align:right">因子1</th>
+                                    <th style="text-align:right">因子2</th>
+                                    <th>読み方</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>かわいい</td>
+                                    <td style="text-align:right">0.45</td>
+                                    <td style="text-align:right">0.43</td>
+                                    <td>どちらにも近く、解釈が曖昧</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        クロス負荷は、項目の問題を考えるうえで重要です。たとえば「かわいい」という言葉が、親しみやすさにも、楽しさにも関係しているように見える場合、その項目は複数の意味を含んでいる可能性があります。こうした項目は、尺度設計の観点から見直す候補になります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 共通性 -->
+                    <div style="font-size:0.62em">
+                        <h2>共通性と項目の見直し</h2>
+                        <ul>
+                            <li>
+                                <strong>共通性</strong>は、その項目の分散のうち、
+                                <br />
+                                <strong>採用した因子群でどの程度説明できているか</strong> を表す。
+                            </li>
+                        </ul>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>共通性</th>
+                                    <th>直感的な読み方</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>高い</td>
+                                    <td>その項目は因子構造にうまく乗っている</td>
+                                </tr>
+                                <tr>
+                                    <td>低い</td>
+                                    <td>今回の因子構造では説明しにくい</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>実務では、次の項目を見直す。→ 質問紙や評価語の改善につなげる。</p>
+                        <ul>
+                            <li>負荷量が低い</li>
+                            <li>クロス負荷が大きい</li>
+                            <li>共通性が低い</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        共通性が低い項目は、今回採用した因子ではうまく説明できていない項目だと考えます。これは、その項目が悪いという意味に限らず、別の概念を測っている、語が曖昧である、あるいは因子数が適切でない可能性もあります。負荷量、クロス負荷、共通性を合わせて読むことが大切です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 因子得点 -->
+                    <div style="font-size:0.62em">
+                        <h2>因子得点は「後で使える」が主役ではない</h2>
+                        <p>
+                            因子分析でも、因子ごとの <strong>因子得点</strong> を推定できる。
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>因子得点とは</strong>: 各対象や各回答者が、その因子上でどこに位置するかを表す値
+                            </li>
+                        </ul>
+                        <p>ただし、今日の主役はまず次の2つ。</p>
+                        <ul>
+                            <li>どんな因子があるか</li>
+                            <li>どんな項目がその因子を支えているか</li>
+                        </ul>
+                        <p>
+                            <strong>因子得点は、因子構造が安定してから、
+                                <br />
+                            群比較・回帰・後続分析に使うものとして押さえる。</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子得点を使えば、対象や回答者を因子上に位置づけることができます。ただし、因子構造がまだ不安定な段階で因子得点を使いすぎると、解釈が危うくなります。第10回では、因子得点そのものよりも、因子の意味と項目のまとまりを読むことを優先します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 因子分析の基本フロー -->
+                    <div style="font-size:0.7em">
+                        <h2>因子分析の基本フロー</h2>
+                        <ol>
+                            <li>
+                                <strong>事前確認</strong>: 相関構造、サンプル数、項目の内容を確認する
+                            </li>
+                            <li>
+                                <strong>抽出</strong>: 主因子法、最尤法などで因子を取り出す
+                            </li>
+                            <li>
+                                <strong>因子数決定</strong>: スクリープロット、解釈しやすさ、補助基準を見る
+                            </li>
+                            <li>
+                                <strong>回転</strong>: Varimax や Promax で解釈しやすくする
+                            </li>
+                            <li>
+                                <strong>解釈</strong>: 因子負荷量、共通性、クロス負荷を読む
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子分析は、ボタンを押して結果を出せば終わりではありません。分析前の確認、因子の抽出、因子数の判断、回転、結果の解釈という流れで考えます。特に、因子数と回転の選択には、統計的判断と内容的判断の両方が関わります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例の読み方 -->
+                    <div style="font-size:0.62em">
+                        <h2>事例の読み方</h2>
+                        <p>因子分析の応用事例は、次の3点で読むと整理しやすい。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>確認すること</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>対象</strong>
+                                    </td>
+                                    <td>何を評価しているか</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>感性・主観体験</strong>
+                                    </td>
+                                    <td>どのような印象や体験を測っているか</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>データと活用</strong>
+                                    </td>
+                                    <td>どんなデータを取り、結果を何に使うか</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            感性工学では、因子分析の結果を
+                            <br />
+                            <strong>設計改善・尺度設計・解釈可能な軸づくり</strong>に結びつける。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここからは、因子分析が感性工学や産業応用でどのように使われるかを見ます。単に「因子分析を使った」という点だけではなく、何を対象にし、どのような感性や主観体験を測り、その結果をどのような設計や改善につなげているかを読むことが大切です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例1：製品音 -->
+                    <div style="font-size:0.58em">
+                        <h2>事例1：製品音の印象を意味次元に整理する</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>家電などの製品音</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>粗い、心地よい、機械的、力強い など</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>
+                                        Semantic Differential による評定データに
+                                        <br />
+                                        <strong>因子分析</strong>を適用し、製品音の意味次元を整理する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>どの音が「力強さ」「不快さ」「なじみやすさ」と関係するか</li>
+                            <li>結果を製品音設計へ返す</li>
+                        </ul>
+                        <p>
+                            参考：<a href="https://www.ijdesign.org/index.php/IJDesign/article/view/957">Özcan &amp; van Egmond (2012)</a>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        製品音の評価では、単に音が大きいか小さいかではなく、その音がどのような印象を与えるかが重要になります。SD法で集めた評価データを因子分析することで、音の印象を意味次元として整理し、製品音の設計に活かすことができます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例2：店舗ファサード -->
+                    <div style="font-size:0.58em">
+                        <h2>事例2：店舗ファサードの印象を少数因子にまとめる</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>都市部の飲食店ファサード</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>
+                                        魅力的、親しみやすい、
+                                        <br />
+                                        おしゃれ、価値がありそう など
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>
+                                        SD尺度で集めた印象評価を因子分析し、
+                                        <br />
+                                        外観印象を少数因子へ整理する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>どの外観特徴が、どの印象を強めるか</li>
+                            <li>印象因子と構成要素の関係を考える</li>
+                        </ul>
+                        <p>
+                            参考：<a href="https://doi.org/10.11247/jssdj.60.3_11">Hung &amp; Nieh (2013). <em>A Study on Kansei Image Evaluation of Shop Façade Based on Semantic Differential</em>.</a>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        店舗の外観は、入店したいかどうか、親しみやすいかどうか、おしゃれに見えるかどうかといった印象に影響します。因子分析を使うと、多数の印象評価を少数の因子にまとめ、外観の構成要素と印象の関係を議論しやすくなります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例3：Tシャツ画像 -->
+                    <div style="font-size:0.58em">
+                        <h2>事例3：Tシャツ画像の印象を国別に比較する</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>Tシャツ画像</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>目立つ、無害そう、魅力的 など</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>
+                                        14対の形容詞ペアによるSD評価に、
+                                        <br />
+                                        最大尤度法と Varimax 回転で因子分析を実施
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>日本参加者と中国参加者で印象因子を比較する</li>
+                            <li>設計要素との関係から、地域差に応じたデザイン戦略へつなげる</li>
+                        </ul>
+                        <p>
+                            参考：<a href="https://doi.org/10.5057/ijae.IJAE-D-24-00003">Zhu, Takahashi, &amp; Shoji (2024). <em>Comparison of Evaluation of T-shirts between Japanese and Chinese based on Hierarchical Kansei Model</em>.</a>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Tシャツ画像の印象評価では、同じデザインでも文化や地域によって評価の構造が異なる可能性があります。因子分析を使えば、どのような印象因子が現れるかを参加者群ごとに比較し、デザイン戦略の検討につなげることができます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例4：触覚インタフェース -->
+                    <div style="font-size:0.58em">
+                        <h2>事例4：触覚インタフェース評価の因子を抽出する</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>ロータリーエンコーダの触覚</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>活動感、評価、安定感、付着感 など</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>
+                                        30対の形容詞ペアによる触覚評価に
+                                        <br />
+                                        因子分析を適用し、4つの共通因子を抽出
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>因子得点と物理パラメータを対応づける</li>
+                            <li>狙った触感印象を制御するモデル構築へつなげる</li>
+                        </ul>
+                        <p>
+                            参考：<a href="https://doi.org/10.5057/ijae.IJAE-D-24-00042">Morozumi, Ozawa, Toya, et al. (2025). <em>Personalization of a Tactile Inference Model for Rotary Encoders Using Transfer Learning</em>.</a>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        触覚インタフェースでは、クリック感や回転感などの物理的特徴が、使用者にどのような触感印象を与えるかが重要です。因子分析を使って触覚評価の背後にある因子を取り出し、物理パラメータと対応づけることで、狙った触感を設計する方向へ進めます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 事例5：モバイルアプリUX -->
+                    <div style="font-size:0.58em">
+                        <h2>事例5：モバイルアプリ UX の評価因子を整理する</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象</td>
+                                    <td>高齢者向けモバイルアプリのUX</td>
+                                </tr>
+                                <tr>
+                                    <td>感性・主観体験</td>
+                                    <td>見やすさ、操作しやすさ、理解しやすさ など</td>
+                                </tr>
+                                <tr>
+                                    <td>データと活用</td>
+                                    <td>
+                                        質問紙データに因子分析を適用し、
+                                        <br />
+                                        主要因子を抽出する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <ul>
+                            <li>
+                                <strong>改善方針</strong>: フォントサイズ、行間、アイコン設計、反応時間
+                            </li>
+                            <li>
+                                参考：<a href="https://doi.org/10.3389/fpsyg.2025.1609302">Jin (2025). <em>The psychological influencing factors for the elderly in using mobile applications and the mechanism of user experience</em>.</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        UX評価では、利用者が感じる見やすさ、操作しやすさ、理解しやすさなどを測ることがあります。因子分析を使うことで、評価項目の背後にある主要なUX因子を整理し、UI設計の具体的な改善方針に結びつけることができます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- データサイエンスとの接点 -->
+                    <div style="font-size:0.62em">
+                        <h2>データサイエンスとの接点</h2>
+                        <p>
+                            因子分析は、正解ラベルがなくても構造を見つけるという意味で、
+                            <br />
+                            <strong>教師なし学習</strong>の一種である。(ただし、この授業での主目的は予測ではない)
+                        </p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>手法</th>
+                                    <th>この授業での主な役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PCA</td>
+                                    <td>見通しを作る、圧縮する</td>
+                                </tr>
+                                <tr>
+                                    <td>因子分析</td>
+                                    <td>背後の構造を仮定して説明する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <h3>因子分析は、解釈可能な軸を作るための方法である。</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子分析は、教師なし学習に近い位置づけで考えることができます。ただし、機械学習の文脈でよく言われる予測性能を高めることが主目的ではありません。感性データ処理では、解釈可能な軸を作り、人間の感性や印象を説明することが重要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 感性データと誤差 -->
+                    <div style="font-size:0.62em">
+                        <h2>誤差を無視しないことに意味がある</h2>
+                        <h3>- 感性データは揺らぐ -</h3>
+                        <p>
+                            <strong>その日の気分、文脈、語の解釈の違い、記入ミスや注意の揺れ</strong>
+                        </p>
+                        <ul>
+                            <li>因子分析では、すべてを「真の構造」とはみなさない。</li>
+                            <li>
+                                <strong>共通因子で説明できる部分と、独自・誤差の部分を分けて考える。</strong>
+                            </li>
+                            <li>
+                                これは、主観評価を「雑音」として捨てず、<strong>構造化して扱う</strong>発想である。
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        感性データには、回答者の状態や文脈、言葉の受け取り方の違いが反映されます。因子分析は、そうした揺らぎをすべて一つの真の構造として扱うのではなく、共通因子と独自因子に分けて考えます。この点が、感性データを丁寧に扱ううえで重要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 統計と内容判断 -->
+                    <div style="font-size:0.6em">
+                        <h2>因子分析は、統計だけでは決まらない</h2>
+                        <p>因子分析では、計算すれば自動で唯一の正解が出るわけではない。</p>
+                        <ul>
+                            <li>2因子解の方がシンプルで説明しやすい</li>
+                            <li>3因子解の方が理論的には自然</li>
+                            <li>Varimax だと分かりやすい</li>
+                            <li>Promax の方が概念的には妥当</li>
+                        </ul>
+                        <blockquote>
+                            <p>因子分析は、統計と内容理解の両方が必要な手法である。</p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        因子数や回転の選択には、統計的な目安だけでなく、項目の内容や研究目的が関わります。実際の分析では、複数の解を比較し、どの解がもっとも説明しやすく、目的に合っているかを検討します。ここが、因子分析の難しさであり、面白さでもあります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- SDデータの尺度水準 -->
+                    <div style="font-size:0.7em">
+                        <h2>順序尺度の SD データをどう扱うか</h2>
+                        <p>
+                            SD法の評定値は、理論上は <strong>順序尺度</strong> の側面が強い。一方、実務では、
+                            <br />
+                            <strong>間隔尺度に近いものとして因子分析を行う</strong> ことが多い。
+                        </p>
+                        <ul>
+                            <li>その仮定の上で分析していることを自覚する</li>
+                            <li>項目設計を確認する</li>
+                            <li>分布の確認を怠らない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        SD法の評定は、厳密には順序尺度としての性質を持ちます。それでも実務では、間隔尺度に近いものとして扱って因子分析を行うことがあります。重要なのは、その仮定を自覚し、項目設計やデータ分布を確認したうえで分析することです。
+                    </aside>
+                </section>
+                <section>
+                    <!-- ミニ活動1 -->
+                    <div style="font-size:0.62em">
+                        <h2>ミニ活動1：これは PCA 的？ 因子分析的？</h2>
+                        <h3>Think（2分）</h3>
+                        <p>次の2文を、それぞれ言い換える。</p>
+                        <ol>
+                            <li>たくさんの項目を2軸にまとめたい</li>
+                            <li>背後にある共通の要因を見つけて名前を付けたい</li>
+                        </ol>
+                        <h3>Pair（3分）</h3>
+                        <p>互いの言い換えを見比べ、違いを整理する。</p>
+                        <h3>Share（2分）</h3>
+                        <p>
+                            全体で、<strong>要約</strong> と <strong>構造理解</strong> の違いを確認する。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この活動では、PCAと因子分析の違いを自分の言葉で説明することを目指します。1つ目はPCAに近い説明です。2つ目は因子分析に近い説明です。単に用語を覚えるのではなく、「何をしたいときにどちらを使うのか」を考えてください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- ミニ活動2 -->
+                    <div style="font-size:0.58em">
+                        <h2>ミニ活動2：SD項目を因子候補にまとめる</h2>
+                        <h3>Think（3分）</h3>
+                        <p>次の項目を、2〜3個のまとまりに分ける。</p>
+                        <blockquote>
+                            <p>
+                                見やすい、直感的、安心できる、信頼できそう、
+                                高級感がある、洗練されている、親しみやすい、楽しい
+                            </p>
+                        </blockquote>
+                        <h3>Pair（4分）</h3>
+                        <p>まとまりごとに名前を付ける。</p>
+                        <h3>Share（2分）</h3>
+                        <p>同じ項目でも、まとめ方が複数あり得ることを確認する。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この活動では、実際に因子名を付ける練習をします。たとえば、見やすい・直感的は操作しやすさに近いかもしれません。安心できる・信頼できそうは信頼感に近いかもしれません。ただし、正解は一つではありません。項目の意味をどう解釈するかが重要です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- ミニ活動3 -->
+                    <div style="font-size:0.62em">
+                        <h2>ミニ活動3：回転はどちらが自然か</h2>
+                        <h3>Think（3分）</h3>
+                        <p>「高級感」と「信頼感」が関係しそうなテーマを1つ考える。</p>
+                        <h3>Pair（4分）</h3>
+                        <p>そのテーマでは、どちらが自然かを話し合う。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>選択肢</th>
+                                    <th>考え方</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Varimax</td>
+                                    <td>因子どうしを独立とみなす</td>
+                                </tr>
+                                <tr>
+                                    <td>Promax</td>
+                                    <td>因子どうしの関連を許す</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>Share（2分）</h3>
+                        <p>因子どうしを独立とみなすか、関連を許すかを共有する。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この活動では、VarimaxとPromaxの違いを実際のテーマに当てはめて考えます。たとえば高級感と信頼感は、製品やサービスによっては強く関係しているかもしれません。その場合、因子間相関を許すPromaxの方が概念的に自然な場合があります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- ミニ活動4 -->
+                    <div style="font-size:0.5em">
+                        <h2>ミニ活動4：負荷量表の問題項目を見つける</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th style="text-align:right">因子1</th>
+                                    <th style="text-align:right">因子2</th>
+                                    <th style="text-align:right">共通性</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>高級感がある</td>
+                                    <td style="text-align:right">0.81</td>
+                                    <td style="text-align:right">0.12</td>
+                                    <td style="text-align:right">0.68</td>
+                                </tr>
+                                <tr>
+                                    <td>洗練されている</td>
+                                    <td style="text-align:right">0.77</td>
+                                    <td style="text-align:right">0.19</td>
+                                    <td style="text-align:right">0.63</td>
+                                </tr>
+                                <tr>
+                                    <td>安心できる</td>
+                                    <td style="text-align:right">0.18</td>
+                                    <td style="text-align:right">0.74</td>
+                                    <td style="text-align:right">0.58</td>
+                                </tr>
+                                <tr>
+                                    <td>信頼できそう</td>
+                                    <td style="text-align:right">0.31</td>
+                                    <td style="text-align:right">0.69</td>
+                                    <td style="text-align:right">0.57</td>
+                                </tr>
+                                <tr>
+                                    <td>かわいい</td>
+                                    <td style="text-align:right">0.45</td>
+                                    <td style="text-align:right">0.43</td>
+                                    <td style="text-align:right">0.39</td>
+                                </tr>
+                                <tr>
+                                    <td>個性的だ</td>
+                                    <td style="text-align:right">0.12</td>
+                                    <td style="text-align:right">0.18</td>
+                                    <td style="text-align:right">0.07</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>問い</h3>
+                        <ul>
+                            <li>問題がありそうな項目を2つ選ぶ</li>
+                            <li>「クロス負荷」「共通性が低い」という言葉を使って理由を説明する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この表では、「かわいい」は因子1と因子2の両方に近い値で載っているため、クロス負荷の可能性があります。「個性的だ」は共通性が低く、今回の因子構造では説明しにくい項目かもしれません。このように、負荷量だけでなく共通性も合わせて読みます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 確認問題 -->
+                    <div style="font-size:0.62em">
+                        <h2>確認問題</h2>
+                        <ol>
+                            <li>
+                                <p>
+                                    因子分析とは何か。
+                                    <strong>潜在因子</strong>という言葉を使って1〜2文で説明しなさい。
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    PCA と因子分析の違いを、
+                                    <strong>扱う分散</strong>と<strong>誤差</strong>の観点から説明しなさい。
+                                </p>
+                            </li>
+                            <li>
+                                <p>因子数を決めるときに見るものを2つ以上挙げなさい。</p>
+                            </li>
+                            <li>
+                                <p>
+                                    Varimax と Promax の違いを、
+                                    <strong>因子間相関</strong>の観点から説明しなさい。
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    共通性が低い項目、クロス負荷の大きい項目は、
+                                    それぞれ何を意味する可能性があるかを書きなさい。
+                                </p>
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        確認問題では、今日の中心概念を自分の言葉で説明できるかを確認します。特に、PCAと因子分析の違い、因子数の決定、回転の考え方、負荷量表の読み方は重要です。用語を丸暗記するのではなく、SD法データをどう読むための考え方なのかを意識してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 授業後課題 -->
+                    <div style="font-size:0.55em">
+                        <h2>授業後課題：身近な対象の「因子構造」を設計する</h2>
+                        <p>A4 1枚程度（目安：800〜1200字）でまとめる。実データがなくても、計画でよい。</p>
+                        <ol>
+                            <li>
+                                <strong>対象</strong>：身近な対象を1つ選ぶ
+                            </li>
+                            <li>
+                                <strong>感性・主観体験</strong>：測りたい印象を3つ程度挙げる
+                            </li>
+                            <li>
+                                <strong>項目案</strong>：両極表現のペアを10〜15項目作る
+                            </li>
+                            <li>
+                                <strong>仮説因子</strong>：2〜3因子にまとまりそうか考え、因子名案を書く
+                            </li>
+                            <li>
+                                <strong>分析前の確認</strong>：項目間相関、語の重複、回答者負担など
+                            </li>
+                            <li>
+                                <strong>回転の選択</strong>：Varimax / Promax のどちらを選ぶか
+                            </li>
+                            <li>
+                                <strong>注意点</strong>：クロス負荷、共通性、サンプル数など
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この課題は、因子分析を実行する前の設計を考える練習です。対象を選び、どのような印象を測りたいのかを考え、それを測るための両極表現を作ります。そのうえで、どのような因子にまとまりそうかを仮説として書き、分析前に確認すべき点も整理してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日のまとめ -->
+                    <div style="font-size:0.62em">
+                        <h2>今日のまとめ</h2>
+                        <ul>
+                            <li>
+                                因子分析は、多数の観測項目の背後にある <strong>潜在因子</strong> を見つける手法である
+                            </li>
+                            <li>
+                                PCA は <strong>要約</strong>、因子分析は <strong>構造理解</strong> に重心がある
+                            </li>
+                            <li>
+                                基本の流れは、
+                                <strong>事前確認 → 抽出 → 因子数決定 → 回転 → 解釈</strong>
+                            </li>
+                            <li>
+                                負荷量だけでなく、<strong>クロス負荷や共通性</strong>も見る
+                            </li>
+                            <li>因子分析は、質問紙や評価語の改善にも使える</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のポイントは、因子分析を「項目の背後にある見えない構造を読む方法」として理解することです。PCAとの違いを意識しながら、因子負荷量、共通性、クロス負荷を読み、因子に名前を付ける流れを押さえてください。また、因子分析は分析結果を読むだけでなく、質問紙設計の改善にも使えることを覚えておきましょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 次回への橋渡し -->
+                    <div style="font-size:0.62em">
+                        <h2>次回への橋渡し：Visual Analog Scale 1</h2>
+                        <p>
+                            次回から <strong>Visual Analog Scale（VAS）</strong> を扱う。
+                        </p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>方法</th>
+                                    <th>見たいもの</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SD法＋因子分析</td>
+                                    <td>言葉の軸を並べて、印象構造を読む</td>
+                                </tr>
+                                <tr>
+                                    <td>VAS</td>
+                                    <td>1つまたは少数の感覚の強さを、連続量として読む</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>次回のキーワード：</p>
+                        <ul>
+                            <li>100mm 線／0〜100 の連続値</li>
+                            <li>リッカート尺度との違い</li>
+                            <li>微妙な差を取りたいときの尺度設計</li>
+                            <li>医療・心理・UX への応用</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次回からはVASを扱います。SD法と因子分析では、複数の言葉の軸を使って印象構造を読みます。一方、VASでは、1つまたは少数の感覚の強さを連続量として測ります。つまり、言葉の構造を見たいのか、強さの差を見たいのかによって、使う道具が変わっていきます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 参考資料：因子分析の基本 -->
+                    <div style="font-size:0.8em">
+                        <h2>参考資料：因子分析の基本</h2>
+                        <ul>
+                            <li>
+                                <a href="https://doi.org/10.20982/tqmp.09.2.p079">Yong, A. G., &amp; Pearce, S. (2013). <em>A Beginner’s Guide to Factor Analysis: Focusing on Exploratory Factor Analysis</em>.</a>
+                            </li>
+                            <li>
+                                <a href="https://doi.org/10.5116/ijme.5f96.0f4a">Tavakol, M., &amp; Wetzel, A. (2020). <em>Factor Analysis: a means for theory and instrument development in support of construct validity</em>.</a>
+                            </li>
+                            <li>
+                                <a href="https://online.stat.psu.edu/stat505/lesson/12">Penn State STAT 505, <em>Lesson 12: Factor Analysis</em>.</a>
+                            </li>
+                            <li>
+                                <a href="https://stats.oarc.ucla.edu/spss/seminars/introduction-to-factor-analysis/a-practical-introduction-to-factor-analysis/">UCLA OARC, <em>A Practical Introduction to Factor Analysis: Exploratory Factor Analysis</em>.</a>
+                            </li>
+                            <li>
+                                <a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.FactorAnalysis.html">scikit-learn, <em>FactorAnalysis</em>.</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        このスライドには、因子分析の考え方や実行手順を確認するための基本文献をまとめています。理論的な背景を見直したいときはYong and PearceやTavakol and Wetzel、分析の流れを具体的に確認したいときはPenn State STAT 505やUCLA OARC、実装を確認したいときはscikit-learnのドキュメントを見るとよいです。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 感性工学・産業応用の例 -->
+                    <div style="font-size:0.8em">
+                        <h2>感性工学・産業応用の例</h2>
+                        <ul>
+                            <li>
+                                <a href="https://www.ijdesign.org/index.php/IJDesign/article/view/957">Özcan &amp; van Egmond (2012). <em>Basic Semantics of Product Sounds</em>.</a>
+                            </li>
+                            <li>
+                                <a href="https://doi.org/10.11247/jssdj.60.3_11">Hung &amp; Nieh (2013). <em>A Study on Kansei Image Evaluation of Shop Façade Based on Semantic Differential</em>.</a>
+                            </li>
+                            <li>
+                                <a href="https://doi.org/10.5057/ijae.IJAE-D-24-00003">Zhu, Takahashi, &amp; Shoji (2024). <em>Comparison of Evaluation of T-shirts between Japanese and Chinese based on Hierarchical Kansei Model</em>.</a>
+                            </li>
+                            <li>
+                                <a href="https://doi.org/10.5057/ijae.IJAE-D-24-00042">Morozumi, Ozawa, Toya, et al. (2025). <em>Personalization of a Tactile Inference Model for Rotary Encoders Using Transfer Learning</em>.</a>
+                            </li>
+                            <li>
+                                <a href="https://doi.org/10.3389/fpsyg.2025.1609302">Jin (2025). <em>The psychological influencing factors for the elderly in using mobile applications and the mechanism of user experience</em>.</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        このスライドには、感性工学や産業応用に近い研究例をまとめています。製品音、店舗ファサード、Tシャツ画像、触覚インタフェース、モバイルアプリUXのように、対象は違っても、主観評価を集めて印象や経験の構造を読むという考え方は共通しています。自分の課題で対象を選ぶときの参考にしてください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- NotebookLM -->
+                    <div style="font-size:0.8em">
+                        <h2>NotebookLM</h2>
+                        <ol>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/c882788b-628c-41b0-bbae-7695f0de5186">医学教育における因子分析の実践ガイド</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/195b0fb0-a281-43de-96d2-872968257992">SPSSで学ぶ探索的因子分析の実践ガイド</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/03c4d468-2fb0-49da-92ae-cd7d87f31f6e">家電の音響設計が形作る製品体験と意味解釈の階層構造</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/795a054c-5cb1-42cd-8583-2c51c8c559a6">台中の外食産業における感性工学と外観デザインの相関研究</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/7ae95c81-4deb-4b33-9adc-1b48bdb1f630">日中Tシャツ感性評価の比較と市場戦略</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/5862ad47-551c-41b7-b252-9e2b29dedbb9">ロータリーエンコーダの触覚パーソナライズ推定モデル</a>
+                            </li>
+                            <li>
+                                <a href="https://notebooklm.google.com/notebook/e9942c98-e605-4e52-b3cc-64036d524b46">高齢者のためのモバイルアプリUX設計指針</a>
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最後に、復習用のNotebookLMを紹介します。上の2つは因子分析そのものの基本と実行手順を確認するための資料です。3つ目以降は、製品音、店舗外観、Tシャツ、触覚インタフェース、高齢者向けモバイルアプリのように、感性評価の対象が変わると、因子分析で読みたい構造も変わることを見るための事例です。授業後に見直すときは、まず自分の関心に近い事例を1つ選び、何を測っているのか、どのような因子が出ているのか、その結果が設計や改善にどうつながっているのかを確認してください。NotebookLMの要約は理解の入口として使い、レポートで引用や根拠を書くときは、必ず元の論文や資料に戻って確認してください。
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+        </script>
+    </body>
+</html>
