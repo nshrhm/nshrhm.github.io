@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感性データ処理</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" width="316" height="316" alt="logo" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 表紙 -->
+<h1>感性データ処理</h1>
+<h2>第12回 Visual Analog Scale 2</h2>
+<h3>VASアンケートを設計する</h3>
+<h4>データサイエンス学部</h4>
+<h4>白濵 成希</h4>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第12回から第15回までは、これまで学んだ知識を小規模な感性評価プロジェクトとして統合します。今回は、評価したい対象を決め、2つの刺激と3つのVAS項目からなるアンケートをグループで設計します。
+<p>重要なのは、見栄えのよいアンケートを作ることではなく、研究質問、刺激、質問文、アンカー、分析計画が一貫した測定器を作ることです。今日完成させるのは公開フォームではなく、教員がVAS Padへ実装できる水準の設計書です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日の到達目標 -->
+<div style="font-size:0.72em">
+<h2>今日の到達目標</h2>
+<p>授業後に、次のことを実行できることを目指します。</p>
+<ol>
+<li>評価対象を、<strong>比較可能な研究質問</strong>へ変換する</li>
+<li><strong>2刺激 × 3 VAS項目</strong>の小規模実験を設計する</li>
+<li>1項目1概念、具体的アンカー、方向統一を満たす</li>
+<li>刺激条件・回答負荷・著作権・倫理を点検する</li>
+<li>データ取得前に、<strong>仮説と分析計画</strong>を書く</li>
+<li>認知的プリテストを行い、設計を修正する</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回は知識確認より、設計を完成させることが中心です。良い設計は、測りたい概念、比較する刺激、質問文、分析方法が一本につながっています。
+<p>授業終了時には、グループごとに実験設計書を提出します。その後、教員側で内容を確認し、承認されたものをVAS Padへ登録します。学生が管理画面を直接操作することよりも、測定設計に集中する方針です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 授業全体での位置づけ -->
+<div style="font-size:0.62em">
+<h2>授業全体での位置づけ</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">回</th>
+<th>テーマ</th>
+<th>プロジェクトでの役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">11</td>
+<td>VAS 1</td>
+<td>VASの役割・向き不向き・限界を理解</td>
+</tr>
+<tr>
+<td style="text-align:right"><strong>12</strong></td>
+<td><strong>VAS 2</strong></td>
+<td><strong>問い・刺激・VAS項目を設計</strong></td>
+</tr>
+<tr>
+<td style="text-align:right">13</td>
+<td>VAS 3</td>
+<td>回答、CSV確認、Python分析</td>
+</tr>
+<tr>
+<td style="text-align:right">14</td>
+<td>データ分析ワークフロー</td>
+<td>図表・結果・考察をレポート化</td>
+</tr>
+<tr>
+<td style="text-align:right">15</td>
+<td>総合演習</td>
+<td>発表、最終修正、提出</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>第12〜15回は、<strong>設計 → 取得 → 分析 → 報告</strong>を<br />一つの流れとして経験する。</p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第11回はVASという尺度を理解する回でした。ここからは、実際に使う段階へ進みます。第12回で設計し、第13回で回答と分析を行い、第14回でレポートへ変換し、第15回で発表と提出を行います。
+<p>この流れは、第1回から繰り返してきた感性データ処理の基本プロセスそのものです。分析手法を単独で使うのではなく、測定から報告まで一貫させます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 90分の見取り図 -->
+<div style="font-size:0.7em">
+<h2>90分の見取り図</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">時間</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0〜10分</td>
+<td>プロジェクト説明・グループ確認</td>
+</tr>
+<tr>
+<td style="text-align:right">10〜25分</td>
+<td>研究質問と仮説を決める</td>
+</tr>
+<tr>
+<td style="text-align:right">25〜40分</td>
+<td>2つの刺激を決める</td>
+</tr>
+<tr>
+<td style="text-align:right">40〜58分</td>
+<td>3つのVAS項目とアンカーを設計</td>
+</tr>
+<tr>
+<td style="text-align:right">58〜70分</td>
+<td>説明文・倫理・分析計画を整える</td>
+</tr>
+<tr>
+<td style="text-align:right">70〜82分</td>
+<td>他グループによる認知的プリテスト</td>
+</tr>
+<tr>
+<td style="text-align:right">82〜90分</td>
+<td>修正・設計書提出</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+前半で研究質問と刺激を決め、中盤でVAS項目を作ります。後半は、説明文、データ取扱い、分析計画を整え、他グループに回答者の立場で点検してもらいます。
+<p>時間内にすべてを完璧にするのではなく、重大な設計ミスを見つけて修正し、教員が実装可能な設計書へまとめることを優先します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4回プロジェクト -->
+<div style="font-size:0.68em">
+<h2>4回で完成させるもの</h2>
+<h3>グループ成果</h3>
+<ul>
+<li>VAS実験設計書</li>
+<li>2刺激 × 3 VAS項目のアンケート</li>
+<li>3分間の結果発表</li>
+</ul>
+<h3>個人成果</h3>
+<ul>
+<li>実行済み分析Notebook</li>
+<li>図表と統計量</li>
+<li>最終レポート</li>
+</ul>
+<h3>評価の考え方</h3>
+<ul>
+<li>データ収集は協働</li>
+<li>分析・解釈・文章は個人</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+グループで実験を作る理由は、刺激の作成、尺度設計、品質確認を協働で行うためです。一方、最終レポートは個人で作成します。同じデータを使っても、どの図を選び、どの根拠から何を解釈するかには個人差が出ます。
+<p>したがって、グループ内の貢献だけでなく、自分で分析を再現し、結果を自分の言葉で説明できることが評価対象になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- グループ構成 -->
+<div style="font-size:0.66em">
+<h2>48名を 8グループ × 6名にする</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">設計数</th>
+<th style="text-align:right">各グループ</th>
+<th style="text-align:right">各学生の回答数</th>
+<th style="text-align:right">各アンケートの目標n</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">8アンケート</td>
+<td style="text-align:right">6名</td>
+<td style="text-align:right">4件</td>
+<td style="text-align:right">24名</td>
+</tr>
+</tbody>
+</table>
+<h3>この構成の狙い</h3>
+<ul>
+<li>8種類のテーマを見る</li>
+<li>全員が設計に関与する</li>
+<li>1人の回答負荷を15〜25分程度に抑える</li>
+<li>各アンケートで探索的分析に使える回答数を確保する</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+一つのアンケートに48名全員が回答すると、回答数は多い一方、設計経験が薄くなります。各自が多数のアンケートを作ると、設計数は増えても回答者が不足します。
+<p>そこで8グループが1件ずつ設計し、各学生は4件だけ回答します。各アンケートには4グループ、合計24名が回答する割当です。欠席を考慮し、20名以上を実施上の最低目安とします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 回答割当 -->
+<div style="font-size:0.55em">
+<h2>回答割当：循環型の不完全ブロック</h2>
+<table>
+<thead>
+<tr>
+<th>回答グループ</th>
+<th>回答するアンケート</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G1</td>
+<td>G2・G3・G4・G5</td>
+</tr>
+<tr>
+<td>G2</td>
+<td>G3・G4・G5・G6</td>
+</tr>
+<tr>
+<td>G3</td>
+<td>G4・G5・G6・G7</td>
+</tr>
+<tr>
+<td>G4</td>
+<td>G5・G6・G7・G8</td>
+</tr>
+<tr>
+<td>G5</td>
+<td>G6・G7・G8・G1</td>
+</tr>
+<tr>
+<td>G6</td>
+<td>G7・G8・G1・G2</td>
+</tr>
+<tr>
+<td>G7</td>
+<td>G8・G1・G2・G3</td>
+</tr>
+<tr>
+<td>G8</td>
+<td>G1・G2・G3・G4</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>自分のグループのアンケートには回答しない</li>
+<li>各アンケートは4グループ × 6名 = 24名</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この割当では、各学生が4アンケートに回答し、どのアンケートにも24名が割り当てられます。自分たちのアンケートに答えないのは、設計意図や仮説を知っていることによるバイアスを減らすためです。
+<p>第13回には、グループごとに指定された4つのURLを提示します。回答は相談せず、個人の感じ方として行います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 標準仕様 -->
+<div style="font-size:0.6em">
+<h2>1アンケートの標準仕様</h2>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>標準</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>刺激</td>
+<td>2件</td>
+</tr>
+<tr>
+<td>VAS項目</td>
+<td>3件</td>
+</tr>
+<tr>
+<td>総評定数</td>
+<td>2 × 3 = 6回</td>
+</tr>
+<tr>
+<td>自由記述</td>
+<td>任意で1問</td>
+</tr>
+<tr>
+<td>回答時間</td>
+<td>3〜5分</td>
+</tr>
+<tr>
+<td>数字表示</td>
+<td>原則オフ</td>
+</tr>
+<tr>
+<td>属性</td>
+<td>原則取得しない</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>3刺激を使う場合は、回答負荷と分析目的を説明して<br />教員の承認を得る。</p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+標準仕様を決めるのは、テーマの自由を奪うためではなく、回答負荷とデータ品質をそろえるためです。2刺激×3項目なら6回の評定で済み、4アンケートに回答しても過度な負担になりにくい設計です。
+<p>性別や年代は、取れるから取るのではなく、研究質問に必要な場合だけ検討します。同一学年の授業内調査では、属性を細かく取ることで個人を推測しやすくなる点にも注意します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 設計の流れ -->
+<div style="font-size:0.78em">
+<h2>設計はこの順番で進める</h2>
+<ol>
+<li><strong>何を比較したいか</strong>を決める</li>
+<li>研究質問を1文にする</li>
+<li>刺激A・Bを決める</li>
+<li>測る構成概念を3つ決める</li>
+<li>質問文と両端アンカーを書く</li>
+<li>仮説と分析計画を書く</li>
+<li>説明文・倫理・回答負荷を確認する</li>
+<li>プリテストして修正する</li>
+</ol>
+<blockquote>
+<p>いきなりVAS項目や画面デザインから<br />作り始めない。</p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問紙設計の基本と同じく、最初に測りたいものを明確にします。項目の文面から始めると、後から研究質問と合わなくなることがあります。
+<p>分析計画をデータ取得前に書くのも重要です。結果を見てから都合のよい項目だけ選ぶのではなく、主に見る項目と図を先に決めます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 研究質問 -->
+<div style="font-size:0.6em">
+<h2>研究質問を「比較できる形」にする</h2>
+<h3>曖昧</h3>
+<blockquote>
+<p>この動画は良いか。</p>
+</blockquote>
+<h3>比較可能</h3>
+<blockquote>
+<p>表現テンポの異なる2つの動画は、視聴後の<br /><strong>好ましさ・落ち着き・活発さ</strong>にどのような違いを生むか。</p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここで大切なのは、評価対象を一つ選ぶだけでなく、何と何を比べるのかを文の中に入れることです。「良いか」では、回答者ごとに判断基準が変わってしまいます。
+<p>比較可能な問いにすると、刺激の条件、測る感性、後で作る図がつながります。この段階で、好ましさ、落ち着き、活発さのように、測る概念を言葉で固定します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 研究質問に必要な要素 -->
+<div style="font-size:0.8em">
+<h2>研究質問に必要な要素</h2>
+<ul>
+<li>対象・刺激</li>
+<li>比較する条件</li>
+<li>測る感性・主観体験</li>
+<li>必要なら回答場面</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+「良いか」という問いには、好み、分かりやすさ、信頼、楽しさなどが混ざります。比較研究では、どの条件を変え、何を測るかを明確にする必要があります。
+<p>研究質問が書けたら、その文に刺激A・BとVAS3項目が対応しているか確認します。対応しない項目は、面白そうでも削る候補です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 仮説 -->
+<div style="font-size:0.7em">
+<h2>仮説は「当てるため」ではない</h2>
+<h3>例</h3>
+<ul>
+<li>刺激Aは刺激Bより、<strong>落ち着き</strong>が高いと予想する</li>
+<li><strong>好ましさ</strong>は個人差が大きく、方向を決めない</li>
+<li>刺激Bは刺激Aより、<strong>活発さ</strong>が高いと予想する</li>
+</ul>
+<h3>仮説の役割</h3>
+<ul>
+<li>何を主に比較するかを固定する</li>
+<li>分析の選択を事前に考える</li>
+<li>予想と異なる結果も学びに変える</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+仮説は正解を当てるゲームではありません。データを見る前に予想を書き、後で結果と比較することで、どこに新しい発見があったかを明確にします。
+<p>方向を決めにくい項目は、無理に「Aが高い」と書く必要はありません。「差があるかを探索する」としても構いません。ただし、主分析項目は決めておきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 刺激設計 -->
+<div style="font-size:0.62em">
+<h2>刺激A・Bを設計する</h2>
+<h3>文章刺激</h3>
+<ul>
+<li>100〜300字程度を目安</li>
+<li>文字量、難易度、表示時間を近づける</li>
+<li>自作または利用条件を確認した文章を使う</li>
+</ul>
+<h3>YouTube刺激</h3>
+<ul>
+<li>20〜60秒程度を目安</li>
+<li>開始秒・終了秒を固定する</li>
+<li>音量・イヤホン・再生環境をそろえる</li>
+<li>再生不能時の扱いを決める</li>
+</ul>
+<blockquote>
+<p>比較したい要因以外の差を、できるだけ小さくする。</p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+刺激AとBに多くの違いがあると、どの違いがVAS値へ影響したのか分かりません。文章なら長さや難しさ、動画なら長さ、音量、画質、知名度などを考えます。
+<p>完全に一要因だけ変えることが難しい場合もあります。そのときは、統制できなかった違いを設計書へ書き、最終レポートで代替説明や限界として扱います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 1項目1概念 -->
+<div style="font-size:0.7em">
+<h2>1本のVASでは1つのことだけを測る</h2>
+<table>
+<thead>
+<tr>
+<th>問題のある項目</th>
+<th>問題</th>
+<th>修正例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>好ましく、落ち着くと感じたか</td>
+<td>2概念が混在</td>
+<td>好ましさ／落ち着きを分ける</td>
+</tr>
+<tr>
+<td>この動画は良かったか</td>
+<td>「良い」が曖昧</td>
+<td>何を測るか具体化</td>
+</tr>
+<tr>
+<td>面白くて分かりやすいか</td>
+<td>二重質問</td>
+<td>面白さ／分かりやすさを分ける</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>1つの値に、複数の解釈を押し込まない。</p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+VASの線は一つの連続軸です。質問文に二つの概念が入ると、回答者がどちらを基準に位置を決めたか分からなくなります。
+<p>第7回で扱ったダブルバーレル質問を思い出してください。「好ましいが落ち着かない」と感じた人が答えられるよう、概念を分けます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- アンカー -->
+<div style="font-size:0.65em">
+<h2>両端アンカーは「同じ軸の両端」にする</h2>
+<h3>良い例</h3>
+<ul>
+<li>まったく好ましくない ― 非常に好ましい</li>
+<li>まったく落ち着きを感じない ― 非常に強く落ち着きを感じる</li>
+<li>まったく活発でない ― 非常に活発である</li>
+</ul>
+<h3>問題のある例</h3>
+<ul>
+<li>嫌い ― 落ち着く</li>
+<li>分かりにくい ― 好き</li>
+<li>普通 ― とても良い</li>
+</ul>
+<h3>原則</h3>
+<ul>
+<li>高得点側の意味を統一する</li>
+<li>全刺激で同じアンカーを使う</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+左右のラベルは、同じ構成概念の低い状態と高い状態を表す必要があります。「嫌い」と「落ち着く」は別概念であり、一つの線の両端にはできません。
+<p>高得点側の意味をそろえると、分析時の逆転処理ミスを減らせます。授業では、原則として右側を「その概念が強い」方向に統一します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 質問文 -->
+<div style="font-size:0.6em">
+<h2>対象と時間枠を質問文で固定する</h2>
+<h3>弱い質問</h3>
+<blockquote>
+<p>どのくらい落ち着きますか。</p>
+</blockquote>
+<h3>改善例</h3>
+<blockquote>
+<p><strong>この文章を読み終えた直後</strong>、どのくらい落ち着きを感じましたか。</p>
+</blockquote>
+<h3>確認すること</h3>
+<ul>
+<li>何を体験した後か</li>
+<li>いつの状態を答えるか</li>
+<li>誰の感じ方を答えるか</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+「落ち着きますか」だけでは、文章そのものの印象か、回答者の現在の気分か、長期的な効果かが曖昧です。対象と時間枠を固定すると、回答の解釈がそろいやすくなります。
+<p>質問文は長くしすぎず、刺激を体験した直後の主観状態を尋ねる形を基本とします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- VAS Pad -->
+<div style="font-size:0.58em">
+<h2>VAS Padで実現できること</h2>
+<ul>
+<li>実験slugごとに回答URLを分離</li>
+<li>文章またはYouTubeを刺激として提示</li>
+<li>複数刺激 × 複数VAS項目</li>
+<li>数字表示のON/OFF</li>
+<li>匿名回答、管理画面のみ認証</li>
+<li>未回答のまま次へ進むことを防止</li>
+<li>CSVダウンロード</li>
+<li>設定JSONのexport / import</li>
+</ul>
+<h3>本授業の推奨</h3>
+<p><code>showCurrentValue: false</code>、性別・年代は原則OFF</p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+VAS Padでは、各刺激と各VAS項目の組合せが0〜100の値として保存されます。実験ごとにURLと回答データを分離できるため、8グループのアンケートを同じシステムで運用できます。
+<p>今回は古典的な無目盛りVASに近づけるため、数値表示を原則オフにします。管理画面は教員側で扱い、学生は設計内容の作成と品質確認に集中します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- VAS Padへの引渡し -->
+<div style="font-size:0.66em">
+<h2>学生が設計し、教員が実装する</h2>
+<h3>学生が提出するもの</h3>
+<ul>
+<li>研究質問・仮説</li>
+<li>刺激A・Bの内容と出典</li>
+<li>VAS3項目のID・質問文・アンカー</li>
+<li>説明文・回答方法</li>
+<li>分析計画</li>
+<li>プリテスト結果</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+公開システムの管理権限を学生全員へ渡すと、誤操作や設定上書きのリスクが高くなります。そこで、学生は実験設計書を完成させ、教員またはTAがVAS Padへ実装します。
+<p>実装後に不明点があれば、設計グループへ確認します。本番回答開始後は、同じslugの刺激や項目を変更しません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 教員側で行うこと -->
+<div style="font-size:1.0em">
+<h2>教員側で行うこと</h2>
+<ul>
+<li>倫理・著作権・負荷の確認</li>
+<li>VAS Padへの登録</li>
+<li>URL・表示・CSVの動作確認</li>
+<li>本番設定の固定</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+教員側の作業は、学生の設計を代わりに考えることではなく、授業として安全に実施できる形へ実装することです。倫理、著作権、回答負荷を確認してから登録します。
+<p>登録後は、URLが開くか、刺激が想定通り表示されるか、CSVに必要な列が出るかを確認します。本番開始後は設定を固定し、途中で項目名や順序を変えません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 倫理とデータ最小化 -->
+<div style="font-size:0.62em">
+<h2>授業内演習でも守ること</h2>
+<ul>
+<li>回答は任意で、中止しても不利益がない</li>
+<li>強い不快・差別・トラウマを誘発する刺激を避ける</li>
+<li>氏名・学籍番号を集めない</li>
+<li>性別・年代は分析目的がなければ集めない</li>
+<li>自由記述に個人情報を書かせない</li>
+<li>データを授業外へ再配布しない</li>
+<li>研究目的への二次利用は授業利用と切り分ける</li>
+</ul>
+<blockquote>
+<p>「匿名だから何をしてもよい」わけではない。</p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+授業内の演習でも、回答者は人です。任意参加、回答中止、刺激の安全性、データ最小化を守ります。授業の成績は回答内容ではなく、設計・分析・考察で評価します。
+<p>授業で得たデータを後から研究成果へ使う場合は、授業目的の収集とは切り分け、必要な説明、同意、審査を別途行う必要があります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 著作権 -->
+<div style="font-size:0.66em">
+<h2>刺激の著作権・利用条件</h2>
+<h3>安全な選択</h3>
+<ul>
+<li>自作した短文・画像・音</li>
+<li>パブリックドメイン</li>
+<li>明確な利用許諾がある素材</li>
+<li>YouTubeの公式公開動画を、授業内で埋め込み提示</li>
+</ul>
+<h3>設計書に記録する</h3>
+<ul>
+<li>作品名・URL</li>
+<li>作成者・公開者</li>
+<li>使用区間</li>
+<li>利用条件を確認した日</li>
+</ul>
+<blockquote>
+<p>出典表示は、利用許諾の代わりではない。</p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+刺激物は教材の一部であると同時に、他者の著作物である可能性があります。出典を書けば自由に複製できるわけではありません。
+<p>授業では、短い自作刺激を推奨します。YouTubeを使う場合も、公式公開動画、埋め込み可能性、学内ネットワークでの再生を確認し、開始・終了秒を固定します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 役割分担 -->
+<div style="font-size:0.54em">
+<h2>6名の役割分担</h2>
+<table>
+<thead>
+<tr>
+<th>役割</th>
+<th>主な責任</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>研究課題・仮説</td>
+<td>問いと予想を1文で固定</td>
+</tr>
+<tr>
+<td>刺激A</td>
+<td>内容・出典・提示条件を記録</td>
+</tr>
+<tr>
+<td>刺激B</td>
+<td>内容・出典・提示条件を記録</td>
+</tr>
+<tr>
+<td>VAS項目</td>
+<td>3項目・アンカー・方向を設計</td>
+</tr>
+<tr>
+<td>品質・倫理</td>
+<td>説明文、負荷、著作権、プリテスト</td>
+</tr>
+<tr>
+<td>分析計画</td>
+<td>図、統計量、主分析項目を事前指定</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>担当を分けても、最終確認は6名全員で行う</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+役割を決めることで、誰か一人がすべてを作る状態を避けます。ただし、役割分担は責任の分断ではありません。刺激担当もVAS項目を確認し、分析担当も研究質問を理解する必要があります。
+<p>最後に6名全員が、研究質問から分析計画までの一貫性を確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 認知的プリテスト -->
+<div style="font-size:0.66em">
+<h2>認知的プリテスト：回答者の頭の中を確認する</h2>
+<p>他グループの学生に、回答者のつもりで説明してもらう。</p>
+<ol>
+<li>何をする調査だと思ったか</li>
+<li>刺激A・Bの違いをどう理解したか</li>
+<li>各VAS項目は何を尋ねていると思ったか</li>
+<li>左右の端をどう解釈したか</li>
+<li>どこで迷ったか</li>
+<li>回答時間は長すぎないか</li>
+</ol>
+<blockquote>
+<p>「分かりましたか」だけでは、誤解を見つけにくい。</p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+プリテストでは、設計者が説明するのではなく、回答者に自分の理解を言葉にしてもらいます。「分かりました」と答えても、実際には異なる意味で理解していることがあります。
+<p>指摘を受けたら、回答者が悪いと考えず、測定器である質問紙の側を修正します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- グループ活動 前半：設計書を埋める -->
+<div style="font-size:1.0em">
+<h2>グループ活動 前半<br />設計書を埋める</h2>
+<ol>
+<li>研究質問と仮説</li>
+<li>刺激 A・B</li>
+<li>VAS 3項目</li>
+<li>説明文・分析計画</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+設計段階では意見を広げすぎると時間が足りなくなるため、まず標準仕様へ収めます。独創性より、比較可能性と測定の明確さを優先します。
+<p>前半のゴールは、完璧な文章ではなく、研究質問、刺激、VAS項目、分析計画の骨格をそろえることです。迷った場合は、2刺激、3項目、3から5分という標準仕様に戻します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- グループ活動 後半：グループ交換 -->
+<div style="font-size:1.0em">
+<h2>グループ活動 後半<br />グループ交換</h2>
+<ol>
+<li>設計書を交換</li>
+<li>認知的プリテスト票で点検</li>
+<li>最優先の修正点を1つ伝える</li>
+<li>自グループで修正する</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+設計段階では意見を広げすぎると時間が足りなくなるため、まず標準仕様へ収めます。独創性より、比較可能性と測定の明確さを優先します。
+<p>プリテストでは、相手のテーマそのものを評価するのではなく、回答者として理解できるか、回答可能か、安全かを点検します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第12回の提出物 -->
+<div style="font-size:1.0em">
+<h2>第12回の提出物</h2>
+<ul>
+<li>VAS実験設計ワークシート</li>
+<li>グループ役割表</li>
+<li>認知的プリテスト結果</li>
+<li>刺激の本文・URL・出典</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の提出物は、VAS Padに登録するための材料です。研究質問、役割、プリテスト結果、刺激の出典がそろっていると、教員側で迷わず実装できます。
+<p>未完成のまま出すより、判断に迷った点を明記してください。どこが仮決定で、どこを確認してほしいのかが分かれば、承認前の修正がしやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size:1.0em">
+<h3>教員承認の条件</h3>
+<ul>
+<li>研究質問と刺激・項目が対応</li>
+<li>1項目1概念</li>
+<li>アンカーの方向が統一</li>
+<li>2刺激 × 3項目、3〜5分</li>
+<li>著作権・倫理に問題なし</li>
+<li>分析計画が事前に書かれている</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+提出物がそろっていても、設計に重大な問題があれば再提出となります。再提出は罰ではなく、本番で回収不能なデータを作らないための品質ゲートです。
+<p>教員確認後、VAS Padへの実装と予備回答を行います。第13回の開始時には、グループごとのURLを提示します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まとめ -->
+<div style="font-size:0.8em">
+<h2>まとめと次回への橋渡し</h2>
+<h3>今日の核心</h3>
+<ol>
+<li>VAS実験は、<strong>問い → 刺激 → 項目 → 分析</strong>を一貫させる</li>
+<li>標準は <strong>2刺激 × 3項目</strong></li>
+<li>1本のVASは1概念、アンカーは同じ軸の両端</li>
+<li>刺激条件・負荷・著作権・倫理を事前に確認する</li>
+<li>本番前に、他者によるプリテストを行う</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の成果は、VAS Padの画面ではなく、整合性のある実験設計です。良い分析は、良い測定からしか生まれません。
+<p>研究質問、刺激、項目、分析計画がずれていないかを最後にもう一度確認してください。今日ここで直した設計上の曖昧さが、次回のデータ品質を大きく左右します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まとめ -->
+<div style="font-size:1.0em">
+<h2>次回</h2>
+<ul>
+<li>4アンケートに回答</li>
+<li>CSV取得・品質確認</li>
+<li>Pythonで分布・個人差・刺激差を可視化</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+次回は回答者と分析者の両方を経験します。回答者としては指示に従い独立に回答し、分析者としてはCSV原本を保全し、まずデータ品質と分布を確認します。
+<p>回答時は、他の人と相談せず、その場で感じた印象をそのまま記録します。分析時は、平均値だけで結論を急がず、分布、外れ値、刺激ごとの差を順に見ていきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 参考資料 -->
+<div style="font-size:0.8em">
+<h2>主な参考資料</h2>
+<ol>
+<li>Aitken, R. C. B. (1969). <em>Measurement of feelings using visual analogue scales</em>.</li>
+<li>Byrom, B., et al. (2022). <em>Measurement Comparability of Electronic and Paper Administration of Visual Analogue Scales</em>.</li>
+<li>Boynton, P. M., &amp; Greenhalgh, T. (2004). <em>Selecting, designing, and developing your questionnaire</em>.</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+参考資料は、VASの基本、紙と電子の比較、質問紙設計、そして授業で使うVAS Padの仕様です。今回の演習では、文献の詳細を暗記するより、設計原則を自分たちのアンケートへ適用することを重視します。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
