@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>サイコロシリーズ (ITP1_11_A-D) 統合ビジュアル解説</title>
+  <!-- Tailwind CDN と Google Fonts に依存しています。オフライン配布時は代替CSS/フォントを用意してください。 -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -36,32 +37,32 @@
       line-height: 1.2;
     }
 
-    .face-1 {
+    .pos-top {
       grid-column: 2;
       grid-row: 1;
     }
 
-    .face-2 {
+    .pos-left {
       grid-column: 1;
       grid-row: 2;
     }
 
-    .face-3 {
+    .pos-front {
       grid-column: 2;
       grid-row: 2;
     }
 
-    .face-4 {
+    .pos-right {
       grid-column: 3;
       grid-row: 2;
     }
 
-    .face-5 {
+    .pos-back {
       grid-column: 4;
       grid-row: 2;
     }
 
-    .face-6 {
+    .pos-bottom {
       grid-column: 2;
       grid-row: 3;
     }
@@ -176,19 +177,24 @@
     <section class="mb-8">
       <h2 class="text-xl font-bold text-gray-700 mb-4">1. サイコロの表現方法</h2>
       <p class="mb-4">
-        このプログラムでは、サイコロを「展開図」の形で表現しています。立体のサイコロを平面に展開したもので、実際の物理的なサイコロと対応しています。
+        このプログラムでは、AOJ公式仕様と同じ順番で入力された6つの整数を、上面・正面・右面・左面・背面・底面として扱います。初期配置は
+        <code class="inline-code">[top, front, right, left, back, bottom]</code> =
+        <code class="inline-code">[1, 2, 3, 4, 5, 6]</code> です。
       </p>
       <div class="diagram-container">
         <div>
-          <h3 class="font-bold text-center mb-2">サイコロの展開図</h3>
+          <h3 class="font-bold text-center mb-2">サイコロの展開図（AOJ公式配置）</h3>
           <div class="dice-grid mx-auto">
-            <div class="dice-face face-1 bg-blue-100">1<br><span class="text-xs">(上面)</span></div>
-            <div class="dice-face face-2 bg-green-100">2<br><span class="text-xs">(左面)</span></div>
-            <div class="dice-face face-3 bg-yellow-100">3<br><span class="text-xs">(正面)</span></div>
-            <div class="dice-face face-4 bg-red-100">4<br><span class="text-xs">(右面)</span></div>
-            <div class="dice-face face-5 bg-purple-100">5<br><span class="text-xs">(背面)</span></div>
-            <div class="dice-face face-6 bg-gray-100">6<br><span class="text-xs">(底面)</span></div>
+            <div class="dice-face pos-top bg-blue-100">1<br><span class="text-xs">(上面)</span></div>
+            <div class="dice-face pos-left bg-red-100">4<br><span class="text-xs">(左面)</span></div>
+            <div class="dice-face pos-front bg-green-100">2<br><span class="text-xs">(正面)</span></div>
+            <div class="dice-face pos-right bg-yellow-100">3<br><span class="text-xs">(右面)</span></div>
+            <div class="dice-face pos-back bg-purple-100">5<br><span class="text-xs">(背面)</span></div>
+            <div class="dice-face pos-bottom bg-gray-100">6<br><span class="text-xs">(底面)</span></div>
           </div>
+          <p class="text-xs text-gray-600 mt-2 text-center">
+            faces[0]=上面, faces[1]=正面, faces[2]=右面, faces[3]=左面, faces[4]=背面, faces[5]=底面
+          </p>
         </div>
         <div>
           <h3 class="font-bold text-center mb-2">立体のサイコロ</h3>
@@ -199,9 +205,9 @@
               <path d="M20 70 L50 50" fill="none" stroke="#f59e0b" stroke-width="1" />
               <path d="M80 70 L50 50" fill="none" stroke="#f59e0b" stroke-width="1" />
               <text x="45" y="25" font-size="10" font-weight="bold" text-anchor="middle">1</text>
-              <text x="50" y="72" font-size="10" font-weight="bold" text-anchor="middle">3</text>
+              <text x="50" y="72" font-size="10" font-weight="bold" text-anchor="middle">2</text>
               <text x="72" y="55" font-size="10" font-weight="bold" text-anchor="middle"
-                transform="rotate(30 70,55)">4</text>
+                transform="rotate(30 70,55)">3</text>
             </svg>
           </div>
         </div>
@@ -217,24 +223,24 @@
 
       <!-- North Roll -->
       <div class="mb-6">
-        <h3 class="text-lg font-bold text-gray-600 mb-3">北へ回転 (N): 手前に転がす</h3>
+        <h3 class="text-lg font-bold text-gray-600 mb-3">北へ回転 (N): AOJ図のN方向（奥側）へ転がす</h3>
         <div class="movement-container">
           <div class="dice-grid">
-            <div class="dice-face face-1 bg-blue-100">1</div>
-            <div class="dice-face face-2 bg-green-100">2</div>
-            <div class="dice-face face-3 bg-yellow-100">3</div>
-            <div class="dice-face face-4 bg-red-100">4</div>
-            <div class="dice-face face-5 bg-purple-100">5</div>
-            <div class="dice-face face-6 bg-gray-100">6</div>
+            <div class="dice-face pos-top bg-blue-100">1</div>
+            <div class="dice-face pos-left bg-red-100">4</div>
+            <div class="dice-face pos-front bg-green-100">2</div>
+            <div class="dice-face pos-right bg-yellow-100">3</div>
+            <div class="dice-face pos-back bg-purple-100">5</div>
+            <div class="dice-face pos-bottom bg-gray-100">6</div>
           </div>
           <div class="text-2xl">→</div>
           <div class="dice-grid">
-            <div class="dice-face face-1 bg-yellow-100">3</div>
-            <div class="dice-face face-2 bg-green-100">2</div>
-            <div class="dice-face face-3 bg-gray-100">6</div>
-            <div class="dice-face face-4 bg-red-100">4</div>
-            <div class="dice-face face-5 bg-blue-100">1</div>
-            <div class="dice-face face-6 bg-purple-100">5</div>
+            <div class="dice-face pos-top bg-green-100">2</div>
+            <div class="dice-face pos-left bg-red-100">4</div>
+            <div class="dice-face pos-front bg-gray-100">6</div>
+            <div class="dice-face pos-right bg-yellow-100">3</div>
+            <div class="dice-face pos-back bg-blue-100">1</div>
+            <div class="dice-face pos-bottom bg-purple-100">5</div>
           </div>
         </div>
         <p class="text-sm text-gray-600 mt-2">上面→背面、正面→上面、底面→正面、背面→底面</p>
@@ -242,24 +248,24 @@
 
       <!-- South Roll -->
       <div class="mb-6">
-        <h3 class="text-lg font-bold text-gray-600 mb-3">南へ回転 (S): 奥に転がす</h3>
+        <h3 class="text-lg font-bold text-gray-600 mb-3">南へ回転 (S): AOJ図のS方向（手前側）へ転がす</h3>
         <div class="movement-container">
           <div class="dice-grid">
-            <div class="dice-face face-1 bg-blue-100">1</div>
-            <div class="dice-face face-2 bg-green-100">2</div>
-            <div class="dice-face face-3 bg-yellow-100">3</div>
-            <div class="dice-face face-4 bg-red-100">4</div>
-            <div class="dice-face face-5 bg-purple-100">5</div>
-            <div class="dice-face face-6 bg-gray-100">6</div>
+            <div class="dice-face pos-top bg-blue-100">1</div>
+            <div class="dice-face pos-left bg-red-100">4</div>
+            <div class="dice-face pos-front bg-green-100">2</div>
+            <div class="dice-face pos-right bg-yellow-100">3</div>
+            <div class="dice-face pos-back bg-purple-100">5</div>
+            <div class="dice-face pos-bottom bg-gray-100">6</div>
           </div>
           <div class="text-2xl">→</div>
           <div class="dice-grid">
-            <div class="dice-face face-1 bg-purple-100">5</div>
-            <div class="dice-face face-2 bg-green-100">2</div>
-            <div class="dice-face face-3 bg-blue-100">1</div>
-            <div class="dice-face face-4 bg-red-100">4</div>
-            <div class="dice-face face-5 bg-gray-100">6</div>
-            <div class="dice-face face-6 bg-yellow-100">3</div>
+            <div class="dice-face pos-top bg-purple-100">5</div>
+            <div class="dice-face pos-left bg-red-100">4</div>
+            <div class="dice-face pos-front bg-blue-100">1</div>
+            <div class="dice-face pos-right bg-yellow-100">3</div>
+            <div class="dice-face pos-back bg-gray-100">6</div>
+            <div class="dice-face pos-bottom bg-green-100">2</div>
           </div>
         </div>
         <p class="text-sm text-gray-600 mt-2">上面→正面、正面→底面、底面→背面、背面→上面</p>
@@ -270,21 +276,21 @@
         <h3 class="text-lg font-bold text-gray-600 mb-3">東へ回転 (E): 右に転がす</h3>
         <div class="movement-container">
           <div class="dice-grid">
-            <div class="dice-face face-1 bg-blue-100">1</div>
-            <div class="dice-face face-2 bg-green-100">2</div>
-            <div class="dice-face face-3 bg-yellow-100">3</div>
-            <div class="dice-face face-4 bg-red-100">4</div>
-            <div class="dice-face face-5 bg-purple-100">5</div>
-            <div class="dice-face face-6 bg-gray-100">6</div>
+            <div class="dice-face pos-top bg-blue-100">1</div>
+            <div class="dice-face pos-left bg-red-100">4</div>
+            <div class="dice-face pos-front bg-green-100">2</div>
+            <div class="dice-face pos-right bg-yellow-100">3</div>
+            <div class="dice-face pos-back bg-purple-100">5</div>
+            <div class="dice-face pos-bottom bg-gray-100">6</div>
           </div>
           <div class="text-2xl">→</div>
           <div class="dice-grid">
-            <div class="dice-face face-1 bg-green-100">2</div>
-            <div class="dice-face face-2 bg-gray-100">6</div>
-            <div class="dice-face face-3 bg-yellow-100">3</div>
-            <div class="dice-face face-4 bg-blue-100">1</div>
-            <div class="dice-face face-5 bg-purple-100">5</div>
-            <div class="dice-face face-6 bg-red-100">4</div>
+            <div class="dice-face pos-top bg-red-100">4</div>
+            <div class="dice-face pos-left bg-gray-100">6</div>
+            <div class="dice-face pos-front bg-green-100">2</div>
+            <div class="dice-face pos-right bg-blue-100">1</div>
+            <div class="dice-face pos-back bg-purple-100">5</div>
+            <div class="dice-face pos-bottom bg-yellow-100">3</div>
           </div>
         </div>
         <p class="text-sm text-gray-600 mt-2">上面→右面、右面→底面、底面→左面、左面→上面</p>
@@ -295,21 +301,21 @@
         <h3 class="text-lg font-bold text-gray-600 mb-3">西へ回転 (W): 左に転がす</h3>
         <div class="movement-container">
           <div class="dice-grid">
-            <div class="dice-face face-1 bg-blue-100">1</div>
-            <div class="dice-face face-2 bg-green-100">2</div>
-            <div class="dice-face face-3 bg-yellow-100">3</div>
-            <div class="dice-face face-4 bg-red-100">4</div>
-            <div class="dice-face face-5 bg-purple-100">5</div>
-            <div class="dice-face face-6 bg-gray-100">6</div>
+            <div class="dice-face pos-top bg-blue-100">1</div>
+            <div class="dice-face pos-left bg-red-100">4</div>
+            <div class="dice-face pos-front bg-green-100">2</div>
+            <div class="dice-face pos-right bg-yellow-100">3</div>
+            <div class="dice-face pos-back bg-purple-100">5</div>
+            <div class="dice-face pos-bottom bg-gray-100">6</div>
           </div>
           <div class="text-2xl">→</div>
           <div class="dice-grid">
-            <div class="dice-face face-1 bg-red-100">4</div>
-            <div class="dice-face face-2 bg-blue-100">1</div>
-            <div class="dice-face face-3 bg-yellow-100">3</div>
-            <div class="dice-face face-4 bg-gray-100">6</div>
-            <div class="dice-face face-5 bg-purple-100">5</div>
-            <div class="dice-face face-6 bg-green-100">2</div>
+            <div class="dice-face pos-top bg-yellow-100">3</div>
+            <div class="dice-face pos-left bg-blue-100">1</div>
+            <div class="dice-face pos-front bg-green-100">2</div>
+            <div class="dice-face pos-right bg-gray-100">6</div>
+            <div class="dice-face pos-back bg-purple-100">5</div>
+            <div class="dice-face pos-bottom bg-red-100">4</div>
           </div>
         </div>
         <p class="text-sm text-gray-600 mt-2">上面→左面、左面→底面、底面→右面、右面→上面</p>
@@ -346,6 +352,15 @@
       今回のプログラムは、指定された「上面」と「正面」の整数を持つ状態を探し出し、その時の「右面」の整数を答えるものです。その中心的なロジックである <code
         class="inline-code">find_right_side</code> メソッドの仕組みを解説します。
     </p>
+    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-8 text-sm text-gray-700">
+      <h2 class="font-bold mb-2">ITP1_11_B の入力と出力</h2>
+      <ul class="list-disc list-inside space-y-1">
+        <li>1行目: サイコロの6整数（上面・正面・右面・左面・背面・底面）</li>
+        <li>2行目: 質問数 <code class="inline-code">q</code></li>
+        <li>続く <code class="inline-code">q</code> 行: <code class="inline-code">target_top target_front</code></li>
+        <li>各質問について、条件に合う向きの右面を1行ずつ出力する</li>
+      </ul>
+    </div>
 
     <!-- Section 1: Dice Representation -->
     <section class="mb-8">
@@ -414,7 +429,7 @@
       <h2 class="text-xl font-bold text-gray-700 mb-4">3. <code class="inline-code">find_right_side</code> メソッドの解説</h2>
       <p class="mb-4">
         この「しらみつぶし作戦」を実装しているのが <code class="inline-code">find_right_side</code>
-        メソッドです。ネストしたループ（繰り返し処理）を使い、サイコロを体系的に回転させることで、全24通りの向きを網羅しています。
+        メソッドです。まず6通りの上面を作り、それぞれについて上面と底面を固定したまま側面を4通りに回すことで、合計24通りの向きを網羅します。
       </p>
       <div class="shadow-lg rounded-lg">
         <div class="bg-gray-700 rounded-t-lg px-4 py-2 flex items-center">
@@ -422,28 +437,38 @@
           <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
           <div class="w-3 h-3 rounded-full bg-green-500"></div>
         </div>
-        <pre class="bg-gray-900 text-gray-200 p-4 rounded-b-lg text-sm font-mono overflow-x-auto"><code>def find_right_side(self, target_top, target_front):
-    <span class="text-green-400"># あらゆる向きを試すため、様々な方向に回転させる</span>
-    
-    <span class="text-green-400"># 6つの面がそれぞれ上面になるパターンを試す</span>
-    for _ in range(6):
-        <span class="text-green-400"># 上面を固定したまま、側面を4回回転させて正面を試す</span>
-        for _ in range(4):
-            if self.top == target_top and self.front == target_front:
-                return self.right
-            self.roll_E() <span class="text-green-400"># 右スピン（上面と底面は変わらない）</span>
-        
-        <span class="text-green-400"># 次の面を上面に持ってくるための回転パターン</span>
-        if _ % 2 == 0:
-            self.roll_N()
-        else:
-            self.roll_E()
+        <pre class="bg-gray-900 text-gray-200 p-4 rounded-b-lg text-sm font-mono overflow-x-auto"><code>def spin(self):
+    <span class="text-green-400"># AOJの E/W 命令ではなく、上面・底面を固定した補助操作</span>
+    <span class="text-green-400"># 正面・右面・背面・左面だけを1つずつ回す</span>
+    self.front, self.right, self.back, self.left = (
+        self.left, self.front, self.right, self.back
+    )
 
+
+def all_orientations(self):
+    <span class="text-green-400"># 各面を一度ずつ上面にするための代表的な命令列</span>
+    top_sequences = ["", "N", "S", "NN", "E", "W"]
+
+    for seq in top_sequences:
+        d = self.copy()
+        for command in seq:
+            d.roll(command)  <span class="text-green-400"># AOJの N/S/E/W と同じ転がし</span>
+
+        <span class="text-green-400"># 同じ上面のまま、正面候補を4通り試す</span>
+        for spin_index in range(4):
+            yield d.copy()
+            d.spin()
+
+
+def find_right_side(self, target_top, target_front):
+    for d in self.all_orientations():
+        if d.top == target_top and d.front == target_front:
+            return d.right
 </code></pre>
       </div>
-      <p class="mt-4 text-sm text-gray-600">※注：上記のコードは実際のプログラムのループ構造を分かりやすく解説したもので、完全に同一ではありません。ポイントは、<code
-          class="inline-code">roll_N()</code>（縦回転）と<code
-          class="inline-code">roll_E()</code>（横回転）を組み合わせることで、全ての面を上面や正面として試している点です。</p>
+      <p class="mt-4 text-sm text-gray-600">ポイントは、AOJの <code class="inline-code">E</code> 命令を「横スピン」として使わないことです。
+        <code class="inline-code">E</code> は東方向への転がしなので上面・底面が変わります。上面を固定して正面候補だけを変えたい場合は、別の補助操作
+        <code class="inline-code">spin()</code> を用意します。</p>
     </section>
 
     <!-- Section 4: Summary -->
@@ -538,7 +563,10 @@
       <h2 class="text-xl font-bold text-gray-700 mb-4">3. <code class="inline-code">are_same_dice</code> 関数の解説</h2>
       <p class="mb-4">
         この全探索を実装しているのが <code class="inline-code">are_same_dice</code> 関数です。前回の <code
-          class="inline-code">find_right_side</code> と非常によく似たループ構造でサイコロBを全24通りに回転させ、各状態でサイコロAと全ての面が一致するかを比較しています。
+          class="inline-code">find_right_side</code> と同じ <code class="inline-code">all_orientations()</code>
+        を使い、サイコロBを全24通りに回転させて、各状態でサイコロAと全ての面が一致するかを比較しています。ここで
+        <code class="inline-code">faces</code> は <code class="inline-code">[top, front, right, left, back, bottom]</code>
+        の順に並んだリストです。
       </p>
       <div class="shadow-lg rounded-lg">
         <div class="bg-gray-700 rounded-t-lg px-4 py-2 flex items-center">
@@ -547,29 +575,11 @@
           <div class="w-3 h-3 rounded-full bg-green-500"></div>
         </div>
         <pre class="bg-gray-900 text-gray-200 p-4 rounded-b-lg text-sm font-mono overflow-x-auto"><code>def are_same_dice(dice1, dice2):
-    <span class="text-green-400"># dice1 を基準に、dice2 をあらゆる向きに回転させて比較する</span>
-    
-    for _ in range(4):
-        for _ in range(2):
-            for _ in range(4):
-                <span class="text-green-400"># 現在の dice2 の向きが dice1 と完全に一致するかチェック</span>
-                if (dice1.top    == dice2.top and
-                    dice1.front  == dice2.front and
-                    dice1.right  == dice2.right and
-                    dice1.left   == dice2.left and
-                    dice1.back   == dice2.back and
-                    dice1.bottom == dice2.bottom):
-                    return True <span class="text-green-400"># 一致したら、その時点で True を返す</span>
-                
-                dice2.roll_E() <span class="text-green-400"># dice2 を横に回転</span>
-            
-            dice2.roll_N() <span class="text-green-400"># dice2 を縦に回転</span>
-            dice2.roll_N()
-        
-        dice2.roll_N()
-        dice2.roll_E()
+    <span class="text-green-400"># dice1 を基準に、dice2 の24姿勢を順番に比較する</span>
+    for d in dice2.all_orientations():
+        if d.faces == dice1.faces:
+            return True
 
-    <span class="text-green-400"># 全ての向きを試しても一致しなかった場合</span>
     return False
 </code></pre>
       </div>
@@ -596,6 +606,11 @@
       <h2 class="text-xl font-bold text-gray-700 mb-4">1. 問題の核心：総当たり比較</h2>
       <p class="mb-4">
         「n個のサイコロが全て異なる」ことを証明するには、どうすればよいでしょうか？答えは、「考えられる全てのペアを比較し、一つも同じものがないことを確認する」です。これを「総当たり比較」や「ペアワイズ比較」と呼びます。
+      </p>
+      <p class="mb-4 text-gray-700">
+        ITP1_11_D では <code class="inline-code">2 &lt;= n &lt;= 100</code> です。ペア数は最大でも
+        <code class="inline-code">100 * 99 / 2 = 4950</code> 個で、各ペアについて最大24姿勢を調べても十分間に合います。
+        そのため、全ペアを総当たりで比較する方針が妥当です。
       </p>
       <div class="diagram-container">
         <div class="text-center">

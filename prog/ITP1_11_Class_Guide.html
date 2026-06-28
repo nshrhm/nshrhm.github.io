@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>【図解】クラスとオブジェクト：サイコロを例に</title>
+  <!-- Tailwind CDN と Google Fonts に依存しています。オフライン配布時は代替CSS/フォントを用意してください。 -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -39,32 +40,32 @@
       background-color: white;
     }
 
-    .face-1 {
+    .pos-top {
       grid-column: 2;
       grid-row: 1;
     }
 
-    .face-2 {
+    .pos-left {
       grid-column: 1;
       grid-row: 2;
     }
 
-    .face-3 {
+    .pos-front {
       grid-column: 2;
       grid-row: 2;
     }
 
-    .face-4 {
+    .pos-right {
       grid-column: 3;
       grid-row: 2;
     }
 
-    .face-5 {
+    .pos-back {
       grid-column: 4;
       grid-row: 2;
     }
 
-    .face-6 {
+    .pos-bottom {
       grid-column: 2;
       grid-row: 3;
     }
@@ -89,19 +90,39 @@
       <p class="mb-6 text-gray-700">
         プログラムでは、サイコロの6つの面を1つのリスト <code>faces</code> で管理します。リストの各番号（インデックス）が、サイコロのどの面に対応するか、という「ルール」を決めることが重要です。
       </p>
+      <div class="mb-6 overflow-x-auto">
+        <table class="min-w-full text-sm border border-gray-300 bg-white">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="border border-gray-300 px-3 py-2 text-left">faces</th>
+              <th class="border border-gray-300 px-3 py-2 text-left">変数名</th>
+              <th class="border border-gray-300 px-3 py-2 text-left">日本語</th>
+              <th class="border border-gray-300 px-3 py-2 text-left">AOJ初期ラベル</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="border border-gray-300 px-3 py-2"><code>faces[0]</code></td><td class="border border-gray-300 px-3 py-2"><code>top</code></td><td class="border border-gray-300 px-3 py-2">上面</td><td class="border border-gray-300 px-3 py-2">1</td></tr>
+            <tr><td class="border border-gray-300 px-3 py-2"><code>faces[1]</code></td><td class="border border-gray-300 px-3 py-2"><code>front</code></td><td class="border border-gray-300 px-3 py-2">正面</td><td class="border border-gray-300 px-3 py-2">2</td></tr>
+            <tr><td class="border border-gray-300 px-3 py-2"><code>faces[2]</code></td><td class="border border-gray-300 px-3 py-2"><code>right</code></td><td class="border border-gray-300 px-3 py-2">右面</td><td class="border border-gray-300 px-3 py-2">3</td></tr>
+            <tr><td class="border border-gray-300 px-3 py-2"><code>faces[3]</code></td><td class="border border-gray-300 px-3 py-2"><code>left</code></td><td class="border border-gray-300 px-3 py-2">左面</td><td class="border border-gray-300 px-3 py-2">4</td></tr>
+            <tr><td class="border border-gray-300 px-3 py-2"><code>faces[4]</code></td><td class="border border-gray-300 px-3 py-2"><code>back</code></td><td class="border border-gray-300 px-3 py-2">背面</td><td class="border border-gray-300 px-3 py-2">5</td></tr>
+            <tr><td class="border border-gray-300 px-3 py-2"><code>faces[5]</code></td><td class="border border-gray-300 px-3 py-2"><code>bottom</code></td><td class="border border-gray-300 px-3 py-2">底面</td><td class="border border-gray-300 px-3 py-2">6</td></tr>
+          </tbody>
+        </table>
+      </div>
       <div class="flex flex-col lg:flex-row items-center justify-around gap-8 p-4 bg-white rounded-lg">
         <div class="text-center">
           <h3 class="font-bold mb-3 text-lg">展開図とリストの対応</h3>
           <div class="dice-grid">
-            <div class="dice-face face-1 bg-blue-100">上面<br><code class="font-mono text-blue-800">faces[0]</code></div>
-            <div class="dice-face face-2 bg-red-100">左面<br><code class="font-mono text-red-800">faces[3]</code></div>
-            <div class="dice-face face-3 bg-green-100">正面<br><code class="font-mono text-green-800">faces[1]</code>
+            <div class="dice-face pos-top bg-blue-100">上面<br><code class="font-mono text-blue-800">faces[0]</code></div>
+            <div class="dice-face pos-left bg-red-100">左面<br><code class="font-mono text-red-800">faces[3]</code></div>
+            <div class="dice-face pos-front bg-green-100">正面<br><code class="font-mono text-green-800">faces[1]</code>
             </div>
-            <div class="dice-face face-4 bg-yellow-100">右面<br><code class="font-mono text-yellow-800">faces[2]</code>
+            <div class="dice-face pos-right bg-yellow-100">右面<br><code class="font-mono text-yellow-800">faces[2]</code>
             </div>
-            <div class="dice-face face-5 bg-purple-100">背面<br><code class="font-mono text-purple-800">faces[4]</code>
+            <div class="dice-face pos-back bg-purple-100">背面<br><code class="font-mono text-purple-800">faces[4]</code>
             </div>
-            <div class="dice-face face-6 bg-gray-200">底面<br><code class="font-mono text-gray-800">faces[5]</code></div>
+            <div class="dice-face pos-bottom bg-gray-200">底面<br><code class="font-mono text-gray-800">faces[5]</code></div>
           </div>
         </div>
         <div class="text-center">
