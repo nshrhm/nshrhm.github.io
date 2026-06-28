@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Google Forms の回答TSVをVAS Pad用JSONに変換する文章刺激向けツール">
+  <title>VAS Pad TSV to JSON Converter</title>
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; margin: 2rem; max-width: 1100px; }
+    textarea { width: 100%; min-height: 260px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+    button { padding: .6rem 1rem; font-size: 1rem; margin: .5rem .5rem .5rem 0; }
+    .box { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+    .ok { color: #0b6b2a; }
+    .warn { color: #9a5b00; }
+    .err { color: #b00020; }
+    code { background: #f3f3f3; padding: .1rem .25rem; border-radius: 4px; }
+    pre { white-space: pre-wrap; background: #f8f8f8; border: 1px solid #ddd; padding: 1rem; overflow-x: auto; }
+    a.download { display: inline-block; margin: .25rem .5rem .25rem 0; }
+  </style>
+</head>
+<body>
+  <h1>VAS Pad TSV to JSON Converter</h1>
+  <p>Google Forms の回答スプレッドシートからヘッダー行を含めてコピーしたTSVを貼り付け、VAS Pad用JSONへ変換します。列名には <code>[experiment_title]</code> のような角括弧IDが必要です。</p>
+
+  <div class="box">
+    <h2>1. TSVを貼り付け</h2>
+    <textarea id="tsv" placeholder="Google Sheetsから、ヘッダー行を含めてコピーしたTSVを貼り付けてください"></textarea>
+    <br>
+    <button id="convert">変換する</button>
+    <button id="clear">クリア</button>
+  </div>
+
+  <div class="box">
+    <h2>2. 変換結果</h2>
+    <div id="summary">未変換です。</div>
+    <div id="downloads"></div>
+    <pre id="report"></pre>
+  </div>
+
+<script id="base-template" type="application/json">{"formatVersion": 1, "experiment": {"slug": "sample-kansei-text", "title": "教材サンプル：文章刺激のVAS感性評価"}, "config": {"shared": {"configVersion": 1, "defaultLocale": "ja", "enabledLocales": ["ja"], "theme": {"palettePreset": "mono", "palette": {"bg1": "#fafafa", "bg2": "#eaeaea", "card": "#ffffff", "ink": "#111111", "muted": "#444444", "line": "#d0d0d0", "accent": "#111111", "accent2": "#4b4b4b", "onAccent": "#ffffff", "success": "#2f855a", "danger": "#b43c2a"}, "typography": {"fontPreset": "default-ja"}, "spacing": {"density": "normal"}}, "showCurrentValue": false, "showGender": false, "showAgeRange": false, "showComprehensionCheck": true, "stimuli": [{"id": "campus_morning"}, {"id": "campus_lunch"}], "vasItems": [{"id": "calmness"}, {"id": "liveliness"}, {"id": "visit_intention"}]}, "locales": {"ja": {"introTitle": "授業用サンプル：文章から受ける印象のVAS評価", "introBody": "このアンケートは、感性データ処理の授業でVAS主観評価を学ぶためのサンプルです。\n\n2つの短い文章を読み、それぞれの文章から受けた印象を、線上の位置で回答してください。回答に正解・不正解はありません。あなたが読んだ直後に感じた印象を、そのまま回答してください。\n\n回答は授業内の教材データとして匿名で扱います。氏名、学籍番号、個人が特定される情報、機微な個人情報は入力しないでください。参加は任意であり、同意しない場合は回答せずに終了できます。", "introBodyHtml": "<p>このアンケートは、感性データ処理の授業でVAS主観評価を学ぶためのサンプルです。</p><p>2つの短い文章を読み、それぞれの文章から受けた印象を、線上の位置で回答してください。回答に正解・不正解はありません。あなたが読んだ直後に感じた印象を、そのまま回答してください。</p><p>回答は授業内の教材データとして匿名で扱います。氏名、学籍番号、個人が特定される情報、機微な個人情報は入力しないでください。参加は任意であり、同意しない場合は回答せずに終了できます。</p>", "instructions": "このアンケートでは、2つの文章を順に提示します。\n\n各文章を読んだあと、3本のVASに回答してください。左端は0、右端は100に対応しますが、画面上には数値を表示しません。線上の位置を使って、文章を読んだ直後の印象を表してください。\n\n深く考えすぎず、文章から受けた第一印象に近い位置を選んでください。すべての項目に回答すると、次の文章または送信へ進めます。", "instructionsHtml": "<p>このアンケートでは、2つの文章を順に提示します。</p><p>各文章を読んだあと、3本のVASに回答してください。左端は0、右端は100に対応しますが、画面上には数値を表示しません。線上の位置を使って、文章を読んだ直後の印象を表してください。</p><p>深く考えすぎず、文章から受けた第一印象に近い位置を選んでください。すべての項目に回答すると、次の文章または送信へ進めます。</p>", "declineTitle": "回答を終了しました", "declineBody": "参加しない選択を受け付けました。回答は保存されません。授業では、提示されたサンプルや説明を見ながら、VAS項目の作り方と分析方法を確認してください。", "declineBodyHtml": "<p>参加しない選択を受け付けました。回答は保存されません。授業では、提示されたサンプルや説明を見ながら、VAS項目の作り方と分析方法を確認してください。</p>", "thankYouTitle": "回答ありがとうございました", "thankYouBody": "回答ありがとうございました。\n\nこのサンプルデータは、授業で次の内容を確認するために使います。\n・2つの刺激文で印象がどのように変わるか\n・VASの平均、ばらつき、分布をどう見るか\n・「差が見える」ことと「強い結論が言える」ことをどう区別するか", "thankYouBodyHtml": "<p>回答ありがとうございました。</p><p>このサンプルデータは、授業で次の内容を確認するために使います。<br>・2つの刺激文で印象がどのように変わるか<br>・VASの平均、ばらつき、分布をどう見るか<br>・「差が見える」ことと「強い結論が言える」ことをどう区別するか</p>", "comprehensionCheck": {"title": "回答前の確認", "prompt": "このアンケートで行うこととして、正しいものを1つ選んでください。", "wrongAnswerMessage": "もう一度確認してください。このアンケートでは、2つの文章を読んだ直後の印象をVASで回答します。", "choices": [{"id": "cc1", "label": "2つの文章を読み、それぞれの文章から受けた印象を線上の位置で回答する"}, {"id": "cc2", "label": "文章を読まずに、できるだけ早くすべて同じ位置で回答する"}, {"id": "cc3", "label": "氏名や学籍番号など、個人が特定される情報を自由記述に入力する"}, {"id": "cc4", "label": "文章の内容について、正解を当てるテストとして回答する"}], "correctChoiceId": "cc1"}, "stimuli": {"campus_morning": {"kind": "text", "title": "文章A：朝のキャンパス中庭", "author": "教材用オリジナル文章", "body": "授業が始まる少し前、キャンパスの中庭には柔らかな朝の光が差している。ベンチの近くでは木の葉がゆっくり揺れ、遠くから小さな鳥の声が聞こえる。通り過ぎる学生は少なく、足音も控えめで、空気はひんやりとしている。\n\n掲示板の前で立ち止まる学生が一人、静かに予定を確認している。全体として、時間が少しゆっくり流れているように感じられる場面である。", "bodyHtml": "<p>授業が始まる少し前、キャンパスの中庭には柔らかな朝の光が差している。ベンチの近くでは木の葉がゆっくり揺れ、遠くから小さな鳥の声が聞こえる。通り過ぎる学生は少なく、足音も控えめで、空気はひんやりとしている。</p><p>掲示板の前で立ち止まる学生が一人、静かに予定を確認している。全体として、時間が少しゆっくり流れているように感じられる場面である。</p>"}, "campus_lunch": {"kind": "text", "title": "文章B：昼休みのキャンパス広場", "author": "教材用オリジナル文章", "body": "昼休みのキャンパス広場には、複数の学生グループの声が重なっている。キッチンカーの前には列ができ、近くのテーブルでは笑い声やスマートフォンの通知音が聞こえる。人の動きは多く、次の授業へ向かう学生が足早に通り過ぎる。\n\n掲示板の周りではイベント案内を見ながら話す学生もいる。全体として、にぎわいがあり、あちこちで何かが始まりそうな場面である。", "bodyHtml": "<p>昼休みのキャンパス広場には、複数の学生グループの声が重なっている。キッチンカーの前には列ができ、近くのテーブルでは笑い声やスマートフォンの通知音が聞こえる。人の動きは多く、次の授業へ向かう学生が足早に通り過ぎる。</p><p>掲示板の周りではイベント案内を見ながら話す学生もいる。全体として、にぎわいがあり、あちこちで何かが始まりそうな場面である。</p>"}}, "vasItems": {"calmness": {"label": "この文章から、どの程度「落ち着き」を感じましたか。", "leftLabel": "まったく落ち着きを感じない", "rightLabel": "非常に落ち着きを感じる"}, "liveliness": {"label": "この文章から、どの程度「活気」を感じましたか。", "leftLabel": "まったく活気を感じない", "rightLabel": "非常に活気を感じる"}, "visit_intention": {"label": "この場面に、どの程度「訪れてみたい」と感じましたか。", "leftLabel": "まったく訪れてみたいと思わない", "rightLabel": "非常に訪れてみたいと思う"}}}, "en": {"introTitle": "", "introBody": "", "instructions": "", "declineTitle": "", "declineBody": "", "thankYouTitle": "", "thankYouBody": "", "comprehensionCheck": {"title": "", "prompt": "", "wrongAnswerMessage": "", "choices": [{"id": "cc1", "label": ""}, {"id": "cc2", "label": ""}, {"id": "cc3", "label": ""}, {"id": "cc4", "label": ""}], "correctChoiceId": "cc1"}, "stimuli": {"campus_morning": {"kind": "text", "title": "Item 1", "author": "", "body": ""}, "campus_lunch": {"kind": "text", "title": "Item 2", "author": "", "body": ""}}, "vasItems": {"calmness": {"label": "Question 1", "leftLabel": "", "rightLabel": ""}, "liveliness": {"label": "Question 2", "leftLabel": "", "rightLabel": ""}, "visit_intention": {"label": "Question 3", "leftLabel": "", "rightLabel": ""}}}, "zh-Hans": {"introTitle": "", "introBody": "", "instructions": "", "declineTitle": "", "declineBody": "", "thankYouTitle": "", "thankYouBody": "", "comprehensionCheck": {"title": "", "prompt": "", "wrongAnswerMessage": "", "choices": [{"id": "cc1", "label": ""}, {"id": "cc2", "label": ""}, {"id": "cc3", "label": ""}, {"id": "cc4", "label": ""}], "correctChoiceId": "cc1"}, "stimuli": {"campus_morning": {"kind": "text", "title": "项目 1", "author": "", "body": ""}, "campus_lunch": {"kind": "text", "title": "项目 2", "author": "", "body": ""}}, "vasItems": {"calmness": {"label": "题目 1", "leftLabel": "", "rightLabel": ""}, "liveliness": {"label": "题目 2", "leftLabel": "", "rightLabel": ""}, "visit_intention": {"label": "题目 3", "leftLabel": "", "rightLabel": ""}}}, "zh-Hant": {"introTitle": "", "introBody": "", "instructions": "", "declineTitle": "", "declineBody": "", "thankYouTitle": "", "thankYouBody": "", "comprehensionCheck": {"title": "", "prompt": "", "wrongAnswerMessage": "", "choices": [{"id": "cc1", "label": ""}, {"id": "cc2", "label": ""}, {"id": "cc3", "label": ""}, {"id": "cc4", "label": ""}], "correctChoiceId": "cc1"}, "stimuli": {"campus_morning": {"kind": "text", "title": "項目 1", "author": "", "body": ""}, "campus_lunch": {"kind": "text", "title": "項目 2", "author": "", "body": ""}}, "vasItems": {"calmness": {"label": "題目 1", "leftLabel": "", "rightLabel": ""}, "liveliness": {"label": "題目 2", "leftLabel": "", "rightLabel": ""}, "visit_intention": {"label": "題目 3", "leftLabel": "", "rightLabel": ""}}}, "ko": {"introTitle": "", "introBody": "", "instructions": "", "declineTitle": "", "declineBody": "", "thankYouTitle": "", "thankYouBody": "", "comprehensionCheck": {"title": "", "prompt": "", "wrongAnswerMessage": "", "choices": [{"id": "cc1", "label": ""}, {"id": "cc2", "label": ""}, {"id": "cc3", "label": ""}, {"id": "cc4", "label": ""}], "correctChoiceId": "cc1"}, "stimuli": {"campus_morning": {"kind": "text", "title": "항목 1", "author": "", "body": ""}, "campus_lunch": {"kind": "text", "title": "항목 2", "author": "", "body": ""}}, "vasItems": {"calmness": {"label": "문항 1", "leftLabel": "", "rightLabel": ""}, "liveliness": {"label": "문항 2", "leftLabel": "", "rightLabel": ""}, "visit_intention": {"label": "문항 3", "leftLabel": "", "rightLabel": ""}}}}}}</script>
+<script>
+const REQUIRED_FIELDS = [
+  "group_id", "experiment_slug", "experiment_title", "research_question", "hypothesis", "target_context",
+  "stimulus_1_title", "stimulus_1_author", "stimulus_1_body",
+  "stimulus_2_title", "stimulus_2_author", "stimulus_2_body",
+  "vas_1_concept", "vas_1_label", "vas_1_left", "vas_1_right",
+  "vas_2_concept", "vas_2_label", "vas_2_left", "vas_2_right",
+  "vas_3_concept", "vas_3_label", "vas_3_left", "vas_3_right"
+];
+const STIMULUS_IDS = ["s1", "s2"];
+const VAS_IDS = ["v1", "v2", "v3"];
+const SUPPORTED_LOCALES = ["ja", "en", "zh-Hans", "zh-Hant", "ko"];
+const LOCALE_ITEM_LABELS = {
+  "en": ["Item", "Question"],
+  "zh-Hans": ["项目", "题目"],
+  "zh-Hant": ["項目", "題目"],
+  "ko": ["항목", "문항"]
+};
+
+function parseDelimited(text, delimiter='\t') {
+  const rows = [];
+  let row = [], cell = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    const next = text[i + 1];
+    if (inQuotes) {
+      if (ch === '"' && next === '"') { cell += '"'; i++; }
+      else if (ch === '"') { inQuotes = false; }
+      else { cell += ch; }
+    } else {
+      if (ch === '"') inQuotes = true;
+      else if (ch === delimiter) { row.push(cell); cell = ''; }
+      else if (ch === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
+      else if (ch !== '\r') { cell += ch; }
+    }
+  }
+  row.push(cell);
+  if (row.some(v => v.trim() !== '')) rows.push(row);
+  return rows;
+}
+function fieldKey(header) {
+  const m = (header || '').match(/\[([A-Za-z0-9_]+)\]/);
+  return m ? m[1] : '';
+}
+function slugify(value, fallback) {
+  let s = String(value || '').trim().toLowerCase().replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  if (!s) s = fallback || 'vas-experiment';
+  if (s.length > 64) s = s.slice(0, 64).replace(/-$/g, '');
+  return s || fallback || 'vas-experiment';
+}
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function paragraphsToHtml(text) {
+  return String(text || '').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim().split(/\n\s*\n/).filter(p => p.trim()).map(p => '<p>' + esc(p.trim()).replace(/\n/g, '<br>') + '</p>').join('');
+}
+function blankLocale(locale) {
+  const labels = LOCALE_ITEM_LABELS[locale] || ['Item', 'Question'];
+  const [itemWord, questionWord] = labels;
+  return {
+    introTitle: '', introBody: '', instructions: '', declineTitle: '', declineBody: '', thankYouTitle: '', thankYouBody: '',
+    comprehensionCheck: { title: '', prompt: '', wrongAnswerMessage: '', choices: [1,2,3,4].map(i => ({id: 'cc' + i, label: ''})), correctChoiceId: 'cc1' },
+    stimuli: { s1: {kind: 'text', title: itemWord + ' 1', author: '', body: ''}, s2: {kind: 'text', title: itemWord + ' 2', author: '', body: ''} },
+    vasItems: { v1: {label: questionWord + ' 1', leftLabel: '', rightLabel: ''}, v2: {label: questionWord + ' 2', leftLabel: '', rightLabel: ''}, v3: {label: questionWord + ' 3', leftLabel: '', rightLabel: ''} }
+  };
+}
+function comprehensionCheck() {
+  return {
+    title: '回答前の確認',
+    prompt: 'このアンケートで行うこととして、正しいものを1つ選んでください。',
+    wrongAnswerMessage: 'もう一度確認してください。このアンケートでは、2つの文章を読んだ直後の印象をVASで回答します。',
+    choices: [
+      {id: 'cc1', label: '2つの文章を読み、それぞれの文章から受けた印象を線上の位置で回答する'},
+      {id: 'cc2', label: '文章を読まずに、できるだけ早くすべて同じ位置で回答する'},
+      {id: 'cc3', label: '氏名や学籍番号など、個人が特定される情報を自由記述に入力する'},
+      {id: 'cc4', label: '文章の内容について、正解を当てるテストとして回答する'}
+    ],
+    correctChoiceId: 'cc1'
+  };
+}
+function buildJson(base, row, slug) {
+  const data = JSON.parse(JSON.stringify(base));
+  data.formatVersion = 1;
+  data.experiment = { slug, title: row.experiment_title };
+  data.config.shared.configVersion = 1;
+  data.config.shared.defaultLocale = 'ja';
+  data.config.shared.enabledLocales = ['ja'];
+  data.config.shared.showCurrentValue = false;
+  data.config.shared.showGender = false;
+  data.config.shared.showAgeRange = false;
+  data.config.shared.showComprehensionCheck = true;
+  data.config.shared.stimuli = STIMULUS_IDS.map(id => ({id}));
+  data.config.shared.vasItems = VAS_IDS.map(id => ({id}));
+  const introBody = `このアンケートは、感性データ処理の授業でVAS主観評価を学ぶために実施するものです。\n\nテーマ：${row.experiment_title}\n調べたいこと：${row.research_question}\n\n2つの短い文章を読み、それぞれの文章から受けた印象を、線上の位置で回答してください。回答に正解・不正解はありません。読んだ直後に感じた印象を、そのまま回答してください。\n\n補足：${row.target_context}\n\n回答は授業内の教材データとして匿名で扱います。氏名、学籍番号、個人が特定される情報、機微な個人情報は入力しないでください。参加は任意であり、同意しない場合は回答せずに終了できます。`;
+  const instructions = 'このアンケートでは、2つの文章を順に提示します。\n\n各文章を読んだあと、3本のVASに回答してください。左端は0、右端は100に対応しますが、画面上には数値を表示しません。線上の位置を使って、文章を読んだ直後の印象を表してください。\n\n深く考えすぎず、第一印象に近い位置を選んでください。すべての項目に回答すると、次の文章または送信へ進めます。';
+  const declineBody = '参加しない選択を受け付けました。回答は保存されません。授業では、提示された説明を見ながら、VAS項目の作り方と分析方法を確認してください。';
+  const thankYouBody = `回答ありがとうございました。\n\nこのデータは、授業で次の内容を確認するために使います。\n・2つの刺激文で印象がどのように変わるか\n・VASの平均、ばらつき、分布をどう見るか\n・差が見えることと、強い結論が言えることをどう区別するか\n\n設計時の仮説：${row.hypothesis}`;
+  data.config.locales = {};
+  data.config.locales.ja = {
+    introTitle: row.experiment_title + '：研究参加へのお願い', introBody, introBodyHtml: paragraphsToHtml(introBody),
+    instructions, instructionsHtml: paragraphsToHtml(instructions),
+    declineTitle: '回答を終了しました', declineBody, declineBodyHtml: paragraphsToHtml(declineBody),
+    thankYouTitle: '回答ありがとうございました', thankYouBody, thankYouBodyHtml: paragraphsToHtml(thankYouBody),
+    comprehensionCheck: comprehensionCheck(),
+    stimuli: {
+      s1: {kind: 'text', title: row.stimulus_1_title, author: row.stimulus_1_author, body: row.stimulus_1_body, bodyHtml: paragraphsToHtml(row.stimulus_1_body)},
+      s2: {kind: 'text', title: row.stimulus_2_title, author: row.stimulus_2_author, body: row.stimulus_2_body, bodyHtml: paragraphsToHtml(row.stimulus_2_body)}
+    },
+    vasItems: {
+      v1: {label: row.vas_1_label, leftLabel: row.vas_1_left, rightLabel: row.vas_1_right},
+      v2: {label: row.vas_2_label, leftLabel: row.vas_2_left, rightLabel: row.vas_2_right},
+      v3: {label: row.vas_3_label, leftLabel: row.vas_3_left, rightLabel: row.vas_3_right}
+    }
+  };
+  SUPPORTED_LOCALES.filter(l => l !== 'ja').forEach(l => data.config.locales[l] = blankLocale(l));
+  return data;
+}
+function validate(row, seen) {
+  const warnings = [], errors = [];
+  REQUIRED_FIELDS.forEach(f => { if (!String(row[f] || '').trim()) errors.push(`必須項目 [${f}] が空欄です。`); });
+  const slug = slugify(row.experiment_slug, String(row.group_id || 'group').toLowerCase() + '-vas');
+  if (slug !== row.experiment_slug) warnings.push(`slug '${row.experiment_slug}' を '${slug}' に正規化しました。`);
+  if (seen.has(slug)) errors.push(`slug '${slug}' が重複しています。`);
+  seen.add(slug);
+  [1,2].forEach(n => { const len = String(row[`stimulus_${n}_body`] || '').length; if (len && len < 80) warnings.push(`刺激文${n}が短めです（${len}字）。`); if (len > 600) warnings.push(`刺激文${n}が長めです（${len}字）。`); });
+  [1,2,3].forEach(n => { if ((row[`vas_${n}_left`] || '') === (row[`vas_${n}_right`] || '')) errors.push(`VAS設問${n}の左右ラベルが同一です。`); });
+  if (Object.values(row).join('\n').includes('要修正')) errors.push('要修正プレースホルダが残っています。');
+  return {slug, warnings, errors};
+}
+function convert() {
+  const base = JSON.parse(document.getElementById('base-template').textContent);
+  const text = document.getElementById('tsv').value;
+  const rows = parseDelimited(text);
+  const summary = document.getElementById('summary');
+  const downloads = document.getElementById('downloads');
+  const report = document.getElementById('report');
+  downloads.innerHTML = ''; report.textContent = '';
+  if (rows.length < 2) { summary.innerHTML = '<span class="err">ヘッダー行と1行以上の回答が必要です。</span>'; return; }
+  const headers = rows[0];
+  const keys = headers.map(fieldKey);
+  const missing = REQUIRED_FIELDS.filter(f => !keys.includes(f));
+  if (missing.length) { summary.innerHTML = '<span class="err">必要な列IDがありません: ' + missing.join(', ') + '</span>'; return; }
+  const seen = new Set();
+  let ok = 0, err = 0;
+  const lines = ['row\tgroup_id\tslug\ttitle\tstatus\twarnings\terrors'];
+  rows.slice(1).forEach((cells, idx) => {
+    if (!cells.some(c => String(c || '').trim())) return;
+    const row = {};
+    keys.forEach((k, i) => { if (k) row[k] = String(cells[i] || '').trim(); });
+    const check = validate(row, seen);
+    const status = check.errors.length ? 'error' : 'ok';
+    if (status === 'ok') {
+      ok++;
+      const data = buildJson(base, row, check.slug);
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json;charset=utf-8'});
+      const a = document.createElement('a');
+      a.className = 'download';
+      a.href = URL.createObjectURL(blob);
+      a.download = `experiment-${check.slug}.json`;
+      a.textContent = `experiment-${check.slug}.json をダウンロード`;
+      downloads.appendChild(a);
+    } else { err++; }
+    lines.push([idx + 2, row.group_id || '', check.slug, row.experiment_title || '', status, check.warnings.join(' | '), check.errors.join(' | ')].join('\t'));
+  });
+  summary.innerHTML = `<span class="ok">変換成功: ${ok}件</span> / <span class="err">エラー: ${err}件</span>`;
+  report.textContent = lines.join('\n');
+}
+document.getElementById('convert').addEventListener('click', convert);
+document.getElementById('clear').addEventListener('click', () => { document.getElementById('tsv').value=''; document.getElementById('summary').textContent='未変換です。'; document.getElementById('downloads').innerHTML=''; document.getElementById('report').textContent=''; });
+</script>
+</body>
+</html>

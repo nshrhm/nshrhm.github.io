@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="Google Forms の回答TSVをVAS Pad用JSONに変換するYouTube動画刺激向けツール" />
+  <title>VAS Pad YouTube TSV → JSON 変換ツール</title>
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans JP", sans-serif; line-height: 1.65; margin: 2rem; }
+    textarea { width: 100%; min-height: 14rem; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    button { padding: 0.6rem 1rem; margin: 0.4rem 0.4rem 0.4rem 0; }
+    pre { white-space: pre-wrap; background: #f6f6f6; border: 1px solid #ddd; padding: 1rem; }
+    .ok { color: #146c2e; } .warn { color: #9a6700; } .err { color: #b00020; }
+  </style>
+</head>
+<body>
+  <h1>VAS Pad YouTube TSV → JSON 変換ツール</h1>
+  <p>Google Forms の回答先 Spreadsheet から、ヘッダー行を含めてコピーしたTSVを貼り付けてください。1行ごとに、VAS Pad import用JSONを生成します。動画URL、動画ID、<code>mm:ss</code>形式の開始・終了時刻に対応しています。</p>
+  <textarea id="tsv" placeholder="ここにGoogle SheetsからコピーしたTSVを貼り付けます"></textarea>
+  <div>
+    <button id="convert">JSONを生成</button>
+    <button id="clear">クリア</button>
+  </div>
+  <h2>結果</h2>
+  <div id="result"></div>
+  <pre id="log"></pre>
+<script>
+const REQUIRED = [
+  'group_id','experiment_title',
+  'video_1_title','video_1_youtube','video_1_start','video_1_end','video_1_description',
+  'video_2_title','video_2_youtube','video_2_start','video_2_end','video_2_description',
+  'vas_1_label','vas_1_left','vas_1_right','vas_2_label','vas_2_left','vas_2_right','vas_3_label','vas_3_left','vas_3_right'
+];
+const STIMULUS_IDS = ['s1','s2'];
+const VAS_IDS = ['v1','v2','v3'];
+const QUALITY_KEY_PHRASES = [
+  '動画IDまたはURLを確認した',
+  '開始秒と終了秒を確認した',
+  '2つの動画の長さや提示条件をそろえた',
+  '個人情報・機微情報の入力を求めていない',
+  '著作権・出典・公開条件を確認した',
+  '1つのVAS設問では1つの構成概念だけを測る'
+];
+
+function clean(value) {
+  if (value === null || value === undefined) return '';
+  return String(value).replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+}
+function fieldIdFromHeader(header) {
+  const h = clean(header);
+  const match = h.match(/\[([a-zA-Z0-9_]+)\]/);
+  return match ? match[1] : h;
+}
+function escapeHtml(value) {
+  return clean(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function paragraphsToHtml(text) {
+  const cleaned = clean(text);
+  if (!cleaned) return '';
+  return cleaned.split(/\n\s*\n+/).filter(Boolean).map(p => '<p>' + escapeHtml(p).replace(/\n/g, '<br>') + '</p>').join('');
+}
+function slugify(value, fallback) {
+  let s = clean(value).toLowerCase().replace(/[\s_]+/g,'-').replace(/[^a-z0-9-]+/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'');
+  const fb = clean(fallback).toLowerCase().replace(/[^a-z0-9-]+/g,'-').replace(/^-|-$/g,'') || 'youtube-vas';
+  return s || fb;
+}
+function extractYouTubeVideoId(value) {
+  const v = clean(value);
+  if (/^[A-Za-z0-9_-]{11}$/.test(v)) return v;
+  const patterns = [/[?&]v=([A-Za-z0-9_-]{11})/, /youtu\.be\/([A-Za-z0-9_-]{11})/, /\/embed\/([A-Za-z0-9_-]{11})/, /\/shorts\/([A-Za-z0-9_-]{11})/];
+  for (const p of patterns) {
+    const m = v.match(p);
+    if (m) return m[1];
+  }
+  throw new Error('YouTube動画IDを抽出できません: ' + v);
+}
+function parseSeconds(value) {
+  const v = clean(value);
+  if (!v) throw new Error('秒数が空です。');
+  if (/^\d+(\.0+)?$/.test(v)) return parseInt(Number(v), 10);
+  if (/^\d{1,2}:\d{2}(:\d{2})?$/.test(v)) {
+    const parts = v.split(':').map(Number);
+    return parts.length === 2 ? parts[0] * 60 + parts[1] : parts[0] * 3600 + parts[1] * 60 + parts[2];
+  }
+  const jp = v.match(/^(?:(\d+)\s*分)?\s*(\d+)\s*秒$/);
+  if (jp) return (parseInt(jp[1] || '0', 10) * 60) + parseInt(jp[2], 10);
+  throw new Error('秒数は整数秒、mm:ss、hh:mm:ss、または「1分23秒」で入力してください: ' + v);
+}
+function parseTsv(text) {
+  const rows = [];
+  let row = [], cell = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    const next = text[i + 1];
+    if (inQuotes) {
+      if (ch === '"' && next === '"') { cell += '"'; i++; }
+      else if (ch === '"') inQuotes = false;
+      else cell += ch;
+    } else {
+      if (ch === '"') inQuotes = true;
+      else if (ch === '\t') { row.push(cell); cell = ''; }
+      else if (ch === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
+      else cell += ch;
+    }
+  }
+  row.push(cell); rows.push(row);
+  return rows.filter(r => r.some(c => clean(c) !== ''));
+}
+function defaultTheme() {
+  return {palettePreset:'mono', palette:{bg1:'#fafafa',bg2:'#eaeaea',card:'#ffffff',ink:'#111111',muted:'#444444',line:'#d0d0d0',accent:'#111111',accent2:'#4b4b4b',onAccent:'#ffffff',success:'#2f855a',danger:'#b43c2a'}, typography:{fontPreset:'default-ja'}, spacing:{density:'normal'}};
+}
+function blankLocale(itemWord, questionWord) {
+  return {introTitle:'',introBody:'',instructions:'',declineTitle:'',declineBody:'',thankYouTitle:'',thankYouBody:'',comprehensionCheck:{title:'',prompt:'',wrongAnswerMessage:'',choices:[{id:'cc1',label:''},{id:'cc2',label:''},{id:'cc3',label:''},{id:'cc4',label:''}],correctChoiceId:'cc1'},stimuli:{s1:{kind:'text',title:itemWord+' 1',author:'',body:''},s2:{kind:'text',title:itemWord+' 2',author:'',body:''}},vasItems:{v1:{label:questionWord+' 1',leftLabel:'',rightLabel:''},v2:{label:questionWord+' 2',leftLabel:'',rightLabel:''},v3:{label:questionWord+' 3',leftLabel:'',rightLabel:''}}};
+}
+function buildIntroAndInstructions(title, commonInstruction) {
+  const intro = `このアンケートは、感性データ処理の授業で作成した「${title}」です。\n\n2つの短いYouTube動画を指定された区間だけ視聴し、それぞれの動画から受けた印象を、線上の位置で回答してください。回答に正解・不正解はありません。動画を視聴した直後の印象を、そのまま回答してください。\n\n回答は授業内の教材データとして匿名で扱います。氏名、学籍番号、個人が特定される情報、機微な個人情報は入力しないでください。参加は任意であり、同意しない場合は回答せずに終了できます。`;
+  let instructions = 'このアンケートでは、2つのYouTube動画を順に提示します。\n\n各動画について、指定された開始秒から終了秒までを視聴してください。視聴後、3本のVASに回答します。左端は0、右端は100に対応しますが、画面上には数値を表示しません。線上の位置を使って、動画を視聴した直後の印象を表してください。\n\n動画に音声が含まれる場合は、授業で指定された音量・視聴条件を守ってください。再生できない、途中で止まる、音声が聞こえないなどの問題があれば、無理に回答せず教員へ伝えてください。';
+  if (clean(commonInstruction)) instructions += '\n\n学生作成グループからの補足指示:\n' + clean(commonInstruction);
+  return {intro, instructions};
+}
+function buildConfig(row, rowIndex) {
+  const errors = [], warnings = [];
+  for (const f of REQUIRED) if (!clean(row[f])) errors.push(`${rowIndex}行目: 必須フィールド [${f}] が空です。`);
+  if (errors.length) return {errors,warnings,filename:'',config:null};
+  let vid1, vid2, start1, end1, start2, end2;
+  try {
+    vid1 = extractYouTubeVideoId(row.video_1_youtube); vid2 = extractYouTubeVideoId(row.video_2_youtube);
+    start1 = parseSeconds(row.video_1_start); end1 = parseSeconds(row.video_1_end);
+    start2 = parseSeconds(row.video_2_start); end2 = parseSeconds(row.video_2_end);
+  } catch(e) { errors.push(`${rowIndex}行目: ${e.message}`); return {errors,warnings,filename:'',config:null}; }
+  [['動画1',start1,end1], ['動画2',start2,end2]].forEach(([label,start,end]) => {
+    if (start < 0 || end < 0) errors.push(`${rowIndex}行目: ${label} の開始秒・終了秒は0以上にしてください。`);
+    if (end <= start) errors.push(`${rowIndex}行目: ${label} の終了秒は開始秒より大きくしてください。`);
+    const d = end - start;
+    if (d > 0 && d < 10) warnings.push(`${rowIndex}行目: ${label} の視聴区間が${d}秒です。短すぎないか確認してください。`);
+    if (d > 90) warnings.push(`${rowIndex}行目: ${label} の視聴区間が${d}秒です。授業内では20〜60秒程度を推奨します。`);
+  });
+  if (errors.length) return {errors,warnings,filename:'',config:null};
+  const quality = clean(row.quality_check);
+  QUALITY_KEY_PHRASES.forEach(p => { if (!quality.includes(p)) warnings.push(`${rowIndex}行目: 設計チェック「${p}」が確認されていません。`); });
+  [1,2,3].forEach(i => { const label = clean(row[`vas_${i}_label`]); if (label.includes('かつ') || label.includes('または')) warnings.push(`${rowIndex}行目: VAS${i}質問文に複数概念が混ざっていないか確認してください。`); });
+  const title = clean(row.experiment_title);
+  const slug = slugify(row.experiment_slug || row.group_id, 'video-' + clean(row.group_id || rowIndex));
+  const ii = buildIntroAndInstructions(title, row.common_viewing_instruction);
+  const config = {formatVersion:1,experiment:{slug,title},config:{shared:{configVersion:1,defaultLocale:'ja',enabledLocales:['ja'],theme:defaultTheme(),showCurrentValue:false,showGender:false,showAgeRange:false,showComprehensionCheck:true,stimuli:STIMULUS_IDS.map(id=>({id})),vasItems:VAS_IDS.map(id=>({id}))},locales:{}}};
+  config.config.locales.ja = {introTitle:'授業用VASアンケート：動画から受ける印象の評価',introBody:ii.intro,introBodyHtml:paragraphsToHtml(ii.intro),instructions:ii.instructions,instructionsHtml:paragraphsToHtml(ii.instructions),declineTitle:'回答を終了しました',declineBody:'参加しない選択を受け付けました。回答は保存されません。授業では、提示されたサンプルや説明を見ながら、VAS項目の作り方と分析方法を確認してください。',declineBodyHtml:'<p>参加しない選択を受け付けました。回答は保存されません。授業では、提示されたサンプルや説明を見ながら、VAS項目の作り方と分析方法を確認してください。</p>',thankYouTitle:'回答ありがとうございました',thankYouBody:'回答ありがとうございました。\n\nこのデータは授業内で、2つの動画刺激から受ける印象の違い、VAS値の平均、ばらつき、分布を確認するために使います。',thankYouBodyHtml:'<p>回答ありがとうございました。</p><p>このデータは授業内で、2つの動画刺激から受ける印象の違い、VAS値の平均、ばらつき、分布を確認するために使います。</p>',comprehensionCheck:{title:'回答前の確認',prompt:'このアンケートで行うこととして、正しいものを1つ選んでください。',wrongAnswerMessage:'もう一度確認してください。このアンケートでは、2つのYouTube動画を指定区間だけ視聴した直後の印象をVASで回答します。',choices:[{id:'cc1',label:'2つのYouTube動画を指定された区間だけ視聴し、それぞれの動画から受けた印象を線上の位置で回答する'},{id:'cc2',label:'動画を視聴せず、できるだけ早くすべて同じ位置で回答する'},{id:'cc3',label:'氏名や学籍番号など、個人が特定される情報を自由記述に入力する'},{id:'cc4',label:'動画の内容について、正解を当てる知識テストとして回答する'}],correctChoiceId:'cc1'},stimuli:{s1:{kind:'youtube',title:clean(row.video_1_title),author:clean(row.video_1_source),body:clean(row.video_1_description),bodyHtml:paragraphsToHtml(row.video_1_description),youtubeVideoId:vid1,youtubeStartSeconds:start1,youtubeEndSeconds:end1},s2:{kind:'youtube',title:clean(row.video_2_title),author:clean(row.video_2_source),body:clean(row.video_2_description),bodyHtml:paragraphsToHtml(row.video_2_description),youtubeVideoId:vid2,youtubeStartSeconds:start2,youtubeEndSeconds:end2}},vasItems:{v1:{label:clean(row.vas_1_label),leftLabel:clean(row.vas_1_left),rightLabel:clean(row.vas_1_right)},v2:{label:clean(row.vas_2_label),leftLabel:clean(row.vas_2_left),rightLabel:clean(row.vas_2_right)},v3:{label:clean(row.vas_3_label),leftLabel:clean(row.vas_3_left),rightLabel:clean(row.vas_3_right)}}};
+  config.config.locales.en = blankLocale('Item','Question');
+  config.config.locales['zh-Hans'] = blankLocale('项目','题目');
+  config.config.locales['zh-Hant'] = blankLocale('項目','題目');
+  config.config.locales.ko = blankLocale('항목','문항');
+  return {errors,warnings,filename:`experiment-${slug}.json`,config};
+}
+function rowsFromTsv(text) {
+  const table = parseTsv(text);
+  if (table.length < 2) throw new Error('ヘッダー行と少なくとも1件の回答行が必要です。');
+  const headers = table[0].map(fieldIdFromHeader);
+  return table.slice(1).map(r => Object.fromEntries(headers.map((h, i) => [h, clean(r[i] || '')])));
+}
+function convertTsvText(text) {
+  const rows = rowsFromTsv(text);
+  return rows.map((row, i) => buildConfig(row, i + 2));
+}
+if (typeof module !== 'undefined') module.exports = {convertTsvText, buildConfig, parseTsv, extractYouTubeVideoId, parseSeconds};
+
+</script>
+<script>
+function downloadText(filename, text) {
+  const blob = new Blob([text], {type: 'application/json;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
+document.getElementById('clear').addEventListener('click', () => { document.getElementById('tsv').value = ''; document.getElementById('result').innerHTML = ''; document.getElementById('log').textContent = ''; });
+document.getElementById('convert').addEventListener('click', () => {
+  const resultDiv = document.getElementById('result');
+  const log = document.getElementById('log');
+  resultDiv.innerHTML = ''; log.textContent = '';
+  try {
+    const results = convertTsvText(document.getElementById('tsv').value);
+    results.forEach((r, idx) => {
+      const box = document.createElement('div');
+      const status = r.errors.length ? 'ERROR' : (r.warnings.length ? 'OK_WITH_WARNINGS' : 'OK');
+      box.innerHTML = `<h3 class="${r.errors.length ? 'err' : (r.warnings.length ? 'warn' : 'ok')}">${idx + 1}行目: ${status}</h3>`;
+      if (r.errors.length) {
+        const pre = document.createElement('pre'); pre.textContent = r.errors.join('\n'); box.appendChild(pre);
+      } else {
+        const btn = document.createElement('button'); btn.textContent = `${r.filename} をダウンロード`;
+        btn.addEventListener('click', () => downloadText(r.filename, JSON.stringify(r.config, null, 2) + '\n'));
+        box.appendChild(btn);
+        if (r.warnings.length) { const pre = document.createElement('pre'); pre.textContent = r.warnings.join('\n'); box.appendChild(pre); }
+      }
+      resultDiv.appendChild(box);
+    });
+    log.textContent = `${results.length}行を処理しました。`;
+  } catch (e) {
+    log.textContent = e.stack || e.message;
+    log.className = 'err';
+  }
+});
+</script>
+</body>
+</html>
