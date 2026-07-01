@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>生成AIで「動く」Webアプリを作る超入門スキルアップコース（基礎編）</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png" alt="logo" style="height:100%" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h4>
+                        生成AIで「動く」Webアプリを作る
+                        <br />
+                        超入門スキルアップコース（基礎編）
+                    </h4>
+                    <br />
+                    <h3>
+                        第5回: アプリらしく整える
+                        <br />
+                        空状態・並び替え・削除の基本
+                    </h3>
+                    <p>講師：白濵 成希</p>
+                    <p>下関市立大学 データサイエンス学部</p>
+                    <p>2026年7月2日(木) 18:10〜19:40</p>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日は第5回です。タイトルは「アプリらしく整える」です。
+                        <p>第4回では、保存した記録がFirestoreにあること、ログインした本人の記録として扱われていること、Security Rulesがデータを守っていることを確認しました。</p>
+                        <p>今日は、新しいサービスを追加するのではありません。すでに動いている「マイ記録帳」の一覧表示を、見やすく、分かりやすく、扱いやすく整えます。</p>
+                        <p>記録がないときの案内、新しい記録を上に表示する並び方、記録数、保存中・保存完了・保存失敗の表示、保存後の入力欄のクリアを扱います。</p>
+                        <p>削除機能は任意です。進度に余裕がある人だけ、後半で安全条件を確認しながら追加します。</p>
+                        <p>今日の授業では、画面を大きく作り替えるよりも、「使う人が迷わない表示になっているか」を一つずつ確かめます。AIに任せきりにせず、出てきた変更を自分の目で確認する練習にもしていきます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日のゴール -->
+                    <div style="font-size:1.0em">
+                        <h2>今日のゴール</h2>
+                        <p>
+                            <strong>保存した記録一覧を、見やすく、分かりやすく、扱いやすくする。</strong>
+                        </p>
+                        <p>できるようになること</p>
+                        <ul>
+                            <li>記録がない状態を分かりやすくする</li>
+                            <li>新しい記録をすぐ見つけられる</li>
+                            <li>保存結果を画面で確認できる</li>
+                            <li>入力を続けやすくする</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の一言ゴールは、「保存した記録一覧を、見やすく、分かりやすく、扱いやすくする」です。
+                        <p>アプリは、データを保存できるだけでは十分ではありません。記録がないときに何をすればよいか分かること、新しい記録をすぐ見つけられること、保存できたかどうかが画面から分かることも大切です。</p>
+                        <p>さらに、記録したあとに入力欄がそのまま残っていると、次の入力を始めにくくなります。保存に成功したらフォームを空にして、続けて使いやすい画面にします。</p>
+                        <p>今日は、機能を大量に増やすのではなく、今ある機能を丁寧に整えます。</p>
+                        <p>この回で目指す「分かりやすさ」は、見た目の豪華さではありません。保存した記録がどこに出たか、今何件あるか、次に何をすればよいかが、画面を見れば分かる状態です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の位置づけ -->
+                    <div style="font-size:0.8em">
+                        <h2>今日の位置づけ</h2>
+                        <ul>
+                            <li>第3回：Firestoreへ保存して読む</li>
+                            <li>第4回：保存・ログイン・ルールを点検した</li>
+                            <li>
+                                <strong>第5回：一覧表示をアプリらしく整える</strong>
+                            </li>
+                            <li>
+                                第6回：自分用の項目を少し追加する
+                                <br />
+                                <br />
+                            </li>
+                        </ul>
+                        <h3>新しいサービスは追加しません</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        講座全体の中で、今日の位置づけを確認します。
+                        <p>
+                            第3回では、GoogleログインとFirestoreを使って、記録を保存し、読み込めるようにしました。第4回では、保存した記録がFirestoreにあり、ログインした本人の記録として扱われ、Security Rulesで守られていることを確認しました。
+                        </p>
+                        <p>第5回の今日は、その土台を変えずに、一覧表示と操作の分かりやすさを整えます。</p>
+                        <p>次回の第6回では、アプリの用途を一つ選び、入力項目を一つか二つだけ追加します。したがって今日は、まだ自分用の項目追加には進みません。</p>
+                        <p>新しいサービスや新しいプロジェクトを増やすと、どこで問題が起きたのか分かりにくくなります。今日は第4回までの土台を保ったまま、画面の表示と確認のしやすさだけを整えます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 前回確認したこと -->
+                    <div style="font-size:1.0em">
+                        <h2>前回確認したこと</h2>
+                        <ul>
+                            <li>講座用GmailでGoogleログインした</li>
+                            <li>記録がFirestoreに保存された</li>
+                            <li>再読み込み後も記録を読めた</li>
+                            <li>
+                                <code>records</code> に記録が入っていた
+                            </li>
+                            <li>
+                                <code>userId</code> で誰の記録かを見分けていた
+                            </li>
+                            <li>Security Rulesが本人の記録を守っていた</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        前回確認した内容を振り返ります。
+                        <p>今回の「マイ記録帳」では、Firestoreのrecordsコレクションに記録が保存されています。記録一件ごとのドキュメントには、タイトル、本文、気分、作成日時、userIdなどのフィールドがあります。</p>
+                        <p>userIdは、その記録がどのログインユーザーのものかを見分けるための情報です。実際の値を覚えたり、教材画像に載せたりする必要はありません。</p>
+                        <p>Security Rulesでは、ログインしていることと、記録のuserIdがログイン中のユーザーと一致することを確認していました。</p>
+                        <p>今日は、この保存方法と安全条件を維持したまま、画面側を整えます。</p>
+                        <p>もし自分のアプリでコレクション名やフィールド名が少し違っていても、慌てなくて大丈夫です。大切なのは、ログインした本人の記録だけを保存し、本人の記録だけを表示する考え方が保たれていることです。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日やらないこと -->
+                    <div style="font-size:0.58em">
+                        <h2>今日やらないこと</h2>
+                        <ul>
+                            <li>編集機能</li>
+                            <li>複雑な検索・絞り込み</li>
+                            <li>複雑な権限管理</li>
+                            <li>画像アップロード / Cloud Storage</li>
+                            <li>外部API連携 / Gemini APIキー作成</li>
+                            <li>メール送信 / 決済機能</li>
+                            <li>本番公開</li>
+                            <li>Cloud Billing / Blazeプラン</li>
+                            <li>Cloud Run / Firebase App Hosting</li>
+                            <li>クレジットカード登録 / 支払い方法登録</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日やらないことを先に確認します。
+                        <p>編集機能は扱いません。複雑な検索や絞り込み、複雑な権限管理も扱いません。画像アップロードやCloud Storage、外部API、Gemini APIキー作成、メール送信、決済機能にも進みません。</p>
+                        <p>本番公開は行いません。Cloud Billing、Blazeプラン、Cloud Run、Firebase App Hosting、クレジットカード登録、支払い方法登録も、今日の導線にはありません。</p>
+                        <p>AIが「便利だから追加しましょう」と提案してきても、今日の範囲外であれば採用しません。初心者向けの授業では、できることを増やすより、今の安全な範囲を守って完成度を上げることを優先します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 押さない導線 -->
+                    <div style="font-size:0.7em">
+                        <h2>表示されても今日は押さない</h2>
+                        <ul>
+                            <li>Deploy / Publish</li>
+                            <li>Get API key</li>
+                            <li>Add database and auth</li>
+                            <li>Upgrade / Set up billing</li>
+                            <li>Link billing account / Upgrade to Blaze</li>
+                            <li>Deploy to Cloud Run</li>
+                            <li>Firebase App Hosting</li>
+                            <li>Cloud Storage bucket</li>
+                            <li>
+                                支払い方法登録 / クレジットカード登録
+                                <br />
+                            </li>
+                        </ul>
+                        <p>
+                            <strong>出たら操作を止めて、講師に確認</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        操作中に、便利そうなボタンや案内が表示されることがあります。しかし、ここに書いた表示は今日は押しません。
+                        <p>
+                            DeployとPublishは公開につながる可能性があります。Get API keyはAPIキー作成につながります。Upgrade、Set up billing、Link billing account、Upgrade to Blazeは、課金やプラン変更につながる可能性があります。
+                        </p>
+                        <p>Add database and authも今日は押しません。すでに第3回でFirebaseとの連携を行っているため、新しい連携を追加する必要はありません。</p>
+                        <p>これらの表示が出たら、先に進まず、画面をそのままにして講師に確認してください。</p>
+                        <p>特に課金、公開、APIキーに関係しそうな画面は、意味が分からないまま進めないことが大切です。授業中は「分からないボタンは止まる」が安全な操作ルールです。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- アプリらしく整えるとは -->
+                    <div style="font-size:0.8em">
+                        <h2>「アプリらしく整える」とは</h2>
+                        <p>使う人が、次の状態を迷わず理解できることです。</p>
+                        <ul>
+                            <li>まだ記録がない</li>
+                            <li>保存処理が進んでいる</li>
+                            <li>保存に成功した</li>
+                            <li>保存に失敗した</li>
+                            <li>どの記録が新しいか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        「アプリらしく整える」という言葉は、見た目を派手にするという意味ではありません。
+                        <p>使っている人が、今どのような状態なのかを迷わず理解できることが大切です。</p>
+                        <p>記録が一件もないなら、「壊れている」のではなく、「まだ記録がない」と分かる表示が必要です。保存ボタンを押した直後には、処理中であることが分かる表示が必要です。保存できたのか、失敗したのかも、画面から判断できるようにします。</p>
+                        <p>利用者に今の状態を伝えることが、使いやすいアプリの基本です。</p>
+                        <p>今回追加する表示は、どれも小さなものです。ただ、その小さな表示があるだけで、利用者は「待てばよいのか」「入力すればよいのか」「直す必要があるのか」を判断しやすくなります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日整える5つ -->
+                    <div style="font-size:0.76em">
+                        <h2>今日整える5つのこと</h2>
+                        <ol>
+                            <li>記録が0件のときのメッセージ</li>
+                            <li>新しい記録を上に表示</li>
+                            <li>記録数の表示</li>
+                            <li>保存中・保存完了・保存失敗の表示</li>
+                            <li>
+                                保存成功後にフォームを空にする
+                                <br />
+                                <br />
+                            </li>
+                        </ol>
+                        <h3>まず、この5つだけに絞ります</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日、必ず整える項目は五つです。
+                        <p>一つ目は、記録がゼロ件のときの空状態メッセージです。二つ目は、新しい記録を一覧の上に表示することです。三つ目は、現在の記録数を表示することです。</p>
+                        <p>四つ目は、保存中、保存完了、保存失敗の状態表示です。五つ目は、保存に成功したあと、入力フォームを空にすることです。</p>
+                        <p>今日は、まずこの五つだけに絞ります。AIが編集、検索、画像、公開などを追加しようとしても、今回の範囲には入れません。</p>
+                        <p>作業の順番としては、まずメインプロンプトで五つをまとめて依頼し、そのあと画面を見ながら一つずつ確認します。うまくいかなかったところだけ、後半の補助プロンプトで直していきます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第4回アプリを開く -->
+                    <div style="font-size:0.8em">
+                        <h2>第4回のアプリを開く</h2>
+                        <p>確認すること</p>
+                        <ul>
+                            <li>「マイ記録帳」を開いている</li>
+                            <li>Googleログイン機能が残っている</li>
+                            <li>Firestore保存と読み込みが動く</li>
+                            <li>第4回で使ったプロジェクトである</li>
+                        </ul>
+                        <h3>新しいアプリは作りません</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここから操作に入ります。
+                        <p>Google AI Studio Buildで、第4回まで使っていた「マイ記録帳」を開いてください。今日は新しいアプリを作りません。前回までのアプリに追加指示を出します。</p>
+                        <p>Googleログイン機能が残っていること、Firestoreへの保存と読み込みが動くことを確認します。また、第4回で確認したFirebaseプロジェクトと対応しているアプリを開いているか確認してください。</p>
+                        <p>違うアプリや新しい空のプロジェクトを開いている場合は、ここで戻ります。</p>
+                        <p>今日の改善は、前回までの保存機能が動いていることを前提にしています。最初に開くアプリを間違えると、AIへの指示が正しくても結果を確認できないので、ここは少し丁寧に見ます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Gmailとログイン状態 -->
+                    <div style="font-size:0.76em">
+                        <h2>講座用Gmailとログイン状態を確認</h2>
+                        <ul>
+                            <li>講座用のプライベートGmailを使う</li>
+                            <li>ログイン済みか確認する</li>
+                            <li>勤務先・学校・家族のアカウントは使わない</li>
+                            <li>メールアドレスやプロフィール画像を撮影しない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        アプリを開いたら、ログイン状態を確認します。
+                        <p>講座用のプライベートGmailを使ってください。勤務先、学校、家族のアカウントでは進めません。複数のGoogleアカウントを使っている人は、どのアカウントでログインしているかを確認します。</p>
+                        <p>アプリ画面にメールアドレスやプロフィール画像が表示される場合があります。教材用のスクリーンショットや画面共有では、それらが映らないようにしてください。</p>
+                        <p>今日の目的は、ログインした本人の記録一覧を整えることです。ログイン情報を見せることではありません。</p>
+                        <p>もし違うアカウントでログインしていた場合は、作業を進める前に切り替えます。記録が見えない原因が、アプリの不具合ではなく、別アカウントで開いているだけということもよくあります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 空状態とは -->
+                    <div style="font-size:0.8em">
+                        <h2>空状態メッセージとは</h2>
+                        <p>記録が0件のときに表示する案内です。</p>
+                        <blockquote>
+                            <p>
+                                まだ記録がありません。
+                                最初の記録を書いてみましょう
+                            </p>
+                        </blockquote>
+                        <p>空白のままにせず、次に何をすればよいか伝えます。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        記録が一件もない状態を「空状態」と呼びます。
+                        <p>一覧が何も表示されないままだと、利用者は、読み込みに失敗しているのか、まだ記録がないだけなのか判断できません。</p>
+                        <p>そこで、「まだ記録がありません。最初の記録を書いてみましょう」と表示します。</p>
+                        <p>空状態メッセージには、二つの役割があります。一つは、エラーではないことを伝えることです。もう一つは、次に何をすればよいか案内することです。</p>
+                        <p>難しい説明や長い文章は必要ありません。短く、安心できる言葉にします。</p>
+                        <p>空状態は、アプリの失敗画面ではなく、利用者を次の操作へ案内する通常の状態です。だから、警告のように強い表現にする必要はありません。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 空状態の確認 -->
+                    <div style="font-size:0.72em">
+                        <h2>空状態を確認する</h2>
+                        <p>確認すること</p>
+                        <ul>
+                            <li>記録カードが0件</li>
+                            <li>空状態メッセージが表示される</li>
+                            <li>入力フォームは使える</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        記録がゼロ件の状態では、このような空状態メッセージが表示されるようにします。
+                        <p>自分のアカウントにすでに記録がある場合は、空状態を確認するためだけに、記録を無理に削除しないでください。講師が用意した空状態の画面や、講師指定の確認方法を使います。</p>
+                        <p>空状態でも、入力フォームは表示されていて、新しい記録を書けることを確認します。空状態メッセージがフォームや保存ボタンを隠してはいけません。</p>
+                        <p>ここで確認したいのは、「記録がないこと」と「入力できないこと」を混同しない画面になっているかです。記録がゼロ件でも、これから最初の記録を書ける状態なら正しく進められます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 新しい順 -->
+                    <div style="font-size:0.8em">
+                        <h2>新しい記録を上に表示する</h2>
+                        <p>一覧の先頭に、最新の記録を置きます。</p>
+                        <ul>
+                            <li>いちばん新しい記録</li>
+                            <li>少し前の記録</li>
+                            <li>古い記録</li>
+                        </ul>
+                        <p>
+                            <strong>追加した記録をすぐ見つけられる</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        記録一覧は、新しい記録を上に表示します。
+                        <p>保存したばかりの記録が一覧の下に追加されると、記録が増えたときに見つけにくくなります。最新の記録を先頭に置けば、保存できたことをすぐ確認できます。</p>
+                        <p>並び順は、タイトルの五十音順や本文の文字列ではなく、作成日時を基準にします。今回のアプリでは、記録にcreatedAtなどの作成日時が保存されています。</p>
+                        <p>フィールド名は生成結果によって少し異なることがありますが、「新しく作成された記録ほど上」という考え方は同じです。</p>
+                        <p>確認するときは、最後に保存した記録のタイトルを覚えておくと見つけやすくなります。講座では、個人情報ではなく、「並び順確認2」のような架空の短いタイトルを使います。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 記録数 -->
+                    <div style="font-size:0.8em">
+                        <h2>記録数を表示する</h2>
+                        <p>一覧の近くに、件数を表示します。</p>
+                        <blockquote>
+                            <p>記録数：3件</p>
+                        </blockquote>
+                        <p>確認しやすくなること</p>
+                        <ul>
+                            <li>保存後に1件増えた</li>
+                            <li>削除後に1件減った</li>
+                            <li>今、何件あるか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        一覧の近くに、現在の記録数を表示します。
+                        <p>たとえば、「記録数：3件」のような短い表示で十分です。保存後に一件増えたことを確認できます。任意の削除機能を扱った場合は、削除後に一件減ったことも確認できます。</p>
+                        <p>件数は、現在画面に表示している本人の記録数です。他人の記録を含めた数ではありません。</p>
+                        <p>空状態では、「記録数：0件」と表示し、その下に空状態メッセージを出すと、状態がさらに分かりやすくなります。</p>
+                        <p>この件数は、Firestore全体の件数ではなく、アプリ画面に表示されている自分の記録の件数として扱います。ほかの人の記録が混ざっていないことも、間接的に確認できます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 保存状態 -->
+                    <div style="font-size:0.78em">
+                        <h2>保存の状態を画面に出す</h2>
+                        <p>ボタンを押したあとの状態を伝えます。</p>
+                        <ul>
+                            <li>
+                                <strong>保存中</strong>：処理が終わるまで待つ
+                            </li>
+                            <li>
+                                <strong>保存完了</strong>：Firestoreへの保存に成功
+                            </li>
+                            <li>
+                                <strong>保存失敗</strong>：保存できなかった
+                            </li>
+                        </ul>
+                        <p>
+                            <strong>無反応に見せないことが大切</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        「記録する」ボタンを押したあと、何も表示が変わらないと、利用者はボタンが押せたのか分かりません。
+                        <p>そこで、処理を始めたら「保存中」と表示します。Firestoreへの保存が成功したら「保存完了」に変えます。エラーが起きた場合は「保存失敗」と表示します。</p>
+                        <p>保存中にボタンを何度も押せると、同じ記録が複数作られることがあります。生成結果によっては、保存中だけボタンを押せない状態にすることもあります。</p>
+                        <p>今日は、少なくとも現在の状態が画面で分かることを確認します。</p>
+                        <p>保存状態の文言は、多少違っていても構いません。「保存しています」「保存しました」「保存できませんでした」のように、意味が利用者に伝わることを優先します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 入力後クリア -->
+                    <div style="font-size:0.78em">
+                        <h2>保存成功後にフォームを空にする</h2>
+                        <p>保存に成功したあと</p>
+                        <ul>
+                            <li>タイトル欄を空にする</li>
+                            <li>本文欄を空にする</li>
+                            <li>気分欄を初期状態に戻す</li>
+                            <li>次の記録を入力できる状態にする</li>
+                        </ul>
+                        <p>
+                            <strong>保存失敗時は入力内容を消さない</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        保存に成功したら、入力フォームを空にします。そうすると、続けて次の記録を入力しやすくなります。
+                        <p>タイトル欄と本文欄は空にします。気分を選ぶ欄は、未選択または最初の状態に戻します。実際のフォームの作り方によって、初期状態は異なって構いません。</p>
+                        <p>重要なのは、保存に失敗したときには入力内容を消さないことです。失敗時に入力が消えると、利用者は同じ文章をもう一度入力しなければなりません。</p>
+                        <p>フォームを空にするのは、Firestoreへの保存が成功したあとだけです。</p>
+                        <p>この動きは、連続して記録を書くときに効いてきます。一件保存するたびに手で消さなくてよいので、利用者は次の記録にすぐ移れます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- メインプロンプト -->
+                    <div style="font-size:0.80em">
+                        <h2>受講生用メインプロンプト</h2>
+                        <pre><code class="language-text">
+「マイ記録帳」の一覧表示を、初心者向けに見やすく整えてください。
+
+次の改善だけを行ってください。
+
+- 記録が0件のときに「まだ記録がありません。最初の記録を書いてみましょう」と表示する
+- 新しい記録を上に表示する
+- 記録数を表示する
+- 保存中、保存完了、保存失敗が分かる表示を出す
+- 記録後に入力欄を空にする
+
+削除、編集、画像アップロード、外部API、公開、課金設定は追加しないでください。
+Cloud Billing、Blaze、Cloud Run、
+Firebase App Hosting、Deploy、Get API key は使わないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        このプロンプトを、現在の「マイ記録帳」が開かれているGoogle AI Studio Buildの入力欄に貼り付けます。
+                        <p>最初の行では、一覧表示を初心者向けに見やすく整えることを伝えています。そのあと、今日改善する五項目だけを指定しています。</p>
+                        <p>最後には、追加しない機能と、使わないサービスを書いています。削除は任意機能なので、最初のプロンプトでは追加しません。編集、画像アップロード、外部API、公開、課金設定も追加しません。</p>
+                        <p>Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Get API keyを使わないことも明記しています。</p>
+                        <p>プロンプトを貼り付けるときは、自分のメールアドレス、実名、プロジェクトIDなどを追記しないでください。このまま使える形にしているので、必要以上に個別情報を入れずに送信します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- プロンプトの読み方 -->
+                    <div style="font-size:0.8em">
+                        <h2>プロンプトの読み方</h2>
+                        <p>この指示は、4つに分かれています。</p>
+                        <ol>
+                            <li>何を整えるか</li>
+                            <li>どの状態を表示するか</li>
+                            <li>保存後に何をするか</li>
+                            <li>何を追加しないか</li>
+                        </ol>
+                        <p>
+                            <strong>作ることと、作らないことを両方伝えます</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        プロンプトの構造を確認します。
+                        <p>最初に、「マイ記録帳」の一覧表示を整えると伝えています。次に、空状態、新しい順、記録数、保存状態という、画面に出したい情報を指定しています。</p>
+                        <p>さらに、保存後に入力欄を空にするという動作を指定しています。</p>
+                        <p>最後に、削除、編集、画像アップロード、外部API、公開、課金設定を追加しないと伝えています。</p>
+                        <p>AIに依頼するときは、作ってほしいことだけでなく、今回は作らないことも明記すると、変更範囲を小さく保ちやすくなります。</p>
+                        <p>この読み方は、次回以降も使えます。AIへの依頼は、「目的」「具体的な変更」「守る条件」「やらないこと」に分けると、結果を確認しやすくなります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 送信前チェック -->
+                    <div style="font-size:0.72em">
+                        <h2>送信前チェック</h2>
+                        <ul>
+                            <li>第4回まで使ったアプリを開いている</li>
+                            <li>講座用Gmailでログインしている</li>
+                            <li>プロンプトに個人情報を入れていない</li>
+                            <li>改善項目が5つに絞られている</li>
+                            <li>削除・編集・公開・課金を追加しないと書いてある</li>
+                        </ul>
+                        <h3>確認できたら送信します</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        プロンプトを送信する前に、短く確認します。
+                        <p>第4回まで使用したアプリを開いているでしょうか。講座用のプライベートGmailでログインしているでしょうか。プロンプトの中に、メールアドレス、実名、勤務先情報などを追加していないでしょうか。</p>
+                        <p>改善項目が、空状態、新しい順、記録数、保存状態、フォームのクリアの五つに絞られていることを確認します。</p>
+                        <p>削除、編集、公開、課金設定を追加しないと書かれていることも確認してください。確認できたら送信します。</p>
+                        <p>送信前チェックは、ミスを防ぐための短い一時停止です。うまくいかないときほど、急いで何度も送るのではなく、今開いているアプリとプロンプトの中身を見直します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 新しく確認すること -->
+                    <div style="font-size:0.7em">
+                        <h2>新しく確認すること</h2>
+                        <ul>
+                            <li>空状態メッセージ</li>
+                            <li>新しい順の表示</li>
+                            <li>記録数</li>
+                            <li>保存状態</li>
+                            <li>保存後のフォーム</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        生成が終わったら、新しく追加された五項目を確認します。
+                        <p>ただし、追加されたものだけを見るのではありません。これまで動いていたGoogleログイン、Firestoreへの保存、Firestoreからの読み込みが壊れていないことも確認します。</p>
+                        <p>確認は、上から順番にチェックしていくと落ち着いて進められます。一度に全部を判断しようとせず、空状態、並び順、件数、保存状態、フォームの順で見ていきます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 残っているか確認すること -->
+                    <div style="font-size:0.8em">
+                        <h2>残っているか確認すること</h2>
+                        <ul>
+                            <li>Googleログイン</li>
+                            <li>Firestore保存と読み込み</li>
+                            <li>自分の記録だけを表示する仕組み</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        また、recordsコレクションの記録を、userIdによってログインした本人のものだけ表示する仕組みが維持されていることも大切です。
+                        <p>AIが画面を整える過程で、保存先や認証処理を大きく変更していないかを確認します。見た目が良くなっても、既存機能が壊れていたら完成ではありません。</p>
+                        <p>特に、自分以外の記録が見えていないか、ログアウト状態でも記録が読めてしまわないかは、安全に関わる確認です。授業では無理に別アカウント検証を増やさず、講師の指示に従って確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 0件確認 -->
+                    <div style="font-size:0.76em">
+                        <h2>記録0件の表示を確認</h2>
+                        <p>確認する表示</p>
+                        <ul>
+                            <li>
+                                <code>記録数：0件</code>
+                            </li>
+                            <li>「まだ記録がありません」</li>
+                            <li>「最初の記録を書いてみましょう」</li>
+                            <li>入力フォームと記録ボタン</li>
+                        </ul>
+                        <h3>0件はエラーではありません</h3>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        記録がゼロ件の状態で、件数と空状態メッセージを確認します。
+                        <p>「記録数：0件」と表示され、その下に「まだ記録がありません。最初の記録を書いてみましょう」と表示されれば分かりやすい状態です。</p>
+                        <p>記録がないことはエラーではありません。赤い警告や、失敗したような表現を出す必要はありません。</p>
+                        <p>すでに記録がある人は、空状態を作るためにデータを削除しないでください。講師のデモ画面や、講師指定の方法で確認します。</p>
+                        <p>空状態を確認できない場合でも、スライドの例と自分の画面を見比べて、記録がないときに出る表示がコード上に追加されているかをAIに説明してもらう方法があります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 複数記録 -->
+                    <div style="font-size:0.8em">
+                        <h2>複数記録で新しい順を確認</h2>
+                        <p>確認方法</p>
+                        <ol>
+                            <li>架空の記録を2件以上用意する</li>
+                            <li>最後に追加した記録を見る</li>
+                            <li>一覧の一番上にあるか確認する</li>
+                            <li>記録数が合っているか確認する</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        新しい順の並びを確認するため、架空の記録を二件以上用意します。
+                        <p>たとえば、「並び順の確認1」と「並び順の確認2」のような短いサンプルを使います。最後に追加した記録が、一覧の一番上に表示されるか確認してください。</p>
+                        <p>同時に、記録数が実際のカード数と一致しているかを確認します。二件なら「記録数：2件」と表示されます。</p>
+                        <p>実名、勤務先、顧客情報、業務上の内容は入力しません。スクリーンショットに使える短い架空の文章にします。</p>
+                        <p>二件を続けて保存したあと、ブラウザを再読み込みしても順番が保たれているかを見ると、画面上だけの一時的な並び替えではないことも確認しやすくなります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 保存中 -->
+                    <div style="font-size:0.8em">
+                        <h2>保存中の表示を確認</h2>
+                        <p>「記録する」を押した直後</p>
+                        <ul>
+                            <li>「保存中」と表示される</li>
+                            <li>処理中であることが分かる</li>
+                            <li>同じ記録を何度も送信しにくい</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        記録するボタンを押した直後に、「保存中」と表示されるか確認します。
+                        <p>保存処理が速い場合、表示は短時間で「保存完了」に変わります。見えにくい場合は、講師の画面やスクリーンショットで確認します。</p>
+                        <p>生成結果によっては、保存中にボタンの文字が変わったり、ボタンが一時的に押せなくなったりします。どちらでも構いません。</p>
+                        <p>大切なのは、処理中であることが利用者に伝わり、何度も同じボタンを押さなくてよいと分かることです。</p>
+                        <p>もし「保存中」が一瞬で消えて見えない場合でも、保存完了表示や一覧への追加が正しく動いていれば、授業では次の確認に進んで構いません。表示の細かい調整は、必要になったときに行います。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 保存完了 -->
+                    <div style="font-size:0.8em">
+                        <h2>保存完了の表示を確認</h2>
+                        <p>保存後に確認すること</p>
+                        <ul>
+                            <li>「保存完了」と表示される</li>
+                            <li>新しい記録が一覧の上に出る</li>
+                            <li>記録数が1件増える</li>
+                            <li>入力フォームが空になる</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Firestoreへの保存が成功したら、「保存完了」と表示されることを確認します。
+                        <p>そのあと、新しく保存した記録が一覧の一番上に表示されるかを見ます。記録数が一件増えていることも確認します。</p>
+                        <p>最後に、タイトル欄と本文欄が空になり、気分欄が初期状態に戻っているかを確認します。</p>
+                        <p>保存完了表示だけが出て、実際には一覧に追加されない場合は、表示だけを先に変更している可能性があります。保存完了、一覧への追加、件数の増加、フォームのクリアをまとめて確認します。</p>
+                        <p>このスライドでは、「表示」と「実際のデータの変化」をセットで見ることが大切です。保存完了という文字だけで判断せず、記録カードと件数も一緒に確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 保存失敗時 -->
+                    <div style="font-size:0.8em">
+                        <h2>保存失敗時のAIへの聞き方</h2>
+                        <pre><code class="language-text">
+「記録する」を押すと、保存失敗と表示されました。
+エラー内容は次のとおりです。
+
+（ここにエラー文を貼ります）
+
+Googleログイン、recordsコレクション、userIdによる本人確認、
+Firestoreへの保存処理、Security Rulesの順に確認してください。
+
+ログインした本人だけが自分の記録を保存できる状態を維持し、
+最小限の修正にしてください。
+
+allow read, write: if true; のような公開設定にはしないでください。
+Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、
+Deploy、Publish、Get API key は使わないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        保存に失敗した場合は、エラー文をAIに正確に伝えます。
+                        <p>個人情報、UID、プロジェクトID、Database IDが含まれていないかを確認してから、エラー文を貼り付けます。</p>
+                        <p>今回のアプリでは、recordsコレクションに記録を保存し、各記録のuserIdで本人の記録かどうかを見分けています。その仕組みを維持したまま、ログイン状態、保存処理、Security Rulesの順に確認してもらいます。</p>
+                        <p>エラーを消すために、allow read, write: if true;のような広すぎるルールへ変更してはいけません。</p>
+                        <p>保存失敗画面は、エラーが発生した人または講師が用意した例で確認します。確認のためにSecurity Rulesを意図的に壊すことはしません。</p>
+                        <p>AIに貼るエラー文は、全文をそのまま貼る前に一度読みます。メールアドレスや識別子が含まれている場合は、講師に確認してから伏せ字にします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 並ばない -->
+                    <div style="font-size:0.8em">
+                        <h2>新しい順にならないとき</h2>
+                        <pre><code class="language-text">
+新しく保存した記録が、一覧の下に表示されています。
+
+既存のrecordsコレクションとuserIdによる本人確認を維持したまま、
+作成日時が新しい記録ほど上に表示されるように修正してください。
+
+タイトルや本文の文字順ではなく、createdAtなどの作成日時を使ってください。
+既存のGoogleログイン、Firestore保存、読み込み、Security Rulesを壊さないでください。
+
+新しいサービス、公開、課金設定、APIキーは追加しないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        新しく保存した記録が一覧の下に出る場合は、現在の状態と希望する状態をAIに伝えます。
+                        <p>並び順は、タイトルや本文の文字順ではなく、createdAtなどの作成日時を使うように指定します。実際のフィールド名が異なる場合は、既存の作成日時フィールドを使ってもらいます。</p>
+                        <p>recordsコレクションとuserIdによる本人確認、Googleログイン、Firestore保存、読み込み、Security Rulesを維持することも明記します。</p>
+                        <p>新しい設定画面や不明なリンクが表示された場合は、勝手に進まず講師に確認してください。</p>
+                        <p>並び替えの修正では、Security Rulesを緩める必要は通常ありません。AIがルール変更を提案してきた場合は、その理由を説明してもらい、広すぎる許可になっていないか確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- フォームが空にならない -->
+                    <div style="font-size:0.8em">
+                        <h2>入力欄が空にならないとき</h2>
+                        <pre><code class="language-text">
+Firestoreへの保存は成功していますが、
+保存完了後も入力欄に前の内容が残っています。
+
+保存に成功した場合だけ、タイトル欄と本文欄を空にし、
+気分欄を初期状態に戻してください。
+
+保存に失敗した場合は、入力内容を消さないでください。
+既存のGoogleログイン、Firestore保存、記録一覧、
+新しい順の表示、記録数は維持してください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Firestoreへの保存は成功しているのに、入力欄が空にならない場合の聞き方です。
+                        <p>重要なのは、「保存に成功した場合だけ」と指定することです。保存処理を始めた直後にフォームを空にすると、途中で保存に失敗した場合にも入力内容が消えてしまいます。</p>
+                        <p>タイトル欄と本文欄を空にし、気分欄を初期状態に戻すように依頼します。同時に、既存のログイン、保存、一覧表示、新しい順、記録数を維持することも伝えます。</p>
+                        <p>一か所を直すときに、ほかの動作を壊さないように条件を明記します。</p>
+                        <p>保存失敗時に入力を残す指定は、利用者への配慮です。せっかく書いた文章を失わないようにすることも、アプリらしいふるまいの一部です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 複雑になりすぎた -->
+                    <div style="font-size:0.8em">
+                        <h2>画面が複雑になりすぎたとき</h2>
+                        <pre><code class="language-text">
+画面が複雑になりすぎました。
+初心者向けに、次の要素だけに整理してください。
+
+- 「マイ記録帳」のタイトル
+- Googleログイン状態
+- タイトル、本文、気分の入力フォーム
+- 「記録する」ボタン
+- 保存中、保存完了、保存失敗の表示
+- 記録数
+- Firestoreから読み込んだ記録一覧
+- 記録が0件のときのメッセージ
+
+recordsコレクションとuserIdによる本人確認は維持してください。
+削除、編集、検索、画像アップロード、外部API、公開、
+課金設定、APIキー作成は追加しないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        AIに何度か修正を頼むと、画面が複雑になりすぎることがあります。
+                        <p>余計なメニュー、検索欄、編集ボタン、画像機能などが追加された場合は、必要な要素だけに整理してもらいます。</p>
+                        <p>このプロンプトでは、アプリのタイトル、ログイン状態、入力フォーム、記録ボタン、保存状態、記録数、一覧、空状態メッセージだけを残します。</p>
+                        <p>同時に、recordsコレクションとuserIdによる本人確認は維持するように伝えます。</p>
+                        <p>AIとアプリを作るときは、追加する指示だけでなく、減らして元に戻す指示も大切です。</p>
+                        <p>画面が複雑になったと感じたら、失敗ではなく整理のタイミングです。必要な要素だけに戻すことで、確認もしやすくなり、次の修正も頼みやすくなります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 削除安全ルール -->
+                    <div style="font-size:0.8em">
+                        <h2>削除を扱う場合の安全ルール</h2>
+                        <ul>
+                            <li>自分の記録だけ削除できる</li>
+                            <li>削除前に確認メッセージを出す</li>
+                            <li>キャンセルしたら削除しない</li>
+                            <li>削除後に一覧から消える</li>
+                            <li>記録数が1件減る</li>
+                            <li>Security Rulesを広げすぎない</li>
+                        </ul>
+                        <p>
+                            <strong><code>allow read, write: if true;</code> は使いません</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        削除を追加する場合の安全ルールです。
+                        <p>削除できるのは、ログインした本人の記録だけです。削除対象の記録に保存されているuserIdと、現在ログインしているユーザーのIDが一致することを確認する考え方を維持します。</p>
+                        <p>削除ボタンを押したら、すぐに削除せず、確認メッセージを出します。キャンセルを選んだ場合は記録を残します。</p>
+                        <p>削除後は、一覧からカードが消え、記録数が一件減ることを確認します。</p>
+                        <p>Security Rulesを変更する必要がある場合も、本人の記録に対する削除だけを許可する最小限の条件にします。公開読み書きにはしません。</p>
+                        <p>削除は取り消しが難しい操作なので、授業では特に慎重に扱います。進度に不安がある場合は、削除を追加せず、ここまでの五項目ができていれば第5回の到達点として十分です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 削除プロンプト -->
+                    <div style="font-size:0.8em">
+                        <h2>削除を追加する場合のプロンプト</h2>
+                        <pre><code class="language-text">
+自分の記録だけを削除できる削除ボタンを追加してください。
+
+条件は次のとおりです。
+
+- 削除前に確認メッセージを表示する
+- 削除後に一覧から消えることを確認できるようにする
+- ログインした本人の記録だけ削除できるようにする
+- FirestoreのSecurity Rulesを広げすぎない
+- 公開書き込みや allow read, write: if true; のような広すぎるルールにはしない
+
+Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+Get API key、Cloud Storage、外部API、画像アップロードは使わないでください。
+
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        削除機能を追加する人は、このプロンプトを使います。
+                        <p>自分の記録だけを削除できること、削除前に確認メッセージを出すこと、削除後に一覧から消えることを指定しています。</p>
+                        <p>Security Rulesを広げすぎないことも明記します。今回のアプリでは、recordsコレクションの各記録にあるuserIdを使って、本人の記録かどうかを確認しています。この考え方と矛盾しない修正にします。</p>
+                        <p>
+                            Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、Get API key、Cloud Storage、外部API、画像アップロードは使いません。
+                        </p>
+                        <p>このプロンプトは任意部分です。全員が必ず実行するものではありません。先に空状態、新しい順、記録数、保存状態、フォームのクリアが確認できてから、余裕がある場合だけ進めます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 削除後確認 -->
+                    <div style="font-size:0.8em">
+                        <h2>削除前と削除後を確認</h2>
+                        <div style="display:flex;
+                                    gap:24px;
+                                    align-items:center;
+                                    justify-content:center">
+                            <div>
+                                <p>
+                                    <strong>削除前</strong>
+                                </p>
+                                <ul>
+                                    <li>確認メッセージが出る</li>
+                                    <li>キャンセルできる</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p>
+                                    <strong>削除後</strong>
+                                </p>
+                                <ul>
+                                    <li>対象記録が消える</li>
+                                    <li>記録数が1件減る</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        削除機能を追加した場合は、削除前と削除後を確認します。
+                        <p>最初に、削除ボタンを押したときに確認メッセージが表示されるかを見ます。まずキャンセルを選び、記録が残ることを確認します。</p>
+                        <p>次に、もう一度削除ボタンを押し、確認メッセージで削除を選びます。対象の記録が一覧から消え、記録数が一件減ることを確認します。</p>
+                        <p>ブラウザを再読み込みしたあとも削除した記録が復活しないことを確認できれば、Firestoreから削除された可能性が高いと判断できます。</p>
+                        <p>削除の練習には、必ず架空の短いサンプル記録を使います。</p>
+                        <p>削除できたように見えても、再読み込み後に復活する場合は、画面上だけで消していてFirestore側の削除ができていない可能性があります。その場合は、エラー文や現在の動きをAIに説明して、最小限の修正を依頼します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 終了チェック -->
+                    <div style="font-size:0.51em">
+                        <h2>第5回 終了チェック</h2>
+                        <ul class="contains-task-list">
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-8676766">
+                                <label class="task-list-item-label" for="task-item-8676766">記録が0件のときのメッセージを確認した</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-4416196">
+                                <label class="task-list-item-label" for="task-item-4416196">新しい記録が上に表示されることを確認した</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-1390485">
+                                <label class="task-list-item-label" for="task-item-1390485">記録数が表示されることを確認した</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-2445624">
+                                <label class="task-list-item-label" for="task-item-2445624">保存中、保存完了、保存失敗の表示を確認した</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-1409677">
+                                <label class="task-list-item-label" for="task-item-1409677">入力後にフォームが空になることを確認した</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-4009126">
+                                <label class="task-list-item-label" for="task-item-4009126">削除を扱った場合、自分の記録だけ削除できることを確認した</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-7358993">
+                                <label class="task-list-item-label" for="task-item-7358993">公開書き込みにしていない</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-167600">
+                                <label class="task-list-item-label" for="task-item-167600">
+                                    Deploy / Publish / Get API key / Upgrade / Set up billing を押していない
+                                </label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-680292">
+                                <label class="task-list-item-label" for="task-item-680292">
+                                    Cloud Billing / Blaze / Cloud Run / App Hosting に進んでいない
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第5回の終了チェックです。
+                        <p>記録がゼロ件のときに、分かりやすいメッセージが表示されたか確認します。新しく保存した記録が一覧の上に表示され、記録数が正しく表示されたか確認します。</p>
+                        <p>保存中、保存完了、保存失敗の状態を確認します。保存失敗は、実際にエラーが発生した画面または講師の例で確認して構いません。確認のためにSecurity Rulesを壊してはいけません。</p>
+                        <p>保存成功後に入力フォームが空になることも確認します。削除を扱った人は、自分の記録だけ削除できることを確認します。</p>
+                        <p>公開書き込みにしていないこと、課金、公開、APIキー作成の導線に進んでいないことも確認してください。</p>
+                        <p>チェック項目は、実際に自分の画面で確認できたものだけに印を付けます。不安な項目が残っている場合は、そこで止めて講師に相談します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第6回への橋渡し -->
+                    <div style="font-size:0.8em">
+                        <h2>第6回への橋渡し</h2>
+                        <p>
+                            次回：<strong>自分用に変える</strong>
+                        </p>
+                        <ul>
+                            <li>アプリの用途を1つ選ぶ</li>
+                            <li>入力項目を1〜2個だけ追加する</li>
+                            <li>追加項目をFirestoreへ保存する</li>
+                            <li>一覧カードにも表示する</li>
+                        </ul>
+                        <p>
+                            <strong>小さく変えて、動作を確認します</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日は、「マイ記録帳」の一覧表示をアプリらしく整えました。
+                        <p>記録がないときの案内、新しい順の並び、記録数、保存状態、保存後のフォームを確認しました。進度に余裕がある人は、安全条件を守って削除機能も追加しました。</p>
+                        <p>次回は、第6回「自分用に変える」です。学習メモ、読書メモ、作業メモなど、用途を一つだけ選びます。そして、入力項目を一つか二つだけ追加します。</p>
+                        <p>追加した項目がFirestoreに保存され、一覧カードにも表示されることを確認します。次回も、新しいサービスを大量に追加せず、小さく変えて、見て、直します。</p>
+                        <p>第5回で練習した、変更範囲を絞ること、保存後に画面で確認すること、危ない導線に進まないことは、第6回でもそのまま使います。今日の整え方が、次のオリジナル化の土台になります。</p>
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+        </script>
+    </body>
+</html>
