@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>生成AIで「動く」Webアプリを作る超入門スキルアップコース（基礎編）</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png"
+                 alt="logo"
+                 style="height:100%;
+                        width:auto;
+                        display:block" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h4>
+                        生成AIで「動く」Webアプリを作る
+                        <br />
+                        超入門スキルアップコース（基礎編）
+                    </h4>
+                    <br />
+                    <h3>
+                        第6回: 自分用に変える
+                        <br />
+                        項目追加と小さなオリジナル化
+                    </h3>
+                    <p>講師：白濵 成希</p>
+                    <p>下関市立大学 データサイエンス学部</p>
+                    <p>2026年7月9日(木) 18:10〜19:40</p>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日は第6回です。タイトルは「自分用に変える — 項目追加と小さなオリジナル化」です。
+                        <p>
+                            第5回では、「マイ記録帳」の一覧表示をアプリらしく整えました。記録が0件のときの表示、新しい順の並び替え、記録数、保存中・保存完了・保存失敗の表示、保存後のフォームクリアを扱いました。削除機能は、進度に余裕がある人だけ任意で扱いました。
+                        </p>
+                        <p>今日は、その土台を保ったまま、自分の仕事や暮らしに近い用途へ少しだけ寄せます。今回のメイン例は「仕事タスクメモ」です。追加する項目は、まず「進み具合」だけにします。</p>
+                        <p>ここで大切なのは、アプリを一気に自由制作へ広げないことです。項目を1つ、余裕があれば2つまでに絞り、フォームに出るか、保存されるか、一覧カードに出るかを確認します。</p>
+                        <p>
+                            今日も、Cloud Billing、Blazeプラン、Cloud Run、Firebase App Hosting、本番公開、APIキー作成には進みません。講座用のプライベートGmailを使い、Sparkプランの範囲で進めます。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日のゴール -->
+                    <div style="font-size:0.82em">
+                        <h2>今日のゴール</h2>
+                        <p>
+                            <strong>「マイ記録帳」を、仕事や暮らしに少し役立つ形へ近づける。</strong>
+                        </p>
+                        <p>できるようになること</p>
+                        <ul>
+                            <li>用途を1つ選ぶ</li>
+                            <li>入力項目を1〜2個だけ追加または変更する</li>
+                            <li>追加項目を保存・再表示できるか確認する</li>
+                            <li>第5回までの機能を壊していないか確認する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のゴールは、「マイ記録帳」を自分の仕事や暮らしに少し役立つ形へ近づけることです。
+                        <p>社会人向けの講座では、日常や仕事に近い題材の方が、自分のアプリとして考えやすくなります。そこで今日は、仕事タスクメモ、買い物・家計メモ、美容・セルフケアメモ、家事メモ、打合せメモなどの例を示します。</p>
+                        <p>ただし、授業の操作は一つにそろえます。メイン導線では「仕事タスクメモ」を例にし、「進み具合」という項目を1つだけ追加します。</p>
+                        <p>
+                            追加した項目は、画面に表示されるだけでは不十分です。保存したあとも残ること、ブラウザを再読み込みしても一覧に表示されることを確認します。そして、第5回までに作ったGoogleログイン、Firestoreへの保存、Firestoreからの読み込み、新しい順、記録数、保存状態表示を壊していないことも確認します。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の位置づけ -->
+                    <div style="font-size:0.8em">
+                        <h2>今日の位置づけ</h2>
+                        <ul>
+                            <li>第4回：保存・ログイン・ルールを点検した</li>
+                            <li>第5回：一覧表示をアプリらしく整えた</li>
+                            <li>
+                                <strong>第6回：自分用の項目を少し追加する</strong>
+                            </li>
+                            <li>第7回：エラーをAIに伝えて直す練習</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>小さく変えて、動作を確認します</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        講座全体の中で、今日の位置づけを確認します。
+                        <p>第4回では、保存した記録がFirestoreにあり、ログインした本人の記録として扱われ、Security Rulesで守られていることを確認しました。</p>
+                        <p>第5回では、一覧表示をアプリらしく整えました。記録がないときの案内、新しい順、記録数、保存状態、保存後のフォームクリアを追加しました。</p>
+                        <p>第6回の今日は、その土台の上に、自分用の入力項目を少しだけ追加します。たとえば、仕事タスクメモにするなら「進み具合」、買い物・家計メモにするなら「分類」、美容・セルフケアメモにするなら「体調」などが考えられます。</p>
+                        <p>次回の第7回では、ログイン、保存、読み込み、一覧表示、Security Rules、見た目の不具合を点検し、エラー文や画面の状態をAIに具体的に伝えて直す練習をします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第5回でできたこと -->
+                    <div style="font-size:0.86em">
+                        <h2>第5回でできたこと</h2>
+                        <ul>
+                            <li>Googleログイン</li>
+                            <li>Firestoreへの保存・読み込み</li>
+                            <li>自分の記録だけを表示</li>
+                            <li>新しい順の一覧表示</li>
+                            <li>記録数の表示</li>
+                            <li>保存中・保存完了・保存失敗</li>
+                            <li>保存成功後のフォームクリア</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第5回までにできていることを確認します。
+                        <p>「マイ記録帳」には、Googleログインがあります。記録はFirestoreに保存され、Firestoreから読み込まれます。また、ログインした本人の記録だけを表示する仕組みを作っています。</p>
+                        <p>画面側では、新しい記録が上に表示され、記録数が表示され、保存中・保存完了・保存失敗の状態が分かるようになりました。保存に成功したら、入力フォームが空になる動きも確認しました。</p>
+                        <p>今日は、これらを消したり壊したりしません。新しい項目を追加するときも、既存のタイトル、本文、気分、記録一覧は残します。今日の変更は、今ある土台に小さく足すイメージです。</p>
+                        <p>ここでは、受講生それぞれのアプリで保存の細かい形が違う可能性があります。そのため、スライドでは細かなデータ構造を決め打ちせず、「今ある記録データに項目を1つ増やす」という概念で説明します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日やらないこと -->
+                    <div style="font-size:0.52em">
+                        <h2>今日やらないこと</h2>
+                        <div style="display:grid;
+                                    grid-template-columns:max-content max-content;
+                                    column-gap:1.1em;
+                                    align-items:start">
+                            <ul style="margin:0; padding-left:1.2em">
+                                <li>複数アプリを同時に作る</li>
+                                <li>自由制作として大きく作り替える</li>
+                                <li>編集機能</li>
+                                <li>複雑な検索・絞り込み</li>
+                                <li>複雑な権限管理</li>
+                                <li>外部API連携</li>
+                                <li>Gemini APIキー作成</li>
+                                <li>画像アップロード</li>
+                                <li>Cloud Storage</li>
+                            </ul>
+                            <ul style="margin:0; padding-left:1.2em">
+                                <li>メール送信</li>
+                                <li>決済機能</li>
+                                <li>本番公開</li>
+                                <li>Cloud Billing</li>
+                                <li>Blazeプラン</li>
+                                <li>Cloud Run</li>
+                                <li>Firebase App Hosting</li>
+                                <li>クレジットカード登録</li>
+                                <li>支払い方法登録</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日やらないことを先に確認します。
+                        <p>今日は、複数のアプリを同時に作りません。自由制作として大きく作り替えることもしません。編集機能、複雑な検索や絞り込み、複雑な権限管理も扱いません。</p>
+                        <p>外部API連携、Gemini APIキー作成、画像アップロード、Cloud Storage、メール送信、決済機能にも進みません。本番公開も行いません。</p>
+                        <p>Cloud Billing、Blazeプラン、Cloud Run、Firebase App Hosting、クレジットカード登録、支払い方法登録は、今日の導線にはありません。</p>
+                        <p>AIが便利そうな機能を提案してきても、今日の範囲外なら採用しません。初心者向けの講座では、少しずつ変えて、壊れていないか確認することを優先します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 表示されても押さないもの -->
+                    <div style="font-size:0.64em">
+                        <h2>表示されても今日は押さない</h2>
+                        <div style="display:grid;
+                                    grid-template-columns:max-content max-content;
+                                    column-gap:1.1em;
+                                    align-items:start">
+                            <ul style="margin:0; padding-left:1.2em">
+                                <li>Deploy</li>
+                                <li>Publish</li>
+                                <li>Get API key</li>
+                                <li>Add database and auth</li>
+                                <li>Upgrade</li>
+                                <li>Set up billing</li>
+                                <li>Link billing account</li>
+                            </ul>
+                            <ul style="margin:0; padding-left:1.2em">
+                                <li>Upgrade to Blaze</li>
+                                <li>Deploy to Cloud Run</li>
+                                <li>Firebase App Hosting</li>
+                                <li>Cloud Storage bucket</li>
+                                <li>支払い方法登録</li>
+                                <li>クレジットカード登録</li>
+                            </ul>
+                        </div>
+                        <br />
+                        <p>
+                            <strong>出たら操作を止めて、講師に確認</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        操作中に、便利そうなボタンや案内が表示されることがあります。しかし、このスライドにある表示は今日は押しません。
+                        <p>
+                            DeployやPublishは公開につながる可能性があります。Get API keyはAPIキー作成につながります。Add database and authは、データベースや認証を新しく追加する導線です。第3回ですでにFirebase連携を行っているため、今日は押しません。
+                        </p>
+                        <p>
+                            Upgrade、Set up billing、Link billing account、Upgrade to Blaze、支払い方法登録、クレジットカード登録は、課金やプラン変更につながる可能性があります。Deploy to Cloud Run、Firebase App Hosting、Cloud Storage bucketも今日の範囲外です。
+                        </p>
+                        <p>これらの表示が出たら、画面をそのままにして講師に確認してください。意味が分からないまま進めないことが、安全な作業の基本です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 自分用に変えるとは -->
+                    <div style="font-size:0.82em">
+                        <h2>「自分用に変える」とは</h2>
+                        <p>
+                            用途に合わせて、<strong>入力項目を少しだけ変える</strong>ことです。
+                        </p>
+                        <ul>
+                            <li>仕事タスクメモ → 進み具合を追加</li>
+                            <li>買い物・家計メモ → 分類を追加</li>
+                            <li>美容・セルフケアメモ → 体調を追加</li>
+                            <li>家事・暮らしメモ → 場所を追加</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>アプリの土台は変えません</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の「自分用に変える」は、画面や機能を何でも自由に作り替えるという意味ではありません。
+                        <p>今ある「マイ記録帳」の土台を残したまま、用途に合わせて入力項目を少しだけ変えることです。</p>
+                        <p>たとえば、仕事タスクメモとして使いたいなら「進み具合」を追加します。買い物や家計のメモとして使いたいなら「分類」を追加します。美容・セルフケアメモなら「体調」、家事や暮らしのメモなら「場所」を追加できます。</p>
+                        <p>性別で使い方を決めつける必要はありません。ただ、受講生が「これは自分の生活や仕事で使えそう」と感じられる題材に近づけることは大切です。</p>
+                        <p>大切なのは、既存のタイトル、本文、気分、記録一覧、Googleログイン、Firestore保存を壊さないことです。今日は、今あるアプリに小さく足す練習です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 自由制作にしすぎない理由 -->
+                    <div style="font-size:0.82em">
+                        <h2>自由制作にしすぎない理由</h2>
+                        <p>一度に大きく変えると、確認が難しくなります。</p>
+                        <ul>
+                            <li>どこで壊れたか分からない</li>
+                            <li>保存の仕組みが変わってしまう</li>
+                            <li>Security Rulesを広げすぎやすい</li>
+                            <li>画面が複雑になりすぎる</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>今日は「1つ変えて、3か所で確認」</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        AIに頼むと、短時間で多くの機能を追加できます。しかし、初心者の段階で一度に大きく変えると、どこで問題が起きたのか分からなくなります。
+                        <p>たとえば、フォームを変え、保存の仕組みを変え、一覧表示を変え、検索機能まで追加すると、保存できない原因がフォームなのか、Firestoreなのか、Security Rulesなのか判断しにくくなります。</p>
+                        <p>そのため今日は、「1つ変えて、3か所で確認」を合言葉にします。1つの項目を追加したら、フォームに出たか、保存後も残るか、一覧カードに出たかを確認します。</p>
+                        <p>小さく変えることは、遠回りではありません。AIと安全にアプリを作るための基本です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- アプリ方向の例 -->
+                    <div style="font-size:0.50em">
+                        <h2>アプリ方向の例</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>方向</th>
+                                    <th>追加項目の例</th>
+                                    <th>サンプル入力例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>仕事タスクメモ</td>
+                                    <td>進み具合、重要度</td>
+                                    <td>進み具合: 確認待ち / 重要度: 中</td>
+                                </tr>
+                                <tr>
+                                    <td>打合せメモ</td>
+                                    <td>種類、次の一手</td>
+                                    <td>種類: 社内 / 次: 資料確認</td>
+                                </tr>
+                                <tr>
+                                    <td>買い物・家計メモ</td>
+                                    <td>分類、予定</td>
+                                    <td>分類: 食品 / 予定: 週末に確認</td>
+                                </tr>
+                                <tr>
+                                    <td>美容・セルフケアメモ</td>
+                                    <td>体調、ひとこと</td>
+                                    <td>体調: ふつう / ひとこと: 早めに寝る</td>
+                                </tr>
+                                <tr>
+                                    <td>家事・暮らしメモ</td>
+                                    <td>場所、優先度</td>
+                                    <td>場所: キッチン / 優先度: 高</td>
+                                </tr>
+                                <tr>
+                                    <td>アイデアメモ</td>
+                                    <td>分類、温度感</td>
+                                    <td>分類: 改善 / 温度感: 試したい</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <p>
+                            <strong>今日のメイン例は「仕事タスクメモ」</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        アプリの方向の例を確認します。
+                        <p>
+                            仕事タスクメモなら、進み具合や重要度を追加できます。打合せメモなら、打合せの種類や次の一手を追加できます。買い物・家計メモなら、分類や予定を追加できます。美容・セルフケアメモなら、体調やひとことを追加できます。家事・暮らしメモなら、場所や優先度を追加できます。
+                        </p>
+                        <p>ここで示しているサンプルはすべて架空の短い内容です。実在の勤務先名、顧客名、家族の個人情報、病名、住所、電話番号などは入力しません。</p>
+                        <p>授業のメイン導線では「仕事タスクメモ」を例にします。全員で同じ例を使うことで、確認ポイントをそろえます。追加項目はまず1つだけです。「進み具合」を追加し、選択肢は「未着手」「進行中」「確認待ち」「完了」にします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日は用途を1つだけ選ぶ -->
+                    <div style="font-size:0.82em">
+                        <h2>今日は用途を1つだけ選ぶ</h2>
+                        <p>まずは、次のどれか1つに絞ります。</p>
+                        <ul>
+                            <li>仕事タスクメモ</li>
+                            <li>打合せメモ</li>
+                            <li>買い物・家計メモ</li>
+                            <li>美容・セルフケアメモ</li>
+                            <li>家事・暮らしメモ</li>
+                            <li>アイデアメモ</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>迷ったら「仕事タスクメモ」で進めます</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日は、用途を1つだけ選びます。
+                        <p>仕事タスクメモ、打合せメモ、買い物・家計メモ、美容・セルフケアメモ、家事・暮らしメモ、アイデアメモなどが候補です。ただし、最初から複数の用途を混ぜないでください。</p>
+                        <p>たとえば、仕事タスク、家計、体調、家事を一つの画面に全部入れようとすると、入力項目が多くなり、何を記録するアプリなのか分かりにくくなります。</p>
+                        <p>迷った人は、授業のメイン例である「仕事タスクメモ」で進めます。進み具合を選ぶ欄を追加し、保存後も残り、一覧カードにも表示されることを確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 追加項目は1〜2個だけ -->
+                    <div style="font-size:0.82em">
+                        <h2>追加項目は1〜2個だけ</h2>
+                        <p>
+                            今日の基本は <strong>1個だけ</strong> です。
+                        </p>
+                        <ul>
+                            <li>追加項目：進み具合</li>
+                            <li>選択肢：未着手 / 進行中 / 確認待ち / 完了</li>
+                            <li>保存：記録データに一緒に残す</li>
+                            <li>一覧表示：「進み具合：確認待ち」</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>2個目は余裕がある人だけ</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の基本は、追加項目を1つだけにすることです。
+                        <p>メイン例では、「進み具合」を追加します。画面には、進み具合を選ぶ欄を追加します。選択肢は、未着手、進行中、確認待ち、完了です。一覧カードには、「進み具合：確認待ち」のように表示します。</p>
+                        <p>ここでは、受講生それぞれのFirestoreの細かい保存形式が同じとは限りません。そのため、スライドでは固定のコレクション名やフィールド名を覚えさせるのではなく、「記録データに追加項目も一緒に保存される」と説明します。</p>
+                        <p>
+                            2つ目の項目を追加する場合は、余裕がある人だけにします。たとえば、仕事タスクメモなら「重要度」を追加できます。ただし、最初から2つ入れると確認項目が増えます。まず1つの項目について、フォーム、保存、一覧カードの3か所で確認できるようになることを優先します。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- データの考え方 -->
+                    <div style="font-size:0.80em">
+                        <h2>データの考え方</h2>
+                        <p>細かい保存形式は、人によって違うことがあります。</p>
+                        <p>今日の理解はこれだけで十分です。</p>
+                        <ul>
+                            <li>記録カード1枚 = 保存データ1件</li>
+                            <li>入力欄1つ = 保存される項目1つ</li>
+                            <li>ログイン = 本人の記録だけを扱う入口</li>
+                            <li>追加項目 = 保存データに足される項目</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここでは、Firestoreのデータ構造を細かく決め打ちして説明しません。
+                        <p>
+                            受講生のアプリは、AIに自由に作らせているため、内部の保存形式が少しずつ違う可能性があります。また、Google AI StudioやFirebaseの初心者向け画面では、Firestoreのデータ構造が以前ほどはっきり見えない場合もあります。
+                        </p>
+                        <p>そのため今日の理解は、概念だけで十分です。</p>
+                        <p>
+                            記録カード1枚が、保存データ1件に対応します。フォームの入力欄1つが、保存される項目1つに対応します。Googleログインは、本人の記録だけを扱う入口です。そして、今日追加する「進み具合」は、その保存データに足される新しい項目です。
+                        </p>
+                        <p>具体的なコレクション名やフィールド名は、講義中に覚える必要はありません。大切なのは、追加した項目が、画面だけでなく保存後も残ることです。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 変更後の概念 -->
+                    <div style="font-size:0.82em">
+                        <h2>今日変える場所は3つ</h2>
+                        <p>「進み具合」を追加したら、3か所で確認します。</p>
+                        <ol>
+                            <li>
+                                <strong>フォーム</strong>：進み具合を選べる
+                            </li>
+                            <li>
+                                <strong>保存</strong>：保存後も値が残る
+                            </li>
+                            <li>
+                                <strong>一覧カード</strong>：進み具合が表示される
+                            </li>
+                        </ol>
+                        <br />
+                        <p>
+                            <strong>保存の仕組みは作り替えません</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日変える場所は3つです。
+                        <p>1つ目はフォームです。入力するときに、進み具合を選べるようにします。</p>
+                        <p>2つ目は保存です。進み具合を選んで保存したあと、その値も記録データに残るようにします。ブラウザを再読み込みしたあとにも出るかを見ると、保存されているかを確認しやすくなります。</p>
+                        <p>3つ目は一覧カードです。保存した記録カードに、「進み具合：確認待ち」のような表示が出ることを確認します。</p>
+                        <p>
+                            ここで重要なのは、保存の仕組みを作り替えないことです。今のアプリが使っているFirestore保存先、ログインした本人の記録だけを表示する仕組み、Security Rulesの考え方は維持します。今日は、新しい保存システムを作るのではなく、今ある記録に項目を一つ足すだけです。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第5回アプリを開く -->
+                    <div style="font-size:0.8em">
+                        <h2>第5回までのアプリを開く</h2>
+                        <p>確認すること</p>
+                        <ul>
+                            <li>「マイ記録帳」を開いている</li>
+                            <li>Googleログイン機能が残っている</li>
+                            <li>Firestore保存と読み込みが動く</li>
+                            <li>新しい順・記録数・保存状態がある</li>
+                            <li>新しいアプリを作っていない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここから操作に入ります。
+                        <p>Google AI Studio Buildで、第5回まで使っていた「マイ記録帳」を開きます。今日は新しいアプリを作りません。前回まで使っていたアプリに追加指示を出します。</p>
+                        <p>まず、Googleログイン機能が残っているか確認します。Firestoreへの保存と読み込みが動くか、新しい順の一覧表示、記録数、保存状態表示が残っているかも確認します。</p>
+                        <p>違うアプリや、新しく作った空のプロジェクトを開いている場合は、ここで戻ります。今日の作業は、既存のアプリを少し変えることが前提です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 講座用Gmailとログイン状態 -->
+                    <div style="font-size:0.78em">
+                        <h2>講座用Gmailとログイン状態を確認</h2>
+                        <ul>
+                            <li>講座用のプライベートGmailを使う</li>
+                            <li>ログイン済みか確認する</li>
+                            <li>勤務先・学校・家族のアカウントは使わない</li>
+                            <li>メールアドレスやプロフィール画像を撮影しない</li>
+                            <li>識別子やプロジェクト情報を見せない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        アプリを開いたら、講座用Gmailとログイン状態を確認します。
+                        <p>この講座では、講座用のプライベートGmailを使います。勤務先、学校、家族のアカウントでは進めません。複数のGoogleアカウントを使っている人は、どのアカウントでログインしているか確認してください。</p>
+                        <p>
+                            アプリ画面やFirebase Consoleには、メールアドレス、プロフィール画像、ユーザーを見分ける内部的な識別子、プロジェクト情報などが表示されることがあります。スクリーンショットや画面共有では、これらを写さないようにします。
+                        </p>
+                        <p>今日の目的は、ログインした本人の記録を自分用に少し変えることです。個人情報や識別子を見せることではありません。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 受講生用メインプロンプト -->
+                    <div style="font-size:0.54em">
+                        <h2>受講生用メインプロンプト</h2>
+                        <pre><code class="language-text">「マイ記録帳」を、仕事タスクメモ用に少しだけ変更してください。
+追加する項目は1つだけです。
+
+- 「進み具合」を選ぶ欄を追加する
+- 選択肢は「未着手」「進行中」「確認待ち」「完了」にする
+- 保存した記録データにも、選んだ進み具合が残るようにする
+- 一覧カードにも「進み具合」として表示する
+
+第5回までに作った次の機能は維持してください。
+
+- Googleログイン
+- Firestoreへの保存
+- Firestoreからの読み込み
+- ログインした本人の記録だけを表示する仕組み
+- 新しい順の一覧表示
+- 記録数の表示
+- 保存中、保存完了、保存失敗の表示
+- 保存成功後に入力欄を空にする動き
+
+既存のタイトル、本文、気分、記録一覧は削除しないでください。
+今のアプリが使っているFirestoreの保存先やログインの仕組みを、別の方式に作り替えないでください。
+
+Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+Get API key、Add database and auth、外部API、画像アップロード、メール送信、決済機能は使わないでください。
+
+実在する個人情報、勤務先情報、顧客情報、業務上の機密情報は入力しません。
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        これが今日のメインプロンプトです。
+                        <p>この文章を、現在の「マイ記録帳」が開かれているGoogle AI Studio Buildの入力欄に貼り付けます。</p>
+                        <p>最初に、仕事タスクメモ用に少しだけ変更すると伝えています。次に、追加する項目は1つだけだと明記しています。</p>
+                        <p>追加するのは「進み具合」を選ぶ欄です。選択肢は、未着手、進行中、確認待ち、完了です。保存した記録データにも、選んだ進み具合が残るようにします。一覧カードにも「進み具合」として表示します。</p>
+                        <p>
+                            後半では、第5回までの機能を維持するように書いています。Googleログイン、Firestore保存、Firestore読み込み、ログインした本人の記録だけを表示する仕組み、新しい順、記録数、保存状態、保存成功後のフォームクリアを残します。
+                        </p>
+                        <p>
+                            さらに、既存のタイトル、本文、気分、記録一覧は削除しないこと、今のFirestore保存先やログインの仕組みを別方式に作り替えないこと、Cloud BillingやAPIキー、公開、外部APIなどは使わないことを明記しています。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- プロンプトの読み方 -->
+                    <div style="font-size:0.8em">
+                        <h2>プロンプトの読み方</h2>
+                        <p>この指示は、5つに分かれています。</p>
+                        <ol>
+                            <li>用途：仕事タスクメモ</li>
+                            <li>追加項目：進み具合</li>
+                            <li>確認先：フォーム・保存・一覧カード</li>
+                            <li>維持する機能</li>
+                            <li>使わない機能・進まない導線</li>
+                        </ol>
+                        <br />
+                        <p>
+                            <strong>作ることと、守ることを両方伝えます</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        プロンプトの読み方を確認します。
+                        <p>まず、用途を仕事タスクメモにすると伝えています。次に、追加項目は進み具合だけだと絞っています。</p>
+                        <p>確認先として、フォーム、保存、一覧カードの3つを指定しています。フォームに出すだけではなく、保存後も残り、一覧カードにも表示されることを確認するためです。</p>
+                        <p>次に、維持する機能を並べています。Googleログイン、Firestore保存、Firestore読み込み、本人の記録だけを表示する仕組み、新しい順、記録数、保存状態、フォームクリアです。</p>
+                        <p>最後に、使わない機能と進まない導線を並べています。AIへの指示では、何を作るかだけでなく、何を壊してはいけないか、何を使わないかも明記すると、変更範囲を小さく保ちやすくなります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 送信前チェック -->
+                    <div style="font-size:0.76em">
+                        <h2>送信前チェック</h2>
+                        <ul>
+                            <li>第5回まで使ったアプリを開いている</li>
+                            <li>講座用Gmailでログインしている</li>
+                            <li>プロンプトに個人情報を入れていない</li>
+                            <li>追加項目が1つだけになっている</li>
+                            <li>保存の仕組みを作り替えないと書いてある</li>
+                            <li>公開・課金・APIキーを使わないと書いてある</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>確認できたら送信します</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        プロンプトを送信する前に、短く確認します。
+                        <p>第5回まで使っていたアプリを開いているでしょうか。講座用のプライベートGmailでログインしているでしょうか。プロンプトの中に、実名、メールアドレス、勤務先情報、顧客情報、業務上の機密情報などを追加していないでしょうか。</p>
+                        <p>追加項目は1つだけになっていますか。今のFirestore保存先やログインの仕組みを作り替えないと書かれていますか。公開、課金、APIキー作成、外部API、画像アップロードを使わないと書かれていますか。</p>
+                        <p>確認できたら送信します。うまくいかないときほど、急いで何度も送るのではなく、今開いているアプリとプロンプトの中身を見直します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 追加項目がフォームに出たか確認 -->
+                    <div style="font-size:0.8em">
+                        <h2>追加項目がフォームに出たか確認</h2>
+                        <p>画面にありますか？</p>
+                        <ul>
+                            <li>「進み具合」を選ぶ欄</li>
+                            <li>選択肢「未着手」</li>
+                            <li>選択肢「進行中」</li>
+                            <li>選択肢「確認待ち」</li>
+                            <li>選択肢「完了」</li>
+                            <li>既存のタイトル・本文・気分</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>既存項目を消していないかも確認</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        生成が終わったら、最初にフォームを確認します。
+                        <p>「進み具合」を選ぶ欄が追加されているかを見ます。選択肢として、未着手、進行中、確認待ち、完了があるか確認します。</p>
+                        <p>
+                            同時に、既存のタイトル、本文、気分の入力欄が残っているかを見ます。AIが新しい項目を追加するときに、既存の項目を消してしまうことがあります。今日は、既存のタイトル、本文、気分、記録一覧を削除しないという条件を入れているので、それが守られているか確認します。
+                        </p>
+                        <p>この段階では、Firestoreの細かな中身を見る前に、まず画面のフォームが正しく変わったかを確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 架空サンプルを入力 -->
+                    <div style="font-size:0.82em">
+                        <h2>架空サンプルを入力</h2>
+                        <p>次のように入力します。</p>
+                        <pre><code class="language-text">進み具合: 確認待ち
+タイトル: 資料確認
+本文: 明日の準備として、説明資料を見直す。
+気分: ふつう
+</code></pre>
+                        <br />
+                        <p>
+                            <strong>実在の仕事情報は入れません</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        フォームに進み具合欄が出たら、架空のサンプルを入力します。
+                        <p>進み具合は確認待ち、タイトルは資料確認、本文は「明日の準備として、説明資料を見直す。」、気分はふつうにします。</p>
+                        <p>ここでの「資料」は架空の一般的な表現です。実在の会社名、部署名、顧客名、案件名、会議名、金額、業務上の機密情報は入力しません。サンプルは、教材として見せても問題ない短い架空の文章にします。</p>
+                        <p>入力したら、「記録する」ボタンを押して保存します。保存中、保存完了、保存失敗の表示がどう変わるかも見てください。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 保存後に一覧カードを見る -->
+                    <div style="font-size:0.82em">
+                        <h2>保存後に一覧カードを見る</h2>
+                        <p>確認すること</p>
+                        <ul>
+                            <li>新しい記録が一覧の上に出る</li>
+                            <li>記録数が1件増える</li>
+                            <li>保存完了が表示される</li>
+                            <li>入力欄が空になる</li>
+                            <li>カードに「進み具合：確認待ち」が出る</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        保存したら、一覧カードを確認します。
+                        <p>第5回で整えたように、新しい記録が一覧の上に表示されるかを見ます。記録数が1件増えたか、保存完了が表示されたか、保存成功後に入力欄が空になったかも確認します。</p>
+                        <p>そして、今日追加した「進み具合」が一覧カードに表示されているかを確認します。「進み具合：確認待ち」のように見えれば分かりやすいです。</p>
+                        <p>ここで、フォームに進み具合欄が出ているだけでは不十分です。保存後の一覧カードにも進み具合が表示されていることを確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Firestoreで追加項目を確認 -->
+                    <div style="font-size:0.76em">
+                        <h2>保存データに追加項目が入ったか確認</h2>
+                        <p>確認方法は2つあります。</p>
+                        <ul>
+                            <li>アプリを再読み込みしても「進み具合」が出る</li>
+                            <li>Firebase Consoleで見える場合は、保存データの中にも追加項目がある</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>Consoleで見えない場合は、無理に深追いしません</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次に、追加項目が保存データに入ったかを確認します。
+                        <p>確認方法は2つあります。1つ目は、アプリを再読み込みしても「進み具合」が一覧カードに表示されるかを見る方法です。これは受講生にとって一番分かりやすい確認です。</p>
+                        <p>
+                            2つ目は、Firebase Consoleで保存データを見られる場合に、記録1件の中に進み具合に相当する項目があるかを見る方法です。ただし、受講生のアプリによって保存形式が違うことがあります。また、初心者向けの画面では、保存データの細かな構造が見えにくい場合があります。
+                        </p>
+                        <p>そのため、Consoleで見えない場合は、無理に深追いしません。今日の必須確認は、フォームに出る、保存後に一覧へ出る、再読み込み後も出る、既存機能が壊れていない、という点です。</p>
+                        <p>スクリーンショットを撮る場合は、メールアドレス、ユーザー識別子、プロジェクトID、Database ID、ドキュメントIDのような文字列を写さないようにします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 再読み込み後の確認 -->
+                    <div style="font-size:0.82em">
+                        <h2>再読み込み後も表示されるか確認</h2>
+                        <ol>
+                            <li>ブラウザを再読み込みする</li>
+                            <li>ログイン状態を確認する</li>
+                            <li>保存した記録を一覧で探す</li>
+                            <li>「進み具合」が表示されるか見る</li>
+                        </ol>
+                        <br />
+                        <p>
+                            <strong>再読み込み後も出れば、保存と読み込みがつながっています</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        保存後の一覧カードに進み具合が出たら、ブラウザを再読み込みして確認します。
+                        <p>再読み込み後も、同じ講座用Gmailでログインしていることを確認します。そのうえで、先ほど保存した記録を一覧で探します。タイトル、本文、気分に加えて、進み具合が表示されるかを見ます。</p>
+                        <p>再読み込み後も進み具合が表示されれば、保存したデータをFirestoreから読み込み、一覧カードに表示できている可能性が高くなります。</p>
+                        <p>もし再読み込み後に進み具合だけ消える場合は、画面上では表示できていたが、保存データには含まれていない、または読み込み後の表示に反映されていない可能性があります。その場合は、後半のトラブル対応プロンプトを使います。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 既存機能が壊れていないか確認 -->
+                    <div style="font-size:0.78em">
+                        <h2>既存機能が壊れていないか確認</h2>
+                        <p>第5回までの機能が残っていますか？</p>
+                        <ul>
+                            <li>Googleログイン</li>
+                            <li>Firestoreへの保存</li>
+                            <li>Firestoreからの読み込み</li>
+                            <li>本人の記録だけを表示する仕組み</li>
+                            <li>新しい順の一覧表示</li>
+                            <li>記録数の表示</li>
+                            <li>保存状態表示</li>
+                            <li>保存後のフォームクリア</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        追加項目がうまく入ったように見えても、既存機能が壊れていないか確認します。
+                        <p>Googleログインは残っていますか。Firestoreへの保存と読み込みは動きますか。ログインした本人の記録だけを表示する仕組みが維持されていますか。</p>
+                        <p>新しい順の一覧表示、記録数、保存中・保存完了・保存失敗の表示、保存成功後のフォームクリアも確認します。</p>
+                        <p>AIに項目追加を頼んだとき、画面の一部だけが変わって、保存処理や読み込み処理が変わってしまうことがあります。見た目だけで判断せず、保存、再読み込み、一覧表示まで確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 2つ目の項目を追加する場合 -->
+                    <div style="font-size:0.78em">
+                        <h2>2つ目の項目を追加する場合</h2>
+                        <p>余裕がある人だけです。</p>
+                        <p>例：仕事タスクメモに「重要度」を追加</p>
+                        <ul>
+                            <li>画面：重要度を選ぶ欄</li>
+                            <li>選択肢：低 / 中 / 高</li>
+                            <li>保存：記録データに一緒に残す</li>
+                            <li>一覧カード：「重要度：中」</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>1つ目と同じ手順で確認</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        2つ目の項目は、余裕がある人だけ扱います。全員必須ではありません。
+                        <p>仕事タスクメモの例なら、「重要度」を追加できます。画面には重要度を選ぶ欄を追加します。選択肢は、低、中、高のように短くします。保存した記録データにも重要度が残るようにし、一覧カードにも「重要度：中」のように表示します。</p>
+                        <p>確認の手順は、1つ目の進み具合と同じです。フォームに出たか、保存後も残るか、一覧カードに表示されたか、再読み込み後も表示されるかを確認します。</p>
+                        <p>2つ目を追加するときも、Googleログイン、Firestore保存、本人の記録だけを表示する仕組み、新しい順、記録数、保存状態表示は維持します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 個人情報を入れない -->
+                    <div style="font-size:0.76em">
+                        <h2>個人情報・仕事の機密を入れない</h2>
+                        <p>サンプル入力には、次を使いません。</p>
+                        <ul>
+                            <li>実名・メールアドレス</li>
+                            <li>勤務先名・部署名</li>
+                            <li>顧客名・取引先名</li>
+                            <li>実在の案件名・金額</li>
+                            <li>学生番号・住所・電話番号</li>
+                            <li>パスワード</li>
+                            <li>支払い情報・請求情報</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>架空の短い文章だけを使います</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日も、サンプル入力には実在の個人情報や仕事の機密情報を使いません。
+                        <p>実名、メールアドレス、勤務先名、部署名、顧客名、取引先名、実在の案件名、金額、学生番号、住所、電話番号、パスワード、支払い情報、請求情報は入力しません。</p>
+                        <p>仕事タスクメモでも、実際の勤務先の会議名や顧客名を入れる必要はありません。「資料確認」「確認待ち」「説明資料を見直す」のような、一般的で短い架空の文章を使います。</p>
+                        <p>Firestoreに保存されるデータも、スクリーンショットに映る可能性があります。あとで教材化したり発表で画面共有したりすることを考えて、見せても問題ない短い文章だけを使いましょう。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 追加項目がフォームに出ないとき -->
+                    <div style="font-size:0.66em">
+                        <h2>追加項目がフォームに出ないとき</h2>
+                        <pre><code class="language-text">「進み具合」を選ぶ欄がフォームに表示されていません。
+
+既存のタイトル、本文、気分の入力欄は残したまま、
+「進み具合」を選ぶ欄を追加してください。
+
+選択肢は「未着手」「進行中」「確認待ち」「完了」です。
+
+保存した記録データにも、選んだ進み具合が残るようにしてください。
+一覧カードにも「進み具合」として表示してください。
+
+Googleログイン、Firestore保存、読み込み、記録一覧は壊さないでください。
+Cloud Billing、Blaze、Deploy、Publish、Get API key は使わないでください。
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここからは、うまくいかないときのAIへの聞き方です。
+                        <p>まず、追加項目がフォームに出ない場合です。AIには、今起きていることをそのまま伝えます。「進み具合を選ぶ欄がフォームに表示されていません」と書きます。</p>
+                        <p>次に、既存のタイトル、本文、気分の入力欄は残したまま、進み具合を選ぶ欄を追加してほしいと伝えます。選択肢も具体的に書きます。</p>
+                        <p>さらに、保存した記録データにも進み具合が残ること、一覧カードにも表示することを再度指定します。</p>
+                        <p>最後に、Googleログイン、Firestore保存、読み込み、記録一覧を壊さないこと、Cloud Billingや公開、APIキー作成には進まないことを書きます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Firestoreに保存されないとき -->
+                    <div style="font-size:0.58em">
+                        <h2>追加項目が保存後に残らないとき</h2>
+                        <pre><code class="language-text">フォームでは「進み具合」を選べますが、保存後に再読み込みすると
+進み具合が消えてしまいます。
+
+現在のアプリが使っているFirestoreの保存先やログインの仕組みは変えず、
+記録を保存するときに、進み具合の値も一緒に保存してください。
+
+ログインした本人の記録だけを表示する仕組みと、既存のSecurity Rulesを維持してください。
+ルールを広げすぎず、最小限の修正にしてください。
+
+allow read, write: if true; のような公開設定にはしないでください。
+Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、
+Deploy、Publish、Get API key、Add database and auth は使わないでください。
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        追加項目が保存後に残らない場合の聞き方です。
+                        <p>フォームでは進み具合を選べるのに、再読み込み後に消えてしまう場合があります。これは、画面の入力欄だけが追加され、保存処理や読み込み後の表示に進み具合が含まれていない状態かもしれません。</p>
+                        <p>AIには、現在のアプリが使っているFirestoreの保存先やログインの仕組みは変えないことを明記します。そのうえで、記録を保存するときに進み具合の値も一緒に保存してほしいと伝えます。</p>
+                        <p>
+                            重要なのは、ログインした本人の記録だけを表示する仕組みと、既存のSecurity Rulesを維持することです。保存できないからといって、allow read, write: if true; のような広すぎるルールにはしません。
+                        </p>
+                        <p>Security Rulesを変更する必要がある場合も、追加項目を扱うための最小限の修正に留めます。公開書き込みにはしません。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 一覧カードに出ないとき -->
+                    <div style="font-size:0.66em">
+                        <h2>一覧カードに追加項目が出ないとき</h2>
+                        <pre><code class="language-text">保存後、進み具合の値は残っているようですが、
+アプリの一覧カードに「進み具合」が表示されません。
+
+保存済みの各記録から、進み具合の値を読み取り、
+一覧カードに「進み具合：確認待ち」のように表示してください。
+
+既存のタイトル、本文、気分、作成日時の表示は残してください。
+新しい順、記録数、保存状態表示も維持してください。
+
+Googleログイン、Firestore保存、読み込み、本人の記録だけを表示する仕組みを壊さないでください。
+公開、課金設定、APIキー作成、新しいサービス追加はしないでください。
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次は、保存後も進み具合が残っているように見えるのに、一覧カードに表示されない場合です。
+                        <p>この場合は、保存処理は動いている可能性があります。問題は、読み込んだデータをカードに表示する処理です。</p>
+                        <p>AIには、保存済みの各記録から進み具合の値を読み取り、一覧カードに「進み具合：確認待ち」のように表示してほしいと伝えます。</p>
+                        <p>既存のタイトル、本文、気分、作成日時の表示は残します。第5回で追加した新しい順、記録数、保存状態表示も維持します。</p>
+                        <p>ここでも、Googleログイン、Firestore保存、Firestore読み込み、本人の記録だけを表示する仕組みを壊さないことを明記します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 既存機能が壊れたとき -->
+                    <div style="font-size:0.62em">
+                        <h2>既存のログイン・保存・読み込みが壊れたとき</h2>
+                        <pre><code class="language-text">進み具合を追加したあと、第5回まで動いていた機能が壊れました。
+
+壊れている状態は次のとおりです。
+
+（ここに、ログインできない / 保存できない / 読み込めない / 一覧が出ない、などを書く）
+
+第5回までの次の機能を優先して元に戻してください。
+
+- Googleログイン
+- Firestoreへの保存
+- Firestoreからの読み込み
+- ログインした本人の記録だけを表示する仕組み
+- 新しい順、記録数、保存状態表示
+
+進み具合の追加は、必要ならいったん単純な形に戻してください。
+allow read, write: if true; のような公開設定にはしないでください。
+Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、Get API key は使わないでください。
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        進み具合を追加したあと、ログイン、保存、読み込み、一覧表示などが壊れる場合があります。
+                        <p>その場合は、まず何が壊れているかを書きます。ログインできないのか、保存できないのか、読み込めないのか、一覧が出ないのかを具体的に書きます。</p>
+                        <p>そして、第5回までの機能を優先して元に戻すように依頼します。Googleログイン、Firestore保存、Firestore読み込み、本人の記録だけを表示する仕組み、新しい順、記録数、保存状態表示が優先です。</p>
+                        <p>進み具合の追加は、必要ならいったん単純な形に戻して構いません。新しい項目を入れることより、既存の安全な土台を壊さないことが大切です。</p>
+                        <p>広すぎるSecurity Rulesにはしません。公開、課金、APIキー作成にも進みません。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 画面が複雑になりすぎたとき -->
+                    <div style="font-size:0.68em">
+                        <h2>画面が複雑になりすぎたとき</h2>
+                        <pre><code class="language-text">画面が複雑になりすぎました。
+初心者向けに、次の要素だけに整理してください。
+
+- 「マイ記録帳」のタイトル
+- Googleログイン状態
+- タイトル、本文、気分、進み具合の入力フォーム
+- 「記録する」ボタン
+- 保存中、保存完了、保存失敗の表示
+- 記録数
+- Firestoreから読み込んだ記録一覧
+- 記録が0件のときのメッセージ
+
+ログインした本人の記録だけを表示する仕組みは維持してください。
+編集、検索、画像アップロード、外部API、公開、課金設定、APIキー作成は追加しないでください。
+</code></pre>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        AIに何度か修正を頼むと、画面が複雑になりすぎることがあります。
+                        <p>たとえば、余計なメニュー、検索欄、編集ボタン、画像アップロード、別ページ、外部サービス連携などが追加される場合があります。</p>
+                        <p>そのときは、必要な要素だけに整理してもらいます。アプリのタイトル、Googleログイン状態、タイトル、本文、気分、進み具合の入力フォーム、記録するボタン、保存状態、記録数、記録一覧、空状態メッセージだけで十分です。</p>
+                        <p>本人の記録だけを表示する仕組みは維持します。見た目を整理するときも、Firestoreの保存先やSecurity Rulesを広げすぎないようにします。</p>
+                        <p>画面が複雑になったら、失敗ではなく整理のタイミングです。AIに「減らす」指示を出すことも、重要な使い方です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日のまとめ -->
+                    <div style="font-size:0.82em">
+                        <h2>今日のまとめ</h2>
+                        <p>第6回では、次を確認しました。</p>
+                        <ul>
+                            <li>用途を1つ選ぶ</li>
+                            <li>入力項目を1つ追加する</li>
+                            <li>フォームに出るか見る</li>
+                            <li>保存後も残るか見る</li>
+                            <li>一覧カードに出るか見る</li>
+                            <li>既存機能が壊れていないか見る</li>
+                        </ul>
+                        <br />
+                        <p>
+                            <strong>小さく変えて、必ず確認する</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のまとめです。
+                        <p>第6回では、「マイ記録帳」を仕事タスクメモ用に少しだけ変更しました。用途を1つ選び、追加項目を1つに絞りました。メイン例では、「進み具合」を追加しました。</p>
+                        <p>確認する場所は3つでした。まず、フォームに進み具合欄が出ているか。次に、保存後も進み具合が残るか。最後に、一覧カードに進み具合が表示されるかです。</p>
+                        <p>さらに、第5回までのGoogleログイン、Firestore保存、読み込み、ログインした本人の記録だけを表示する仕組み、新しい順、記録数、保存状態表示が壊れていないことも確認しました。</p>
+                        <p>今日の合言葉は、小さく変えて、必ず確認する、です。細かなFirestoreの保存形式を覚えることより、追加した項目が画面・保存・一覧で一貫して扱われることを確認できるようになることが大切です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第6回終了チェック -->
+                    <div style="font-size:0.46em">
+                        <h2>第6回 終了チェック</h2>
+                        <ul class="contains-task-list">
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-1300187">
+                                <label class="task-list-item-label" for="task-item-1300187">アプリの用途を1つ選んだ</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-4233567">
+                                <label class="task-list-item-label" for="task-item-4233567">追加項目を1〜2個に絞った</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-1236417">
+                                <label class="task-list-item-label" for="task-item-1236417">追加項目がフォームに表示された</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-787939">
+                                <label class="task-list-item-label" for="task-item-787939">追加項目が保存後も残った</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-2084993">
+                                <label class="task-list-item-label" for="task-item-2084993">追加項目が一覧カードに表示された</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-9575677">
+                                <label class="task-list-item-label" for="task-item-9575677">ブラウザ再読み込み後も表示された</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-7034253">
+                                <label class="task-list-item-label" for="task-item-7034253">既存のログイン・保存・読み込みが壊れていない</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-7833548">
+                                <label class="task-list-item-label" for="task-item-7833548">新しい順、記録数、保存状態表示が維持されている</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-827082">
+                                <label class="task-list-item-label" for="task-item-827082">実在の個人情報や勤務先情報を入力していない</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6498272">
+                                公開書き込みや <code>allow read, write: if true;</code>
+                                <label class="task-list-item-label" for="task-item-6498272">公開書き込みや `allow read, write: if true;` にしていない</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6742091">
+                                <label class="task-list-item-label" for="task-item-6742091">
+                                    Deploy / Publish / Get API key / Add database and auth / Upgrade を押していない
+                                </label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-2439525">
+                                <label class="task-list-item-label" for="task-item-2439525">
+                                    Cloud Billing / Blaze / Cloud Run / Firebase App Hosting に進んでいない
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最後に、第6回の終了チェックをします。
+                        <p>アプリの用途を1つ選んだでしょうか。追加項目を1つ、または余裕がある人は2つまでに絞ったでしょうか。追加項目がフォームに表示され、保存後も残り、一覧カードに表示されたでしょうか。</p>
+                        <p>ブラウザを再読み込みしたあとも表示されることを確認します。これにより、画面上だけの一時的な表示ではなく、保存されたデータとして読み込めていることを確認できます。</p>
+                        <p>既存のログイン、保存、読み込みが壊れていないことも確認します。新しい順、記録数、保存状態表示も維持されているか見ます。</p>
+                        <p>実在の個人情報や勤務先情報を入力していないこと、公開書き込みやallow read, write: if true;のような広すぎるルールにしていないことも重要です。</p>
+                        <p>
+                            最後に、Deploy、Publish、Get API key、Add database and auth、Upgradeを押していないこと、Cloud Billing、Blaze、Cloud Run、Firebase App Hostingに進んでいないことを確認します。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第7回への橋渡し -->
+                    <div style="font-size:0.8em">
+                        <h2>第7回への橋渡し</h2>
+                        <p>
+                            次回：<strong>仕上げとAIデバッグ術</strong>
+                        </p>
+                        <ul>
+                            <li>ログイン、保存、読み込みの点検</li>
+                            <li>一覧表示と追加項目の点検</li>
+                            <li>Security Rulesを広げすぎない確認</li>
+                            <li>エラー文や画面の状態をAIに伝える練習</li>
+                            <li>発表に向けて見せてはいけない情報を隠す準備</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次回は、第7回「仕上げとAIデバッグ術 — エラーを会話の材料にする」です。
+                        <p>第6回では、自分用の項目を小さく追加しました。フォームに出るか、保存後も残るか、一覧カードに出るかを確認しました。</p>
+                        <p>第7回では、発表に向けて、ログイン、保存、読み込み、一覧表示、追加項目、Security Rules、見た目の不具合を点検します。エラーが出たときには、エラー文や画面の状態をAIに具体的に伝えて直す練習をします。</p>
+                        <p>また、第8回の発表に向けて、画面共有で見せてはいけない情報を隠す準備にも進みます。メールアドレス、ユーザー識別子、プロジェクトID、Database ID、個人情報、業務情報、請求情報を見せないように確認します。</p>
+                        <p>次回も、本番公開、Deploy、Publish、Cloud Billing、Blaze、Cloud Run、Firebase App Hostingには進みません。画面共有で安全にデモできる状態を目指します。</p>
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+        </script>
+    </body>
+</html>
