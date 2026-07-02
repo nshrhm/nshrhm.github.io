@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>感性データ処理</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png" style="height:100%" alt="logo" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <!-- 表紙 -->
+                    <h1>感性データ処理</h1>
+                    <h2>第13回 Visual Analog Scale 3</h2>
+                    <h3>2刺激 × 3 VAS項目を分析する</h3>
+                    <h4>データサイエンス学部</h4>
+                    <h4>白濵 成希</h4>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第13回では、第12回で設計した2刺激、3つのVAS項目からなる小規模実験を実際に分析します。
+                        <p>
+                            今回は、一般的な統計手法を広く紹介する回ではなく、学生が自分たちのVASアンケート結果を確認し、可視化し、刺激Aと刺激Bの違いを説明できるようになることを重視します。分析の中心は、同じ回答者が刺激Aと刺激Bを評価したデータを、3つのVAS項目ごとに比較することです。
+                        </p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の到達目標 -->
+                    <div style="font-size:0.68em">
+                        <h2>今日の到達目標</h2>
+                        <p>授業後に、次のことを実行できることを目指します。</p>
+                        <ol>
+                            <li>
+                                第12回で設計した <strong>2刺激 × 3 VAS項目</strong> のデータ構造を説明できる
+                            </li>
+                            <li>
+                                回答CSVを確認し、<strong>回答数・欠損・値の範囲</strong>を点検できる
+                            </li>
+                            <li>
+                                刺激A・Bについて、3つのVAS項目ごとに<strong>分布を可視化</strong>できる
+                            </li>
+                            <li>
+                                各VAS項目について、<strong>同じ回答者内の差分</strong>を作れる
+                            </li>
+                            <li>
+                                <strong>対応のある比較</strong>として、平均差・効果量・必要に応じた検定を報告できる
+                            </li>
+                            <li>分析結果を、第14回の図表作成・レポート化につなげられる</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のゴールは、統計用語をたくさん覚えることではありません。自分たちが作った2刺激、3項目のVASアンケートについて、データを確認し、図を作り、刺激Aと刺激Bの違いを説明できることです。
+                        <p>第12回で事前に立てた研究質問、仮説、分析計画を思い出しながら、データを見た後に都合よく解釈を変えない姿勢も確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 授業全体での位置づけ -->
+                    <div style="font-size:0.62em">
+                        <h2>授業全体での位置づけ</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">回</th>
+                                    <th>テーマ</th>
+                                    <th>プロジェクトでの役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">11</td>
+                                    <td>VAS 1</td>
+                                    <td>VASの役割・向き不向き・限界を理解</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">12</td>
+                                    <td>VAS 2</td>
+                                    <td>問い・刺激・VAS項目を設計</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <strong>13</strong>
+                                    </td>
+                                    <td>
+                                        <strong>VAS 3</strong>
+                                    </td>
+                                    <td>
+                                        <strong>回答、CSV確認、Python分析</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">14</td>
+                                    <td>データ分析ワークフロー</td>
+                                    <td>図表・結果・考察をレポート化</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">15</td>
+                                    <td>総合演習</td>
+                                    <td>発表、最終修正、提出</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                第13回は、設計したVAS実験を
+                                <strong>分析できるデータと結果メモ</strong>へ変える回である。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第12回では、研究質問、刺激、VAS項目、アンカー、分析計画を設計しました。第13回では、その設計に基づいて回答を行い、CSVを確認し、Pythonで分析を始めます。
+                        <p>次回の第14回では、今日作った図や統計量を、レポートとして読み手に伝わる形に整えます。したがって今日の成果は、最終レポートの材料になります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 90分の見取り図 -->
+                    <div style="font-size:0.66em">
+                        <h2>90分の見取り図</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">時間</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">0〜10分</td>
+                                    <td>第12回の標準仕様と回答ルールの確認</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">10〜25分</td>
+                                    <td>指定された4アンケートへ回答</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">25〜40分</td>
+                                    <td>回答CSVの配布・原本保存・データ構造確認</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">40〜58分</td>
+                                    <td>2刺激 × 3項目の記述統計と可視化</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">58〜75分</td>
+                                    <td>刺激A・Bの差分、効果量、対応のある比較</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">75〜88分</td>
+                                    <td>分析メモ作成・グループ内確認</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">88〜90分</td>
+                                    <td>次回への橋渡し</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        前半では、まず回答者として指定されたアンケートに回答します。その後、分析者としてCSVを確認します。
+                        <p>後半では、各グループのアンケートについて、刺激Aと刺激Bの違いを3つのVAS項目ごとに見ます。最後に、今日得られた図、統計量、気づきを分析メモとして残します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第12回の標準仕様 -->
+                    <div style="font-size:0.60em">
+                        <h2>今回分析するデータの前提</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>要素</th>
+                                    <th>標準</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>刺激</td>
+                                    <td>2件</td>
+                                </tr>
+                                <tr>
+                                    <td>VAS項目</td>
+                                    <td>3件</td>
+                                </tr>
+                                <tr>
+                                    <td>総評定数</td>
+                                    <td>2 × 3 = 6回</td>
+                                </tr>
+                                <tr>
+                                    <td>自由記述</td>
+                                    <td>任意で1問</td>
+                                </tr>
+                                <tr>
+                                    <td>回答時間</td>
+                                    <td>3〜5分</td>
+                                </tr>
+                                <tr>
+                                    <td>数字表示</td>
+                                    <td>原則オフ</td>
+                                </tr>
+                                <tr>
+                                    <td>属性</td>
+                                    <td>原則取得しない</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                第12回で標準仕様を上記のように固定した。
+                                <br />
+                                分析は原則として <strong>2刺激 × 3 VAS項目 = 6つの評定値</strong> を扱う。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回の分析は、第12回で決めた標準仕様に合わせます。刺激は2件、VAS項目は3件なので、1人の回答者から6つのVAS値が得られます。3刺激以上、属性別比較、複雑な多変量解析は今回の主対象にはしません。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 回答割当の復習 -->
+                    <div style="font-size:0.56em">
+                        <h2>回答割当の復習</h2>
+                        <p>第12回の割当に従い、各学生は4アンケートに回答する。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>回答グループ</th>
+                                    <th>回答するアンケート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>G1</td>
+                                    <td>G2・G3・G4・G5</td>
+                                </tr>
+                                <tr>
+                                    <td>G2</td>
+                                    <td>G3・G4・G5・G6</td>
+                                </tr>
+                                <tr>
+                                    <td>G3</td>
+                                    <td>G4・G5・G6・G7</td>
+                                </tr>
+                                <tr>
+                                    <td>G4</td>
+                                    <td>G5・G6・G7・G8</td>
+                                </tr>
+                                <tr>
+                                    <td>G5</td>
+                                    <td>G6・G7・G8・G1</td>
+                                </tr>
+                                <tr>
+                                    <td>G6</td>
+                                    <td>G7・G8・G1・G2</td>
+                                </tr>
+                                <tr>
+                                    <td>G7</td>
+                                    <td>G8・G1・G2・G3</td>
+                                </tr>
+                                <tr>
+                                    <td>G8</td>
+                                    <td>G1・G2・G3・G4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul>
+                            <li>
+                                <strong>自分のグループのアンケートには回答しない</strong>
+                            </li>
+                            <li>
+                                各アンケートの目標回答数は <strong>約24名</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        回答割当は第12回で決めたものを使います。自分のグループのアンケートには回答しません。設計意図や仮説を知っているため、回答にバイアスが入る可能性があるからです。
+                        <p>各アンケートは、4グループから回答を得るため、目標回答数は約24名です。欠席などを考慮し、20名以上あれば授業内の探索的分析として扱える目安にします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 回答時のルール -->
+                    <div style="font-size:0.72em">
+                        <h2>回答者として守ること</h2>
+                        <ul>
+                            <li>
+                                他の人と相談せず、<strong>個人の感じ方</strong>として回答する
+                            </li>
+                            <li>刺激A・Bを、指示された条件で確認する</li>
+                            <li>
+                                VASは、<strong>その場で感じた強さ</strong>に合わせて位置を決める
+                            </li>
+                            <li>数字が表示されなくても、感覚に合う位置で回答する</li>
+                            <li>途中で再生不能・表示不具合があればメモする</li>
+                            <li>自由記述に個人情報を書かない</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                回答内容は成績評価の対象ではない。
+                                <br />
+                                設計・分析・考察が評価対象である。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        回答者としてのルールを確認します。主観評価なので、周囲と相談して合わせる必要はありません。むしろ相談するとデータとしての独立性が弱くなります。
+                        <p>また、数字表示を原則オフにしているため、何点を狙うのではなく、直感的な位置で答えます。刺激が再生できない、表示されないなどの問題があれば、その情報はデータ品質の確認に必要です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 分析者として最初にすること -->
+                    <div style="font-size:0.78em">
+                        <h2>分析者として最初にすること</h2>
+                        <p>CSVを受け取ったら、すぐに分析しない。</p>
+                        <ol>
+                            <li>
+                                <strong>原本CSVを保存する</strong>
+                            </li>
+                            <li>コピーを作って分析する</li>
+                            <li>回答数を確認する</li>
+                            <li>6評定がそろっているか確認する</li>
+                            <li>値が0〜100の範囲に入っているか確認する</li>
+                            <li>不具合メモや自由記述を確認する</li>
+                        </ol>
+                        <blockquote>
+                            <p>
+                                統計分析の前に、
+                                <strong>データが分析できる状態か</strong>を確認する。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        CSVを受け取ったら、まず原本を残します。加工や整形を行う場合は、必ずコピーで作業します。
+                        <p>その後、回答数、欠損、値の範囲、刺激提示の不具合を確認します。統計検定に進む前に、そもそも分析できるデータになっているかを確認することが重要です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今回の基本データ構造 -->
+                    <div style="font-size:0.62em">
+                        <h2>今回の基本データ構造</h2>
+                        <p>分析では、次の4要素を確認する。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>要素</th>
+                                    <th>意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>回答者ID相当</td>
+                                    <td>同じ人の回答を結びつけるための識別子</td>
+                                </tr>
+                                <tr>
+                                    <td>刺激</td>
+                                    <td>刺激A／刺激B</td>
+                                </tr>
+                                <tr>
+                                    <td>VAS項目</td>
+                                    <td>項目1／項目2／項目3</td>
+                                </tr>
+                                <tr>
+                                    <td>VAS値</td>
+                                    <td>0〜100の評定値</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>今回の見方</h3>
+                        <ul>
+                            <li>1人が、刺激Aと刺激Bの両方を評価する</li>
+                            <li>各刺激について、3つのVAS項目に答える</li>
+                            <li>
+                                したがって、<strong>同じ人の中でAとBを比較できる</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        CSVの列名は実装や出力形式によって変わる可能性がありますが、分析に必要な要素は決まっています。回答者、刺激、VAS項目、値の4つです。
+                        <p>今回の標準設計では、同じ回答者が刺激Aと刺激Bの両方を評価しています。したがって、分析では刺激Aと刺激Bを別々の人の群として比べるのではなく、同じ人の中の差として見るのが基本です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 横長表と縦長表 -->
+                    <div style="font-size:0.52em">
+                        <h2>横長表と縦長表</h2>
+                        <p>CSVの形は、分析しやすい形に整える。</p>
+                        <h3>横長表のイメージ</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>respondent</th>
+                                    <th style="text-align:right">A_Q1</th>
+                                    <th style="text-align:right">A_Q2</th>
+                                    <th style="text-align:right">A_Q3</th>
+                                    <th style="text-align:right">B_Q1</th>
+                                    <th style="text-align:right">B_Q2</th>
+                                    <th style="text-align:right">B_Q3</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>R001</td>
+                                    <td style="text-align:right">62</td>
+                                    <td style="text-align:right">48</td>
+                                    <td style="text-align:right">71</td>
+                                    <td style="text-align:right">70</td>
+                                    <td style="text-align:right">42</td>
+                                    <td style="text-align:right">84</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>縦長表のイメージ</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>respondent</th>
+                                    <th>stimulus</th>
+                                    <th>item</th>
+                                    <th style="text-align:right">value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>R001</td>
+                                    <td>A</td>
+                                    <td>Q1</td>
+                                    <td style="text-align:right">62</td>
+                                </tr>
+                                <tr>
+                                    <td>R001</td>
+                                    <td>B</td>
+                                    <td>Q1</td>
+                                    <td style="text-align:right">70</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                可視化や集計では、<strong>縦長表</strong>が扱いやすい。
+                                差分計算では、<strong>横長表</strong>が扱いやすい。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        データには、横長表と縦長表があります。横長表は1人1行で、A_Q1、B_Q1のように列が分かれています。差分を計算しやすい形です。
+                        <p>縦長表は、1行が1つの評定値になります。グラフを作るときや、刺激ごと、項目ごとに集計するときに便利です。Pythonでは、必要に応じてこの2つの形を行き来します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 何を比較するのか -->
+                    <div style="font-size:0.72em">
+                        <h2>今回の主分析：刺激Aと刺激Bを比べる</h2>
+                        <p>各VAS項目について、次の問いを立てる。</p>
+                        <ul>
+                            <li>Q1：刺激Aと刺激Bで、評定値に違いがあるか</li>
+                            <li>Q2：刺激Aと刺激Bで、評定値に違いがあるか</li>
+                            <li>Q3：刺激Aと刺激Bで、評定値に違いがあるか</li>
+                        </ul>
+                        <h3>重要</h3>
+                        <p>同じ人がAとBの両方を評価しているので、</p>
+                        <blockquote>
+                            <p>
+                                <strong>B − A の差分</strong>を回答者ごとに作る。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回の中心は、刺激Aと刺激Bの比較です。3つのVAS項目があるので、項目ごとにAとBを比べます。
+                        <p>同じ人がAとBの両方を評価しているため、回答者ごとにBからAを引いた差分を作ります。差分が正ならBの方が高い、負ならAの方が高い、というように方向を決めて読みます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今回は使わない分析 -->
+                    <div style="font-size:0.76em">
+                        <h2>今回は、分析を広げすぎない</h2>
+                        <p>
+                            今回の授業内プロジェクト
+                            <br />
+                            標準仕様 <strong>2刺激 × 3 VAS項目</strong> に固定
+                        </p>
+                        <p>
+                            <strong>したがって</strong>
+                        </p>
+                        <ul>
+                            <li>属性別比較は原則行わない</li>
+                            <li>複雑な多変量解析は行わない</li>
+                            <li>
+                                まず、<strong>各VAS項目で刺激A・Bの差を見る</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        一般的なVAS分析では、3条件以上の比較や相関分析を行うこともあります。しかし、今回の授業内プロジェクトでは、みなさんの混乱を避けるために2刺激、3項目に固定しています。
+                        <p>したがって、主分析は刺激Aと刺激Bの対応あり比較です。相関や属性別分析は、必要がありデータが十分な場合の補助的分析に留めます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 仮説を確認する -->
+                    <div style="font-size:0.68em">
+                        <h2>データを見る前の仮説を確認する</h2>
+                        <p>第12回で書いた仮説に戻る。</p>
+                        <h3>例</h3>
+                        <ul>
+                            <li>
+                                刺激Aは刺激Bより、<strong>落ち着き</strong>が高いと予想した
+                            </li>
+                            <li>
+                                刺激Bは刺激Aより、<strong>活発さ</strong>が高いと予想した
+                            </li>
+                            <li>
+                                <strong>好ましさ</strong>は方向を決めず、探索的に比較するとした
+                            </li>
+                        </ul>
+                        <p>
+                            <strong>今日やること</strong>
+                        </p>
+                        <ul>
+                            <li>仮説と同じ方向で結果を読む</li>
+                            <li>予想外の結果も記録する</li>
+                            <li>データを見た後で、主分析項目を変更しない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        分析の前に、第12回で立てた仮説を確認します。仮説は正解を当てるためのものではありませんが、データを見る前の考えを固定する役割があります。
+                        <p>データを見てから、都合のよい項目だけを主分析にするのは避けます。予想と違う結果が出た場合は、それ自体を考察の材料にします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 3項目の扱い -->
+                    <div style="font-size:0.70em">
+                        <h2>3つのVAS項目をどう扱うか</h2>
+                        <p>3項目は、同じ重みで何でも平均しない。</p>
+                        <p>
+                            <strong>まず行うこと</strong>
+                        </p>
+                        <ol>
+                            <li>各項目を別々に集計する</li>
+                            <li>各項目で刺激A・Bを比較する</li>
+                            <li>第12回の主分析項目を最初に読む</li>
+                            <li>残り2項目は補助的に読む</li>
+                        </ol>
+                        <p>
+                            <strong>注意</strong>
+                        </p>
+                        <ul>
+                            <li>3項目を勝手に合計点にしない</li>
+                            <li>似た項目でも、意味が違えば別々に読む</li>
+                            <li>どの項目が主分析かを明記する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回の3項目は、必ずしも同じ尺度の下位項目ではありません。たとえば、好ましさ、落ち着き、活発さは、それぞれ異なる構成概念です。
+                        <p>したがって、勝手に3項目の平均点を作って総合スコアにするのは避けます。まずは項目ごとに読みます。第12回で主分析項目を決めていた場合は、それを最初に解釈します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 記述統計 -->
+                    <div style="font-size:0.66em">
+                        <p>
+                            <strong>まず記述統計を出す</strong>
+                        </p>
+                        <p>各アンケートについて、次の表を作る。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>刺激</th>
+                                    <th>項目</th>
+                                    <th style="text-align:right">n</th>
+                                    <th style="text-align:right">平均</th>
+                                    <th style="text-align:right">標準偏差</th>
+                                    <th style="text-align:right">中央値</th>
+                                    <th style="text-align:right">四分位範囲</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A</td>
+                                    <td>Q1</td>
+                                    <td style="text-align:right">24</td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                </tr>
+                                <tr>
+                                    <td>B</td>
+                                    <td>Q1</td>
+                                    <td style="text-align:right">24</td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                </tr>
+                                <tr>
+                                    <td>A</td>
+                                    <td>Q2</td>
+                                    <td style="text-align:right">24</td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                </tr>
+                                <tr>
+                                    <td>B</td>
+                                    <td>Q2</td>
+                                    <td style="text-align:right">24</td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            <strong>見ること</strong>
+                        </p>
+                        <ul>
+                            <li>どちらの刺激が高いか</li>
+                            <li>ばらつきは大きいか</li>
+                            <li>中央値と平均が大きくずれていないか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最初に作るのは記述統計の表です。刺激Aと刺激B、項目Q1からQ3の組合せで、n、平均、標準偏差、中央値、四分位範囲を出します。
+                        <p>この段階では、p値を急いで出す必要はありません。まず、どちらが高いか、ばらつきは大きいか、平均と中央値が大きくずれていないかを確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 可視化1 -->
+                    <div style="font-size:0.72em">
+                        <h2>可視化1：分布を見る</h2>
+                        <p>各VAS項目について、刺激A・Bの分布を比べる。</p>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>向いている図</strong>
+                                </p>
+                                <ul>
+                                    <li>箱ひげ図</li>
+                                    <li>バイオリンプロット</li>
+                                    <li>ヒストグラム</li>
+                                    <li>スウォームプロット</li>
+                                </ul>
+                            </div>
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>見ること</strong>
+                                </p>
+                                <ul>
+                                    <li>0や100に集まっていないか</li>
+                                    <li>中央付近に集中していないか</li>
+                                    <li>二極化していないか</li>
+                                    <li>外れ値らしい値がないか</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        VASデータでは、平均だけを見ずに分布を確認します。0や100に多く集まる場合、床効果や天井効果が考えられます。中央に集中している場合、刺激差が弱い、質問が曖昧、回答者が迷ったなどの可能性があります。
+                        <p>外れ値らしい値があっても、すぐに削除してはいけません。まずは刺激や回答状況を確認し、レポートでは外れ値をどう扱ったかを明記します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 可視化2 -->
+                    <div style="font-size:0.72em">
+                        <h2>可視化2：同じ人の変化を見る</h2>
+                        <p>今回の標準設計では、同じ人がAとBを評価する。</p>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>向いている図</strong>
+                                </p>
+                                <ul>
+                                    <li>対応のある線グラフ</li>
+                                    <li>AとBを結ぶスロープグラフ</li>
+                                    <li>
+                                        差分 <code>B − A</code> のヒストグラム
+                                    </li>
+                                    <li>差分の箱ひげ図</li>
+                                </ul>
+                            </div>
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>見ること</strong>
+                                </p>
+                                <ul>
+                                    <li>多くの人が同じ方向に変化しているか</li>
+                                    <li>一部の人だけが大きく変化していないか</li>
+                                    <li>差分が左右対称に近いか</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        対応ありのデータでは、AとBの分布を別々に見るだけでは不十分です。同じ人の中でどれくらい変わったかを見る必要があります。
+                        <p>AとBを線で結ぶ図や、BマイナスAの差分分布を見ると、多くの回答者が同じ方向に動いているのか、一部の回答者だけが強く反応しているのかが分かります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Python 1 -->
+                    <div style="font-size:0.8em">
+                        <h2>Pythonで最初に確認すること</h2>
+                        <p>CSVを読み込んだら、まず中身を見る。</p>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <pre><code class="language-python">
+import pandas as pd
+
+df = pd.read_csv(&quot;your_group_vas.csv&quot;)
+
+display(df.head())
+print(df.shape)
+print(df.columns)
+print(df.isna().sum())
+
+</code></pre>
+                            </div>
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>確認すること</strong>
+                                </p>
+                                <ul>
+                                    <li>行数は想定に近いか</li>
+                                    <li>必要な列があるか</li>
+                                    <li>欠損がないか</li>
+                                    <li>VAS値が0〜100に入っているか</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここでは、Pythonで最初に行う確認を示します。列名は実際のCSVに合わせて読み替えます。
+                        <p>いきなりグラフや検定を作るのではなく、まずデータの形、列名、欠損、値の範囲を確認します。どの列が回答者、刺激、項目、値に対応するかを明確にします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Python 2 -->
+                    <div style="font-size:0.75em">
+                        <h2>Python：縦長表で集計する</h2>
+                        <p>
+                            縦長表 <code>long_df</code> があると、刺激 × 項目で集計しやすい。
+                        </p>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <pre><code class="language-python"># long_df の列の例：
+# respondent, stimulus, item, value
+
+summary = (
+    long_df
+    .groupby([&quot;stimulus&quot;, &quot;item&quot;])[&quot;value&quot;]
+    .agg([&quot;count&quot;, &quot;mean&quot;, &quot;std&quot;, &quot;median&quot;])
+    .reset_index()
+)
+
+display(summary)
+</code></pre>
+                            </div>
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>読み方</strong>
+                                </p>
+                                <ul>
+                                    <li>
+                                        <code>stimulus</code>：AまたはB
+                                    </li>
+                                    <li>
+                                        <code>item</code>：3つのVAS項目
+                                    </li>
+                                    <li>
+                                        <code>value</code>：0〜100のVAS値
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        縦長表があると、刺激と項目でグループ化して平均や標準偏差を出しやすくなります。配布Notebookでは、実際のCSVからこの縦長表を作る処理を使います。
+                        <p>この段階で、各刺激と各項目の回答数がそろっているかを確認してください。ある項目だけ回答数が少ない場合は、欠損や整形ミスがないか見直します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Python 3 -->
+                    <div style="font-size:0.7em">
+                        <h2>Python：差分を作る</h2>
+                        <p>同じ回答者のAとBを対応づける。</p>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <pre><code class="language-python"># 例：1つのVAS項目だけを取り出す
+item_id = &quot;Q1&quot;
+
+sub = long_df[long_df[&quot;item&quot;] == item_id]
+
+wide = sub.pivot(
+    index=&quot;respondent&quot;,
+    columns=&quot;stimulus&quot;,
+    values=&quot;value&quot;
+)
+
+wide[&quot;diff_B_minus_A&quot;] = wide[&quot;B&quot;] - wide[&quot;A&quot;]
+
+display(wide.head())
+</code></pre>
+                            </div>
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>差分の意味</strong>
+                                </p>
+                                <ul>
+                                    <li>
+                                        <code>diff &gt; 0</code>：Bの方が高い
+                                    </li>
+                                    <li>
+                                        <code>diff &lt; 0</code>：Aの方が高い
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        差分を作るときは、同じ回答者のAとBを対応づけます。ここでは、1つの項目だけを取り出し、回答者を行、刺激AとBを列にした横長表を作っています。
+                        <p>BマイナスAという方向を決めておくと、差分の符号を解釈しやすくなります。仮説がAの方が高いという場合でも、差分方向はレポート内で統一してください。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Python 4 -->
+                    <div style="font-size:0.8em">
+                        <h2>Python：差分の記述統計</h2>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <pre><code class="language-python">diff = wide[&quot;diff_B_minus_A&quot;].dropna()
+diff_summary = {
+    &quot;n&quot;: diff.count(),
+    &quot;mean_diff&quot;: diff.mean(),
+    &quot;sd_diff&quot;: diff.std(),
+    &quot;median_diff&quot;: diff.median(),
+    &quot;q1&quot;: diff.quantile(0.25),
+    &quot;q3&quot;: diff.quantile(0.75),
+}
+
+diff_summary
+</code></pre>
+                            </div>
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>必ず見ること</strong>
+                                </p>
+                                <ul>
+                                    <li>平均差は何点か</li>
+                                    <li>差分の標準偏差は大きいか</li>
+                                    <li>中央値と平均差は近いか</li>
+                                    <li>差分が極端な人はいないか</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        刺激AとBの比較では、差分の記述統計が重要です。平均差だけでなく、差分のばらつき、中央値、四分位範囲を確認します。
+                        <p>同じ平均差でも、ほとんどの人が少しずつBを高く評価している場合と、一部の人だけが大きくBを高く評価している場合では、意味が変わります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 検定の基本 -->
+                    <div style="font-size:0.72em">
+                        <h2>今回の基本検定：対応のあるt検定</h2>
+                        <p>今回の標準デザインでは、</p>
+                        <ul>
+                            <li>同じ回答者が刺激Aと刺激Bを評価する</li>
+                            <li>
+                                各項目で <code>B − A</code> の差分を作れる
+                            </li>
+                        </ul>
+                        <p>したがって、まず考えるのは</p>
+                        <blockquote>
+                            <p>
+                                <strong>対応のあるt検定</strong>
+                            </p>
+                        </blockquote>
+                        <h3>何を検定しているか</h3>
+                        <p>
+                            <code>B − A</code> の平均差が、0と見なせるかを調べる。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回の標準デザインでは、同じ回答者がAとBを評価するため、対応のあるt検定が基本になります。これは、A群とB群を別々の人として比べる方法ではありません。
+                        <p>対応のあるt検定では、回答者ごとのBマイナスAの差分を作り、その平均差が0と見なせるかを調べます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- t検定だけで終わらない -->
+                    <div style="font-size:0.70em">
+                        <h2>t検定だけで終わらない</h2>
+                        <p>p値だけでは、結果を十分に説明できない。</p>
+                        <h3>合わせて報告するもの</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>見るもの</th>
+                                    <th>意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>AとBの平均・標準偏差</td>
+                                    <td>各刺激の評定の概要</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        平均差 <code>B − A</code>
+                                    </td>
+                                    <td>刺激差の向きと大きさ</td>
+                                </tr>
+                                <tr>
+                                    <td>95%信頼区間</td>
+                                    <td>平均差の不確実さ</td>
+                                </tr>
+                                <tr>
+                                    <td>効果量</td>
+                                    <td>差の大きさの目安</td>
+                                </tr>
+                                <tr>
+                                    <td>分布図</td>
+                                    <td>値の偏り・外れ値・個人差</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>「有意だった」だけでは、レポートとして弱い。</p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        p値は、結果の一部にすぎません。レポートでは、AとBの平均、標準偏差、平均差、信頼区間、効果量、図を合わせて示します。
+                        <p>特に授業内の小規模データでは、p値だけで強い結論を出すのではなく、図と効果量を見て、どの程度の差がありそうかを丁寧に述べます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 効果量 -->
+                    <div style="font-size:0.64em">
+                        <h2>効果量：差の大きさを読む</h2>
+                        <p>対応あり比較では、差分を使った効果量を考える。</p>
+                        <h3>授業内での簡易的な目安</h3>
+                        <p>
+                            $$
+                            d_z = \frac{\text{差分の平均}}{\text{差分の標準偏差}}
+                            $$
+                        </p>
+                        <h3>読み方</h3>
+                        <ul>
+                            <li>p値：差が0と見なせるかの手がかり</li>
+                            <li>効果量：差がどのくらい大きいかの手がかり</li>
+                            <li>図：その差が全体的な傾向か、一部の人の影響かを見る手がかり</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        対応あり比較では、回答者ごとの差分を使って効果量を計算できます。ここでは、差分の平均を差分の標準偏差で割る簡易的な効果量を紹介します。
+                        <p>効果量は、p値とは違い、差の大きさを読むための指標です。ただし、効果量だけでも判断せず、図や研究質問と合わせて解釈します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- ノンパラメトリック -->
+                    <div style="font-size:0.72em">
+                        <h2>差分が大きく歪むとき</h2>
+                        <blockquote>
+                            <p>
+                                差分の分布が強く歪む、外れ値の影響が大きい、nが小さい場合
+                                <br />
+                            </p>
+                        </blockquote>
+                        <p>
+                            ⇒ <strong>Wilcoxon符号付順位検定</strong> を検討
+                        </p>
+                        <p>
+                            <strong>注意</strong>
+                        </p>
+                        <ul>
+                            <li>これは対応あり2条件の代替法</li>
+                            <li>平均差を直接検定する方法ではない</li>
+                            <li>結果は、中央値・四分位範囲・図と一緒に読む</li>
+                        </ul>
+                        <p>
+                            <strong>避けたいこと</strong>
+                        </p>
+                        <ul>
+                            <li>Shapiro–Wilkのp値だけで機械的に切り替える</li>
+                            <li>都合のよい結果になる検定を後から選ぶ</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        差分の分布が大きく歪む場合は、Wilcoxon符号付順位検定を検討します。ただし、これは平均差を直接検定する方法ではなく、順位に基づく方法です。
+                        <p>また、正規性検定のp値だけで機械的にt検定かWilcoxonかを決めるのは避けます。まず可視化し、外れ値や差分の形を見て、分析理由を説明できるようにします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Python 5 -->
+                    <div style="font-size:0.65em">
+                        <h2>Python：対応のあるt検定</h2>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <pre><code class="language-python">from scipy import stats
+a = wide[&quot;A&quot;].dropna()
+b = wide[&quot;B&quot;].dropna()
+
+# 同じ回答者だけにそろえる
+paired = wide[[&quot;A&quot;, &quot;B&quot;]].dropna()
+
+result = stats.ttest_rel(paired[&quot;B&quot;], paired[&quot;A&quot;])
+
+print(result)
+</code></pre>
+                            </div>
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>解釈の方向</strong>
+                                </p>
+                                <ul>
+                                    <li>
+                                        <code>B − A</code> が正：Bの方が高い
+                                    </li>
+                                    <li>
+                                        <code>B − A</code> が負：Aの方が高い
+                                    </li>
+                                    <li>p値だけでなく、平均差と図を必ず見る</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Pythonでは、scipyのttest_relを使うと対応のあるt検定を実行できます。ここでは、同じ回答者についてAとBが両方そろっている行だけを使います。
+                        <p>出力されたp値だけを見て結論を書くのではなく、平均差、効果量、分布図と合わせて解釈します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Python 6 -->
+                    <div style="font-size:0.8em">
+                        <h2>Python：Wilcoxon符号付順位検定</h2>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <pre><code class="language-python">from scipy import stats
+paired = wide[[&quot;A&quot;, &quot;B&quot;]].dropna()
+
+result = stats.wilcoxon(
+    paired[&quot;B&quot;],
+    paired[&quot;A&quot;]
+)
+
+print(result)
+</code></pre>
+                            </div>
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>使う場面</strong>
+                                </p>
+                                <ul>
+                                    <li>差分の分布が強く歪んでいる</li>
+                                    <li>外れ値の影響が大きい</li>
+                                    <li>平均差より、順位にもとづく比較として報告したい</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Wilcoxon符号付順位検定は、対応あり2条件のノンパラメトリックな代替法です。授業内では、t検定とWilcoxonの両方を機械的に並べるのではなく、どちらを主として読むかを分析理由とともに示すことを重視します。
+                        <p>分布が強く歪んでいる場合や外れ値が目立つ場合には、Wilcoxonの結果を補助的に示すことがあります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 3項目の結果整理 -->
+                    <div style="font-size:0.54em">
+                        <h2>3項目の結果を1枚の表にまとめる</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VAS項目</th>
+                                    <th style="text-align:right">A平均</th>
+                                    <th style="text-align:right">B平均</th>
+                                    <th style="text-align:right">平均差 B−A</th>
+                                    <th>95% CI</th>
+                                    <th style="text-align:right">効果量</th>
+                                    <th style="text-align:right">p値</th>
+                                    <th>読み取り</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Q1 好ましさ</td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Q2 落ち着き</td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Q3 活発さ</td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td></td>
+                                    <td style="text-align:right"></td>
+                                    <td style="text-align:right"></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>読み方</h3>
+                        <ul>
+                            <li>主分析項目を最初に読む</li>
+                            <li>残り2項目で結果の意味を補う</li>
+                            <li>予想と違う項目を考察に回す</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        3項目の結果は、1枚の表にまとめると読みやすくなります。A平均、B平均、平均差、信頼区間、効果量、p値、簡単な読み取りを入れます。
+                        <p>ただし、3項目をすべて同じ強さの結論として扱うのではなく、第12回で決めた主分析項目を最初に読みます。残りの項目は、結果の解釈を補う材料として使います。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 結果パターン -->
+                    <div style="font-size:0.62em">
+                        <h2>2刺激 × 3項目でよくある結果パターン</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>パターン</th>
+                                    <th>例</th>
+                                    <th>解釈の方向</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1項目だけ差が大きい</td>
+                                    <td>活発さだけBが高い</td>
+                                    <td>刺激差は特定の感性に出た</td>
+                                </tr>
+                                <tr>
+                                    <td>3項目すべて同じ方向</td>
+                                    <td>Bが全項目で高い</td>
+                                    <td>全体的にBが強い印象を与えた</td>
+                                </tr>
+                                <tr>
+                                    <td>項目で方向が分かれる</td>
+                                    <td>Bは活発だが、Aは落ち着く</td>
+                                    <td>刺激の特徴が分化している</td>
+                                </tr>
+                                <tr>
+                                    <td>平均差は小さいが分散が大きい</td>
+                                    <td>人によって好みが割れる</td>
+                                    <td>個人差・刺激解釈の違いに注目</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        2刺激3項目の結果には、いくつか典型的なパターンがあります。1項目だけ差が出る場合、刺激の違いが特定の感性にだけ効いている可能性があります。
+                        <p>項目によって方向が分かれる場合は、刺激AとBの特徴が分化していると考えられます。平均差は小さいがばらつきが大きい場合は、個人差や刺激の解釈の違いを考察します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 相関は補助分析 -->
+                    <div style="font-size:0.70em">
+                        <h2>余力があれば：3項目の関係を見る</h2>
+                        <p>
+                            今回の主分析は、刺激A・Bの差である。
+                            <br />
+                            ただし補助的に、次を見ることはできる。
+                        </p>
+                        <p>
+                            <strong>例</strong>
+                        </p>
+                        <ul>
+                            <li>好ましさが高い人は、落ち着きも高く評価したか</li>
+                            <li>活発さが高い刺激は、好ましさも高い傾向か</li>
+                            <li>
+                                <code>B−A</code> の差分どうしに関係があるか
+                            </li>
+                        </ul>
+                        <p>
+                            <strong>注意</strong>
+                        </p>
+                        <ul>
+                            <li>nは約24名で大きくない</li>
+                            <li>相関は因果を示さない</li>
+                            <li>主分析ではなく、考察の補助として扱う</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        3つのVAS項目の関係を見ることもできます。ただし、今回の主分析はあくまで刺激Aと刺激Bの比較です。相関は補助分析として扱います。
+                        <p>たとえば、好ましさの差分と落ち着きの差分が同じ方向に動くかを見ると、刺激のどの特徴が好ましさに結びついていそうかを考える手がかりになります。ただし、相関から因果を断定しないようにします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 結果の書き方 -->
+                    <div style="font-size:0.62em">
+                        <h2>結果の書き方：最小テンプレート</h2>
+                        <p>
+                            <strong>対応のある比較の例</strong>
+                        </p>
+                        <blockquote>
+                            <p>
+                                Q2「落ち着き」について、刺激Aの平均は 68.2、刺激Bの平均は 54.7 であった。回答者ごとの差分 <code>B−A</code> の平均は −13.5 点であり、刺激Aの方が落ち着きが高い傾向が見られた。対応のあるt検定の結果、差は … であった。
+                                <br />
+                                効果量は … であった。
+                            </p>
+                        </blockquote>
+                        <p>
+                            <strong>必ず含めること</strong>
+                        </p>
+                        <ul>
+                            <li>どの項目か</li>
+                            <li>AとBの平均</li>
+                            <li>差分の向き</li>
+                            <li>図と合わせた解釈</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        結果を書くときは、まずどの項目について述べているのかを明確にします。そのうえで、AとBの平均、差分の向き、検定結果、効果量を示します。
+                        <p>例文中の数値はあくまで形式の例です。実際のレポートでは、自分のグループのデータに基づいて書きます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 悪い書き方 -->
+                    <div style="font-size:0.72em">
+                        <h2>避けたい書き方</h2>
+                        <p>
+                            <strong>弱い例</strong>
+                        </p>
+                        <ul>
+                            <li>Bの方が良かった</li>
+                            <li>有意差があったのでBが優れている</li>
+                            <li>p値が有意でなかったので差はない</li>
+                            <li>Aは落ち着く刺激であると証明された</li>
+                        </ul>
+                        <p>
+                            <strong>修正の方向</strong>
+                        </p>
+                        <ul>
+                            <li>どのVAS項目かを書く</li>
+                            <li>平均差の向きと大きさを書く</li>
+                            <li>図で分布を確認する</li>
+                            <li>「この2刺激の比較では」と範囲を限定する</li>
+                            <li>有意でなくても、効果量と不確実さを見る</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        レポートでは、「良かった」「優れている」といった総合評価だけで終わらせないようにします。今回測っているのは、3つのVAS項目であり、それぞれの強さです。
+                        <p>また、今回の結果だけで刺激一般の性質を証明することはできません。この2刺激、この回答者、この条件ではどうだったか、という範囲を明確にして書きます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 限界と考察 -->
+                    <div style="font-size:0.66em">
+                        <h2>考察で必ず触れること</h2>
+                        <p>授業内プロジェクトには限界がある。</p>
+                        <h3>例</h3>
+                        <ul>
+                            <li>回答者は授業内の学生に限られる</li>
+                            <li>回答数は約20〜24名程度である</li>
+                            <li>刺激A・Bは、比較したい要因以外も違う可能性がある</li>
+                            <li>順序効果や疲労の影響が残る可能性がある</li>
+                            <li>属性を原則取得しないため、属性別解釈はできない</li>
+                            <li>VASは主観評価であり、行動や生理指標ではない</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                限界を書くことは、失敗を書くことではない。
+                                <br />
+                                結論の範囲を正確に示すことである。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        考察では、結果の意味だけでなく限界も書きます。これは失敗を認めるためではなく、結論の範囲を正確に示すためです。
+                        <p>特に今回の授業内データでは、回答者数が限られること、刺激の統制に限界があること、属性を原則取得しないことを押さえます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 授業内活動 -->
+                    <div style="font-size:0.64em">
+                        <h2>授業内活動：自グループの分析メモを作る</h2>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>1. データ確認</strong>
+                                </p>
+                                <ul>
+                                    <li>回答数</li>
+                                    <li>欠損</li>
+                                    <li>0〜100範囲外の値</li>
+                                    <li>刺激提示の不具合</li>
+                                </ul>
+                            </div>
+                            <div style="flex:1;">
+                                <p>
+                                    <strong>2. 可視化</strong>
+                                </p>
+                                <ul>
+                                    <li>3項目それぞれでA・Bの分布図</li>
+                                    <li>
+                                        3項目それぞれで <code>B−A</code> の差分図
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p>
+                            <strong>3. 統計量</strong>
+                        </p>
+                        <ul>
+                            <li>A平均、B平均</li>
+                            <li>
+                                平均差 <code>B−A</code>
+                            </li>
+                            <li>効果量</li>
+                            <li>必要に応じて対応のあるt検定またはWilcoxon</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        授業内活動では、自分たちのアンケートについて分析メモを作ります。まずデータ確認、次に可視化、最後に統計量です。
+                        <p>この順番を守ることで、p値だけを先に見てしまうことを防ぎます。第14回では、この分析メモを図表と文章に整えます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 提出する分析メモ -->
+                    <div style="font-size:0.70em">
+                        <h2>今日の提出物：分析メモ</h2>
+                        <ol>
+                            <li>アンケート名・グループ名</li>
+                            <li>研究質問</li>
+                            <li>主分析項目</li>
+                            <li>回答数とデータ確認結果</li>
+                            <li>3項目の記述統計表</li>
+                            <li>分布図または差分図</li>
+                            <li>刺激A・Bの違いについての暫定解釈</li>
+                            <li>次回レポート化するときの課題</li>
+                        </ol>
+                        <blockquote>
+                            <p>
+                                完璧なレポートではなく、
+                                <br />
+                                <strong>第14回で整えるための材料</strong>として提出する。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の提出物は、最終レポートではなく分析メモです。研究質問、主分析項目、回答数、データ確認結果、記述統計、図、暫定解釈を入れます。
+                        <p>次回は、この分析メモをもとに、図表の体裁、結果の書き方、考察の組み立てを整えていきます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- まとめ -->
+                    <div style="font-size:0.78em">
+                        <h2>今日のまとめ</h2>
+                        <ol>
+                            <li>
+                                今回の分析対象は <strong>2刺激 × 3 VAS項目</strong>
+                            </li>
+                            <li>1人につき6つのVAS値が得られる</li>
+                            <li>
+                                同じ人がAとBを評価するため、基本は<strong>対応あり</strong>
+                            </li>
+                            <li>
+                                各項目で <code>B − A</code> の差分を作る
+                            </li>
+                            <li>平均差だけでなく、分布・効果量・不確実さを見る</li>
+                            <li>3項目を勝手に合計せず、項目ごとに解釈する</li>
+                            <li>結果は「この2刺激の比較では」と範囲を限定して書く</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のまとめです。今回の分析では、2刺激と3つのVAS項目に絞ります。同じ回答者がAとBを評価するため、項目ごとにBマイナスAの差分を作ります。
+                        <p>そして、平均差、分布、効果量、必要に応じた検定を合わせて結果を読みます。3項目を勝手に合計せず、それぞれの感性概念として解釈します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 次回：データ分析ワークフロー -->
+                    <div style="font-size:0.86em">
+                        <h2>次回：データ分析ワークフロー</h2>
+                        <p>第14回では、今日の分析メモを</p>
+                        <ul>
+                            <li>図表</li>
+                            <li>結果文</li>
+                            <li>考察</li>
+                            <li>限界</li>
+                            <li>最終レポート</li>
+                        </ul>
+                        <p>へ整える。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次回は、データ分析ワークフローです。今日作った分析メモを、読み手に伝わるレポートへ整えます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 次回までに確認すること -->
+                    <div style="font-size:0.86em">
+                        <h2>次回までに確認すること</h2>
+                        <ul>
+                            <li>自分のグループのCSVが読めるか</li>
+                            <li>3項目の分布図が作れるか</li>
+                            <li>
+                                <code>B−A</code> の差分表が作れるか
+                            </li>
+                            <li>主分析項目の結果を1段落で説明できるか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        そのために、CSVが読めること、分布図が作れること、差分表が作れること、主分析項目の結果を短く説明できることを確認しておいてください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- 参考資料 -->
+                    <div style="font-size:0.72em">
+                        <h2>主な参考資料</h2>
+                        <ol>
+                            <li>第12回スライド：VASアンケートを設計する</li>
+                            <li>
+                                Ranganathan (2021). <em>Choosing the Correct Statistical Test</em>.
+                            </li>
+                            <li>
+                                Mishra et al. (2019). <em>Student’s t-test, ANOVA, and ANCOVA</em>.
+                            </li>
+                            <li>
+                                Kim &amp; Park (2019). <em>Normality and sample size in t-test</em>.
+                            </li>
+                            <li>
+                                Lakens (2013). <em>Calculating and reporting effect sizes</em>.
+                            </li>
+                            <li>
+                                Lee (2016). <em>Alternatives to P value: confidence interval and effect size</em>.
+                            </li>
+                            <li>
+                                Byrom et al. (2022). <em>Electronic and paper VAS comparability</em>.
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        参考資料として、第12回スライドと、統計検定、効果量、信頼区間、電子VASに関する資料を挙げています。
+                        <p>授業内では文献の細部を暗記する必要はありません。今回の目的は、自分たちの2刺激、3項目のデータを、適切に確認し、図にし、刺激差として説明できるようになることです。</p>
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+        </script>
+    </body>
+</html>
