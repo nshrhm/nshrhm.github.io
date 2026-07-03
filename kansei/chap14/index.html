@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>感性データ処理</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="logo"
+             style="position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    z-index: 1;
+                    height:3rem">
+            <img src="logo.png" style="height:100%" alt="logo" />
+        </div>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <!-- 表紙 -->
+                    <h1>感性データ処理</h1>
+                    <h2>第14回 データ分析ワークフロー</h2>
+                    <h3>図表・結果・考察をレポート化する</h3>
+                    <h4>データサイエンス学部</h4>
+                    <h4>白濵 成希</h4>
+                    <p>
+                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第14回では、第12回で設計し、第13回で分析した2刺激、3つのVAS項目の結果を、レポートとして伝わる形に整えます。
+                        <p>今回は新しい統計手法を増やす回ではありません。問いを確認し、データを点検し、図で確認し、必要な統計量を示し、結果と考察を分けて書くという、分析から報告までの流れを整理する回です。</p>
+                        <p>今日の目的は、分析メモを最終レポートの骨格へ変えることです。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の到達目標 -->
+                    <div style="font-size:0.66em">
+                        <h2>今日の到達目標</h2>
+                        <p>授業後に、次のことを実行できることを目指します。</p>
+                        <ol>
+                            <li>
+                                <strong>問い → データ → 図表 → 統計量 → 解釈</strong>の流れを説明できる
+                            </li>
+                            <li>
+                                第13回の分析メモを、<strong>レポートの材料</strong>として整理できる
+                            </li>
+                            <li>
+                                欠損・外れ値・値の範囲・変数名など、<strong>前処理で確認すべき点</strong>を説明できる
+                            </li>
+                            <li>
+                                <strong>Results と Discussion</strong>を分けて書ける
+                            </li>
+                            <li>
+                                <strong>IMRAD形式</strong>を使って、最終レポートの骨格を作れる
+                            </li>
+                            <li>生データ・処理済みデータ・図表・Notebook・READMEを整理できる</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のゴールは、分析結果を単に出すことではありません。読み手が、何を測り、どのデータを使い、どんな結果が得られ、どこまで言えるのかを追える状態にすることです。
+                        <p>第13回では、CSV確認、記述統計、分布図、差分、効果量、対応のある比較を扱いました。第14回では、それらを最終レポートに入れられる形に整えます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 授業全体での位置づけ -->
+                    <div style="font-size:0.62em">
+                        <h2>授業全体での位置づけ</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">回</th>
+                                    <th>テーマ</th>
+                                    <th>プロジェクトでの役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">11</td>
+                                    <td>VAS 1</td>
+                                    <td>VASの役割・向き不向き・限界を理解</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">12</td>
+                                    <td>VAS 2</td>
+                                    <td>問い・刺激・VAS項目を設計</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">13</td>
+                                    <td>VAS 3</td>
+                                    <td>回答、CSV確認、Python分析</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <strong>14</strong>
+                                    </td>
+                                    <td>
+                                        <strong>データ分析ワークフロー</strong>
+                                    </td>
+                                    <td>
+                                        <strong>図表・結果・考察をレポート化</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">15</td>
+                                    <td>総合演習</td>
+                                    <td>発表、最終修正、提出</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                第14回は、分析結果を
+                                <br />
+                                <strong>読み手に伝わる成果物</strong>へ変える回である。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第12回から第15回までは、一つの小規模プロジェクトとしてつながっています。第12回で設計し、第13回で分析し、第14回でレポート化し、第15回で仕上げます。
+                        <p>したがって、今日の内容は第15回の総合演習に直結します。第13回で作った分析メモを、どの順番で説明すればレポートになるのかを確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 90分の見取り図 -->
+                    <div style="font-size:0.66em">
+                        <h2>90分の見取り図</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">時間</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">0〜10分</td>
+                                    <td>第13回の分析メモと今日のゴール確認</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">10〜25分</td>
+                                    <td>問い・データ構造・前処理の再確認</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">25〜45分</td>
+                                    <td>図表の選び方と、2刺激×3項目の結果整理</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">45〜60分</td>
+                                    <td>Results と Discussion の分離</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">60〜75分</td>
+                                    <td>IMRAD形式とレポート骨格の作成</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">75〜85分</td>
+                                    <td>再現性：フォルダ構成・README・Notebook</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">85〜90分</td>
+                                    <td>第15回への準備確認</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の前半では、まず第13回の分析メモを見直し、データが分析できる状態かを確認します。中盤では、図表と結果文を整えます。後半では、IMRAD形式に沿ってレポート骨格を作り、最後に再現性のためのファイル整理を確認します。
+                        <p>時間内に完成原稿まで書き切ることよりも、第15回で迷わず仕上げられる骨格を作ることを優先します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の出発点 -->
+                    <div style="font-size:0.70em">
+                        <h2>今日の出発点：第13回の分析メモ</h2>
+                        <ul>
+                            <li>研究質問</li>
+                            <li>主分析項目</li>
+                            <li>回答数とデータ確認結果</li>
+                            <li>3項目の記述統計表</li>
+                            <li>分布図または差分図</li>
+                            <li>刺激A・Bの違いについての暫定解釈</li>
+                            <li>次回レポート化するときの課題</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                これを<strong>最終レポートの章立てと文章</strong>へ変換する。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第13回の分析メモは、最終レポートの下書きではなく、材料集です。今日行うのは、その材料を目的、方法、結果、考察の順番に並べ直すことです。
+                        <p>研究質問はIntroductionに入り、刺激やVAS項目はMethodsに入り、記述統計や図表はResultsに入り、暫定解釈や限界はDiscussionに入ります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- なぜワークフローなのか -->
+                    <div style="font-size:0.6em">
+                        <h2>なぜ今「ワークフロー」なのか</h2>
+                        <p>
+                            <strong>分析できた</strong>ことと、<strong>伝わって使える</strong>ことは別である。
+                        </p>
+                        <p>たとえば、次の説明だけでは不十分。</p>
+                        <ul>
+                            <li>t検定をした</li>
+                            <li>箱ひげ図を描いた</li>
+                            <li>Bの平均がAより高かった</li>
+                        </ul>
+                        <p>
+                            必要なのは、分析手法を <strong>判断の根拠</strong> に変えるワークフロー
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>何を良くしたいのか</strong>
+                            </li>
+                            <li>
+                                <strong>誰の、どんな感じ方を測ったのか</strong>
+                            </li>
+                            <li>
+                                <strong>どの図表・統計量から何が言えるのか</strong>
+                            </li>
+                            <li>
+                                <strong>結論の範囲と限界はどこか</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        感性データ処理では、分析結果は最終的に設計、改善、提案に使われます。したがって、分析ソフトを動かしただけでは十分ではありません。
+                        <p>読み手は、なぜその分析をしたのか、図から何が読み取れるのか、その結果から何を言ってよく、何を言い過ぎてはいけないのかを知りたいはずです。ワークフローは、その説明の筋道を作るための考え方です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- ワークフロー全体 -->
+                    <div style="font-size:0.7em">
+                        <h2>感性データ分析の7工程</h2>
+                        <ol>
+                            <li>
+                                <strong>問いを定める</strong>
+                            </li>
+                            <li>
+                                <strong>データの形を決める</strong>
+                            </li>
+                            <li>
+                                <strong>前処理する</strong>
+                            </li>
+                            <li>
+                                <strong>可視化する</strong>
+                            </li>
+                            <li>
+                                <strong>分析する</strong>
+                            </li>
+                            <li>
+                                <strong>解釈する</strong>
+                            </li>
+                            <li>
+                                <strong>レポートとして残す</strong>
+                            </li>
+                        </ol>
+                        <blockquote>
+                            <p>
+                                重要なのは、工程名を覚えることではなく、
+                                <br />
+                                <strong>各工程で何を判断するか</strong>である。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第14回では、ワークフローを7工程で整理します。これは単に順番を暗記するためではありません。
+                        <p>それぞれの工程で判断することがあります。問いでは何を測るのか、データの形ではどの列を持つのか、前処理では何が怪しいのか、可視化では何を確認するのか、分析ではどの手法が問いに合うのか、解釈ではどこまで言えるのかを考えます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 第12〜14回の接続 -->
+                    <div style="font-size:0.70em">
+                        <h2>第12〜14回の接続</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:right">回</th>
+                                    <th>主な成果物</th>
+                                    <th>次の工程との接続</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:right">12</td>
+                                    <td>VAS実験設計書</td>
+                                    <td>研究質問・刺激・3項目・仮説を固定する</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">13</td>
+                                    <td>分析メモ</td>
+                                    <td>CSV確認、分布図、差分、効果量を作る</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">
+                                        <strong>14</strong>
+                                    </td>
+                                    <td>
+                                        <strong>レポート骨格</strong>
+                                    </td>
+                                    <td>
+                                        <strong>図表、結果文、考察、限界へ整える</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">15</td>
+                                    <td>最終レポート</td>
+                                    <td>発表・最終修正・提出</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                ここで新しく大きく広げず、
+                                <br />
+                                <strong>2刺激 × 3 VAS項目</strong>の結果を丁寧に仕上げる。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第12回では測定器を設計しました。第13回では、その測定器から得たデータを確認し、分析メモを作りました。
+                        <p>第14回では、分析メモをレポートに変換します。ここで分析を広げすぎないことが重要です。今回のプロジェクトでは、2刺激、3項目という標準仕様に絞って、結果を正確に説明できることを重視します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 問いに戻る -->
+                    <div style="font-size:0.68em">
+                        <h2>まず研究質問に戻る</h2>
+                        <p>レポートを書く前に、研究質問を確認する。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>書けているか</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>対象・刺激</strong>
+                                    </td>
+                                    <td>刺激Aと刺激Bは何か</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>比較条件</strong>
+                                    </td>
+                                    <td>何が異なる2刺激なのか</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>感性・主観体験</strong>
+                                    </td>
+                                    <td>3つのVAS項目は何を測るか</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>評価方法</strong>
+                                    </td>
+                                    <td>VASで0〜100として測ったか</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>主分析</strong>
+                                    </td>
+                                    <td>どの項目を中心に読むか</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            (例) 表現テンポの異なる2つの動画は、視聴後の
+                            <br />
+                            <strong>好ましさ・落ち着き・活発さ</strong>にどのような違いを生むか。
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        レポートを書くときは、最初に研究質問へ戻ります。研究質問が曖昧なままだと、図表も結果文も考察も曖昧になります。
+                        <p>第12回で書いた研究質問を見直し、刺激AとB、測る感性、評価方法、主分析項目が対応しているかを確認します。対応していない項目は、結果としては示せても、主張の中心にはしにくくなります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- ミニ活動1 -->
+                    <div style="font-size:0.70em">
+                        <h2>ミニ活動1：何が足りないか</h2>
+                        <p>次の文を読み、結果としてまだ足りない情報を2つ挙げる。</p>
+                        <blockquote>
+                            <p>「案Bは案Aより良かったので、案Bを採用する。」</p>
+                        </blockquote>
+                        <h3>考える観点</h3>
+                        <ul>
+                            <li>何を「良い」と測ったのか</li>
+                            <li>誰が評価したのか</li>
+                            <li>どの刺激・条件を比べたのか</li>
+                            <li>図や統計量は何を示したのか</li>
+                            <li>限界はどこか</li>
+                        </ul>
+                        <p>
+                            <strong>Think 2分 → Pair 2分 → Share 1分</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この活動では、結果文として不足している情報を見つけます。「良かった」という言葉には、好ましさ、使いやすさ、安心感、活発さなど複数の意味が混ざります。
+                        <p>また、誰が、どの条件で、どの尺度で、どの程度の差を示したのかが分からないと、採用という判断には進めません。ここから、問い、方法、結果、考察を分けて書く必要性につなげます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- データパッケージ -->
+                    <div style="font-size:0.72em">
+                        <h2>最終レポートに必要なデータ一式</h2>
+                        <p>
+                            分析結果だけでなく、次の対応関係を残す。結果だけでなく、
+                            <br />
+                            <strong>その結果がどう作られたか</strong> を残す。
+                        </p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>種類</th>
+                                    <th>役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>生データ</strong>
+                                    </td>
+                                    <td>元の回答。上書きしない</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>処理済みデータ</strong>
+                                    </td>
+                                    <td>整形・前処理後の表</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>コードブック</strong>
+                                    </td>
+                                    <td>列名、意味、単位、値の範囲</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Notebook / スクリプト</strong>
+                                    </td>
+                                    <td>分析手順</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>図表</strong>
+                                    </td>
+                                    <td>レポートに使う出力</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>README</strong>
+                                    </td>
+                                    <td>再実行の手順と注意点</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第14回では、データ分析を成果物として残すことを考えます。最終レポートだけが成果物ではありません。
+                        <p>生データ、処理済みデータ、コードブック、Notebook、図表、READMEがそろっていると、どの処理からどの結果が出たのかを追いやすくなります。これは研究だけでなく、実務上の品質管理としても重要です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 生データを上書きしない -->
+                    <div style="font-size:0.78em">
+                        <h2>生データを上書きしない</h2>
+                        <p>CSVを受け取ったら、最初にすることは保存である。</p>
+                        <ol>
+                            <li>
+                                <code>data_raw/</code> などに原本CSVを置く
+                            </li>
+                            <li>原本は編集せず、コピーまたはNotebookで整形する</li>
+                            <li>
+                                整形後の表は <code>data_processed/</code> などに保存する
+                            </li>
+                            <li>どの処理をしたかをメモする</li>
+                        </ol>
+                        <p>
+                            <strong>避けたいこと</strong>
+                        </p>
+                        <ul>
+                            <li>原本CSVを直接開いて並べ替え、そのまま保存する</li>
+                            <li>手作業で値を直し、記録を残さない</li>
+                            <li>図用に別ファイルを作り、元データとの対応が分からない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        分析でよくある事故は、生データを直接編集してしまうことです。あとから間違いに気づいても、元に戻せなくなります。
+                        <p>原本CSVは必ず保存し、整形や前処理はコピーやNotebook上で行います。手作業で直した場合も、何を直したのか記録が必要です。第15回の提出物でも、原本と処理済みデータの区別を意識してください。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- コードブック -->
+                    <div style="font-size:0.60em">
+                        <h2>コードブック：列の意味を残す</h2>
+                        <p>2刺激 × 3 VAS項目では、少なくとも次を説明できるようにする。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>変数名</th>
+                                    <th>意味</th>
+                                    <th>値・単位</th>
+                                    <th>備考</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <code>respondent</code>
+                                    </td>
+                                    <td>回答者ID相当</td>
+                                    <td>R001, R002, …</td>
+                                    <td>個人名ではない</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>stimulus</code>
+                                    </td>
+                                    <td>刺激条件</td>
+                                    <td>A / B</td>
+                                    <td>同じ人が両方評価</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>order</code>
+                                    </td>
+                                    <td>提示順序</td>
+                                    <td>1 / 2</td>
+                                    <td>順序効果の確認に使う</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>item</code>
+                                    </td>
+                                    <td>VAS項目</td>
+                                    <td>Q1 / Q2 / Q3</td>
+                                    <td>項目名と対応づける</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>value</code>
+                                    </td>
+                                    <td>VAS値</td>
+                                    <td>0〜100</td>
+                                    <td>高いほど強い方向を明記</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                列名だけで意味が分からない場合、
+                                未来の自分も読み直せない。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        コードブックは、変数一覧です。列名、意味、単位、値の範囲、注意点を残します。
+                        <p>特にVASでは、値が高いほど何を意味するのかが重要です。好ましさなら高いほど好ましい、不快さなら高いほど不快、というように、方向を明記します。項目名とQ1、Q2、Q3の対応も必ず残してください。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Tidy data -->
+                    <div style="font-size:0.58em">
+                        <h2>Tidy data：分析しやすい表の基本形</h2>
+                        <p>分析しやすいデータは、次の形になっている。</p>
+                        <ul>
+                            <li>
+                                <strong>各変数が列</strong>
+                            </li>
+                            <li>
+                                <strong>各観測が行</strong>
+                            </li>
+                            <li>
+                                <strong>各セルに1つの値</strong>
+                            </li>
+                        </ul>
+                        <h3>VAS実験の縦長表</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>respondent</th>
+                                    <th>stimulus</th>
+                                    <th style="text-align:right">order</th>
+                                    <th>item</th>
+                                    <th style="text-align:right">value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>R001</td>
+                                    <td>A</td>
+                                    <td style="text-align:right">1</td>
+                                    <td>Q1</td>
+                                    <td style="text-align:right">62</td>
+                                </tr>
+                                <tr>
+                                    <td>R001</td>
+                                    <td>A</td>
+                                    <td style="text-align:right">1</td>
+                                    <td>Q2</td>
+                                    <td style="text-align:right">48</td>
+                                </tr>
+                                <tr>
+                                    <td>R001</td>
+                                    <td>B</td>
+                                    <td style="text-align:right">2</td>
+                                    <td>Q1</td>
+                                    <td style="text-align:right">70</td>
+                                </tr>
+                                <tr>
+                                    <td>R001</td>
+                                    <td>B</td>
+                                    <td style="text-align:right">2</td>
+                                    <td>Q2</td>
+                                    <td style="text-align:right">42</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                可視化や集計では、
+                                <strong>縦長表</strong>が扱いやすい。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Tidy dataは、分析しやすい表の基本形です。1つのセルに複数の情報を入れず、回答者、刺激、順序、項目、値を別々の列に分けます。
+                        <p>第13回でも、縦長表と横長表を扱いました。可視化や刺激別・項目別の集計には、縦長表が便利です。一方、同じ人のAとBの差分を作るときには、横長表へ変換することもあります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 横長表と縦長表 -->
+                    <div style="font-size:0.52em">
+                        <h2>横長表と縦長表を使い分ける</h2>
+                        <h3>横長表：差分計算に向く</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>respondent</th>
+                                    <th style="text-align:right">A_Q1</th>
+                                    <th style="text-align:right">A_Q2</th>
+                                    <th style="text-align:right">A_Q3</th>
+                                    <th style="text-align:right">B_Q1</th>
+                                    <th style="text-align:right">B_Q2</th>
+                                    <th style="text-align:right">B_Q3</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>R001</td>
+                                    <td style="text-align:right">62</td>
+                                    <td style="text-align:right">48</td>
+                                    <td style="text-align:right">71</td>
+                                    <td style="text-align:right">70</td>
+                                    <td style="text-align:right">42</td>
+                                    <td style="text-align:right">84</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>縦長表：可視化・集計に向く</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>respondent</th>
+                                    <th>stimulus</th>
+                                    <th>item</th>
+                                    <th style="text-align:right">value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>R001</td>
+                                    <td>A</td>
+                                    <td>Q1</td>
+                                    <td style="text-align:right">62</td>
+                                </tr>
+                                <tr>
+                                    <td>R001</td>
+                                    <td>B</td>
+                                    <td>Q1</td>
+                                    <td style="text-align:right">70</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                レポートでは、どちらを使ったかではなく、
+                                <strong>何を比べるために整形したか</strong>を説明する。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        横長表と縦長表は、どちらが正しいというものではありません。目的によって使い分けます。
+                        <p>差分を作るときは、同じ回答者のAとBが同じ行にある横長表が便利です。刺激別、項目別に平均や箱ひげ図を作るときは縦長表が便利です。重要なのは、整形の目的を説明できることです。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 前処理の目的 -->
+                    <div style="font-size:0.76em">
+                        <h2>前処理の目的</h2>
+                        <ul>
+                            <li>
+                                <strong>何が測れていて、何が怪しいかを確認</strong>
+                            </li>
+                        </ul>
+                        <p>
+                            <strong>最低限の点検</strong>
+                        </p>
+                        <ul>
+                            <li>回答数は想定に近いか</li>
+                            <li>欠損はどこにあるか</li>
+                            <li>VAS値は0〜100に入っているか</li>
+                            <li>6評定がそろっているか</li>
+                            <li>刺激提示や再生の不具合はないか</li>
+                            <li>項目の方向はそろっているか</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        前処理は、結果をきれいに見せるために都合の悪いデータを消す作業ではありません。分析前にデータの状態を点検する作業です。
+                        <p>今回のVAS実験では、回答数、欠損、値の範囲、6つの評定値がそろっているか、不具合メモ、項目方向を確認します。点検した内容は、MethodsやResultsの補足として書けるようにします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 欠損があるときに確認すること -->
+                    <div style="font-size:0.72em">
+                        <h2>欠損があるときに確認すること</h2>
+                        <ul>
+                            <li>欠損の件数と割合</li>
+                            <li>どの刺激・どの項目に多いか</li>
+                            <li>途中離脱や表示不具合と関係していないか</li>
+                            <li>除外するのか、残すのか、その理由</li>
+                        </ul>
+                        <p>無言で削除しない</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        欠損は、まず件数と場所を確認します。特定の刺激や項目だけ欠損が多い場合、質問文や刺激提示に問題があった可能性があります。
+                        <p>重要なのは、欠損を見つけた瞬間に削除するのではなく、何が起きているかを説明できる状態にすることです。全体で何件欠けているのか、AだけなのかBだけなのか、特定のVAS項目だけなのかを確認します。</p>
+                        <p>レポートでは、除外した場合も残した場合も、その判断理由を書きます。無言で削除すると、結果がどのデータに基づいているのか読み手が追えなくなります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 2刺激 × 3項目で特に見ること -->
+                    <div style="font-size:0.72em">
+                        <h2>2刺激 × 3項目で特に見ること</h2>
+                        <ul>
+                            <li>1人につき6評定がそろっているか</li>
+                            <li>Aだけ欠けている人、Bだけ欠けている人はいないか</li>
+                            <li>対応あり比較に使える人数はいくつか</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                欠損は、消す前に
+                                <strong>把握して報告する</strong>。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回の標準設計では、同じ回答者がAとBの両方を評価するため、対応あり比較に使える人数が重要です。AとBのどちらかが欠けると、その項目の差分には使えません。
+                        <p>たとえば、好ましさではAとBがそろっていても、落ち着きではBだけ欠けている人がいるかもしれません。その場合、項目ごとに分析に使える人数が変わります。</p>
+                        <p>したがって、単に回答者数を書くのではなく、各項目でAとBのペアが何組そろっているかを確認します。これは、平均差や対応あり検定を読む前の前提条件です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 外れ値 -->
+                    <div style="font-size:0.70em">
+                        <h2>外れ値：本物の個人差か、手順違反か</h2>
+                        <p>外れ値には2種類ある。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>種類</th>
+                                    <th>例</th>
+                                    <th>対応</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>本物の個人差</strong>
+                                    </td>
+                                    <td>ある人だけ強く不快に感じた</td>
+                                    <td>すぐ削除しない</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>入力ミス・手順違反</strong>
+                                    </td>
+                                    <td>全項目100連打、条件取り違え</td>
+                                    <td>原因を確認する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        感性データでは個人差が大きく出ることがあります。外れ値に見える値が、実はその人の本当の感じ方であることもあります。
+                        <p>一方で、0や100を連打している、刺激を見ていない、条件を取り違えたといった手順違反の可能性もあります。削除する場合は、結果を見てから都合よく決めるのではなく、基準と理由を明記します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 外れ値処理の基本手順 -->
+                    <div style="font-size:1.0em">
+                        <h3>外れ値処理の基本手順</h3>
+                        <ol>
+                            <li>まず図で見つける</li>
+                            <li>原因を考える</li>
+                            <li>除外するなら基準を明記する</li>
+                        </ol>
+                        <blockquote>
+                            <p>
+                                「都合の悪い値だけ消す」
+                                <br />
+                                は避ける。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        <p>外れ値処理では、まず図で値の分布を確認します。箱ひげ図や散布図、差分図を見ると、他の回答から大きく離れた値や、特定の回答者だけ極端な差を示している場合に気づきやすくなります。</p>
+                        <p>次に、その値が本物の個人差なのか、入力ミスや手順違反なのかを考えます。感性評価では、人によって強い反応が出ること自体は珍しくありません。</p>
+                        <p>除外する場合は、結果を見てから都合よく消すのではなく、あらかじめ説明できる基準を置きます。レポートには、何を外れ値とみなし、何件をどの理由で除外したのかを書きます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 項目方向 -->
+                    <div style="font-size:0.70em">
+                        <h2>項目の方向をそろえる</h2>
+                        <p>VAS値が高いほど何を意味するかを確認する。</p>
+                        <p>
+                            <strong>例</strong>
+                        </p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>高い値の意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>好ましさ</td>
+                                    <td>より好ましい</td>
+                                </tr>
+                                <tr>
+                                    <td>落ち着き</td>
+                                    <td>より落ち着く</td>
+                                </tr>
+                                <tr>
+                                    <td>活発さ</td>
+                                    <td>より活発に感じる</td>
+                                </tr>
+                                <tr>
+                                    <td>不快さ</td>
+                                    <td>より不快</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        VASの値が高いことの意味は、項目ごとに異なります。好ましさは高いほど肯定的ですが、不快さは高いほど否定的な反応です。
+                        <p>そのため、平均値を読む前に、各項目の方向を確認します。値が高いほど好ましいのか、落ち着くのか、活発なのか、あるいは不快なのかを明記しないと、同じ「高い」という結果でも解釈が逆になることがあります。</p>
+                        <p>レポートでは、Methodsの尺度説明やコードブックに、各項目のアンカーと高得点の意味を残してください。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 項目方向 -->
+                    <div style="font-size:1.0em">
+                        <h2>注意</h2>
+                        <ul>
+                            <li>3項目を勝手に合計点にしない</li>
+                            <li>「好ましさ」と「不快さ」は方向が違う</li>
+                            <li>逆向き項目を処理した場合は、別列として保存する</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        したがって、3項目を何となく平均して総合点にしてはいけません。反転処理をする場合は、元の列を上書きせず、反転後の列を別名で保存します。レポートには、どの方向で読んだかを明記します。
+                        <p>特に、「好ましさ」と「不快さ」のように意味の方向が違う項目をそのまま足すと、何を測っている点数なのか分からなくなります。合計点を作るなら、項目が同じ概念を測っているという根拠と、方向をそろえる処理が必要です。</p>
+                        <p>今回の標準課題では、まず3項目を別々に読み、どの項目でAとBの違いが見えたのかを説明する方針にします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 手作業を減らす -->
+                    <div style="font-size:0.76em">
+                        <h2>手作業を減らす</h2>
+                        <p>再現性を下げやすい操作</p>
+                        <ul>
+                            <li>Excelで並べ替えて、そのまま上書きする</li>
+                            <li>コピペで値を貼り直す</li>
+                            <li>図を作るために別ファイルを手修正する</li>
+                            <li>不要そうな行を目視で消す</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        手作業そのものが禁止というわけではありません。ただし、手作業は後から追跡しにくいことが多いです。
+                        <p>たとえば、Excelで並べ替えたあとにそのまま上書きすると、元の順序や変更前の値が分からなくなることがあります。コピペで値を直す操作も、どのセルを変えたのかが記録に残りにくいです。</p>
+                        <p>分析結果に関わる操作ほど、あとから説明できる形にしておく必要があります。手作業を減らす目的は、楽をすることだけでなく、ミスを見つけやすくすることです。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 手作業を減らす -->
+                    <div style="font-size:0.76em">
+                        <h2>望ましい形</h2>
+                        <ul>
+                            <li>Notebookやスクリプトで処理する</li>
+                            <li>手作業をした場合は、作業メモに残す</li>
+                            <li>原本CSVと処理済みCSVを分ける</li>
+                            <li>図の作り方を再実行できるようにする</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        特に、並べ替え、コピペ、目視削除は事故の原因になります。可能な限りNotebookやスクリプトで処理し、どうしても手作業が必要な場合は何をしたかメモに残します。
+                        <p>原本CSVと処理済みCSVを分けておけば、処理に失敗しても最初からやり直せます。図も、手作業で画像を作るのではなく、Notebookを再実行すれば同じ図が出る状態にしておくと安全です。</p>
+                        <p>第15回で最終レポートを整えるときにも、どのデータからどの図を作ったのかが分かると、修正がかなり楽になります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 可視化の役割 -->
+                    <div style="font-size:0.66em">
+                        <h2>可視化：統計の前に状況を把握する</h2>
+                        <p>
+                            <strong>役割</strong>
+                        </p>
+                        <ul>
+                            <li>分布の偏りを見る</li>
+                            <li>床効果・天井効果を見る</li>
+                            <li>外れ値を確認する</li>
+                            <li>条件差の方向を確認する</li>
+                            <li>同じ人の差分を見る</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                先に図を見ることで、<strong>検定結果を誤解しにくくなる</strong>。可視化は、見栄えのためだけではない。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第13回でも確認したように、VASデータでは平均値やp値だけでは不十分です。同じ平均差でも、全員が少しずつ変化している場合と、一部の人だけが大きく変化している場合では意味が違います。
+                        <p>可視化は、統計解析の前にデータの状態を確認する安全点検です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 図の選び方 -->
+                    <div style="font-size:0.5em">
+                        <h2>どの図を最初に見るか</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>見たいこと</th>
+                                    <th>向いている図</th>
+                                    <th>今回の例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>分布</td>
+                                    <td>ヒストグラム、箱ひげ図、バイオリンプロット</td>
+                                    <td>A/BそれぞれのVAS値</td>
+                                </tr>
+                                <tr>
+                                    <td>条件差</td>
+                                    <td>箱ひげ図、平均＋信頼区間</td>
+                                    <td>AとBの比較</td>
+                                </tr>
+                                <tr>
+                                    <td>同じ人の変化</td>
+                                    <td>スロープグラフ、差分ヒストグラム</td>
+                                    <td>
+                                        <code>B−A</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2変数の関係</td>
+                                    <td>散布図</td>
+                                    <td>補助分析として項目間関係</td>
+                                </tr>
+                                <tr>
+                                    <td>構造</td>
+                                    <td>MDS、対応分析、PCAマップ</td>
+                                    <td>他の手法の復習</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                今回の主役は、
+                                <strong>分布図 + 差分図 + 結果表</strong>である。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        図は問いによって選びます。分布を見たいならヒストグラムや箱ひげ図、条件差を見たいなら箱ひげ図や平均と信頼区間、同じ人の変化を見たいなら差分図が向いています。
+                        <p>今回の2刺激3項目のプロジェクトでは、分布図、差分図、結果表を最低限のセットとして考えます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 2刺激×3項目の結果整理 -->
+                    <div style="font-size:0.54em">
+                        <h2>2刺激 × 3項目の結果を整理する</h2>
+                        <h3>図表セットの最小案</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>種類</th>
+                                    <th>内容</th>
+                                    <th>使いどころ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>図1</td>
+                                    <td>3項目のA/B分布図</td>
+                                    <td>全体の分布とばらつき</td>
+                                </tr>
+                                <tr>
+                                    <td>図2</td>
+                                    <td>
+                                        主分析項目の <code>B−A</code> 差分図
+                                    </td>
+                                    <td>同じ人の変化</td>
+                                </tr>
+                                <tr>
+                                    <td>表1</td>
+                                    <td>3項目の記述統計</td>
+                                    <td>A平均、B平均、標準偏差、中央値</td>
+                                </tr>
+                                <tr>
+                                    <td>表2</td>
+                                    <td>3項目の比較結果</td>
+                                    <td>平均差、95% CI、効果量、p値</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>注意</h3>
+                        <ul>
+                            <li>図表を増やしすぎない</li>
+                            <li>本文で参照しない図表は置かない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最終レポートでは、図表を増やせばよいわけではありません。読み手が研究質問を追うために必要な図表を選びます。
+                        <p>3項目すべての分布を見せる図、主分析項目の差分を示す図、記述統計の表、比較結果の表があれば、2刺激3項目の結果はかなり説明しやすくなります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 分析手法を選ぶ -->
+                    <div style="font-size:0.55em">
+                        <h2>手法名より「問いとデザイン」から選ぶ</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>問い</th>
+                                    <th>向くデータ</th>
+                                    <th>本講義の手法</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象どうしの似ている／違うを見たい</td>
+                                    <td>類似度・距離</td>
+                                    <td>MDS</td>
+                                </tr>
+                                <tr>
+                                    <td>対象とカテゴリの関係を見たい</td>
+                                    <td>クロス集計表</td>
+                                    <td>数量化Ⅲ類・対応分析</td>
+                                </tr>
+                                <tr>
+                                    <td>SD項目を少数軸に要約したい</td>
+                                    <td>SD評定</td>
+                                    <td>主成分分析</td>
+                                </tr>
+                                <tr>
+                                    <td>背後の潜在因子を考えたい</td>
+                                    <td>SD評定</td>
+                                    <td>因子分析</td>
+                                </tr>
+                                <tr>
+                                    <td>2条件の差を見たい</td>
+                                    <td>VASなどの連続量</td>
+                                    <td>t検定、Wilcoxon</td>
+                                </tr>
+                                <tr>
+                                    <td>2変数の関係を見たい</td>
+                                    <td>VAS、ログ、物理量</td>
+                                    <td>相関</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                手法名を先に決めず、
+                                <strong>問い → デザイン → データ型</strong>で絞る。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第14回は、授業全体の手法を束ねる回でもあります。MDS、数量化Ⅲ類、PCA、因子分析、検定、相関は、それぞれ向いている問いとデータ型が違います。
+                        <p>今回のプロジェクトでは、2刺激のVAS値を同じ回答者で比較するため、主分析は対応あり比較になります。ただし、授業全体では、問いとデータ型によって手法を選ぶことを確認します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今回の分析選択 -->
+                    <div style="font-size:0.72em">
+                        <h2>今回の主分析は広げすぎない</h2>
+                        <p>第12〜13回の標準仕様</p>
+                        <ul>
+                            <li>2刺激</li>
+                            <li>3 VAS項目</li>
+                            <li>同じ回答者がAとBを評価</li>
+                            <li>属性は原則取得しない</li>
+                        </ul>
+                        <h3>したがって</h3>
+                        <ul>
+                            <li>各項目を別々に読む</li>
+                            <li>
+                                <code>B−A</code> の差分を作る
+                            </li>
+                            <li>記述統計・分布図・効果量を示す</li>
+                            <li>必要に応じて対応のあるt検定またはWilcoxonを使う</li>
+                            <li>属性別比較や複雑な多変量解析は主分析にしない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今回のデータでは、分析を広げすぎないことが重要です。属性を原則取得していないので、属性別比較はできません。3つのVAS項目も、同じ尺度の下位項目とは限らないため、勝手に合計点にしません。
+                        <p>項目ごとにAとBを比較し、主分析項目を中心に結果を説明します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 結果と考察を分ける -->
+                    <div style="font-size:0.64em">
+                        <h2>Results と Discussion を混ぜない</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>節</th>
+                                    <th>書くこと</th>
+                                    <th>例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Results</strong>
+                                    </td>
+                                    <td>図表で示された観測事実</td>
+                                    <td>案Bは案AよりスムーズさVASが高かった</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Discussion</strong>
+                                    </td>
+                                    <td>結果の意味づけ・限界・提案</td>
+                                    <td>ボタン配置の違いが寄与した可能性がある</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>注意</h3>
+                        <ul>
+                            <li>「差があった」からすぐ「採用すべき」と書かない</li>
+                            <li>Resultsでは、まず数値・図表・方向を書く</li>
+                            <li>Discussionで、理由・限界・次の改善を書く</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        レポートで最もよく起きる失敗は、結果と考察が混ざることです。Resultsでは、図表や統計量から何が示されたかを書きます。Discussionでは、その結果がなぜ起きた可能性があるか、どこまで一般化できるか、次に何を改善すべきかを書きます。
+                        <p>採用や改善提案は、観測事実の後に、限界を踏まえて慎重に述べます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 結果段落の型 -->
+                    <div style="font-size:0.62em">
+                        <h2>結果段落の型</h2>
+                        <ol>
+                            <li>どの図表を見るかを示す</li>
+                            <li>重要な数値を1つ書く</li>
+                            <li>図から何が言えるかを1文で述べる</li>
+                        </ol>
+                        <h3>例</h3>
+                        <blockquote>
+                            <p>
+                                図2に示すように、Q2「落ち着き」では刺激Aの方が刺激Bより高い傾向が見られた。回答者ごとの差分 <code>B−A</code> の平均は −13.5 点であり、効果量は … であった。この結果は、この2刺激の比較では刺激Aの方が落ち着きを強く感じさせたことを示す。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        結果段落は、型を使うと書きやすくなります。まず図表を参照し、次に重要な数値を示し、最後に観測事実として何が言えるかを書きます。
+                        <p>この段階では、なぜ落ち着きが高かったのかという理由づけは控えめにします。それはDiscussionで扱います。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 避けたい書き方 -->
+                    <div style="font-size:0.60em">
+                        <h2>避けたい書き方と修正方向</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>避けたい書き方</th>
+                                    <th>修正の方向</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Bの方が良かった</td>
+                                    <td>どのVAS項目で高かったかを書く</td>
+                                </tr>
+                                <tr>
+                                    <td>有意差があったのでBが優れている</td>
+                                    <td>差の大きさ、図、限界も示す</td>
+                                </tr>
+                                <tr>
+                                    <td>p値が有意でなかったので差はない</td>
+                                    <td>効果量と不確実さを見る</td>
+                                </tr>
+                                <tr>
+                                    <td>この刺激は落ち着くと証明された</td>
+                                    <td>「この2刺激の比較では」と範囲を限定する</td>
+                                </tr>
+                                <tr>
+                                    <td>なんとなくBが好まれた</td>
+                                    <td>平均差・分布・自由記述など根拠を示す</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>主張は、測定した項目の範囲に限定する。</p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        感性評価のレポートでは、「良い」「優れている」「証明された」といった強い表現を使いすぎないようにします。
+                        <p>今回測っているのは、3つのVAS項目です。したがって、どの項目についてどの方向の差があったのかを示します。結論は、今回の2刺激、今回の回答者、今回の手順の範囲に限定して書きます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- IMRAD -->
+                    <div style="font-size:0.60em">
+                        <h2>IMRAD形式で骨格を作る</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>節</th>
+                                    <th>何を書くか</th>
+                                    <th>今回のVAS実験での例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Introduction</strong>
+                                    </td>
+                                    <td>背景、目的、研究質問</td>
+                                    <td>なぜ2刺激を比較するか</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Methods</strong>
+                                    </td>
+                                    <td>参加者、刺激、手順、尺度、分析方法</td>
+                                    <td>2刺激、3項目、VAS、対応あり比較</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Results</strong>
+                                    </td>
+                                    <td>図表、記述統計、検定結果</td>
+                                    <td>分布図、差分図、結果表</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Discussion</strong>
+                                    </td>
+                                    <td>意味づけ、限界、改善提案</td>
+                                    <td>なぜ差が出たか、どこまで言えるか</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Conclusion</strong>
+                                    </td>
+                                    <td>要点のまとめ</td>
+                                    <td>最も重要な結果と次の課題</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                IMRADは、読者が
+                                <strong>問いから結論まで追いやすくする型</strong>である。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        IMRAD形式は、Introduction、Methods、Results、Discussionの頭文字をとった構成です。最後にConclusionを加えると、授業レポートとして整理しやすくなります。
+                        <p>この形式を使うと、背景と問い、方法、結果、意味づけを分けて書けます。第15回では、この骨格に沿って最終レポートを完成させます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Methods -->
+                    <div style="font-size:0.62em">
+                        <h2>Methods：方法で書くこと</h2>
+                        <p>今回のVAS実験では、少なくとも次を書く。</p>
+                        <ul>
+                            <li>
+                                <strong>参加者</strong>：授業内の学生、回答数、除外があれば理由
+                            </li>
+                            <li>
+                                <strong>刺激</strong>：刺激A・Bの内容、提示条件
+                            </li>
+                            <li>
+                                <strong>手順</strong>：提示順、回答割当、自分のグループには回答しないこと
+                            </li>
+                            <li>
+                                <strong>尺度</strong>：3つのVAS項目、アンカー、0〜100の意味
+                            </li>
+                            <li>
+                                <strong>データ処理</strong>：欠損、外れ値、整形方法
+                            </li>
+                            <li>
+                                <strong>分析方法</strong>：記述統計、図、差分、効果量、検定
+                            </li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                Methodsは、他者が
+                                <strong>同じ手順を追える程度</strong>に書く。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Methodsは、実験の説明です。ここが曖昧だと、結果の意味も曖昧になります。
+                        <p>刺激AとBが何だったのか、3つのVAS項目が何だったのか、どのように回答したのか、どのようにデータを処理したのか、どの分析を行ったのかを書きます。長く書きすぎる必要はありませんが、読み手が手順を追えることが重要です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Results -->
+                    <div style="font-size:0.66em">
+                        <h2>Results：結果で書くこと</h2>
+                        <p>Resultsでは、解釈を急がず、観測事実を書く。</p>
+                        <h3>入れるもの</h3>
+                        <ul>
+                            <li>回答数とデータ確認結果</li>
+                            <li>3項目の記述統計表</li>
+                            <li>A/Bの分布図</li>
+                            <li>主分析項目の差分図</li>
+                            <li>平均差、95%信頼区間、効果量</li>
+                            <li>必要に応じて検定結果</li>
+                        </ul>
+                        <h3>書き方</h3>
+                        <ul>
+                            <li>「図1に示すように…」</li>
+                            <li>「表1に示すように…」</li>
+                            <li>
+                                「平均差 <code>B−A</code> は…」
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Resultsでは、まずデータ確認と結果を示します。図表番号を付け、本文で必ず参照します。
+                        <p>ここで大事なのは、結果を読み手に見せることです。図表を貼るだけではなく、どの図表のどこを見るのかを本文で説明します。</p>
+                        <p>たとえば、「図1にA/B別の分布を示す」「表1に3項目の記述統計を示す」と書いたうえで、平均差やばらつき、差分の方向を述べます。必要に応じて、95%信頼区間、効果量、p値もここに置きます。</p>
+                        <p>ただし、ここでは理由づけを急ぎません。「なぜそうなったか」「どちらを採用すべきか」はDiscussionで扱います。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- Discussion -->
+                    <div style="font-size:0.66em">
+                        <h2>Discussion：考察で書くこと</h2>
+                        <p>Discussionでは、結果の意味を考える。</p>
+                        <h3>書く観点</h3>
+                        <ul>
+                            <li>主分析項目の結果は、仮説と一致したか</li>
+                            <li>刺激A・Bの違いが、結果にどう関係した可能性があるか</li>
+                            <li>3項目の結果は一貫しているか、分かれているか</li>
+                            <li>回答者数や刺激統制の限界は何か</li>
+                            <li>次に改善・追加検証するなら何をするか</li>
+                        </ul>
+                        <h3>注意</h3>
+                        <ul>
+                            <li>因果を断定しすぎない</li>
+                            <li>結論の範囲を限定する</li>
+                            <li>予想外の結果も考察材料にする</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        Discussionでは、結果の意味を考えます。第12回で立てた仮説と結果を比べ、なぜそのような結果になった可能性があるかを述べます。
+                        <p>ただし、今回の授業内データだけで因果を強く断定することはできません。限界を明記し、そのうえで次にどう改善するかを書くと、考察が安定します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 図表の作法 -->
+                    <div style="font-size:0.60em">
+                        <h2>図表の最低限ルール</h2>
+                        <ul>
+                            <li>
+                                図表番号を付ける
+                                <ul>
+                                    <li>図1、図2、表1、表2</li>
+                                </ul>
+                            </li>
+                            <li>タイトルを付ける</li>
+                            <li>軸ラベル・単位・条件名を明記する</li>
+                            <li>n数やエラーバーの意味を書く</li>
+                            <li>本文で必ず参照する</li>
+                            <li>何を伝える図なのかを先に決める</li>
+                        </ul>
+                        <p>
+                            <strong>悪い状態</strong>
+                        </p>
+                        <ul>
+                            <li>図だけ貼って説明がない</li>
+                            <li>軸ラベルがない</li>
+                            <li>A/Bが何を意味するか分からない</li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        図表は、見た目を整えるだけではなく、読み手が誤解しないように作る必要があります。条件名、軸ラベル、単位、n数、エラーバーの意味が分からない図は、レポートの根拠として弱くなります。
+                        <p>図表は必ず本文で参照してください。「図2に示すように」と書くことで、読み手がどこを見ればよいか分かります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 再現性 -->
+                    <div style="font-size:0.70em">
+                        <h2>再現性：未来の自分が再実行できる形にする</h2>
+                        <p>再現性は、立派な研究者だけの話ではない。</p>
+                        <h3>まず目指すこと</h3>
+                        <ul>
+                            <li>数か月後の自分が、同じ結果を出せる</li>
+                            <li>どのCSVからどの図を作ったか分かる</li>
+                            <li>どの前処理をしたか分かる</li>
+                            <li>どのNotebookを実行すればよいか分かる</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                再現性は、
+                                <strong>未来の自分と他者への説明責任</strong>である。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        再現性というと、大規模な研究公開を想像するかもしれません。しかし授業レベルでは、数か月後の自分が同じ結果を再現できることが出発点です。
+                        <p>どのCSVを使ったか、どの前処理をしたか、どのNotebookを実行したか、どの図がどの分析から出たかを追えるようにします。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- フォルダ構成 -->
+                    <div style="font-size:0.5em">
+                        <h2>おすすめの最小フォルダ構成</h2>
+                        <div style="display:flex; gap:2.2em; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <pre><code class="language-text">project/
+  data_raw/
+  data_processed/
+  notebooks/
+  figures/
+  report/
+  README.md
+</code></pre>
+                            </div>
+                            <div style="flex:1;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>フォルダ</th>
+                                            <th>入れるもの</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <code>data_raw/</code>
+                                            </td>
+                                            <td>生データ。上書きしない</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <code>data_processed/</code>
+                                            </td>
+                                            <td>整形・前処理後データ</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <code>notebooks/</code>
+                                            </td>
+                                            <td>分析Notebook</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <code>figures/</code>
+                                            </td>
+                                            <td>出力図</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <code>report/</code>
+                                            </td>
+                                            <td>レポート本文、提出用PDF</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <code>README.md</code>
+                                            </td>
+                                            <td>目的、手順、注意点</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        最小フォルダ構成を決めておくと、ファイルが散らかりにくくなります。生データ、処理済みデータ、Notebook、図、レポートを分けます。
+                        <p>提出時にこの構成を完全に求めるかどうかは課題指示に従いますが、自分の作業フォルダとしては、このように分けておくと安全です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- README -->
+                    <div style="font-size:0.72em">
+                        <h2>READMEに最低限書くこと</h2>
+                        <ul>
+                            <li>この分析は何を目的にしているか</li>
+                            <li>どのファイルが生データか</li>
+                            <li>どのファイルが処理済みデータか</li>
+                            <li>Notebookをどの順に実行するか</li>
+                            <li>どの図がどこに出力されるか</li>
+                            <li>欠損・外れ値・除外基準の扱い</li>
+                            <li>VAS項目の方向や反転処理の有無</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                READMEは、
+                                <strong>分析フォルダの取扱説明書</strong>である。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        READMEは、分析フォルダの取扱説明書です。何の分析なのか、どのデータを使うのか、どのNotebookを実行するのか、どの図がどこに出るのかを書きます。
+                        <p>欠損や外れ値、反転処理のように、結果に影響する判断もREADMEに残しておくと、あとから確認しやすくなります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 単体ではなくパイプライン -->
+                    <div style="font-size:0.72em">
+                        <h2>大事なのはアルゴリズム単体ではなくパイプライン</h2>
+                        <p>データサイエンスでは、モデルや検定名に目が向きやすい。</p>
+                        <p>しかし実務で価値になるのは、</p>
+                        <ul>
+                            <li>どの問いから始めたか</li>
+                            <li>どのデータをどう整えたか</li>
+                            <li>どの図と分析で説明したか</li>
+                            <li>その手順を他者が追えるか</li>
+                        </ul>
+                        <p>という流れである。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        データサイエンスでは、機械学習モデルや統計検定そのものに注目しがちです。しかし、実務で重要なのはパイプライン全体です。
+                        <p>どの問いから始めたのか、どのデータを集めたのか、どの前処理をしたのか、どの図表で説明したのかがつながっていなければ、結果だけが立派でも使いにくくなります。</p>
+                        <p>今回のレポートでも、対応あり検定を使ったかどうかだけでなく、その検定に至るまでの測定、整形、可視化、解釈の流れを読者が追えることを目指します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 感性データでは特に -->
+                    <div style="font-size:1.0em">
+                        <h3>感性データでは特に</h3>
+                        <ul>
+                            <li>質問文</li>
+                            <li>VASのアンカー</li>
+                            <li>刺激提示条件</li>
+                            <li>回答文脈</li>
+                        </ul>
+                        <p>が結果に影響する。</p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        感性データでは、質問文、アンカー、刺激提示、回答文脈が結果に影響します。したがって、アルゴリズムだけでなく、測定と前処理と報告までを一つの流れとして考える必要があります。
+                        <p>同じ刺激でも、質問文が少し違えば回答の意味が変わることがあります。VASの左端と右端の表現、刺激を見せる順番、回答者がどのような状況で評価したかも、結果の読み方に関わります。</p>
+                        <p>だからこそMethodsでは、刺激、手順、尺度を丁寧に書きます。Discussionでは、測定条件が結果に与えた可能性や限界も考察に含めます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- きれいな図より誤解しない図 -->
+                    <div style="font-size:0.78em">
+                        <h2>「きれいな図」より「誤解しない図」</h2>
+                        <p>図はプレゼン資料である前に、分析の道具である。</p>
+                        <h3>確認すること</h3>
+                        <ul>
+                            <li>軸ラベルがあるか</li>
+                            <li>条件名が分かるか</li>
+                            <li>VAS値の範囲が分かるか</li>
+                            <li>何人のデータか分かるか</li>
+                            <li>本文でその図を説明しているか</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                良い図は、
+                                読み手が<strong>何を見ればよいか</strong>分かる図である。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        図は見た目がきれいであることも大切ですが、それ以上に誤解しないことが重要です。
+                        <p>軸ラベル、条件名、VAS値の範囲、n数、本文での説明がそろっているかを確認します。とくにAとBの意味が分からない図は、レポートの読み手には伝わりません。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- ワークフローが見える事例 -->
+                    <div style="font-size:0.54em">
+                        <h2>ワークフローが見える事例</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>事例</th>
+                                    <th>見るポイント</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>遠隔VR介入で痛みや気分を追う</td>
+                                    <td>問い・介入条件・VASなどの測定・比較がつながる</td>
+                                </tr>
+                                <tr>
+                                    <td>リモートUX調査</td>
+                                    <td>プラットフォーム設計と主観データ収集が方法記述に直結する</td>
+                                </tr>
+                                <tr>
+                                    <td>オンラインレビューから感性ワード抽出</td>
+                                    <td>データ取得 → 前処理 → 評価語選定の流れが見える</td>
+                                </tr>
+                                <tr>
+                                    <td>Affective Slider</td>
+                                    <td>測定ツール自体を明示し、再利用可能にする</td>
+                                </tr>
+                                <tr>
+                                    <td>音の主観評価で尺度形式を比較</td>
+                                    <td>応答尺度の設計がデータ品質に影響する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <blockquote>
+                            <p>
+                                事例を読むときは、
+                                <strong>問い → データ → 前処理・分析 → 報告</strong>の流れに注目する。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここでは、細かな論文内容を暗記する必要はありません。事例を見るときは、どの問いから始まり、どんなデータを集め、どのように前処理や分析を行い、どのように報告しているかに注目します。
+                        <p>感性データ処理では、測定ツールや尺度形式そのものも結果に影響します。そのため、方法を明確に書くことが重要です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 授業内活動 -->
+                    <div style="font-size:0.62em">
+                        <h2>授業内活動：分析メモをレポート骨格に変える</h2>
+                        <p>第13回の分析メモを使って、次を埋める。</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>節</th>
+                                    <th>今日書く内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Introduction</td>
+                                    <td>研究質問を1文で書く</td>
+                                </tr>
+                                <tr>
+                                    <td>Methods</td>
+                                    <td>刺激A/B、3項目、回答者、分析方法を書く</td>
+                                </tr>
+                                <tr>
+                                    <td>Results</td>
+                                    <td>入れる図表を2〜4個選ぶ</td>
+                                </tr>
+                                <tr>
+                                    <td>Discussion</td>
+                                    <td>主な解釈、限界、次の改善を書く</td>
+                                </tr>
+                                <tr>
+                                    <td>README</td>
+                                    <td>見出しを5つ作る</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>作業の順番</h3>
+                        <ol>
+                            <li>研究質問を確認する</li>
+                            <li>図表を選ぶ</li>
+                            <li>結果文を1段落書く</li>
+                            <li>考察文を1段落書く</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        ここからは授業内活動です。第13回の分析メモを、IMRADの各節へ振り分けます。
+                        <p>特に重要なのは、結果文と考察文を分けることです。結果文では図表と数値を述べ、考察文では意味づけと限界を書きます。READMEについては、まず見出しを5つ作るところから始めます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 活動：Results と Discussion -->
+                    <div style="font-size:0.60em">
+                        <h2>活動：Results と Discussionを分ける</h2>
+                        <p>次の文を、Results と Discussion に分解する。</p>
+                        <blockquote>
+                            <p>案Bは案AよりスムーズさVASが高かった。したがって案Bは分かりやすい設計であり採用すべきである。</p>
+                        </blockquote>
+                        <h3>分け方</h3>
+                        <ul>
+                            <li>
+                                <strong>Results</strong>
+                                <ul>
+                                    <li>図表や数値で示された事実</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>Discussion</strong>
+                                <ul>
+                                    <li>意味づけ、理由の仮説、限界、提案</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>
+                            <strong>Think 2分 → Pair 3分 → Share 2分</strong>
+                        </p>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        この活動では、結果と考察を分ける練習をします。「案Bは案AよりスムーズさVASが高かった」はResultsに入ります。
+                        <p>一方、「分かりやすい設計である」「採用すべきである」は考察や提案です。ただし、その主張には根拠と限界が必要です。なぜスムーズさが高かった可能性があるのか、他の項目ではどうだったのか、回答者や刺激の限界は何かを補います。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日の提出物 -->
+                    <div style="font-size:0.68em">
+                        <h2>今日の提出物：レポート骨格</h2>
+                        <p>A4 1〜2枚程度を目安に、次をまとめる。</p>
+                        <ol>
+                            <li>研究質問</li>
+                            <li>刺激A・B</li>
+                            <li>3つのVAS項目と主分析項目</li>
+                            <li>データ確認結果</li>
+                            <li>使用する図表の一覧</li>
+                            <li>主分析項目の結果文</li>
+                            <li>考察の下書き</li>
+                            <li>限界</li>
+                            <li>READMEに入れる見出し</li>
+                            <li>第15回で仕上げる作業</li>
+                        </ol>
+                        <blockquote>
+                            <p>
+                                完成原稿ではなく、
+                                <strong>第15回で仕上げるための設計図</strong>として提出する。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_47.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日の提出物は、レポート骨格です。完成した文章でなくても構いませんが、第15回で何をすればよいかが分かる状態にします。
+                        <p>研究質問、刺激、VAS項目、データ確認、図表、結果文、考察、限界、README見出しを入れてください。第15回では、この骨格をもとに文章を整えます。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- チェックリスト -->
+                    <div style="font-size:0.72em">
+                        <h2>第15回に向けたチェックリスト</h2>
+                        <ul class="contains-task-list">
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-5787752">
+                                <label class="task-list-item-label" for="task-item-5787752">研究質問を1文で言える</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-1641772">
+                                <label class="task-list-item-label" for="task-item-1641772">生データと処理済みデータを分けている</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-7828344">
+                                <label class="task-list-item-label" for="task-item-7828344">3項目の記述統計表がある</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-303183">
+                                <label class="task-list-item-label" for="task-item-303183">分布図または差分図がある</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-2182850">
+                                <label class="task-list-item-label" for="task-item-2182850">主分析項目の結果文がある</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-6199472">
+                                <label class="task-list-item-label" for="task-item-6199472">Results と Discussion を分けている</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-3763839">
+                                <label class="task-list-item-label" for="task-item-3763839">限界を書ける</label>
+                            </li>
+                            <li class="task-list-item">
+                                <input class="task-list-item-checkbox"
+                                       disabled=""
+                                       type="checkbox"
+                                       id="task-item-9545651">
+                                <label class="task-list-item-label" for="task-item-9545651">READMEの見出しがある</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_48.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        第15回までに、このチェックリストを確認してください。特に、研究質問、図表、結果文、考察、限界がそろっているかが重要です。
+                        <p>図表や分析ができていても、研究質問と対応していなければレポートとして弱くなります。逆に、複雑な分析がなくても、問いから結論まで一貫していれば、良いレポートになります。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 今日のまとめ -->
+                    <div style="font-size:0.74em">
+                        <h2>今日のまとめ</h2>
+                        <ol>
+                            <li>
+                                第14回は、新しい手法ではなく<strong>手法を使える形に束ねる回</strong>
+                            </li>
+                            <li>
+                                分析は、<strong>問い → データ → 前処理 → 可視化 → 分析 → 解釈 → 報告</strong>で考える
+                            </li>
+                            <li>生データを上書きせず、処理手順を残す</li>
+                            <li>VAS結果は、3項目を勝手に合計せず、項目ごとに読む</li>
+                            <li>Resultsでは観測事実、Discussionでは意味づけと限界を書く</li>
+                            <li>IMRAD形式で、最終レポートの骨格を作る</li>
+                            <li>READMEは、未来の自分が再実行するための取扱説明書である</li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_49.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        今日のまとめです。第14回では、新しい統計手法を増やすのではなく、これまで学んだ手法を成果物へつなげる流れを整理しました。
+                        <p>特に、結果と考察を分けること、図表を本文で説明すること、データとNotebookを再実行できる形で残すことが重要です。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 次回 -->
+                    <div style="font-size:0.86em">
+                        <h2>次回：総合演習</h2>
+                        <p>第15回では、今日作ったレポート骨格をもとに、</p>
+                        <ul>
+                            <li>図表の体裁を整える</li>
+                            <li>Results を文章化する</li>
+                            <li>Discussion と限界を書く</li>
+                            <li>Conclusion をまとめる</li>
+                            <li>発表または提出用に最終確認する</li>
+                        </ul>
+                        <blockquote>
+                            <p>
+                                最終目標は、
+                                <strong>問い → 測定 → 分析 → 報告</strong>が一貫したレポートである。
+                            </p>
+                        </blockquote>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_50.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        次回は総合演習です。今日作ったレポート骨格を、提出できる形に仕上げます。
+                        <p>第15回では、図表の体裁、結果文、考察、限界、結論を整えます。最終的に、研究質問から測定、分析、報告までが一貫しているレポートを目指します。</p>
+                    </aside>
+                </section>
+                <section>
+                    <!-- 主な参考資料 -->
+                    <div style="font-size:0.62em">
+                        <h2>主な参考資料</h2>
+                        <ol>
+                            <li>第12回スライド：VASアンケートを設計する</li>
+                            <li>第13回スライド：2刺激×3 VAS項目を分析する</li>
+                            <li>
+                                Wickham (2014). <em>Tidy Data</em>.
+                            </li>
+                            <li>
+                                Sandve et al. (2013). <em>Ten Simple Rules for Reproducible Computational Research</em>.
+                            </li>
+                            <li>
+                                Wilson et al. (2017). <em>Good enough practices in scientific computing</em>.
+                            </li>
+                            <li>
+                                Rougier et al. (2014). <em>Ten Simple Rules for Better Figures</em>.
+                            </li>
+                            <li>
+                                Mensh &amp; Kording (2017). <em>Ten simple rules for structuring papers</em>.
+                            </li>
+                            <li>
+                                Wilkinson et al. (2016). <em>The FAIR Guiding Principles for scientific data management and stewardship</em>.
+                            </li>
+                            <li>
+                                The Turing Way Community. <em>Guide for Reproducible Research</em>.
+                            </li>
+                            <li>
+                                University of Minnesota Libraries. <em>Structure of a Research Paper: IMRaD Format</em>.
+                            </li>
+                        </ol>
+                    </div>
+                    <p>
+                        <audio controls src="./voiceovers/slide_51.mp3" type="audio/mpeg"></audio>
+                    </p>
+                    <aside class="notes">
+                        参考資料として、第12回と第13回のスライドに加え、Tidy data、再現可能な研究、良い図、論文構成、FAIR原則、IMRAD形式に関する資料を挙げています。
+                        <p>授業内では文献の細部を暗記する必要はありません。重要なのは、今日のプロジェクトで、分析結果を読み手が追える形に整えることです。</p>
+                    </aside>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+        </script>
+    </body>
+</html>
