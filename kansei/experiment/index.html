@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="下関市立大学データサイエンス学部3年の科目「感性データ処理」で実施するVAS評価実験の入口ページです。">
+        <title>VAS評価実験 | 感性データ処理</title>
+        <style>
+    :root {
+      --ink: #16202f;
+      --muted: #5e6b7c;
+      --line: rgba(22, 32, 47, 0.12);
+      --panel: rgba(255, 255, 255, 0.82);
+      --panel-solid: #ffffff;
+      --bg: #fbfaf7;
+      --teal: #0f766e;
+      --teal-dark: #115e59;
+      --rose: #be3455;
+      --amber: #d97706;
+      --clay: #9a5b35;
+      --disabled: #778396;
+      --shadow: 0 18px 48px rgba(22, 32, 47, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic", "YuGothic", "Noto Sans JP", sans-serif;
+      line-height: 1.8;
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.16), transparent 34rem),
+        linear-gradient(225deg, rgba(190, 52, 85, 0.13), transparent 32rem),
+        linear-gradient(rgba(22, 32, 47, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(22, 32, 47, 0.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 42px 42px, 42px 42px, auto;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .site-shell {
+      width: min(1160px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 72vh;
+      display: grid;
+      align-items: center;
+      padding: 52px 0 58px;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: clamp(4px, 7vw, 92px);
+      bottom: 42px;
+      width: min(34vw, 370px);
+      aspect-ratio: 1.22;
+      border: 1px solid rgba(15, 118, 110, 0.24);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.18)),
+        repeating-linear-gradient(90deg, transparent 0 30px, rgba(15, 118, 110, 0.12) 31px),
+        repeating-linear-gradient(0deg, transparent 0 30px, rgba(190, 52, 85, 0.1) 31px);
+      transform: rotate(-6deg);
+      z-index: -1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 20px;
+      color: var(--teal-dark);
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 36px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--rose), var(--amber));
+    }
+
+    h1 {
+      max-width: 940px;
+      margin: 0;
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 780px;
+      margin: 28px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2.2vw, 1.16rem);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 30px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hero-meta li {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 13px;
+      background: rgba(255, 255, 255, 0.68);
+      color: #344256;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 36px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      border-radius: 8px;
+      padding: 0 18px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+      color: #fff;
+      box-shadow: 0 14px 32px rgba(15, 118, 110, 0.22);
+    }
+
+    .button.secondary {
+      border: 1px solid rgba(190, 52, 85, 0.22);
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--rose);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    main {
+      padding: 0 0 72px;
+    }
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      line-height: 1.22;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 560px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .notice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .notice {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .notice-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border: 1px solid rgba(217, 119, 6, 0.28);
+      border-radius: 8px;
+      color: var(--amber);
+      font-weight: 900;
+      background: linear-gradient(135deg, rgba(217, 119, 6, 0.12), rgba(190, 52, 85, 0.11));
+    }
+
+    .notice h3,
+    .experiment-title {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    .notice h3 {
+      font-size: 1.04rem;
+    }
+
+    .notice p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .experiment-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .experiment-card {
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      border-radius: 8px;
+      padding: 18px;
+      background: var(--panel-solid);
+      box-shadow: 0 12px 30px rgba(22, 32, 47, 0.06);
+      text-decoration: none;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    a.experiment-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--rose), var(--amber));
+    }
+
+    a.experiment-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(15, 118, 110, 0.36);
+      box-shadow: 0 18px 42px rgba(15, 118, 110, 0.13);
+    }
+
+    .experiment-card.is-disabled {
+      color: var(--disabled);
+      background: rgba(255, 255, 255, 0.58);
+      border-color: rgba(119, 131, 150, 0.2);
+    }
+
+    .experiment-card.is-disabled::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      background: rgba(119, 131, 150, 0.28);
+    }
+
+    .experiment-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--teal);
+      font-size: 0.78rem;
+      font-weight: 900;
+      line-height: 1.4;
+    }
+
+    .is-disabled .experiment-kicker {
+      color: var(--disabled);
+    }
+
+    .status {
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: rgba(15, 118, 110, 0.1);
+      color: var(--teal-dark);
+      white-space: nowrap;
+    }
+
+    .is-disabled .status {
+      background: rgba(119, 131, 150, 0.14);
+      color: var(--disabled);
+    }
+
+    .experiment-title {
+      font-size: 1.06rem;
+      line-height: 1.58;
+    }
+
+    .experiment-meta {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .experiment-foot {
+      margin-top: 20px;
+      color: var(--clay);
+      font-size: 0.86rem;
+      font-weight: 900;
+    }
+
+    .is-disabled .experiment-foot {
+      color: var(--disabled);
+    }
+
+    .review-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .review-link {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--teal-dark);
+      font-weight: 900;
+      text-decoration: none;
+      transition: transform 160ms ease, border-color 160ms ease;
+    }
+
+    .review-link span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .review-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(190, 52, 85, 0.28);
+    }
+
+    .site-footer {
+      margin-top: 52px;
+      padding: 28px 0 44px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        min-height: auto;
+        padding-top: 42px;
+      }
+
+      .hero::after {
+        width: 280px;
+        opacity: 0.55;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 10px;
+      }
+
+      .notice-grid,
+      .experiment-grid,
+      .review-links {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .site-shell {
+        width: min(100% - 28px, 1160px);
+      }
+
+      .hero {
+        padding: 32px 0 44px;
+      }
+
+      .hero::after {
+        right: -66px;
+        bottom: 18px;
+        width: 230px;
+      }
+
+      .hero-copy {
+        margin-top: 22px;
+      }
+
+      .hero-meta {
+        margin-top: 24px;
+      }
+
+      .hero-actions {
+        display: grid;
+        margin-top: 28px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .notice-grid,
+      .experiment-grid,
+      .review-links {
+        grid-template-columns: 1fr;
+      }
+
+      .notice,
+      .experiment-card {
+        padding: 18px;
+      }
+
+      .experiment-card {
+        min-height: 176px;
+      }
+    }
+        </style>
+    </head>
+    <body>
+        <header class="hero">
+            <div class="site-shell">
+                <p class="eyebrow">下関市立大学 データサイエンス学部3年</p>
+                <h1>感性データ処理<br>VAS評価実験</h1>
+                <p class="hero-copy">
+                    学生グループが設計したVAS評価実験の入口です。各グループのテーマを確認し、割り当てられた実験ページへ進んでください。
+                    回答は授業内の教材データとして匿名で扱います。氏名、学籍番号、個人が特定される情報、機微な個人情報は入力しないでください。
+                </p>
+                <ul class="hero-meta" aria-label="実験情報">
+                    <li>2026年度 春学期</li>
+                    <li>2刺激 × 3 VAS項目</li>
+                    <li>参加は任意</li>
+                    <li>個人情報は入力しない</li>
+                </ul>
+                <div class="hero-actions">
+                    <a class="button primary" href="#experiments">実験URLを選ぶ</a>
+                    <a class="button secondary" href="#review">VASを復習する</a>
+                </div>
+            </div>
+        </header>
+        <main class="site-shell">
+            <section class="section" aria-labelledby="notice-title">
+                <div class="section-head">
+                    <h2 id="notice-title">回答前の確認</h2>
+                    <p>実験ページでは、提示された刺激を見たり読んだりした直後の印象を、線上の位置で回答します。</p>
+                </div>
+                <div class="notice-grid">
+                    <article class="notice">
+                        <div class="notice-mark" aria-hidden="true">01</div>
+                        <h3>直感に近い位置で回答</h3>
+                        <p>正解・不正解はありません。深く考えすぎず、提示直後の感じ方をVAS上に表してください。</p>
+                    </article>
+                    <article class="notice">
+                        <div class="notice-mark" aria-hidden="true">02</div>
+                        <h3>匿名の教材データ</h3>
+                        <p>回答は授業内で分析練習に使います。氏名、学籍番号、連絡先などは入力しないでください。</p>
+                    </article>
+                    <article class="notice">
+                        <div class="notice-mark" aria-hidden="true">03</div>
+                        <h3>参加は任意</h3>
+                        <p>同意しない場合は回答せず終了できます。回答中も、無理に続ける必要はありません。</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section" id="experiments" aria-labelledby="experiments-title">
+                <div class="section-head">
+                    <h2 id="experiments-title">グループ別 実験URL</h2>
+                    <p>自分の担当グループ、または教員から指定されたグループの実験ページを開いてください。</p>
+                </div>
+                <div class="experiment-grid">
+                    <a class="experiment-card" href="https://vaspad.web.app/g1-kansei-text" target="_blank" rel="noopener noreferrer">
+                        <div>
+                            <div class="experiment-kicker">
+                                <span>G1</span><span class="status">公開中</span>
+                            </div>
+                            <h3 class="experiment-title">紹介文による感じ方</h3>
+                            <p class="experiment-meta">2刺激 × 3 VAS項目</p>
+                        </div>
+                        <div class="experiment-foot">回答へ進む</div>
+                    </a>
+                    <a class="experiment-card" href="https://vaspad.web.app/g2-kansei-image" target="_blank" rel="noopener noreferrer">
+                        <div>
+                            <div class="experiment-kicker">
+                                <span>G2</span><span class="status">公開中</span>
+                            </div>
+                            <h3 class="experiment-title">イラストの描画手法の違い</h3>
+                            <p class="experiment-meta">2刺激 × 3 VAS項目</p>
+                        </div>
+                        <div class="experiment-foot">回答へ進む</div>
+                    </a>
+                    <a class="experiment-card" href="https://vaspad.web.app/g3-campus-text" target="_blank" rel="noopener noreferrer">
+                        <div>
+                            <div class="experiment-kicker">
+                                <span>G3</span><span class="status">公開中</span>
+                            </div>
+                            <h3 class="experiment-title">文章から受ける印象</h3>
+                            <p class="experiment-meta">2刺激 × 3 VAS項目</p>
+                        </div>
+                        <div class="experiment-foot">回答へ進む</div>
+                    </a>
+                    <a class="experiment-card" href="https://vaspad.web.app/g4-kansei-video" target="_blank" rel="noopener noreferrer">
+                        <div>
+                            <div class="experiment-kicker">
+                                <span>G4</span><span class="status">公開中</span>
+                            </div>
+                            <h3 class="experiment-title">楽器による音楽の感じ方の違い</h3>
+                            <p class="experiment-meta">2刺激 × 3 VAS項目</p>
+                        </div>
+                        <div class="experiment-foot">回答へ進む</div>
+                    </a>
+                    <a class="experiment-card" href="https://vaspad.web.app/g5-scu-image" target="_blank" rel="noopener noreferrer">
+                        <div>
+                            <div class="experiment-kicker">
+                                <span>G5</span><span class="status">公開中</span>
+                            </div>
+                            <h3 class="experiment-title">国旗から受ける印象</h3>
+                            <p class="experiment-meta">2刺激 × 3 VAS項目</p>
+                        </div>
+                        <div class="experiment-foot">回答へ進む</div>
+                    </a>
+                    <a class="experiment-card" href="https://vaspad.web.app/g6-kansei-image" target="_blank" rel="noopener noreferrer">
+                        <div>
+                            <div class="experiment-kicker">
+                                <span>G6</span><span class="status">公開中</span>
+                            </div>
+                            <h3 class="experiment-title">ピカチュウとイーブイ</h3>
+                            <p class="experiment-meta">2刺激 × 3 VAS項目</p>
+                        </div>
+                        <div class="experiment-foot">回答へ進む</div>
+                    </a>
+                    <article class="experiment-card is-disabled" aria-disabled="true">
+                        <div>
+                            <div class="experiment-kicker">
+                                <span>G7</span><span class="status">未設定</span>
+                            </div>
+                            <h3 class="experiment-title">未提出</h3>
+                            <p class="experiment-meta">提出があり次第、更新します</p>
+                        </div>
+                        <div class="experiment-foot">準備中</div>
+                    </article>
+                    <a class="experiment-card" href="https://vaspad.web.app/g8-kansei-parfait" target="_blank" rel="noopener noreferrer">
+                        <div>
+                            <div class="experiment-kicker">
+                                <span>G8</span><span class="status">公開中</span>
+                            </div>
+                            <h3 class="experiment-title">ショートケーキ風パフェ画像</h3>
+                            <p class="experiment-meta">2刺激 × 3 VAS項目</p>
+                        </div>
+                        <div class="experiment-foot">回答へ進む</div>
+                    </a>
+                </div>
+            </section>
+
+            <section class="section" id="review" aria-labelledby="review-title">
+                <div class="section-head">
+                    <h2 id="review-title">VASの復習</h2>
+                    <p>評価尺度の考え方、アンケート設計、2刺激×3項目の分析は講義資料で確認できます。</p>
+                </div>
+                <div class="review-links">
+                    <a class="review-link" href="../chap11/">第11回 Visual Analog Scale 1<span>連続尺度で感じ方の強さを測る</span></a>
+                    <a class="review-link" href="../chap12/">第12回 Visual Analog Scale 2<span>VASアンケートを設計する</span></a>
+                    <a class="review-link" href="../chap13/">第13回 Visual Analog Scale 3<span>2刺激 × 3 VAS項目を分析する</span></a>
+                </div>
+            </section>
+        </main>
+        <footer class="site-footer">
+            <div class="site-shell">
+                <p>感性データ処理 | VAS評価実験 | 下関市立大学 データサイエンス学部 | 2026年度 春学期</p>
+            </div>
+        </footer>
+    </body>
+</html>
