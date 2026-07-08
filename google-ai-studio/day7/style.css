@@ -1,0 +1,46 @@
+/* 見出しの大文字変換を無効化（reveal.jsテーマのデフォルトを上書き） */
+:root {
+  --r-heading-text-transform: none;
+}
+
+.portal-link {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(37, 99, 235, 0.22);
+    border-radius: 8px;
+    box-shadow: 0 10px 28px rgba(22, 32, 51, 0.14);
+    color: #162033;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.75rem 0.95rem;
+    position: fixed;
+    right: 20px;
+    text-decoration: none;
+    top: 20px;
+    z-index: 20;
+}
+
+.portal-link:hover,
+.portal-link:focus-visible {
+    border-color: rgba(37, 99, 235, 0.56);
+    outline: none;
+}
+
+/* コードブロック全体の位置（外側の余白） */
+.reveal pre {
+    margin-top: 40px;    /* 上の要素との距離 */
+    margin-bottom: 40px; /* 下の要素との距離 */
+    padding: 30px;       /* pre直下のテキストにも内側の余白を作る */
+    width: 100%;         /* 幅をスライド幅に合わせる（お好みで） */
+    box-sizing: border-box;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* 少し影をつけて浮かせる */
+}
+
+/* コードブロック内部の文字と枠の間の隙間（内側の余白） */
+.reveal pre code {
+    padding: 0;          /* 余白はpre側で指定して二重にならないようにする */
+    max-height: 600px;   /* 長すぎる場合の最大高さを指定 */
+    line-height: 1.3;    /* 行間を少し広げて読みやすくする */
+    border-radius: 8px;  /* 角を少し丸くする */
+}

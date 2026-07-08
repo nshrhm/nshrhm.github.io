@@ -1,0 +1,1742 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>生成AIで「動く」Webアプリを作る超入門スキルアップコース（基礎編）</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" alt="Logo" style="height:100%" />
+    </div>
+    <a class="portal-link" href="../">講義ポータルへ戻る</a>
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h4>生成AIで「動く」Webアプリを作る<br />超入門スキルアップコース（基礎編）</h4>
+<br />
+<h3>第7回: 仕上げとAIデバッグ術<br />エラーを会話の材料にする</h3>
+<p>講師：白濵 成希</p>
+<p>下関市立大学 データサイエンス学部</p>
+<p>2026年7月16日(木) 18:10〜19:40</p>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日は第7回「仕上げとAIデバッグ術 — エラーを会話の材料にする」です。
+<p>第6回では、「マイ記録帳」を仕事タスクメモ用に少しだけ変更し、「進み具合」のような追加項目を入れました。今日は、そのアプリを発表前に点検します。</p>
+<p>今日の大きな考え方は、エラーを失敗として終わらせないことです。エラー文、画面の状態、直前にした操作は、AIに相談するための大事な材料になります。</p>
+<p>さらに今日は、Google AI Studio BuildのCheckpointも扱います。AIに直し続けるだけでなく、前の動いていた状態へ戻す選択肢を持つことも、AIデバッグの重要な技術です。</p>
+<p>新機能を大量に追加する回ではありません。ログイン、保存、読み込み、一覧表示、追加項目、Security Rules、画面の整理を順番に確認し、第8回の画面共有発表に進める状態を目指します。</p>
+<p>今日も、Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、Get API keyには進みません。画面共有で見せてはいけない情報を隠す練習も行います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日のゴール -->
+<div style="font-size:0.78em">
+<h2>今日のゴール</h2>
+<p><strong>エラーを、AIに相談するための材料として扱えるようになる。</strong></p>
+<ul>
+<li>デバッグカードで状況を整理する</li>
+<li>Checkpointを戻り地点として使う判断を知る</li>
+<li>ログイン・保存・読み込みを点検する</li>
+<li>追加項目が再読み込み後も残るか確認する</li>
+<li>発表用の1分説明文を作る</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の一言ゴールは、「エラーを失敗ではなく、AIに相談するための材料として扱えるようにする」です。
+<p>Webアプリを作っていると、ログインできない、保存できない、読み込めない、再読み込み後に追加項目が消える、画面が複雑になりすぎる、ということが起きます。</p>
+<p>そのときに、ただ「動きません」と聞くのではなく、どのボタンを押したか、どんなエラー文が出たか、どの表示まではできているか、何を使わない条件にしたいかを整理してAIに伝えます。</p>
+<p>さらに今日は、Checkpointを「戻り地点」として扱います。小さな不具合はAIに最小修正を頼み、大きく壊れた場合は前の動いていたCheckpointへ戻すことも考えます。ただし、CheckpointはFirestoreの保存データやFirebase Consoleの設定を何でも戻す完全バックアップではありません。戻したあとも、人間がログイン、保存、読み込み、追加項目を確認します。</p>
+<p>最後には、第8回の発表で使う1分説明文も作ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日の位置づけ -->
+<div style="font-size:0.8em">
+<h2>今日の位置づけ</h2>
+<ul>
+<li>第5回：一覧表示をアプリらしく整えた</li>
+<li>第6回：自分用の項目を少し追加した</li>
+<li><strong>第7回：動作点検とAIデバッグ</strong></li>
+<li>第8回：画面共有で発表</li>
+</ul>
+<br />
+<p><strong>今日は発表前の仕上げです</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+講座全体の中で、今日の位置づけを確認します。
+<p>第5回では、一覧表示を整えました。記録がないときの表示、新しい順、記録数、保存中・保存完了・保存失敗の表示、保存後のフォームクリアを扱いました。</p>
+<p>第6回では、自分用の項目を少し追加しました。メイン例では、仕事タスクメモ用に「進み具合」を追加し、フォーム、保存、一覧カード、再読み込み後の表示を確認しました。</p>
+<p>第7回の今日は、発表前の仕上げです。新しい大きな機能を増やすのではなく、ログイン、保存、読み込み、追加項目、画面の見やすさ、Security Rulesの方針を確認します。</p>
+<p>第8回は画面共有での発表です。今日は、その準備として、見せる画面、見せない情報、説明文を整えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第6回でできたこと -->
+<div style="font-size:0.82em">
+<h2>第6回でできたこと</h2>
+<ul>
+<li>「マイ記録帳」を自分用に少し変更した</li>
+<li>仕事タスクメモの例を使った</li>
+<li>「進み具合」などの項目を追加した</li>
+<li>フォーム・保存・一覧で確認した</li>
+<li>再読み込み後も残るか確認した</li>
+</ul>
+<br />
+<p><strong>今日は、その状態を点検します</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第6回でできたことを振り返ります。
+<p>前回は、「マイ記録帳」を自分の仕事や暮らしに少し役立つ形へ近づけました。メイン例では、仕事タスクメモとして「進み具合」を追加しました。</p>
+<p>確認した場所は、フォーム、保存、一覧カードでした。つまり、入力欄に進み具合が出るか、保存した記録データに残るか、一覧カードに表示されるかを見ました。</p>
+<p>さらに、ブラウザを再読み込みしても追加項目が表示されるかを確認しました。再読み込み後も表示されれば、画面上だけの一時的な表示ではなく、保存と読み込みがつながっている可能性が高くなります。</p>
+<p>今日は、この前回のアプリを開き、発表前にもう一度点検します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日やらないこと -->
+<div style="font-size:0.50em">
+<h2>今日やらないこと</h2>
+<div style="display:grid; grid-template-columns:max-content max-content; column-gap:1.1em; align-items:start">
+<ul style="margin:0; padding-left:1.2em">
+<li>新機能の大量追加</li>
+<li>自由制作として大きく作り替えること</li>
+<li>複雑な検索・絞り込み</li>
+<li>複雑な権限管理</li>
+<li>本番公開</li>
+<li>Deploy</li>
+<li>Publish</li>
+<li>Cloud Billing</li>
+<li>Blazeプラン</li>
+</ul>
+<ul style="margin:0; padding-left:1.2em">
+<li>Cloud Run</li>
+<li>Firebase App Hosting</li>
+<li>Cloud Storage</li>
+<li>画像アップロード</li>
+<li>APIキー作成</li>
+<li>外部API連携</li>
+<li>メール送信</li>
+<li>決済機能</li>
+<li>支払い方法登録・クレジットカード登録</li>
+</ul>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日やらないことを先に確認します。
+<p>今日は、新機能を大量に追加しません。自由制作としてアプリを大きく作り替えることもしません。複雑な検索や絞り込み、複雑な権限管理も扱いません。</p>
+<p>本番公開は行いません。Deploy、Publish、Cloud Billing、Blazeプラン、Cloud Run、Firebase App Hostingにも進みません。</p>
+<p>Cloud Storage、画像アップロード、APIキー作成、外部API連携、メール送信、決済機能も扱いません。支払い方法登録やクレジットカード登録にも進みません。</p>
+<p>AIが便利そうな機能を提案しても、今日の目的は発表前の点検と仕上げです。増やすよりも、今あるアプリを安全に説明できる状態にすることを優先します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 表示されても押さないもの -->
+<div style="font-size:0.62em">
+<h2>表示されても今日は押さない</h2>
+<div style="display:grid; grid-template-columns:max-content max-content; column-gap:1.1em; align-items:start">
+<ul style="margin:0; padding-left:1.2em">
+<li>Deploy</li>
+<li>Publish</li>
+<li>Get API key</li>
+<li>Add database and auth</li>
+<li>Upgrade</li>
+<li>Set up billing</li>
+<li>Link billing account</li>
+</ul>
+<ul style="margin:0; padding-left:1.2em">
+<li>Upgrade to Blaze</li>
+<li>Deploy to Cloud Run</li>
+<li>Firebase App Hosting</li>
+<li>Cloud Storage bucket</li>
+<li>支払い方法登録</li>
+<li>クレジットカード登録</li>
+</ul>
+</div>
+<br />
+<p><strong>出たら操作を止めて、講師に確認</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+操作中に、便利そうなボタンや案内が表示されることがあります。しかし、このスライドにある表示は今日は押しません。
+<p>DeployやPublishは公開につながる可能性があります。Get API keyはAPIキー作成につながります。Add database and authは、データベースや認証を新しく追加する導線です。第3回ですでにFirebase連携を行っているため、今日は押しません。</p>
+<p>Upgrade、Set up billing、Link billing account、Upgrade to Blaze、支払い方法登録、クレジットカード登録は、課金やプラン変更につながる可能性があります。Deploy to Cloud Run、Firebase App Hosting、Cloud Storage bucketも今日の範囲外です。</p>
+<p>これらの表示が出たら、画面をそのままにして講師に確認してください。意味が分からないまま進めないことが大切です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- エラーは材料 -->
+<div style="font-size:0.82em">
+<h2>エラーは失敗ではなく材料</h2>
+<p>エラーが出たら、次を集めます。</p>
+<ul>
+<li>何をしたか</li>
+<li>どんな表示になったか</li>
+<li>エラー文</li>
+<li>期待した動き</li>
+<li>使わない機能・進まない導線</li>
+</ul>
+<br />
+<p><strong>材料が多いほど、AIに相談しやすくなります</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の中心となる考え方です。エラーは失敗ではなく、AIに相談するための材料です。
+<p>たとえば、「記録する」ボタンを押した、保存失敗と表示された、エラー文には権限やSecurity Rulesのことが書かれていた、期待した動きはFirestoreに保存されて一覧に出ることだった、というように整理します。</p>
+<p>さらに、Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、Get API keyを使わないこと、allow read, write: if true; のような広すぎるルールにしないことも一緒に伝えます。</p>
+<p>AIには、現在の状態、期待する状態、守る条件をセットで渡します。これが、AIデバッグの基本です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- デバッグの考え方 -->
+<div style="font-size:0.82em">
+<h2>デバッグは「観察」から始める</h2>
+<p>原因を当てに行かない。</p>
+<p>まず集めるもの</p>
+<ul>
+<li>直前にした操作</li>
+<li>画面に出た表示</li>
+<li>エラー文</li>
+<li>期待した動き</li>
+<li>守る条件</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第7回では、デバッグの考え方を新しく学びます。エラーが出たとき、すぐに原因を当てようとしなくて大丈夫です。まず観察します。どの操作をしたか、画面に何が出たか、エラー文は何か、期待していた動きは何か、そして守りたい安全条件は何かを集めます。AIに相談するときも、この材料があるほど、修正の方向が具体的になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- AI Studioで見る場所 -->
+<div style="font-size:0.82em">
+<h2>AI Studioで見る4つの場所</h2>
+<ul>
+<li><strong>Preview</strong>: 画面で何が起きたか</li>
+<li><strong>Chat</strong>: AIに状況を説明する</li>
+<li><strong>Code</strong>: 何が変わったかを見る</li>
+<li><strong>Firebase Console</strong>: ログイン・保存・ルールを見る</li>
+</ul>
+<p>今日は、無理にコード編集しません。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Google AI Studio Buildでは、ただ画面を見て終わりではありません。Previewでは、実際にアプリを触って何が起きたかを確認します。Chatでは、AIに状況を説明して修正を依頼します。Codeでは、AIがどこかのファイルを変えていることを確認できます。ただし、今日は受講生がコードを無理に編集する必要はありません。Firebase Consoleでは、Googleログイン、Firestore、Security Rulesを確認します。この4つを役割分担して見ることが、今日の新しい知識です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Checkpointの考え方 -->
+<div style="font-size:0.82em">
+<h2>Checkpointは「戻り地点」</h2>
+<p>AI Studio Buildでは、前の状態へ戻れる場合があります。</p>
+<ul>
+<li>AIに指示する</li>
+<li>アプリが変更される</li>
+<li>変更後の状態が残る</li>
+<li>必要なら前のCheckpointへ戻す</li>
+</ul>
+<br />
+<p><strong>大きく壊れたときの安全策です</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここで、Google AI Studio BuildのCheckpointを紹介します。Checkpointは、AIに指示してアプリを作っていく途中の戻り地点です。ゲームのセーブポイントに近いものだと考えてください。AIにプロンプトを送り、処理が終わると、その変更後の状態が履歴として残る場合があります。大きく壊れたときは、さらに修正を重ねる前に、前の動いていたCheckpointへ戻すことを考えます。ただし、何でも完全に元通りにする魔法ではありません。Firestoreの中の保存データやFirebase Consoleの設定まで全部戻るとは考えず、まずはアプリ編集の戻り地点として扱います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 小さなプロンプト -->
+<div style="font-size:0.82em">
+<h2>小さく頼むほど、戻しやすい</h2>
+<p>1回のプロンプトを小さくします。</p>
+<p>悪い例：</p>
+<blockquote>
+<p>検索、編集、削除、デザイン、Rulesを全部直して</p>
+</blockquote>
+<p>良い例：</p>
+<blockquote>
+<p>保存後に入力欄を空にしてください</p>
+</blockquote>
+<p><strong>1回の変更を小さくすることがデバッグのコツです。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Checkpointを使いやすくするには、プロンプトを小さく分けることが大切です。1回のプロンプトで検索、編集、削除、デザイン、Security Rulesまで全部頼むと、どこで壊れたか分かりにくくなります。戻すときも、大きな変更をまとめて戻すことになります。反対に、1回のプロンプトを1つの変更に絞ると、もし壊れても、どの変更が原因だったか分かりやすくなります。今日は、AIに大きく任せるのではなく、小さく頼んで、見て、必要なら戻すという流れを学びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 戻すか直すか -->
+<div style="font-size:0.60em">
+<h2>戻すか、直すか</h2>
+<table>
+<thead>
+<tr>
+<th>状況</th>
+<th>まず考えること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文字や余白だけ変えたい</td>
+<td>AIに最小修正を頼む</td>
+</tr>
+<tr>
+<td>追加項目だけ一覧に出ない</td>
+<td>診断して最小修正</td>
+</tr>
+<tr>
+<td>ログイン・保存・読み込みがまとめて壊れた</td>
+<td>Checkpointへ戻す候補</td>
+</tr>
+<tr>
+<td>AIが余計な機能を大量追加した</td>
+<td>Checkpointへ戻す候補</td>
+</tr>
+<tr>
+<td>Security Rulesが広くなりすぎた</td>
+<td>Checkpointへ戻す候補</td>
+</tr>
+</tbody>
+</table>
+<p><strong>直し続けるより、戻した方が早いことがあります。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+不具合が出たとき、いつもAIに直し続けてもらえばよいとは限りません。文字や余白のような小さなずれなら、AIに最小修正を頼めばよいです。追加項目が一覧に出ない程度なら、まず診断して、保存処理か表示処理のどちらかを見ます。一方で、ログイン、保存、読み込みがまとめて壊れた場合や、AIが余計な機能を大量に追加した場合、Security Rulesが広くなりすぎた場合は、前のCheckpointへ戻す方が安全なことがあります。第7回では、直すだけでなく、戻す判断も学びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 戻す前のメモ -->
+<div style="font-size:0.9em">
+<h2>戻す前にメモする</h2>
+<p>Checkpointへ戻す前に、短く記録します。</p>
+<pre><code class="language-text">
+　直前に頼んだこと:
+　壊れたところ:
+　前に動いていたこと:
+　戻したい理由:
+
+</code></pre>
+<p>メールアドレス、UID、プロジェクトIDは書きません。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Checkpointへ戻す前に、何が起きたかを短くメモします。直前にAIへ頼んだこと、壊れたところ、前に動いていたこと、戻したい理由を書きます。このメモは、AIに渡すためだけでなく、自分が状況を整理するためにも役立ちます。ただし、メールアドレス、UID、プロジェクトID、Database ID、APIキーのように見える文字列、実在の個人情報や業務情報は書きません。戻す前にメモしておくと、同じ失敗を繰り返しにくくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Restore後の確認 -->
+<div style="font-size:0.82em">
+<h2>Restore後も確認する</h2>
+<p>戻したら、もう一度確認します。</p>
+<ul>
+<li>ログインできるか</li>
+<li>保存できるか</li>
+<li>読み込めるか</li>
+<li>追加項目が残るか</li>
+<li>危険導線に進んでいないか</li>
+</ul>
+<br />
+<p><strong>戻しただけで安心しません。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Restoreを使って前のCheckpointへ戻したあとも、必ず自分で確認します。ログインできるか、保存できるか、読み込めるか、追加項目が残るかを見ます。また、Deploy、Publish、Get API key、Upgrade、Cloud Billing、Blaze、Cloud Run、Firebase App Hostingに進んでいないことも確認します。戻したつもりでも、画面やチャットの状態が自分の期待とずれていることがあります。デバッグでは、戻すことも確認の一部です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Restore後プロンプト -->
+<div style="font-size:0.9em">
+<h2>Restore後の再出発プロンプト</h2>
+<pre><code class="language-text">
+　Checkpointで、前の動いていた状態に戻しました。
+　直前の失敗した変更は採用しません。
+　
+　まず、現在の状態を前提に、まだコードやSecurity Rulesを変更しないでください。
+　次に確認すべき点だけを、初心者向けに順番に教えてください。
+　
+　守る条件:
+　- Googleログイン、Firestore保存、Firestore読み込みを維持する
+　- ログインした本人の記録だけを扱う
+　- allow read, write: if true; のような広すぎるルールにしない
+　- Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+　　Get API key は使わない
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Checkpointで戻したあと、AIが前の失敗した指示に引きずられることがあります。そのため、再開するときは、直前の失敗した変更は採用しません、と明確に伝えます。そして、まだコードやSecurity Rulesを変更しないでください、と書きます。まず確認すべき点だけを順番に教えてもらいます。これにより、戻した直後にまた同じ失敗を繰り返すリスクを下げます。受講生には、このプロンプトをコピーして、必要なときに使えるようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Checkpointの限界 -->
+<div style="font-size:0.78em">
+<h2>Checkpointの限界</h2>
+<p>次のようには考えません。</p>
+<ul>
+<li>Firestoreデータの完全バックアップ</li>
+<li>Firebase Console設定の完全バックアップ</li>
+<li>課金・公開状態の取り消しボタン</li>
+<li>AIが失敗指示を完全に忘れる保証</li>
+</ul>
+<br />
+<p><strong>大切な説明文やエラー情報は、別にメモします。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Checkpointは便利ですが、限界があります。教材では、Firestoreデータの完全バックアップ、Firebase Console設定の完全バックアップ、課金や公開状態の取り消しボタンとしては扱いません。また、Restoreしたあとに、AIが失敗した指示を完全に忘れる保証もありません。だからこそ、重要な状態、発表用の説明文、エラー文、AIに聞いた内容は、別にメモしておきます。初心者には、Checkpointは安全策の一つであり、確認とメモを置き換えるものではない、と伝えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- AIに渡す情報 -->
+<div style="font-size:0.80em">
+<h2>AIに渡す情報の基本</h2>
+<p>「動きません」だけでは足りない。書くことは、</p>
+<ol>
+<li>直前にした操作</li>
+<li>画面に出た表示</li>
+<li>エラー文</li>
+<li>期待する動き</li>
+<li>守りたい安全条件</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AIに相談するとき、「動きません」だけでは情報が足りません。
+<p>まず、直前にした操作を書きます。たとえば、Googleログインボタンを押した、記録するボタンを押した、ブラウザを再読み込みした、などです。</p>
+<p>次に、画面に出た表示を書きます。ログイン画面のまま、保存失敗と出た、一覧が空のまま、追加項目だけ消えた、などです。</p>
+<p>エラー文があれば、個人情報や識別子を確認したうえで貼ります。そして、期待する動きも書きます。最後に、Cloud Billingに進まない、広すぎるSecurity Rulesにしない、本人の記録だけを扱う、といった安全条件を入れます。</p>
+<p>これにより、AIの修正範囲を小さくできます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- デバッグカード -->
+<div style="font-size:0.9em">
+<h2>デバッグカードを書く</h2>
+<pre><code class="language-text">
+　1. 直前にした操作:
+　2. 画面に出た表示:
+　3. エラー文:
+　4. 期待した動き:
+　5. 守りたい条件:
+
+</code></pre>
+<p>「動きません」ではなく、材料を渡します。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の中心になる道具が、デバッグカードです。直前にした操作、画面に出た表示、エラー文、期待した動き、守りたい条件の5つを短く書きます。エラー文を貼る場合は、メールアドレス、UID、プロジェクトID、Database ID、APIキーのように見える文字列が入っていないか確認します。これをAIに渡すと、「動きません」だけよりも、はるかに具体的に相談できます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 症状分類 -->
+<div style="font-size:0.58em">
+<h2>症状を分類する</h2>
+<table>
+<thead>
+<tr>
+<th>症状</th>
+<th>まず見る場所</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ボタンが反応しない</td>
+<td>画面・クリック処理</td>
+</tr>
+<tr>
+<td>Googleログインできない</td>
+<td>Authentication</td>
+</tr>
+<tr>
+<td>保存失敗</td>
+<td>保存処理・Security Rules</td>
+</tr>
+<tr>
+<td>再読み込み後に消える</td>
+<td>保存・読み込み</td>
+</tr>
+<tr>
+<td>追加項目だけ消える</td>
+<td>保存項目・一覧表示</td>
+</tr>
+<tr>
+<td>Consoleが開かない</td>
+<td>アカウント・ブラウザ</td>
+</tr>
+</tbody>
+</table>
+<p>原因を一つに決めつけません。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+エラーは、まず症状で分類します。ボタンが反応しないなら、画面やクリック処理を見ます。GoogleログインできないならAuthenticationを見ます。保存失敗なら、保存処理とSecurity Rulesを見ます。再読み込み後に消えるなら、Firestoreに実際に保存されているか、読み込み処理があるかを見ます。第6回で追加した項目だけ消えるなら、保存項目や一覧カードへの表示が抜けている可能性があります。このように、原因を決めつけず、見る場所を分けます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まず診断する -->
+<div style="font-size:0.9em">
+<h2>まず診断、すぐ修正しない</h2>
+<p>AIへの最初の一文</p>
+<pre><code class="language-text">
+　まだ変更しないでください。
+　まず確認すべき点を順番に教えてください。
+
+</code></pre>
+<p>原因を決めつけないことが大切。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+保存できない、読み込めない、ログインできない、という状態になったとき、すぐに「直してください」と頼むと、AIが大きく変更してしまうことがあります。特にSecurity Rulesを広げすぎると危険です。そこで最初は、「まだ変更しないでください。まず確認すべき点を順番に教えてください」と聞きます。これは、AIを修理担当ではなく、点検の案内役として使う方法です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 診断プロンプト -->
+<div style="font-size:0.9em">
+<h2>診断プロンプト</h2>
+<pre><code class="language-text">
+　まだコードやSecurity Rulesを変更しないでください。
+　まず、原因を決めつけず、確認すべき点を順番に整理してください。
+　
+　1. 直前にした操作:
+　2. 画面に出た表示:
+　3. エラー文:
+　4. 期待した動き:
+　5. 守りたい条件:
+　　- Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+　　　Get API key は使わない
+　　- allow read, write: if true; にはしない
+　　- ログインした本人の記録だけを扱う
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+このプロンプトは、すぐ修正させるのではなく、まず確認順を整理してもらうためのものです。授業中に不具合が出た場合、このプロンプトの空欄を埋めてAIに渡します。特に大事なのは、まだ変更しないでください、という一文です。これにより、AIがいきなりSecurity Rulesや保存処理を大きく変えてしまうことを防ぎます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 見せてはいけない情報 -->
+<div style="font-size:0.72em">
+<h2>見せてはいけない情報</h2>
+<p>AIへの相談、スクリーンショット、画面共有では隠します。</p>
+<ul>
+<li>メールアドレス</li>
+<li>UID、ユーザー識別子</li>
+<li>プロジェクトID</li>
+<li>Database ID</li>
+<li>APIキーのように見える文字列</li>
+<li>実名、勤務先、顧客情報</li>
+<li>業務上の機密情報</li>
+<li>支払い情報、請求情報</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AIに相談するとき、スクリーンショットを撮るとき、画面共有をするときには、見せてはいけない情報があります。
+<p>メールアドレス、UID、ユーザー識別子、プロジェクトID、Database ID、APIキーのように見える文字列は、そのまま見せません。</p>
+<p>また、実名、勤務先、顧客名、取引先名、案件名、業務上の機密情報、学生番号、住所、電話番号、パスワード、支払い情報、請求情報も入力しません。</p>
+<p>エラー文の中に識別子が含まれていることもあります。貼り付ける前に一度読み、必要なら「伏せ字」や「プロジェクトIDは伏せます」のように置き換えます。</p>
+<p>第8回の発表でも、見せるのはアプリの画面と架空のサンプルデータです。管理画面や個人情報は見せません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第6回までのアプリを開く -->
+<div style="font-size:0.76em">
+<h2>第6回までのアプリを開く</h2>
+<p>確認すること</p>
+<ul>
+<li>第6回まで使ったアプリを開いている</li>
+<li>新しいアプリを作っていない</li>
+<li>ログイン・保存・一覧の画面がある</li>
+<li>追加項目が残っている</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここから実際の操作に入ります。
+<p>Google AI Studio Buildで、第6回まで使っていたアプリを開きます。今日は新しいアプリを作りません。新しいプロジェクトや新しい空のアプリを作ると、どこまでできていたか分からなくなります。</p>
+<p>まず、「マイ記録帳」または自分で少し変更した記録アプリが開いていることを確認します。ログイン状態、入力フォーム、記録するボタン、保存状態、記録一覧が見えるかを見ます。</p>
+<p>第6回で追加した「進み具合」などの項目がフォームに残っているかも確認します。</p>
+<p>この画面をスクリーンショットに使う場合は、メールアドレス、UID、プロジェクトID、Database IDが写っていないか確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 講座用Gmailとログイン状態 -->
+<div style="font-size:0.78em">
+<h2>講座用Gmailとログイン状態を確認</h2>
+<ul>
+<li>講座用のプライベートGmailを使う</li>
+<li>勤務先・学校・家族のアカウントは使わない</li>
+<li>ログイン済みか確認する</li>
+<li>サインアウト状態ならログインする</li>
+<li>メールアドレスは見せない</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+アプリを開いたら、講座用Gmailとログイン状態を確認します。
+<p>この講座では、講座用のプライベートGmailを使います。勤務先、学校、家族のアカウントでは進めません。複数のGoogleアカウントを使っている人は、どのアカウントでログインしているか確認してください。</p>
+<p>サインアウト状態なら、Googleログインボタンからログインします。すでにログイン済みなら、ログイン状態が表示されているかを見ます。</p>
+<p>ただし、メールアドレスやプロフィール画像を大きく表示しないように注意します。画面共有で表示される場合は、発表時に隠す、拡大しない、見せる画面を切り替えるなどの工夫をします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 動作点検の全体像 -->
+<div style="font-size:0.82em">
+<h2>動作点検の全体像</h2>
+<p>今日は、順番に確認します。</p>
+<ol>
+<li>ログインできるか</li>
+<li>架空の記録を保存できるか</li>
+<li>一覧に表示されるか</li>
+<li>再読み込み後も表示されるか</li>
+<li>追加項目も残るか</li>
+<li>本人の記録だけを扱っているか</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の動作点検の全体像です。
+<p>まず、ログインできるかを確認します。次に、架空の記録を1件保存します。保存後、その記録が一覧に表示されるかを見ます。</p>
+<p>そのあと、ブラウザを再読み込みします。再読み込み後も記録が表示されるかを確認します。第6回で追加した「進み具合」などの項目も残るかを見ます。</p>
+<p>最後に、ログインした本人の記録だけを扱う仕組みが維持されているかを確認します。ここでは、Firestoreの細かなデータ構造を決め打ちして説明しません。受講生ごとに内部の保存形式が違う可能性があるため、フォーム、保存、一覧、再読み込み後の表示、本人の記録だけを扱う仕組みという流れで確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ログイン確認 -->
+<div style="font-size:0.78em">
+<h2>ログインを確認する</h2>
+<p>確認すること</p>
+<ul>
+<li>Googleログインボタンがある</li>
+<li>講座用Gmailでログインできる</li>
+<li>ログイン後の画面に進む</li>
+<li>自分の記録用の画面が表示される</li>
+</ul>
+<br />
+<p><strong>ログインできることと、保存できることは別に確認します</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最初にログインを確認します。
+<p>サインアウト状態であれば、Googleログインボタンが表示されるかを見ます。ボタンを押して、講座用Gmailでログインできるか確認します。</p>
+<p>ログイン後に、入力フォームや記録一覧がある画面へ進むかを見ます。ここで確認しているのは、アプリが「誰が使っているか」を認識できているかです。</p>
+<p>大切なのは、ログインできることと、Firestoreに保存できることは別だという点です。ログインに成功しても、Security Rulesや保存処理の問題で保存できないことがあります。</p>
+<p>そのため、まずログインだけを確認し、そのあと保存と読み込みを別々に確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 保存確認 -->
+<div style="font-size:0.78em">
+<h2>架空の記録を1件保存する</h2>
+<p>次のサンプルを使います。</p>
+<pre><code class="language-text">
+　進み具合: 確認待ち
+　タイトル: 発表準備
+　本文: 画面共有で説明する内容を確認する。
+　気分: ふつう
+
+</code></pre>
+<br />
+<p><strong>実在の仕事情報は入れません</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ログインできたら、架空の記録を1件保存します。
+<p>サンプルは、進み具合が確認待ち、タイトルが発表準備、本文が「画面共有で説明する内容を確認する。」、気分がふつうです。</p>
+<p>ここでも、実在の個人情報や仕事の機密情報は入力しません。勤務先名、部署名、顧客名、案件名、金額、学生番号、住所、電話番号などは使いません。</p>
+<p>アプリによって入力項目名が少し違う場合があります。その場合は、自分の画面に合わせて、同じ意味の欄に短い架空の文章を入力します。</p>
+<p>「記録する」ボタンを押したら、保存中、保存完了、保存失敗の表示も確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 一覧確認 -->
+<div style="font-size:0.82em">
+<h2>保存した記録を一覧で確認</h2>
+<p>保存後に見ること</p>
+<ul>
+<li>新しい記録が一覧に出る</li>
+<li>タイトルと本文が表示される</li>
+<li>気分が表示される</li>
+<li>追加項目が表示される</li>
+<li>記録数が増える</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+保存したら、記録一覧を確認します。
+<p>新しく保存した記録が一覧に出ているかを見ます。タイトル、本文、気分が表示されているかを確認します。</p>
+<p>第6回で追加した「進み具合」などの追加項目も表示されているかを見ます。仕事タスクメモの例なら、「進み具合：確認待ち」のように表示されていれば分かりやすいです。</p>
+<p>第5回で記録数を表示するようにしている場合は、記録数が1件増えたかも確認します。</p>
+<p>この段階では、まずアプリ画面で正しく表示されるかを見ます。Firebase Consoleの細かな構造を無理に追いかける必要はありません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 追加項目確認 -->
+<div style="font-size:0.82em">
+<h2>追加項目を確認する</h2>
+<p>第6回で追加した項目（例）</p>
+<ul>
+<li>進み具合</li>
+<li>重要度</li>
+<li>分類</li>
+<li>次にやること</li>
+<li>場所</li>
+<li>体調</li>
+</ul>
+<br />
+<p><strong>フォーム・保存・一覧の3か所で確認します</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+次に、第6回で追加した項目を確認します。
+<p>メイン例では「進み具合」でしたが、受講生によっては「重要度」「分類」「次にやること」「場所」「体調」など別の項目を追加しているかもしれません。</p>
+<p>ここでは、追加項目の名前を細かくそろえる必要はありません。確認する考え方をそろえます。</p>
+<p>1つ目はフォームです。入力時に追加項目を選べる、または入力できるかを見ます。2つ目は保存です。記録するボタンを押したあとも、その値が残るかを見ます。3つ目は一覧です。保存済みの記録カードに追加項目が表示されるかを見ます。</p>
+<p>この3か所がつながっていれば、追加項目がアプリの中で扱われていると考えやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 再読み込み確認 -->
+<div style="font-size:0.82em">
+<h2>再読み込み後も残るか確認</h2>
+<ol>
+<li>ブラウザを再読み込みする</li>
+<li>ログイン状態を確認する</li>
+<li>保存した記録を探す</li>
+<li>追加項目も表示されるか見る</li>
+</ol>
+<br />
+<p><strong>再読み込み後も出れば、保存と読み込みがつながっています</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+保存後の一覧に記録が出たら、ブラウザを再読み込みします。
+<p>再読み込み後も、同じ講座用Gmailでログインしていることを確認します。そのうえで、先ほど保存した記録を一覧で探します。</p>
+<p>タイトル、本文、気分に加えて、第6回で追加した「進み具合」などの項目が表示されるかを見ます。</p>
+<p>再読み込み後も表示されれば、画面上だけの一時的な表示ではなく、保存したデータを読み込んで表示できている可能性が高くなります。</p>
+<p>もし再読み込み後に追加項目だけ消える場合は、フォームには追加されているが保存処理や読み込み後の表示に入っていない可能性があります。その場合は、後半のプロンプトを使ってAIに相談します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 保存できないとき -->
+<div style="font-size:0.8em">
+<h2>保存できないときの聞き方</h2>
+<pre><code class="language-text">
+　「記録する」を押してもFirestoreに保存できません。
+　画面に出ているエラーや状態は次のとおりです。
+
+　（ここにエラー文や画面の状態を書きます）
+
+　Googleログイン、現在の保存処理、Firestoreへの書き込み、
+ Security Rulesの順に確認してください。
+
+　Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+　Get API key は使わないでください。
+　画像アップロード、外部API、メール送信、決済機能は追加しないでください。
+　allow read, write: if true; のような広すぎるルールにはしないでください。
+　ログインした本人の記録だけを扱う仕組みを維持してください。
+　個人情報、勤務先情報、顧客情報、業務上の機密情報を入力しない前提で、
+　最小限の修正にしてください。
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+保存できないときのプロンプトです。
+<p>ここでは、まず「記録する」を押してもFirestoreに保存できないと、今起きていることをそのまま書きます。次に、画面に出ているエラー文や状態を書きます。</p>
+<p>AIには、Googleログイン、現在の保存処理、Firestoreへの書き込み、Security Rulesの順に確認してもらいます。いきなりSecurity Rulesだけを広げるのではなく、順番に見ることが大切です。</p>
+<p>安全条件も必ず入れます。Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、Get API keyは使いません。画像アップロード、外部API、メール送信、決済機能も追加しません。allow read, write: if true; のような広すぎるルールにしないこと、ログインした本人の記録だけを扱う仕組みを維持することも明記します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 読み込めないとき -->
+<div style="font-size:0.8em">
+<h2>読み込めないときの聞き方</h2>
+<pre><code class="language-text">
+　Firestoreに保存した記録が、アプリの一覧に表示されません。状況は次のとおりです。
+
+ （保存できたように見える / 再読み込み後に消える / 一覧が空のまま、などを書く）
+
+ ログイン状態、Firestoreの保存先、読み込み処理、一覧カードへの表示、Security Rulesの順に
+ 確認してください。
+
+　Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+　Get API key は使わないでください。
+　画像アップロード、外部API、メール送信、決済機能は追加しないでください。
+　allow read, write: if true; のような広すぎるルールにはしないでください。
+　ログインした本人の記録だけを扱う仕組みを維持してください。
+　個人情報、勤務先情報、顧客情報、業務上の機密情報を入力しない前提で、
+　最小限の修正にしてください。
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+読み込めないときのプロンプトです。
+<p>Firestoreに保存したように見えるのに、アプリの一覧に表示されない場合があります。再読み込み後に消える場合もあります。</p>
+<p>このときは、状況を具体的に書きます。保存できたように見えるのか、再読み込み後に消えるのか、一覧が空のままなのかを説明します。</p>
+<p>確認の順番は、ログイン状態、Firestoreの保存先、読み込み処理、一覧カードへの表示、Security Rulesです。読み込みの問題なのに保存処理だけを直しても解決しない場合があります。</p>
+<p>ここでも、Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、Get API keyを使わないこと、広すぎるルールにしないこと、本人の記録だけを扱うことを明記します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ログインできないとき -->
+<div style="font-size:0.8em">
+<h2>ログインできないときの聞き方</h2>
+<pre><code class="language-text">
+　Googleログインボタンを押してもログインできません。
+　表示されているエラーや状態は次のとおりです。
+
+（ここにエラー文、画面の状態、ログイン前後の状況を書きます）
+
+　Firebase AuthenticationのGoogleログインを使う前提で、確認すべき点を順番に教えてください。
+　Googleログイン後、ログインした本人の記録だけを扱う仕組みを維持してください。
+
+　Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+　Get API key は使わないでください。
+　画像アップロード、外部API、メール送信、決済機能は追加しないでください。
+　allow read, write: if true; のような広すぎるルールにはしないでください。
+　個人情報、勤務先情報、顧客情報、業務上の機密情報を入力しない前提で確認してください。
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ログインできないときのプロンプトです。
+<p>Googleログインボタンを押してもログインできない場合は、画面に出ているエラー文や状態をAIに渡します。ボタンを押しても反応がないのか、Googleのアカウント選択画面まで進むのか、アプリに戻ったあとログイン状態にならないのかを具体的に書くとよいです。</p>
+<p>Firebase AuthenticationのGoogleログインを使う前提で、確認すべき点を順番に教えてもらいます。ここでは、保存処理やFirestoreのルールを急いで変えるのではなく、まずログインの設定とアプリ側のログイン処理を確認します。</p>
+<p>安全条件も同じです。課金、公開、APIキー作成、新しいサービス追加には進みません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 追加項目が消えるとき -->
+<div style="font-size:0.8em">
+<h2>追加項目が再読み込み後に消えるとき</h2>
+<pre><code class="language-text">
+　第6回で追加した項目が、保存直後の一覧には表示されますが、ブラウザを再読み込みすると
+　消えてしまいます。
+　追加項目は次のとおりです。
+
+　（例：進み具合。選択した値：確認待ち）
+
+　現在のアプリが使っているFirestoreの保存先やログインの仕組みは作り替えず、
+　保存時に追加項目の値も一緒に保存し、読み込み後の一覧カードにも表示してください。
+
+　Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+　Get API key は使わないでください。
+　画像アップロード、外部API、メール送信、決済機能は追加しないでください。
+　allow read, write: if true; のような広すぎるルールにはしないでください。
+　ログインした本人の記録だけを扱う仕組みを維持してください。
+　個人情報、勤務先情報、顧客情報、業務上の機密情報を入力しない前提で、
+　最小限の修正にしてください。
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第6回で追加した項目が、再読み込み後に消えるときのプロンプトです。
+<p>この状態では、保存直後の画面には追加項目が表示されているので、一見うまくいったように見えます。しかし、再読み込み後に消えるなら、保存データに含まれていない、または読み込み後の一覧表示に反映されていない可能性があります。</p>
+<p>AIには、追加項目の名前と値を書きます。たとえば、進み具合、確認待ち、のように書きます。</p>
+<p>そして、現在のFirestore保存先やログインの仕組みを作り替えず、保存時に追加項目の値も一緒に保存し、読み込み後の一覧カードにも表示するように依頼します。</p>
+<p>この修正では、Security Rulesを広げすぎないこと、本人の記録だけを扱う仕組みを維持することが大切です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Fix errorの扱い -->
+<div style="font-size:0.82em">
+<h2>Fix errorは出発点</h2>
+<p>AIが直しても、最後は人間が確認します。</p>
+<p>確認すること</p>
+<ul>
+<li>本人の記録だけ読める</li>
+<li>本人の記録だけ保存できる</li>
+<li>使っていない場所を開けていない</li>
+<li><code>allow read, write: if true;</code> にしていない</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Google AI Studioでは、権限エラーに対してFix errorのような補助が出る場合があります。これは便利ですが、押して終わりではありません。AIが生成したSecurity Rulesは、あくまで出発点です。直ったあとに、ログインした本人の記録だけ読めるか、本人の記録だけ保存できるか、使っていない場所まで開けていないかを確認します。特に、allow read, write: if true; のような広すぎるルールにはしません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Security Rulesを広げすぎない -->
+<div style="font-size:0.8em">
+<h2>Security Rulesを広げすぎない確認</h2>
+<pre><code class="language-text">
+ Firestore Security Rulesが広すぎないか確認したいです。
+ 次の方針を守っているか、初心者向けに確認してください。
+
+- ログインしている人だけが使える
+- ログインした本人の記録だけを読める
+- ログインした本人の記録だけを作成・更新・削除できる
+- 使っていない場所まで開放しない
+- allow read, write: if true; のような広すぎるルールにしない
+
+　Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+　Get API key は使わないでください。
+　画像アップロード、外部API、メール送信、決済機能は追加しないでください。
+　個人情報、勤務先情報、顧客情報、業務上の機密情報を入力しない前提で確認してください。
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Security Rulesを広げすぎない確認のプロンプトです。
+<p>保存できない、読み込めないというエラーが出ると、AIが広いルールを提案することがあります。たとえば、allow read, write: if true; のようなルールです。これは、誰でも読める、誰でも書けるに近い危険な設定です。</p>
+<p>今日の方針は、ログインしている人だけが使えること、ログインした本人の記録だけを読めること、本人の記録だけを作成、更新、削除できることです。使っていない場所まで開放しません。</p>
+<p>受講生ごとにアプリ内部の保存形式が違う可能性があるため、スライドでは特定のコレクション名を決め打ちしすぎません。大事なのは、本人の記録だけを扱う条件が維持されていることです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 画面が複雑になりすぎたとき -->
+<div style="font-size:0.8em">
+<h2>画面が複雑になりすぎたとき</h2>
+<pre><code class="language-text">
+　画面が複雑になりすぎました。
+　初心者向けに、次の要素だけに整理してください。
+　　- アプリのタイトル
+　　- Googleログイン状態
+　　- タイトル、本文、気分、追加項目の入力フォーム
+　　- 「記録する」ボタン
+　　- 保存中、保存完了、保存失敗の表示
+　　- 記録数
+　　- 保存した記録の一覧
+　　- 記録が0件のときのメッセージ
+　ログインした本人の記録だけを扱う仕組みは維持してください。
+　Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+　Get API key は使わないでください。
+　画像アップロード、外部API、メール送信、決済機能は追加しないでください。
+　allow read, write: if true; のような広すぎるルールにはしないでください。
+　個人情報、勤務先情報、顧客情報、業務上の機密情報を入力しない前提にしてください。
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AIに何度か修正を頼むと、画面が複雑になりすぎることがあります。
+<p>たとえば、余計なメニュー、検索欄、編集画面、画像アップロード、外部API連携、公開ボタンの説明などが増える場合があります。</p>
+<p>そのときは、必要な要素だけに整理してもらいます。アプリのタイトル、Googleログイン状態、入力フォーム、記録するボタン、保存状態、記録数、一覧、空状態メッセージがあれば、発表用のデモとしては十分です。</p>
+<p>ここでも、ログインした本人の記録だけを扱う仕組みは維持します。画面を整理するときに保存先やSecurity Rulesをむやみに変えないようにします。</p>
+<p>複雑になったら、失敗ではなく整理のタイミングです。AIに「減らす」指示を出すことも、重要なデバッグ術です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- AIの修正後に確認すること -->
+<div style="font-size:0.82em">
+<h2>AIの修正後に確認すること</h2>
+<p>修正されたら、必ず自分で見ます。</p>
+<ul>
+<li>ログインできるか</li>
+<li>保存できるか</li>
+<li>読み込めるか</li>
+<li>追加項目が残るか</li>
+<li>本人の記録だけを扱っているか</li>
+<li>危険導線に進んでいないか</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AIが修正してくれたら、それで終わりではありません。必ず自分で確認します。
+<p>ログインできるか、架空の記録を保存できるか、保存した記録を読み込めるか、追加項目が再読み込み後も残るかを確認します。</p>
+<p>本人の記録だけを扱う仕組みが維持されているかも見ます。少なくとも、ログインしていない状態で記録が見えてしまわないか、自分以外の記録が混ざるような説明になっていないかを確認します。</p>
+<p>また、修正の途中でDeploy、Publish、Get API key、Upgrade、Cloud Billing、Blaze、Cloud Run、Firebase App Hostingなどに進んでいないことも確認します。</p>
+<p>AIの回答は便利ですが、最終確認は人間が行います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 発表で見せる画面を整える -->
+<div style="font-size:0.80em">
+<h2>発表で見せる画面を整える</h2>
+<p>第8回で見せるのは、アプリ画面です。</p>
+<p>見せるもの</p>
+<ul>
+<li>アプリ名</li>
+<li>入力フォーム</li>
+<li>架空のサンプル記録</li>
+<li>記録一覧</li>
+<li>追加項目</li>
+<li>保存できたこと</li>
+</ul>
+<p>見せないもの</p>
+<ul>
+<li>管理画面、ID、メールアドレス、請求情報</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第8回の発表で見せる画面を整えます。
+<p>発表で見せるのは、基本的にアプリ画面です。アプリ名、入力フォーム、架空のサンプル記録、記録一覧、第6回で追加した項目、保存できたことを見せます。</p>
+<p>Firebase Consoleや管理画面を見せる必要はありません。メールアドレス、UID、プロジェクトID、Database ID、請求情報が出やすいためです。</p>
+<p>発表用のサンプル記録も、必ず架空の短い文章にします。仕事タスクメモであっても、実在の勤務先や顧客の情報は使いません。</p>
+<p>画面が複雑になっている場合は、前のスライドのプロンプトで必要な要素だけに整理します。第8回では、作ったものを短く説明できる状態を目指します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 発表用1分説明文テンプレート -->
+<div style="font-size:0.8em">
+<h2>発表用1分説明文テンプレート</h2>
+<pre><code class="language-text">
+　私のアプリは「〇〇記録帳」です。
+　このアプリでは、〇〇を記録できます。
+　入力項目は、タイトル、本文、気分、〇〇です。
+　Googleログイン後、自分の記録だけが表示されます。
+　記録はFirestoreに保存されます。
+　工夫した点は、〇〇です。
+　うまくいかなかった点は、〇〇で、AIに〇〇と聞いて修正しました。
+　今日は公開やDeployはせず、画面共有でデモします。
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第8回に向けて、発表用の1分説明文を作ります。
+<p>このテンプレートを使うと、短く必要な情報を話せます。アプリ名、何を記録できるか、入力項目、Googleログイン後に自分の記録だけが表示されること、Firestoreに保存されること、工夫した点、AIに聞いて直した点を入れます。</p>
+<p>第6回の流れに合わせて、仕事タスクメモであれば、入力項目の最後に「進み具合」を入れられます。別の用途にした人は、自分の追加項目に置き換えます。</p>
+<p>最後に、「今日は公開やDeployはせず、画面共有でデモします」と言います。これは、本番公開やURL配布ではなく、講義内の発表であることを明確にするためです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 発表用説明文プロンプト -->
+<div style="font-size:0.8em">
+<h2>発表用1分説明文を作るプロンプト</h2>
+<pre><code class="language-text">　第8回の画面共有発表で使う、1分程度の説明文を作ってください。
+　私のアプリは、仕事タスクメモ用の「マイ記録帳」です。
+　入力項目は、タイトル、本文、気分、進み具合です。
+　Googleログイン後、自分の記録だけが表示されます。
+　記録はFirestoreに保存されます。
+　工夫した点は、追加項目の進み具合を一覧にも表示したことです。
+　うまくいかなかった点は、（ここに困ったことを書く）です。
+　AIには、（ここにAIへ聞いた内容を書く）と聞いて修正しました。
+　説明文には、公開やDeployをしないことを入れてください。
+　Cloud Billing、Blaze、Cloud Run、Firebase App Hosting、Deploy、Publish、
+　Get API key は使わない前提です。
+　画像アップロード、外部API、メール送信、決済機能は追加しません。
+　allow read, write: if true; のような広すぎるルールにはしません。
+　ログインした本人の記録だけを扱う仕組みを維持します。
+　個人情報、勤務先情報、顧客情報、業務上の機密情報は入力しない前提で、
+　初心者にも分かる自然な日本語にしてください。
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+これは、発表用の1分説明文をAIに作ってもらうためのプロンプトです。
+<p>アプリの用途、入力項目、Googleログイン、自分の記録だけが表示されること、Firestoreに保存されること、工夫した点、困った点、AIに聞いた内容を入れます。</p>
+<p>困った点とAIに聞いた内容は、自分の実際の経験に合わせて書き換えます。たとえば、保存できなかった、追加項目が再読み込み後に消えた、一覧に表示されなかった、画面が複雑になりすぎた、などです。</p>
+<p>このプロンプトにも、安全条件を入れています。公開、Deploy、課金、APIキー作成、外部API、画像アップロード、メール送信、決済機能は使いません。広すぎるSecurity Rulesにしないこと、本人の記録だけを扱う仕組みを維持すること、個人情報や業務機密を入れないことも明記しています。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日のまとめ -->
+<div style="font-size:0.82em">
+<h2>今日のまとめ</h2>
+<p>第7回では、次を確認しました。</p>
+<ul>
+<li>エラーを観察してデバッグカードに整理する</li>
+<li>Checkpointを戻り地点として考える</li>
+<li>戻すか、直すかを判断する</li>
+<li>ログイン・保存・読み込みを点検する</li>
+<li>追加項目が再読み込み後も残るか確認する</li>
+<li>発表用の説明文を作る</li>
+<li>見せてはいけない情報を隠す</li>
+</ul>
+<br />
+<p><strong>エラーは、会話の材料です。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日のまとめです。
+<p>第7回では、発表前の仕上げとして、ログイン、保存、読み込み、一覧表示、追加項目、Security Rules、画面の見やすさを点検しました。</p>
+<p>新しい知識として、デバッグカードとCheckpointを扱いました。エラーが出たら、直前にした操作、画面に出た表示、エラー文、期待した動き、守りたい条件を集めます。これがデバッグカードです。</p>
+<p>また、AIに直し続けるだけでなく、前の動いていたCheckpointへ戻す選択肢も学びました。小さな不具合なら最小修正、大きく壊れたらCheckpointへ戻す候補、と判断します。ただし、Checkpointは完全バックアップではありません。Firestoreの中のデータ、Firebase Consoleの設定、課金や公開状態まで何でも戻せるとは考えません。</p>
+<p>保存できない、読み込めない、ログインできない、追加項目が消える、画面が複雑になりすぎるという状態は、すべてAIに相談する材料になります。</p>
+<p>また、第8回の画面共有発表に向けて、発表用の1分説明文を作り、メールアドレス、UID、プロジェクトID、Database ID、個人情報、業務上の機密情報を見せない準備もしました。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第7回終了チェック -->
+<div style="font-size:0.38em">
+<h2>第7回 終了チェック</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6486380"><label class="task-list-item-label" for="task-item-6486380"> エラー時に集める情報を説明できる</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1626590"><label class="task-list-item-label" for="task-item-1626590"> デバッグカードを書ける</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5401369"><label class="task-list-item-label" for="task-item-5401369"> Checkpointが「戻り地点」だと説明できる</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5762043"><label class="task-list-item-label" for="task-item-5762043"> 1回のプロンプトを小さくする理由を説明できる</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5821089"><label class="task-list-item-label" for="task-item-5821089"> 大きく壊れたとき、戻す選択肢を持てる</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3279955"><label class="task-list-item-label" for="task-item-3279955"> Restore後の再出発プロンプトを使える</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5513229"><label class="task-list-item-label" for="task-item-5513229"> Checkpointを完全バックアップとは考えていない</label></li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、第7回の終了チェックをします。
+<p>まず、エラー時に集める情報を説明できるか確認します。直前にした操作、画面に出た表示、エラー文、期待した動き、守りたい条件を整理できれば、AIへの相談が具体的になります。</p>
+<p>次に、Checkpointについて確認します。Checkpointは戻り地点です。1回のプロンプトを小さくすると、どの変更で壊れたか分かりやすく、戻す判断もしやすくなります。大きく壊れたときは、直し続けるだけでなく、前の動いていたCheckpointへ戻す選択肢を持ちます。ただし、CheckpointをFirestoreデータやFirebase Console設定の完全バックアップとは考えません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第7回終了チェック続き -->
+<div style="font-size:0.38em">
+<h2>第7回 終了チェック続き</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3347875"><label class="task-list-item-label" for="task-item-3347875"> ログインできることを確認した</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2762499"><label class="task-list-item-label" for="task-item-2762499"> 記録を保存できることを確認した</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4035943"><label class="task-list-item-label" for="task-item-4035943"> 保存した記録を読み込めることを確認した</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6640538"><label class="task-list-item-label" for="task-item-6640538"> 第6回で追加した項目が表示・保存・再表示されることを確認した</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-763000"><label class="task-list-item-label" for="task-item-763000"> Security Rulesを広げすぎない方針を確認した</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1249611"><label class="task-list-item-label" for="task-item-1249611"> 発表用の1分説明文を作った</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7255747"><label class="task-list-item-label" for="task-item-7255747"> メールアドレス、UID、プロジェクトID、Database IDを見せていない</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6884639"><label class="task-list-item-label" for="task-item-6884639"> 実在の個人情報、勤務先情報、顧客情報、業務上の機密情報を入力していない</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8100502"><label class="task-list-item-label" for="task-item-8100502"> Deploy / Publish / Get API key / Add database and auth / Upgrade を押していない</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5263006"><label class="task-list-item-label" for="task-item-5263006"> Cloud Billing / Blaze / Cloud Run / Firebase App Hosting に進んでいない</label></li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+そのうえで、ログインできること、架空の記録を保存できること、保存した記録を読み込めること、第6回で追加した「進み具合」などの項目が、フォームに表示され、保存され、再読み込み後も一覧に表示されることを確認します。
+<p>Security Rulesを広げすぎない方針も確認します。allow read, write: if true; のような公開読み書きにはしません。</p>
+<p>発表用の1分説明文を作ったか、メールアドレス、UID、プロジェクトID、Database IDを見せていないか、実在の個人情報や業務上の機密情報を入力していないかも重要です。</p>
+<p>最後に、Deploy、Publish、Get API key、Add database and auth、Upgradeを押していないこと、Cloud Billing、Blaze、Cloud Run、Firebase App Hostingに進んでいないことを確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第8回への橋渡し -->
+<div style="font-size:0.82em">
+<h2>第8回への橋渡し</h2>
+<p>次回：<strong>発表会 — 画面共有でデモ</strong></p>
+<p>準備しておくこと</p>
+<ul>
+<li>見せるアプリ画面</li>
+<li>架空のサンプル記録</li>
+<li>1分説明文</li>
+<li>AIに聞いて直した点</li>
+<li>見せてはいけない情報を隠した画面</li>
+</ul>
+<br />
+<p><strong>公開やDeployはせず、画面共有で発表します</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+次回は、第8回「発表会 — 画面共有でデモ」です。
+<p>発表では、1人2〜3分程度で、自分のアプリを画面共有します。何の記録アプリにしたか、どの項目を入力するか、Googleログイン後に自分の記録だけが表示されること、Firestoreに保存されること、AIに聞いて直した点を説明します。</p>
+<p>今日作った1分説明文をもとに、次回の発表に備えます。見せる画面はアプリ画面を中心にします。Firebase Consoleや管理画面、メールアドレス、UID、プロジェクトID、Database ID、請求情報は見せません。</p>
+<p>第8回も、本番公開、Deploy、Publish、Cloud Billing、Blaze、Cloud Run、Firebase App Hostingには進みません。講義内の画面共有デモとして、安全に発表します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 最後の確認 -->
+<div style="font-size:0.82em">
+<h2>次回までの小さな宿題</h2>
+<p>できる範囲で準備します。</p>
+<ul>
+<li>発表で使う架空の記録を1件用意する</li>
+<li>1分説明文を読み直す</li>
+<li>見せる画面を決める</li>
+<li>メールアドレスやIDが見えないか確認する</li>
+</ul>
+<br />
+<p><strong>第8回は、作ったものを短く説明する回です</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+次回までの小さな宿題です。
+<p>発表で使う架空の記録を1件用意します。仕事タスクメモであれば、「発表準備」「画面共有で説明する内容を確認する」「進み具合：確認待ち」のような短い架空の記録で十分です。</p>
+<p>今日作った1分説明文を読み直します。自分の言葉として話しやすいように、長すぎるところは短くして構いません。</p>
+<p>また、発表で見せる画面を決めます。ログイン状態、入力フォーム、保存済みの記録一覧、追加項目が見える画面がよいです。</p>
+<p>最後に、メールアドレス、UID、ユーザー識別子、プロジェクトID、Database IDが見えていないか確認します。</p>
+<p>第8回は、完成品を公開する回ではなく、作ったものを短く説明し、次の一歩を知る回です。おつかれさまでした。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
