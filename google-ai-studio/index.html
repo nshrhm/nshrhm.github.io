@@ -309,6 +309,20 @@
                 grid-template-columns: repeat(4, minmax(0, 1fr));
             }
 
+            .catalog-section {
+                margin-top: 56px;
+            }
+
+            .catalog-grid {
+                display: grid;
+                gap: 14px;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .catalog-grid .lesson {
+                min-height: 220px;
+            }
+
             .lesson {
                 background: rgba(255, 255, 255, 0.9);
                 border: 1px solid var(--line);
@@ -464,6 +478,7 @@
                 }
 
                 .metric-grid,
+                .catalog-grid,
                 .lesson-grid {
                     grid-template-columns: 1fr;
                 }
@@ -499,6 +514,7 @@
                     <div class="hero-actions" aria-label="公開済み教材">
                         <a class="primary-link" href="day7/">最新公開: 第7回へ</a>
                         <a class="secondary-link" href="#lessons">全回一覧を見る</a>
+                        <a class="secondary-link" href="#ui-catalogs">UIカタログを見る</a>
                     </div>
                 </div>
                 <aside class="signal-board" aria-label="コース概要">
@@ -633,6 +649,44 @@
                         <p>画面共有で短くデモし、費用・個人情報・次の一歩を確認します。</p>
                         <span class="date">7月23日（木）</span>
                     </article>
+                </div>
+            </section>
+
+            <section id="ui-catalogs" class="catalog-section" aria-labelledby="catalog-title">
+                <div class="section-head">
+                    <h2 id="catalog-title">UIカタログ</h2>
+                    <p>
+                        画面部品や操作パターンを実際に試しながら、AIへ伝えるプロンプトを作れます。
+                    </p>
+                </div>
+                <div class="catalog-grid">
+                    <a class="lesson available" href="ui_catalog_1.html">
+                        <div class="lesson-label">
+                            <strong>UI Catalog 1</strong>
+                            <span class="status">初級</span>
+                        </div>
+                        <h3>画面部品を見て選ぶ</h3>
+                        <p>入力欄、選択肢、日付、数値など、基本の画面部品を試せます。</p>
+                        <span class="date">基本の画面部品</span>
+                    </a>
+                    <a class="lesson available" href="ui_catalog_2.html">
+                        <div class="lesson-label">
+                            <strong>UI Catalog 2</strong>
+                            <span class="status">中級</span>
+                        </div>
+                        <h3>画面構成と操作を選ぶ</h3>
+                        <p>タブ、サイドバー、ダイアログ、通知などの使い分けを確認できます。</p>
+                        <span class="date">画面構成とフィードバック</span>
+                    </a>
+                    <a class="lesson available" href="ui_catalog_3.html">
+                        <div class="lesson-label">
+                            <strong>UI Catalog 3</strong>
+                            <span class="status">上級</span>
+                        </div>
+                        <h3>壊れにくいUIを設計する</h3>
+                        <p>レスポンシブ対応、Undo、自動保存、オフライン設計などを試せます。</p>
+                        <span class="date">高度なUI・PWA設計</span>
+                    </a>
                 </div>
             </section>
 
