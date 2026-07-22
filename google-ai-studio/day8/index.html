@@ -1,0 +1,1411 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>生成AIで「動く」Webアプリを作る超入門スキルアップコース（基礎編）</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" alt="" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h4>生成AIで「動く」Webアプリを作る<br />超入門スキルアップコース（基礎編）</h4>
+<br />
+<h3>第8回: スマートフォンで使う方法<br />アプリ公開手順と作成アプリ品評会</h3>
+<p>講師：白濵 成希</p>
+<p>下関市立大学 データサイエンス学部</p>
+<p>2026年7月23日(木) 18:10〜19:40</p>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日は最終回、第8回です。タイトルは「スマートフォンで使う方法を知る — アプリ公開手順と作成アプリ品評会」です。
+<p>第1回から第7回まで、Google AI Studioで画面を作り、GoogleログインとFirestoreを追加し、保存・読み込み・Security Rulesを点検し、自分用の項目を少し追加し、エラーをAIへ伝えて直してきました。</p>
+<p>今日は二部構成です。前半では、将来自分で作ったWebアプリをスマートフォンから確認するときの公開手順を学びます。ただし、受講生のみなさんは授業中に公開操作を行いません。Publish、Get Started、Publish Appは、意味と順番を講師の画面例で確認するだけです。</p>
+<p>後半では、Teamsへ提出したスクリーンショットと説明文章を講師が投影し、作成アプリ品評会を行います。受講生による画面共有やライブ操作ではありません。作品の目的、使いやすさ、独自の工夫、AIとの改善、安全な情報の扱いを一緒に見ていきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日のゴール -->
+<div style="font-size:0.82em">
+<h2>今日のゴール</h2>
+<p><strong>公開の基本手順と停止条件、作品の工夫を安全に伝える。</strong></p>
+<ul>
+<li>公開すると何が変わるか説明できる</li>
+<li>スマートフォンで開く流れを説明できる</li>
+<li>課金や有料設定の前で止まれる</li>
+<li>画像と文章をTeamsへ提出できる</li>
+<li>他の作品から工夫を学べる</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日のゴールは二つあります。
+<p>一つ目は、公開の基本手順と停止条件を理解することです。Google AI Studioの中で動くプレビューと、公開後にスマートフォンのブラウザから開けるWebアプリは、同じものではありません。公開するとURLが発行され、AI Studioを開いていない端末からもアクセスできるようになります。そのため、公開前と公開後に、安全性と動作を改めて確認する必要があります。</p>
+<p>二つ目は、自分の作品を安全に伝えることです。スクリーンショット数枚と短い説明文章を提出し、講師が投影します。アプリ名、用途、独自の項目、工夫した表示、AIに聞いて直した点が伝わるようにします。</p>
+<p>今日は公開を完了させることが目標ではありません。公開する前に何を確認し、どの表示が出たら止まるのかを理解することが目標です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日の二部構成 -->
+<div style="font-size:0.76em">
+<h2>今日の二部構成</h2>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2em; align-items:start">
+<div>
+<h3>第1部　公開手順</h3>
+<ul>
+<li>公開の意味</li>
+<li>Starter Tier</li>
+<li>PublishからURL発行まで</li>
+<li>スマートフォンでの確認</li>
+<li>止まるべき表示</li>
+</ul>
+</div>
+<div>
+<h3>第2部　品評会</h3>
+<ul>
+<li>画像と説明文を提出</li>
+<li>講師が作品を投影</li>
+<li>良い点と次の改善を共有</li>
+<li>他の作品から学ぶ</li>
+</ul>
+</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の流れを確認します。
+<p>最初の約30分は、アプリ公開手順の説明です。プレビューと公開の違い、Google Cloud Starter Tier、Publish、Get Started、URL設定、Publish App、公開後のスマートフォン確認を順番に説明します。</p>
+<p>この部分では、講師が事前に用意したスクリーンショットや専用アカウントの画面を使います。受講生のみなさんは、自分の画面で公開ボタンを探したり、押したりしません。</p>
+<p>その後、約10分でスクリーンショットと説明文章をTeamsへ提出します。後半の約40分は品評会です。講師が提出物を順番に投影し、良い点、参考になる工夫、次に改善できそうな点を短く共有します。</p>
+<p>最後に、講座全体を振り返り、今後自分で続けるときの基本を確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第7回までにできたこと -->
+<div style="font-size:0.70em">
+<h2>第7回までにできたこと</h2>
+<ul>
+<li>日本語の指示で画面を作った</li>
+<li>Googleログインを追加した</li>
+<li>Firestoreへ保存し、読み込んだ</li>
+<li>一覧を見やすく整えた</li>
+<li>自分用の項目を追加した</li>
+<li>エラーをAIへ具体的に伝えた</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここまでの講座を振り返ります。
+<p>第1回では、Google AI Studio Buildを開き、日本語の指示で画面とボタンを作りました。第2回では、入力フォームと一覧を作りました。第3回では、GoogleログインとFirestoreを追加し、クラウドへ保存して読み込める状態にしました。</p>
+<p>第4回では、保存した記録、再読み込み、Firebase Console、Security Rulesを点検しました。第5回では、空状態、新しい順、記録数、保存状態などを整えました。第6回では、「進み具合」などの独自項目を少し追加しました。第7回では、ログインできない、保存できない、追加項目が消えるといった状態をAIへ具体的に伝えて直す練習をしました。</p>
+<p>今日の公開手順は、これらが一通り動くアプリを外部のブラウザから開ける形にするための知識です。公開は、作成の最後に押す単なるボタンではありません。動作、安全性、費用、公開範囲を確認してから進む工程です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日の大事なルール -->
+<div style="font-size:0.86em">
+<h2>今日の大事なルール</h2>
+<h3>公開手順は <strong>説明だけ</strong></h3>
+<p>受講生は授業中に、次を押しません。</p>
+<ul>
+<li><code>Publish</code></li>
+<li><code>Get Started</code></li>
+<li><code>Publish App</code></li>
+</ul>
+<br />
+<p><strong>公開URLも発行しません。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の最も大事なルールです。
+<p>公開手順は説明だけです。受講生のみなさんは、授業中にPublish、Get Started、Publish Appを押しません。公開URLも発行しません。スマートフォンから公開版を開く実習も行いません。</p>
+<p>理由は、Google Cloud Starter Tierを利用できる条件がアカウントごとに異なるためです。講座用のプライベートGmailを使っていても、過去のBilling利用状況などにより、Starter Tierが表示されない場合があります。また、公開できるサービス数には上限があります。</p>
+<p>Starter Tierが利用できない場合に、Standard DeploymentやCloud Billingへ進むと、講座の安全方針から外れます。全員が同じ安全な条件で進められるとは限らないため、今日は手順を知識として学びます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日やらないこと -->
+<div style="font-size:0.52em">
+<h2>今日やらないこと</h2>
+<div style="display:grid; grid-template-columns:max-content max-content; column-gap:1.3em; align-items:start">
+<ul style="margin:0; padding-left:1.2em">
+<li>公開URLの発行</li>
+<li>URLやQRコードの配布</li>
+<li>受講生による画面共有・ライブ操作</li>
+<li>Standard Deployment</li>
+<li>Cloud Billing</li>
+<li>Blazeプランへの変更</li>
+<li>Cloud Runへの直接デプロイ</li>
+<li>Cloud Run Consoleの操作</li>
+</ul>
+<ul style="margin:0; padding-left:1.2em">
+<li>Firebase App Hosting</li>
+<li>APIキー作成</li>
+<li>アプリ内Gemini API呼び出し</li>
+<li>外部API連携</li>
+<li>Cloud Storage</li>
+<li>アプリへの画像アップロード機能</li>
+<li>メール送信・決済機能</li>
+<li>支払い方法・クレジットカード登録</li>
+</ul>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日やらないことを確認します。
+<p>受講生は公開URLを発行しません。URLやQRコードも配布しません。受講生による画面共有やライブ操作も行いません。作品は、Teamsへ提出した画像と文章を講師が投影します。</p>
+<p>Standard Deployment、Cloud Billing、Blazeプラン、Cloud Runへの直接デプロイ、Cloud Run Console、Firebase App Hostingには進みません。APIキー、外部API、画像アップロード、Cloud Storage、メール送信、決済機能も扱いません。</p>
+<p>Google AI StudioのGeminiは、アプリを作る開発助手として使ってきました。アプリそのものからGemini APIを呼び出す機能は追加していません。公開後の利用者によるAPI呼び出しが作成者側の利用量になる場合があるため、今日も追加しません。</p>
+<p>なお、スクリーンショットをTeamsへ提出することは、アプリに画像アップロード機能を追加することとは別です。提出物としてPNGファイルをアップロードするだけです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- プレビューと公開後の違い -->
+<div style="font-size:0.60em">
+<h2>プレビューと公開後は違う</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>AI Studioのプレビュー</th>
+<th>公開後のWebアプリ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主な目的</td>
+<td>作りながら確認する</td>
+<td>別の端末から使う</td>
+</tr>
+<tr>
+<td>開く場所</td>
+<td>Google AI Studio Build</td>
+<td>Chrome / Safari</td>
+</tr>
+<tr>
+<td>利用者</td>
+<td>主に作成者</td>
+<td>URLへアクセスした人</td>
+</tr>
+<tr>
+<td>確認</td>
+<td>画面と基本動作</td>
+<td>ログイン・保存・公開範囲・安全性</td>
+</tr>
+</tbody>
+</table>
+<br />
+<p><strong>公開すると、AI Studioの外から開けるURLができます。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+プレビューと公開後の違いを確認します。
+<p>AI Studioのプレビューは、アプリを作りながら動作を見る場所です。主に作成者が、Build画面の中で確認します。</p>
+<p>公開後のWebアプリは、ChromeやSafariなどのブラウザから開きます。スマートフォンや別のパソコンなど、AI Studioを開いていない端末からもURLでアクセスできます。</p>
+<p>ここで注意したいのは、URLができたからといって、安全性が自動的に保証されるわけではないことです。URLを知っている人がアクセスする可能性があります。Googleログインが動くか、Firestoreへ保存できるか、自分の記録だけが見えるか、個人情報が表示されていないかを改めて確認します。</p>
+<p>URLは、アクセス制御そのものではありません。誰に知らせるか、どこへ掲載するかも公開前に考えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開前に点検すること -->
+<div style="font-size:0.64em">
+<h2><code>Publish</code> の前に点検する</h2>
+<ul>
+<li>アプリ名と用途が分かる</li>
+<li>Googleログインが動く</li>
+<li>架空の記録を保存できる</li>
+<li>再読み込み後も表示される</li>
+<li>自分の記録だけが見える</li>
+<li>Security Rulesを広げすぎていない</li>
+<li>個人情報・業務情報が入っていない</li>
+<li>費用と利用上限を確認した</li>
+</ul>
+<br />
+<p><strong>「動いた」だけで、すぐ公開しません。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+将来自分で公開するときは、Publishを押す前に点検します。
+<p>アプリ名と用途が分かるか、Googleログインが動くか、架空の記録を保存できるか、再読み込み後も表示されるかを確認します。さらに、自分の記録だけが表示され、Security Rulesが広すぎる公開設定になっていないことを確認します。</p>
+<p>アプリの画面や保存データに、実名、メールアドレス、勤務先名、顧客名、案件名、学生番号、支払い情報などが入っていないことも大切です。</p>
+<p>また、公開に使う仕組みの利用条件、上限、費用を公式資料で確認します。今日説明するStarter Tierは、利用できる場合にCloud Billingを自分で設定せず公開できる簡易な経路ですが、対象者と上限があります。</p>
+<p>公開は、最後にボタンを押すだけの工程ではありません。公開してよい状態かを判断する工程です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Starter Tierとは -->
+<div style="font-size:0.70em">
+<h2>Google Cloud Starter Tierとは</h2>
+<blockquote>
+<p>利用できる場合、Google AI Studioから<br />
+<strong>Cloud Billingを自分で設定せず</strong><br />Webアプリを公開できます。</p>
+</blockquote>
+<ul>
+<li>公開できるサービスは最大2個</li>
+<li>公開先はGoogle Cloud側の管理された環境</li>
+<li>Firebaseの <strong>Sparkプランとは別の仕組み</strong></li>
+<li>無制限・全員対象ではない</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Google Cloud Starter Tierについて説明します。
+<p>Starter Tierを利用できる場合は、自分でGoogle CloudプロジェクトやCloud Billingアカウントを設定せず、Google AI StudioからWebアプリを公開できます。公開できるサービスは最大2個です。</p>
+<p>ここで、FirebaseのSparkプランと混同しないようにします。Google Cloud Starter Tierは、AI StudioからWebアプリを公開するための経路です。Firebase Sparkプランは、AuthenticationやFirestoreをFirebase側の無償枠で使うための料金プランです。役割が違います。</p>
+<p>Starter Tierが表示されたからといって、FirebaseをBlazeプランへ変更する必要はありません。この講座では、Firebase側は引き続きSparkプランの範囲を維持します。</p>
+<p>Starter Tierにも上限があり、すべてのアカウントが利用できるわけではありません。そのため、今日は受講生に一斉公開をさせません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Starter Tierを使えない場合 -->
+<div style="font-size:0.8em">
+<h2>Starter Tierを使えない場合</h2>
+<p>例</p>
+<ul>
+<li>アカウントが対象外</li>
+<li>過去または現在にBillingアカウントがある</li>
+<li>Workspace系の組織アカウントを使っている</li>
+<li>すでに2サービスを公開している</li>
+<li>Starter Tierが画面に表示されない</li>
+</ul>
+<br />
+<p><strong>その場合は、そこで止まります</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Starter Tierを利用できない場合があります。
+<p>Google公式資料では、過去または現在にGoogle Cloud Billingアカウントを持つユーザーは対象外となる場合があります。また、Google Workspace、Google Workspace for Educationなどの組織アカウントも対象外です。すでに2サービスを公開している場合も上限に達します。</p>
+<p>講座用のプライベートGmailを使っていても、過去の利用状況によってStarter Tierが表示されない可能性があります。Starter Tierが表示されないことは、受講生の操作ミスとは限りません。</p>
+<p>その場合は、Standard DeploymentやBilling設定へ進みません。既存の公開サービスを授業中に削除したり、有料アカウントへ変更したりもしません。「このアカウントでは今日は進まない」と判断することが正しい対応です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順1 Publish -->
+<div style="font-size:0.70em">
+<h2>公開手順1：<code>Publish</code></h2>
+<img src="figures/SS-08-01.png" alt="SS-08-01: Publish画面" width="auto" />
+<ul>
+<li>右上の <code>Publish</code> が公開の入口です。</li>
+<li><strong>今日は押しません。</strong></li>
+<li>将来自分で公開するときの入口として確認します。</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+公開手順の1つ目です。
+<p>Google公式資料では、Google AI Studio Build modeの右上にあるPublishが公開の入口です。画面構成や表示文言は変更される可能性があるため、授業では講師が直前に確認した実機画面を使います。</p>
+<p>今日は、このボタンの位置と意味だけを確認します。受講生は押しません。</p>
+<p>将来自分で公開するときは、Publishを押す前に、正しいアプリを開いているか、講座用のプライベートGmailを使っているか、ログイン・保存・読み込みが動くか、架空のデータだけが入っているかを確認します。</p>
+<p>環境によってDeployなど別の文言が見える場合は、勝手に読み替えて進まず、最新の公式資料を確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順2 説明画面 -->
+<div style="font-size:0.70em">
+<h2><strong>Publish</strong> を押すと最初に説明画面が出る</h2>
+<ul>
+<li>公開すると <strong>公開URL</strong> で開ける</li>
+<li>Chat history と code は <strong>private</strong></li>
+<li>ここでも今日は<strong>先へ進まない</strong></li>
+</ul>
+<img src="figures/SS-08-02.png" alt="Publish ボタンを押した直後の説明画面" width="300" />
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Publish ボタンを押した直後に表示される説明画面を確認します。画面には、公開するとアプリが public URL で利用できることが示されています。一方で、chat history と code は private のままであることも表示されています。
+<p>ここでみなさんに伝えたいのは、「公開されるのはアプリとして見える画面であり、チャット履歴やコードそのものではない」
+という点です。
+ただし、それでも公開されたURLには他者がアクセスできる可能性があるため、
+アプリ画面内に個人情報やテスト用の不適切な内容を残してはいけません。</p>
+<p>画面下には Get started ボタンがありますが、
+授業ではここから先へ進みません。
+今日は手順の流れを知ることが大切です。Cloud Billing や Upgrade が関係する画面が出たら先へ進まないようにしてください。</p>
+<p>この次の段階では、将来自分で公開する場合に
+URL設定や Publish App に進む流れがあることを説明します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順3 プロジェクトと課金確認画面 -->
+<div style="font-size:0.70em">
+<h2><strong>Step 1 Confirm project and billing</strong> を確認する</h2>
+<ul>
+<li>公開先の <strong>Google Cloud Project</strong> を確認する</li>
+<li><strong>No billing setup</strong> と表示されることがある</li>
+<li><strong>Set up billing は今日は押さない</strong></li>
+</ul>
+<img src="figures/SS-08-03.png" alt="Publish your app の Step 1 Confirm project and billing 画面" width="300" />
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面は、Publish の説明画面の次に表示される、公開先のプロジェクトと課金設定を確認する画面です。
+画面上部には Step 1 Confirm project and billing と表示されています。
+<p>ここでは、公開したアプリをどの Google Cloud Project に保存するのかを確認します。
+画面にはプロジェクト名が表示され、その下に No billing setup と表示されることがあります。
+これは、まだ課金設定が行われていない状態を表しています。</p>
+<p>ここで特に大事なのは、下にある Set up billing ボタンです。
+講座では Cloud Billing を使わない方針ですので、このボタンは押しません。
+受講生のみなさんには、「このような画面が出ることがある」と知ってもらえれば十分です。</p>
+<p>もし将来自分で公開を試したときに、この画面で billing の設定を求められた場合は、
+その場で先に進まず、まず状況を確認してください。
+この講座では、支払い方法登録や有料プランへの変更は扱いません。</p>
+<p>また、プロジェクト名の部分には、自分の作成中アプリに対応する名前が表示されます。
+講師はここで、公開とは単に見た目を保存するのではなく、
+Google Cloud 側にアプリの公開先を持つ操作であることを短く説明してください。</p>
+<p>この次は、もし billing が必要な場合には、
+講座ではそこで止めるという判断が大切であることをあらためて伝えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順4 請求先アカウント設定画面 -->
+<div style="font-size:0.70em">
+<h2>Google Cloud 請求先アカウントの設定</h2>
+<ul>
+<li>これは <strong>Cloud Billing</strong> の設定画面</li>
+<li>この講座では <strong>ここから先へ進まない</strong></li>
+<li><strong>同意して続行</strong> は今日は押さない</li>
+</ul>
+<img src="figures/SS-08-04.png" alt="Google Cloud 請求先アカウントの設定画面" width="400" />
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面は、Google Cloud の請求先アカウントを設定する画面です。
+ここまで進むと、アプリの公開手順の中で Cloud Billing に関係する段階に入っていることが分かります。
+<p>講座では Cloud Billing を使わない方針です。
+そのため、この画面が表示された場合は、ここで止まります。
+右下には「同意して続行」というボタンがありますが、今日は押しません。</p>
+<p>画面の説明文には、Gemini API の請求が Google Cloud 請求先アカウントで管理されることや、
+お支払い情報を設定するとレート制限の引き上げや追加機能を利用できることが書かれています。
+しかし、この講座では支払い方法登録や有料設定には進まないことが大切です。</p>
+<p>受講生のみなさんには、
+「公開の途中で billing の設定画面が出たら、その先は授業の範囲外である」
+と理解してもらえれば十分です。
+無理に公開を完了させる必要はありません。</p>
+<p>また、この種の画面には氏名、メールアドレス、組織名などの個人情報が表示されることがあります。
+教材用のスクリーンショットとして使う場合は、必要に応じてトリミングやぼかしを行ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順5 請求先アカウント詳細画面 -->
+<div style="font-size:0.70em">
+<h2><strong>請求先アカウントの詳細の追加</strong></h2>
+<ul>
+<li>名前・住所などの <strong>連絡先情報</strong> を求める画面</li>
+<li><strong>お支払い方法を追加</strong> は押さない</li>
+<li><strong>送信</strong> せず、右上の <strong>×</strong> で閉じる</li>
+</ul>
+<img src="figures/SS-08-05.png" alt="SS-08-05: 請求先アカウントの連絡先情報と支払い方法を追加する画面" width="300" />
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+みなさん、この画面は「請求先アカウントの詳細の追加」と表示された、Cloud Billingの手続きを進める画面です。
+<p>ここでは、名前や住所などの連絡先情報と、お支払い方法の登録を求められます。
+右側には、Gemini APIの有料枠や前払いに関する説明も表示されています。</p>
+<p>この講座では、Cloud Billingを設定しません。
+そのため、「名前と住所を追加」や「お支払い方法を追加」は押しません。
+左下の「送信」も押さず、右上の×で画面を閉じます。</p>
+<p>公開の途中でこの画面が表示された場合は、無料の範囲だけでは先へ進めない状態になっている可能性があります。
+公開を完了させるために、無理に個人情報やクレジットカード情報を入力する必要はありません。
+この画面が出たら、「今日はここで止まる」が正しい判断です。</p>
+<p>また、この画面には、Googleアカウントの名称やメールアドレスが表示されることがあります。
+スクリーンショットを教材やTeamsで共有するときは、アカウント名、メールアドレス、住所、支払い情報を必ず隠してください。</p>
+<p>将来自分で有料サービスを利用する場合も、料金、利用上限、支払い方法、解約方法を公式資料で確認してから判断します。
+意味が分からないまま、その場で登録を進めないようにしましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順6 Gemini API 利用上限確認画面 -->
+<div style="font-size:0.70em">
+<h2><strong>Gemini API usage</strong> の確認画面</h2>
+<ul>
+<li>Gemini を使うアプリではこの画面が出ることがある</li>
+<li><strong>Set spend cap</strong> は利用上限の設定</li>
+<li>ここから先は<strong>講師の確認用画面</strong></li>
+</ul>
+<img src="figures/SS-08-06.png" alt="Publish your app の Step 1 Control Gemini API usage 画面" width="200" />
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+みなさん、この画面は、アプリの中で Gemini を使っている場合に表示されることがある確認画面です。
+画面には Step 1 Control Gemini API usage とあり、Gemini API の利用量をどのように管理するかを確認しています。
+<p>ここで大事なのは、Gemini を使うアプリでは、
+公開時に「どこまで利用してよいか」を管理する考え方が必要になる、ということです。
+Set spend cap は、利用上限を設定するためのボタンです。
+一方で、Skip を選んで先に進むこともできます。</p>
+<p>ただし、この講座では、受講生のみなさんにこの操作を実施してもらうわけではありません。
+これは、講師が検証用の環境で公開手順を確認したときに出てきた画面です。
+みなさんには、「Gemini を使うアプリでは、このような利用量の確認が入ることがある」と知ってもらえれば十分です。</p>
+<p>この画面が出るかどうかは、作ったアプリの内容によって変わります。
+Gemini を使っていないアプリでは、この画面は出ないことがあります。
+逆に、Gemini を使っているアプリでは、公開の前にこのような確認が入る可能性があります。</p>
+<p>ここで覚えてほしいのは、
+公開には見た目の確認だけではなく、利用量や費用の管理も関係することがある、という点です。
+そのため、公開を試すときには、何が無料で、どこから先が追加の管理を必要とするのかを見分けることが大切です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順7 Gemini API費用上限の設定画面 -->
+<div style="font-size:0.70em">
+<h2>Gemini APIの<strong>費用上限</strong>を設定する画面</h2>
+<ul>
+<li>アプリ内Geminiを使う場合の<strong>費用管理</strong></li>
+<li>1か月に利用できる金額の上限を設定する</li>
+<li>上限に達するとGemini APIの利用が<strong>一時停止</strong></li>
+<li>この講座では<strong>講師が管理</strong>し、受講生は変更しない</li>
+</ul>
+<img src="figures/SS-08-07.png" alt="SS-08-07: Gemini APIの1か月の費用上限を入力して保存する画面" width="auto" />
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+みなさん、この画面は、アプリ内でGeminiを使う場合に、1か月の費用上限を設定する画面です。
+<p>前の画面で Set spend cap を選ぶと、この画面が表示されます。
+入力欄には、1か月に利用できる費用の上限額を日本円で入力します。
+金額を入力して Save を押すと、その上限が設定されます。</p>
+<p>設定した上限に達すると、Gemini APIの利用は一時停止します。
+これにより、想定していた金額を大きく超えて使い続けることを防ぎやすくなります。</p>
+<p>ただし、画面にも書かれているように、利用状況の反映には時間がかかる場合があります。
+上限に達してから停止するまでに10分程度の遅れが生じ、設定した金額を少し超える可能性があります。
+そのため、費用上限は安全のための補助機能であり、設定額を絶対に超えないことを保証するものではありません。</p>
+<p>Remove spend cap は、設定した費用上限を取り除く操作です。
+上限を取り除くと、費用を止めるための基準がなくなるため、意味を理解せずに選ばないようにします。</p>
+<p>今回の講座で受講生のみなさんが作った標準アプリでは、アプリ内からGemini APIを呼び出す機能は使用しません。
+そのため、通常はこの費用上限を設定する必要はありません。</p>
+<p>この画面は、講師がアプリ内Geminiを利用する検証用アプリで確認したものです。
+みなさんには、Geminiを使うアプリを公開するときには、画面や機能だけでなく、利用量と費用の管理も必要になることを知ってもらえれば十分です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順8 Gemini API費用上限の設定完了画面 -->
+<div style="font-size:0.70em">
+<h2>Gemini APIの<strong>費用上限の設定</strong></h2>
+<ul>
+<li><code>spend cap has been set</code> で設定完了を確認</li>
+<li><strong>Continue</strong> で公開手順の次へ進む</li>
+<li><strong>Edit spend cap</strong> で上限を見直せる</li>
+<li>ここから先も<strong>講師の検証用画面</strong></li>
+</ul>
+<img src="figures/SS-08-08.png" alt="SS-08-08: Gemini APIの費用上限が設定され、ContinueとEdit spend capが表示された確認画面" width="200" />
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+みなさん、この画面は、前の画面で入力したGemini APIの費用上限が設定されたことを確認する画面です。
+<p>中央に「Gemini API spend cap has been set」と表示されていれば、費用上限の設定は完了しています。</p>
+<p>Continueを押すと、アプリ公開の次の手順へ進みます。
+設定した上限を変更したい場合は、Edit spend capを選びます。</p>
+<p>費用上限を設定しておくと、アプリ内Gemini APIの利用が想定以上に増えたときのリスクを抑えやすくなります。
+ただし、前のスライドで確認したように、利用状況の反映には時間差が生じることがあります。
+そのため、費用上限だけに任せず、利用量や通知も確認することが大切です。</p>
+<p>画面上ではFirebase Studioという名称が表示されています。
+画面の文言や名称は、サービスの更新によって変わることがあります。
+ここでは、Gemini APIの費用上限が設定されたことを確認する画面として理解してください。</p>
+<p>この講座の標準アプリでは、アプリ内からGemini APIを呼び出す機能は使いません。
+したがって、受講生のみなさんがこの設定を行う必要はありません。
+これは、講師がアプリ内Geminiを使用する検証用アプリで確認した画面です。</p>
+<p>みなさんには、Geminiを組み込んだアプリを公開する場合には、公開操作だけでなく、利用量と費用を管理する工程も必要になることを知ってもらえれば十分です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順9 公開内容とURLの最終確認画面 -->
+<div style="font-size:0.70em">
+<h2><strong>Step 2 Final touches</strong> で公開内容を確認する</h2>
+<ul>
+<li>アプリ名と <strong>Description</strong> を確認する</li>
+<li><strong>App URL</strong> は公開後に使うアドレス</li>
+<li><code>利用可能</code> は、そのURL候補を使えるという表示</li>
+<li><strong>Publish your app</strong> は今日は押さない</li>
+</ul>
+<img src="figures/SS-08-09.png" alt="SS-08-09: アプリ名、説明文、App URLを確認して公開する直前の画面" width="auto" />
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+みなさん、この画面は、アプリを公開する直前に、公開内容を最終確認する画面です。
+画面上部には Step 2 Final touches と表示されています。
+<p>最初に確認するのは、アプリ名です。
+この例では「AI旅行手帳 - Travel Memories」と表示されています。
+アプリを開いた人が、何のためのアプリなのか分かる名前になっているかを確認します。</p>
+<p>次に、Descriptionを確認します。
+Descriptionは、アプリの内容を短く説明する文章です。
+長い説明ではなく、「何ができるアプリか」が一読して分かる文章にします。
+実在の個人名、勤務先名、顧客名、案件名などは書かないようにしてください。</p>
+<p>その下にあるApp URLは、公開後にアプリを開くためのアドレスです。
+入力欄に書いた文字列の後ろへ、<code>.ai.studio</code> が付きます。
+この画面で「利用可能」と表示されていれば、そのURL候補は現在使用できる状態です。
+ただし、この時点では、まだアプリが公開されたわけではありません。</p>
+<p>URLには、実名、メールアドレス、学生番号、勤務先名、学校名など、個人や組織を特定しやすい情報を入れません。
+短く、内容が分かり、他人に見られても問題のない文字列を使います。</p>
+<p>画面下の Publish your app を押すと、実際の公開処理が始まります。
+この講座では、受講生のみなさんはこのボタンを押しません。
+ここから先の画面は、講師が検証用の環境で確認したものです。</p>
+<p>みなさんには、公開直前には、アプリ名、説明文、URL、安全な情報の扱いをまとめて確認することを覚えてもらえれば十分です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順10 公開完了画面 -->
+<div style="font-size:0.70em">
+<h2>アプリが<strong>公開完了</strong>するとこの画面が出る</h2>
+<ul>
+<li><code>is published!</code> で<strong>公開完了</strong></li>
+<li><code>Status</code> が <strong>Ready</strong> なら利用できる状態</li>
+<li><code>Visit</code> で公開されたアプリを開ける</li>
+<li>ここから先も<strong>講師の検証用画面</strong></li>
+</ul>
+<img src="figures/SS-08-11.png" alt="SS-08-11: アプリの公開完了後に Status Ready、App URL、Visit ボタンが表示された画面" width="300" />
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+みなさん、この画面は、アプリの公開処理が完了したあとに表示される画面です。
+<p>中央には、アプリ名のあとに「is published!」と表示されています。
+これは、公開が完了したことを表しています。
+その下の Status が Ready になっていれば、公開されたアプリが利用できる状態になっていると判断できます。</p>
+<p>画面には Visit ボタンがあります。
+これを押すと、公開されたアプリを実際に開くことができます。
+また、App URL の欄には、公開されたアプリのURLが表示されます。
+このURLをスマートフォンのブラウザで開けば、スマートフォンでもアプリの動作確認ができます。</p>
+<p>一方で、Republish は、修正後にもう一度公開し直すための操作です。
+また、Unpublish app は、公開を止める操作です。
+公開したあとも、必要に応じて公開停止や再公開ができることが分かります。</p>
+<p>この画面には、Gemini API や API Key に関する表示が出ることがあります。
+こうした情報は、授業用のスクリーンショットや共有資料にそのまま載せないようにします。
+URL、API Key、アカウント情報などは、必要に応じてぼかしたり隠したりして扱います。</p>
+<p>この講座では、受講生のみなさん自身がここまで公開操作を行うわけではありません。
+これは、講師が検証用の環境で、公開後にはどのような画面が出るのかを確認した例です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順11 URL設定 -->
+<div style="font-size:0.8em">
+<h2>公開手順11：URLを確認する</h2>
+<p>URL例</p>
+<h3><a href="https://sample-app.ai.studio">https://sample-app.ai.studio</a></h3>
+<p>URLに入れないもの</p>
+<ul>
+<li>実名・メールアドレス</li>
+<li>勤務先・学校・顧客名</li>
+<li>学生番号・案件名</li>
+<li>個人を特定しやすい文字列</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+公開設定では、公開URLを確認します。
+<p>環境によっては、ai.studio配下の覚えやすいサブドメインを設定できる場合があります。サブドメイン名は世界全体で重複できず、すでに使われている名前は選べません。</p>
+<p>教材では、sample-appのような架空の文字列を使います。実在の公開URLはスクリーンショットに載せません。</p>
+<p>URLには、実名、メールアドレス、勤務先名、学校名、顧客名、学生番号、案件名などを含めません。URLは外部へ見える文字列になるため、短く一般的で、個人や組織を特定しにくい名前にします。</p>
+<p>商標や実在の組織名を不用意に使わないことも大切です。公開URLはアプリ名の一部ではなく、外部からアクセスする入口です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Webアプリとストアアプリの違い -->
+<div style="font-size:0.76em">
+<h2>今回は「Webアプリ」です</h2>
+<p>スマートフォンのブラウザで開きます。</p>
+<h3>今回説明する</h3>
+<ul>
+<li>Chrome / SafariでURLを開く</li>
+<li>Googleログイン</li>
+<li>Firestore保存</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Webアプリとストアアプリの違いを確認します。
+<p>今回説明しているのは、公開URLをスマートフォンのChromeやSafariで開くWebアプリです。GoogleログインやFirestore保存も、ブラウザ上のWebアプリで使います。</p>
+<p>Google PlayやApp Storeへ登録するアプリではありません。APKを作成・配布すること、AndroidやiPhoneのネイティブアプリに変換すること、ストア審査、アプリ内課金も扱いません。</p>
+<p>スマートフォンのホーム画面へ追加する方法も、今回の必須手順にはしません。まずは、Webアプリとして安全に公開し、ブラウザで正しく動くことを確認する考え方を学びます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 将来自分で公開前点検をAIに頼む -->
+<div style="font-size:0.8em">
+<h2>将来自分で公開前点検をAIに頼む例</h2>
+<pre><code class="language-text">
+Google AI Studioで作ったWebアプリを、将来自分のスマートフォンから
+確認するために公開したいです。
+まだPublishは押さず、公開前に確認すべき項目だけを
+初心者向けに整理してください。
+
+現在のアプリには、Googleログイン、Firestoreへの保存、
+Firestoreからの読み込みがあります。
+
+次の方針を守ってください。
+- Cloud Billingは設定しない
+- Standard Deploymentへ進まない
+- Blazeプランへ変更しない
+- 支払い方法やクレジットカードを登録しない
+- Cloud Run Consoleを直接操作しない
+- APIキーを作成・共有しない
+- Security Rulesを広すぎる公開設定にしない
+- 実在の個人情報、勤務先情報、顧客情報を使わない
+
+公開前、公開操作中、公開後の3段階に分けて説明してください。
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+これは、将来自分で公開を検討するときに、AIへ公開前点検を依頼するプロンプト例です。授業中に公開させるためのプロンプトではありません。
+<p>最初に、まだPublishを押さず、確認項目だけを整理してほしいと伝えています。現在のアプリにGoogleログイン、Firestore保存、読み込みがあることも伝えます。</p>
+<p>そのあと、Cloud Billing、Standard Deployment、Blaze、支払い方法、Cloud Run Console、APIキー、広すぎるSecurity Rules、個人情報を使わないという条件を並べています。</p>
+<p>最後に、公開前、公開操作中、公開後の3段階に分けるよう指定しています。AIに相談するときも、何をしたいかだけでなく、まだ何をしないか、どこで止まりたいかを明確に伝えることが大切です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 補足 Firebase Consoleの関連プロジェクト画面 -->
+<div style="font-size:0.70em">
+<h2>Firebase Consoleで関連プロジェクトを確認</h2>
+<ul>
+<li>Firebaseを使うアプリでは、関連プロジェクトが一覧に表示される</li>
+<li><strong>AI Studio</strong> の表示で、Google AI Studioとの関係を確認できる</li>
+<li>GoogleログインやFirestoreは、このプロジェクトで管理する</li>
+<li>既存プロジェクトがある場合は、<strong>新しく作り直さない</strong></li>
+</ul>
+<img src="figures/SS-08-12.png" alt="SS-08-12: Firebase ConsoleにGoogle AI Studioで作成された関連プロジェクトが表示された画面" width="500" />
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+みなさん、この画面はFirebase Consoleの最初の画面です。
+<p>Google AI Studioで作ったアプリにFirebaseを連携している場合は、対応するFirebaseプロジェクトが、この一覧に表示されます。</p>
+<p>画面右側のプロジェクトには「AI Studio」という表示があります。
+これは、Google AI Studioとの関係があるプロジェクトだと確認するための目印です。
+画面の説明にも、Google AI Studioで作成されたプロジェクトであることが示されています。</p>
+<p>このプロジェクトを開くと、第3回と第4回で確認したFirebase AuthenticationやCloud Firestoreを管理できます。
+AuthenticationはGoogleログインを管理する場所です。
+Cloud Firestoreは、アプリの記録データを保存する場所です。</p>
+<p>ここで注意したいのは、Firebase Consoleは、公開されたアプリを開くための画面ではないということです。
+公開URLや公開状態は、先ほど確認したGoogle AI StudioのPublish画面で管理します。
+Firebase Consoleは、ログインやデータ保存など、アプリの裏側を確認する管理画面です。</p>
+<p>すでにアプリに対応するプロジェクトが表示されている場合は、「新しいFirebaseプロジェクトを作成」を押して、別のプロジェクトを作り直さないようにします。
+別のプロジェクトを作ると、アプリが使っている保存先と、Firebase Consoleで見ている保存先が一致しなくなることがあります。</p>
+<p>また、この画面には、Googleアカウントの表示名、プロジェクト名、プロジェクトIDなどが表示されます。
+教材用の画像やTeamsへの提出画像では、これらの情報をそのまま見せません。
+受講生のみなさんが品評会へ提出するのはアプリの画面であり、Firebase Consoleの管理画面ではありません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開後トラブル1 unauthorized-domain -->
+<div style="font-size:0.8em">
+<h2>Googleログインで <code>unauthorized-domain</code> が出たら</h2>
+<pre><code class="language-text">
+　Firebase: Error (auth/unauthorized-domain)
+
+</code></pre>
+<ul>
+<li>公開後のドメインが、Firebase Authに未登録</li>
+<li>Firestore Security Rules の問題ではない</li>
+<li>直すのは <strong>承認済みドメイン</strong></li>
+<li>ルールを広げて解決しない</li>
+</ul>
+<p><strong>授業中は操作せず、講師の画面例で確認します。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+みなさん、将来自分で公開したアプリでGoogleログインをしようとしたときに、Firebase: Error、auth/unauthorized-domain というエラーが出ることがあります。授業中には公開操作や設定変更を行わず、講師の画面例で確認します。
+<p>これは、Firestoreの保存ルールが厳しすぎる、というエラーではありません。
+Firebase Authentication、つまりログイン機能の側で、「このドメインからGoogleログインしてよい」とまだ許可されていない状態です。</p>
+<p>Firebase Authでは、知らないWebサイトからGoogleログイン機能を勝手に使われないように、ログインを許可するドメインを制限しています。
+AI Studioのプレビューでは動いていても、公開後のURLは別のドメインになるため、公開後だけログインできないことがあります。</p>
+<p>ここで大事なのは、Firestore Security Rulesを広げないことです。
+allow read, write: if true; のような広すぎるルールにしても、このログインエラーの正しい解決にはなりません。</p>
+<p>必要な対応は、Firebase Authenticationの承認済みドメインに、公開アプリのドメインを必要最小限で追加することです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開後トラブル2 公開アプリのドメイン確認 -->
+<div style="font-size:0.70em">
+<h2>公開アプリの<strong>ドメイン</strong>を確認する</h2>
+<ul>
+<li>公開版を開いたブラウザのアドレスバーを見る</li>
+<li><code>https://</code> の後から、最初の <code>/</code> の手前まで</li>
+<li>例：<code>ais-pre-...asia-northeast1.run.app</code></li>
+<li><code>https://</code> や <code>/</code> 以降は入れない</li>
+<li>開発用ドメインは、必要な場合だけ追加する</li>
+</ul>
+<p><strong>授業中は実在のURLを共有しません。</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+次に、Firebase Authへ追加するドメインを確認します。
+<p>ドメインは、公開されたアプリを開いているブラウザのアドレスバーで確認します。
+URL全体ではなく、https:// の後から、最初のスラッシュの手前までを見ます。</p>
+<p>たとえば、公開URLが長い場合でも、Firebaseに追加するのはホスト名の部分だけです。
+https:// は入れません。
+その後ろのスラッシュ以降のパスも入れません。</p>
+<p>AI Studioの公開アプリでは、公開用のドメインと開発プレビュー用のドメインが別に見える場合があります。
+受講生のみなさんが将来自分で公開する場合は、まず公開版で実際にログインしたいドメインだけを追加します。
+開発用ドメインまで追加するかどうかは、必要な場合だけ判断します。</p>
+<p>ここでも、実在のURLやプロジェクト名をスクリーンショットやTeams提出物にそのまま載せないようにしてください。
+設定作業では正確なドメインが必要ですが、教材や共有資料では伏せ字にします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開後トラブル3 Firebase Authの承認済みドメイン追加 -->
+<div style="font-size:0.70em">
+<h2>Firebase Authに公開ドメインを追加する</h2>
+<p><strong>授業中は操作しません。将来自分で公開した場合の確認手順です。</strong></p>
+<ol>
+<li>Firebase Consoleで対象プロジェクトを開く</li>
+<li><strong>Authentication</strong> を開く</li>
+<li><strong>Settings / 設定</strong> を開く</li>
+<li><strong>Authorized domains / 承認済みドメイン</strong> を確認</li>
+<li><strong>Add domain / ドメインを追加</strong></li>
+<li>公開用ドメインだけを追加</li>
+</ol>
+<br />
+<h3>Firestore Security Rules は変更しない</h3>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、Firebase Consoleでの対応です。これは将来自分で公開した場合の確認手順であり、授業中には操作しません。
+<p>Firebase Consoleで、公開したアプリに対応するプロジェクトを開きます。
+次に、Authenticationを開きます。
+その中のSettings、または設定タブを開きます。</p>
+<p>そこに、Authorized domains、または承認済みドメインという項目があります。
+ドメインを追加するボタンから、先ほど確認した公開アプリのドメインを追加します。</p>
+<p>ここで追加するのは、公開後のGoogleログインに必要なドメインだけです。
+関係のないドメインをたくさん追加しません。
+また、Firestore Security Rulesは変更しません。</p>
+<p>この対応は、「その公開ドメインからGoogleログインを開始してよい」とFirebase Authに知らせる作業です。
+Firestoreのデータを誰が読めるか、誰が書けるかを変える作業ではありません。</p>
+<p>設定後は、公開アプリのページを再読み込みし、もう一度Googleログインを試します。
+ログインできたら、次にFirestoreへの保存、再読み込み後の表示、自分の記録だけが表示されることを確認します。</p>
+<p>もしまだ動かない場合は、エラー文、公開版のドメイン、Firebase Authenticationの設定、Googleログインの有効化状態を整理してAIに相談します。
+ただし、Cloud Billing、Blaze、Cloud Runの直接操作、APIキー作成、Security Rulesの全面開放には進みません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 公開手順12 Firebase Blazeプランへの変更通知 -->
+<div style="font-size:0.70em">
+<h2>Firebaseが <strong>Blazeプラン</strong> に変更された</h2>
+<ul>
+<li>Google Cloud側の課金設定がFirebaseにも反映される</li>
+<li><code>BLAZE プランにアップグレードされました</code> と通知される</li>
+<li>講座用プロジェクトでは<strong>ここまで進まない</strong></li>
+<li>これは<strong>講師の検証用環境</strong>で確認した画面</li>
+</ul>
+<img src="figures/SS-08-13.png" alt="SS-08-13: Google Cloud側の操作によりFirebaseプロジェクトがBlazeプランへアップグレードされたことを知らせる画面" width="auto" />
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+みなさん、この画面は、Google Cloud側で課金に関する設定を進めたあとに表示されたFirebaseの通知です。
+<p>通知には、「Google Cloud コンソールでのアクティビティにより、プロジェクトがBLAZEプランにアップグレードされました」と書かれています。</p>
+<p>FirebaseのSparkプランは、Cloud Billingを設定せずに利用する無料枠中心のプランです。
+一方、Blazeプランは、利用したサービスや利用量に応じて費用が発生する可能性がある従量制のプランです。</p>
+<p>ここで覚えてほしいのは、Google Cloud側で請求先アカウントを設定すると、その影響がFirebase側にも及ぶということです。
+Google CloudとFirebaseは、別々に見える画面でも、同じプロジェクトを土台として動いています。</p>
+<p>そのため、先ほどの「請求先アカウントの設定」や「お支払い方法を追加」を進めると、Firebase側も講座で使ってきたSparkプランの状態ではなくなることがあります。</p>
+<p>この講座では、受講生のみなさんのFirebaseプロジェクトをBlazeプランへ変更しません。
+Cloud Billing、Set up billing、Link billing account、支払い方法登録の画面が出たら、そこで止まります。</p>
+<p>この画像は、公開後の流れを確認するために、講師が課金設定済みの検証用環境で操作した結果です。
+受講生のみなさんが同じ操作を行う必要はありません。</p>
+<p>Blazeプランへの変更通知が出たからといって、ただちに大きな請求が発生したという意味ではありません。
+しかし、課金可能な状態へ変わったことを示しているため、利用サービス、利用量、予算通知などを管理する必要があります。</p>
+<p>公開や課金を伴う操作では、目の前のボタンだけではなく、Google CloudとFirebaseの両方にどのような変更が起きるかを確認することが大切です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第2部へ -->
+<div style="font-size:0.86em">
+<h2>第2部：作成アプリ品評会</h2>
+<p>ここからは、作品を安全に共有します。</p>
+<ul>
+<li>スクリーンショットと説明文章を提出</li>
+<li>講師がプロジェクタへ投影</li>
+<li>受講生は画面共有しない</li>
+<li>公開URLやQRコードは使わない</li>
+<li>良い点と次の改善をみんなで学ぶ</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここから第2部、作成アプリ品評会です。
+<p>品評会では、スクリーンショットと説明文章をTeamsの指定フォルダへ提出します。講師が提出物をプロジェクタへ投影します。受講生が自分のパソコンを画面共有したり、ライブ操作したりする必要はありません。</p>
+<p>公開URLやQRコードも使いません。Firebase Consoleやソースコードも提出しません。</p>
+<p>品評会は、順位だけを決める場ではありません。何を記録するアプリか、入力項目は用途に合っているか、画面は分かりやすいか、独自の工夫は何か、AIへどのように伝えて改善したか、安全に情報を扱っているかを見ます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 提出物は2点 -->
+<div style="font-size:0.76em">
+<h2>提出物は2点</h2>
+<h3>1. スクリーンショット 数枚</h3>
+<ul>
+<li>提出番号_アプリ名_画像1.PNG、画像2.PNG、…</li>
+</ul>
+<h3>2. 説明文章 1ファイル</h3>
+<ul>
+<li>提出番号_アプリ名_説明.txt</li>
+</ul>
+<br />
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+提出物は2点です。
+<p>1つ目は、アプリのスクリーンショット数枚です。PNG形式で保存します。アプリ名、独自の入力項目、架空のサンプル記録、記録一覧、工夫した見た目など、画像ごとに見せたい内容が分かるようにします。</p>
+<p>2つ目は、説明文章1ファイルです。TXT形式です。長い開発日記にはしません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 講座全体の振り返りと次の一歩 -->
+<div style="font-size:0.68em">
+<h2>8回で経験したこと</h2>
+<ol>
+<li>AI Studioを起動した</li>
+<li>日本語で画面を作った</li>
+<li>入力フォームを作った</li>
+<li>GoogleログインとFirestoreを追加した</li>
+<li>保存・読み込み・Rulesを点検した</li>
+<li>一覧を使いやすく整えた</li>
+<li>自分用の項目を追加した</li>
+<li>エラーをAIへ伝えて直した</li>
+<li>公開手順と停止条件を学んだ</li>
+<li>作品を画像と文章で伝えた</li>
+</ol>
+<br />
+<blockquote>
+<p><strong>小さく作り、見て、AIに伝え、もう一度確認する。</strong></p>
+</blockquote>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+講座全体を振り返ります。
+<p>最初は、Google AI Studioを開き、日本語で簡単な画面とボタンを作るところから始めました。その後、入力フォーム、Googleログイン、Firestore、Security Rules、一覧表示、独自項目、AIデバッグへ進みました。</p>
+<p>今日、公開手順と停止条件を学び、作品をスクリーンショットと文章で伝えました。</p>
+<p>今後、自分で別のアプリを作るときも、一度で完成させる必要はありません。小さく作り、実際の画面を見て、想定と違うところをAIに具体的に伝え、修正後にもう一度確認します。</p>
+<p>公開するときは、ボタンを押せば終わりではありません。誰が使うか、何を保存するか、誰に見えるか、費用が発生しないかを確認してから進みます。</p>
+<p>これが、AIと対話しながらWebアプリを作り続けるための基本です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 第8回終了チェック -->
+<div style="font-size:0.45em">
+<h2>第8回 終了チェック</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4208286"><label class="task-list-item-label" for="task-item-4208286"> AI Studioのプレビューと公開後のWebアプリの違いを説明できる</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2897594"><label class="task-list-item-label" for="task-item-2897594"> スマートフォンではChromeまたはSafariで開くと理解した</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8548532"><label class="task-list-item-label" for="task-item-8548532"> Google PlayやApp Storeへの登録とは別だと理解した</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8893390"><label class="task-list-item-label" for="task-item-8893390"> 公開後もログイン、保存、再読み込みを確認すると理解した</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9324815"><label class="task-list-item-label" for="task-item-9324815"> スクリーンショット数枚と説明文章を用意した</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1579452"><label class="task-list-item-label" for="task-item-1579452"> 他の作品から参考になる工夫を見つけた</label></li>
+</ul>
+<br />
+<h3>講座修了です。おつかれさまでした。</h3>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、第8回の終了チェックです。
+<p>AI Studioのプレビューと公開後のWebアプリの違いを説明できるか、Publish、Get Started、Publish Appの順番と意味を理解したかを確認します。</p>
+<p>スマートフォンではChromeまたはSafariでWebアプリを開くこと、Google PlayやApp Storeへの登録とは別であることを確認します。</p>
+<p>Starter Tierを利用できない場合は進まず、Standard Deployment、Billing、支払い方法登録へ進んでいないことを確認します。将来自分で公開した場合も、Googleログイン、Firestore保存、再読み込み、自分の記録だけが見えることを改めて確認します。</p>
+<p>品評会用のスクリーンショットと説明文章をTeamsへ提出し、個人情報や管理情報を含めていないことを確認します。他の受講生の作品から、参考になる工夫を一つ見つけられれば、品評会の目的も達成です。</p>
+<p>これで全8回の講座は修了です。最初から完璧なアプリを作る必要はありません。小さく作り、見て、AIに伝え、もう一度確認する流れを、これからも使ってください。おつかれさまでした。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
