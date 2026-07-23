@@ -82,6 +82,7 @@
 <br />
 <h4>下関市立大学 データサイエンス学部<br />データサイエンス学科</h4>
 <h5>白濵 成希</h5>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 皆さん、こんにちは。今日は、プログラミングの文法を覚える授業ではありません。
 <p>身近な疑問を一つ選び、データを見て、AIと一緒にプログラムを作り、グラフから答えを考えます。</p>
@@ -107,6 +108,7 @@
 <br />
 <div class="takeaway">データを集める → 規則を見つける → 次を考える</div>
 </div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 皆さんが毎日使うサービスの裏側では、データが使われています。
 <p>SNSは、過去の行動から次に見たい内容を予測します。交通案内は、現在と過去のデータから渋滞を予測します。ホテルや交通機関の価格も、需要の予測によって変わることがあります。</p>
@@ -158,6 +160,7 @@
 <br />
 <div class="takeaway">目標：販売数と関係しそうな要因を、グラフで説明する</div>
 </div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 今日使うのは、模擬講義用に作った架空のデータです。個人情報は含みません。
 <p>一行が一日を表し、最高気温、雨、土日、イベント、アイス販売数が記録されています。</p>
@@ -185,6 +188,7 @@
 <h3>一つ選んで挙手してください</h3>
 <div class="small-note">予想は「仮説」。正解を当てるより、確かめ方を考える。</div>
 </div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 ここで皆さんに参加してもらいます。
 <p>アイスの販売数に一番関係しそうなのは、気温、雨、土日やイベントのどれでしょうか。最も強いと思うものを一つ選び、挙手してください。</p>
@@ -256,6 +260,7 @@
 <li>グラフは、列どうしの関係を見やすくしたもの</li>
 </ul>
 </div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 データ分析は、難しい数式の前に、表を正しく読むところから始まります。
 <p>この表では、一行が一日です。列は、その日に測った項目です。</p>
@@ -284,6 +289,7 @@
 <h3>今日はVS Codeで全部つなぐ</h3>
 <p><code>CSVデータ</code> → <code>Codexへの指示</code> → <code>Python</code> → <code>グラフ</code> → <code>人間の判断</code></p>
 </div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 データ分析は、グラフを描くだけではありません。
 <p>最初に問いを決め、計算方法をプログラムにし、見える形にし、最後に意味を考えます。</p>
@@ -314,6 +320,7 @@
 <h3>見てほしいところ</h3>
 <p>AIの説明 → 変更ファイル → 実行結果 → 生成されたグラフ</p>
 </div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 ここからライブデモです。VS Codeでプロジェクトを開き、data、src、outputsの三つを見せます。
 <p>まずCodexに、何を作るかだけでなく、入力ファイル、必要な計算、グラフの条件、保存先まで伝えます。</p>
@@ -335,6 +342,7 @@
 <img src="assets/temperature_vs_sales.png" alt="気温とアイス販売数の散布図。右上がりの傾向がある。" style="width:70%;" />
 <div class="takeaway">このデータでは、気温が高い日ほど販売数が多い傾向　<br />相関係数 <strong>r = 0.73</strong></div>
 </div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 散布図では、一つの点が一日です。横が気温、縦が販売数です。
 <p>全体として右上がりなので、気温が高い日ほど販売数が多い傾向があります。相関係数は0.73で、かなりはっきりした正の関係です。</p>
@@ -363,6 +371,7 @@
 </blockquote>
 <h3>挙手で一つ選ぶ → Codexに追加分析を依頼</h3>
 </div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 追加分析を皆さんに選んでもらいます。雨、曜日、イベントのうち、次に確かめたいものへ挙手してください。
 <p>選ばれた列名をプロンプトに入れ、二つのグループの平均を比べる棒グラフを追加してもらいます。</p>
@@ -390,6 +399,7 @@
 </ol>
 <div class="takeaway">作る → 見る → 意見を伝える → 直す</div>
 </div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 グラフが作れたことと、伝わるグラフができたことは同じではありません。
 <p>文字が小さすぎないか、単位があるか、数値が読み取れるか、何を比べたグラフかがすぐ分かるかを確認します。</p>
@@ -433,6 +443,7 @@
 <h3>AIの自然な説明も、データとグラフで確認する</h3>
 <div class="takeaway">相関 ≠ 因果　／　分析結果には範囲と条件がある</div>
 </div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 ここが今日最も重要な注意点です。
 <p>気温と販売数に関係があっても、気温だけが原因だとは断定できません。暑い日は晴れが多いかもしれませんし、休日やイベントが重なっているかもしれません。</p>
@@ -463,6 +474,7 @@
 <h3>君なら、何をデータで見える化する？</h3>
 <div class="small-note">下関市立大学データサイエンス学部では、R・Python・統計・AI活用をつなげて学びます。</div>
 </div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
 <aside class="notes">
 今日は、皆さんの予想から始め、データを読み、CodexとPythonプログラムを作り、グラフで確かめ、改善し、最後にどこまで言えるかを考えました。
 <p>覚えて帰ってほしいのは、この四つの問いです。</p>
