@@ -1,0 +1,125 @@
+/* Open Campus Data Science mock lecture */
+.reveal {
+  font-family: "Noto Sans CJK JP", "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+  color: #173746;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #0d4b65;
+}
+
+.reveal h2 {
+  font-size: 1.55em;
+  margin-bottom: 0.55em;
+}
+
+.reveal h3 {
+  color: #3b8bad;
+}
+
+.reveal strong {
+  color: #0b76a0;
+}
+
+.reveal blockquote {
+  width: 88%;
+  padding: 0.75em 1em;
+  border-left: 0.25em solid #3b8bad;
+  background: #f2f7f9;
+  box-shadow: none;
+  font-style: normal;
+}
+
+.reveal table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 92%;
+  margin: 0 auto;
+  font-size: 0.9em;
+}
+
+.reveal th {
+  background: #eaf3f7;
+  color: #0d4b65;
+  font-weight: 700;
+}
+
+.reveal th,
+.reveal td {
+  border: 1px solid #c9dce4;
+  padding: 0.45em 0.65em;
+}
+
+.reveal code {
+  color: #8f2d56;
+}
+
+.reveal pre {
+  box-sizing: border-box;
+  width: 92%;
+  margin: 0.6em auto 0.9em;
+  padding: 0.8em 1em;
+  border: 2px solid #c9dce4;
+  border-left: 0.35em solid #0b76a0;
+  border-radius: 0.5em;
+  background: #f2f7f9;
+  box-shadow: none;
+}
+
+.reveal pre code {
+  padding: 0;
+  color: #173746;
+  background: transparent;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.reveal .live {
+  display: inline-block;
+  padding: 0.22em 0.55em;
+  border-radius: 999px;
+  background: #0d4b65;
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.reveal .takeaway {
+  margin: 0.7em auto;
+  padding: 0.7em 1em;
+  width: 88%;
+  border-radius: 0.5em;
+  background: #edf7fb;
+  color: #0d4b65;
+  font-weight: 700;
+}
+
+.reveal .choice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65em;
+  margin-top: 0.7em;
+}
+
+.reveal .choice {
+  padding: 0.8em 0.45em;
+  border: 2px solid #9fc8d8;
+  border-radius: 0.55em;
+  background: #f8fbfc;
+  text-align: center;
+  font-weight: 700;
+}
+
+.reveal .small-note {
+  font-size: 0.62em;
+  color: #5a707a;
+}
+
+.reveal img {
+  border: 0;
+  box-shadow: none;
+}

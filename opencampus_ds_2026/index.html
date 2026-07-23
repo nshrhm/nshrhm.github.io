@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>AIと一緒にデータを見える化する！　データサイエンスとプログラミング</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="assets/open_campus_ds.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h2>AIとデータを見える化する！</h2>
+<h3>気温でアイスは売れるのか？</h3>
+<br />
+<h4>下関市立大学 データサイエンス学部<br />データサイエンス学科</h4>
+<h5>白濵 成希</h5>
+<aside class="notes">
+皆さん、こんにちは。今日は、プログラミングの文法を覚える授業ではありません。
+<p>身近な疑問を一つ選び、データを見て、AIと一緒にプログラムを作り、グラフから答えを考えます。</p>
+<p>今日の問いは、「気温が高いと、アイスは本当に売れるのか」です。</p>
+<p>答えを最初から聞くのではなく、皆さんの予想、AIが作るプログラム、実際のデータを順番につないで確かめます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 君が毎日使う「魔法」の正体 -->
+<div style="font-size:0.76em">
+<h2>君が毎日使う「魔法」の正体</h2>
+<div class="choice-grid">
+  <div class="choice">📱<br /><strong>SNS</strong><br />おすすめを予測</div>
+  <div class="choice">🚗<br /><strong>交通</strong><br />渋滞を予測</div>
+  <div class="choice">🏷️<br /><strong>価格</strong><br />需要を予測</div>
+</div>
+<br />
+<div class="takeaway">データを集める → 規則を見つける → 次を考える</div>
+</div>
+<aside class="notes">
+皆さんが毎日使うサービスの裏側では、データが使われています。
+<p>SNSは、過去の行動から次に見たい内容を予測します。交通案内は、現在と過去のデータから渋滞を予測します。ホテルや交通機関の価格も、需要の予測によって変わることがあります。</p>
+<p>データサイエンスは、数字を眺めるだけではありません。データから規則や違いを見つけ、次の判断に使う学問です。</p>
+<p>今日は、その小さな一例を、アイスの販売データで体験します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日のミッション -->
+<div style="font-size:0.72em">
+<h2>今日のミッション</h2>
+<h3>架空のコンビニ1店舗・75日分を分析する</h3>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>temperature_c</code></td>
+<td>その日の最高気温</td>
+</tr>
+<tr>
+<td><code>rain</code></td>
+<td>雨が降ったか</td>
+</tr>
+<tr>
+<td><code>weekend</code></td>
+<td>土日か</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>近くでイベントがあったか</td>
+</tr>
+<tr>
+<td><code>ice_sales</code></td>
+<td>アイスの販売数</td>
+</tr>
+</tbody>
+</table>
+<br />
+<div class="takeaway">目標：販売数と関係しそうな要因を、グラフで説明する</div>
+</div>
+<aside class="notes">
+今日使うのは、模擬講義用に作った架空のデータです。個人情報は含みません。
+<p>一行が一日を表し、最高気温、雨、土日、イベント、アイス販売数が記録されています。</p>
+<p>このデータから、何が販売数と関係していそうかを探し、グラフで説明することが今日のミッションです。</p>
+<p>ここで重要なのは、AIに答えだけを尋ねるのではなく、データを読み、計算し、グラフを作るプログラムを一緒に作ることです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まず予想しよう -->
+<div style="font-size:0.78em">
+<h2>まず予想しよう</h2>
+<h3>アイス販売数に一番効きそうなのは？</h3>
+<div class="choice-grid">
+  <div class="choice"><strong>① 気温</strong><br />暑いほど売れる？</div>
+  <div class="choice"><strong>② 雨</strong><br />雨の日は減る？</div>
+  <div class="choice"><strong>③ 土日・イベント</strong><br />人出が増える？</div>
+</div>
+<br />
+<h3>一つ選んで挙手してください</h3>
+<div class="small-note">予想は「仮説」。正解を当てるより、確かめ方を考える。</div>
+</div>
+<aside class="notes">
+ここで皆さんに参加してもらいます。
+<p>アイスの販売数に一番関係しそうなのは、気温、雨、土日やイベントのどれでしょうか。最も強いと思うものを一つ選び、挙手してください。</p>
+<p>それぞれの人数を大まかに数えます。理由も一、二人に聞きます。</p>
+<p>この予想を、データサイエンスでは仮説と呼びます。仮説は、最初から正しい必要はありません。大切なのは、どのデータを使い、どう確かめるかです。</p>
+<p>今日はまず、最も票が集まりそうな気温から調べ、その後の追加分析は皆さんに選んでもらいます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- データは表から始まる -->
+<div style="font-size:0.70em">
+<h2>データは「表」から始まる</h2>
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th style="text-align:right">temperature_c</th>
+<th>rain</th>
+<th>weekend</th>
+<th>event</th>
+<th style="text-align:right">ice_sales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-06-01</td>
+<td style="text-align:right">20.6</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td style="text-align:right">15</td>
+</tr>
+<tr>
+<td>2026-06-02</td>
+<td style="text-align:right">21.0</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td style="text-align:right">42</td>
+</tr>
+<tr>
+<td>2026-06-03</td>
+<td style="text-align:right">23.1</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td style="text-align:right">45</td>
+</tr>
+<tr>
+<td>2026-06-04</td>
+<td style="text-align:right">25.9</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td style="text-align:right">47</td>
+</tr>
+</tbody>
+</table>
+<br />
+<ul>
+<li><strong>行</strong>：一つの観測。この場合は「一日」</li>
+<li><strong>列</strong>：測った項目</li>
+<li>グラフは、列どうしの関係を見やすくしたもの</li>
+</ul>
+</div>
+<aside class="notes">
+データ分析は、難しい数式の前に、表を正しく読むところから始まります。
+<p>この表では、一行が一日です。列は、その日に測った項目です。</p>
+<p>例えば、6月2日は最高気温21.0度、雨なし、平日、イベントなしで、42個売れています。</p>
+<p>気温と販売数の関係を知りたいなら、temperature_cとice_salesの二列を使います。</p>
+<p>ただし、同じ気温でも販売数が違う日があります。その違いに、雨や土日、イベントが関わっているかもしれません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 分析の流れ -->
+<div style="font-size:0.74em">
+<h2>データ分析は「四つの仕事」</h2>
+<ol>
+<li><strong>問いを決める</strong>　何を知りたい？</li>
+<li><strong>プログラムを作る</strong>　どう計算する？</li>
+<li><strong>見える化する</strong>　どのグラフなら伝わる？</li>
+<li><strong>意味を考える</strong>　何が言えて、何は言えない？</li>
+</ol>
+<br />
+<h3>今日はVS Codeで全部つなぐ</h3>
+<p><code>CSVデータ</code> → <code>Codexへの指示</code> → <code>Python</code> → <code>グラフ</code> → <code>人間の判断</code></p>
+</div>
+<aside class="notes">
+データ分析は、グラフを描くだけではありません。
+<p>最初に問いを決め、計算方法をプログラムにし、見える形にし、最後に意味を考えます。</p>
+<p>今日は、この流れをVS Codeの中でつなぎます。データはCSVファイル、プログラムはPython、プログラム作成を助けるAIがCodexです。</p>
+<p>AIは計算や作図を速くしてくれますが、何を調べるか、結果が妥当か、どこまで言えるかを決めるのは人間です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- LIVE 1 -->
+<div style="font-size:0.64em">
+<h2><span class="live">LIVE 1</span> 気温と販売数を見える化</h2>
+<pre><code class="language-text">data/ice_sales.csv を読み、Pythonで次を実装してください。
+
+- 気温とアイス販売数の散布図
+- 一次回帰直線
+- Pearsonの相関係数
+- 日本語のタイトル、軸名、単位
+- outputs/temperature_vs_sales.png に保存
+- データ件数、相関係数、傾きを表示
+</code></pre>
+<br />
+<h3>見てほしいところ</h3>
+<p>AIの説明 → 変更ファイル → 実行結果 → 生成されたグラフ</p>
+</div>
+<aside class="notes">
+ここからライブデモです。VS Codeでプロジェクトを開き、data、src、outputsの三つを見せます。
+<p>まずCodexに、何を作るかだけでなく、入力ファイル、必要な計算、グラフの条件、保存先まで伝えます。</p>
+<p>Codexが変更予定を説明したら、src/analyze_ice_sales.pyの差分を確認します。高校生には、pandasが表を扱い、matplotlibがグラフを描く道具だとだけ説明します。</p>
+<p>実装後、VS Codeのタスクまたは <code>uv run python src/analyze_ice_sales.py</code> で実行します。</p>
+<p>エラーが出た場合も、データサイエンスでは普通のことです。エラー文をCodexに渡し、原因と修正を確認します。ただし時間が2分を超えたら完成版へ切り替えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 散布図を読む -->
+<div style="font-size:0.70em">
+<h2>グラフから何が読める？</h2>
+<img src="assets/temperature_vs_sales.png" alt="気温とアイス販売数の散布図。右上がりの傾向がある。" style="width:70%;" />
+<div class="takeaway">このデータでは、気温が高い日ほど販売数が多い傾向　<br />相関係数 <strong>r = 0.73</strong></div>
+</div>
+<aside class="notes">
+散布図では、一つの点が一日です。横が気温、縦が販売数です。
+<p>全体として右上がりなので、気温が高い日ほど販売数が多い傾向があります。相関係数は0.73で、かなりはっきりした正の関係です。</p>
+<p>回帰直線の傾きは約4.5です。この架空データでは、気温が1度高い日に、平均して約4.5個多い傾向を表します。</p>
+<p>ただし、点は一直線には並びません。同じ気温でも売上が違います。そこで、別の要因も調べます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- LIVE 2 -->
+<div style="font-size:0.69em">
+<h2><span class="live">LIVE 2</span> 次は何を比べる？</h2>
+<div class="choice-grid">
+  <div class="choice"><strong>① 雨</strong><br />雨なし vs 雨</div>
+  <div class="choice"><strong>② 曜日</strong><br />平日 vs 土日</div>
+  <div class="choice"><strong>③ イベント</strong><br />なし vs あり</div>
+</div>
+<br />
+<blockquote>
+<p>選ばれた2群で平均販売数を比較し、平均値と件数を棒グラフに表示してください。</p>
+</blockquote>
+<h3>挙手で一つ選ぶ → Codexに追加分析を依頼</h3>
+</div>
+<aside class="notes">
+追加分析を皆さんに選んでもらいます。雨、曜日、イベントのうち、次に確かめたいものへ挙手してください。
+<p>選ばれた列名をプロンプトに入れ、二つのグループの平均を比べる棒グラフを追加してもらいます。</p>
+<p>ここでは、平均値だけでなく、何日分の平均なのかを表す件数nも表示させます。平均が違って見えても、データ数が少ない場合は慎重に考える必要があるからです。</p>
+<p>実行後、選ばれたグラフをVS Codeで開き、どちらが高いかを会場に答えてもらいます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- グラフを改善する -->
+<div style="font-size:0.70em">
+<h2>同じデータでも、見せ方で理解が変わる</h2>
+<img src="assets/factor_comparisons.png" alt="雨、曜日、イベントの三つの比較グラフ。" style="width:70%;" />
+<h3>どこを一つ直す？</h3>
+<ol>
+<li>文字を大きくする</li>
+<li>数値をグラフ上に表示する</li>
+<li>説明を短く追加する</li>
+<li>画像を横長にする</li>
+</ol>
+<div class="takeaway">作る → 見る → 意見を伝える → 直す</div>
+</div>
+<aside class="notes">
+グラフが作れたことと、伝わるグラフができたことは同じではありません。
+<p>文字が小さすぎないか、単位があるか、数値が読み取れるか、何を比べたグラフかがすぐ分かるかを確認します。</p>
+<p>皆さんならどこを一つ直すか、選んでください。最も票が多い改善をCodexに依頼し、もう一度プログラムを実行します。</p>
+<p>AIに一回で完成品を出させるのではなく、結果を見て、人間が改善点を言葉にすることが重要です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 相関と因果 -->
+<div style="font-size:0.68em">
+<h2>「関係がある」と「原因である」は違う</h2>
+<table>
+<thead>
+<tr>
+<th>このデータから言える</th>
+<th>このデータだけでは言えない</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>気温と販売数に正の関係がある</td>
+<td>気温だけが販売数を決める</td>
+</tr>
+<tr>
+<td>雨・土日・イベントで平均が違う</td>
+<td>すべての店でも同じ結果になる</td>
+</tr>
+<tr>
+<td>75日分の傾向を数値で示せる</td>
+<td>来年の販売数を必ず当てられる</td>
+</tr>
+</tbody>
+</table>
+<br />
+<h3>AIの自然な説明も、データとグラフで確認する</h3>
+<div class="takeaway">相関 ≠ 因果　／　分析結果には範囲と条件がある</div>
+</div>
+<aside class="notes">
+ここが今日最も重要な注意点です。
+<p>気温と販売数に関係があっても、気温だけが原因だとは断定できません。暑い日は晴れが多いかもしれませんし、休日やイベントが重なっているかもしれません。</p>
+<p>また、これは架空の一店舗、75日分のデータです。他の地域、別の店、別の年まで同じとは限りません。</p>
+<p>AIは自然な文章で結論を書けます。しかし、自然に読めることと、正しいことは同じではありません。元データ、計算、グラフ、適用範囲を人間が確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- まとめ -->
+<div style="font-size:0.76em">
+<h2>今日の四つの問い</h2>
+<ol>
+<li><strong>何を知りたい？</strong></li>
+<li><strong>どんなデータが必要？</strong></li>
+<li><strong>どう見える化する？</strong></li>
+<li><strong>何が言えて、何は言えない？</strong></li>
+</ol>
+<br />
+<blockquote>
+<p>AIは答えを決めるものではなく、<br /><strong>仮説を何度でも試せる相棒</strong></p>
+</blockquote>
+<h3>君なら、何をデータで見える化する？</h3>
+<div class="small-note">下関市立大学データサイエンス学部では、R・Python・統計・AI活用をつなげて学びます。</div>
+</div>
+<aside class="notes">
+今日は、皆さんの予想から始め、データを読み、CodexとPythonプログラムを作り、グラフで確かめ、改善し、最後にどこまで言えるかを考えました。
+<p>覚えて帰ってほしいのは、この四つの問いです。</p>
+<p>何を知りたいか。どんなデータが必要か。どう見える化するか。何が言えて、何は言えないか。</p>
+<p>AIは、答えを代わりに決める存在ではありません。仮説を素早く試し、プログラムやグラフの試作品を何度でも作ってくれる相棒です。</p>
+<p>データサイエンスを学ぶと、その相棒を使うだけでなく、結果を確認し、直し、社会の問題へ応用できるようになります。</p>
+<p>最後に、皆さんなら何をデータで見える化してみたいか、考えてみてください。ありがとうございました。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
