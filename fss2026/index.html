@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Membership Specification and Sensitivity Reporting for Fuzzy-Entropy-Based LLM Emotion Scoring</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: 発表題目、著者、所属を示すタイトルスライド -->
+<div style="font-size:0.80em">
+<div class="title-block">
+<h2>ファジィエントロピー型LLM感情評価における<br>メンバシップ関数仕様と感度報告</h2>
+<p class="english-title">Membership Specification and Sensitivity Reporting for<br>Fuzzy-Entropy-Based LLM Emotion Scoring</p>
+<p class="authors"><strong>白濵 成希<sup>1</sup></strong> / 中谷 直史<sup>2</sup> / 渡邉 志<sup>3</sup></p>
+<p class="presenter">発表者：下関市立大学 データサイエンス学部　白濵 成希</p>
+<p class="affiliations"><sup>1</sup>下関市立大学　<sup>2</sup>順天堂大学　<sup>3</sup>静岡理工科大学</p>
+<p class="conference">第42回 ファジィ システム シンポジウム / FSS2026<br>2026年9月2日–4日</p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+下関市立大学の Shirahama Narukiです。本日は、ファジィエントロピー型LLM感情評価における、メンバシップ関数仕様と感度報告について発表します。共同研究者は、Nakaya, Watanabeです。どうぞよろしくお願いいたします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: 前研究の実験全体像を示し、今回の研究の前提を共有する -->
+<div style="font-size:0.72em">
+<h2>前研究：LLMの「感情的個性」をどう測るか</h2>
+<div class="workflow" role="img" aria-label="日本語文学テキストからLLM、ペルソナとtemperature条件、0から100の感情スコア、分析指標へ進む流れ">
+<div class="workflow-step"><span>1</span><strong>日本語<br>文学テキスト</strong></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step"><span>2</span><strong>36種類の<br>LLM</strong></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step"><span>3</span><strong>ペルソナ<br>temperature</strong></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step"><span>4</span><strong>0–100<br>感情スコア</strong></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step emphasized"><span>5</span><strong>安定性<br>多様性<br>曖昧さ</strong></div>
+</div>
+<div class="callout primary-message" style="margin-top:0.8em">
+<p>前研究では、正解率だけでなく、<br>
+<strong>連続的な感情強度・応答の安定性・解釈の多様性・スコアの曖昧さ</strong>を記述した</p>
+</div>
+<p class="caption-note">本発表では、このうち「スコアの曖昧さ」を測る記述子に焦点を絞る。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回の話に入る前に、前研究の位置づけを簡単に共有します。私たちは、日本語文学テキストを対象に、36種類のLLMへ、ペルソナやtemperature条件を与え、0から100の連続的な感情スコアを出力させました。その目的は、単なる正解率ではなく、連続的な感情強度、応答の安定性、解釈の多様性、そしてスコアの曖昧さを記述することでした。本発表は、この全体の中でも、スコアの曖昧さを測る記述子、つまりファジィエントロピーに焦点を絞ります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: なぜファジィエントロピーが必要だったかを、応答安定性との違いも含めて説明する -->
+<div style="font-size:0.72em">
+<h2>なぜファジィエントロピーが必要だったか</h2>
+<div class="two-column interpretation-grid">
+<div class="interpretation-case low-sensitivity">
+<h3>スコアが安定している</h3>
+<p>同じ条件で毎回 $x=25$ を出す<br>
+→ 応答としては安定</p>
+<hr>
+<p>しかし、$25$ が Low と Medium の境界なら、<br>
+<strong>言語ラベルとしては遷移的</strong></p>
+</div>
+<div class="interpretation-case high-sensitivity">
+<h3>スコアの意味が境界的</h3>
+<p>$x=40$：Medium が支配的<br>
+→ クリスプに近い</p>
+<p>$x=25$：Low と Medium が重なる<br>
+→ 曖昧さが高い可能性</p>
+</div>
+</div>
+<div class="callout primary-message">
+<p><strong>応答の変動</strong>と、<strong>スコアの言語的な曖昧さ</strong>は別の概念</p>
+</div>
+<p class="bottom-message">連続スコアが Low / Medium / High のどの境界に位置するかを、<br />ファジィエントロピーで記述する</p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ファジィエントロピーが必要になった理由は、応答の安定性と、スコアの言語てきな曖昧さが別の概念だからです。たとえば、あるLLMが同じ条件で毎回25点を出すなら、応答としては安定しています。しかし、その25点がLowとMediumの境界領域にあるなら、言語ラベルとしては遷移てきです。逆に、40点のようにMediumが支配的な領域では、個々のスコアはクリスプに近いと扱えます。この境界的な曖昧さを数値化するために、ファジィメンバシップとファジィエントロピーを使いました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: 今回の問題として、同じスコアでも仕様でエントロピーが変わることを提示する -->
+<div style="font-size:0.68em">
+<h2>今回の問題：同じスコアでも $H^*$ は変わる</h2>
+<div class="question-panel">
+<p><span class="score-pill">同じ 0–100 スコア $x$</span></p>
+<p><span class="question-arrow">＋</span></p>
+<p><span class="score-pill">同じエントロピー式</span></p>
+<p><span class="question-arrow">→</span></p>
+<p><span class="question-mark">同じ $H^*(x)$ ？</span></p>
+</div>
+<div class="answer-callout">
+<p><strong>必ずしも同じではない</strong></p>
+<p>Low / Medium / High への写像、つまり<br>
+<strong>メンバシップ関数仕様</strong>が変わると、エントロピー応答も変わる</p>
+</div>
+<div class="callout primary-message" style="margin-top:0.8em">
+<p>$H^*(x)$：<strong>ラベルの重なり曖昧性を、その関数族内で 0〜1 にそろえた値</strong></p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここからが今回の発表の問題です。エイチ・スターは、Low、Medium、Highというラベルの重なり曖昧性を、その関数族の中でゼロから一にそろえた値です。ゼロに近いほどラベルの重なりが小さく、一に近いほど、その関数族の中で重なり曖昧性が最大に近いことを表します。ただし、同じゼロから百の感情スコアと、同じエントロピー式を用いても、メンバシップ関数の仕様が違えば、得られるエイチ・スターは一致しません。スコアを三つのラベルへどのように写像するかによって、ラベルの重なり方が変わるからです。したがって、エイチ・スターはスコア単独の属性ではなく、スコアと文書化されたメンバシップ仕様との組に対する記述子です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: 研究質問、二つの提案、対象外の範囲を整理する -->
+<div style="font-size:0.80em">
+<h2>研究上の問い・提案・範囲</h2>
+<div class="callout primary-message">
+<p><strong>何を仕様化し、版管理し、感度確認すれば、$H^*(x)$ を再現・解釈できるか？</strong></p>
+</div>
+<div class="two-column">
+<div>
+<h3>提案</h3>
+<ol>
+<li><strong>メンバシップ仕様カード</strong></li>
+<li><strong>スコア軸感度報告プロトコル</strong></li>
+</ol>
+</div>
+<div class="scope-box">
+<h3>本発表の対象外</h3>
+<ul>
+<li>モデル／プロバイダ順位</li>
+<li>人間評価との整合性</li>
+<li>ペルソナ・温度効果</li>
+<li>ベンチマーク比較</li>
+</ul>
+</div>
+</div>
+<p class="bottom-message">LLMを比べる前に、0〜100のスコアを測る「ものさし」を点検する</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+研究上の問いは、ファジィエントロピーを再現可能かつ解釈可能にするために、何を仕様化し、版管理し、感度確認すべきか、というものです。提案は二つです。第一に、必要な設計情報をまとめるメンバシップ仕様カード。第二に、妥当な代替関数族との差をスコア軸上で確認する感度報告プロトコルです。本研究は、LLMの順位や個々のモデル出力を分析する研究ではありません。ゼロから百までの各スコアをLow、Medium、Highへどう対応づけ、エイチ・スターがどのように応答するかという、評価のものさし自体を点検する研究です。そのため、人間評価との整合性、ペルソナや温度の効果、ベンチマーク比較も本発表の対象外です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: 使用するエントロピー式と、確率ではないこと・族内正規化を明示する -->
+<div style="font-size:0.76em">
+<h2>$H^*(x)$：重なり曖昧性を 0〜1 で読む</h2>
+<div class="formula-box">
+<p>$$
+H_{\mathrm{raw}}(x)
+=-\sum_{\ell \in {L,M,H}}\mu_\ell(x)\log_2\mu_\ell(x),
+\qquad 0\log_2 0:=0
+$$</p>
+<p>$$
+H^*(x)=H_{\mathrm{raw}}(x) / H_{\max}^{\mathrm{grid}}
+$$</p>
+<p class="formula-plain-language">そのスコアでの重なり曖昧性 ÷ その関数族で得られる最大値</p>
+</div>
+<div class="spec-card compact-card">
+<div><span>1</span><strong>$\mu_L,\mu_M,\mu_H$ はラベル上の確率ではなく、和が1である必要もない</strong></div>
+<div><span>2</span><strong>$H_{\max}^{\mathrm{grid}}$ は、族ごとに同じグリッド $0,0.1,\ldots,100.0$ 上で推定</strong></div>
+<div style="grid-column:1 / 3"><span>3</span><strong>$H^*(x)\approx0$：重なりが小さい　／　$H^*(x)\approx1$：その関数族の中で重なり曖昧性が最大に近い</strong></div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+本研究で用いるのは、メンバシップのかさなりに対するShannon型のエントロピーです。まずエイチ・ローが、そのスコアでLow、Medium、Highがどれくらいかさなっているかを数値にします。次に、それを同じ関数族で得られる最大値で割ったものが、エイチ・スターです。いわば、関数族ごとに異なる目盛りを、ゼロから一へそろえています。エイチ・スターがゼロに近ければラベルのかさなりは小さく、一に近ければ、その関数族の中で重なり曖昧性が最大に近いと読みます。ただし、一は百パーセントの誤りや予測確率を意味しません。ミューもラベル上の確率ではなく、合計が一である必要はありません。また、正規化の最大値は普遍定数ではなく、関数族ごとに同じゼロ点一きざみのグリッド上で推定します。したがって、異なる族のエイチ・スターの差は、共通の絶対尺度上の誤差ではなく、仕様感度として報告します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: 共通仕様と3つのメンバシップ関数族を1枚で説明する -->
+<div style="font-size:0.66em">
+<h2>意味は固定し、曲線の形だけを変えて比較する</h2>
+<div class="scope-box function-family-definition">
+<p><strong>関数族</strong>＝Low・Medium・Highの3本を一組として作る「曲線設計の規則」</p>
+</div>
+<div class="two-column">
+<div>
+<h3>固定する意味的仕様</h3>
+<table class="appendix-table">
+<thead><tr><th>項目</th><th>区間</th></tr></thead>
+<tbody>
+<tr><td>Low transition</td><td>$[0,30]$</td></tr>
+<tr><td>Medium rise</td><td>$[10,30]$</td></tr>
+<tr><td>Medium plateau</td><td>$[30,50]$</td></tr>
+<tr><td>Medium fall</td><td>$[50,70]$</td></tr>
+<tr><td>High transition</td><td>$[50,100]$</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>比較する3つの関数族</h3>
+<table class="appendix-table family-values">
+<thead><tr><th>family ID</th><th>特徴</th><th>$H_{\max}^{grid}$</th></tr></thead>
+<tbody>
+<tr><td><code>legacy_linear_v1</code></td><td>$C^0$ 区分線形</td><td>1.0577</td></tr>
+<tr><td><code>zadeh_s_z_pi_v1</code></td><td>$C^1$ 二次 S/Z/pi</td><td>1.0524</td></tr>
+<tr><td><code>sigmoid_composed_s_z_pi_v1</code></td><td>ロジスティックワープ＋S/Z/pi</td><td>1.0184</td></tr>
+</tbody>
+</table>
+<div class="scope-box" style="margin-top:0.65em">
+3族は代表的な設計点であり、網羅でも順位づけでもない。<br>
+比較しているのはLLMではなく、メンバシップ関数族である。
+</div>
+</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここでいう関数族とは、一本の関数の種類ではなく、Low、Medium、Highの三本のメンバシップ関数を一組として作る、曲線設計の規則です。スコア範囲、三つのラベル、そして意味てきなブレークポイントは共通にします。その上で、区間を直線で結ぶか、S、Z、パイ関数で滑らかに結ぶか、さらにシグモイド的に変形するかを変えています。つまり、同じ目盛りと区切りに対して、曲線の引き方を変えているわけです。ここで比較しているのは三つのLLMモデルではなく、三つのメンバシップ関数族です。三つの族は代表的な設計候補であり、どれか一つを普遍的に正しいものとして順位づけするわけではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: 提案するメンバシップ仕様カードの役割と主要項目を示す -->
+<div style="font-size:0.70em">
+<h2>提案1：メンバシップ仕様カード</h2>
+<div class="callout primary-message">
+<p><strong>エントロピーを計算した「測定器の仕様書」</strong></p>
+</div>
+<div class="spec-card compact-card">
+<div><span>軸</span><strong>スコア範囲 / スコアグリッド</strong></div>
+<div><span>意味</span><strong>ラベル / ブレークポイント</strong></div>
+<div><span>関数</span><strong>family ID / version / 滑らかさ</strong></div>
+<div><span>境界</span><strong>端点挙動 / クリップ規則</strong></div>
+<div><span>縮約</span><strong>エントロピー式 / ゼロ項規約</strong></div>
+<div><span>正規化</span><strong>族別 $H_{\max}^{\mathrm{grid}}$ / 推定グリッド</strong></div>
+</div>
+<div class="two-column" style="margin-top:0.7em">
+<div class="scope-box"><strong>意味的決定</strong><br>範囲・ラベル・ブレークポイント</div>
+<div class="scope-box"><strong>実装・provenance</strong><br>関数族・端点・artifact ID・hash・生成版</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第一の提案は、メンバシップ仕様カードです。これは、エントロピーを計算した測定器の仕様書に相当します。スコア軸と意味てきブレークポイント、関数族と滑らかさ、端点処理、エントロピー式、族別の正規化を一つにまとめます。さらに、アーティファクト識別子、設定ハッシュ、生成スクリプト版を結び付けます。これにより、意味てきな決定と実装上の決定を分けて記録し、第三者が同じ仕様を再実装し、照合し、監査しやすくします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: スコアから感度報告までの推奨ワークフローとアーティファクト規律を示す -->
+<div style="font-size:0.67em">
+<h2>提案2：報告ワークフローを先に固定する</h2>
+<div class="workflow" role="img" aria-label="スコアからメンバシップ、エントロピー、感度報告、下流評価へ進む流れ">
+<div class="workflow-step"><span>1</span><strong>0–100<br>スコア</strong></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step"><span>2</span><strong>文書化した<br>関数族</strong></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step memberships"><span>3</span><strong><i class="low-dot"></i>Low<br><i class="medium-dot"></i>Medium<br><i class="high-dot"></i>High</strong></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step"><span>4</span><strong>$H_{\mathrm{raw}}(x)$<br>→ $H^*(x)$</strong></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step emphasized"><span>5</span><strong>スコア軸<br>感度報告</strong></div>
+</div>
+<div class="downstream-gate">↓ 仕様を点検した後に</div>
+<div class="downstream-box">下流のLLM評価を別途実施・報告</div>
+<ul class="check-list" style="margin-top:0.65em">
+<li>設定・グリッド・カード・図・感度行列を、artifact ID / hash / 生成版で結び付ける</li>
+<li>ブレークポイント、端点、グリッドを変えたら、新しいカードと感度報告を作る</li>
+<li>本スコア軸分析に、新しいAPI呼び出しや生のモデル応答は不要</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+推奨する順序は、スコアを文書化した関数族へ通し、Low、Medium、Highのメンバシップを得て、エイチ・ローとエイチ・スターを計算し、その後にスコア軸感度を点検する、というものです。下流のLLM評価は、この仕様点検を終えてから別途報告します。設定、グリッド、仕様カード、図、感度行列は、アーティファクト識別子、ハッシュ、生成版で結び付けます。仕様を変更した場合は、古い名称を流用せず、新しいカードと感度報告を作ります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: 科学図を用いて三族のメンバシップ曲線とエントロピー応答を示す -->
+<div style="font-size:0.3em">
+<h2>Figure 1：左の仕様が、右の応答をつくる</h2>
+<div class="figure-side-layout">
+<figure class="scientific-figure">
+<img src="./figure1_membership_and_entropy_response.png" alt="3つのメンバシップ関数族について、左列にLow・Medium・Highのメンバシップ曲線、右列に正規化エントロピー応答Hスターを示した図" />
+</figure>
+<div class="figure-side-copy">
+<div class="figure-order">
+<strong>上から</strong><br>
+区分線形<br>
+S / Z / π<br>
+シグモイド合成
+</div>
+<div class="figure-columns">
+<strong>左：</strong>メンバシップ<br>
+<strong>右：</strong>族内正規化した $H^*(x)$
+</div>
+<div class="figure-reading">
+<p><strong>読み方：</strong> 形状・滑らかさの違い → ピークの高さ・幅・局所的な肩の違い<br>
+<strong>注意：</strong> これはLLM出力のヒストグラムではなく、仕様のスコア軸応答</p>
+</div>
+</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+図1の左列は、３つの関数族についてLow、Medium、Highのメンバシップ曲線を示します。右列は、それぞれに対応する正規化エントロピー応答です。左側で遷移の速さや滑らかさが変わると、右側のピークの高さ、幅、局所的な肩も変わります。区分線形の局所的な折れは、応答曲線にも引き継がれます。重要なのは、この図がモデル出力の分布ではないことです。ピークはLLMがそのスコアを多く出したことではなく、その仕様がスコア軸のどこへ高い重なり曖昧性を割り当てるかを示します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: 感度報告の指標と実際の結果を示す -->
+<div style="font-size:0.70em">
+<h2>スコア軸感度：代替仕様との差を測る</h2>
+<table class="results-table">
+<thead>
+<tr><th>族ペア</th><th>最大絶対差<br>$\max|\Delta H^*|$</th><th>平均絶対差<br>$\mathrm{mean}|\Delta H^*|$</th><th>$x_{\max}$</th><th>領域</th></tr>
+</thead>
+<tbody>
+<tr><td>linear – S/Z/pi</td><td>0.343</td><td>0.110</td><td>26.3</td><td class="region-cell">Low–Medium</td></tr>
+<tr class="largest"><td>linear – sigmoid-composed</td><td>0.481</td><td>0.158</td><td>25.3</td><td class="region-cell">Low–Medium</td></tr>
+<tr><td>S/Z/pi – sigmoid-composed</td><td>0.167</td><td>0.048</td><td>24.0</td><td class="region-cell">Low–Medium</td></tr>
+</tbody>
+</table>
+<div class="callout warning-callout">
+<p>3組すべてで、最大の局所差は <strong>Low–Medium 遷移領域</strong>に現れた</p>
+</div>
+<p class="caption-note">真値に対する「誤差」ではなく、代替仕様の応答曲線間の「差」。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+妥当な代替関数族とのスコア軸感度報告です。同じゼロ点一きざみのグリッドで、二つのエイチ・スター応答の最大絶対差、平均絶対差、最大差の位置と領域を報告します。区分線形とシグモイド合成の最大絶対差は0.481でした。また、３つの組み合わせすべてで、最大差はLowとMediumの遷移領域に現れました。ここで比較しているのは代替仕様同士ですから、これらは真値に対する誤差ではなく、応答曲線間の差です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: 最大差0.481を過剰解釈せず、下流評価へどう結びつけるかを示す -->
+<div style="font-size:0.76em">
+<h2>0.481をどう読むか</h2>
+<div class="two-column interpretation-grid">
+<div class="interpretation-case low-sensitivity">
+<h3>この結果から言えること</h3>
+<ul>
+<li>$x=25.3$ で最大の<strong>局所的仕様差</strong></li>
+<li>最大差は Low–Medium 遷移域に集中</li>
+<li>この領域を使う下流分析には感度上の注意が必要</li>
+</ul>
+</div>
+<div class="interpretation-case high-sensitivity">
+<h3>この結果だけでは言えないこと</h3>
+<ul>
+<li>48.1% の予測誤差</li>
+<li>LLMの性能差</li>
+<li>共通の絶対尺度で曖昧さが「半分」変化</li>
+</ul>
+</div>
+</div>
+<div class="callout primary-message">
+<p><strong>同じ25.3点が、仕様によって</strong><br>
+区分線形では <i>H</i><sup>*</sup> = 0.676 にも、sigmoid合成では <i>H</i><sup>*</sup> = 0.195 にも読まれる<br>
+<strong>最大局所差：0.481</strong></p>
+</div>
+<p class="caption-note">各曲線は族固有の $H_{\max}^{\mathrm{grid}}$ で別々に正規化。共通の絶対尺度における48.1%差ではない。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ゼロ点四八一を具体的に読みます。同じスコア二十五点三に対して、区分線形族ではエイチ・スターがゼロ点六七六、シグモイド合成族ではゼロ点一九五となりました。その差がゼロ点四八一であり、ゼロから百までのスコア軸上で最大でした。要するに、同じ二十五点三が、仕様によってゼロ点六七六にもゼロ点一九五にも読まれる、ということです。どちらかが真値で、もう一方が誤差だという意味ではありません。曖昧さの解釈が、LowとMediumの遷移領域では関数族の選択に敏感だという結果です。また、各曲線は族ごとの最大応答を一として別々に正規化しています。そのため、ゼロ点四八一は四十八点一パーセントの予測誤差でも、モデル性能差でも、共通の絶対尺度上で曖昧さが半分変化したという意味でもありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: 再現性、アーティファクト規律、限界を1枚に統合する -->
+<div style="font-size:0.68em">
+<h2>再現性・適用範囲・限界</h2>
+<div class="two-column">
+<div>
+<h3>再現性のために</h3>
+<ul class="check-list">
+<li>仕様カード、応答曲線、感度行列を生成物として保存</li>
+<li>artifact ID、config hash、生成スクリプト版を記録</li>
+<li>設定変更時は新しいカードと感度報告を作成</li>
+</ul>
+</div>
+<div class="scope-box">
+<h3>本研究の限界</h3>
+<ul>
+<li>普遍的に正しい関数族は特定しない</li>
+<li>検討したのは代表的な3族</li>
+<li>分析対象は0–100のスコア軸のみ</li>
+<li>下流のLLM評価は別の研究段階</li>
+</ul>
+</div>
+</div>
+<div class="callout primary-message">
+<p>目的は「最良の族」の選択ではなく、<br>
+選択を<strong>可視化・版管理・感度確認</strong>できるようにすること</p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+再現性と限界をまとめます。仕様カード、応答曲線、感度行列は、生成物として保存し、アーティファクト識別子、設定ハッシュ、生成スクリプト版と結び付けます。ここでブレークポイントとは、Low、Medium、Highの所属度が変化し始めたり、変化し終わったりするスコア上の位置です。端点処理とは、その区間の境界や外側で、所属度をどのようにゼロまたは一へ固定するかという規則です。将来、ブレークポイントや端点処理、グリッドを変える場合は、新しいカードと感度報告を作ります。一方で、本研究は普遍的に正しい関数族を選ぶ研究ではありません。検討したのは代表的な三族であり、分析対象はゼロから百のスコア軸のみです。目的は、最良の族を断定することではなく、選択を可視化し、版管理し、感度確認できるようにすることです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: 最小報告チェックリストと発表の結論を一体化して示す -->
+<div style="font-size:0.70em">
+<h2>最小報告パッケージと結論</h2>
+<div class="spec-card compact-card">
+<div><span>1</span><strong>スコア範囲とグリッド解像度</strong></div>
+<div><span>2</span><strong>ラベルと意味的ブレークポイント</strong></div>
+<div><span>3</span><strong>family ID、滑らかさ、端点規約</strong></div>
+<div><span>4</span><strong>エントロピー式と族別 $H_{\max}^{\mathrm{grid}}$</strong></div>
+<div style="grid-column:1 / 3"><span>5</span><strong>少なくとも1つの妥当な代替族とのスコア軸感度比較</strong></div>
+</div>
+<div class="final-message" style="margin-top:0.8em">
+<p><strong>ファジィエントロピー値を単独で報告しない</strong></p>
+</div>
+<p class="bottom-message">仕様カード ＋ 応答曲線 ＋ 感度比較を、一つの再現可能な報告単位にする</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+結論です。ファジィエントロピーを用いるときは、あたいだけを切り離して報告しません。少なくとも、スコア軸とグリッド、ラベルとブレークポイント、関数族と滑らかさと端点規約、エントロピー式と族別正規化、そして妥当な代替族への感度比較を示します。仕様カード、応答曲線、感度比較を一つの報告単位にすることで、将来のEQ-Fuzzy評価において、仕様依存性をモデル効果と誤認するリスクを下げ、再現性と監査可能性を高められます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: 本研究を支援する科研費課題と関係者への謝意を示す -->
+<div style="font-size:0.72em">
+<h2>研究費・謝辞</h2>
+<div class="funding-card">
+<p class="funding-agency">日本学術振興会科学研究費助成事業（JSPS KAKENHI）</p>
+<div class="funding-grant">
+<p class="funding-label">基盤研究(C)・課題番号 <a href="https://kaken.nii.ac.jp/ja/grant/KAKENHI-PROJECT-26K14983/" target="_blank" rel="noopener noreferrer">26K14983</a></p>
+<p class="funding-title">ファジィエントロピーとペルソナ多様性に基づく<br>LLM感情知能の不確実性評価</p>
+<p class="funding-investigator">研究代表者：白濵 成希（下関市立大学）</p>
+</div>
+<p class="funding-support">本研究の一部は、課題番号 26K14983 および 24K13350 の支援を受けた。</p>
+<p class="funding-thanks">ご支援ならびに関係者の皆様に、深く感謝申し上げます。</p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、研究費について申し添えます。本研究の一部は、日本学術振興会科学研究費助成事業、課題番号二六ケー一四九八三、および二四ケー一三三五〇の支援を受けました。二六ケー一四九八三は、基盤研究シー、「ファジィエントロピーとペルソナ多様性に基づく、エルエルエム感情知能の不確実性評価」という研究課題で、白濵が研究代表者をつとめています。ご支援ならびに関係者の皆様に、深く感謝申し上げます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: 質疑応答のために題目と連絡先を示す -->
+<div style="font-size:0.80em">
+<div class="questions-slide">
+<h2>ご清聴ありがとうございました</h2>
+<p class="questions-label">ご質問をお願いいたします</p>
+<p class="questions-title">ファジィエントロピー型LLM感情評価における<br>メンバシップ関数仕様と感度報告</p>
+<p class="contact">白濵 成希 / 下関市立大学<br><code>nshirahama@ieee.org</code></p>
+<div class="repository-card">
+<div class="repository-copy">
+<div class="repository-heading">公開コード・再現手順</div>
+<a class="repository-url" href="https://github.com/nshrhm/eq-fuzzy" target="_blank" rel="noopener noreferrer">github.com/nshrhm/eq-fuzzy</a>
+<div class="repository-hint">QRコードからもアクセスできます</div>
+</div>
+<div class="repository-qr-wrap"><a class="repository-qr-link" href="https://github.com/nshrhm/eq-fuzzy" target="_blank" rel="noopener noreferrer"><img class="repository-qr" src="./QR_099340.png" alt="EQ-Fuzzy公開リポジトリへのQRコード"></a></div>
+</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ご清聴ありがとうございました。ご質問をお願いいたします。今回使用したメンバシップ関数の設定、計算コード、テスト、および再現手順は、GitHubの nshrhm スラッシュ eq-fuzzy で公開しています。画面のQRコードまたは表示しているURLから、発表後の確認や再利用にご参照ください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: 付録として完全な仕様カードの必須項目を一覧化する -->
+<div style="font-size:0.70em">
+<h2>付録A：完全なメンバシップ仕様カード</h2>
+<table class="appendix-table">
+<thead><tr><th>項目</th><th>記録する内容</th></tr></thead>
+<tbody>
+<tr><td>スコア範囲</td><td>閉区間。ここでは [0, 100]</td></tr>
+<tr><td>スコアグリッド</td><td>応答と $H_{max}^{grid}$ の推定に用いるグリッド</td></tr>
+<tr><td>ラベル</td><td>Low / Medium / High</td></tr>
+<tr><td>ブレークポイント</td><td>ラベル遷移と中央領域</td></tr>
+<tr><td>family ID</td><td>バージョン付き関数族識別子</td></tr>
+<tr><td>滑らかさ</td><td>連続性クラスまたは滑らかさ規約</td></tr>
+<tr><td>端点挙動</td><td>厳密・クリップ・漸近的処理</td></tr>
+<tr><td>エントロピー式</td><td>$H_{raw}(x)$ と $0 log_2 0 := 0$</td></tr>
+<tr><td>正規化</td><td>族別 $H_{max}^{grid}$ と推定グリッド</td></tr>
+<tr><td>バージョン管理</td><td>artifact ID / config hash / 生成スクリプト版</td></tr>
+</tbody>
+</table>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+付録では、仕様カードの完全な項目を示します。軸、意味、関数、境界、縮約、正規化に加えて、アーティファクト識別子、設定ハッシュ、生成スクリプト版まで記録します。ゼロのメンバシップに対するゼロ掛けるログ二ゼロは、ゼロとして扱います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: 凍結アーティファクトのグリッド、族ID、正規化定数を示す -->
+<div style="font-size:0.70em">
+<h2>付録B：共通仕様と族別 $H_{\max}^{\mathrm{grid}}$</h2>
+<div class="grid-summary">
+<p><strong>スコア範囲：</strong> [0, 100]　　<strong>開始：</strong> 0　　<strong>終了：</strong> 100<br>
+<strong>刻み：</strong> 0.1　　<strong>点数：</strong> 1001</p>
+</div>
+<table class="appendix-table family-values">
+<thead><tr><th>family ID</th><th>滑らかさ</th><th>端点挙動</th><th>$H_{\max}^{\mathrm{grid}}$</th></tr></thead>
+<tbody>
+<tr><td><code>legacy_linear_v1</code></td><td>$C^0$ 区分線形</td><td>端点を0/1に固定</td><td>1.0577</td></tr>
+<tr><td><code>zadeh_s_z_pi_v1</code></td><td>$C^1$ 区分二次</td><td>端点を0/1に固定</td><td>1.0524</td></tr>
+<tr><td><code>sigmoid_composed_s_z_pi_v1</code></td><td>非クリップ区間で $C^1$</td><td>端点を0/1に固定<br>内部を[0,1]にクリップ</td><td>1.0184</td></tr>
+</tbody>
+</table>
+<p class="caption-note">共通ブレークポイント：Low [0,30]、Medium rise [10,30]、plateau [30,50]、fall [50,70]、High [50,100]。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+凍結アーティファクトのグリッドは、ゼロから百まで、刻み幅ゼロ点一、千一点です。三つの族はいずれも、遷移区間の端点では所属度を厳密にゼロまたは一へ固定します。違いは、シグモイド合成族では、さらに区間内部の計算値をゼロから一の範囲に収めることです。区分線形族とS、Z、パイ関数族は、定義上この範囲に収まるため、内部クリップを必要としません。グリッド上のエイチ・マックスは、区分線形が一・ゼロ五七七、S、Z、パイが一・ゼロ五二四、シグモイド合成が一・ゼロ一八四です。これらは提出原稿と同じ表示精度で示しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: 族ペア感度指標の数学的定義と役割を示す -->
+<div style="font-size:0.72em">
+<h2>付録C：感度指標の定義</h2>
+<div class="metric-list">
+<div><strong>最大絶対差</strong><span>$\max_x |H_a^*(x)-H_b^*(x)|$</span><small>最大の局所的不一致</small></div>
+<div><strong>平均絶対差</strong><span>$\frac{1}{N}\sum_x |H_a^*(x)-H_b^*(x)|$</span><small>グリッド全体の粗い要約</small></div>
+<div><strong>最大差の位置</strong><span>$x_{\max}$ と遷移領域</span><small>不一致が生じるスコア領域</small></div>
+<div><strong>積分絶対差</strong><span>$\int |H_a^*(x)-H_b^*(x)|\,dx$</span><small>スコア軸全体の差</small></div>
+</div>
+<p class="bottom-message">比較対象は非順序の関数族ペア。モデルや観測頻度は含まない。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+感度指標は、同じグリッド上の二つのエイチ・スター応答を比較します。最大絶対差は最大の局所的不一致、平均絶対差はグリッド全体の粗い要約です。最大差のスコアと遷移領域は、不一致の位置を示します。積分絶対差は、軸全体の差をまとめます。いずれも関数族ペアの比較であり、モデルや観測頻度は入っていません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: 凍結CSVに基づく族ペア感度の詳細表を示す -->
+<div style="font-size:0.68em">
+<h2>付録D：族ペア感度の詳細</h2>
+<table class="appendix-table detailed-sensitivity">
+<thead>
+<tr><th>族ペア</th><th>最大<br>|ΔH*|</th><th>平均<br>|ΔH*|</th><th>x_max</th><th>遷移領域</th><th>積分<br>|ΔH*|</th></tr>
+</thead>
+<tbody>
+<tr><td><code>legacy_linear_v1</code><br>– <code>zadeh_s_z_pi_v1</code></td><td>0.343</td><td>0.110</td><td>26.3</td><td>Low–Medium<br>10–30</td><td>11.018</td></tr>
+<tr><td><code>legacy_linear_v1</code><br>– <code>sigmoid_composed_s_z_pi_v1</code></td><td>0.481</td><td>0.158</td><td>25.3</td><td>Low–Medium<br>10–30</td><td>15.824</td></tr>
+<tr><td><code>zadeh_s_z_pi_v1</code><br>– <code>sigmoid_composed_s_z_pi_v1</code></td><td>0.167</td><td>0.048</td><td>24.0</td><td>Low–Medium<br>10–30</td><td>4.817</td></tr>
+</tbody>
+</table>
+<p class="caption-note">凍結 <code>family_sensitivity_matrix.csv</code> の値を小数第3位に丸めて表示。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+詳細表には、本文の三指標に加えて積分絶対差も示します。値は凍結された感度行列CSVから読み、小数第3位に丸めています。最大差の領域は三ペアとも、十から三十の Low と Medium の重なり領域です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: 提出原稿で用いた主要参考文献を一覧化する -->
+<div style="font-size:0.64em">
+<h2>付録E：主要参考文献</h2>
+<ol class="references">
+<li>Shirahama, N., Yoshimoto, Y., Nakaya, N., & Watanabe, S. “Mathematical framework for characterizing emotional individuality in large language models: Temperature control, fuzzy entropy, and persona-based diversity analysis.” <em>Mathematics</em>, 14(7), 1224, 2026. doi:10.3390/math14071224.</li>
+<li>Shannon, C. E. “A mathematical theory of communication.” <em>Bell System Technical Journal</em>, 27(3), 379–423, 1948.</li>
+<li>Zadeh, L. A. “Fuzzy sets.” <em>Information and Control</em>, 8(3), 338–353, 1965.</li>
+<li>De Luca, A., & Termini, S. “A definition of a nonprobabilistic entropy in the setting of fuzzy sets theory.” <em>Information and Control</em>, 20(4), 301–312, 1972.</li>
+<li>Umano, M. “Some considerations on membership functions of fuzzy sets.” <em>Proceedings of the Fuzzy System Symposium</em>, 41, 70–74, 2025. doi:10.14864/fss.41.0_70.</li>
+</ol>
+<p class="caption-note">書誌情報は提出原稿の参考文献に基づく。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+主要参考文献です。本研究で用いる記述子の文脈、Shannon 型の式、ファジィ集合と非確率的エントロピーの基礎、そしてメンバシップ関数設計に関する近年のFSS発表を示しています。書誌情報は提出原稿に記載された内容をそのまま基礎としています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22: 想定される方法論的質問への短い回答を示す -->
+<div style="font-size:0.70em">
+<h2>付録F：想定される方法論的な質問</h2>
+<div class="qa-list">
+<div><strong>Q. どの族が最良ですか？</strong><p>A. 本研究は普遍的な最良族を選びません。選択の明示と代替族への感度確認を求めます。</p></div>
+<div><strong>Q. メンバシップ度は確率ですか？</strong><p>A. いいえ。選択したファジィ分割が与える所属度であり、ラベル上の確率分布ではありません。</p></div>
+<div><strong>Q. 応答曲線のピークはモデル出力の集中ですか？</strong><p>A. いいえ。仕様がスコア軸上に割り当てる重なりの大きさです。</p></div>
+<div><strong>Q. 今回の発表は前研究の結果を再分析していますか？</strong><p>A. いいえ。前研究は動機づけであり、本発表はスコア軸上の記述子仕様を扱います。</p></div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+想定される質問への短い回答です。最良の族を選ぶ研究ではないこと、メンバシップ度は確率ではないこと、応答曲線はモデル出力の分布ではないこと、今回の発表は前研究の結果を再分析するものではなく、スコア軸上の記述し仕様を扱う研究であることが要点です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23: S・Z・π関数の形とLow・Medium・Highへの割り当てを補足する -->
+<div style="font-size:0.68em">
+<h2>付録G：S・Z・π関数とは？</h2>
+<p class="function-shape-question">Q. それぞれ、どのような形と役割を持つ関数ですか？</p>
+<div class="function-shape-grid">
+<div class="function-shape-card low-shape">
+<h3>Z関数 → Low</h3>
+<svg class="shape-curve" viewBox="0 0 100 70" role="img" aria-label="所属度が1から0へ滑らかに下降するZ関数">
+<path d="M8 8 C8 32, 22 35, 50 35 C78 35, 92 38, 92 62" />
+</svg>
+<p><strong>所属度 1 → 0</strong><br>
+スコアが高くなるほど<br>Lowらしさが減る</p>
+</div>
+<div class="function-shape-card medium-shape">
+<h3>π関数 → Medium</h3>
+<svg class="shape-curve" viewBox="0 0 100 70" role="img" aria-label="所属度が0から1へ上昇し、中央の台地を経て0へ下降するπ関数">
+<path d="M5 62 C5 35, 18 8, 35 8 L65 8 C82 8, 95 35, 95 62" />
+</svg>
+<p><strong>所属度 0 → 1 → 0</strong><br>
+中央の台地と<br>両側の滑らかな遷移</p>
+</div>
+<div class="function-shape-card high-shape">
+<h3>S関数 → High</h3>
+<svg class="shape-curve" viewBox="0 0 100 70" role="img" aria-label="所属度が0から1へ滑らかに上昇するS関数">
+<path d="M8 62 C8 38, 22 35, 50 35 C78 35, 92 32, 92 8" />
+</svg>
+<p><strong>所属度 0 → 1</strong><br>
+スコアが高くなるほど<br>Highらしさが増す</p>
+</div>
+</div>
+<div class="scope-box function-shape-note">
+<p><strong>πは円周率ではなく、曲線の形に由来する名称。</strong><br>
+区分線形族と意味的な区切りは同じで、区間のつなぎ方を滑らかにした設計。</p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+S、Z、パイ関数について補足します。S関数は、所属度をゼロから一へ滑らかに増加させる曲線です。Z関数はその逆向きで、一からゼロへ滑らかに減少させます。パイ関数は、S型の上昇とZ型の下降を組み合わせ、中間領域への所属度を表します。本研究では、LowにZ関数、Mediumにパイ関数、HighにS関数を割り当てています。区分線形族とラベルや意味てきなブレークポイントは同じですが、遷移部分を滑らかにつなぐ点が異なります。なお、ここでのパイは円周率ではなく、曲線の形に由来する名称です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: 設定から感度行列までの凍結成果物を実在するファイルで説明する -->
+<div style="font-size:0.60em">
+<h2>付録H：設定から感度行列までの具体例</h2>
+<div class="artifact-example-root">
+<strong>成果物一式：</strong><code>artifacts/fss2026/membership_specification_v1/</code>
+</div>
+<table class="artifact-example-table">
+<thead><tr><th>項目</th><th>実在する例</th><th>何を記録するか</th></tr></thead>
+<tbody>
+<tr><td><strong>設定</strong></td><td><code>configs/fss/<br>membership_specification_v1.yaml</code></td><td>スコア範囲、0.1刻み、ラベル、関数族、端点、正規化方法</td></tr>
+<tr><td><strong>グリッド</strong></td><td><code>membership_grid.csv</code><br><code>entropy_response_grid.csv</code></td><td>1001点 × 3族について、所属度と $H_{\mathrm{raw}}$、$H^*$、$H_{\max}$</td></tr>
+<tr><td><strong>カード</strong></td><td><code>membership_specification_card.csv</code><br><code>.tex</code> 版も生成</td><td>族ID、滑らかさ、端点処理、ブレークポイント、族別 $H_{\max}$</td></tr>
+<tr><td><strong>図</strong></td><td><code>figure1_membership_and_<br>entropy_response.png</code></td><td>メンバシップ曲線と $H^*$ 応答を、人間が視覚的に確認</td></tr>
+<tr><td><strong>感度行列</strong></td><td><code>family_sensitivity_matrix.csv</code><br><code>.tex</code> 版も生成</td><td>族ペアの最大差、平均差、最大差の位置、積分差</td></tr>
+</tbody>
+</table>
+<p class="bottom-message">一つの設定から、機械可読な表・確認用の図・比較結果を一式として生成する</p>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+具体的な成果物を示します。設定ファイルには、スコア範囲、刻み幅、ラベル、関数族、端点、正規化方法を記録します。メンバシップグリッドとエントロピー応答グリッドには、ゼロから百までの千一点と三つの関数族について、所属度、エイチ・ロー、エイチ・スター、エイチ・マックスを保存します。仕様カードは、族の滑らかさや端点処理などを一覧化します。図は人間が曲線を確認するための表現です。感度行列は、関数族ペアの最大差、平均差、最大差の位置、積分差を保存します。このように、一つの設定から機械可読な表、確認用の図、比較結果を一式として生成します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: artifact ID、設定ハッシュ、生成版の役割と現在の記録限界を説明する -->
+<div style="font-size:0.66em">
+<h2>付録I：artifact ID・hash・生成版の役割</h2>
+<div class="provenance-example-grid">
+<div class="provenance-example-card">
+<strong>artifact ID</strong>
+<code>membership_specification_v1</code>
+<p>成果物一式を人間が識別し、フォルダや報告から参照する名前</p>
+</div>
+<div class="provenance-example-card">
+<strong>config hash</strong>
+<code class="full-hash">f955b8c6a309b4c1a89115862a40561a5e2fdb05528de2e3f91f5a1065d69de0</code>
+<p>使用した設定ファイルが1バイトも変わっていないことを確認するSHA-256指紋</p>
+</div>
+<div class="provenance-example-card provenance-warning">
+<strong>生成版</strong>
+<code>workflow_scripts: 5 paths</code>
+<p><b>記録済み：</b>生成スクリプトのパス<br><b>未記録：</b><code>generator_version</code> / <code>source_commit</code></p>
+</div>
+</div>
+<div class="scope-box provenance-status">
+<p><strong>現状：</strong>生成スクリプトの場所は追跡できるが、厳密なコード版はGit履歴で補助確認する。<br>
+<strong>次版：</strong><code>source_commit</code> または <code>generator_version</code> を成果物要約へ固定する。</p>
+</div>
+<p class="bottom-message">名前で束ね、hashで設定を照合し、生成版で計算コードを固定する</p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+成果物を再現可能に識別する三つの情報を区別します。アーティファクトIDは、成果ぶつ一式を人間が参照するための名前です。ここでは、メンバシップ・スペシフィケーション・ブイワンです。設定ハッシュは、使用した設定ファイルの内容を照合するSHA二五六の指紋で、接頭辞はエフ九五五ビー八シー六エー三〇九です。最後に生成版は、どの版の計算コードを使ったかを固定する情報です。現在の成果ぶつ要約には五本の生成スクリプトのパスは記録されていますが、ジェネレーター・バージョンやソース・コミットという専用フィールドはありません。したがって、現状はGit履歴で補助確認する必要があります。次の版では、ソース・コミットまたは生成版を成果物要約へ明示的に固定することが改善点です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26: ブレークポイントと端点処理の違いを具体的な区間と規則で補足する -->
+<div style="font-size:0.66em">
+<h2>付録J：ブレークポイントと端点処理とは？</h2>
+<div class="breakpoint-endpoint-grid">
+<div class="definition-card breakpoint-card">
+<h3>ブレークポイント＝「どこで」</h3>
+<p>曲線の挙動が切り替わる<strong>スコア上の位置</strong></p>
+<div class="breakpoint-example">
+<strong>本研究の例</strong><br>
+Low：0–30<br>
+Medium：上昇 10–30 ／ 中央 30–50 ／ 下降 50–70<br>
+High：50–100
+</div>
+</div>
+<div class="definition-card endpoint-card">
+<h3>端点処理＝「境界でどうするか」</h3>
+<p>遷移区間の境界と外側で<strong>所属度を決める規則</strong></p>
+<ul>
+<li><strong>区分線形、S・Z・π：</strong>端点を0/1に固定</li>
+<li><strong>sigmoid合成：</strong>端点を0/1に固定し、内部を[0,1]にクリップ</li>
+</ul>
+<p><small>※クリップは所属度を有効範囲へ収める処理であり、データの切り捨てではない。</small></p>
+</div>
+</div>
+<div class="callout primary-message breakpoint-endpoint-message">
+<p>同じブレークポイントでも、関数族や端点処理が異なれば<br>
+曲線と $H^*$ が変わり得るため、両方を記録する</p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ブレークポイントと端点処理の違いを補足します。ブレークポイントは、曲線の挙動がどこで切り替わるかを表すスコア上の位置です。本研究では、Lowはゼロから三十、Mediumは十から三十で上昇し、三十から五十を中央領域として、五十から七十で下降します。Highは五十から百です。一方、端点処理は、遷移区間の境界やその外側で、所属度をどのように決めるかという計算規則です。三つの族はいずれも、端点の所属度をゼロまたは一へ固定します。シグモイド合成族だけは、さらに区間内部の値をゼロから一の範囲に収めます。ここでいうクリップは所属度を有効範囲に収める処理であり、観測データを切り捨てることではありません。つまり、ブレークポイントは、どこで、端点処理は、境界でどうするか、という違いです。同じブレークポイントを使っても、関数族や端点処理によって曲線とエイチ・スターが変わり得るため、両方を記録します。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
