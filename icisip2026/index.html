@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Development of VAS Pad: A Canvas-Based Visual Analog Scale Web Application with an Explicit Unanswered State</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <div style="font-size:0.70em">
+<h2>Development of VAS Pad</h2>
+<h3>A Canvas-Based Visual Analog Scale Web Application with an Explicit Unanswered State</h3>
+<br />
+<h4>ICISIP 2026</h4>
+<h5>Naruki Shirahama, Naofumi Nakaya, Satoshi Watanabe</h5>
+<div class="takeaway">A manual-first talk: from system development to practical dissemination</div>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Hello everyone. This presentation is based on our ICISIP 2026 paper, "Development of VAS Pad: A Canvas-Based Visual Analog Scale Web Application with an Explicit Unanswered State." However, I will not simply repeat the paper section by section. The system is already described in the paper, so today I will emphasize how VAS Pad can be used and disseminated as a practical platform. The central technical idea is simple: before a respondent answers, a VAS should not display an answer position. Around that idea, VAS Pad provides respondent screens, administrator tools, multilingual content, JSON settings, CSV export, and PWA support. My goal is that you understand not only what we built, but also how a researcher or instructor can actually run a VAS study with it.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Why this talk is manual-first -->
+<div style="font-size:0.72em">
+<h2>Why this talk is manual-first</h2>
+<div class="two-grid">
+  <div class="feature left">
+    <span class="pill">Paper</span><br /><br />
+    <strong>System-development report</strong><br />
+    Canvas VAS, explicit unanswered state, Firebase administration, multilingual settings, PWA support, research and education use cases.
+  </div>
+  <div class="feature left">
+    <span class="pill">Manual</span><br /><br />
+    <strong>Adoption guide</strong><br />
+    Respondent flow, administrator workflow, experiment URLs, survey languages, JSON backup, CSV download, deletion checks, and operating procedure.
+  </div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+The submitted paper establishes the technical and research motivation. It explains why ordinary web sliders are not neutral substitutes for paper-based VAS, and it reports the implementation of VAS Pad. For this conference presentation, I want to shift the emphasis toward adoption. A tool becomes valuable when other people can understand its workflow, configure experiments, avoid common mistakes, and export data in a usable form. That is why the user manual is central to this talk. The manual explains what respondents see, what administrators must configure, and what checks are necessary before data collection. In other words, the paper gives the scholarly basis, and the manual turns the system into something that can spread to laboratories, classrooms, and collaborative projects.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- The measurement-interface problem -->
+<div style="font-size:0.70em">
+<h2>The measurement-interface problem</h2>
+<div class="feature-grid">
+  <div class="feature">
+    <span class="outline-pill">Paper VAS</span><br /><br />
+    A blank line is shown.<br />
+    The respondent creates the mark.
+  </div>
+  <div class="feature">
+    <span class="outline-pill">HTML slider</span><br /><br />
+    A thumb is visible.<br />
+    A value exists before an answer.
+  </div>
+  <div class="feature">
+    <span class="outline-pill">VAS Pad Canvas</span><br /><br />
+    The line is shown first.<br />
+    The marker appears only after action.
+  </div>
+</div>
+<br />
+<div class="takeaway">Convenient implementation is not always measurement-equivalent implementation.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+The motivation begins with a small interface detail. In a paper-based VAS, the respondent sees a line with semantic anchors, but no response position exists until the respondent makes a mark. In many web questionnaires, this line is replaced with an HTML range slider. That is convenient, but it changes the interface. A slider normally has a visible thumb and a current value even before the respondent has formed an answer. In particular, a midpoint default can become an unintended cue. VAS Pad was designed to avoid that cue. It uses Canvas to draw the line, stores the unanswered state as null, and draws the response marker only after a click, tap, or drag operation. This is the foundation of the entire system.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Core design -->
+<div style="font-size:0.70em">
+<h2>Core design: an explicit unanswered state</h2>
+<div class="split-left" style="grid-template-columns:minmax(0, 0.92fr) minmax(0, 1.08fr);">
+  <div>
+    <div class="flow" style="width:100%">
+      <div class="step"><code>null</code><br />before response</div>
+      <div class="arrow">&rarr;</div>
+      <div class="step">click / tap / drag</div>
+      <div class="arrow">&rarr;</div>
+      <div class="step"><code>0-100</code><br />after response</div>
+    </div>
+<pre><code>&lt;br /&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The Canvas draws only the VAS line while the value is &lt;code&gt;null&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;The pointer position is converted to an integer value from &lt;code&gt;0&lt;/code&gt; to &lt;code&gt;100&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;0&lt;/code&gt; is a valid left-endpoint response; &lt;code&gt;null&lt;/code&gt; is no response.&lt;/li&gt;
+  &lt;li&gt;Required VAS items block page advance until answered.&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+  </div>
+  <div class="image-card">
+    <img src="figures/fig06.png" alt="Stimulus screen with multiple VAS questions" style="max-height:420px; width:100%; object-fit:contain;" />
+    <div class="caption">Respondent-side stimulus and VAS screen</div>
+  </div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+The most important data-model decision is the distinction between null and zero. If a VAS value is stored as zero before the respondent acts, we cannot distinguish a missing response from a valid answer at the left endpoint. VAS Pad keeps the value as null until the respondent interacts with the line. After the interaction, the position on the line segment is converted to a value from zero to one hundred. Respondents can adjust the position by dragging. They also cannot move forward while a required VAS question remains unanswered. This implementation supports both visual neutrality and data integrity. The interface remains close to paper VAS before the response, and the exported data remains easy to analyze after the response.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Respondent journey -->
+<div style="font-size:0.66em">
+<h2>Respondent journey: screens users actually see</h2>
+<div class="four-grid">
+  <div class="image-card">
+    <img src="figures/fig02.png" alt="Research information and consent screen" style="max-height:255px; width:100%; object-fit:contain;" />
+    <div class="caption"><strong>1. Consent</strong><br />Read, agree, or decline</div>
+  </div>
+  <div class="image-card">
+    <img src="figures/fig03.png" alt="Response instructions screen" style="max-height:255px; width:100%; object-fit:contain;" />
+    <div class="caption"><strong>2. Instructions</strong><br />Target, endpoints, confidence</div>
+  </div>
+  <div class="image-card">
+    <img src="figures/fig06.png" alt="Stimulus and VAS questions screen" style="max-height:255px; width:100%; object-fit:contain;" />
+    <div class="caption"><strong>3. VAS response</strong><br />Stimulus and common items</div>
+  </div>
+  <div class="image-card">
+    <img src="figures/fig08.png" alt="Response submission completion screen" style="max-height:255px; width:100%; object-fit:contain;" />
+    <div class="caption"><strong>4. Completion</strong><br />Submission confirmed</div>
+  </div>
+</div>
+<div class="takeaway">The manual presents VAS Pad as a complete respondent experience, not only as an input widget.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+For dissemination, the respondent experience is just as important as the VAS component itself. A participant opens the response URL, reviews the research information, and chooses whether to participate. If they agree, they read the response instructions. In the example shown in the manual, the instructions specify the target person, the meaning of the endpoints, and how to answer confidence. Then the respondent views a stimulus and answers multiple VAS questions. After all stimuli are completed, the final screen appears, and the response is submitted only when the respondent selects the submit button. The completion screen confirms that submission succeeded. This flow is useful because it reduces ambiguity for participants and gives researchers a predictable structure for web-based VAS studies.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Ethics and comprehension -->
+<div style="font-size:0.70em">
+<h2>Research ethics are built into the workflow</h2>
+<div class="split-right" style="grid-template-columns:minmax(0, 1.08fr) minmax(0, 0.92fr);">
+  <div>
+    <ul>
+      <li><strong>Consent gate:</strong> declining participation stops the survey.</li>
+      <li><strong>Comprehension check:</strong> misunderstanding can be detected before responses.</li>
+      <li><strong>Required VAS answers:</strong> accidental missing values are reduced before submission.</li>
+      <li><strong>Data-policy transparency:</strong> consent text should match the research protocol and platform use.</li>
+    </ul>
+<pre><code>&lt;div class=&quot;message&quot;&gt;VAS Pad supports ethical operation, but the researcher remains responsible for the approved content and data-management policy.&lt;/div&gt;
+</code></pre>
+  </div>
+  <div class="two-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr));">
+    <div class="image-card">
+      <img src="figures/fig04.png" alt="Comprehension-check question" style="max-height:205px; width:100%; object-fit:contain;" />
+      <div class="caption">Comprehension check</div>
+    </div>
+    <div class="image-card">
+      <img src="figures/fig05.png" alt="Wrong-answer explanation in comprehension check" style="max-height:205px; width:100%; object-fit:contain;" />
+      <div class="caption">Wrong-answer guidance</div>
+    </div>
+  </div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+VAS Pad is not only a convenient survey screen. It also provides workflow elements that are important in human-participant research. The consent screen can describe study purpose, eligibility, voluntary participation, withdrawal, personal information, response data, and contact information. If a person does not consent, the survey does not begin. The comprehension check helps confirm that the participant understands the instructions before answering. If the answer is wrong, the system can show an explanation and ask the participant to review the relevant point. At the same time, VAS Pad does not remove the researcher's responsibility. For example, anonymous IDs, Firebase operations, and YouTube stimuli may still involve platform-side records or third-party services. Therefore, consent wording and data-management policies must be carefully aligned with the actual study.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Multilingual settings -->
+<div style="font-size:0.68em">
+<h2>Multilingual use: two separate language settings</h2>
+<div class="two-grid" style="grid-template-columns:minmax(0, 0.70fr) minmax(0, 1.30fr);">
+  <div class="image-card">
+    <img src="figures/fig09.png" alt="Interface-language selector" style="max-height:300px; width:100%; object-fit:contain;" />
+    <div class="caption">Interface language selector</div>
+  </div>
+  <div>
+    <table>
+      <thead>
+        <tr><th>Setting</th><th>Main content affected</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Interface language</strong></td><td>Navigation, admin page, system-interface elements</td></tr>
+        <tr><td><strong>Survey language</strong></td><td>Consent text, instructions, comprehension check, stimuli, VAS labels, messages</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="message">Supported locales in the manual: Japanese, English, Simplified Chinese, Traditional Chinese, and Korean.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+A major dissemination feature is multilingual support. VAS Pad separates the interface language from the survey language. The interface language affects shared navigation, the administrator page, and general system elements. The survey language affects experiment-specific content such as the research information, instructions, comprehension-check text, stimulus content, VAS labels, and end messages. This separation is useful when a researcher wants the system interface in one language but needs respondents to answer a survey in another language.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Multilingual dissemination -->
+<div style="font-size:0.70em">
+<h2>Multilingual use: one structure, multiple languages</h2>
+<div class="feature-grid" style="grid-template-columns:repeat(3, minmax(0, 1fr));">
+  <div class="image-card"><img src="figures/fig10.png" alt="Japanese survey example" style="max-height:285px; width:100%; object-fit:contain;" /><div class="caption">Japanese survey</div></div>
+  <div class="image-card"><img src="figures/fig11.png" alt="Traditional Chinese survey example" style="max-height:285px; width:100%; object-fit:contain;" /><div class="caption">Traditional Chinese survey</div></div>
+  <div class="image-card"><img src="figures/fig12.png" alt="Korean interface and survey example" style="max-height:285px; width:100%; object-fit:contain;" /><div class="caption">Korean interface and survey</div></div>
+</div>
+<div class="takeaway">One experiment structure can support multiple language versions.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Administrators can configure which languages are published for each experiment, and they can edit each locale separately. These examples show the same survey structure in Japanese, Traditional Chinese, and Korean. The manual also supports English and Simplified Chinese. For international collaboration, this design supports translation and review while keeping the underlying experiment structure stable.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Experiment creation and selection -->
+<div style="font-size:0.65em">
+<h2>One deployment can manage many experiments</h2>
+<div class="two-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr));">
+  <div class="image-card">
+    <img src="figures/fig14.png" alt="Creating a new experiment" style="max-height:320px; width:100%; object-fit:contain;" />
+    <div class="caption">Create an experiment with a title and slug</div>
+  </div>
+  <div class="image-card">
+    <img src="figures/fig15.png" alt="Selecting an experiment to edit" style="max-height:320px; width:100%; object-fit:contain;" />
+    <div class="caption">Switch the experiment being edited</div>
+  </div>
+</div>
+<div class="takeaway">Each experiment has its own settings, language content, and response data.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+The administrator workflow is also important for adoption. A single deployment of VAS Pad can contain multiple experiments, and each experiment has its own settings, language content, and response data. When creating a new experiment, the administrator enters a clear title and a slug. Administrators can then switch which experiment they are editing from the management screen.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Experiment response URLs -->
+<div style="font-size:0.72em">
+<h2>Each experiment has its own response URL</h2>
+<pre><code class="language-text">Default experiment:       https://vaspad.web.app/
+Other experiment:         https://vaspad.web.app/{slug}
+Example slug:             text-presentation
+Example response URL:     https://vaspad.web.app/text-presentation
+</code></pre>
+<div class="takeaway">Do not distribute only the top-level URL when the intended experiment uses a slug.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+The slug entered when an experiment is created becomes part of the respondent URL. The default experiment uses the top-level URL, but other experiments use the top-level URL followed by the slug. Switching the experiment on the administrator page changes what you are editing; it does not automatically redirect the public top-level URL. This detail is easy to overlook, so the manual emphasizes it strongly. For real data collection, distributing the correct response URL is a basic but critical operational requirement.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Authoring -->
+<div style="font-size:0.64em">
+<h2>Authoring: turn a protocol into a reusable VAS study</h2>
+<div class="four-grid">
+  <div class="image-card">
+    <img src="figures/fig17.png" alt="Editing consent screen" style="max-height:245px; width:100%; object-fit:contain;" />
+    <div class="caption"><strong>Consent screen</strong><br />Purpose, withdrawal, data handling</div>
+  </div>
+  <div class="image-card">
+    <img src="figures/fig18.png" alt="Editing shared response instructions" style="max-height:245px; width:100%; object-fit:contain;" />
+    <div class="caption"><strong>Shared instructions</strong><br />Target, endpoints, difficult judgments</div>
+  </div>
+  <div class="image-card">
+    <img src="figures/fig23.png" alt="Editing a text stimulus item" style="max-height:245px; width:100%; object-fit:contain;" />
+    <div class="caption"><strong>Stimuli</strong><br />Text, YouTube video, or image</div>
+  </div>
+  <div class="image-card">
+    <img src="figures/fig24.png" alt="Configuring shared VAS questions" style="max-height:245px; width:100%; object-fit:contain;" />
+    <div class="caption"><strong>VAS questions</strong><br />Question label and endpoint labels</div>
+  </div>
+</div>
+<div class="message">The administrator edits structure once, then applies common VAS questions across multiple stimuli.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+VAS Pad is designed to reduce the amount of one-off survey programming required for VAS studies. The administrator can edit the consent screen, shared instructions, comprehension check, stimulus items, VAS questions, decline end message, and final message from the admin page. Stimuli can be text, YouTube videos, or images. Text stimuli support formatted content, and common VAS questions can be applied to every stimulus item. This is especially useful when the same emotions, impressions, or confidence ratings must be collected repeatedly across several materials. The manual also gives practical authoring advice: do not reverse endpoint meanings accidentally, avoid incomplete translations, and make sure the instructions are consistent with every VAS label. These are small details, but they directly affect data quality.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- JSON and CSV -->
+<div style="font-size:0.66em">
+<h2>Reproducibility: JSON settings and CSV responses</h2>
+<div class="flow">
+  <div class="step">Design experiment</div>
+  <div class="arrow">&rarr;</div>
+  <div class="step">Save settings</div>
+  <div class="arrow">&rarr;</div>
+  <div class="step">Export JSON</div>
+  <div class="arrow">&rarr;</div>
+  <div class="step">Collect responses</div>
+  <div class="arrow">&rarr;</div>
+  <div class="step">Download CSV</div>
+</div>
+<div class="three-grid feature-grid" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="image-card"><img src="figures/fig29.png" alt="Importing a settings JSON file" style="max-height:185px; width:100%; object-fit:contain;" /><div class="caption">JSON import</div></div>
+  <div class="image-card"><img src="figures/fig30.png" alt="Exporting a settings JSON file" style="max-height:185px; width:100%; object-fit:contain;" /><div class="caption">JSON export</div></div>
+  <div class="image-card"><img src="figures/fig31.png" alt="Downloading response data as CSV" style="max-height:185px; width:100%; object-fit:contain;" /><div class="caption">CSV download</div></div>
+</div>
+<div class="takeaway">JSON supports backup, duplication, version management, and AI-assisted editing; CSV supports statistical analysis and visualization.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+For research use, reproducibility and data handling matter. VAS Pad allows settings to be exported and imported as JSON. This supports backup, duplication of experiments, version management, and collaborative review. It also makes generative-AI-assisted editing or translation easier, because the structure can be represented explicitly. However, JSON import is not the same as validation. The manual warns that the administrator must review imported settings and then save them before they become active. After data collection, responses are downloaded as CSV for the currently selected experiment. This is important: response data are separated by experiment. The administrator must select the correct experiment before downloading. In practice, the JSON and CSV workflow connects questionnaire design, operation, and analysis.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Research use case -->
+<div style="font-size:0.70em">
+<h2>Use case 1: human VAS data for LLM evaluation</h2>
+<div class="feature left">
+  <span class="pill">Research</span><br /><br />
+  <strong>Human VAS data for LLM emotion evaluation</strong>
+  <ul>
+    <li>Literary texts or conversational materials as stimuli</li>
+    <li>Fine-grained ratings such as interest, surprise, sadness, anger, and confidence</li>
+    <li>Consent, comprehension check, anonymous response management, and CSV export</li>
+  </ul>
+</div>
+<div class="message">VAS Pad supports comparison between model behavior and human subjective evaluation.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+The paper describes two use-case directions. The first is research on emotional-intelligence evaluation of large language models, especially the EQ-Fuzzy line of work. In this context, human VAS data are needed to compare model behavior with human subjective evaluation. VAS Pad can present literary texts or conversational materials and collect fine-grained affective intensity ratings and confidence while supporting consent, comprehension checks, anonymous response management, and CSV export.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Education use case -->
+<div style="font-size:0.70em">
+<h2>Use case 2: a complete data science project cycle</h2>
+<div class="feature left">
+  <span class="pill">Education</span><br /><br />
+  <strong>Data science project exercise</strong>
+  <ul>
+    <li>Students configure experiments and collect responses</li>
+    <li>JSON settings, response CSV files, notebooks, visualization, and reports</li>
+    <li>A full cycle from survey design to data analysis</li>
+  </ul>
+</div>
+<div class="message">VAS Pad is positioned as reusable infrastructure for subjective-evaluation practice.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+The second direction is education. In the third-year data science project exercise at Shimonoseki City University, students used VAS Pad to configure web experiments, collect responses, download CSV data, analyze results, visualize data, and write reports. This classroom use is not presented as a learning-outcome evaluation. Rather, it shows that the platform is practical enough to support a complete data-science project cycle and can serve as reusable infrastructure for subjective-evaluation practice.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Operating checklist -->
+<div style="font-size:0.64em">
+<h2>Operating checklist for adopters</h2>
+<div class="split-left">
+  <div>
+    <ol>
+      <li>Create or select the correct experiment.</li>
+      <li>Set editing locale, default locale, and published locales.</li>
+      <li>Edit consent, instructions, and comprehension check.</li>
+      <li>Register stimuli and shared VAS questions.</li>
+      <li>Select <strong>Save</strong>, then distribute the correct slug URL.</li>
+      <li>Export JSON before operation; download CSV after collection.</li>
+    </ol>
+<pre><code>&lt;div class=&quot;takeaway&quot;&gt;Most failures are operational: wrong experiment, wrong language, unsaved edits, or wrong response URL.&lt;/div&gt;
+</code></pre>
+  </div>
+  <div class="image-card">
+    <img src="figures/fig28.png" alt="Design settings and Save button" style="max-height:330px; width:100%; object-fit:contain;" />
+    <div class="caption">The Save button stores all current edits for the selected experiment.</div>
+  </div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+The manual ends with a recommended operating procedure, and I think this is one of the most useful parts for dissemination. Before launching an experiment, the administrator should confirm the experiment title and slug, configure language settings, edit the research information, shared instructions, comprehension check, stimuli, VAS questions, final messages, display fields, and design. Then the settings must be saved. After saving, the administrator should distribute the correct response URL, preferably with the experiment slug when the experiment is not the default one. JSON backup should be downloaded when appropriate. After data collection, the administrator should again verify the selected experiment and download the CSV. Many practical mistakes are not programming errors. They are workflow errors, and the manual is designed to reduce them.
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Roadmap and closing -->
+<div class="closing-slide" style="font-size:0.58em">
+<h2>Roadmap and closing</h2>
+<div class="two-grid">
+  <div class="feature left">
+    <span class="pill">Now available</span><br /><br />
+    <ul>
+      <li>Canvas VAS with no initial marker</li>
+      <li>Consent, instructions, comprehension check</li>
+      <li>Multiple stimuli and shared VAS questions</li>
+      <li>Five-language survey configuration</li>
+      <li>JSON import/export and CSV download</li>
+      <li>User manual for respondents and administrators</li>
+    </ul>
+  </div>
+  <div class="feature left">
+    <span class="pill">Next work</span><br /><br />
+    <ul>
+      <li>Accessibility: keyboard, ARIA, fallback content, numeric confirmation</li>
+      <li>Stronger JSON validation and preview</li>
+      <li>Experiment-specific access control and duplicate-response checks</li>
+      <li>Empirical comparison among paper VAS, HTML sliders, and VAS Pad</li>
+    </ul>
+  </div>
+</div>
+<div class="message">VAS Pad is a small interface correction with a large operational goal: reliable VAS surveys that other people can actually run.</div>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+To close, I want to emphasize both the current contribution and the future boundary. VAS Pad already provides a Canvas-based VAS input that avoids an initial marker, together with the surrounding functions needed for research and education: consent, instructions, comprehension checks, multiple stimuli, multilingual content, JSON settings, CSV response download, Firebase-based administration, and PWA support. The user manual is an important dissemination step because it explains how respondents and administrators should actually use the system. At the same time, this is still a system-development report. We still need stronger accessibility design, stronger validation and preview for imported settings, operational safeguards, and empirical comparison among paper VAS, ordinary sliders, and VAS Pad. Thank you very much for your attention.
+</aside>
+<script src="./image-zoom.js"></script>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
