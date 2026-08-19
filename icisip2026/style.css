@@ -1,0 +1,368 @@
+/* ICISIP 2026 VAS Pad presentation */
+.reveal::after {
+  content: "";
+  position: fixed;
+  top: 10px;
+  right: -90px;
+  width: 230px;
+  height: 52px;
+  background: url("2026_logo.png") no-repeat center / contain;
+  z-index: 1000;
+}
+
+:root {
+  --r-heading-text-transform: none;
+}
+
+.reveal {
+  font-family: "Noto Sans", "Noto Sans CJK JP", "Helvetica Neue", Arial, sans-serif;
+  color: #173746;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #0d4b65;
+}
+
+.reveal h1 {
+  font-size: 1.95em;
+}
+
+.reveal h2 {
+  font-size: 1.55em;
+  margin-bottom: 0.50em;
+}
+
+.reveal h3 {
+  color: #3b8bad;
+  font-size: 1.05em;
+}
+
+.reveal strong {
+  color: #0b76a0;
+}
+
+.reveal em {
+  color: #3b6575;
+}
+
+.reveal blockquote {
+  width: 88%;
+  padding: 0.75em 1em;
+  border-left: 0.25em solid #3b8bad;
+  background: #f2f7f9;
+  box-shadow: none;
+  font-style: normal;
+}
+
+.reveal table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 92%;
+  margin: 0 auto;
+  font-size: 0.82em;
+}
+
+.reveal th {
+  background: #eaf3f7;
+  color: #0d4b65;
+  font-weight: 700;
+}
+
+.reveal th,
+.reveal td {
+  border: 1px solid #c9dce4;
+  padding: 0.42em 0.58em;
+}
+
+.reveal code {
+  color: #8f2d56;
+}
+
+.reveal pre {
+  box-sizing: border-box;
+  width: 92%;
+  margin: 0.6em auto 0.9em;
+  padding: 0.8em 1em;
+  border: 2px solid #4a5568;
+  border-left: 0.35em solid #0b76a0;
+  border-radius: 0.5em;
+  background: #272822;
+  box-shadow: none;
+}
+
+.reveal pre code {
+  padding: 0;
+  color: #f8f8f2;
+  background: transparent;
+  line-height: 1.5;
+  text-shadow: none;
+  white-space: pre-wrap;
+}
+
+.reveal img {
+  border: 0;
+  box-shadow: none;
+}
+
+.reveal .small {
+  font-size: 0.70em;
+}
+
+.reveal .tiny {
+  font-size: 0.58em;
+}
+
+.reveal .caption {
+  font-size: 0.48em;
+  color: #5a707a;
+  margin-top: 0.25em;
+}
+
+.reveal .takeaway {
+  margin: 0.7em auto;
+  padding: 0.7em 1em;
+  width: 88%;
+  border-radius: 0.5em;
+  background: #edf7fb;
+  color: #0d4b65;
+  font-weight: 700;
+}
+
+.reveal .message {
+  margin: 0.65em auto;
+  padding: 0.65em 0.9em;
+  width: 86%;
+  border-radius: 0.5em;
+  background: #f8fbfc;
+  border: 2px solid #9fc8d8;
+  color: #173746;
+  font-weight: 700;
+}
+
+.reveal .pill {
+  display: inline-block;
+  padding: 0.20em 0.55em;
+  border-radius: 999px;
+  background: #0d4b65;
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.reveal .outline-pill {
+  display: inline-block;
+  padding: 0.18em 0.52em;
+  border-radius: 999px;
+  border: 2px solid #9fc8d8;
+  background: #f8fbfc;
+  color: #0d4b65;
+  font-weight: 800;
+}
+
+.reveal .choice-grid,
+.reveal .feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65em;
+  margin-top: 0.7em;
+}
+
+.reveal .two-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75em;
+  align-items: start;
+}
+
+.reveal .closing-slide {
+  font-size: 0.60em;
+}
+
+.reveal .closing-slide .two-grid {
+  gap: 0.55em;
+}
+
+.reveal .closing-slide .feature {
+  min-width: 0;
+  padding: 0.50em 0.40em;
+}
+
+.reveal .closing-slide ul {
+  margin: 0.35em 0 0 1em;
+}
+
+.reveal .closing-slide li {
+  margin: 0.12em 0;
+  line-height: 1.25;
+}
+
+.reveal .closing-slide .message {
+  margin: 0.45em auto 0;
+  padding: 0.50em 0.75em;
+}
+
+.reveal .four-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.55em;
+  align-items: start;
+}
+
+.reveal .choice,
+.reveal .feature {
+  padding: 0.70em 0.45em;
+  border: 2px solid #9fc8d8;
+  border-radius: 0.55em;
+  background: #f8fbfc;
+  text-align: center;
+  font-weight: 700;
+}
+
+.reveal .feature.left {
+  text-align: left;
+}
+
+.reveal .image-card {
+  padding: 0.35em;
+  border: 1px solid #d8e6ec;
+  border-radius: 0.45em;
+  background: #ffffff;
+}
+
+.reveal .image-card img {
+  width: 100%;
+  height: auto;
+  cursor: zoom-in;
+  touch-action: manipulation;
+}
+
+body.image-zoom-open {
+  overflow: hidden;
+}
+
+.image-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  background: rgba(5, 20, 28, 0.88);
+  cursor: zoom-out;
+}
+
+.image-zoom-overlay.is-open {
+  display: flex;
+  animation: image-zoom-fade-in 160ms ease-out;
+}
+
+.image-zoom-overlay img {
+  width: calc(100vw - 2rem);
+  height: calc(100vh - 2rem);
+  object-fit: contain;
+  border: 0;
+  filter: drop-shadow(0 0.4rem 1rem rgba(0, 0, 0, 0.45));
+  cursor: zoom-out;
+  animation: image-zoom-grow-in 160ms ease-out;
+}
+
+@keyframes image-zoom-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes image-zoom-grow-in {
+  from { transform: scale(0.96); }
+  to { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-zoom-overlay.is-open,
+  .image-zoom-overlay img {
+    animation: none;
+  }
+}
+
+@media print {
+  body.image-zoom-open {
+    overflow: visible;
+  }
+
+  .image-zoom-overlay {
+    display: none !important;
+  }
+}
+
+.reveal .flow {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0.38em;
+  margin: 0.65em auto;
+  width: 94%;
+}
+
+.reveal .flow .step {
+  flex: 1;
+  padding: 0.58em 0.35em;
+  border: 2px solid #9fc8d8;
+  border-radius: 0.45em;
+  background: #f8fbfc;
+  font-weight: 700;
+  font-size: 0.64em;
+  text-align: center;
+}
+
+.reveal .flow .arrow {
+  display: flex;
+  align-items: center;
+  color: #3b8bad;
+  font-weight: 900;
+  font-size: 0.9em;
+}
+
+.reveal .split-left {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 0.75em;
+  align-items: center;
+}
+
+.reveal .split-right {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 0.75em;
+  align-items: center;
+}
+
+.reveal .big-number {
+  font-size: 1.8em;
+  font-weight: 900;
+  color: #0b76a0;
+  line-height: 1.0;
+}
+
+.reveal .muted {
+  color: #5a707a;
+}
+
+.reveal .url {
+  font-size: 0.72em;
+  color: #0d4b65;
+  font-weight: 700;
+}
+
+.reveal ul,
+.reveal ol {
+  margin-left: 1.05em;
+}
+
+.reveal li {
+  margin: 0.25em 0;
+}
