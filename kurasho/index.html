@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>ＡＩと一緒に未来を創る！君のアイデアを形にするマルチモーダルＡＩ</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <div class="lesson-title">
+<h2>AIと一緒に未来を創る！</h2>
+<h3>君のアイデアを形にする<br >マルチモーダルＡＩ</h3>
+<br />
+<h4>下関市立大学 データサイエンス学部<br />データサイエンス学科</h4>
+<h5>白濵 成希</h5>
+</div>
+<script src="./deck-logo.js"></script>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+皆さん、こんにちは。今日の45分は、AIについて長い説明を聞くだけの授業ではありません。
+<p>皆さんから三つの言葉をもらい、それを材料にAIと一緒に画像を作ります。そして、その画像を使った、動くWebページまで作ります。</p>
+<p>ただし、AIが出したものを、そのまま完成品にはしません。本当に狙いどおりか、見やすいか、正しく動くかを、皆さんと一緒に確かめます。</p>
+<p>今日体験してほしいのは、「つくる、見る、伝える、直す」という流れです。特別なプログラミングの知識は必要ありません。AIに驚くだけでなく、自分の考えを作品に近づけていくところまで参加してください。</p>
+<p>まず、今日作るものを皆さんに決めてもらいます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日のミッション -->
+<div class="lesson-slide mission-slide" style="font-size:0.80em">
+<h2>今日のミッション</h2>
+<div class="callout primary-message">
+<ul>
+<li>三つの選択から <strong>「未来の学校イベント」をつくる</strong></li>
+<li>挙手で一つずつ決めよう</li>
+</ul>
+</div>
+<div class="choice-table">
+<table>
+<thead>
+<tr>
+<th>決めること</th>
+<th>選択肢</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>場所</strong></td>
+<td>海底都市 ／ 月面基地 ／ 未来の商店街</td>
+</tr>
+<tr>
+<td><strong>イベント</strong></td>
+<td>科学祭 ／ 音楽祭 ／ スポーツ祭</td>
+</tr>
+<tr>
+<td><strong>雰囲気</strong></td>
+<td>わくわくする ／ 神秘的 ／ 落ち着く</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日作るのは、「未来の学校イベント」の告知ページです。ただし、どんなイベントにするかは、私だけでは決めません。
+<p>まず場所、次にイベント、最後に雰囲気を一つずつ選びます。正解はありません。自分が見てみたいと思うものに手を挙げてください。</p>
+<p>三つとも選んだら、選ばれた言葉を一緒に確認しましょう。この三つの言葉が、これから画像とWebページに変わります。</p>
+<p>では、その前に、今日使うマルチモーダルAIがどのようなものかを一言で説明します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- マルチモーダルAIって何？ -->
+<div class="lesson-slide multimodal-slide" style="font-size:0.70em">
+<h2>マルチモーダルAIって何？</h2>
+<div class="modality-flow" aria-label="文字、画像、音声、動画、文書を相互に扱う">
+<span>文字</span><b>⇄</b><span>画像</span><b>⇄</b><span>音声</span><b>⇄</b><span>動画</span><b>⇄</b><span>文書</span>
+</div>
+<ul>
+<li>情報の「形」をつないで扱えるAI</li>
+</ul>
+<h3>今日のライブデモ</h3>
+<div class="process-flow compact-flow" aria-label="文字から画像、コード、Webページへ進む">
+<span>文字</span><b>→</b><span>画像</span><b>→</b><span>コード</span><b>→</b><span>Webページ</span>
+</div>
+<ul>
+<li>一つのアイデアが、別の形へ変わっていく</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AIというと、文字を入力して、文字で答えてもらう使い方を思い浮かべるかもしれません。
+<p>現在のAIは、文字だけでなく、画像、音声、動画、文書など、いろいろな形の情報を扱えます。このように、複数の情報の形をつないで扱うAIを、マルチモーダルAIと呼びます。</p>
+<p>今日は、文字で伝えたアイデアから画像を作り、その画像と文字を材料にコードを書いて、Webページにする流れに集中します。</p>
+<p>つまり、文字、画像、コード、Webページへと、一つのアイデアの形が次々に変わります。</p>
+<p>AIに画像を見せたり、音声で話しかけたりしたことがある人はいますか。それも、情報の形をまたいだ使い方の一例です。</p>
+<p>今日は、この変化を一つの制作の流れとしてつなぎます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日はVS Codeで全部つなぐ -->
+<div class="lesson-slide workflow-slide" style="font-size:0.8em">
+<h2>今日はVS Codeで全部つなぐ</h2>
+<div class="workflow-grid">
+<div><span>1</span><strong>皆さんのアイデア</strong><code>idea.md</code></div>
+<div><span>2</span><strong>AIがつくる画像</strong><code>assets/hero.png</code></div>
+<div><span>3</span><strong>動くWebページ</strong><code>index.html + style.css + script.js</code></div>
+<div><span>4</span><strong>統合ブラウザで確認・改善</strong></div>
+</div>
+<div class="cycle-message">つくる　→　見る　→　伝える　→　直す</div>
+<div class="bottom-message">AI × プログラミング × データサイエンス</div>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の作業は、VS Codeという制作環境に集めます。
+<p>最初に、皆さんが選んだ三つの言葉を、idea.mdというファイルに記録します。その内容からAIが画像を作り、画像とアイデアを使って、HTML、CSS、JavaScriptを書きます。最後に、同じVS Codeの中にあるブラウザで動作を確かめます。</p>
+<p>今日は、ファイル名や英語を暗記する必要はありません。大切なのは、人間が目的を記録し、AIがそれを材料に作品を作り、変更内容と結果を人間が確認する流れです。</p>
+<p>まず、いま選んだ言葉を一つのファイルにしましょう。何を作るかを先に記録しておけば、あとから指示と結果を比べられます。</p>
+<p>ただし、最初のデモでは、あえてこのファイルを使わず、曖昧な指示を出してみます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- デモ1　AIは心を読める？ -->
+<div class="lesson-slide live-slide" style="font-size:0.72em">
+<h2>デモ1　AIは心を読める？</h2>
+<div class="prompt-card">「未来の学校イベントの画像を作ってください。」</div>
+<h3>まだ伝えていないこと</h3>
+<div class="question-grid">
+<ul>
+<li>場所は？</li>
+<li>何のイベント？</li>
+<li>どんな雰囲気？</li>
+<li>何に使う画像？</li>
+</ul>
+</div>
+<div class="question-callout">AIは、言わなかった部分をどうする？</div>
+<div class="live-action">▶ LIVE：あえて曖昧な指示で画像をつくる</div>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+まずは、あえて短く曖昧な指示を出します。
+<p>「未来の学校イベントの画像を作ってください。」</p>
+<p>先ほど皆さんが選んだ場所、イベント、雰囲気は伝えません。画像の用途も伝えません。</p>
+<p>生成する前に予想してください。AIは、どんな画像を作るでしょうか。分からない条件があると止まるでしょうか。それとも、足りない部分を何かで補うでしょうか。</p>
+<p>では、実際に作ってみます。結果が出たら、先ほど選んだ場所、イベント、雰囲気が表れているか、Webページの上部に使えそうかを見てください。</p>
+<p>AIは、条件が足りなくても必ず質問するとは限りません。学習した多くの例をもとに、足りない部分を補って作ることがあります。しかし、この指示には、私たちが選んだ三つの言葉が含まれていません。AIは、伝えていない条件を知ることはできません。</p>
+<p>そのため、「何かができた」ことと、「私たちの狙いどおりにできた」ことは別です。</p>
+<p>今度は、皆さんのアイデアと用途をきちんと伝えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 指示を「設計図」にする -->
+<div class="lesson-slide blueprint-slide" style="font-size:0.64em">
+<h2>指示を「設計図」にする</h2>
+<div class="blueprint-grid">
+<div class="card-grid-heading"><span>伝えること</span><strong>問い</strong></div>
+<div><span>目的</span><strong>何を作る？</strong></div>
+<div><span>相手</span><strong>誰のため？</strong></div>
+<div><span>条件</span><strong>どんな雰囲気・構図？</strong></div>
+<div><span>用途</span><strong>どこで使う？</strong></div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+良い結果を得るために、難しい言葉や長い文章が必要とは限りません。重要なのは、必要な条件を分けて伝えることです。
+<p>今日は、指示を四つの部分に分けます。</p>
+<p>目的は、未来の学校イベントの画像を作ることです。相手は高校生です。条件には、皆さんが選んだ場所、イベント、雰囲気を入れます。用途は、Webサイトの上部に置く横長の画像です。</p>
+<p>さらに、画像の中に文字を入れないことや、実在の人物、既存作品のキャラクターを使わないことも条件として伝えます。</p>
+<p>このように、指示は魔法の言葉ではなく、AIと目的や条件を共有するための設計図です。では、この設計図を使って、もう一度画像を作ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ▶ LIVE：3語を入れてつくる -->
+<div class="lesson-slide live-slide" style="font-size:0.8em">
+<h2>▶ LIVE：3語を入れてつくる</h2>
+<div class="prompt-card command-prompt">
+<blockquote>
+<p>$imagegen 高校の<strong>科学祭</strong>のイベント画像を作成、舞台は<strong>海底都市</strong>、雰囲気は<strong>わくわくする</strong>、Webサイト上部用の横長画像、画像内に文字は入れない、現在のワークスペースのフォルダに保存する。</p>
+</blockquote>
+</div>
+<div class="live-action"><strong>必要な条件</strong>を盛り込む</div>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここでは、皆さんが選んだ三つの言葉を、指示に入れます。画面の例では、科学祭、海底都市、わくわくする雰囲気です。実際には、先ほど選んだ言葉に置き換えます。
+<p>さらに、高校生向けであること、Webサイト上部に使う横長画像であること、画像内に文字を入れないこと、作業フォルダに保存することも伝えます。</p>
+<p>生成中は、どの条件が画像に表れそうか予想してください。結果が出たら、最初の曖昧な指示で作った画像と比べます。どちらが今日の目的に近いでしょうか。追加した条件のうち、どれが効いたと思いますか。</p>
+<p>AIは、一回で完成品を出す自動販売機ではありません。人間が目的を伝え、結果を見て、足りない条件を言葉にしながら、狙いに近づけます。さらに直すなら何を伝えるかも考えてみてください。</p>
+<p>AIは文字から画像を作れました。次は、作った画像をAI自身に読み直してもらいます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- デモ2　AIに画像を見直してもらう -->
+<div class="lesson-slide image-review-slide" style="font-size:0.68em">
+<h2>デモ2 AIに画像を見直してもらう</h2>
+<div class="image-review-layout">
+<figure class="hero-figure">
+<img src="science-festival-underwater-city-hero.png" alt="海底都市の科学祭を描いた横長の生成画像">
+</figure>
+<div class="review-copy">
+<div class="cycle-message compact-cycle">文字　→　画像　→　もう一度、文字へ</div>
+<table>
+<thead>
+<tr>
+<th>分けて考える</th>
+<th>AIへの問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>見える事実</strong></td>
+<td>画像から確実に分かることは？</td>
+</tr>
+<tr>
+<td><strong>推測</strong></td>
+<td>想像で補っていることは？</td>
+</tr>
+<tr>
+<td><strong>改善</strong></td>
+<td>高校生向けに直せることは？</td>
+</tr>
+<tr>
+<td><strong>画像説明</strong></td>
+<td>見えない人にもどう伝える？</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+いま、文字から画像を作りました。次は逆方向です。画像をAIに見せて、文章で説明してもらいます。
+<p>ただし、画像の説明には、画像に本当に見えていることと、AIが想像して補ったことが混ざる場合があります。そこで、四つに分けて答えるように頼みます。</p>
+<p>一つ目は、画像から確実に見える事実。二つ目は、画像だけでは断定できない推測。三つ目は、高校生向けの画像として改善できる点。四つ目は、画像を見ることができない人にも内容が伝わる、短い画像説明です。</p>
+<p>この短い説明は、あとでWebページの画像に設定し、音声読み上げなどでも内容が伝わるように使います。</p>
+<p>答えを分けてもらうと、どこまでが観察で、どこからが解釈なのかを、人間が確認しやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ▶ LIVE：画像を読み、短い説明文をつくる -->
+<div class="lesson-slide image-analysis-slide" style="font-size:0.68em">
+<h2>▶ LIVE：画像を読み、短い説明文をつくる</h2>
+<div class="callout primary-message">「それらしい説明」も、確認が必要</div>
+<div class="image-analysis-layout">
+<figure class="hero-figure analysis-figure">
+<img src="science-festival-underwater-city-hero.png" alt="海底都市の科学祭を描いた横長の生成画像">
+</figure>
+<div class="ai-response">
+<blockquote>
+<p>この画像  から「イベントが楽しい」「参加者がワクワクしている」という雰囲気が伝わるか確認してください。</p>
+</blockquote>
+<pre><code class="language-text">はい、どちらの雰囲気も概ね伝わります。
+
+- 「ワクワクしている」：ロボット、透明ディスプレイ、海底都市、展示を指差して会話する生徒から、好奇心や未来感が伝わります。
+- 「イベントが楽しい」：複数の展示や参加者が描かれており、科学祭の体験型イベントらしさがあります。
+
+一方で、全体の青い色調と落ち着いた表情により、「楽しい」というより「美しく知的で幻想的」な印象がやや強めです。楽しさをさらに強調するなら、笑顔や驚いた表情、手を挙げる・身を乗り出すなど、より動きのある参加者を増やすと効果的です。
+</code></pre>
+</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+画面の回答を見てみましょう。ロボット、透明な画面、海底都市、展示を指さす人物などは、画像の中にあるかどうかを確認できます。
+<p>一方、「楽しんでいる」や「わくわくしている」は、表情、姿勢、色、周囲の物から考えた解釈です。画像だけから、その人の気持ちを事実として断定することはできません。</p>
+<p>この回答では、未来らしさや好奇心は伝わる一方、青い色調や落ち着いた表情によって、楽しさよりも美しさや知的な印象が強いと説明しています。そして、笑顔や動きのある姿勢を増やすという改善案を出しています。</p>
+<p>ただし、その改善案を採用するかは人間が決めます。皆さんが選んだ雰囲気を壊していないか、画像に本当に見える根拠があるかを確認してください。</p>
+<p>AIの文章が自然に読めることと、内容が事実であることは同じではありません。AIに事実と推測を分けさせても、最後に確認するのは人間です。</p>
+<p>では、皆さんのアイデア、画像、そして短い画像説明を材料にして、動くWebページを作ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- デモ3　アイデアをWebページにする -->
+<div class="lesson-slide web-build-slide" style="font-size:0.66em">
+<h2>デモ3　アイデアをWebページにする</h2>
+<div class="role-grid">
+<div class="card-grid-heading"><span>ファイル</span><strong>役割</strong></div>
+<div><span>HTML</span><strong>内容と構造</strong></div>
+<div><span>CSS</span><strong>色・大きさ・配置</strong></div>
+<div><span>JavaScript</span><strong>ボタンなどの動き</strong></div>
+</div>
+<div class="prompt-card compact-prompt">
+<blockquote>
+<p>idea.mdと画像を使い、高校生向けのイベント告知ページを作ってください。</p>
+</blockquote>
+</div>
+<div class="human-check">AIが編集　→　人間が差分を確認</div>
+<div class="live-action">▶ LIVE：画像・開催情報・動くボタンを追加する</div>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここから少しだけ、プログラミングの世界をのぞきます。
+<p>HTMLはページの内容と構造、CSSは色や大きさや配置、JavaScriptはボタンなどの動きを担当します。今日は文法を覚える必要はありません。</p>
+<p>AIには、idea.mdと作った画像を使い、高校生向けのイベント告知ページを作るように頼みます。日時や場所などは架空のデモ情報にし、先ほど作った短い画像説明も設定します。</p>
+<p>注目してほしいのは、AIに「何を作るか」を伝えることと、AIが変更したファイルを人間が確認することです。HTML、CSS、JavaScriptのどこが変わったかを見ます。</p>
+<p>AIがコードを書いても、目的を決めたのは人間です。変更内容を確認し、本当に使うかを決めるのも人間です。</p>
+<p>プログラミングを学ぶと、AIに頼めることが増えるだけでなく、AIが作ったものを自分で点検できるようになります。</p>
+<p>コードができても、本当に動くかはまだ分かりません。実際に開いて確かめます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- デモ4　動かして、直す -->
+<div class="lesson-slide check-slide" style="font-size:0.68em">
+<h2>デモ4　動かして、直す</h2>
+<div class="callout primary-message">VS Codeの統合ブラウザで確認</div>
+<div class="check-grid">
+<div><span>1</span><strong>画像は表示される？</strong></div>
+<div><span>2</span><strong>大事な情報は見つけやすい？</strong></div>
+<div><span>3</span><strong>ボタンは動く？</strong></div>
+<div><span>4</span><strong>スマートフォンでも読める？</strong></div>
+</div>
+<div class="question-callout">皆さんなら、どこを一つ直す？</div>
+<div class="live-action">▶ LIVE：意見を一つ選び、その場で改善する</div>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+コードが書けたことと、作品が完成したことは同じではありません。
+<p>VS Codeの中にあるブラウザでページを開きます。画像が表示されるか。日時や場所などの大事な情報がすぐ見つかるか。ボタンを押すと表示が変わるか。画面を狭くしても読めるか。この四点を順番に確認します。</p>
+<p>動いたとしても、見やすく伝わるとは限りません。皆さんなら、一か所だけ直せるとしたら、どこを直しますか。</p>
+<p>出してもらった意見から一つを選び、AIに改善を頼みます。変更後は、同じ場所をもう一度確認し、前より目的に近づいたかを比べます。</p>
+<p>AIへの指示は、一回で完成させるものではありません。つくる、見る、伝える、直す。この繰り返しで作品を良くします。</p>
+<p>見た目が良くなっても、作った本人だけの感想では、皆さんに伝わったか分かりません。そこで感じ方を測ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- デモ5　感じ方をデータにする -->
+<div class="lesson-slide vas-slide" style="font-size:0.66em">
+<h2>デモ5　感じ方をデータにする</h2>
+<div class="vas-question">この告知ページを見て、イベントに参加してみたい</div>
+<div class="vas-scale">
+<span>まったく思わない</span>
+<canvas class="vas-canvas" width="640" height="72" tabindex="0" role="slider" aria-label="まったく思わないからぜひ参加したいまでの評価尺度" aria-valuemin="0" aria-valuemax="100" aria-valuetext="未選択"></canvas>
+<span>ぜひ参加したい</span>
+</div>
+<div class="vas-instruction">線上をクリックして、感じ方に近い位置に印をつけてみよう</div>
+<div class="callout primary-message">同じ作品を見ても、感じ方は同じとは限らない</div>
+<div class="process-flow compact-flow" aria-label="つくる、測る、比べる、直すの順に進む">
+<span>つくる</span><b>→</b><span>測る</span><b>→</b><span>比べる</span><b>→</b><span>直す</span>
+</div>
+<div class="live-action">▶ LIVE：線上をクリックしてVASを体験する</div>
+</div>
+<script src="./vas-canvas.js"></script>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Webページができました。しかし、作った私が「良いページです」と言うだけでは、高校生に本当に届いたか分かりません。そこで、感じ方を線上の位置で表すVASという方法を紹介します。
+<p>「この告知ページを見て、イベントに参加してみたい。」</p>
+<p>左は「まったく思わない」、右は「ぜひ参加したい」です。線上をクリックすると、その位置に印が付きます。別の場所をクリックすると、印もその場所へ移動します。これは知識を試す問題ではないので、正解や不正解はありません。</p>
+<p>ただし、このスライド上のCanvasは操作を体験するためのデモです。この画面で付けた印は保存も送信もされません。</p>
+<p>実際に複数の人から回答を集める場合は、誰がどこを選んだかではなく、回答がどのあたりに集まり、どのくらい広がっているかを見ます。同じページを見ても、全員が同じように感じるとは限りません。この違いは失敗ではなく、作品を考えるためのデータです。</p>
+<p>別の画像やキャッチコピーでも同じように測って比べれば、次の改善につなげられます。ただし、たとえ今日この教室で複数の回答を集めたとしても、その一回の結果だけで、すべての高校生について結論を出すことはできません。</p>
+<p>これが、作品づくりにデータサイエンスを使う一例です。</p>
+<p>データで確かめる対象は、Webページだけではありません。私は、AIの答え方そのものも研究しています。最後には、大学の授業で使っているVAS評価実験の紹介ページも案内します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 研究　AIの「読み方のくせ」を調べる -->
+<div class="lesson-slide research-slide" style="font-size:0.75em">
+<h2>研究　AIの「読み方のくせ」を調べる</h2>
+<div class="story-quote">
+<blockquote>
+<p>彼女は少し笑って、<br />「よかったね」と言った。</p>
+</blockquote>
+</div>
+<div class="interpretation-grid">
+<div class="card-grid-heading"><span>読み方</span><strong>解釈の例</strong></div>
+<div><span>事実を慎重に読む</span><strong>素直な祝福かもしれない</strong></div>
+<div><span>物語の行間を読む</span><strong>安堵や皮肉の可能性もある</strong></div>
+<div><span>相手の気持ちを考える</span><strong>無理に笑った可能性もある</strong></div>
+</div>
+<div class="question-callout">どれか一つだけが、絶対の正解？</div>
+<div class="bottom-message">AIの感情ではなく、曖昧さの扱い方を測る</div>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、私が行っている研究を少しだけ紹介します。
+<p>この一文を読んでください。</p>
+<p>「彼女は少し笑って、『よかったね』と言った。」</p>
+<p>この人は、本当に喜んでいるのでしょうか。安心したのでしょうか。皮肉なのでしょうか。それとも、本当はつらいのに笑ったのでしょうか。</p>
+<p>この文だけでは前後の状況が分からないので、解釈を一つに決められません。事実を慎重に読む、物語の行間を読む、相手の気持ちを考える、といった読み方によって、注目する点が変わります。</p>
+<p>AIにも読み方を指示すると、同じ文章への答えが変わります。これはAI自身の気分や感情が変わったという意味ではありません。与えた読み方に応じて、解釈の仕方が変わったということです。</p>
+<p>私は、AIに本当の感情があるかを調べているのではありません。AIが曖昧な文章をどう解釈し、どの程度強く言い切り、根拠や別の可能性を示せるかを測っています。</p>
+<p>三つの解釈のうち、この短い文だけで絶対に間違いだと言えるものはあるでしょうか。大切なのは、根拠を示し、分からないことを分からないと言い、別の可能性を残すことです。</p>
+<p>AIの研究には、AIを速く賢くする研究だけでなく、AIの答え方を測り、言い切りすぎを見つける研究もあります。</p>
+<p>今日のすべてに共通する考え方を、最後に四つの問いへまとめます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日の四つの問い -->
+<div class="lesson-slide conclusion-slide" style="font-size:0.8em">
+<h2>今日の四つの問い</h2>
+<div class="question-grid conclusion-questions">
+<div><span>1</span><strong>何を作る？</strong></div>
+<div><span>2</span><strong>誰のため？</strong></div>
+<div><span>3</span><strong>何を守る？</strong></div>
+<div><span>4</span><strong>どう確かめる？</strong></div>
+</div>
+<div class="final-message">
+<blockquote>
+<p>AIは未来を決めるものではなく、<br /><strong>アイデアを何度でも<br />試作品にしてくれる相棒</strong></p>
+</blockquote>
+</div>
+<div class="final-question">君なら、AIと何をつくる？</div>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日は、皆さんの三つの言葉をファイルに記録し、AIで画像を作りました。その画像を読み直し、VS CodeでWebページにし、実際に動かして直し、最後に感じ方をデータとして扱う考え方を見ました。
+<p>その全部に共通する問いが、この四つです。</p>
+<p>一つ目は、何を作るのか。目的が曖昧なら、AIは足りない部分を補います。</p>
+<p>二つ目は、誰のために作るのか。今日は、高校生向けのイベント告知ページを作りました。</p>
+<p>三つ目は、何を守るのか。個人情報、権利、安全など、便利さより先に考える条件があります。</p>
+<p>四つ目は、どう確かめるのか。説明した内容が画像に本当に見えるか、ページが動くか、相手に伝わるかを人間が確認します。</p>
+<p>AIが自分で未来を決めるわけではありません。何を目指し、何を採用するかを決めるのは人間です。</p>
+<p>AIは、皆さんのアイデアを何度でも試作品にしてくれる相棒です。データサイエンスとプログラミングを学ぶと、その相棒を使うだけでなく、狙いどおりかを確かめ、直し、新しい仕組みを作れるようになります。</p>
+<p>最後に10秒だけ考えてください。</p>
+<p>「皆さんなら、AIと一緒に何を作ってみたいですか。」</p>
+<p>まとめはここまでです。最後に、大学でVASをどのように学んでいるか、参考ページを紹介します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 感性データ処理 -->
+<div class="lesson-slide qr-slide" style="font-size:0.8em">
+<h2>感性データ処理</h2>
+<h3>VAS評価実験</h3>
+<div class="qr-layout">
+<div class="qr-copy">
+<p><a class="experiment-link" href="https://nshrhm.github.io/kansei/experiment/">https://nshrhm.github.io/kansei/experiment/</a></p>
+<div class="open-campus-link">
+<p><a href="https://www.shimonoseki-cu.ac.jp/opencampus/">https://www.shimonoseki-cu.ac.jp/opencampus/</a></p>
+</div>
+</div>
+<a class="qr-card" href="https://nshrhm.github.io/kansei/experiment/">
+<img src="QR_593084.png" alt="VAS評価実験ページを開くQRコード">
+</a>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、大学での学びを知るための参考情報を紹介します。
+<p>このQRコードから、下関市立大学データサイエンス学部の三年次科目「感性データ処理」で使っている、VAS評価実験の入口ページを開けます。大学生が設計した複数の実験テーマや、VASで感じ方を測る方法を見ることができます。</p>
+<p>これは、先ほどスライド上で操作したCanvasとは別のページです。Canvasに付けた印が、このページへ送られることはありません。また、この授業で皆さんに実験への回答を求めるものではありません。興味がある人は、大学で扱う学習内容の一例として見てください。</p>
+<p>画面にあるもう一つのURLからは、下関市立大学のオープンキャンパス情報を確認できます。</p>
+<p>以上で授業を終わります。今日はありがとうございました。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
