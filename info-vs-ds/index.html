@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>情報工学とデータサイエンスの違い</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: 講演のテーマと、優劣ではなく進路判断を扱うことを伝える -->
+<div class="title-slide">
+<div class="title-copy">
+<h2>情報工学と<br>データサイエンスの違い</h2>
+<p class="subtitle">「仕組み」と「根拠」から考える進路選択</p>
+<p class="presenter">下関市立大学 データサイエンス学部 教授 白濵 成希</p>
+</div>
+<img class="university-logo" src="./assets/2026_logo.png" alt="下関市立大学ロゴ">
+</div>
+<p class="opening-message">どちらが優れているかではなく、<strong>自分は何に取り組みたいか</strong>を考えます。</p>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日は、情報工学とデータサイエンスの違いについてお話しします。二つの分野のどちらが上か、どちらが将来有利か、という順位を決める話ではありません。皆さんが大学で何を学びたいのか、自分はどのような問いにわくわくするのかを考えるための材料を持ち帰ってもらうことが目的です。
+<p>進路を調べると、「AI」「DX」「データ」といった似た言葉が多く、学部名だけでは違いが分かりにくいと思います。今日は技術の名前を暗記するのではなく、何を問い、何ができたら成功と考える分野なのかを比べます。</p>
+<p>私は大学と大学院で情報工学を学び、現在はデータサイエンス学部で教育と研究をしています。その経験も使いながら、二つの分野が離れた選択肢ではなく、後からつながり発展し得ることも説明します。まず、身近な問題から始めましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: 食堂混雑の二択で、自分の関心を直感的に選んでもらう -->
+<div class="slide-body">
+<h2>最初の質問：どちらを先にやりたい？</h2>
+<p class="scenario">学校食堂の混雑を減らすとしたら……</p>
+<div class="choice-grid">
+<div class="choice-card info-card">
+<span class="choice-label">A</span>
+<h3>予約・整理券アプリを作る</h3>
+<p>画面、保存、通信、安全性を考えて、実際に動く仕組みにする</p>
+</div>
+<div class="choice-card ds-card">
+<span class="choice-label">B</span>
+<h3>混雑データを分析する</h3>
+<p>いつ、なぜ混むのかを調べ、効果のありそうな対策を考える</p>
+</div>
+</div>
+<p class="vote-prompt">近い方に挙手してください。迷った人、両方の人も大歓迎です。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+まず、正解のない二択です。学校食堂が昼休みに混雑して困っているとします。皆さんなら、予約や整理券のアプリを作る方を先にやりたいでしょうか。それとも、混雑のデータを集めて、原因と対策を考える方を先にやりたいでしょうか。
+<p>Aに近い人は挙手してください。ありがとうございます。ではBに近い人はどうでしょう。まだ分からない人、両方やってみたい人も手を挙げてみてください。周りと違っても問題ありません。ここでは知識を試しているのではなく、何に最初に関心が向くかを見ています。</p>
+<p>Aを選んだ人は、操作する画面やデータの保存方法、同時に利用しても止まらない仕組みに関心があるかもしれません。Bを選んだ人は、いつ混むのか、原因は何か、対策が本当に効いたかを確かめたいのかもしれません。この直感的な選択を、今日の話の後半でもう一度振り返ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: 二択は入口にすぎず、現実の課題解決には両分野が必要だと示す -->
+<div class="slide-body">
+<h2>本当に混雑を減らすには、両方が必要</h2>
+<div class="two-halves">
+<div class="half info-half">
+<span>情報工学</span>
+<strong>データを集め、使える仕組みを成立させる</strong>
+</div>
+<div class="plus-sign">＋</div>
+<div class="half ds-half">
+<span>データサイエンス</span>
+<strong>原因や効果を調べ、次の判断につなげる</strong>
+</div>
+</div>
+<div class="callout primary-message">
+二択は<strong>違いを理解する入口</strong>。実社会では、境界を越えて協働します。
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AとBは、どちらか一方だけが正解という意味ではありません。アプリがなければ、必要なデータを安定して集められないかもしれません。分析だけしても、その結果を予約方法やメニューの準備に反映する仕組みがなければ、混雑は改善しません。
+<p>例えば、待ち時間を予測するモデルが高精度でも、表示画面が分かりにくかったり、アクセスが集中すると止まったりすれば役立ちません。反対に、とても使いやすいアプリを作っても、集めるデータが偏っていれば、誤った混雑予測を表示するかもしれません。技術的に動くことと、根拠が妥当であることの両方が必要です。</p>
+<p>今日はいったん二つを分けて特徴を見ますが、最後には再びつなげます。進路も同じで、最初にどちらかへ進んだから、もう一方に関われなくなるわけではありません。その前に、皆さんがすでに学んでいる内容との接点を確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: 高校の情報Iが、すでに両分野への入口になっていることを示す -->
+<div class="slide-body">
+<h2>「情報I」で、もう両方に出会っている</h2>
+<div class="info1-grid">
+<div>
+<span class="subject-icon">💻</span>
+<strong>プログラミング</strong>
+<small>処理を組み立て、動かす</small>
+</div>
+<div>
+<span class="subject-icon">🛜</span>
+<strong>ネットワーク・安全</strong>
+<small>情報を届け、守る</small>
+</div>
+<div>
+<span class="subject-icon">💹</span>
+<strong>データ活用</strong>
+<small>整理し、読み取り、説明する</small>
+</div>
+<div>
+<span class="subject-icon">📊</span>
+<strong>モデル化</strong>
+<small>現実を単純化して確かめる</small>
+</div>
+</div>
+<p class="bottom-message">大学では、入口をより深く、体系的に学びます。</p>
+<p class="source-line">出典：文部科学省「高等学校情報科『情報I』『情報II』」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+情報工学やデータサイエンスは、大学に入って初めて出会う遠い世界ではありません。皆さんが学ぶ情報Iには、プログラミング、ネットワークとセキュリティ、データの活用、モデル化とシミュレーションなどが含まれています。
+<p>プログラムや通信の仕組みを深く学ぶ方向は情報工学へ、データから現象を理解する方向はデータサイエンスへつながります。そして、問題を発見し、情報を集め、方法を考え、結果を評価する流れは両方に共通します。情報Iの授業で、コードを直して動かしたときが面白かったか、グラフから予想外の傾向を見つけたときが面白かったか、思い出してみてください。</p>
+<p>大学では、これらの入口を数学や理論と結びつけ、より大きな問題へ広げます。今の得意不得意だけでなく、もっと深く知りたいと思った活動が進路の手掛かりになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: 高校生向けの最初の近似として、両分野の重心を短く対比する -->
+<div class="slide-body">
+<h2>まずは、この違いから</h2>
+<div class="contrast-grid large-contrast">
+<div class="contrast-panel info-panel">
+<p class="eyebrow">情報工学</p>
+<p class="big-phrase">仕組みを<br>つくる</p>
+<p>正しく・速く・安全に・使える形で</p>
+</div>
+<div class="contrast-panel ds-panel">
+<p class="eyebrow">データサイエンス</p>
+<p class="big-phrase">データから<br>根拠をつくる</p>
+<p>どこまでが確かなのか考え、判断へ</p>
+</div>
+</div>
+<p class="source-line">整理：調査レポート第1章・第3章</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+高校生向けに最も短く言うと、情報工学は仕組みをつくること、データサイエンスはデータから根拠をつくることに重心があります。情報工学は、情報を扱う仕組みを正しく、速く、安全に、使える形で成立させます。データサイエンスは、データからどこまで確かに何が言えるかを考え、予測、評価、提案、判断につなげます。
+<p>ここで「情報工学は作る人、データサイエンスは考える人」と誤解しないでください。情報工学でも、利用者の要求を理解し、設計を考えます。データサイエンスでも、分析プログラムやデータ処理の仕組みを作ります。違いは、使う道具の有無ではなく、何を専門の中心に置き、何を成功と評価するかです。</p>
+<p>また、データサイエンスは情報工学より簡単なプログラミングをする分野でも、情報工学を新しい名前に変えた分野でもありません。この短い対比を入口にしながら、次は共有している基礎と、データサイエンスに必要な領域知識を見ます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: 共通基盤と領域知識の重なりとして、二つの学問を捉え直す -->
+<div class="slide-body">
+<h2>二つの「箱」ではなく、重なりで考える</h2>
+<div class="overlap-figure" role="img" aria-label="情報工学、数学統計、応用領域が重なり、データサイエンスを形づくる図">
+<div class="overlap-circle computing">情報工学・<br>コンピューティング</div>
+<div class="overlap-circle statistics">数学・統計</div>
+<div class="overlap-circle domain">応用領域</div>
+<div class="overlap-center">データ<br>サイエンス</div>
+</div>
+<div class="shared-tools">
+<span>数学</span><span>プログラミング</span><span>アルゴリズム</span><span>DB</span><span>AI</span>
+</div>
+<p class="source-line">出典：日本学術会議「情報学分野」(2016)、情報処理学会「DSカリキュラム標準」(2021)</p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+情報工学とデータサイエンスを、境界線で完全に分かれた二つの箱として覚えると実態を見失います。数学、プログラミング、アルゴリズム、データベース、AIなど、多くの道具を共有しています。
+<p>データサイエンスでは、さらに確率や統計と、経営、医療、行政、教育など分析対象の知識が強く結びつきます。例えば医療データを分析するなら、数字の計算だけでなく、病気の定義、検査の意味、患者の安全、個人情報について理解する必要があります。売上データなら、商品、顧客、季節、販売方法の理解がなければ数字を誤って解釈します。</p>
+<p>一方、情報工学も利用者や社会から切り離された技術だけではありません。使いやすさ、アクセシビリティ、プライバシー、社会への影響を考えます。同じ道具を使っていても、中心に置く問いと成功の基準が少し違う、と考えてください。まず情報工学側の問いを詳しく見ます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: 情報工学の中心を、システムを成立させる問いとして具体化する -->
+<div class="slide-body">
+<h2>情報工学は「どう成立させるか」を問う</h2>
+<div class="question-stack info-questions">
+<div><span>正</span>想定した入力に、正しい結果を返すか</div>
+<div><span>速</span>利用者やデータが増えても、速く動くか</div>
+<div><span>守</span>故障や攻撃があっても、安全に使えるか</div>
+<div><span>続</span>他の人が読み、修正し、運用し続けられるか</div>
+</div>
+<p class="example-strip"><strong>対象：</strong>アルゴリズム、ソフトウェア、OS、ネットワーク、DB、セキュリティ、ロボットなど</p>
+<p class="source-line">出典：情報処理学会「カリキュラム標準J17」、ACMほか「CS2023」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+情報工学では、情報をどのように表現し、計算し、保存し、通信し、人や機械が使える形にするかを学びます。プログラムが一度動けば終わりではありません。入力が増えても速いか、想定外の操作で壊れないか、攻撃から守れるか、後から別の人が修正できるかまで考えます。
+<p>例えば、千人が使えるアプリを百万人が同時に使うと、同じプログラムでも動かなくなるかもしれません。正しいパスワードを確認できても、通信の途中で内容が漏れれば安全とは言えません。機能を追加するたびに全体が壊れる設計では、長く使い続けられません。そのため、アルゴリズム、データ構造、OS、ネットワーク、データベース、ソフトウェア工学などを体系的に学びます。</p>
+<p>大学によっては電子回路、ロボット、通信、画像や音声も深く扱います。「情報工学はアプリ制作だけ」と考えると範囲を狭く見過ぎます。作るもの自体と、その内部の原理に関心が向き、なぜ動くのか、どう改善できるかを掘り下げる分野です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: 情報工学の達成感と避けられない難しさを対にして示す -->
+<div class="slide-body">
+<h2>「動いた！」の先にある、情報工学の面白さ</h2>
+<div class="success-struggle">
+<div class="success-box">
+<h3>達成感</h3>
+<ul>
+<li>自分の設計が実際に動く</li>
+<li>複雑な仕組みを理解できる</li>
+<li>より速く、安全に、美しくできる</li>
+</ul>
+</div>
+<div class="struggle-box">
+<h3>続けて向き合う難しさ</h3>
+<ul>
+<li>一行のバグを長時間探す</li>
+<li>部品をつなぐと予想外に壊れる</li>
+<li>仕様変更や運用後の修正が続く</li>
+</ul>
+</div>
+</div>
+<p class="bottom-message">成功とは「動く」だけでなく、<strong>信頼して使い続けられる</strong>こと。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+情報工学の魅力は、自分が考えたものが実際に動くことです。仕組みを理解し、同じ機能でももっと速く、もっと安全に、もっと分かりやすくできる面白さがあります。利用者には見えない工夫でも、応答が速くなったり、故障から復旧できたり、多くの人を支える基盤になります。
+<p>その一方で、小さなバグを何時間も探したり、個別には動く部品をつないだ途端に問題が起きたりします。原因が自分のコードではなく、通信、設定、データ形式、利用環境の組み合わせにあることもあります。完成後も、利用者の増加、セキュリティ対策、仕様変更に対応します。</p>
+<p>ここで大切なのは、バグが好きかどうかではありません。うまく動かないときに、問題を小さく分け、記録を取り、仮説を立てて確かめる過程に意味を感じられるかです。正しく動くことに加え、信頼して使い続けられる仕組みにしたいと思えるかが、関心を考える材料になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: データサイエンスの中心を、根拠の妥当性と判断につなぐ問いとして示す -->
+<div class="slide-body">
+<h2>データサイエンスは「何が言えるか」を問う</h2>
+<div class="question-stack ds-questions">
+<div><span>問</span>誰の、どの判断に役立つ問いなのか</div>
+<div><span>測</span>必要なものを、本当に測れているか</div>
+<div><span>確</span>偶然や偏りではなく、どこまで確かか</div>
+<div><span>動</span>結果を説明し、行動や改善につなげられるか</div>
+</div>
+<p class="example-strip"><strong>成果：</strong>分析、モデル、予測、可視化、評価、提案、施策</p>
+<p class="source-line">出典：情報処理学会「DSカリキュラム標準」(2021)、厚生労働省 job tag</p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+データサイエンスは、データに計算をかけてグラフを作るだけの分野ではありません。最初に、誰の何を良くするための問いかを考えます。「売上を予測する」という課題でも、誰が、いつ、どの判断に使うのかで必要な精度やデータが変わります。
+<p>次に、必要なものを測れているか、データに欠けや偏りがないかを確認します。集めやすい人のデータだけで全体を説明していないか、結果を知った後の情報を予測に混ぜていないか、といった点も調べます。分析した後も、見つかった関係が偶然ではないか、別の人や時期にも成り立つか、相関を原因だと思い込んでいないかを考えます。</p>
+<p>最後に、結果を利用者や専門家へ説明し、施策を実行した後に本当に改善したかを評価します。高い予測精度だけでなく、誤りの影響、不確実性、公平性、現場での有用性までが成功の条件です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: データは現実そのものではなく、測り方を通した記録だと理解してもらう -->
+<div class="slide-body">
+<h2>データは「現実そのもの」ではない</h2>
+<div class="measurement-flow">
+<div class="world-box">現実の世界<br><small>例：学力、健康、満足</small></div>
+<div class="flow-arrow">→</div>
+<div class="lens-box">測り方・対象・時期<br><small>試験？質問？誰を含む？</small></div>
+<div class="flow-arrow">→</div>
+<div class="data-box">記録されたデータ<br><small>現実の一部</small></div>
+</div>
+<div class="four-checks">
+<span>何を測った？</span><span>誰が含まれる？</span><span>どう測った？</span><span>どこまで言える？</span>
+</div>
+<p class="bottom-message">数字があることと、結論が正しいことは同じではありません。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+データサイエンスで特に大切なのは、データを客観的な事実そのものだと思い込まないことです。例えば学力を考えても、定期試験、模擬試験、レポート、授業中の活動では測っているものが違います。欠席した人を含むか、いつ測ったかによっても結果は変わります。
+<p>身長のように比較的直接測れそうなものでも、機器、姿勢、時刻によって小さな違いが出ます。まして満足、意欲、幸福、使いやすさのような概念は、一つの数字だけで完全には表せません。データは、現実の一部を、ある目的と方法で記録したものです。</p>
+<p>だから、何を、誰について、どのように測り、どこまで言えるのかを確かめます。データを疑って捨てるのではなく、作られ方を理解して、言える範囲を正確に示します。明確な一つの正解が出ない状況でも、条件と不確実性を説明し、次に何を調べるべきか提案できることが、データサイエンスの強さです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: 一つのデータサービスの工程で、両分野の担当が何度も交差することを示す -->
+<div class="slide-body">
+<h2>食堂の混雑対策を「使えるサービス」にするまで</h2>
+<div class="service-pipeline">
+<div><span>1</span><strong>問い</strong><small>何を改善する？</small><em class="ds-dot">DS</em></div>
+<div><span>2</span><strong>測る</strong><small>何を記録する？</small><em class="both-dot">両方</em></div>
+<div><span>3</span><strong>集める</strong><small>安全に保存する</small><em class="ie-dot">情報</em></div>
+<div><span>4</span><strong>分析</strong><small>原因・予測・効果</small><em class="ds-dot">DS</em></div>
+<div><span>5</span><strong>届ける</strong><small>アプリで使える形に</small><em class="ie-dot">情報</em></div>
+<div><span>6</span><strong>改善</strong><small>本当に減った？</small><em class="both-dot">両方</em></div>
+</div>
+<p class="bottom-message">境界は一本の線ではなく、工程の中で何度も交差します。</p>
+<p class="source-line">出典：調査レポート第7章、IPA「デジタルスキル標準 ver.2.0」(2026)</p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最初の食堂の例を、サービス全体として見てみます。まず、何を改善するかを決めます。「混雑を減らす」だけでは曖昧なので、待ち時間、行列の長さ、売り切れ、利用者の公平性など、何を良くしたいかを定めます。次に、入店時刻を記録するのか、注文数を見るのか、カメラやセンサーを使うのか、混雑をどう測るかを設計します。
+<p>入力画面、通信、認証、データベースを用意して、安全にデータを集める部分では情報工学が強く働きます。欠損や偏りを確認し、混雑の原因や予測、対策の効果を分析する部分ではデータサイエンスが強く働きます。そして結果をアプリで届ける段階で、再びシステム設計が必要です。</p>
+<p>導入後には、本当に待ち時間が減ったか、一部の人だけ不便になっていないかを測り直します。問い、測定、実装、評価は一方向ではなく、結果を見ながら戻ります。二つの分野は前半と後半に分かれるのではなく、工程の中で何度も協働します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: 講演者の研究を、情報工学とデータサイエンスの接続工程として示す -->
+<div class="slide-body">
+<h2>私の研究でも、二つはつながっている</h2>
+<p class="research-question">人や生成AIが表す「感情」を、どう測り、比べ、解釈するか</p>
+<div class="research-flow">
+<div><strong>回答画面</strong><small>直感的に答えられる？</small><span>HCI・情報工学</span></div>
+<div><strong>安全な保存</strong><small>欠損なく集められる？</small><span>DB・情報工学</span></div>
+<div><strong>感情の数値化</strong><small>何をどう測る？</small><span>VAS・測定</span></div>
+<div><strong>ばらつきの<br>分析</strong><small>曖昧さをどう表す？</small><span>統計・ファジィ</span></div>
+<div><strong>人とLLMの<br>比較</strong><small>公平な実験設計？</small><span>DS・AI</span></div>
+</div>
+<p class="bottom-message">よいシステムだけでも、よい分析手法だけでも、<br>意味のある研究にはなりません。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+私自身の研究を、二つの分野の接点として紹介します。私は、ヒトや大規模言語モデルが表す感情をどのように測り、比べ、解釈するかを研究しています。ここでは研究結果を紹介するのではなく、一つの研究を成立させるために、どの知識が必要になるかを見ます。
+<p>最初に、ヒトが回答する画面を作ります。例えば、気持ちの強さを線の上の位置で答えるVAS、ビジュアル・アナログ・スケールを使うとします。画面の大きさや操作方法が違えば、回答のしやすさや記録値に影響するかもしれません。直感的に操作できる画面を設計し、入力ミスを防ぎ、回答を欠けなく安全に保存するところでは、プログラミング、ヒューマンコンピュータインタラクション、データベースなど、情報工学の知識を使います。</p>
+<p>しかし、きれいな画面で数字を集めただけでは、感情を正しく測れたとは言えません。「うれしい」と「安心した」は同じなのか、線の中央を選んだ人の気持ちは本当に同じなのか、個人差をどう扱うかを考えます。曖昧さや段階的な違いを表すためにファジィ理論を使い、ばらつきや関係を調べるために統計やデータサイエンスを使います。</p>
+<p>さらに、ヒトの回答と生成AIの出力を比べるなら、同じ質問、同じ条件、独立した評価方法が必要です。数値が近かったというだけで、AIが人と同じ感情を持つとは言えません。測ったものが何を意味するか、どこまで一般化できるかを慎重に解釈します。</p>
+<p>このように、システムがなければデータを集められず、測定設計が悪ければ整ったデータにも意味がなく、分析結果だけでは社会的な解釈ができません。私は情報工学からデータサイエンスへ単純に乗り換えたのではなく、情報工学で学んだ数学、プログラミング、アルゴリズム、システム構築を、新しい問いに接続しています。皆さんの進路も、最初の選択が将来を一つに固定するものではありません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: AIにより基礎が不要になるのではなく、検証と統合の重要性が増すと伝える -->
+<div class="slide-body">
+<h2>AI時代に、二つの違いはなくなる？</h2>
+<p class="answer-banner">なくならない。ただし、境界をつなぐ仕事は増える。</p>
+<div class="ai-era-grid">
+<div>
+<h3>情報工学で重要になること</h3>
+<p>AI生成コードの検証／全体設計／テスト／安全性／運用責任</p>
+</div>
+<div>
+<h3>データサイエンスで重要になること</h3>
+<p>問い・測定の妥当性／データ漏えい／評価／不確実性／公平性</p>
+</div>
+</div>
+<div class="boundary-jobs">
+<span>データエンジニア</span><span>AI・MLエンジニア</span><span>MLOps</span><span>医療情報</span>
+</div>
+<p class="source-line">出典：調査レポート第7章、IPA「デジタルスキル標準 ver.2.0」(2026)</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+生成AIは、コードを書いたり、データを整形したり、分析方法を提案したりしてくれます。それでは基礎を学ばなくてよいのでしょうか。むしろ、出力が正しいか、安全か、目的に合っているかを検証する力が重要になります。AIは自信があるように見える誤ったコードや説明を返すことがあり、動いたことだけでは正しさの証明になりません。
+<p>情報工学では、AIが作った部品を含めてシステム全体を設計し、テストし、権限や個人情報を守り、障害時に対応する責任があります。データサイエンスでは、問いや測定が妥当か、学習データと評価データが混ざっていないか、相関を原因と誤解していないか、結果を使ってよい条件かを判断します。</p>
+<p>データエンジニア、機械学習エンジニア、MLOpsのように、データを集める基盤、モデル、サービス、運用をつなぐ仕事もあります。AI時代に基礎の価値が消えるのではなく、AIの出力を確かめ、現実の仕組みに責任を持って組み込むために、二つの基礎がさらに必要になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: 得意不得意ではなく、どちらの難しさに意味を感じるかを考えてもらう -->
+<div class="slide-body">
+<h2>もう一度、挙手してください</h2>
+<p class="scenario">どちらの難しさなら「もう少し考えたい」と思えますか？</p>
+<div class="difficulty-grid">
+<div class="info-difficulty">
+<span>A</span>
+<strong>動かない原因を探す</strong>
+<p>一行のバグ、部品の接続、性能と安全性の両立</p>
+</div>
+<div class="ds-difficulty">
+<span>B</span>
+<strong>断定できない理由を探す</strong>
+<p>欠けたデータ、曖昧な問い、相関と因果、不確実な結論</p>
+</div>
+</div>
+<p class="vote-prompt">「楽そうな方」ではなく、難しくても意味を感じる方を考えます。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最初は、やってみたい活動を選びました。今度は、どちらの難しさなら続けて向き合えそうかを考えてください。Aは、動かない原因を探し、設計を直し、性能や安全性を両立する難しさです。Bは、データが足りない、結論を断定できない、問いから考え直す必要があるという難しさです。
+<p>Aに近い人は挙手してください。ではBに近い人はどうでしょう。最初の投票と答えが変わっても構いません。作ることには惹かれるけれどバグを追うよりデータの意味を考えたい人や、社会問題に関心はあるけれど分析よりサービス実装をしたい人もいるでしょう。</p>
+<p>適性は、数学の現在の点数やプログラミング経験だけで決まりません。大学は基礎から学ぶ場所です。うまくいかないときにも、その問題をもう少し解きたいと思えるか、どちらの難しさに意味を感じられるかが大切です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: 関心を二択で断定せず、技術と応用の二軸上に位置づける -->
+<div class="slide-body">
+<h2>自分の関心を、二つの軸で置いてみる</h2>
+<div class="axis-map" role="img" aria-label="横軸が仕組みを作る関心からデータで判断する関心、縦軸が現場応用から原理探究を示す関心マップ">
+<div class="axis-y top">原理・技術を深く掘りたい</div>
+<div class="axis-y bottom">現場・社会で応用したい</div>
+<div class="axis-x left">仕組み・システムを作りたい</div>
+<div class="axis-x right">データから理解・判断したい</div>
+<div class="quadrant q1">コンピュータ科学<br>アルゴリズム</div>
+<div class="quadrant q2">統計・機械学習理論</div>
+<div class="quadrant q3">ソフトウェア・HCI</div>
+<div class="quadrant q4">ビジネス・ヘルスDS</div>
+<div class="center-zone">AI／データ工学<br>情報システム</div>
+</div>
+<p class="bottom-message">中央や境界にいるのも、自然な関心です。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+二つの分野を性格診断のように決めつけないため、二つの軸で考えてみます。横方向は、仕組みやシステムを作りたい関心から、データで現象を理解し判断したい関心です。縦方向は、原理や理論を深く掘りたい関心から、現場や社会で応用したい関心です。
+<p>左上なら、計算の原理、アルゴリズム、コンピュータの内部に関心が近いかもしれません。右上なら、統計や機械学習の理論を深く学びたいかもしれません。左下なら、利用者のためのソフトウェアや情報システムを作る方向、右下なら、ビジネスや健康など具体的な問題をデータで改善する方向が考えられます。</p>
+<p>中央には、AI、データ工学、情報システム、医療情報など、両方を強く使う領域があります。自分を無理に一点へ固定する必要も、今すぐ専門を決める必要もありません。どちらの方向へ少し強く引かれるか、原理と応用のどちらをもっと知りたいかを言葉にできれば、大学の授業を比較しやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: 講演後に実行できる三つの小体験で、関心を具体的に確かめる方法を示す -->
+<div class="slide-body">
+<h2>適性は、三つの小さな体験で確かめる</h2>
+<div class="experience-grid">
+<div>
+<span>A</span><strong>作る</strong>
+<p>備品貸出Webアプリ</p>
+<small>設計やバグ修正が面白い？</small>
+</div>
+<div>
+<span>B</span><strong>調べる</strong>
+<p>公開データをグラフ化</p>
+<small>予想外の結果を追いたい？</small>
+</div>
+<div>
+<span>C</span><strong>つなぐ</strong>
+<p>混雑予測ダッシュボード</p>
+<small>作る・分析する、どちらに時間を使いたい？</small>
+</div>
+</div>
+<div class="reflection-strip">振り返り：何をしていると時間を忘れた？　どの失敗なら再挑戦したい？</div>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+進路は、今日の話だけで決めなくてかまいません。小さく体験して比べてください。Aでは、教室の備品貸出など、簡単なWebアプリを作ります。利用者と必要な機能を決め、データを保存し、重複貸出や誤入力を防ぎます。完成度より、設計やバグ修正を面白いと感じたかを見ます。
+<p>Bでは、気温や図書館利用者数、スポーツ記録などの公開データを使います。最初に問いを一文で書き、データの出所、欠損、グラフ、言えることと言えないことを説明します。予想と違う結果が出たとき、失敗だと思うか、さらに調べたいと思うかを見ます。</p>
+<p>Cでは、データを集め、分析し、画面で見せるところまでつなぎます。システム作りと分析のどちらに時間を使いたくなったか、両方をつなぐことが楽しかったかを振り返ります。何をしていると時間を忘れたか、どの失敗なら再挑戦したいかが、自分の関心を具体的にします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: 大学名や宣伝語ではなく、実際の教育内容を比較する手順を示す -->
+<div class="slide-body">
+<h2>大学は「学部名」だけで選ばない</h2>
+<div class="curriculum-lens">
+<div><span>1</span><strong>必修科目</strong><small>何を全員が学ぶ？</small></div>
+<div><span>2</span><strong>シラバス</strong><small>どこまで深く扱う？</small></div>
+<div><span>3</span><strong>研究室・卒業研究</strong><small>最後に何へ挑戦する？</small></div>
+</div>
+<div class="check-pairs">
+<p><strong>情報工学の深さ：</strong>OS、計算機構成、ネットワーク、セキュリティ、ソフトウェア工学</p>
+<p><strong>DSの深さ：</strong>確率・統計、回帰、機械学習、調査・実験、領域応用</p>
+</div>
+<p class="bottom-message">「AI」「データサイエンス」という名前より、4年間の中身を見る。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+同じ学部名でも、大学によって学ぶ内容はかなり違います。情報工学部の中にデータサイエンスやAIのコースがある場合も、データサイエンス学部でプログラミング、アルゴリズム、データベースをしっかり学ぶ場合もあります。「AI」「DX」「情報」という名前だけでは、四年間の重心は分かりません。
+<p>最初に必修科目を見ます。選択科目に興味のある名前があっても、毎年開講されるか、自分が履修できるかは別だからです。次にシラバスで、授業名だけでなく、扱う理論、演習、前提科目、評価方法まで確認します。例えば「AI」という科目でも、仕組みの数学を学ぶ授業、プログラムを実装する授業、既存ツールを利用する授業では内容が違います。</p>
+<p>最後に、教員の専門、研究室、プロジェクト、卒業研究を調べます。四年間の最後に何を自分で考え、作り、分析できるかが見えてきます。大学の強みだけでなく、自分が学びたいのに不足している科目も確認し、異なるタイプの大学と比較してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: 下関市立大学DS学部の教育を、数理統計・情報・応用の統合として位置づける -->
+<div class="slide-body scu-slide">
+<div class="heading-with-logo">
+<h2>下関市立大学データサイエンス学部</h2>
+<img src="./assets/2026_logo.png" alt="下関市立大学ロゴ">
+</div>
+<div class="scu-triad">
+<div><strong>数理・統計</strong><span>線形代数／解析／数理統計／回帰／カテゴリカルデータ</span></div>
+<div><strong>情報・AI</strong><span>プログラミング／アルゴリズム／DB／ネットワーク／AI</span></div>
+<div><strong>応用領域</strong><span>ビジネス／ヘルス／社会科学／倫理／コミュニケーション</span></div>
+</div>
+<div class="scu-path"><span>基礎</span> → <span>分析演習</span> → <span>DSプロジェクト</span> → <span>卒業研究</span></div>
+<p class="bottom-message">情報工学の基礎を使い、データを社会の判断と価値創造へつなげる。</p>
+<p class="source-line">出典：下関市立大学「3つのポリシー」「授業科目表」(2026年8月20日確認)</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここまでの見方を使って、下関市立大学データサイエンス学部を位置づけます。公式の授業科目表を見ると、数学基礎、線形代数、解析、数理統計、プログラミング、アルゴリズムが専門基礎に置かれています。データベース、ネットワーク、AIも学びます。つまり、用意されたAIを操作するだけではなく、数理と情報の基礎から積み上げる構成です。
+<p>その上で、回帰分析、定量てきデータ解析、カテゴリカルデータ解析、データマイニングと演習を段階的に学びます。応用先として、経営情報、マーケティング、最適化などのビジネス領域と、疫学、公衆衛生、生物統計、医療健康情報などのヘルス領域があります。何のために分析するかを、対象分野と結びつけます。</p>
+<p>さらに、DSプロジェクトでは現実の課題をチームで扱い、卒業研究では自分の問いを深めます。分析手法だけでなく、問いの設定、協働、説明、倫理まで含めて社会の判断と価値創造へつなげることが学部の重心です。情報工学の基礎を使いますが、OSや回路そのものより、統計的分析と領域応用を専門の中心に置きます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: 下関市立大学に合いやすい関心と、他分野も比較すべき関心を公平に示す -->
+<div class="slide-body">
+<h2>自分の関心と、学部の重心を合わせる</h2>
+<div class="fit-grid">
+<div class="good-fit">
+<h3>下関市立大学DS学部と合いやすい</h3>
+<ul>
+<li>数学とプログラミングの両方を学びたい</li>
+<li>ビジネス・健康・人や社会をデータで考えたい</li>
+<li>分析結果を説明し、提案へつなげたい</li>
+</ul>
+</div>
+<div class="compare-fit">
+<h3>情報工学系とも丁寧に比較したい</h3>
+<ul>
+<li>CPU、OS、コンパイラを中心に深く学びたい</li>
+<li>回路、通信、ロボット、制御に強く惹かれる</li>
+<li>大規模ソフトウェア設計を専門の中心にしたい</li>
+</ul>
+</div>
+</div>
+<div class="new-faculty-note">2024年開設。学部固有の卒業・就職実績ではなく、公開カリキュラムと実際の学びで判断します。</div>
+<p class="source-line">出典：下関市立大学「データサイエンス学部開設式」(2024)、調査レポート第13章</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+すべての高校生に同じ学部を勧めることは、よい進路支援ではありません。数学とプログラミングの両方を基礎から学び、ビジネスや健康、人や社会の課題をデータで考え、分析結果を説明して提案につなげたい人には、本学部が具体的な選択肢になります。AIを使ってみたいだけでなく、なぜその結果になるのか、どこまで信頼できるのかを理解したい人にも合いやすいでしょう。
+<p>一方、CPUの内部、OS、コンパイラ、電子回路、通信、ロボット、制御、大規模ソフトウェア設計を専門の中心にしたい人は、情報工学、コンピュータ科学、電気電子、ロボティクス系のカリキュラムとも比較してください。これは本学部の弱点を並べるのではなく、専門の重心が違うことを正確に伝えるためです。</p>
+<p>本学部は2024年開設で、2026年8月時点では第一期生が四年間の課程を修了していません。そのため、学部固有の卒業・就職実績を先取りして説明することはできません。公開カリキュラム、実施済みの授業やプロジェクト、教員の研究、学生の活動を見て、自分の関心と合うかを判断してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: 三つの結論を再提示し、学部情報とオープンキャンパスへの行動につなげる -->
+<div class="slide-body final-takeaway">
+<h2>今日、持ち帰ってほしいこと</h2>
+<ol class="three-takeaways">
+<li><strong>優劣ではなく重心の違い</strong><span>仕組みをつくる／データから根拠をつくる</span></li>
+<li><strong>適性は固定された才能ではない</strong><span>どの問いと難しさに向き合いたいか</span></li>
+<li><strong>学部名ではなく中身を見る</strong><span>必修科目、シラバス、研究、プロジェクト</span></li>
+</ol>
+<div class="qr-grid">
+<a href="https://www.shimonoseki-cu.ac.jp/data-science/">
+<img src="./assets/qr-scu-ds.svg" alt="下関市立大学データサイエンス学部公式サイトのQRコード">
+<span>データサイエンス学部</span>
+</a>
+<a href="https://www.shimonoseki-cu.ac.jp/nyushi/events/oc">
+<img src="./assets/qr-scu-oc.svg" alt="下関市立大学オープンキャンパス案内のQRコード">
+<span>オープンキャンパス案内</span>
+</a>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に三つだけ確認します。第一に、情報工学とデータサイエンスは優劣ではなく、中心に置く問いの違いです。情報工学が「できる」を支える仕組みを作り、データサイエンスがデータから「何をすべきか」の根拠を考えます。現実のサービスでは両方が必要です。
+<p>第二に、適性は今の得意不得意だけで決まりません。作ることと調べることのどちらに時間を使いたいか、どちらの失敗なら再挑戦したいか、小さな体験を通して確かめてください。数学、情報、国語、英語、理科や社会で学ぶことも、後から専門の土台になります。</p>
+<p>第三に、大学は学部名や流行の言葉だけでなく、必修科目、シラバス、研究、プロジェクトを見て選びます。下関市立大学データサイエンス学部の学びや、今後のオープンキャンパス情報は、画面の案内から確認できます。すべての人に同じ答えはありません。皆さんが自分の関心と大学の中身を照合し、納得できる進路を選ぶことを願っています。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: 質問を受ける時間へ移り、二つの観点から質問を促す -->
+<div class="questions-slide">
+<p class="questions-title">質問はありますか？</p>
+<p class="questions-lead">進路の迷いでも、大学での学びでも大丈夫です。</p>
+<div class="question-prompts">
+<span>「この興味はどちらに近い？」</span>
+<span>「数学やプログラミングはどのくらい必要？」</span>
+<span>「大学では実際に何をする？」</span>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここから五分ほど、質問を受けます。情報工学とデータサイエンスの違いだけでなく、自分の興味がどちらに近いか、数学やプログラミングをどのように準備すればよいか、大学で実際に何をするかといった質問でも構いません。今の時点で進路が決まっていなくても問題ありません。迷っている点そのものを質問にしてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22: 情報工学などの名称には大学ごとの差があるという前提を補足する -->
+<div class="slide-body appendix-slide">
+<p class="appendix-label">APPENDIX</p>
+<h2>用語は、大学によって範囲が違う</h2>
+<div class="term-grid">
+<div><strong>情報学</strong><span>情報の生成・表現・蓄積・伝達・分析まで含む広い概念</span></div>
+<div><strong>情報工学</strong><span>CS、ソフトウェア、通信、電子、制御などを含み得る</span></div>
+<div><strong>コンピュータ科学</strong><span>計算、アルゴリズム、プログラム、計算機システムを体系化</span></div>
+<div><strong>データサイエンス</strong><span>統計・計算・データ工学・AI・領域知識を統合</span></div>
+</div>
+<p class="bottom-message">名称を辞書のように固定せず、各大学の教育内容を確認する。</p>
+<p class="source-line">出典：日本学術会議「情報学分野」(2016)、ACM「CC2020」、情報処理学会</p>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+補足として、用語の注意点です。情報学、情報工学、情報科学、コンピュータ科学は完全な同義語ではありませんが、日本の大学では名称と範囲がさまざまです。情報工学という名称で、ソフトウェア、ネットワーク、電子回路、ロボット、生命情報まで扱う場合があります。データサイエンスも、統計だけの学部、AIだけの学部という意味ではありません。名称だけから内容を決めつけないことが重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23: 本編では省略した比較軸を一覧化し、違いと共通点を確認できるようにする -->
+<div class="slide-body appendix-slide compact-table">
+<p class="appendix-label">APPENDIX</p>
+<h2>詳細比較：違う道具より、違う「成功条件」</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>情報工学の重心</th>
+<th>データサイエンスの重心</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>出発点</td>
+<td>要求、仕様、機能、技術制約</td>
+<td>問い、仮説、意思決定、データ</td>
+</tr>
+<tr>
+<td>プログラミング</td>
+<td>対象・主要な成果物</td>
+<td>分析・検証・自動化の手段</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>離散、論理、計算量、線形代数等</td>
+<td>確率、統計、線形代数、最適化等</td>
+</tr>
+<tr>
+<td>典型的評価</td>
+<td>正しさ、速度、信頼性、安全性</td>
+<td>妥当性、再現性、汎化、不確実性</td>
+</tr>
+<tr>
+<td>典型的失敗</td>
+<td>動かない、遅い、壊れる、漏れる</td>
+<td>偏り、過学習、誤解釈、役立たない</td>
+</tr>
+<tr>
+<td>成果</td>
+<td>ソフトウェア、システム、基盤</td>
+<td>分析、モデル、評価、提案</td>
+</tr>
+</tbody>
+</table>
+<p class="source-line">出典：調査レポート第6章</p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+本編の比較を、より細かい軸でまとめた表です。両分野は同じ数学やプログラミングを使いますが、何から仕事を始め、何を成功とみなすかに違いが表れます。ただし、AIサービスのように共同で作る成果では、この表の左右が混ざります。これは職業を完全に分類する表ではなく、大学で何を深く学びたいかを考えるための比較です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: 情報工学系とデータサイエンス系の典型的な4年間の重心を比較する -->
+<div class="slide-body appendix-slide compact-table">
+<p class="appendix-label">APPENDIX</p>
+<h2>典型的な4年間の学び</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">学年</th>
+<th>情報工学系の典型</th>
+<th>データサイエンス系の典型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">1年</td>
+<td>数学、物理、プログラミング、離散数学</td>
+<td>数学、確率・統計、プログラミング、倫理</td>
+</tr>
+<tr>
+<td style="text-align:right">2年</td>
+<td>データ構造、OS、計算機構成、DB、ネットワーク</td>
+<td>数理統計、回帰、データ処理、DB、可視化</td>
+</tr>
+<tr>
+<td style="text-align:right">3年</td>
+<td>ソフトウェア工学、セキュリティ、AI、専門実験</td>
+<td>機械学習、時系列、調査・実験、領域応用</td>
+</tr>
+<tr>
+<td style="text-align:right">4年</td>
+<td>設計・開発、研究室、卒業研究</td>
+<td>実データプロジェクト、社会実装、卒業研究</td>
+</tr>
+</tbody>
+</table>
+<div class="caution-line">これは典型例。実際は大学・コースごとに大きく異なります。</div>
+<p class="source-line">出典：調査レポート第8章。個別大学の教育課程を示す表ではない。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+四年間の学びを典型例として並べています。情報工学系では、コンピュータの内部やシステム構築へ段階的に進む傾向があります。データサイエンス系では、確率統計、データ処理、分析、領域応用へ段階的に進む傾向があります。ただし、これは全国共通の時間割ではありません。情報工学系で統計やAIを深く学ぶ大学も、データサイエンス系でソフトウェアやデータ基盤を深く学ぶ大学もあります。比較の出発点として使ってください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: 職種も二分されず、情報工学とデータサイエンスの重心が連続していることを示す -->
+<div class="slide-body appendix-slide">
+<p class="appendix-label">APPENDIX</p>
+<h2>仕事も「二択」ではない</h2>
+<div class="career-spectrum">
+<div class="career-end info-end">情報工学の重心</div>
+<div class="career-items">
+<span>ネットワーク</span>
+<span>ソフトウェア</span>
+<span>セキュリティ</span>
+<span class="bridge-job">データエンジニア</span>
+<span class="bridge-job">AI・MLエンジニア</span>
+<span class="bridge-job">MLOps</span>
+<span>データサイエンティスト</span>
+<span>データアナリスト</span>
+</div>
+<div class="career-end ds-end">データサイエンスの重心</div>
+</div>
+<div class="callout primary-message">学部名と職種は一対一ではありません。大学で何を学び、何を作り、何を研究したかが重要です。</div>
+<p class="source-line">出典：調査レポート第7章・第11章</p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+仕事も情報工学とデータサイエンスに完全には分かれません。ソフトウェアエンジニアが機械学習を扱うことも、データサイエンティストが分析システムを実装することもあります。特にデータエンジニア、機械学習エンジニア、MLOpsは両方の能力を強く使います。同じ職種名でも企業によって仕事内容が異なるため、名前だけではなく、実際の工程と必要な能力を見てください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26: 大学比較と自己対話に使える、具体的な確認質問を持ち帰ってもらう -->
+<div class="slide-body appendix-slide">
+<p class="appendix-label">APPENDIX</p>
+<h2>オープンキャンパスで確かめること</h2>
+<div class="question-checklist">
+<div><span>授業</span>数学・統計・プログラミングの必修は？</div>
+<div><span>深さ</span>OS、ネットワーク、回帰、機械学習はどこまで？</div>
+<div><span>実践</span>実データやPBLは何年次から？ 学生は何を担当？</div>
+<div><span>研究</span>卒業研究は必修？ 最近のテーマは？</div>
+<div><span>自分</span>作りたいもの、データで調べたいことは？</div>
+<div><span>比較</span>不足している科目も含め、別タイプの大学と比べた？</div>
+</div>
+<p class="bottom-message">パンフレットを「読む」から、学びを「質問する」へ。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+オープンキャンパスでは、設備を見るだけでなく、実際の学びを質問してください。数学や統計、プログラミングの必修、情報工学科目と分析科目の深さ、実データを扱う時期、プロジェクトで学生が担う役割、卒業研究のテーマを聞きます。同時に、自分が作りたいもの、データで調べたいことも一文で書いてみてください。一つの大学だけでなく、重心の異なる大学を比べると、自分に必要な学びが見えやすくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27: 本編前半の定義・教育・職種に関する公式出典を完全なURLで示す -->
+<div class="slide-body appendix-slide references-slide">
+<p class="appendix-label">REFERENCES 1/2</p>
+<h2>定義・教育・職種の出典</h2>
+<ol>
+<li>日本学術会議「情報学分野」(2016)<br>
+<a href="https://www.scj.go.jp/ja/info/kohyo/pdf/kohyo-23-h160323-2-abstract.pdf">https://www.scj.go.jp/ja/info/kohyo/pdf/kohyo-23-h160323-2-abstract.pdf</a></li>
+<li>情報処理学会「カリキュラム標準J17」<br>
+<a href="https://www.ipsj.or.jp/annai/committee/education/j07/curriculum_j17.html">https://www.ipsj.or.jp/annai/committee/education/j07/curriculum_j17.html</a></li>
+<li>情報処理学会「データサイエンス・カリキュラム標準」(2021)<br>
+<a href="https://www.ipsj.or.jp/annai/committee/education/public_comment/qe83kf0000002hlu-att/a1618203503118.pdf">https://www.ipsj.or.jp/annai/committee/education/public_comment/qe83kf0000002hlu-att/a1618203503118.pdf</a></li>
+<li>文部科学省「情報に関する学習指導要領Q&amp;A・情報II教材」<br>
+<a href="https://www.mext.go.jp/a_menu/shotou/new-cs/qa/1422454.htm">https://www.mext.go.jp/a_menu/shotou/new-cs/qa/1422454.htm</a><br>
+<a href="https://www.mext.go.jp/a_menu/shotou/zyouhou/detail/mext_00742.html">https://www.mext.go.jp/a_menu/shotou/zyouhou/detail/mext_00742.html</a></li>
+<li>ACMほか「Computer Science Curricula 2023」<br>
+<a href="https://csed.acm.org/">https://csed.acm.org/</a></li>
+<li>ACM・IEEE Computer Society「Computing Curricula 2020」<br>
+<a href="https://www.acm.org/binaries/content/assets/education/curricula-recommendations/cc2020.pdf">https://www.acm.org/binaries/content/assets/education/curricula-recommendations/cc2020.pdf</a></li>
+<li>厚生労働省 job tag「データサイエンティスト」<br>
+<a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/323">https://shigoto.mhlw.go.jp/User/Occupation/Detail/323</a></li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここには、情報工学、データサイエンス、高校情報科、職業に関する主な公式出典をまとめています。本編では読みやすさを優先して機関名と資料名だけを示しました。定義や教育内容をさらに確認したい場合は、これらの一次資料を参照してください。各資料の最終確認日は、調査レポートの基準日である2026年8月20日です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28: AIスキル標準と下関市立大学に関する公式出典、および資料の権威順を示す -->
+<div class="slide-body appendix-slide references-slide">
+<p class="appendix-label">REFERENCES 2/2</p>
+<h2>AI・下関市立大学の出典</h2>
+<ol>
+<li>IPA「DX推進スキル標準」<br>
+<a href="https://www.ipa.go.jp/jinzai/skill-standard/dss/about_dss-p.html">https://www.ipa.go.jp/jinzai/skill-standard/dss/about_dss-p.html</a></li>
+<li>IPA「デジタルスキル標準 ver.2.0」(2026)<br>
+<a href="https://www.ipa.go.jp/pressrelease/2026/press20260416.html">https://www.ipa.go.jp/pressrelease/2026/press20260416.html</a></li>
+<li>下関市立大学「データサイエンス学部」<br>
+<a href="https://www.shimonoseki-cu.ac.jp/data-science/">https://www.shimonoseki-cu.ac.jp/data-science/</a></li>
+<li>下関市立大学「3つのポリシー」<br>
+<a href="https://www.shimonoseki-cu.ac.jp/about/gaiyou/outline_3policy">https://www.shimonoseki-cu.ac.jp/about/gaiyou/outline_3policy</a></li>
+<li>下関市立大学「授業科目表」<br>
+<a href="https://www.shimonoseki-cu.ac.jp/wp-content/uploads/2026/03/2024ds.pdf">https://www.shimonoseki-cu.ac.jp/wp-content/uploads/2026/03/2024ds.pdf</a></li>
+<li>下関市立大学「データサイエンス学部開設式」(2024)<br>
+<a href="https://www.shimonoseki-cu.ac.jp/data-science/2024/04/09/opening_ceremony_240409/">https://www.shimonoseki-cu.ac.jp/data-science/2024/04/09/opening_ceremony_240409/</a></li>
+<li>下関市立大学「オープンキャンパス」<br>
+<a href="https://www.shimonoseki-cu.ac.jp/nyushi/events/oc">https://www.shimonoseki-cu.ac.jp/nyushi/events/oc</a></li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+AI時代のスキルと、下関市立大学データサイエンス学部に関する公式出典です。このスライドデッキの内容上の主資料は、2026年8月20日付の調査レポートです。大学紹介は、同レポートが確認した公式の教育方針と授業科目表を根拠とし、学部固有の卒業実績など、まだ確認できない情報は示していません。オープンキャンパスの日程は年度ごとに変わるため、恒久的な案内ページを参照してください。
+</aside>
+<script src="./image-zoom.js"></script>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
