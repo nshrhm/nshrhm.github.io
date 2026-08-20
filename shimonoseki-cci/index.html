@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>事務DXと生成AIのはじめ方</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: Establish the approved title, company-first presenter identity, and trusted university connection -->
+<div class="title-slide">
+<div class="title-copy">
+<img class="brand-logo title-logo" src="./harborgate-logo-provisional.png" alt="HarborGate AI Audit 暫定ロゴ">
+<p class="eyebrow">下関商工会議所 職員向けミニセミナー</p>
+<h2>事務DXと<br>生成AIのはじめ方</h2>
+<p class="title-subtitle">AIを入れる前に、仕事の流れを軽くする</p>
+<div class="title-rule"></div>
+<p class="event-meta">2026年9月8日　11:00<br>下関商工会議所</p>
+<div class="presenter-block">
+<p><strong>株式会社 HarborGate AI Audit</strong><br>
+白濵 成希　代表取締役</p>
+<p><span>下関市立大学 データサイエンス学部 データサイエンス学科<br>教授・博士（工学）</span></p>
+</div>
+</div>
+<div class="title-visual">
+<img src="./cover-image.png" alt="海峡に光のゲートが立つイメージ">
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+本日はお時間をいただき、ありがとうございます。株式会社ハーバーゲート・エーアイ・オーディット代表取締役の白濵ナルキです。下関市立大学では、データサイエンス学部の教授として教育と研究に携わっています。今回は大学とのご縁をきっかけに、会社の代表として、事務ディーエックスと生成エーアイの基本をお話しします。難しい技術や製品の説明からではなく、日々の仕事を少し軽くするには何を見ればよいか、というところから始めます。今日の題名は、事務ディーエックスと生成エーアイのはじめ方です。中心となる考え方は、エーアイを入れる前に、まず仕事の流れを軽くする、ということです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: Set expectations for the free introductory seminar and distinguish it from individual diagnosis -->
+<div class="slide-body">
+<p class="section-label">00　今日の位置づけ</p>
+<h2>全体像と「安全な小さな一歩」を共有します</h2>
+<div class="card-grid four-up agenda-grid">
+<div class="card numbered-card">
+<p><span class="number-chip">1</span></p>
+<p><strong>DXとは何か</strong></p>
+<p>道具の導入と仕事の変化を分ける</p>
+</div>
+<div class="card numbered-card">
+<p><span class="number-chip">2</span></p>
+<p><strong>生成AIに向く仕事</strong></p>
+<p>得意・苦手・任せないを知る</p>
+</div>
+<div class="card numbered-card">
+<p><span class="number-chip">3</span></p>
+<p><strong>安全に使う基本</strong></p>
+<p>入力・確認・保存を考える</p>
+</div>
+<div class="card numbered-card">
+<p><span class="number-chip">4</span></p>
+<p><strong>最初の一業務</strong></p>
+<p>全部ではなく一つから始める</p>
+</div>
+</div>
+<div class="boundary-note">
+<p>本日は一般的な考え方を扱います。個別の業務診断・改善設計・製品選定は、現状を確認したうえで別途行います。</p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日は四つのことを扱います。最初に、ディーエックスとは何かを、単なる道具の導入と区別して整理します。次に、生成エーアイが得意な仕事と、任せてはいけない仕事を見ます。その後、架空の事例を使って、入力、出力、確認という流れを体験していただきます。最後に、安全に使う基本と、最初の一業務の選び方をお伝えします。本日は全体像を共有する入門セミナーです。下関商工会議所の実際の業務を診断したり、特定の製品を選んだりする場ではありません。個別の業務フロー、契約、情報の扱いを確認しないまま、具体策を断定することはできないためです。まずは、皆さんが同じ言葉で話せる土台を作ることを目指します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: Anchor the entire talk in the claim that DX is not equivalent to adopting AI -->
+<div class="hero-slide dark-slide">
+<p class="section-label light">まず結論</p>
+<div class="hero-copy">
+<h2>DXは<br>「AIを入れること」<br>ではありません</h2>
+<p>仕事の流れを軽くし、<br>必要な情報が必要な人へ届く状態をつくること</p>
+<p><strong>生成AIは、そのための道具の一つです。</strong></p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+まず、今日いちばんお伝えしたい結論です。ディーエックスは、生成エーアイを契約することでも、新しいシステムを入れることでもありません。仕事の流れを軽くして、必要な情報が必要な人へ届き、職員の皆さんが本来の仕事へ時間を使える状態を作ることです。例えば、紙で受け取った内容を表計算へ写し、さらに別のシステムへ写しているなら、エーアイで転記を速くする前に、転記そのものをなくせないかを考えます。生成エーアイは便利な道具ですが、仕事の流れに問題が残ったまま加えると、道具が一つ増えるだけになることがあります。主役はエーアイではなく、仕事と、それを担う人です。この視点を持って、身近な事務を見ていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: Help frontline staff recognize three common sources of administrative friction without claiming they occur locally -->
+<div class="slide-body">
+<p class="section-label">01　身近な事務DX</p>
+<h2>仕事が重くなる三つのサイン</h2>
+<div class="card-grid three-up friction-grid">
+<div class="card friction-card">
+<p><span class="friction-icon">写</span></p>
+<h3>転記</h3>
+<p>紙・FAX・メールの内容を、Excelや別システムへ入力し直す</p>
+</div>
+<div class="card friction-card">
+<p><span class="friction-icon">探</span></p>
+<h3>探す</h3>
+<p>最新版のファイルや過去の記録を、人に聞かないと見つけられない</p>
+</div>
+<div class="card friction-card">
+<p><span class="friction-icon">待</span></p>
+<h3>待つ</h3>
+<p>確認・承認・返信を待つ間に、業務が止まる</p>
+</div>
+</div>
+<div class="bottom-message">AIを考える前に、まずこの三つを見つけます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+仕事を軽くする入口として、三つのサインを紹介します。一つ目は転記です。紙やファックス、メールで届いた内容を、表計算や別のシステムへ何度も入力し直す状態です。二つ目は探すです。最新版のファイル、過去の案内、以前の対応記録などが見つからず、作成者や担当者へ聞く必要がある状態です。三つ目は待つです。確認、承認、返信、担当者の帰庁などを待つ間に、処理が止まる状態です。これは下関商工会議所で実際に起きていると断定しているわけではありません。一般的な事務で、改善の候補を見つけるための見方です。エーアイを使うかどうかを考える前に、自分の仕事には転記、探す、待つのどれがあるかを見ると、課題を具体的にしやすくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: Give a practical talk-specific distinction among IT adoption, digitization, and DX -->
+<div class="slide-body">
+<p class="section-label">02　用語をそろえる</p>
+<h2>IT化・デジタル化・DXの違い</h2>
+<p class="lead">本講演では、次のように整理します。</p>
+<div class="card-grid three-up concept-grid">
+<div class="card concept-card blue-card">
+<p><span class="number-chip blue">1</span></p>
+<h3>IT化</h3>
+<p><strong>道具を置き換える</strong></p>
+<p>紙の予定表を共有カレンダーへ</p>
+</div>
+<div class="card concept-card teal-card">
+<p><span class="number-chip teal">2</span></p>
+<h3>デジタル化</h3>
+<p><strong>情報を使いやすくする</strong></p>
+<p>申込情報を一つの表で管理</p>
+</div>
+<div class="card concept-card gold-card">
+<p><span class="number-chip gold">3</span></p>
+<h3>DX</h3>
+<p><strong>仕事の流れと価値を変える</strong></p>
+<p>申込から案内・集計までをつなぐ</p>
+</div>
+</div>
+<div class="bottom-message">目標は道具を増やすことではなく、会員支援へ使える時間を増やすこと。</div>
+<p class="source-note">参考：経済産業省「デジタルガバナンス・コード3.0」／区分と例は本講演用の実務的整理</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここで、似た言葉を本講演用に整理します。アイティー化は、紙や手作業をデジタルの道具へ置き換える段階です。例えば、紙の予定表を共有カレンダーへ変えることです。デジタル化は、情報をデータとして扱い、使いやすくする段階です。例えば、申込情報を一つの表にまとめ、集計や検索ができるようにします。ディーエックスは、道具やデータを使って、仕事の流れや提供する価値を変える段階です。例えば、申込、案内、出欠、集計を一つの流れにつなぎ、職員が転記ではなく会員への支援に時間を使えるようにします。厳密な言葉の境界を覚えることが目的ではありません。道具を入れただけなのか、情報を使えるようにしたのか、それとも仕事の流れまで変わったのかを、分けて考えるための整理です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: Explain generative AI as a language-oriented assistant whose fluent output still needs verification -->
+<div class="slide-body">
+<p class="section-label">03　生成AIの基本</p>
+<h2>言葉で頼むと、下書きや整理を返す補助者</h2>
+<div class="ai-definition-layout">
+<div class="workflow vertical-workflow">
+<div class="workflow-step">
+<p><span>入力</span></p>
+<p>目的・条件・元になる資料を渡す</p>
+</div>
+<div class="workflow-arrow">↓</div>
+<div class="workflow-step emphasized">
+<p><span>処理</span></p>
+<p>要約・分類・言い換えを行う</p>
+</div>
+<div class="workflow-arrow">↓</div>
+<div class="workflow-step">
+<p><span>出力</span></p>
+<p>文章・表・チェックリストの下書きを返す</p>
+</div>
+</div>
+<div class="ai-image-card">
+<img src="./sanple-image-1.png" alt="文書や予定を生成AIが整理する説明用イメージ">
+</div>
+</div>
+<div class="warning-message">自然な文章であることと、内容が正しいことは別です。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+生成エーアイを、言葉を扱う事務補助者として考えてみます。最初に、目的、条件、元になる資料を入力します。生成エーアイは、その言葉のつながりをもとに、要約、分類、言い換え、文章の組み立てなどを行います。そして、文章、表、チェックリストなどの形で出力を返します。ここで大切なのは、出力が完成品ではなく下書きだという点です。生成エーアイは、もっともらしく自然な文章を作ることが得意です。しかし、自然に読めることは、元の資料と一致していることや、事実として正しいことを保証しません。条件が不足していても、空白をそれらしい内容で埋めることがあります。したがって、使う側は、何を材料として渡したか、何を作らせたか、どこを確認するかを最初から考える必要があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: Separate suitable, conditional, and prohibited uses of generative AI for beginner staff -->
+<div class="slide-body">
+<p class="section-label">04　向き・不向き</p>
+<h2>得意・条件付き・任せない</h2>
+<div class="card-grid three-up capability-grid">
+<div class="card capability-card good-card">
+<h3>得意</h3>
+<ul>
+<li>文章の下書き</li>
+<li>要約・整理</li>
+<li>言い換え</li>
+<li>分類</li>
+<li>チェックリスト化</li>
+</ul>
+</div>
+<div class="card capability-card conditional-card">
+<h3>条件付き</h3>
+<ul>
+<li>長文資料の読解</li>
+<li>FAQ作成</li>
+<li>アンケート分析</li>
+<li>過去資料の検索</li>
+</ul>
+<p><small>原典・権限・人の確認が必要</small></p>
+</div>
+<div class="card capability-card stop-card">
+<h3>任せない</h3>
+<ul>
+<li>事実の最終保証</li>
+<li>制度適用の断定</li>
+<li>決裁・審査</li>
+<li>個人や企業の評価</li>
+<li>機密情報の安全判断</li>
+</ul>
+</div>
+</div>
+<div class="bottom-message">AIには下書きを任せ、責任を伴う判断は人が行います。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+生成エーアイの仕事を、三つに分けます。得意なのは、文章の下書き、要約、整理、言い換え、分類、チェックリスト化です。正解が一つに決まらず、人が後から直せる作業に向いています。条件付きで有効なのは、長い資料の読解、よくある質問の作成、アンケート分析、過去資料の検索などです。これらは、元の資料が正しいこと、エーアイがその資料を参照できる権限があること、出力をヒトが確認することが前提です。一方で、事実の最終保証、制度が適用できるかの断定、決裁や審査、個人や企業の評価、機密情報を入力して安全かどうかの判断は任せません。便利かどうかだけでなく、間違えたときに誰へ影響するか、責任を誰が持つかで分けることが重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: Present only the authoritative fictional inputs for the first static demonstration -->
+<div class="slide-body demo-slide">
+<p class="section-label">05　静的デモ 1</p>
+<h2>入力：確定した開催要項</h2>
+<p class="demo-badge">説明用の架空例</p>
+<div class="demo-input-grid">
+<div class="input-facts">
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>確定情報</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名称</td>
+<td>はじめての業務改善セミナー</td>
+</tr>
+<tr>
+<td>日時</td>
+<td>2026年10月15日 14:00～15:30</td>
+</tr>
+<tr>
+<td>会場</td>
+<td>本館2階会議室</td>
+</tr>
+<tr>
+<td>対象</td>
+<td>会員企業の担当者</td>
+</tr>
+<tr>
+<td>定員・参加費</td>
+<td>30名・無料</td>
+</tr>
+<tr>
+<td>申込期限</td>
+<td>10月8日</td>
+</tr>
+<tr>
+<td>申込先</td>
+<td><a href="https://example.com">example.com</a> の説明用ページ</td>
+</tr>
+<tr>
+<td>問い合わせ</td>
+<td>企画課</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="prompt-box">
+<p><strong>AIへの依頼</strong></p>
+<p>上記の情報だけを使い、250字以内の案内メールを作成してください。</p>
+<p>不足する情報は補わず、「要確認」としてください。</p>
+</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここからは、実際のサービスを操作する代わりに、入力、出力、確認を三枚のスライドで順番に見ます。最初の例は、会員向けセミナーの案内メールです。これは説明用の架空例で、実在する行事ではありません。左側には、確定した開催要項があります。名称、日時、会場、対象、定員、参加費、申込期限、申込先、問い合わせ先がそろっています。右側では、エーアイに、ここに書かれた情報だけを使うこと、二百五十字以内にすること、不足情報を勝手に補わないことを指示しています。良い依頼の基本は、目的、材料、制約、出力形式を明確にすることです。今回は材料がそろっているため、案内文の下書きは生成エーアイに向く作業に見えます。では、どのような出力が返ったとするか、次で見ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: Show a fluent but intentionally flawed illustrative output without revealing the errors yet -->
+<div class="slide-body demo-slide">
+<p class="section-label">05　静的デモ 1</p>
+<h2>出力：読みやすい案内メールができた？</h2>
+<p class="demo-badge warning">説明用に作成した、誤りを含む出力例</p>
+<div class="output-box email-output">
+<p><strong>件名：はじめての業務改善セミナーのご案内</strong></p>
+<p>10月15日14時から、本館2階会議室で業務改善セミナーを開催します。どなたでも無料で参加できます。</p>
+<p>参加をご希望の方は、10月10日までに専用ページからお申し込みください。皆さまのご参加をお待ちしています。</p>
+</div>
+<div class="question-callout">文章は自然です。では、元の開催要項と一致しているでしょうか。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+こちらが、生成エーアイから返ったと想定する案内メールです。これは特定の製品が実際に生成した結果ではなく、確認の練習用に作成した、誤りを含む例です。文章だけを読むと、短くまとまっていて、丁寧で、すぐに使えそうに見えます。件名もあり、日時と会場も書かれています。生成エーアイの便利さは、このように、ゼロから文章を書く仕事を、下書きを直す仕事へ変えられることです。しかし、読みやすいからといって、そのまま送信してはいけません。元の開催要項と一項目ずつ照合する必要があります。特に、対象者、定員、日時、金額、期限、申込先、問い合わせ先は、誤ると参加者へ直接迷惑をかける項目です。ここでは、どこに問題があるかを次のスライドで確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: Demonstrate deterministic human verification of the first AI output against its source -->
+<div class="slide-body demo-slide">
+<p class="section-label">05　静的デモ 1</p>
+<h2>確認：元資料と一項目ずつ照合する</h2>
+<table class="verification-table">
+<table>
+<thead>
+<tr>
+<th>確認項目</th>
+<th style="text-align:center">判定</th>
+<th>確認結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日時・会場</td>
+<td style="text-align:center">✓</td>
+<td>入力どおり</td>
+</tr>
+<tr>
+<td>対象</td>
+<td style="text-align:center">×</td>
+<td>「会員企業の担当者」が「どなたでも」に変化</td>
+</tr>
+<tr>
+<td>定員</td>
+<td style="text-align:center">×</td>
+<td>30名が抜けた</td>
+</tr>
+<tr>
+<td>申込期限</td>
+<td style="text-align:center">×</td>
+<td>10月8日が10月10日に変化</td>
+</tr>
+<tr>
+<td>申込先</td>
+<td style="text-align:center">×</td>
+<td>申込ページが本文から抜けた</td>
+</tr>
+<tr>
+<td>参加費</td>
+<td style="text-align:center">✓</td>
+<td>入力どおり</td>
+</tr>
+</tbody>
+</table>
+</table>
+<div class="bottom-message">読みやすさではなく、元資料との一致を確認します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+元の開催要項と照合すると、問題が見つかります。日時、会場、参加費は入力どおりです。しかし、対象は会員企業の担当者だったのに、出力では、どなたでも参加できると範囲が広がっています。定員三十名は抜けています。申込期限は十月八日だったのに、十月十日へ変わっています。申込ページも本文から抜けています。このような誤りは、文章全体の印象だけを見ていると見落としやすいものです。確認では、うまく書けているかだけでなく、元資料の項目がすべて入り、数字や意味が変わっていないかを見ます。生成エーアイへ、最後に不一致を検査させることも補助にはなりますが、その検査もエーアイの出力です。最終的には、担当者が確定資料を見て確認します。次は、元の情報自体が曖昧な場合を見ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: Present an anonymized but ambiguous fictional meeting memo as the second static-demo input -->
+<div class="slide-body demo-slide">
+<p class="section-label">06　静的デモ 2</p>
+<h2>入力：曖昧な会議メモ</h2>
+<p class="demo-badge">匿名化した説明用の架空例</p>
+<div class="demo-input-grid">
+<div class="memo-box">
+<p><strong>会議メモ</strong></p>
+<ul>
+<li>11月6日に会員向け説明会を開催する方向</li>
+<li>会場は第1会議室またはオンラインを検討</li>
+<li>案内文は来週までに初稿を作る</li>
+<li>申込方法は未決定</li>
+<li>担当者は次回会議で決める</li>
+</ul>
+</div>
+<div class="prompt-box">
+<p><strong>AIへの依頼</strong></p>
+<p>決定事項・未決事項・担当ToDoに分けてください。</p>
+<p>分からない事項は推測せず、「要確認」としてください。</p>
+</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+二つ目は、会議メモの整理です。これも匿名化した説明用の架空例です。メモには、十一月六日に会員向け説明会を開催する方向であること、会場は会議室かオンラインを検討していること、案内文は来週までに初稿を作ること、申込方法は未決定であること、担当者は次回会議で決めることが書かれています。ここには、方向、検討、来週という曖昧な言葉があります。誰が書いたメモか、会議日はいつかも示していません。エーアイには、決定事項、未決事項、担当する作業に分けること、分からない事項を推測しないことを指示します。会議メモの整理は便利な使い方ですが、元のメモが曖昧であれば、きれいに整理した結果が、元の意味より確定的に見える危険があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: Show how AI can turn ambiguity into unsupported specificity in a meeting-summary example -->
+<div class="slide-body demo-slide">
+<p class="section-label">06　静的デモ 2</p>
+<h2>出力：きれいに整理されたように見える</h2>
+<p class="demo-badge warning">説明用に作成した、誤りを含む出力例</p>
+<div class="output-columns">
+<div class="output-box">
+<p><strong>決定事項</strong></p>
+<ul>
+<li>11月6日に第1会議室で会員向け説明会を開催する</li>
+</ul>
+</div>
+<div class="output-box">
+<p><strong>未決事項</strong></p>
+<ul>
+<li>申込方法</li>
+</ul>
+</div>
+<div class="output-box">
+<p><strong>担当ToDo</strong></p>
+<ul>
+<li>総務課：10月23日までに案内文を作成する</li>
+</ul>
+</div>
+</div>
+<div class="question-callout">情報が整理されたのか、それとも新しい事実が作られたのか。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+出力を見ると、決定事項、未決事項、担当する作業に分かれ、会議後の行動が明確になったように見えます。しかし、元のメモにはなかった具体的な内容が加わっています。開催する方向、という表現が、開催すると断定されています。会場は二つの候補を検討していたのに、第1会議室で決定したことになっています。担当者は次回決めるはずでしたが、総務課が担当することになっています。来週という表現も、会議日が分からないのに十月二十三日へ置き換えられています。生成エーアイは、曖昧な文章を整えるときに、空白をもっともらしい具体性で埋めることがあります。見た目が整っているほど、元のメモへ戻って確認する必要があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: Correct the second demo by restoring uncertainty and identifying every unsupported assertion -->
+<div class="slide-body demo-slide">
+<p class="section-label">06　静的デモ 2</p>
+<h2>確認：曖昧さを勝手に消さない</h2>
+<div class="check-list">
+<div><span>×</span>「開催する方向」を「開催決定」に変えた</div>
+<div><span>×</span>未確定の会場を第1会議室と断定した</div>
+<div><span>×</span>担当者を総務課と推測した</div>
+<div><span>×</span>「来週」を10月23日と具体化した</div>
+<div><span>×</span>会場・担当者・期限を未決事項へ入れなかった</div>
+</div>
+<div class="corrected-output">
+<p><strong>修正後：</strong> 開催、会場、担当者、期限、申込方法はすべて <strong>要確認</strong></p>
+</div>
+<div class="bottom-message">AIは、曖昧さを「もっともらしい具体性」で埋めることがあります。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+確認では、元のメモに書かれていることと、エーアイが加えたことを分けます。開催は決定ではなく方向です。会場、担当者、期限、申込方法は未確定です。正しい整理は、これらを要確認として残すことです。生成エーアイを使う目的は、曖昧さを隠して見栄えを良くすることではありません。決まったことと、まだ決まっていないことを区別し、次に何を確認するかを分かりやすくすることです。実際の会議記録で音声や発言を扱う場合は、録音への同意、保存期間、閲覧範囲、個人情報の扱いも別に決める必要があります。この二つの例から分かる共通点は、生成エーアイの出力を、必ず元の資料へ戻って確認することです。ここからは、その確認を含む安全な使い方を整理します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: Give beginners three memorable organizational safety principles for generative AI use -->
+<div class="slide-body">
+<p class="section-label">07　安全運用</p>
+<h2>安全に使うための三原則</h2>
+<div class="card-grid three-up principle-grid">
+<div class="card principle-card">
+<p><span class="number-chip teal">1</span></p>
+<h3>入れない</h3>
+<p>組織で許可されていない個人情報・機密情報を入力しない</p>
+</div>
+<div class="card principle-card">
+<p><span class="number-chip blue">2</span></p>
+<h3>任せきらない</h3>
+<p>事実・数字・日付・固有名詞・URLを人が確認する</p>
+</div>
+<div class="card principle-card">
+<p><span class="number-chip gold">3</span></p>
+<h3>チャットだけに残さない</h3>
+<p>確認済みの最終版を、組織の正式な保存場所へ残す</p>
+</div>
+</div>
+<div class="bottom-message">使う前に、利用環境・入力情報・確認責任を決めます。</div>
+<p class="source-note">参考：デジタル庁「生成AIの調達・利活用に係るガイドライン 第2.0版」／個人情報保護委員会「生成AIサービスの利用に関する注意喚起等」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+安全に使うための三原則です。一つ目は、入れないです。組織で利用を許可されていないサービスへ、個人情報、会員情報、相談内容、契約情報、未公開資料などを入力しません。二つ目は、任せきらないです。エーアイの出力は下書きとして扱い、事実、数字、日付、固有名詞、アドレス、制度や規程を人が確認します。三つ目は、チャットだけに残さないです。確認と承認が終わった最終版は、組織の正式なファイル置き場や業務システムへ保存します。エーアイとの会話だけを、公式な記録や引継ぎの根拠にしません。個人の注意力だけに頼るのではなく、どの利用環境を使うか、何を入力してよいか、誰が確認するか、どこへ保存するかを組織で決めることが重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: Provide a plain-language traffic-light heuristic without presenting it as the chamber's official policy -->
+<div class="slide-body">
+<p class="section-label">08　入力情報</p>
+<h2>入力情報の信号機</h2>
+<div class="card-grid three-up traffic-grid">
+<div class="traffic-card green-card">
+<h3>緑　利用しやすい</h3>
+<ul>
+<li>公開済みの情報</li>
+<li>説明用の架空データ</li>
+<li>十分に匿名化した文章</li>
+<li>組織で承認済みのひな型</li>
+</ul>
+</div>
+<div class="traffic-card yellow-card">
+<h3>黄　利用前に確認</h3>
+<ul>
+<li>内部の会議メモ</li>
+<li>公開前の案内文</li>
+<li>内部マニュアル</li>
+<li>匿名化していないアンケート</li>
+</ul>
+<p><small>ルール・契約・権限・入力範囲を確認</small></p>
+</div>
+<div class="traffic-card red-card">
+<h3>赤　入力しない</h3>
+<ul>
+<li>会員・相談者の個人情報</li>
+<li>経営相談・融資・人事の記録</li>
+<li>パスワード・認証情報</li>
+<li>未公開の機密・契約情報</li>
+</ul>
+</div>
+</div>
+<div class="boundary-note">安全に始めるための一般的な目安です。正式な区分は、利用サービスと組織ルールを確認して定めます。</div>
+<p class="source-note">参考：個人情報保護委員会の注意喚起、IPA「情報セキュリティ10大脅威2026」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+入力してよい情報を、信号機で考えてみます。緑は、比較的利用しやすい情報です。すでに公開されている情報、説明用の架空データ、十分に匿名化した文章、組織で使用を承認されたひな型などです。黄色は、利用する前に確認が必要な情報です。内部の会議メモ、公開前の案内文、内部マニュアル、匿名化していないアンケートなどが該当します。利用サービスの契約、組織のルール、閲覧権限、入力する範囲を確認します。赤は、許可されていない生成エーアイへ入力しない情報です。会員や相談者の個人情報、経営相談、融資、人事の記録、パスワード、未公開の機密情報などです。これは正式な社内規程ではなく、安全に始めるための一般的な目安です。実際の区分は、契約内容と現在の情報管理を確認して決めます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: Turn the two demonstrations into a repeatable five-step safe-use workflow -->
+<div class="slide-body">
+<p class="section-label">09　利用手順</p>
+<h2>「匿名化 → 下書き → 確認 → 修正 → 記録」で回す</h2>
+<div class="precondition-banner">前提：組織で許可されたAI環境を使う</div>
+<div class="workflow horizontal-workflow five-steps">
+<div class="workflow-step"><span>1</span><strong>匿名化</strong><small>固有名・機密を外す</small></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step"><span>2</span><strong>下書き</strong><small>AIに整理させる</small></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step"><span>3</span><strong>確認</strong><small>原典・規程を見る</small></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step"><span>4</span><strong>修正</strong><small>職員が判断する</small></div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step"><span>5</span><strong>記録</strong><small>正式な場所へ保存</small></div>
+</div>
+<div class="bottom-message">AIの回答ではなく、人が確認した最終成果物を記録にします。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+二つの静的デモを、共通の利用手順へまとめます。前提は、組織で利用を許可されたエーアイ環境を使うことです。最初に、固有名や機密情報を外し、必要最小限の情報にします。次に、生成エーアイへ下書きや整理を依頼します。出力が返ったら、原典、規程、数字、日付、アドレスなどを確認します。そして、職員の判断で修正し、必要な承認を受けます。最後に、確認済みの成果物を正式な場所へ保存します。この流れで重要なのは、生成エーアイの回答そのものを記録としないことです。エーアイとの会話は作業過程であり、公式な成果ブツはヒトが確認した後の文書です。部署ごとに使い方が異なる場合でも、この五段階を共通にすると、確認漏れや情報の扱いのばらつきを減らしやすくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: Show why adding AI to a fragmented process does not constitute meaningful DX -->
+<div class="slide-body">
+<p class="section-label">10　AIの前に整える</p>
+<h2>AIだけでは仕事は軽くならない</h2>
+<div class="comparison-grid">
+<div class="comparison-panel weak-path">
+<h3>AIを追加しただけ</h3>
+<p>紙・メール・Excelが分散</p>
+<p><span>↓</span></p>
+<p>AIで転記や文章作成を速くする</p>
+<p><span>↓</span></p>
+<p>確認先と保存場所は分散したまま</p>
+</div>
+<div class="comparison-panel strong-path">
+<h3>仕事の流れを整える</h3>
+<p>入力を一つにする</p>
+<p><span>↓</span></p>
+<p>定型処理をつなぐ</p>
+<p><span>↓</span></p>
+<p>AIが下書きし、人が確認する</p>
+<p><span>↓</span></p>
+<p>正式な場所へ保存する</p>
+</div>
+</div>
+<div class="bottom-message gold-message">AIで転記を速くするより、転記そのものをなくす。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+生成エーアイだけを追加しても、仕事が軽くならない場合があります。紙、メール、表計算が分散したまま、エーアイで文章作成や転記だけを速くすると、入力元、確認先、保存場所の混乱は残ります。作業が少し速くなっても、どれが最新版か分からない、同じ内容を複数の場所へ入れる、承認を待つ、といった問題は解決しません。先に考えるのは、入力を一つにできないか、項目名や保存場所をそろえられないか、定型的な通知や転記を仕組みでつなげられないか、ということです。その上で、文章の下書き、要約、分類などに生成エーアイを使い、判断は人が行います。エーアイで転記を速くするより、転記そのものをなくす。この順序が、事務ディーエックスでは重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: Give staff four general criteria for choosing one low-risk first workflow without conducting diagnosis -->
+<div class="slide-body">
+<p class="section-label">11　最初の一歩</p>
+<h2>全部を変えず、安全に試せる一つを選ぶ</h2>
+<div class="card-grid four-up selection-grid">
+<div class="card selection-card">
+<h3>繰り返す</h3>
+<p>毎日・毎週行っている</p>
+</div>
+<div class="card selection-card">
+<h3>形が分かる</h3>
+<p>元資料と完成形を説明できる</p>
+</div>
+<div class="card selection-card">
+<h3>低リスク</h3>
+<p>公開・架空・匿名化情報で試せる</p>
+</div>
+<div class="card selection-card">
+<h3>比べられる</h3>
+<p>時間・修正・手戻りを測れる</p>
+</div>
+</div>
+<div class="bottom-message">最初から全職員・全部署・全業務へ広げない。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最初の対象は、全部の業務から選ぶ必要はありません。候補を選ぶための四つの条件を紹介します。一つ目は、毎日や毎週のように繰り返し発生することです。二つ目は、元になる資料と、完成させたいものの形を説明できることです。三つ目は、公開情報、架空情報、十分に匿名化した情報を使って、低いリスクで試せることです。四つ目は、作成時間、修正回数、手戻りなどを、導入前後で比べられることです。例えば、案内文の下書きや公開資料の要約は、条件を整えれば比較的試しやすい候補です。一方で、会員企業の評価や、融資、税務、法務、人事の最終判断から始めるべきではありません。小さく試すとは、無料のサービスを各自の判断で使うことではなく、対象、環境、ルール、確認方法を小さく限定することです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: Present HarborGate's paid professional support as the next stage after general education -->
+<div class="slide-body">
+<p class="section-label">12　個別に進めるなら</p>
+<h2>一般論の次には、現状確認が必要です</h2>
+<div class="support-path">
+<div class="support-card featured-support">
+<p><span>1</span></p>
+<h3>DXスポット診断</h3>
+<p>紙・Excel・メール・FAX・保存場所・承認の流れを整理する</p>
+</div>
+<div class="support-arrow">→</div>
+<div class="support-card">
+<p><span>2</span></p>
+<h3>PoC／実証</h3>
+<p>一つの業務で試し、時間・品質・手戻りを測る</p>
+</div>
+<div class="support-arrow">→</div>
+<div class="support-card">
+<p><span>3</span></p>
+<h3>ルール・運用</h3>
+<p>情報区分、確認責任、保存、研修、AI Auditを整える</p>
+</div>
+</div>
+<div class="company-boundary">
+<p>個別の現状診断・改善設計・導入支援は、対象範囲を確認したうえで<br><strong>株式会社 HarborGate AI Audit</strong> として対応します。</p>
+</div>
+<p class="audit-note">ここでいうAuditは、財務監査ではなく、AIの品質・ガバナンス・リスク評価を意味します。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日お話ししたのは、事務ディーエックスと生成エーアイの一般的な考え方です。実際に個別の組織で進めるには、現在の仕事と利用環境を確認する必要があります。最初の段階は、ディーエックスのスポット診断です。カミ、表計算、メール、ファックス、保存場所、承認の流れを整理し、どこに転記、探す、待つがあるかを確認します。次に、安全に試せる一つの業務を選び、ピーオーシー、つまり小規模な実証を行います。時間、品質、修正、手戻りを測り、続ける価値があるかを判断します。その後、情報区分、確認責任、保存方法、研修などを整え、運用として定着させます。このような個別の診断、設計、導入支援は、範囲を確認した上で、株式会社ハーバーゲート・エーアイ・オーディットとして対応します。社名のオーディットは財務監査ではなく、エーアイの品質、ガバナンス、リスクを評価し、改善につなげるという意味です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: Close with four memorable takeaways and the approved two-step consultation route -->
+<div class="takeaway-slide dark-slide">
+<p class="section-label light">本日の持ち帰り</p>
+<div class="takeaway-list">
+<div><span>DX</span><strong>AI導入ではなく、仕事の流れを軽くすること</strong></div>
+<div><span>生成AI</span><strong>下書き・要約・整理に強い補助者</strong></div>
+<div><span>安全運用</span><strong>許可された環境・人の確認・正式な保存が基本</strong></div>
+<div><span>次の一歩</span><strong>気になる業務を一つ見つけ、まず総務課へ共有する</strong></div>
+</div>
+<div class="consultation-route">
+<p>組織として現状診断や導入支援が必要な場合は、<br>総務課を通じてHarborGate AI Auditへご相談ください。</p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、今日の持ち帰りを四つにまとめます。ディーエックスは、エーアイを導入することではなく、仕事の流れを軽くすることです。生成エーアイは、下書き、要約、整理に強い補助者ですが、自然な文章と正しい内容は同じではありません。安全運用では、組織で許可された環境を使い、ヒトが元資料を確認し、最終版を正式な場所へ保存します。そして、次の一歩は、全部を変えることではありません。自分の仕事の中で、転記、探す、待つが気になる業務を一つ見つけ、まず担当部署へ共有してください。組織として現状診断、改善設計、生成エーアイの導入支援が必要になった場合は、担当部署を通じて、ハーバーゲート・エーアイ・オーディットへご相談いただけます。今日のお話が、仕事を見直すための共通の出発点になれば幸いです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: Reserve six minutes for brief general questions while preserving the boundary around individual diagnosis -->
+<div class="qa-slide dark-slide">
+<img class="brand-logo qa-logo" src="./harborgate-logo-provisional.png" alt="HarborGate AI Audit 暫定ロゴ">
+<h2>ご質問をどうぞ</h2>
+<p>事務DX・生成AI・安全な使い方について、<br>簡単なご質問をお受けします。</p>
+<div class="qa-presenter">
+<p>株式会社 HarborGate AI Audit　代表取締役　白濵 成希<br>
+下関市立大学　教授・博士（工学）</p>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+以上で本日の説明を終わります。ここから、事務ディーエックス、生成エーアイ、安全な使い方について、簡単なご質問をお受けします。個別の業務、現在の契約、情報区分、製品選定など、実際の環境を確認しないと判断できない内容については、一般的な考え方までお答えし、必要に応じて別の機会に状況を確認します。ご清聴ありがとうございました。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'fade',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+			height: 720,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
