@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">FSS 2026</title>
+  <desc id="desc">濃紺の背景に白いFSSと2026を配置したFSS2026発表資料のアイコン</desc>
+  <rect id="background" x="0" y="0" width="1024" height="1024" rx="224" fill="#173f73"/>
+  <circle id="accent-circle" cx="804" cy="220" r="104" fill="#2f8a5f"/>
+  <rect id="accent-line" x="144" y="806" width="736" height="34" rx="17" fill="#c75b24"/>
+  <text id="title-fss" x="512" y="438" fill="#ffffff" font-family="DejaVu Sans, sans-serif" font-size="286" font-weight="700" text-anchor="middle" dominant-baseline="middle">FSS</text>
+  <text id="title-year" x="512" y="682" fill="#eaf1f8" font-family="DejaVu Sans, sans-serif" font-size="190" font-weight="700" text-anchor="middle" dominant-baseline="middle">2026</text>
+</svg>
