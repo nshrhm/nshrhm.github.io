@@ -973,7 +973,7 @@ High：50–100
         <section >
             
             <!-- 29: membership-function sensitivityからentropy-functional sensitivityへ進む今後の方法論的課題を示す -->
-<div style="font-size:0.56em">
+<div style="font-size:0.4em">
 <h2>付録K：次の方法論的課題</h2>
 <h3>membership sensitivity から entropy-functional sensitivity へ</h3>
 <div class="two-column">
@@ -1034,11 +1034,8 @@ crisp membershipからの離れ方を扱う<br>
             
             <!-- 30: score-grid resolutionとcontinuous maximumを今後の独立した仕様感度として示す -->
 <div style="font-size:0.58em">
-<h2>付録L：次の仕様感度</h2>
-<h3>グリッド解像度と連続最大値</h3>
-<div class="callout warning-callout">
-<p><strong>未実施：今後の方法論的検証</strong></p>
-</div>
+<h2>付録L：グリッドも測定仕様の一部である</h2>
+<h3>未実施：グリッド解像度と連続最大値の方法論的検証</h3>
 <div class="two-column">
 <div class="scope-box">
 <h3>現行の文書化した仕様</h3>
@@ -1073,9 +1070,6 @@ H_{\max}^{\mathrm{continuous}}=\max_{x\in[0,100]}H_{\mathrm{raw}}(x)
 $$</p>
 <p>analytic derivation / validated numerical optimization / sufficiently fine grid with convergence check</p>
 </div>
-<div class="callout primary-message" style="margin-top:0.7em">
-<p><strong>グリッドも測定仕様の一部である</strong></p>
-</div>
 <p class="caption-note">現行値とcontinuous maximumの一致や、refinement後の安定性は未検証。</p>
 </div>
 <p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
@@ -1093,10 +1087,7 @@ $$</p>
             <!-- 31: family-specific、common、rawの比較をnormalization sensitivityとして今後の独立課題にする -->
 <div style="font-size:0.54em">
 <h2>付録M：正規化規則も測定仕様である</h2>
-<h3>normalization sensitivity</h3>
-<div class="callout warning-callout">
-<p><strong>未実施：今後の方法論的検証</strong></p>
-</div>
+<h3>未実施：normalization sensitivity の方法論的検証</h3>
 <div class="three-column">
 <div class="definition-card">
 <h3>A. Family-specific（今回）</h3>
@@ -1140,10 +1131,7 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="callout primary-message" style="margin-top:0.7em">
-<p><strong>正規化規則を変えると、「関数族の差」の意味そのものが変わる</strong></p>
-</div>
-<p class="caption-note">どの方式が最良かを主張せず、比較結果はすべて未実施。</p>
+<p class="caption-note">正規化規則を変えると「関数族の差」の意味も変わる。どの方式が最良かを主張せず、比較結果はすべて未実施。</p>
 </div>
 <p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
@@ -1160,10 +1148,7 @@ $$</p>
             <!-- 32: score-axis sensitivityをempirical score distributionで重み付けする今後のdownstream課題を示す -->
 <div style="font-size:0.58em">
 <h2>付録N：score-axis sensitivity から downstream sensitivity へ</h2>
-<h3>data-weighted sensitivity</h3>
-<div class="callout warning-callout">
-<p><strong>未実施：今後のdownstream方法論的検証</strong></p>
-</div>
+<h3>未実施：data-weighted sensitivity の方法論的検証</h3>
 <div class="two-column">
 <div class="scope-box">
 <h3>Score-axis sensitivity（今回）</h3>
@@ -1186,21 +1171,12 @@ $$</p>
 </div>
 <div class="scope-box" style="margin-top:0.7em">
 <p><strong>Conceptual candidate（今回の承認済み指標ではない）</strong></p>
-<p>$
-S_{\mathrm{weighted}}=\sum_{x\in G}w(x)
-$
-$
-\left\lvert H_a^*(x) - H_b^{\ast}(x)\right\rvert
-$</p>
-<p>$
-\sum_{x\in G}w(x)=1
-$</p>
+<p>$$
+S_{\mathrm{weighted}}=\sum_{x\in G}w(x) \left\lvert H_{a}^{\ast} (x)-H_{b}^{\ast} \right\rvert(x), \qquad \sum_{x\in G}w(x)=1
+$$</p>
 <p>$w(x)$：observed score frequency / density等から得る重み</p>
 </div>
-<div class="callout primary-message" style="margin-top:0.7em">
-<p><strong>「どこが理論上敏感か」から、「実データでその感度がどれだけ効くか」へ</strong></p>
-</div>
-<p class="caption-note">実際のLLM score distribution、model別・persona別・temperature別の結果は今回対象外で、一切未計算。</p>
+<p class="caption-note">「理論上どこが敏感か」から「実データでどれだけ効くか」へ。LLM score distributionや条件別の結果は今回対象外で、一切未計算。</p>
 </div>
 <p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
@@ -1217,10 +1193,7 @@ $</p>
             <!-- 33: 3つの代表的設計点から連続的なmembership-function parameter spaceへ拡張する研究展望を示す -->
 <div style="font-size:0.52em">
 <h2>付録O：3つの関数族から連続的な設計空間へ</h2>
-<h3>membership-family / parameter-space sensitivity</h3>
-<div class="callout warning-callout">
-<p><strong>未実施：今後の方法論的検証</strong></p>
-</div>
+<h3>未実施：membership-family / parameter-space sensitivity</h3>
 <div class="two-column">
 <div class="scope-box">
 <h3>今回：3つのdesign points</h3>
@@ -1229,30 +1202,22 @@ $</p>
 <li>S・π関数型：smooth local transition</li>
 <li>シグモイド合成型：smooth + nonlinear warping</li>
 </ul>
-<p>網羅や順位づけではなく、意味的な区切りを固定したcontrolled comparison</p>
+<p><small>意味的な区切りを固定したcontrolled comparisonであり、網羅・順位づけではない。</small></p>
 </div>
 <div class="scope-box">
 <h3>今後：parameterized design space</h3>
 <ul>
-<li>transition width / overlap width</li>
+<li>transition / overlap / plateau width</li>
 <li>slope / curvature / smoothness</li>
-<li>symmetry / asymmetry</li>
-<li>central plateau width</li>
-<li>endpoint behavior</li>
+<li>symmetry / asymmetry / endpoint behavior</li>
 </ul>
 </div>
 </div>
 <div class="scope-box" style="margin-top:0.7em; text-align:center">
-<p><strong>membership-function family → continuous design parameters → $H^*(x)$ response surface → sensitivity map</strong></p>
+<p><strong>family → continuous parameters → $H^*(x)$ response surface → sensitivity map</strong></p>
+<p><strong>Future RQ：</strong> どの設計パラメータが、スコア軸上の曖昧性応答を最も強く左右するか？</p>
 </div>
-<div class="scope-box" style="margin-top:0.7em">
-<p><strong>Future RQ candidate：</strong> どのメンバシップ関数設計パラメータが、スコア軸上の曖昧性応答を最も強く左右するか？</p>
-</div>
-<div class="callout primary-message" style="margin-top:0.7em">
-<p><strong>LLM時代：メンバシップ関数設計を「実装詳細」から「測定設計」へ</strong></p>
-<p>graded / ambiguous interpretationを扱うLLM評価で、設計仕様を明示・感度確認する方法論的役割を持ち得る</p>
-</div>
-<p class="caption-note">候補parameter、response surface、sensitivity mapはいずれも研究展望であり、今回の実施済み分析や結果ではない。</p>
+<p class="caption-note">LLM評価ではメンバシップ関数を「実装詳細」ではなく「測定設計」として明示・感度確認する。候補parameter、response surface、sensitivity mapはすべて未実施。</p>
 </div>
 <p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
@@ -1268,50 +1233,33 @@ $</p>
             
             <!-- 34: 固定したsemantic breakpointsを独立した感度・calibration課題として示す -->
 <div style="font-size:0.48em">
-<h2>付録P：固定境界からbreakpoint calibrationへ</h2>
-<h3>breakpoint sensitivity / calibration</h3>
-<div class="callout warning-callout">
-<p><strong>未実施：今後の方法論的検証</strong></p>
-</div>
+<h2>付録P：breakpointsも測定仕様の一部である</h2>
+<h3>未実施：固定境界から sensitivity / calibration へ</h3>
 <div class="two-column">
 <div class="scope-box">
 <h3>今回：semantic breakpointsを固定</h3>
 <ul>
-<li>Low：$[0,30]$</li>
-<li>Medium rise：$[10,30]$</li>
-<li>Medium plateau：$[30,50]$</li>
-<li>Medium fall：$[50,70]$</li>
-<li>High：$[50,100]$</li>
+<li>Low $[0,30]$ ／ High $[50,100]$</li>
+<li>Medium：rise $[10,30]$ ／ plateau $[30,50]$ ／ fall $[50,70]$</li>
 </ul>
-<p>membership-function shapeだけを変更し、影響を分離</p>
-<h3>Future sensitivity candidates</h3>
-<p>transition center / width、plateau width、overlap width、Low / Highのsymmetry・asymmetry</p>
-<p><small>例：Low–Medium transitionを $[5,25]$、$[10,30]$、$[15,35]$ へ移動。いずれもillustrative candidateであり、今回未実施。</small></p>
+<p>shapeだけを変更し、影響を分離</p>
+<p><strong>Sensitivity candidates：</strong> transition center / width、plateau / overlap width、Low–Highのsymmetry</p>
+<p><small>例：Low–Medium transitionを $[5,25]$、$[10,30]$、$[15,35]$ へ移動（すべて未実施）。</small></p>
 </div>
 <div class="scope-box">
 <h3>Future breakpoint calibration</h3>
-<p>設定根拠の候補：</p>
 <ul>
-<li>human VAS distribution</li>
-<li>expert elicitation</li>
-<li>empirical LLM score distribution</li>
-<li>clustering / fuzzy c-means</li>
-<li>external validity criterion</li>
-<li>human referenceに対するoptimization</li>
+<li>human evidence：VAS distribution / expert elicitation</li>
+<li>empirical structure：LLM score distribution / clustering</li>
+<li>validation：external criterion / human-reference optimization</li>
 </ul>
-<div class="callout warning-callout" style="margin-top:0.6em">
-<p><strong>CalibrationとEvaluationは分ける</strong></p>
-<p>同じdataでbreakpointsを学習し、同じdataを評価すると、circularity / overfittingが生じ得る</p>
-</div>
+<p><strong>CalibrationとEvaluationは分ける：</strong> 同じdataで学習・評価すると、circularity / overfittingが生じ得る</p>
 </div>
 </div>
 <div class="scope-box" style="margin-top:0.7em">
-<p><strong>Future RQ candidate：</strong> semantic breakpointの位置と幅は、entropy responseをどの程度左右するか？</p>
+<p><strong>Future RQ：</strong> semantic breakpointの位置と幅は、entropy responseをどの程度左右するか？</p>
 </div>
-<div class="callout primary-message" style="margin-top:0.7em">
-<p><strong>breakpointsもmeasurement specificationの一部である</strong></p>
-</div>
-<p class="caption-note">付録Oは曲線形状、付録Pはsemantic boundaryの位置・幅と設定根拠を扱う。calibration手法・候補値・結果はすべて未確定・未実施。</p>
+<p class="caption-note">付録Oは曲線形状、付録Pは境界の位置・幅と設定根拠を扱う。手法・候補値・結果はすべて未確定・未実施。</p>
 </div>
 <p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
