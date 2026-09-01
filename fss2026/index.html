@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
   <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- highlight Theme -->
   
@@ -136,7 +136,7 @@
 <h3>スコアが安定している</h3>
 <p>同じ条件で毎回 $x=25$ を出す<br>
 → 応答としては安定</p>
-<hr>
+<div class="case-divider" aria-hidden="true"></div>
 <p>しかし、$25$ が Low と Medium の境界なら、<br>
 <strong>言語ラベルとしては遷移的</strong></p>
 </div>
@@ -236,7 +236,7 @@
             
             <!-- 6: 使用するエントロピー式と、確率ではないこと・族内正規化を明示する -->
 <div style="font-size:0.76em">
-<h2>$H^*(x)$：重なり曖昧性を 0〜1 で読む</h2>
+<h2>$H^*(x)$：Shannon型記述量を族内正規化</h2>
 <div class="formula-box">
 <p>$$
 H_{\mathrm{raw}}(x)
@@ -246,17 +246,17 @@ $$</p>
 <p>$$
 H^*(x)=H_{\mathrm{raw}}(x) / H_{\max}^{\mathrm{grid}}
 $$</p>
-<p class="formula-plain-language">そのスコアでの重なり曖昧性 ÷ その関数族で得られる最大値</p>
+<p class="formula-plain-language">ラベルメンバシップに対するShannon型エントロピー記述子 ÷ 同じ関数族のグリッド最大値</p>
 </div>
 <div class="spec-card compact-card">
-<div><span>1</span><strong>$\mu_L,\mu_M,\mu_H$ はラベル上の確率ではなく、和が1である必要もない</strong></div>
+<div><span>1</span><strong>各 $\mu_\ell(x)\in[0,1]$ は確率ではなく、和が1である必要もない</strong></div>
 <div><span>2</span><strong>$H_{\max}^{\mathrm{grid}}$ は、族ごとに同じグリッド $0,0.1,\ldots,100.0$ 上で推定</strong></div>
-<div style="grid-column:1 / 3"><span>3</span><strong>$H^*(x)\approx0$：重なりが小さい　／　$H^*(x)\approx1$：その関数族の中で重なり曖昧性が最大に近い</strong></div>
+<div style="grid-column:1 / 3"><span>3</span><strong>$H^*(x)\approx1$ は、その関数族内で最大に近いことを示す。誤り率や共通の絶対尺度ではない</strong></div>
 </div>
 </div>
 <p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
-本研究で用いるのは、メンバシップのかさなりに対するShannon型のエントロピーです。まずエイチ・ローが、そのスコアでLow、Medium、Highがどれくらいかさなっているかを数値にします。次に、それを同じ関数族で得られる最大値で割ったものが、エイチ・スターです。いわば、関数族ごとに異なる目盛りを、ゼロから一へそろえています。エイチ・スターがゼロに近ければラベルのかさなりは小さく、一に近ければ、その関数族の中で重なり曖昧性が最大に近いと読みます。ただし、一は百パーセントの誤りや予測確率を意味しません。ミューもラベル上の確率ではなく、合計が一である必要はありません。また、正規化の最大値は普遍定数ではなく、関数族ごとに同じゼロ点一きざみのグリッド上で推定します。したがって、異なる族のエイチ・スターの差は、共通の絶対尺度上の誤差ではなく、仕様感度として報告します。
+本研究のエイチ・ローは、各ラベルのメンバシップ度に Shannon 型のマイナス・ミュー・ログ・ミューを適用して足し合わせた記述量です。各ミューはゼロから一のメンバシップ度ですが確率ではなく、合計が一である必要もありません。したがって、Low、Medium、Highという確率分布の Shannon entropy とは解釈しません。また、補集合側の項も含む代表的な De Luca–Termini 型そのものを実装した式でもありません。非確率的ファジィエントロピーの理論的背景を踏まえた、Shannon 型の membership entropy descriptor と位置づけます。ゼロ掛けるログ二ゼロは、ミューを正の側からゼロへ近づけた極限がゼロになるため、ゼロと定めます。エイチ・スターは、エイチ・ローを同じ関数族のグリッド最大値で割り、族内でゼロから一へそろえた値です。一は百パーセントの不確実性や誤りを意味せず、異なる族の差は共通の絶対尺度上の誤差ではなく、仕様感度として報告します。
 </aside>
             </section>
     
@@ -288,12 +288,13 @@ $$</p>
 </div>
 <div>
 <h3>比較する3つの関数族</h3>
+<p class="caption-note">以下の名称は、本発表内で3仕様を区別するための便宜的な呼称。</p>
 <table class="appendix-table family-values">
-<thead><tr><th>family ID</th><th>特徴</th><th>$H_{\max}^{grid}$</th></tr></thead>
+<thead><tr><th>便宜的呼称 / family ID</th><th>技術的特徴</th><th>$H_{\max}^{grid}$</th></tr></thead>
 <tbody>
-<tr><td><code>legacy_linear_v1</code></td><td>$C^0$ 区分線形</td><td>1.0577</td></tr>
-<tr><td><code>zadeh_s_z_pi_v1</code></td><td>$C^1$ 二次 S/Z/pi</td><td>1.0524</td></tr>
-<tr><td><code>sigmoid_composed_s_z_pi_v1</code></td><td>ロジスティックワープ＋S/Z/pi</td><td>1.0184</td></tr>
+<tr><td><strong>区分線形型</strong><br><code>legacy_linear_v1</code></td><td>$C^0$ 区分線形</td><td>1.0577</td></tr>
+<tr><td><strong>S・π関数型</strong><br><code>zadeh_s_z_pi_v1</code></td><td>$C^1$ S関数・反転S関数・π関数</td><td>1.0524</td></tr>
+<tr><td><strong>シグモイド合成型</strong><br><code>sigmoid_composed_s_z_pi_v1</code></td><td>ロジスティックワープ＋S/Z/pi</td><td>1.0184</td></tr>
 </tbody>
 </table>
 <div class="scope-box" style="margin-top:0.65em">
@@ -305,7 +306,7 @@ $$</p>
 </div>
 <p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
-ここでいう関数族とは、一本の関数の種類ではなく、Low、Medium、Highの三本のメンバシップ関数を一組として作る、曲線設計の規則です。スコア範囲、三つのラベル、そして意味てきなブレークポイントは共通にします。その上で、区間を直線で結ぶか、S、Z、パイ関数で滑らかに結ぶか、さらにシグモイド的に変形するかを変えています。つまり、同じ目盛りと区切りに対して、曲線の引き方を変えているわけです。ここで比較しているのは三つのLLMモデルではなく、三つのメンバシップ関数族です。三つの族は代表的な設計候補であり、どれか一つを普遍的に正しいものとして順位づけするわけではありません。
+ここでいう関数族とは、一本の関数の種類ではなく、Low、Medium、Highの三本を一組として作る曲線設計の規則です。表示している日本語名は、歴史的な標準名称を主張するものではなく、本発表内で三仕様を区別するための便宜的な呼称です。口頭では、区分線形型、初出のみ「S関数・反転S関数・パイ関数を用いた滑らかな型」、以降はS・パイ関数型、そしてシグモイド合成型と呼びます。実装と provenance では、表に示した family ID と S/Z/pi 表記を保持します。スコア範囲、三つのラベル、意味的なブレークポイントは共通で、同じ目盛りと区切りに対する曲線の引き方だけを変えています。比較対象はLLMではなく、代表的な三つのメンバシップ仕様であり、普遍的な順位づけは行いません。
 </aside>
             </section>
     
@@ -390,9 +391,9 @@ $$</p>
 <div class="figure-side-copy">
 <div class="figure-order">
 <strong>上から</strong><br>
-区分線形<br>
-S / Z / π<br>
-シグモイド合成
+区分線形型<br>
+S・π関数型<br>
+シグモイド合成型
 </div>
 <div class="figure-columns">
 <strong>左：</strong>メンバシップ<br>
@@ -407,7 +408,7 @@ S / Z / π<br>
 </div>
 <p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
-図1の左列は、３つの関数族についてLow、Medium、Highのメンバシップ曲線を示します。右列は、それぞれに対応する正規化エントロピー応答です。左側で遷移の速さや滑らかさが変わると、右側のピークの高さ、幅、局所的な肩も変わります。区分線形の局所的な折れは、応答曲線にも引き継がれます。重要なのは、この図がモデル出力の分布ではないことです。ピークはLLMがそのスコアを多く出したことではなく、その仕様がスコア軸のどこへ高い重なり曖昧性を割り当てるかを示します。
+図1の左列は、区分線形型、S・パイ関数型、シグモイド合成型について、Low、Medium、Highのメンバシップ曲線を示します。右列は、それぞれに対応する族内正規化エントロピー応答です。左側で遷移の速さや滑らかさが変わると、右側のピークの高さ、幅、局所的な肩も変わります。区分線形の局所的な折れは、応答曲線にも引き継がれます。重要なのは、この図がモデル出力の分布ではないことです。ピークはLLMがそのスコアを多く出したことではなく、その仕様がスコア軸のどこへ高い重なり曖昧性を割り当てるかを示します。
 </aside>
             </section>
     
@@ -425,9 +426,9 @@ S / Z / π<br>
 <tr><th>族ペア</th><th>最大絶対差<br>$\max|\Delta H^*|$</th><th>平均絶対差<br>$\mathrm{mean}|\Delta H^*|$</th><th>$x_{\max}$</th><th>領域</th></tr>
 </thead>
 <tbody>
-<tr><td>linear – S/Z/pi</td><td>0.343</td><td>0.110</td><td>26.3</td><td class="region-cell">Low–Medium</td></tr>
-<tr class="largest"><td>linear – sigmoid-composed</td><td>0.481</td><td>0.158</td><td>25.3</td><td class="region-cell">Low–Medium</td></tr>
-<tr><td>S/Z/pi – sigmoid-composed</td><td>0.167</td><td>0.048</td><td>24.0</td><td class="region-cell">Low–Medium</td></tr>
+<tr><td>区分線形型 – S・π関数型</td><td>0.343</td><td>0.110</td><td>26.3</td><td class="region-cell">Low–Medium</td></tr>
+<tr class="largest"><td>区分線形型 – シグモイド合成型</td><td>0.481</td><td>0.158</td><td>25.3</td><td class="region-cell">Low–Medium</td></tr>
+<tr><td>S・π関数型 – シグモイド合成型</td><td>0.167</td><td>0.048</td><td>24.0</td><td class="region-cell">Low–Medium</td></tr>
 </tbody>
 </table>
 <div class="callout warning-callout">
@@ -658,7 +659,7 @@ S / Z / π<br>
 </div>
 <p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
-凍結アーティファクトのグリッドは、ゼロから百まで、刻み幅ゼロ点一、千一点です。三つの族はいずれも、遷移区間の端点では所属度を厳密にゼロまたは一へ固定します。違いは、シグモイド合成族では、さらに区間内部の計算値をゼロから一の範囲に収めることです。区分線形族とS、Z、パイ関数族は、定義上この範囲に収まるため、内部クリップを必要としません。グリッド上のエイチ・マックスは、区分線形が一・ゼロ五七七、S、Z、パイが一・ゼロ五二四、シグモイド合成が一・ゼロ一八四です。これらは提出原稿と同じ表示精度で示しています。
+凍結アーティファクトのグリッドは、ゼロから百まで、刻み幅ゼロ点一、千一点です。三つの族はいずれも、遷移区間の端点では所属度を厳密にゼロまたは一へ固定します。違いは、シグモイド合成型では、さらに区間内部の計算値をゼロから一の範囲に収めることです。区分線形型とS・パイ関数型は、定義上この範囲に収まるため、内部クリップを必要としません。グリッド上のエイチ・マックスは、区分線形型が一・ゼロ五七七、S・パイ関数型が一・ゼロ五二四、シグモイド合成型が一・ゼロ一八四です。これらは提出原稿と同じ表示精度で示しています。
 </aside>
             </section>
     
@@ -732,7 +733,7 @@ S / Z / π<br>
 </div>
 <p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
-主要参考文献です。本研究で用いる記述子の文脈、Shannon 型の式、ファジィ集合と非確率的エントロピーの基礎、そしてメンバシップ関数設計に関する近年のFSS発表を示しています。書誌情報は提出原稿に記載された内容をそのまま基礎としています。
+主要参考文献です。Shannonはマイナス・ミュー・ログ・ミューという関数形の背景、Zadehはファジィ集合の背景、De LucaとTerminiは非確率的ファジィエントロピーの理論的背景として保持しています。ただし、本研究のエイチ・ローを確率分布のShannon entropyや、補集合項を含むDe Luca–Termini型そのものと同一視するものではありません。書誌情報は提出原稿に記載された内容をそのまま基礎としています。
 </aside>
             </section>
     
@@ -743,18 +744,22 @@ S / Z / π<br>
         <section >
             
             <!-- 22: 想定される方法論的質問への短い回答を示す -->
-<div style="font-size:0.70em">
+<div style="font-size:0.62em">
 <h2>付録F：想定される方法論的な質問</h2>
 <div class="qa-list">
 <div><strong>Q. どの族が最良ですか？</strong><p>A. 本研究は普遍的な最良族を選びません。選択の明示と代替族への感度確認を求めます。</p></div>
 <div><strong>Q. メンバシップ度は確率ですか？</strong><p>A. いいえ。選択したファジィ分割が与える所属度であり、ラベル上の確率分布ではありません。</p></div>
-<div><strong>Q. 応答曲線のピークはモデル出力の集中ですか？</strong><p>A. いいえ。仕様がスコア軸上に割り当てる重なりの大きさです。</p></div>
-<div><strong>Q. 今回の発表は前研究の結果を再分析していますか？</strong><p>A. いいえ。前研究は動機づけであり、本発表はスコア軸上の記述子仕様を扱います。</p></div>
+<div><strong>Q. なぜ $-\mu\log\mu$ を使うのですか？</strong><p>A. 唯一正しい fuzzy entropy ではありません。$0$ / $1$ で寄与が0、中間的な membership で正となる単純な Shannon 型記述子です。本研究では entropy 式を固定し、membership-function specification の感度を分離して調べます。</p></div>
+<div><strong>Q. なぜDe Luca–Termini型を使わなかったのですか？</strong><p>A. 比較して棄却したのではありません。今回は既存EQ-FuzzyのShannon型descriptorを固定し、membership-function specificationだけの感度を調べています。De Luca–Termini型を含むentropy functional間の比較は、別の感度分析です。</p></div>
+<div><strong>Q. メンバシップ度の和を1に正規化して、普通のShannon entropyを計算すればよいのでは？</strong><p>A. それも可能ですが、別のdescriptorになります。和を1にするとmembershipの絶対的な大きさを捨て、ラベル間の相対的な配分だけを残します。今回はmembership degreeを保持したまま、membership-function specificationの感度を調べています。</p></div>
 </div>
 </div>
 <p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
-想定される質問への短い回答です。最良の族を選ぶ研究ではないこと、メンバシップ度は確率ではないこと、応答曲線はモデル出力の分布ではないこと、今回の発表は前研究の結果を再分析するものではなく、スコア軸上の記述し仕様を扱う研究であることが要点です。
+想定される質問への短い回答です。最良の族を選ぶ研究ではないこと、メンバシップ度は確率ではないこと、エイチ・ローは確率分布のShannon entropyでもDe Luca–Termini型そのものでもないこと、応答曲線はモデル出力の分布ではないこと、今回の発表は前研究の結果を再分析するものではなく、スコア軸上の記述子仕様を扱う研究であることが要点です。
+<p>「なぜマイナス・ミュー・ログ・ミューを使うのですか？」への口頭回答です。この式を唯一正しいファジィエントロピーとして採用しているわけではありません。今回のマイナス・ミュー・ログ・ミューは、membershipが0または1のとき寄与が0となり、中間的なmembershipに正の寄与を与え、Low、Medium、Highについて単純に加算できるShannon型記述子です。また、前研究から用いている指標でもあります。今回の研究ではこの式自体の最適性を比較するのではなく、entropy functionalを固定した上で、membership-function specificationによって応答がどの程度変わるかを検討しています。さらに追及された場合は、他のentropy functionalも当然可能であり、その比較はentropy式自体をもう一つの仕様要因とする別の感度分析になる、と補足します。</p>
+<p>「なぜDe Luca–Termini型を使わなかったのですか？」への口頭回答です。De Luca–Termini型を比較して棄却したわけではなく、fuzzy entropyの重要な古典的定式化です。今回は前研究から使用しているShannon型のmembership descriptorを固定し、membership-function familyだけを変更しました。entropy functionalまで変更すると二つの要因が同時に変わり、観察した差の由来を分離できません。そのため今回はfunctionalを固定し、De Luca–Termini型を含むfunctional間比較は独立した感度分析と位置づけます。今回の結果は、この固定したdescriptorと今回の3つのmembership familyに限定されます。</p>
+<p>「メンバシップ度の和を1に正規化して、普通のShannon entropyを計算すればよいのでは？」への口頭回答です。はい、和を1に正規化すること自体は可能です。$s=\mu_L+\mu_M+\mu_H$ とし、$p_\ell=\mu_\ell/s$ と置けば、$p$ の和は1になります。ただし、この $p$ をラベルの真の確率とは解釈せず、相対的な構成として扱います。この変換ではmembershipの絶対値を捨て、ラベル間の相対的な配分だけを見る別のdescriptorになります。例えば $(0.5,0.5,0)$ と $(0.1,0.1,0)$ は、正規化後にはどちらも $(0.5,0.5,0)$ です。今回はmembership functionが直接与えるmembership degreeを保持して仕様感度を調べるため、この追加正規化は行っていません。normalized-membership Shannon entropyは有力な代替仕様であり、別の感度分析として比較する価値があります。</p>
 </aside>
             </section>
     
@@ -764,13 +769,60 @@ S / Z / π<br>
     
         <section >
             
-            <!-- 23: S・Z・π関数の形とLow・Medium・Highへの割り当てを補足する -->
+            <!-- 23: 方法論Q&Aのうち正規化と結果解釈に関する回答を分割表示する -->
+<div style="font-size:0.62em">
+<h2>付録F（続き1）：比較・解釈</h2>
+<div class="qa-list">
+<div><strong>Q. なぜ $H_{\max}$ を解析的最大値ではなくグリッド最大値にしたのですか？</strong><p>A. 今回の $H^*$ は、連続領域上の解析的正規化量ではなく、文書化したscore grid上の再現可能なresponseです。membership、entropy response、family sensitivityを同じgridで生成し、全関数族へ同一手順を適用します。grid resolutionへの依存性は今後の検証課題です。</p></div>
+<div><strong>Q. 関数族ごとに別々に正規化した $H^*$ を、関数族間で引き算してよいのですか？</strong><p>A. 差の意味を限定すれば比較できます。各族は自身の $H_{\max}^{\mathrm{grid}}$ で正規化するため、$H^*$ の差は共通の絶対entropy尺度上の差ではありません。同じscoreを各族自身のresponse rangeのどこに置くかという、族内正規化response curve間の仕様感度です。</p></div>
+<div><strong>Q. 最大差 0.481 には、結局どのような科学的意味があるのですか？</strong><p>A. 0.481は効果量や48.1%の予測誤差ではありません。族内正規化した2本のresponse curveの、文書化したscore grid上での最大局所差です。同じscoreでもmembership specificationだけで解釈が異なり得る領域が確認され、3ペアすべてで最大差はLow–Medium遷移領域に現れました。</p></div>
+<div><strong>Q. $H_{\mathrm{raw}}$ はShannon entropyやDe Luca–Termini entropyそのものですか？</strong><p>A. いいえ。メンバシップ度にShannon型の $-\mu\log\mu$ を適用した記述量で、確率分布のentropyでも、補集合項を含むDe Luca–Termini型そのものでもありません。</p></div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+「なぜエイチ・マックスを解析的最大値ではなくグリッド最大値にしたのですか？」への口頭回答です。今回のエイチ・スターは、連続区間上の解析的最大値で正規化した量ではなく、文書化したゼロ点一刻み、千一点のscore grid上で再生成できるresponse artifactとして定義しています。membership values、エイチ・ロー、エイチ・スター、family間感度のすべてで同じグリッドを使い、そこでの族別最大値をエイチ・マックス・グリッドとします。この手順は三つの関数族すべてに同じアルゴリズムとして適用できます。ただし、この最大値は連続区間上の厳密な最大値と一致するとは限りません。文書化したグリッド点では定義上エイチ・スターは一以下ですが、同じ定数でoff-grid点を評価する場合、一般論として一を超える可能性は排除できません。今回の三族で実際に生じるかは未検証であり、grid resolutionは次に確認すべき仕様項目です。
+<p>「関数族ごとに別々に正規化したエイチ・スターを、関数族間で引き算してよいのですか？」への口頭回答です。はい。ただし、この差を絶対的なentropy差とは解釈しません。各familyでは、$H_f<sup>*(x)=H_{\mathrm{raw},f}(x)/H_{\max,f}</sup>{\mathrm{grid}}$ と、異なるfamily-specific maximumで正規化します。したがって差が表すのは、各familyが自身の最大応答を1としたとき、同じscoreをresponse rangeのどこへ位置づけるかというrelative response positionの違いです。そのため誤差や性能差ではなく、specification sensitivityとして報告します。ゼロ点四八一は、族別正規化した二本のresponse curve間で、文書化したscore grid上に観測された最大局所差であり、共通絶対尺度上の四十八点一パーセント差ではありません。raw entropyや共通分母での比較は、別のnormalization specificationとして異なる問いに答えます。</p>
+<p>「最大差ゼロ点四八一には、結局どのような科学的意味があるのですか？」への口頭回答です。ゼロ点四八一は効果量でも、四十八点一パーセントの予測誤差でもありません。今回のfamily-specific normalizationの下で、二本のentropy-response curveがdocumented score grid上で最も離れた局所差です。具体的には同じ二十五点三に対し、区分線形型ではエイチ・スターがゼロ点六七六、シグモイド合成型ではゼロ点一九五となり、その差がゼロ点四八一でした。同じペアのgrid全体の平均絶対差はゼロ点一五八であり、常にゼロ点四八一異なるわけではありません。変えたのはLLMやテキストではなく、membership specificationだけです。したがって科学的に重要なのは、同じscoreでもmeasurement specificationによってdescriptorの解釈が異なり得る領域が存在し、今回の三ペアすべてで最大局所差がLow–Medium遷移領域に現れたことです。ただし、今回はscore-axis-only analysisであり、実際のLLMがその領域をどの程度使うかは考慮していないため、downstream analysisへの影響の大きさまでは言えません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: 方法論Q&Aのうち関数族・境界・適用範囲に関する回答を分割表示する -->
+<div style="font-size:0.62em">
+<h2>付録F（続き2）：設計・適用範囲</h2>
+<div class="qa-list">
+<div><strong>Q. なぜこの3種類のメンバシップ関数族を選んだのですか？</strong><p>A. 網羅的・最良の3族として選んだわけではありません。従来の区分線形型をbaselineとし、同じLow / Medium / Highとsemantic breakpointsを保ちながら、滑らかさと非線形性を段階的に変える代表的なdesign pointsとして選びました。目的は曲線形状に対する仕様感度の確認であり、全membership-function spaceの探索は今後の課題です。</p></div>
+<div><strong>Q. なぜこのブレークポイントなのですか？</strong><p>A. 今回新たに最適化した値ではありません。既存EQ-Fuzzyで用いていたsemantic breakpointsを継承し、固定しています。目的はbreakpointを変えずにmembership-function shapeだけを変更した際の仕様感度を分離して調べることであり、普遍的な最適値とは主張していません。</p></div>
+<div><strong>Q. 応答曲線のピークはモデル出力の集中ですか？</strong><p>A. いいえ。仕様がスコア軸上に割り当てる重なりの大きさです。</p></div>
+<div><strong>Q. 今回の発表は前研究の結果を再分析していますか？</strong><p>A. いいえ。前研究は動機づけであり、本発表はスコア軸上の記述子仕様を扱います。</p></div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+「なぜこの三種類のメンバシップ関数族を選んだのですか？」への口頭回答です。この三族を、代表的な三大membership functionsや最良の三候補として選んだわけではありません。区分線形型は従来のEQ-Fuzzyで使用してきたbaselineで、遷移区間が読みやすい一方、transition pointに角を持ちます。S・パイ関数型は、同じsemantic breakpointsを維持しながら、局所的な遷移を滑らかにします。シグモイド合成型は、滑らかな遷移に加えてnonlinearなscore-axis warpingを導入します。したがって、piecewise linear、smooth local transition、smooth plus nonlinear warpingという三つのdesign pointsです。目的は全membership-function spaceの網羅ではなく、意味的な区切りを固定しながらcurve shapeを変えた場合の仕様感度を確認することです。
+<p>「なぜこのブレークポイントなのですか？」への口頭回答です。このbreakpointを今回の研究で最適値として導出したわけではありません。Lowはゼロから三十、Mediumは十から三十で上昇し、三十から五十をplateau、五十から七十で下降し、Highは五十から百で上昇するというsemantic breakpointsは、以前のEQ-Fuzzy implementationから継承した仕様です。今回の研究質問はmembership-function shapeの違いに対する感度です。breakpointまで同時に変えると、観察された差がshapeによるのかbreakpointによるのか分離できないため、今回は固定しました。これらの値が心理学的にも数学的にも普遍的な最適値だとは主張していません。breakpoint自体の感度やcalibrationは、次の独立した研究課題です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: S関数・反転S関数・π関数の形とLow・Medium・Highへの割り当てを補足する -->
 <div style="font-size:0.68em">
-<h2>付録G：S・Z・π関数とは？</h2>
+<h2>付録G：S関数・反転S関数・π関数とは？</h2>
 <p class="function-shape-question">Q. それぞれ、どのような形と役割を持つ関数ですか？</p>
 <div class="function-shape-grid">
 <div class="function-shape-card low-shape">
-<h3>Z関数 → Low</h3>
+<h3>反転S関数（実装表記 Z）→ Low</h3>
 <svg class="shape-curve" viewBox="0 0 100 70" role="img" aria-label="所属度が1から0へ滑らかに下降するZ関数">
 <path d="M8 8 C8 32, 22 35, 50 35 C78 35, 92 38, 92 62" />
 </svg>
@@ -799,9 +851,9 @@ S / Z / π<br>
 区分線形族と意味的な区切りは同じで、区間のつなぎ方を滑らかにした設計。</p>
 </div>
 </div>
-<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
-S、Z、パイ関数について補足します。S関数は、所属度をゼロから一へ滑らかに増加させる曲線です。Z関数はその逆向きで、一からゼロへ滑らかに減少させます。パイ関数は、S型の上昇とZ型の下降を組み合わせ、中間領域への所属度を表します。本研究では、LowにZ関数、Mediumにパイ関数、HighにS関数を割り当てています。区分線形族とラベルや意味てきなブレークポイントは同じですが、遷移部分を滑らかにつなぐ点が異なります。なお、ここでのパイは円周率ではなく、曲線の形に由来する名称です。
+S関数、反転S関数、パイ関数について補足します。S関数は、所属度をゼロから一へ滑らかに増加させる曲線です。反転S関数はその逆向きで、一からゼロへ滑らかに減少し、実装ではZ関数と表記しています。パイ関数は、S型の上昇と反転S型の下降を組み合わせ、中間領域への所属度を表します。本研究では、Lowに反転S関数、Mediumにパイ関数、HighにS関数を割り当てています。区分線形型とラベルや意味的なブレークポイントは同じですが、遷移部分を滑らかにつなぐ点が異なります。なお、ここでのパイは円周率ではなく、曲線の形に由来する名称です。
 </aside>
             </section>
     
@@ -811,7 +863,7 @@ S、Z、パイ関数について補足します。S関数は、所属度をゼ�
     
         <section >
             
-            <!-- 24: 設定から感度行列までの凍結成果物を実在するファイルで説明する -->
+            <!-- 26: 設定から感度行列までの凍結成果物を実在するファイルで説明する -->
 <div style="font-size:0.60em">
 <h2>付録H：設定から感度行列までの具体例</h2>
 <div class="artifact-example-root">
@@ -829,7 +881,7 @@ S、Z、パイ関数について補足します。S関数は、所属度をゼ�
 </table>
 <p class="bottom-message">一つの設定から、機械可読な表・確認用の図・比較結果を一式として生成する</p>
 </div>
-<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
 具体的な成果物を示します。設定ファイルには、スコア範囲、刻み幅、ラベル、関数族、端点、正規化方法を記録します。メンバシップグリッドとエントロピー応答グリッドには、ゼロから百までの千一点と三つの関数族について、所属度、エイチ・ロー、エイチ・スター、エイチ・マックスを保存します。仕様カードは、族の滑らかさや端点処理などを一覧化します。図は人間が曲線を確認するための表現です。感度行列は、関数族ペアの最大差、平均差、最大差の位置、積分差を保存します。このように、一つの設定から機械可読な表、確認用の図、比較結果を一式として生成します。
 </aside>
@@ -841,7 +893,7 @@ S、Z、パイ関数について補足します。S関数は、所属度をゼ�
     
         <section >
             
-            <!-- 25: artifact ID、設定ハッシュ、生成版の役割と現在の記録限界を説明する -->
+            <!-- 27: artifact ID、設定ハッシュ、生成版の役割と現在の記録限界を説明する -->
 <div style="font-size:0.66em">
 <h2>付録I：artifact ID・hash・生成版の役割</h2>
 <div class="provenance-example-grid">
@@ -867,7 +919,7 @@ S、Z、パイ関数について補足します。S関数は、所属度をゼ�
 </div>
 <p class="bottom-message">名前で束ね、hashで設定を照合し、生成版で計算コードを固定する</p>
 </div>
-<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
 成果物を再現可能に識別する三つの情報を区別します。アーティファクトIDは、成果ぶつ一式を人間が参照するための名前です。ここでは、メンバシップ・スペシフィケーション・ブイワンです。設定ハッシュは、使用した設定ファイルの内容を照合するSHA二五六の指紋で、接頭辞はエフ九五五ビー八シー六エー三〇九です。最後に生成版は、どの版の計算コードを使ったかを固定する情報です。現在の成果ぶつ要約には五本の生成スクリプトのパスは記録されていますが、ジェネレーター・バージョンやソース・コミットという専用フィールドはありません。したがって、現状はGit履歴で補助確認する必要があります。次の版では、ソース・コミットまたは生成版を成果物要約へ明示的に固定することが改善点です。
 </aside>
@@ -879,7 +931,7 @@ S、Z、パイ関数について補足します。S関数は、所属度をゼ�
     
         <section >
             
-            <!-- 26: ブレークポイントと端点処理の違いを具体的な区間と規則で補足する -->
+            <!-- 28: ブレークポイントと端点処理の違いを具体的な区間と規則で補足する -->
 <div style="font-size:0.66em">
 <h2>付録J：ブレークポイントと端点処理とは？</h2>
 <div class="breakpoint-endpoint-grid">
@@ -897,8 +949,8 @@ High：50–100
 <h3>端点処理＝「境界でどうするか」</h3>
 <p>遷移区間の境界と外側で<strong>所属度を決める規則</strong></p>
 <ul>
-<li><strong>区分線形、S・Z・π：</strong>端点を0/1に固定</li>
-<li><strong>sigmoid合成：</strong>端点を0/1に固定し、内部を[0,1]にクリップ</li>
+<li><strong>区分線形型、S・π関数型：</strong>端点を0/1に固定</li>
+<li><strong>シグモイド合成型：</strong>端点を0/1に固定し、内部を[0,1]にクリップ</li>
 </ul>
 <p><small>※クリップは所属度を有効範囲へ収める処理であり、データの切り捨てではない。</small></p>
 </div>
@@ -908,9 +960,362 @@ High：50–100
 曲線と $H^*$ が変わり得るため、両方を記録する</p>
 </div>
 </div>
-<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
 ブレークポイントと端点処理の違いを補足します。ブレークポイントは、曲線の挙動がどこで切り替わるかを表すスコア上の位置です。本研究では、Lowはゼロから三十、Mediumは十から三十で上昇し、三十から五十を中央領域として、五十から七十で下降します。Highは五十から百です。一方、端点処理は、遷移区間の境界やその外側で、所属度をどのように決めるかという計算規則です。三つの族はいずれも、端点の所属度をゼロまたは一へ固定します。シグモイド合成族だけは、さらに区間内部の値をゼロから一の範囲に収めます。ここでいうクリップは所属度を有効範囲に収める処理であり、観測データを切り捨てることではありません。つまり、ブレークポイントは、どこで、端点処理は、境界でどうするか、という違いです。同じブレークポイントを使っても、関数族や端点処理によって曲線とエイチ・スターが変わり得るため、両方を記録します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29: membership-function sensitivityからentropy-functional sensitivityへ進む今後の方法論的課題を示す -->
+<div style="font-size:0.56em">
+<h2>付録K：次の方法論的課題</h2>
+<h3>membership sensitivity から entropy-functional sensitivity へ</h3>
+<div class="two-column">
+<div class="scope-box">
+<p><strong>今回（実施済み）：membership-function sensitivity</strong></p>
+<p>score / breakpoints / entropy functional を固定<br>
+→ membership-function family を変更</p>
+</div>
+<div class="scope-box">
+<p><strong>今後（未実施）：entropy-functional sensitivity</strong></p>
+<p>同じ membership specification に対して<br>
+→ 複数の scalar reduction rule を比較</p>
+</div>
+</div>
+<div class="three-column" style="margin-top:0.7em">
+<div class="definition-card">
+<h3>A. Current Shannon-type descriptor</h3>
+<p>$$
+H_A(x)=-\sum_\ell \mu_\ell(x)\log_2\mu_\ell(x)
+$$</p>
+<p>membershipの絶対的な大きさ<br>
+＋ intermediate activation</p>
+</div>
+<div class="definition-card">
+<h3>B. Normalized-membership Shannon</h3>
+<p>$$
+p_\ell(x)=\mu_\ell(x)/\sum_j\mu_j(x)
+$$</p>
+<p>$$
+H_B(x)=-\sum_\ell p_\ell(x)\log_2p_\ell(x)
+$$</p>
+<p>ラベル間の relative composition</p>
+</div>
+<div class="definition-card">
+<h3>C. De Luca–Termini型</h3>
+<p>各membershipについて<br>
+$\mu$ と $1-\mu$ の双方を考慮する<br>
+crisp membershipからの離れ方を扱う<br>
+代表的な fuzziness functional</p>
+</div>
+</div>
+<div class="callout primary-message" style="margin-top:0.7em">
+<p><strong>membership functionだけでなく、entropy functionalも測定仕様の一部になり得る</strong></p>
+</div>
+<p class="caption-note">※3方式の比較は今回の実験結果ではなく、今後の研究課題。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回の研究ではentropy functionalを固定し、membership-function familyだけの感度を調べました。しかし、質疑応答を掘り下げると、scalar descriptorをどう作るか自体にも複数の合理的な選択があります。現在のShannon型membership descriptor、membershipを和1へ正規化してから計算するShannon entropy、そしてDe Luca–Termini型などです。これらは同じものを別の式で計算しているのではなく、保持する情報やfuzzinessの意味づけが異なります。したがって次の方法論的課題は、membership-function sensitivityだけでなく、entropy-functional sensitivityまで評価することです。これは今回の実験結果ではなく、今回の仕様研究から自然に導かれる今後の研究課題です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30: score-grid resolutionとcontinuous maximumを今後の独立した仕様感度として示す -->
+<div style="font-size:0.58em">
+<h2>付録L：次の仕様感度</h2>
+<h3>グリッド解像度と連続最大値</h3>
+<div class="callout warning-callout">
+<p><strong>未実施：今後の方法論的検証</strong></p>
+</div>
+<div class="two-column">
+<div class="scope-box">
+<h3>現行の文書化した仕様</h3>
+<p>$$
+G={0,0.1,\ldots,100.0}
+$$</p>
+<p>$$
+H_{\max}^{\mathrm{grid}}=\max_{x\in G}H_{\mathrm{raw}}(x)
+$$</p>
+<p>同じgrid上で全族を一貫して比較<br>
+grid pointsでは $H^*(x)\leq1$</p>
+<p><small>連続区間全体の最大値との一致は保証しない。</small></p>
+</div>
+<div class="scope-box">
+<h3>Grid refinement</h3>
+<p>$$
+\Delta x=1\rightarrow0.1\rightarrow0.01\rightarrow\cdots
+$$</p>
+<p><strong>安定性の確認候補</strong></p>
+<ul>
+<li>$H_{\max}^{\mathrm{grid}}$ の収束</li>
+<li>$H^*(x)$ response curve</li>
+<li>$\max|\Delta H^*|$</li>
+<li>$x_{\max}$</li>
+</ul>
+</div>
+</div>
+<div class="scope-box" style="margin-top:0.7em">
+<p><strong>Continuous reference（今後の比較候補）</strong></p>
+<p>$$
+H_{\max}^{\mathrm{continuous}}=\max_{x\in[0,100]}H_{\mathrm{raw}}(x)
+$$</p>
+<p>analytic derivation / validated numerical optimization / sufficiently fine grid with convergence check</p>
+</div>
+<div class="callout primary-message" style="margin-top:0.7em">
+<p><strong>グリッドも測定仕様の一部である</strong></p>
+</div>
+<p class="caption-note">現行値とcontinuous maximumの一致や、refinement後の安定性は未検証。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回の研究では、ゼロ点一刻み、千一点のscore gridを一つの明示的な仕様として固定しました。この方法は再現性には優れますが、エイチ・マックス・グリッドは連続区間上の厳密な最大値とは限りません。したがって次の研究では、一、ゼロ点一、ゼロ点ゼロ一などとgridを細かくしたときに、エイチ・マックス、エイチ・スターのresponse、最大family差、そして最大差の位置がどこまで安定するかを調べる必要があります。さらに必要であれば、解析的または検証済み数値最適化によるcontinuous maximumをreferenceとして比較できます。つまり、membership familyだけでなく、score-grid resolutionもmeasurement specificationの一部として感度確認することが次の課題です。これらのrefinementとcontinuous comparisonは未実施であり、結果値はまだ得られていません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31: family-specific、common、rawの比較をnormalization sensitivityとして今後の独立課題にする -->
+<div style="font-size:0.54em">
+<h2>付録M：正規化規則も測定仕様である</h2>
+<h3>normalization sensitivity</h3>
+<div class="callout warning-callout">
+<p><strong>未実施：今後の方法論的検証</strong></p>
+</div>
+<div class="three-column">
+<div class="definition-card">
+<h3>A. Family-specific（今回）</h3>
+<p>$$
+H_f^*(x)=H_{\mathrm{raw},f}(x) / H_{\max,f}^{\mathrm{grid}}
+$$</p>
+<p>各family内でresponse rangeを0〜1へそろえ、relative response shapeを比較</p>
+</div>
+<div class="definition-card">
+<h3>B. Common normalization</h3>
+<p>$$
+H_{\max}^{\mathrm{common}}=\max_{f,x}H_{\mathrm{raw},f}(x)
+$$</p>
+<p>$$
+\widetilde H_f(x)=H_{\mathrm{raw},f}(x)/H_{\max}^{\mathrm{common}}
+$$</p>
+<p>共通分母でraw magnitude differenceをより保持するfuture-work候補</p>
+</div>
+<div class="definition-card">
+<h3>C. Raw response</h3>
+<p>$$
+H_{\mathrm{raw},f}(x)
+$$</p>
+<p>追加正規化を避け、familyごとのresponse range差もそのまま含める</p>
+</div>
+</div>
+<div class="scope-box" style="margin-top:0.7em">
+<p><strong>Normalization ruleを変えたときの確認候補</strong></p>
+<div class="two-column">
+<div>
+<ul>
+<li>最大family差の大きさと $x_{\max}$</li>
+<li>Low–Mediumが最敏感領域か</li>
+</ul>
+</div>
+<div>
+<ul>
+<li>family間responseの順位・形状解釈</li>
+<li>現行の結論がどこまで安定か</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout primary-message" style="margin-top:0.7em">
+<p><strong>正規化規則を変えると、「関数族の差」の意味そのものが変わる</strong></p>
+</div>
+<p class="caption-note">どの方式が最良かを主張せず、比較結果はすべて未実施。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回の研究では、各familyの最大応答を1にそろえるfamily-specific normalizationを採用しました。これはfamilyごとのresponse shapeを比較するには便利ですが、normalization rule自体も一つの仕様選択です。例えば、すべてのfamilyに同じ最大値を使うcommon normalizationなら、family間のraw magnitude differenceをより残せます。また、raw Hを直接比較する方法もあります。これらはどれか一つが自動的に正しいのではなく、答えている問いが異なります。したがって次の研究課題は、normalization ruleを変更したとき、最大差、大きな差が生じるscore領域、そして結論がどこまで安定するかを調べるnormalization sensitivityです。これは今回未実施のfuture workです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32: score-axis sensitivityをempirical score distributionで重み付けする今後のdownstream課題を示す -->
+<div style="font-size:0.58em">
+<h2>付録N：score-axis sensitivity から downstream sensitivity へ</h2>
+<h3>data-weighted sensitivity</h3>
+<div class="callout warning-callout">
+<p><strong>未実施：今後のdownstream方法論的検証</strong></p>
+</div>
+<div class="two-column">
+<div class="scope-box">
+<h3>Score-axis sensitivity（今回）</h3>
+<p><strong>問い：</strong> 理論上、どのscore領域が仕様に敏感か？</p>
+<ul>
+<li>model output frequencyを使わない</li>
+<li>membership specification自体を点検</li>
+<li>各grid pointを同等に扱う</li>
+</ul>
+</div>
+<div class="scope-box">
+<h3>Data-weighted sensitivity（今後）</h3>
+<p><strong>問い：</strong> 実際に使われたscore領域で、仕様差がanalysisへどの程度影響するか？</p>
+<ul>
+<li>empirical score distributionを重みに使う</li>
+<li>downstream relevanceを反映</li>
+<li>model / text / persona / temperature等に依存し得る</li>
+</ul>
+</div>
+</div>
+<div class="scope-box" style="margin-top:0.7em">
+<p><strong>Conceptual candidate（今回の承認済み指標ではない）</strong></p>
+<p>$
+S_{\mathrm{weighted}}=\sum_{x\in G}w(x)
+$
+$
+\left\lvert H_a^*(x) - H_b^{\ast}(x)\right\rvert
+$</p>
+<p>$
+\sum_{x\in G}w(x)=1
+$</p>
+<p>$w(x)$：observed score frequency / density等から得る重み</p>
+</div>
+<div class="callout primary-message" style="margin-top:0.7em">
+<p><strong>「どこが理論上敏感か」から、「実データでその感度がどれだけ効くか」へ</strong></p>
+</div>
+<p class="caption-note">実際のLLM score distribution、model別・persona別・temperature別の結果は今回対象外で、一切未計算。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回のゼロ点四八一は、score axis上で最も差が大きかった場所を示しています。しかし、実際のLLMがそのscore領域をほとんど使わないのであれば、downstream analysisへの実質的影響は小さい可能性があります。逆に、実際のscoreがLow–Medium遷移領域へ集中していれば、membership specificationの影響は大きくなる可能性があります。そこで次の研究では、各score領域の仕様差を、実際のscore distributionで重み付けするdata-weighted sensitivityが考えられます。これは、「どこが理論上敏感か」という今回の問いから、「実データでその感度がどれだけ効くか」という次の問いへの拡張です。ただし、これは今回未実施のfuture workです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 33: 3つの代表的設計点から連続的なmembership-function parameter spaceへ拡張する研究展望を示す -->
+<div style="font-size:0.52em">
+<h2>付録O：3つの関数族から連続的な設計空間へ</h2>
+<h3>membership-family / parameter-space sensitivity</h3>
+<div class="callout warning-callout">
+<p><strong>未実施：今後の方法論的検証</strong></p>
+</div>
+<div class="two-column">
+<div class="scope-box">
+<h3>今回：3つのdesign points</h3>
+<ul>
+<li>区分線形型：piecewise linear</li>
+<li>S・π関数型：smooth local transition</li>
+<li>シグモイド合成型：smooth + nonlinear warping</li>
+</ul>
+<p>網羅や順位づけではなく、意味的な区切りを固定したcontrolled comparison</p>
+</div>
+<div class="scope-box">
+<h3>今後：parameterized design space</h3>
+<ul>
+<li>transition width / overlap width</li>
+<li>slope / curvature / smoothness</li>
+<li>symmetry / asymmetry</li>
+<li>central plateau width</li>
+<li>endpoint behavior</li>
+</ul>
+</div>
+</div>
+<div class="scope-box" style="margin-top:0.7em; text-align:center">
+<p><strong>membership-function family → continuous design parameters → $H^*(x)$ response surface → sensitivity map</strong></p>
+</div>
+<div class="scope-box" style="margin-top:0.7em">
+<p><strong>Future RQ candidate：</strong> どのメンバシップ関数設計パラメータが、スコア軸上の曖昧性応答を最も強く左右するか？</p>
+</div>
+<div class="callout primary-message" style="margin-top:0.7em">
+<p><strong>LLM時代：メンバシップ関数設計を「実装詳細」から「測定設計」へ</strong></p>
+<p>graded / ambiguous interpretationを扱うLLM評価で、設計仕様を明示・感度確認する方法論的役割を持ち得る</p>
+</div>
+<p class="caption-note">候補parameter、response surface、sensitivity mapはいずれも研究展望であり、今回の実施済み分析や結果ではない。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回の三族は、全membership-function spaceを網羅したものではなく、意味的なブレークポイントを固定した三つの代表的なdesign pointsです。次の研究では関数名を増やすだけでなく、transition width、slope、curvature、smoothness、overlap width、asymmetry、plateau width、endpoint behaviorなどを連続的な設計パラメータとして扱い、それらがエイチ・スターのresponse surfaceをどう変えるかを調べることが考えられます。将来の研究質問候補は、どの設計パラメータがスコア軸上の曖昧性応答を最も強く左右するか、です。これは今回未実施の研究展望です。LLMが人間そのものになった、という意味ではありません。しかしLLMは、人間が人間的な意味を読み込みやすい、連続的で多義的な出力を生成するようになっています。その出力をoverlapping linguistic conceptsで記述する場合、membership-function designは単なる実装上の選択ではなく、測定結果を左右するmeasurement specificationになります。メンバシップ関数設計はファジィ研究で長く扱われてきたテーマですが、LLM evaluationという新しい応用文脈で改めて検討する価値がある、と考えています。ファジィ理論がgradedでambiguousな解釈を明示できることは、現代AI評価へ貢献する一つの方向になり得ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 34: 固定したsemantic breakpointsを独立した感度・calibration課題として示す -->
+<div style="font-size:0.48em">
+<h2>付録P：固定境界からbreakpoint calibrationへ</h2>
+<h3>breakpoint sensitivity / calibration</h3>
+<div class="callout warning-callout">
+<p><strong>未実施：今後の方法論的検証</strong></p>
+</div>
+<div class="two-column">
+<div class="scope-box">
+<h3>今回：semantic breakpointsを固定</h3>
+<ul>
+<li>Low：$[0,30]$</li>
+<li>Medium rise：$[10,30]$</li>
+<li>Medium plateau：$[30,50]$</li>
+<li>Medium fall：$[50,70]$</li>
+<li>High：$[50,100]$</li>
+</ul>
+<p>membership-function shapeだけを変更し、影響を分離</p>
+<h3>Future sensitivity candidates</h3>
+<p>transition center / width、plateau width、overlap width、Low / Highのsymmetry・asymmetry</p>
+<p><small>例：Low–Medium transitionを $[5,25]$、$[10,30]$、$[15,35]$ へ移動。いずれもillustrative candidateであり、今回未実施。</small></p>
+</div>
+<div class="scope-box">
+<h3>Future breakpoint calibration</h3>
+<p>設定根拠の候補：</p>
+<ul>
+<li>human VAS distribution</li>
+<li>expert elicitation</li>
+<li>empirical LLM score distribution</li>
+<li>clustering / fuzzy c-means</li>
+<li>external validity criterion</li>
+<li>human referenceに対するoptimization</li>
+</ul>
+<div class="callout warning-callout" style="margin-top:0.6em">
+<p><strong>CalibrationとEvaluationは分ける</strong></p>
+<p>同じdataでbreakpointsを学習し、同じdataを評価すると、circularity / overfittingが生じ得る</p>
+</div>
+</div>
+</div>
+<div class="scope-box" style="margin-top:0.7em">
+<p><strong>Future RQ candidate：</strong> semantic breakpointの位置と幅は、entropy responseをどの程度左右するか？</p>
+</div>
+<div class="callout primary-message" style="margin-top:0.7em">
+<p><strong>breakpointsもmeasurement specificationの一部である</strong></p>
+</div>
+<p class="caption-note">付録Oは曲線形状、付録Pはsemantic boundaryの位置・幅と設定根拠を扱う。calibration手法・候補値・結果はすべて未確定・未実施。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回はbreakpointsを固定したことで、membership-function shapeの影響を分離しました。しかし当然、breakpoint自体もエイチ・スターを左右するmeasurement specificationの一部です。次の段階では、transition centerやwidth、plateau width、LowとHighの非対称性などを連続的なparameterとして変え、breakpoint sensitivityを調べることができます。さらに将来的には、人間VASやexpert knowledgeなどを用いてbreakpointsをcalibrateする方法も考えられます。ただしdata-driven calibrationを行う場合、同じdataでmembershipを決めて同じdataを評価すると、circularityやoverfittingが生じ得ます。したがってcalibration dataとevaluation dataを分け、trainingまたはcalibration split、validation split、external human-reference dataset、cross-validationなどを検討することが重要になります。human-likeで連続的・境界的に読まれるLLM outputを扱うほど、membership shapeだけでなくsemantic boundariesをどこに置くかも重要なmeasurement designになります。これは今回未実施のfuture workです。
 </aside>
             </section>
     
