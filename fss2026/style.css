@@ -135,6 +135,21 @@
   margin-top: 1.15em;
 }
 
+.title-qr {
+  position: absolute;
+  right: 120px;
+  bottom: 100px;
+  display: block;
+  width: 120px;
+  height: 120px;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 4px solid white;
+  background: white;
+  image-rendering: pixelated;
+}
+
 .two-column,
 .three-column {
   display: grid;

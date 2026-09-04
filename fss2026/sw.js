@@ -1,6 +1,6 @@
 const CACHE_PREFIX = 'fss2026-offline-';
 // Bump this version after changing published assets, then regenerate offline-assets.json.
-const CACHE_NAME = `${CACHE_PREFIX}v1`;
+const CACHE_NAME = `${CACHE_PREFIX}v2`;
 const ASSET_MANIFEST_URL = new URL('./offline-assets.json', self.location.href);
 const OFFLINE_URL = new URL('./index.html', self.location.href).href;
 

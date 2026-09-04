@@ -1,6 +1,7 @@
 [
   "./",
   "./QR_099340.png",
+  "./QR_486120.png",
   "./figure1_membership_and_entropy_response.png",
   "./generate_offline_assets.py",
   "./icons/generate_icons.py",
