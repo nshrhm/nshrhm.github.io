@@ -1,0 +1,68 @@
+:root {
+  --navy: #0b2f4f;
+  --blue: #0866a3;
+  --cyan: #dff4fb;
+  --gold: #f3b61f;
+  --ink: #13212d;
+  --muted: #526371;
+  --paper: #fbfdff;
+  --danger: #9a2b20;
+  --good: #08765a;
+}
+
+.reveal { color: var(--ink); font-family: "Noto Sans JP", "Yu Gothic", sans-serif; font-size: 30px; }
+.reveal .slides { text-align: left; }
+.reveal .slides section { box-sizing: border-box; padding: 36px 52px; }
+.reveal h1, .reveal h2, .reveal h3 { color: var(--navy); font-weight: 800; letter-spacing: .01em; text-transform: none; }
+.reveal h1 { font-size: 2.05em; }
+.reveal h2 { border-left: 12px solid var(--gold); font-size: 1.45em; margin: 0 0 .55em; padding-left: .4em; }
+.reveal h3 { font-size: 1.05em; }
+.reveal p, .reveal li { line-height: 1.45; }
+.reveal ul, .reveal ol { margin-left: 1.2em; }
+.reveal strong { color: var(--blue); }
+.reveal small, .small { color: var(--muted); font-size: .60em; line-height: 1.35; }
+.slide-body { min-height: 570px; }
+.title-slide { align-items: center; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+.eyebrow, .badge { background: var(--navy); border-radius: 999px; color: white; display: inline-block; font-size: .58em; font-weight: 700; padding: .25em .7em; }
+.badge.official { background: var(--good); }
+.badge.prior { background: #765111; }
+.badge.synthesis { background: var(--blue); }
+.lead { color: var(--navy); font-size: 1.28em; font-weight: 800; line-height: 1.4; }
+.callout { background: var(--cyan); border-left: 8px solid var(--blue); border-radius: 8px; padding: .45em .7em; }
+.warning { background: #fff2ed; border-left-color: var(--danger); }
+.grid-2, .grid-3, .grid-4 { display: grid; gap: 18px; }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.card { background: white; border: 2px solid #cddbe5; border-radius: 12px; box-shadow: 0 4px 12px rgba(11,47,79,.08); padding: .55em .65em; }
+.card h3 { margin: 0 0 .25em; }
+.bad { border-top: 7px solid var(--danger); }
+.good { border-top: 7px solid var(--good); }
+.step { border-left: 7px solid var(--blue); }
+.number { align-items: center; background: var(--navy); border-radius: 50%; color: white; display: inline-flex; font-size: .75em; height: 2em; justify-content: center; margin-right: .35em; width: 2em; }
+.answer-flow { align-items: stretch; display: grid; gap: 10px; grid-template-columns: repeat(4, 1fr); }
+.answer-flow > div { background: var(--cyan); border-radius: 10px; padding: .5em; text-align: center; }
+.figure-focus { display: grid; gap: 18px; grid-template-columns: 58% 1fr; }
+.scientific-figure, .zoomable-image { background: white; border: 2px solid #9eb3c1; box-shadow: 0 3px 12px rgba(0,0,0,.13); cursor: zoom-in; max-height: 455px; object-fit: contain; width: 100%; }
+.gallery { display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.gallery.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gallery figure { margin: 0; min-width: 0; }
+.gallery .scientific-figure { height: 350px; }
+.gallery.four .scientific-figure { height: 320px; }
+.gallery figcaption { color: var(--muted); font-size: .43em; line-height: 1.25; margin-top: 4px; text-align: center; }
+.source-line { color: var(--muted); font-size: .44em; margin-top: .55em; }
+.qr-row { display: flex; gap: 38px; justify-content: center; text-align: center; }
+.qr-row img { height: 180px; width: 180px; }
+.qa-map { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+.qa-map .card { font-size: .72em; }
+.slide-no { bottom: 12px; color: #6a7a86; font-size: 13px; position: absolute; right: 18px; }
+
+.image-zoom-overlay { align-items: center; background: rgba(3,15,25,.94); cursor: zoom-out; display: none; inset: 0; justify-content: center; padding: 2vh 2vw; position: fixed; z-index: 9999; }
+.image-zoom-overlay.is-open { display: flex; }
+.image-zoom-overlay img { background: white; max-height: 96vh; max-width: 96vw; object-fit: contain; }
+body.image-zoom-open { overflow: hidden; }
+
+@media (max-width: 900px) {
+  .reveal { font-size: 25px; }
+  .grid-4, .gallery, .gallery.four { grid-template-columns: repeat(2, 1fr); }
+}

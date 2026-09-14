@@ -1,0 +1,2357 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Reveal JS presentation</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="./style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- intent: 誰のための何の資料かを明確にし、対話型の説明を始める。 -->
+<div class="slide-body title-slide">
+<p><span class="eyebrow">2026 OPEN CAMPUS</span></p>
+<h1>小論文対策</h1>
+<h2>データを読み、考え、伝える</h2>
+<p>下関市立大学 データサイエンス学部</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+この資料では、本学データサイエンス学部の過去三年、六つの小論文を材料に、準備の仕方を説明します。
+決まった時間で全部を話す資料ではありません。皆さんの質問に合わせて、必要な部分を一緒に見ていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 全体を通読せず質問から必要箇所へ移動できる資料だと示す。 -->
+<div class="slide-body">
+<h2>この資料の使い方</h2>
+<div class="grid-3">
+<div class="card"><h3>まずコア</h3><p>共通する読み方と書き方を29枚で確認</p></div>
+<div class="card"><h3>その場で質問</h3><p>30枚目の案内から必要な付録へ移動</p></div>
+<div class="card"><h3>実物で確認</h3><p>図表をクリック、または選択して拡大</p></div>
+</div>
+<p class="callout">知りたいことから始めて大丈夫です。試験別・技術別・保護者向けの入口があります。</p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+前半は、六試験に共通する考え方です。三十枚目から先は、質問に応じて選ぶ付録です。
+実物の図表は拡大できます。細かな凡例や注記まで確認したいときに使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 小論文を自由作文だと捉える誤解を入口で修正する。 -->
+<div class="slide-body">
+<h2>小論文は「思ったことを書く」試験？</h2>
+<div class="grid-2">
+<div class="card bad"><h3>よくある誤解</h3><p>テーマの知識を並べ、最後に自分の感想を書く。</p></div>
+<div class="card good"><h3>過去問が求めたこと</h3><p><strong>設問に沿って図表を読み、その根拠から考えを組み立てる。</strong></p></div>
+</div>
+<p class="lead">意見の前に、問いとデータがある。</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+最初の誤解を解きます。自由な感想文ではなく、設問と図表が答案の出発点です。
+公式解説でも、図表に触れず自分の意見が大部分を占める答案は評価できないと繰り返し示されています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 全デッキを貫く答案の因果連鎖を一文で記憶させる。 -->
+<div class="slide-body">
+<h2>中心メッセージ</h2>
+<div class="answer-flow">
+<div><strong>問われたこと</strong><br>を特定</div>
+<div><strong>必要なデータ</strong><br>を選択</div>
+<div><strong>根拠ある解釈</strong><br>を形成</div>
+<div><strong>読み手に伝わる文</strong><br>で表現</div>
+</div>
+<p class="callout">よい答案は「設問 → データ → 解釈 → 主張」が切れずにつながります。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+この四段階が、今日いちばん持ち帰ってほしい流れです。
+どれか一つだけでは足りません。問い、データ、解釈、主張を一本の線にすることが大切です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 本試験が測る三つの力を受験生の行動に置き換える。 -->
+<div class="slide-body">
+<h2>読み取る・考える・表現する</h2>
+<div class="grid-3">
+<div class="card"><h3>読み取る</h3><p>軸・凡例・数値を正確に確認する</p></div>
+<div class="card"><h3>考える</h3><p>比較し、課題と理由を組み立てる</p></div>
+<div class="card"><h3>表現する</h3><p>字数内で根拠と主張を明確にする</p></div>
+</div>
+<p class="source-line"><span class="badge prior">前年度資料</span> OC2025の枠組みを継承し、公式6試験で具体化</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+前年度の説明資料から、読み取る、考える、表現するという三つの力を引き継ぎます。
+今年は六つの問題と公式解説を照合し、それぞれを具体的な行動に分けて説明します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 抽象的な三能力を答案作成中の六つの動作に細分化する。 -->
+<div class="slide-body">
+<h2>答案で行う6つの動作</h2>
+<div class="grid-3">
+<div class="card"><span class="number">1</span>要求を分解</div>
+<div class="card"><span class="number">2</span>定義を確認</div>
+<div class="card"><span class="number">3</span>特徴を比較</div>
+<div class="card"><span class="number">4</span>根拠を選択</div>
+<div class="card"><span class="number">5</span>主張を設計</div>
+<div class="card"><span class="number">6</span>整合性を点検</div>
+</div>
+<p class="lead">「読む」と「書く」の間に、選ぶ・組み立てる工程があります。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+答案作成を六つの動作に分けると、練習しやすくなります。
+図表を眺めてすぐ本文を書き始めず、要求、定義、比較、根拠、主張の順に準備します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 3年6試験のテーマと問題種別を一望させる。 -->
+<div class="slide-body">
+<h2>3年・6試験の全体像</h2>
+<div class="grid-3 small">
+<div class="card"><h3>2024 推薦</h3><p>生成AI・ChatGPT</p></div>
+<div class="card"><h3>2024 前期</h3><p>日本企業のデジタル変革</p></div>
+<div class="card"><h3>2025 推薦</h3><p>データ収集・偽情報</p></div>
+<div class="card"><h3>2025 前期</h3><p>健康増進</p></div>
+<div class="card"><h3>2026 推薦</h3><p>日本の情報通信産業</p></div>
+<div class="card"><h3>2026 前期</h3><p>データサイエンス人材育成</p></div>
+</div>
+<p class="source-line"><span class="badge official">公式</span> 各年度の問題PDF・「出題の意図と解答の傾向」</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+題材は、生成エーアイ、企業のデジタル変革、偽情報、健康、情報通信産業、人材育成と大きく変わっています。
+ここでの情報通信技術は、英字ではアイ・シー・ティー、デジタル変革はディー・エックスと表されます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 過去テーマの暗記が将来予測にならないことを明示する。 -->
+<div class="slide-body">
+<h2>テーマは変わる</h2>
+<p class="lead">情報技術だけでなく、企業、健康、教育、人材まで広い。</p>
+<div class="grid-2">
+<div class="card bad"><h3>避けたい準備</h3><p>次のテーマを当て、知識だけを暗記する。</p></div>
+<div class="card good"><h3>強い準備</h3><p>初見の資料でも使える読み方と書き方を練習する。</p></div>
+</div>
+<p class="callout warning">過去問の分析は、将来のテーマ・図表数・配点を予告するものではありません。</p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+テーマを当てる準備には限界があります。過去問から学ぶべきなのは、どんな資料にも使える方法です。
+この資料も、将来の出題内容や図表数、採点方法を予告するものではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: テーマを越えて繰り返された二段階の問題構造を示す。 -->
+<div class="slide-body">
+<h2>問い方には共通点がある</h2>
+<div class="grid-2">
+<div class="card"><h3>設問1</h3><p>図表から現状や特徴を<strong>概観・説明</strong></p></div>
+<div class="card"><h3>設問2</h3><p>別の図表も使い、課題への<strong>意見・提案</strong></p></div>
+</div>
+<p class="lead">正確な現状把握から、根拠ある課題解決へ。</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+六試験では、まず現状や特徴を説明し、その理解をもとに意見や提案を述べる構造が繰り返されています。
+設問二では、図表の説明だけで終わらず、自分の考えを論理的に展開する必要があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 6試験から整理した五つの準備の柱を定着させる。 -->
+<div class="slide-body">
+<h2>小論文対策の5つの柱</h2>
+<ol>
+<li>問いを正しく読む</li>
+<li>データを正しく読む</li>
+<li>重要な情報を選び、比較する</li>
+<li>データから課題と解決策を考える</li>
+<li>根拠と主張を簡潔に伝える</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+六試験を横断すると、対策は五つの柱に整理できます。
+これから、問い、データ、選択と比較、課題解決、表現の順に見ていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 図表より先に設問を読むという初動を教える。 -->
+<div class="slide-body">
+<h2>最初に読むのは「設問」</h2>
+<div class="answer-flow">
+<div>設問</div><div>必要な図表</div><div>必要な特徴</div><div>答案の形</div>
+</div>
+<p class="callout">先に図表へ飛び込むと、面白いが不要な情報に引っ張られます。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+試験開始後、まず設問を読みます。何を、どの資料から、どの形で答えるかを先に決めます。
+二〇二六年度推薦の公式解説でも、情報通信産業を問う設問に対して、別産業の最大値へ着目した答案が問題視されています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 設問から抽出する5項目をチェックリスト化する。 -->
+<div class="slide-body">
+<h2>設問で確認する5項目</h2>
+<div class="grid-3">
+<div class="card"><h3>対象</h3><p>何について</p></div>
+<div class="card"><h3>資料</h3><p>どの図表を使うか</p></div>
+<div class="card"><h3>動詞</h3><p>述べる・説明・提案</p></div>
+<div class="card"><h3>条件</h3><p>主体・観点・範囲</p></div>
+<div class="card"><h3>字数</h3><p>何を優先するか</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+設問には、答案の仕様書が書かれています。対象、使う資料、動詞、条件、字数の五つを印で分けます。
+特に、国、企業、個人など主体の指定を落とすと、内容が良くても要求を満たせません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 設問の動詞ごとに答案へ必要な操作が違うと理解させる。 -->
+<div class="slide-body">
+<h2>動詞が答案の仕事を決める</h2>
+<div class="grid-3">
+<div class="card"><h3>概観せよ</h3><p>細部より全体像と重要な特徴</p></div>
+<div class="card"><h3>説明せよ</h3><p>根拠を示し、関係を言葉にする</p></div>
+<div class="card"><h3>提案せよ</h3><p>主体・行動・理由・効果を示す</p></div>
+</div>
+<p class="lead">同じ図表でも、動詞が違えば選ぶ情報が変わります。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+概観では全体像、説明では根拠と関係、提案では行動と効果が必要です。
+設問の動詞を、自分が答案で行う具体的な作業へ言い換えてから読み進めます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 図表の内容より前に形式を確認する8項目を示す。 -->
+<div class="slide-body">
+<h2>図表の「取扱説明書」</h2>
+<div class="grid-4 small">
+<div class="card">タイトル</div><div class="card">縦軸</div><div class="card">横軸</div><div class="card">凡例</div>
+<div class="card">単位</div><div class="card">対象</div><div class="card">期間</div><div class="card">注記・出典</div>
+</div>
+<p class="callout">数値を読む前に、何の数値かを確定する。</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+図表には取扱説明書があります。タイトル、二つの軸、凡例、単位、対象、期間、注記と出典です。
+この確認を飛ばすと、数値そのものが読めても、意味を反対に取り違えることがあります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026推薦図表3の左右軸を実物で確認し誤読を防ぐ。 -->
+<div class="slide-body">
+<h2>実物で確認：左右の軸が違う</h2>
+<div class="figure-focus">
+<img class="scientific-figure" src="assets/figures/2026-suisen-p05.png" alt="2026年度推薦 図表3 各国のICT機器端末輸出額の推移">
+<div><p><span class="badge official">2026 推薦・図表3</span></p><p><strong>中国だけ右軸</strong>。同じ高さを同じ金額として読めません。</p><p class="callout warning">公式解説：日本に中国用の右軸を当て、増加と誤読した例。</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+実物の図表を見ます。中国の系列だけ右側の軸を使い、日本などは左側の軸を使います。
+線の高さだけを比べず、系列と軸の対応を指でたどることが、誤読を防ぐ基本です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026推薦図表5のD.I.定義を実物で確認し符号の逆読みに気づかせる。 -->
+<div class="slide-body">
+<h2>実物で確認：上が「不足」とは限らない</h2>
+<div class="figure-focus">
+<img class="scientific-figure" src="assets/figures/2026-suisen-p07.png" alt="2026年度推薦 図表5 雇用人員判断D.I.">
+<div><p><span class="badge official">2026 推薦・図表5</span></p><p><strong>ディー・アイの定義</strong>を先に読む。</p><p>上側は人余り、下側は人手不足。情報通信は不足傾向が続く。</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+ディー・アイは、判断を差し引いて表す指数です。この図では上ほど人余り、下ほど人手不足です。
+公式解説では、縦軸の向きを逆に捉えた例が指摘されました。指標名だけで意味を推測せず、注記を読みます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026前期の凡例を実物で追い学位系列の取り違えを防ぐ。 -->
+<div class="slide-body">
+<h2>実物で確認：凡例を線へ戻す</h2>
+<div class="figure-focus">
+<img class="scientific-figure" src="assets/figures/2026-zenki-p03.png" alt="2026年度前期 図表1 米国の統計学の学位授与数">
+<div><p><span class="badge official">2026 前期・図表1</span></p><p>学士・修士・博士を、<strong>記号と線種</strong>で一つずつ対応。</p><p class="callout warning">公式解説：別図表で学士と修士を読み違えた例。</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+系列が複数ある折れ線グラフでは、凡例から線へ視線を戻します。
+学士、修士、博士のどれかを確定してから数値を読み、答案にも何の学位かを書きます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 複数回答・指数・予測値・母集団の異なる4種類の注意をまとめる。 -->
+<div class="slide-body">
+<h2>まだある「数字の落とし穴」</h2>
+<div class="grid-4 small">
+<div class="card"><h3>複数回答</h3><p>合計が100％とは限らない</p></div>
+<div class="card"><h3>指数</h3><p>実数や割合と同じでない</p></div>
+<div class="card"><h3>予測値</h3><p>実績と分けて表現</p></div>
+<div class="card"><h3>母集団</h3><p>国・年代・回答者数を確認</p></div>
+</div>
+<p class="lead">数字の種類を言葉にできてから、比較する。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+割合らしい数字でも、複数回答なら合計は百パーセントを超えます。指数は実数ではなく、予測値は実績ではありません。
+母集団が違う数値も単純には比べられません。注記と調査対象まで確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 図表から優先して探す6種類の大きな特徴を示す。 -->
+<div class="slide-body">
+<h2>「大きな特徴」を先に探す</h2>
+<div class="grid-3">
+<div class="card">増加・減少</div><div class="card">最大・最小</div><div class="card">グループ差</div>
+<div class="card">共通点</div><div class="card">例外・転換点</div><div class="card">変化しないこと</div>
+</div>
+<p class="callout">概観は「全項目の読み上げ」ではなく、全体を代表する特徴の要約です。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+図表では、増減、最大最小、差、共通点、例外、変化のなさを探します。
+最初から細かな数字を写すのではなく、図表を一文で要約する大きな特徴を決めます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 設問への関連性と代表性で情報を選ぶ基準を示す。 -->
+<div class="slide-body">
+<h2>「目立つ」より「必要」を選ぶ</h2>
+<div class="grid-2">
+<div class="card bad"><h3>目立つ情報</h3><p>最大値、急な変化、知っている話題</p></div>
+<div class="card good"><h3>答案に必要な情報</h3><p>設問の対象を説明し、結論を支える特徴</p></div>
+</div>
+<p class="lead">選択基準は「設問に答えるのに役立つか」。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+目立つ情報が、必ずしも設問に必要とは限りません。
+情報通信産業を問われているのに別産業の最大値を書く例のように、設問との関連性を優先します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 感覚語を代表的な数値で裏づける書き方を示す。 -->
+<div class="slide-body">
+<h2>数字は「根拠」として選ぶ</h2>
+<div class="grid-2">
+<div class="card bad"><h3>弱い</h3><p>大幅に増えた。割合が高い。</p></div>
+<div class="card good"><h3>改善</h3><p>始点・終点・差など、判断を支える代表値を添える。</p></div>
+</div>
+<p class="callout">数字を全部書かず、主張を検証できる最小限の数字を使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+大幅、高い、多いという感覚語だけでは、読み手が判断を確かめられません。
+二〇二六年度前期や二〇二五年度前期の公式解説は、具体的な数値を使う重要性を明示しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 一つの図表を複数の比較軸で読む練習方法を示す。 -->
+<div class="slide-body">
+<h2>多面的に比較する</h2>
+<div class="grid-3">
+<div class="card"><h3>時間</h3><p>いつ変わったか</p></div>
+<div class="card"><h3>集団</h3><p>性別・年代・国の差</p></div>
+<div class="card"><h3>項目</h3><p>認知と利用、意思と行動</p></div>
+</div>
+<p class="lead">全て書く必要はない。ただし、一方向だけで全体を決めない。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+一つのグラフにも、時間、集団、項目という複数の比較軸があります。
+字数内で全てを書く必要はありませんが、一面だけを見て全体の結論にしないようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 複数図表を現状・課題・背景・方向性の物語へ統合する。 -->
+<div class="slide-body">
+<h2>複数図表を「ストーリー」にする</h2>
+<div class="answer-flow">
+<div>重要な現状</div><div>生じている課題</div><div>背景となる要因</div><div>対応の方向</div>
+</div>
+<p class="callout">図表A、図表Bと別々に列挙せず、図表どうしの役割をつなぐ。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+複数図表は、現状、課題、背景、対応という役割に分けるとつながります。
+例えば情報通信産業の重要性と国際的地位を現状として捉え、人材不足と投資の停滞を背景に置けます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 図表上の関連を断定的な因果へ飛躍させない表現を教える。 -->
+<div class="slide-body">
+<h2>「関係」と「因果」を分ける</h2>
+<div class="grid-2">
+<div class="card bad"><h3>飛躍</h3><p>Aが増えたから、必ずBが起きた。</p></div>
+<div class="card good"><h3>安全な表現</h3><p>AとBには関連がみられる。Aが影響した可能性がある。</p></div>
+</div>
+<p class="callout">図表にない理由を書くときは「推察」と分かる言葉を添える。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+同じ時期に二つの変化があっても、一方が他方の原因とは限りません。
+可能性がある、影響したと考えられる、など、事実と推察を区別する表現を使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 概観・説明型答案の基本構造を短い型として提示する。 -->
+<div class="slide-body">
+<h2>答案設計：概観・説明型</h2>
+<div class="answer-flow">
+<div><strong>結論</strong><br>全体像</div><div><strong>根拠1</strong><br>代表的特徴</div><div><strong>根拠2</strong><br>別の比較軸</div><div><strong>まとめ</strong><br>設問へ戻る</div>
+</div>
+<p class="lead">結論を先に置き、数字で支え、もう一度問いへ戻す。</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+概観型では、最初に全体像を一文で示し、二つ程度の代表的な特徴で支えます。
+最後に、それらが設問の対象について何を意味するかへ戻すと、列挙で終わりません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 意見・提案型答案を根拠から実行可能な対応へつなぐ型を示す。 -->
+<div class="slide-body">
+<h2>答案設計：意見・提案型</h2>
+<div class="answer-flow">
+<div><strong>課題</strong><br>図表の根拠</div><div><strong>立場</strong><br>何を目指すか</div><div><strong>提案</strong><br>誰が何をするか</div><div><strong>効果</strong><br>なぜ効くか</div>
+</div>
+<p class="callout">国・企業・大学・学校・地域・個人など、設問指定の主体を落とさない。</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+提案型は、課題、立場、主体ごとの行動、期待する効果の順に組み立てます。
+誰が、誰に、何を、どのように行うかを具体化し、その策が図表の課題にどう効くかを書きます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 字数を内容の優先順位として事前配分する考え方を示す。 -->
+<div class="slide-body">
+<h2>字数は「内容の予算」</h2>
+<div class="grid-2">
+<div class="card"><h3>概観中心の設問</h3><p>結論2：根拠6：まとめ2</p></div>
+<div class="card"><h3>提案中心の設問</h3><p>課題3：提案5：効果2</p></div>
+</div>
+<p class="callout warning">設問2で現状説明に使いすぎると、評価したい提案が薄くなる。</p>
+<p class="small">比率は練習用の目安。実際の設問要求に合わせて調整する。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+字数は、書いてから削るだけでなく、書く前に内容へ配ります。
+二〇二六年度の二試験では、現状説明に字数を使い、提案が薄くなった答案が公式に指摘されています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 本番で再現できる9ステップの答案作成手順を一覧化する。 -->
+<div class="slide-body">
+<h2>本番の9ステップ</h2>
+<div class="grid-3 small">
+<div class="card step">1 設問を読む</div><div class="card step">2 図表の定義を読む</div><div class="card step">3 一言メモ</div>
+<div class="card step">4 比較軸を探す</div><div class="card step">5 数字を選ぶ</div><div class="card step">6 結論を決める</div>
+<div class="card step">7 字数を配る</div><div class="card step">8 書く</div><div class="card step">9 設問へ戻る</div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+本番の流れを九つにします。設問と図表を読み、メモ、比較、数字、結論、字数の順で設計してから書きます。
+最後に設問へ戻り、対象、資料、動詞、条件、字数の五項目を満たしたか確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 公式問題と公式解説を一組で使う最初の具体的練習へ誘導する。 -->
+<div class="slide-body">
+<h2>今日から始める1セット</h2>
+<div class="qr-row">
+<div><img src="assets/qr-past-exams.png" alt="公式過去問ページのQRコード"><p>公式過去問</p></div>
+<div><img src="assets/qr-admissions.png" alt="公式入試情報ページのQRコード"><p>入試情報</p></div>
+</div>
+<p class="callout">問題を解く → 公式の「出題の意図と解答の傾向」を読む → 根拠と構成を直す</p>
+<p class="small">過去問の傾向は将来の出題予告ではありません。最新の入試情報は公式ページで確認してください。</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+最初の練習は、問題と公式解説を必ず一組にします。書いた答案を、公式が重視した点と実際の失敗傾向で直します。
+最新の募集要項や入試情報は公式ページで確認してください。過去の傾向から将来の出題を断定はできません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 来場者の質問を該当する付録番号へすぐ案内する。 -->
+<div class="slide-body">
+<h2>質問に合わせて選ぶ</h2>
+<div class="qa-map">
+<div class="card"><strong>出典・全体像</strong><br>31–33</div>
+<div class="card"><strong>2024推薦／前期</strong><br>34–45</div>
+<div class="card"><strong>2025推薦／前期</strong><br>46–57</div>
+<div class="card"><strong>2026推薦／前期</strong><br>58–69</div>
+<div class="card"><strong>失敗・高評価・文章</strong><br>70–75</div>
+<div class="card"><strong>練習・本番確認</strong><br>76–80</div>
+<div class="card"><strong>高校生・保護者FAQ</strong><br>81–83</div>
+<div class="card"><strong>テンプレート</strong><br>84–86</div>
+<div class="card"><strong>出典・利用範囲</strong><br>87–88</div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+ここからは質問に合わせて付録を選びます。年度別の実物図表、よくある失敗、練習法、保護者向け説明があります。
+知りたい項目を教えてください。関連するスライドへ移動して、必要なところを詳しく説明します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 資料間の権威差を示し、どの主張を何で確かめたか明確にする。 -->
+<div class="slide-body">
+<h2>付録：出典の優先順位</h2>
+<ol>
+<li><span class="badge official">最上位</span> 各年度の問題・公式解説</li>
+<li><span class="badge prior">構成参考</span> OC2025.pdf</li>
+<li><span class="badge synthesis">横断整理</span> 母艦版</li>
+<li><span class="badge">索引のみ</span> EXAM_DATA.md</li>
+</ol>
+<p class="callout warning">索引の2026年度前期は誤記。実在する <code>exam_ds_zenki_26.pdf</code> を採用。</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+問題文、図表、評価の説明は、各年度の公式問題と公式解説を最優先にしました。
+索引には二〇二六年度前期のファイル名に誤りがあるため、実在する二〇二六年度の問題ファイルを使っています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 前年度資料から継承した内容と公式根拠に合わせて修正した内容を区別する。 -->
+<div class="slide-body">
+<h2>OC2025から引き継ぐ点・直す点</h2>
+<div class="grid-2">
+<div class="card good"><h3>引き継ぐ</h3><p>読み取る・考える・表現する<br>図表の定義確認<br>日頃から資料に触れる</p></div>
+<div class="card bad"><h3>限定して扱う</h3><p>「字数の95％以上」は前年度の練習上の助言。三年間共通の公式採点基準とはしない。</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+前年度資料の良い枠組みは引き継ぎました。一方、字数の九十五パーセント以上という記述は練習上の助言として扱います。
+二〇二四年度から二〇二六年度まで共通する公式の採点基準としては説明しません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 六試験の設問構造と主な評価観点を比較可能な形にまとめる。 -->
+<div class="slide-body">
+<h2>6試験 詳細マップ</h2>
+<table>
+<thead>
+<tr>
+<th>年度</th>
+<th>選抜</th>
+<th>主題</th>
+<th>設問1 → 設問2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024</td>
+<td>推薦</td>
+<td>生成AI</td>
+<td>利用状況 → ビジネス利用への意見</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>前期</td>
+<td>DX</td>
+<td>国際比較 → 日本企業への提案</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>推薦</td>
+<td>データ・偽情報</td>
+<td>収集の実態 → 被害防止策</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>前期</td>
+<td>健康</td>
+<td>意識の概観 → 主体別対応</td>
+</tr>
+<tr>
+<td>2026</td>
+<td>推薦</td>
+<td>ICT産業</td>
+<td>現状概観 → 国・企業・個人の提案</td>
+</tr>
+<tr>
+<td>2026</td>
+<td>前期</td>
+<td>人材育成</td>
+<td>米国の動向 → 日本の対応策</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+六試験を並べると、設問一で現状を捉え、設問二で課題解決を考える流れが見えます。
+ここからは各試験を六枚ずつ使い、設問、全図表、全体像、答案設計、公式の指摘を確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024推薦の設問と使用図表の対応を整理する。 -->
+<div class="slide-body">
+<h2>2024推薦：設問構造</h2>
+<p><span class="badge official">生成AI・ChatGPT</span></p>
+<div class="grid-2">
+<div class="card"><h3>設問1：図表1–4</h3><p>注目・利用の実態を説明</p></div>
+<div class="card"><h3>設問2：図表5–7</h3><p>ビジネス利用への見解</p></div>
+</div>
+<p class="callout">情報技術への関心と、図表から具体的・論理的に考察する力を見る問題。</p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+二〇二四年度推薦は、生成エーアイとチャットジーピーティーがテーマです。
+前半で注目と利用の実態を読み、後半でプラス面とマイナス面の資料を使って立場を論じます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024推薦の図表1から4を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2024推薦：図表ギャラリー 1–4</h2>
+<div class="gallery four">
+<figure><img class="scientific-figure" src="assets/figures/2024-suisen-p03.png" alt="2024推薦 図表1"><figcaption>図表1 アクセス数</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-suisen-p04.png" alt="2024推薦 図表2"><figcaption>図表2 国別利用</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-suisen-p05.png" alt="2024推薦 図表3"><figcaption>図表3 認知・利用</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-suisen-p06.png" alt="2024推薦 図表4"><figcaption>図表4 職業別利用</figcaption></figure>
+</div>
+<p class="source-line">出典表示を含む問題PDFのページ画像。クリックまたはキーボードで拡大。</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+前半四つの実物図表です。アクセスの時系列、国別、性別と年代、職業という異なる比較軸があります。
+一つずつ要約したあと、利用の広がりと偏りという全体像へ統合します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024推薦の図表5から7を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2024推薦：図表ギャラリー 5–7</h2>
+<div class="gallery three">
+<figure><img class="scientific-figure" src="assets/figures/2024-suisen-p07.png" alt="2024推薦 図表5"><figcaption>図表5 AIへのイメージ</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-suisen-p08.png" alt="2024推薦 図表6"><figcaption>図表6 ビジネス導入</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-suisen-p09.png" alt="2024推薦 図表7"><figcaption>図表7 利用用途</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+後半は、生成エーアイへの期待と不安、導入状況、利用用途を示します。
+自分の立場に都合の良い資料だけを選ばず、反対側のデータも認めたうえで主張を作ります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024推薦で読むべき全体像を細部から区別して示す。 -->
+<div class="slide-body">
+<h2>2024推薦：読み取る全体像</h2>
+<ul>
+<li>日本では注目が急速に高まり、人口差も考えると利用の大きさが際立つ。</li>
+<li>認知に比べ利用は低く、性別・年代・職業による違いがある。</li>
+<li>期待と不安が併存し、ビジネス導入はまだ限定的。</li>
+</ul>
+<p class="callout">比率を比べるときは、人口や回答者という母集団も考える。</p>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+全体像は、急速な注目、認知と利用の差、集団差、期待と不安の併存です。
+国別の構成比だけで順位を述べず、人口差という分母まで考えられると読みが深まります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024推薦の二設問に対応する答案骨子を示す。 -->
+<div class="slide-body">
+<h2>2024推薦：答案設計</h2>
+<div class="grid-2">
+<div class="card"><h3>設問1</h3><p>急増 → 国別・人口差 → 認知と利用 → 属性差</p></div>
+<div class="card"><h3>設問2</h3><p>導入の現状 → 利点と懸念 → 自分の立場 → 条件や対応</p></div>
+</div>
+<p class="callout">賛成・反対のどちらでも、図表と明確な立場が必要。</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+設問一では複数の比較軸を代表例でまとめます。設問二では、導入の現状から自分の立場へ進みます。
+肯定でも慎重でも構いませんが、根拠、反対側への理解、導入条件を一つの論理にします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024推薦の公式解説にある失敗を一般化して再発防止策へ変える。 -->
+<div class="slide-body">
+<h2>2024推薦：公式解説からの教訓</h2>
+<div class="grid-2 small">
+<div class="card bad"><h3>見られた失敗</h3><p>図表より自分の意見が大半<br>人口差を考えない<br>一つの側面だけ<br>都合の良いデータだけ<br>立場が不明</p></div>
+<div class="card good"><h3>一般化</h3><p>まず資料を説明<br>分母を確認<br>複数軸から代表を選ぶ<br>反対材料も扱う<br>結論を明示</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+公式解説は、図表を使わない、一面だけ、都合の良いデータだけ、立場がないという失敗を挙げています。
+対策は、資料を先に説明し、分母と複数軸を確認し、反対材料も扱って結論を明示することです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024前期の設問と使用図表の対応を整理する。 -->
+<div class="slide-body">
+<h2>2024前期：設問構造</h2>
+<p><span class="badge official">日本企業のDX</span></p>
+<div class="grid-2">
+<div class="card"><h3>設問1：図1–4</h3><p>各国比較から日本の現状を説明</p></div>
+<div class="card"><h3>設問2：図5–8</h3><p>課題を捉え、改善策を提案</p></div>
+</div>
+<p class="callout">ディー・エックスは、単なる機器導入ではなく、データとデジタル技術による変革。</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+二〇二四年度前期は、日本企業のディー・エックス、つまりデジタル変革がテーマです。
+国際比較から日本の遅れや課題を捉え、数値と結びついた改善策を論理的に提案します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024前期の図1から4を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2024前期：図表ギャラリー 1–4</h2>
+<div class="gallery four">
+<figure><img class="scientific-figure" src="assets/figures/2024-zenki-p03.png" alt="2024前期 図1"><figcaption>図1 推進目的・複数回答</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-zenki-p04.png" alt="2024前期 図2"><figcaption>図2 取組状況</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-zenki-p05.png" alt="2024前期 図3"><figcaption>図3 推進体制</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-zenki-p06.png" alt="2024前期 図4"><figcaption>図4 効果</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+前半には、目的、取組、推進体制、得られた効果という流れがあります。
+図一は複数回答です。割合の合計を百パーセントとして扱わず、国ごとの優先順位を比べます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024前期の図5から8を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2024前期：図表ギャラリー 5–8</h2>
+<div class="gallery four">
+<figure><img class="scientific-figure" src="assets/figures/2024-zenki-p07.png" alt="2024前期 図5"><figcaption>図5 課題</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-zenki-p08.png" alt="2024前期 図6"><figcaption>図6 人材</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-zenki-p09.png" alt="2024前期 図7"><figcaption>図7 組織・文化</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2024-zenki-p10.png" alt="2024前期 図8"><figcaption>図8 データ活用</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+後半は、デジタル変革が進まない背景を、人材、組織文化、データ活用などから捉えます。
+提案では、課題を列挙するだけでなく、どの課題にどの施策が対応するかを一対一で結びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024前期で読むべき全体像を国際比較と課題の連鎖として示す。 -->
+<div class="slide-body">
+<h2>2024前期：読み取る全体像</h2>
+<ul>
+<li>日本も生産性向上やデータ活用を重視するが、顧客体験などの優先度に差がある。</li>
+<li>他国と比べ、取組・専門組織・効果の面で進展途上。</li>
+<li>技術導入だけでなく、人材、組織文化、経営との接続が課題。</li>
+</ul>
+<p class="callout">目的 → 体制 → 実行 → 効果という鎖で複数図表を読む。</p>
+</div>
+<audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+全体像は、目的を掲げても体制や実行が整わず、期待する効果につながりにくいという連鎖です。
+技術だけの問題にせず、人材、組織、経営、顧客という複数の層で捉えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024前期の二設問に対応する答案骨子を示す。 -->
+<div class="slide-body">
+<h2>2024前期：答案設計</h2>
+<div class="grid-2">
+<div class="card"><h3>設問1</h3><p>共通する目的 → 日本固有の差 → 体制・効果 → 現状の結論</p></div>
+<div class="card"><h3>設問2</h3><p>主要課題 → 経営・人材・文化の施策 → 実行方法 → 効果</p></div>
+</div>
+<p class="callout">提案は「研修する」で終わらず、対象・内容・評価まで具体化。</p>
+</div>
+<audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+設問一は国際比較を軸に、日本の位置を数字で示します。設問二は課題ごとに施策を対応させます。
+誰に何を教えるか、業務でどう使うか、効果をどう確かめるかまで書くと提案に厚みが出ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2024前期の公式解説にある失敗を一般化して再発防止策へ変える。 -->
+<div class="slide-body">
+<h2>2024前期：公式解説からの教訓</h2>
+<div class="grid-2 small">
+<div class="card bad"><h3>弱くなりやすい答案</h3><p>「低い」「遅れている」だけ<br>具体的数値がない<br>一図表だけ<br>提案が一文・抽象的</p></div>
+<div class="card good"><h3>改善</h3><p>国際差を代表値で示す<br>複数図表を関連づける<br>提案を主体・行動・理由へ展開</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+公式解説が強調するのは、具体的な数値と提案の厚みです。
+現状の説明だけで字数を使わず、課題を裏づける数字と、それに応じた実行可能な提案を残します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025推薦の設問と使用図表の対応を整理する。 -->
+<div class="slide-body">
+<h2>2025推薦：設問構造</h2>
+<p><span class="badge official">データ収集・偽情報</span></p>
+<div class="grid-2">
+<div class="card"><h3>設問1：前半図表</h3><p>情報収集行動と媒体の特徴</p></div>
+<div class="card"><h3>設問2：後半図表</h3><p>偽・誤情報への対応策</p></div>
+</div>
+<p class="callout">設問2のゴールを見据えつつ、設問1を結論ありきで歪めない。</p>
+</div>
+<audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+二〇二五年度推薦は、情報をどう集め、偽情報や誤情報へどう対応するかがテーマです。
+後半の提案を意識して前半を読みますが、都合の良い特徴だけを拾わないことが重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025推薦の前半図表を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2025推薦：図表ギャラリー 前半</h2>
+<div class="gallery three">
+<figure><img class="scientific-figure" src="assets/figures/2025-suisen-p03.png" alt="2025推薦 図表1"><figcaption>図表1</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2025-suisen-p04.png" alt="2025推薦 図表2と3"><figcaption>図表2・3</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2025-suisen-p05.png" alt="2025推薦 図表4"><figcaption>図表4</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_47.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+前半の実物図表です。媒体、年代、情報行動など、異なる分類を丁寧に確認します。
+調査対象と複数回答の有無を見てから、どの層がどの媒体を使うかを比較します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025推薦の後半図表を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2025推薦：図表ギャラリー 後半</h2>
+<div class="gallery four">
+<figure><img class="scientific-figure" src="assets/figures/2025-suisen-p06.png" alt="2025推薦 図表5"><figcaption>図表5</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2025-suisen-p07.png" alt="2025推薦 図表6"><figcaption>図表6</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2025-suisen-p08.png" alt="2025推薦 図表7"><figcaption>図表7</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2025-suisen-p09.png" alt="2025推薦 図表8"><figcaption>図表8</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_48.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+後半には、偽情報や誤情報との接触、見分け方、対応に関係する資料があります。
+個人の注意だけでなく、教育、媒体、プラットフォームなど複数主体の役割へつなげます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025推薦で読むべき全体像を情報行動とリスクの接続として示す。 -->
+<div class="slide-body">
+<h2>2025推薦：読み取る全体像</h2>
+<ul>
+<li>情報収集の媒体と使い方には、年代などによる違いがある。</li>
+<li>速さ・手軽さ・共有しやすさは、偽・誤情報が広がる条件にもなる。</li>
+<li>媒体の特性と利用者の行動を分け、対策へつなぐ必要がある。</li>
+</ul>
+<p class="callout">「若者は危険」のような一括りを避け、図表が示す範囲で述べる。</p>
+</div>
+<audio controls src="./voiceovers/slide_49.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+全体像は、情報行動の違いと、媒体の特性が生むリスクです。
+年代などの差を根拠なく性格の違いへ広げず、調査が示す範囲で解釈します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025推薦の二設問に対応する答案骨子を示す。 -->
+<div class="slide-body">
+<h2>2025推薦：答案設計</h2>
+<div class="grid-2">
+<div class="card"><h3>設問1</h3><p>媒体別の特徴 → 集団差 → 利便性とリスクの接点</p></div>
+<div class="card"><h3>設問2</h3><p>課題 → 個人の確認行動 → 教育・媒体側の仕組み → 効果</p></div>
+</div>
+<p class="callout">注意喚起だけでなく、確認しやすい環境や学習機会まで具体化。</p>
+</div>
+<audio controls src="./voiceovers/slide_50.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+設問一で情報行動を整理し、設問二でその課題に対応する仕組みを提案します。
+気をつけるという精神論だけでなく、出典確認、複数媒体との照合、教育、表示の仕組みへ具体化します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025推薦の公式解説にある失敗を一般化して再発防止策へ変える。 -->
+<div class="slide-body">
+<h2>2025推薦：公式解説からの教訓</h2>
+<div class="grid-2 small">
+<div class="card bad"><h3>弱くなりやすい答案</h3><p>結論に都合の良い図表だけ<br>表面的な注意喚起<br>媒体と利用者を混同<br>図表と提案が離れる</p></div>
+<div class="card good"><h3>改善</h3><p>反対材料も確認<br>仕組みまで具体化<br>主体を分ける<br>根拠ごとに施策を対応</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_51.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+この試験からは、ゴールを見据えて読むことと、結論ありきで読まないことを同時に学べます。
+提案は、個人、学校、媒体、事業者など主体を分け、図表で見えた課題と対応させます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025前期の設問と使用図表の対応を整理する。 -->
+<div class="slide-body">
+<h2>2025前期：設問構造</h2>
+<p><span class="badge official">健康増進</span></p>
+<div class="grid-2">
+<div class="card"><h3>設問1：図1・4</h3><p>食習慣と運動習慣の意識を概観</p></div>
+<div class="card"><h3>設問2：図2・3・5・6</h3><p>妨げる要因から主体別対応を提案</p></div>
+</div>
+<p class="callout">分類をまとめ直し、多面的な比較を字数内で行う。</p>
+</div>
+<audio controls src="./voiceovers/slide_52.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+二〇二五年度前期は、食習慣と運動習慣を通じた健康増進がテーマです。
+設問一で意識の低さを多面的に概観し、設問二で妨げる要因に応じた主体別の対応策を述べます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025前期の図1から3を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2025前期：図表ギャラリー 1–3</h2>
+<div class="gallery three">
+<figure><img class="scientific-figure" src="assets/figures/2025-zenki-p03.png" alt="2025前期 図1"><figcaption>図1 食習慣の改善意思</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2025-zenki-p04.png" alt="2025前期 図2"><figcaption>図2 食習慣の妨げ</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2025-zenki-p05.png" alt="2025前期 図3"><figcaption>図3 食生活の条件</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_53.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+食習慣について、改善意思と、改善を妨げる具体的な要因を見ます。
+回答区分が多いため、設問の結論に合わせて意味の近い区分を統合する方法も有効です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025前期の図4から6を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2025前期：図表ギャラリー 4–6</h2>
+<div class="gallery three">
+<figure><img class="scientific-figure" src="assets/figures/2025-zenki-p06.png" alt="2025前期 図4"><figcaption>図4 運動習慣の改善意思</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2025-zenki-p07.png" alt="2025前期 図5"><figcaption>図5 運動の妨げ</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2025-zenki-p08.png" alt="2025前期 図6"><figcaption>図6 運動環境の条件</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_54.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+運動習慣も、改善意思と妨げる要因を同じ枠組みで読みます。
+食事と運動、男女、年齢階級という複数の比較軸から、代表的な共通点と差を選びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025前期で読むべき全体像を複数分類の統合によって示す。 -->
+<div class="slide-body">
+<h2>2025前期：読み取る全体像</h2>
+<ul>
+<li>「関心はあるが改善するつもりはない」層が、食事・運動とも全体の約4分の1。</li>
+<li>改善に取り組めていない区分を統合すると、特定の年代の課題も見える。</li>
+<li>時間、家事・育児、費用、面倒さなど、行動を妨げる要因は複数。</li>
+</ul>
+<p class="source-line"><span class="badge official">公式解説</span> 代表値を用いた複数の論理的な概観例を提示</p>
+</div>
+<audio controls src="./voiceovers/slide_55.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+公式解説は、最も多い回答区分に注目する方法と、複数区分を統合する方法を例示しています。
+どちらも具体的な数字を使い、食事と運動、男女や年代を比べ、意識の低さという結論へ進みます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025前期の二設問に対応する答案骨子を示す。 -->
+<div class="slide-body">
+<h2>2025前期：答案設計</h2>
+<div class="grid-2">
+<div class="card"><h3>設問1</h3><p>区分を選択・統合 → 食事と運動 → 男女・年代 → 概観</p></div>
+<div class="card"><h3>設問2</h3><p>時間・費用などの要因 → 政府・自治体・企業・学校・医療の施策</p></div>
+</div>
+<p class="callout">設問1の分析と、設問2の施策を同じ課題でつなぐ。</p>
+</div>
+<audio controls src="./voiceovers/slide_56.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+設問一では分類をそのまま読み上げず、意味のあるまとまりに整理します。
+設問二では、時間がない、費用がかかる、面倒といった要因に対し、適切な主体の施策を対応させます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2025前期の公式解説にある失敗を一般化して再発防止策へ変える。 -->
+<div class="slide-body">
+<h2>2025前期：公式解説からの教訓</h2>
+<div class="grid-2 small">
+<div class="card bad"><h3>見られた失敗</h3><p>一側面だけ<br>「割合が高い」で終わる<br>冗長で比較が少ない<br>設問間のつながりが弱い</p></div>
+<div class="card good"><h3>一般化</h3><p>分類を統合<br>代表値を入れる<br>複数軸を簡潔に比較<br>分析した原因へ提案</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_57.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+公式解説は、一つの側面だけを見る答案や、具体的数値のない感覚的な表現を指摘しています。
+分類をまとめ、代表値を選び、複数の比較を簡潔に行う力が、限られた字数で求められます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026推薦の設問と使用図表の対応を整理する。 -->
+<div class="slide-body">
+<h2>2026推薦：設問構造</h2>
+<p><span class="badge official">日本のICT産業</span></p>
+<div class="grid-2">
+<div class="card"><h3>設問1：図表1–4・300字</h3><p>産業の重要性と国際的な位置を概観</p></div>
+<div class="card"><h3>設問2：図表5–7</h3><p>背景を整理し、国・企業・個人の提案</p></div>
+</div>
+<p class="callout">アイ・シー・ティー産業を、ビジネスの視座から鳥瞰する。</p>
+</div>
+<audio controls src="./voiceovers/slide_58.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+二〇二六年度推薦は、日本の情報通信産業がテーマです。
+設問一で重要性と国際的な苦境を概観し、設問二で人材、投資、研究開発の背景から主体別の提案を行います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026推薦の図表1から4を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2026推薦：図表ギャラリー 1–4</h2>
+<div class="gallery four">
+<figure><img class="scientific-figure" src="assets/figures/2026-suisen-p03.png" alt="2026推薦 図表1"><figcaption>図表1 実質GDP構成</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-suisen-p04.png" alt="2026推薦 図表2"><figcaption>図表2 スマートフォン予測</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-suisen-p05.png" alt="2026推薦 図表3"><figcaption>図表3 ICT機器輸出</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-suisen-p06.png" alt="2026推薦 図表4"><figcaption>図表4 ICT機器輸入</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_59.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+前半は、国内経済での規模、世界市場の成長、各国の輸出入を示します。
+図表二は予測を含み、図表三は中国だけ右軸です。データの種類と軸を確認してから全体像を作ります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026推薦の図表5から7を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2026推薦：図表ギャラリー 5–7</h2>
+<div class="gallery three">
+<figure><img class="scientific-figure" src="assets/figures/2026-suisen-p07.png" alt="2026推薦 図表5"><figcaption>図表5 雇用人員判断</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-suisen-p08.png" alt="2026推薦 図表6"><figcaption>図表6 日米の情報化投資</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-suisen-p09.png" alt="2026推薦 図表7"><figcaption>図表7 研究開発費</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_60.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+後半は、人材不足、日米の情報化投資、各国の研究開発費です。
+人、設備やソフトウェアへの投資、研究開発という三つの背景を、発展のための提案へつなげます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026推薦で読むべき全体像を重要性と苦境の対比として示す。 -->
+<div class="slide-body">
+<h2>2026推薦：読み取る全体像</h2>
+<ul>
+<li>情報通信産業は全産業の実質国内総生産の10.7％を占め、重要性が高い。</li>
+<li>世界市場に成長余地がある一方、日本の輸出は減少傾向で国際的地位が低下。</li>
+<li>人材不足が続き、米国との差が大きい投資と伸びない研究開発費が背景。</li>
+</ul>
+<p class="callout">重要なのに苦境。その背景に人材・投資・研究開発がある。</p>
+</div>
+<audio controls src="./voiceovers/slide_61.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+公式解説の中心は、情報通信産業は日本経済に重要なのに、世界の成長とは反対に国際的地位が下がっていることです。
+後半の図表から、人材不足、投資の弱さ、研究開発費の停滞を背景として整理します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026推薦の二設問に対応する答案骨子と字数の優先順位を示す。 -->
+<div class="slide-body">
+<h2>2026推薦：答案設計</h2>
+<div class="grid-2">
+<div class="card"><h3>設問1</h3><p>重要性 → 成長市場 → 輸出入の国際比較 → 苦境という概観</p></div>
+<div class="card"><h3>設問2</h3><p>人材・投資・研究の背景 → 国・企業・個人の施策 → 効果</p></div>
+</div>
+<p class="callout warning">提案部分に字数の半分近くを確保する意識。</p>
+</div>
+<audio controls src="./voiceovers/slide_62.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+設問一は、重要性、成長余地、国際的な苦境を三百字でまとめます。
+設問二は背景説明で終わらず、国、企業、個人の行動へ十分な字数を確保します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026推薦の公式解説にある具体的誤読と提案不足を一般化する。 -->
+<div class="slide-body">
+<h2>2026推薦：公式解説からの教訓</h2>
+<div class="grid-2 small">
+<div class="card bad"><h3>実際の失敗</h3><p>別産業の最大値へ着目<br>5G比率だけを見る<br>左右軸を誤読<br>D.I.を逆に読む<br>投資を株取引と誤認<br>提案が個人視点だけ</p></div>
+<div class="card good"><h3>一般化</h3><p>設問対象を優先<br>業界全体を見る<br>軸・定義を確認<br>用語を文脈で読む<br>ビジネス視点を加える</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_63.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+公式解説は、設問と関係の薄い最大値、左右軸、ディー・アイ、投資の意味など、具体的な誤読を示しています。
+また、教育や個人の能力だけでなく、企業戦略や研究開発などビジネスの視点も期待されています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026前期の設問と使用図表の対応を整理する。 -->
+<div class="slide-body">
+<h2>2026前期：設問構造</h2>
+<p><span class="badge official">データサイエンス人材育成</span></p>
+<div class="grid-2">
+<div class="card"><h3>設問1：図表1–3</h3><p>米国の関連学位授与の動向</p></div>
+<div class="card"><h3>設問2：図表4–7</h3><p>日米差と多様性を踏まえた対応策</p></div>
+</div>
+<p class="callout">学士・修士・博士、分野、国、性別という複数の分類を扱う。</p>
+</div>
+<audio controls src="./voiceovers/slide_64.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+二〇二六年度前期は、統計学とデータサイエンス関連の学位、人材育成がテーマです。
+米国の長期的な人材蓄積と日本の現状を比べ、大学、企業、国などの対応策を考えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026前期の図表1から3を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2026前期：図表ギャラリー 1–3</h2>
+<div class="gallery three">
+<figure><img class="scientific-figure" src="assets/figures/2026-zenki-p03.png" alt="2026前期 図表1"><figcaption>図表1 統計学の学位</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-zenki-p04.png" alt="2026前期 図表2"><figcaption>図表2 医学統計学の学位</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-zenki-p05.png" alt="2026前期 図表3"><figcaption>図表3 DS・分析の学位</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_65.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+前半は米国の学位授与数です。統計学、医学統計学、データサイエンスとデータ分析を分けて見ます。
+学士、修士、博士の凡例を一つずつ確認し、増加の時期や規模を具体的な数値で表します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026前期の図表4から7を原資料のまま拡大確認できるようにする。 -->
+<div class="slide-body">
+<h2>2026前期：図表ギャラリー 4–7</h2>
+<div class="gallery four">
+<figure><img class="scientific-figure" src="assets/figures/2026-zenki-p06.png" alt="2026前期 図表4"><figcaption>図表4 女性割合</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-zenki-p07.png" alt="2026前期 図表5"><figcaption>図表5 女性割合</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-zenki-p08.png" alt="2026前期 図表6"><figcaption>図表6 日本の学部等</figcaption></figure>
+<figure><img class="scientific-figure" src="assets/figures/2026-zenki-p09.png" alt="2026前期 図表7"><figcaption>図表7 先端IT人材</figcaption></figure>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_66.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+後半は、女性の学位取得割合、日本の関連学部や大学院、先端情報技術人材の不足です。
+人数の供給だけでなく、多様な人材が学び、専門性を活かせる環境という質の面も見ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026前期で読むべき全体像を長期蓄積・日米差・多様性から示す。 -->
+<div class="slide-body">
+<h2>2026前期：読み取る全体像</h2>
+<ul>
+<li>米国は統計学の全学位が増え、関連修士は2010年代半ばから急増。</li>
+<li>日本は近年学部等の新設が進む一方、修士・博士の年間供給は合計約1500人。</li>
+<li>先端情報技術人材の不足が拡大し、女性比率から多様性も重要な論点。</li>
+</ul>
+<p class="callout">現在の人数だけでなく、長年の蓄積と教育の連続性を比べる。</p>
+</div>
+<audio controls src="./voiceovers/slide_67.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+米国では長い期間にわたり専門人材が蓄積し、日本は関連学部の整備が本格化した段階です。
+修士と博士の供給、人材不足、女性の参加を組み合わせ、量、質、多様性の課題として捉えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026前期の二設問に対応する答案骨子と主体別提案を示す。 -->
+<div class="slide-body">
+<h2>2026前期：答案設計</h2>
+<div class="grid-2">
+<div class="card"><h3>設問1</h3><p>全学位の増加 → 分野別の違い → 急増した修士 → 長期的需要</p></div>
+<div class="card"><h3>設問2</h3><p>日米の蓄積差 → 大学の一貫教育 → 企業の処遇 → 国の支援 → 多様性</p></div>
+</div>
+<p class="callout">供給量を増やす策と、専門性を活かす環境の両方を提案。</p>
+</div>
+<audio controls src="./voiceovers/slide_68.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+設問一は学位別、分野別の傾向を数字でまとめます。設問二は日本との蓄積差を課題にします。
+大学の教育基盤、企業の評価と採用、国の研究支援や学び直し、多様な人材の参加をつなげます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 2026前期の公式解説にある凡例誤読・数値不足・提案不足を一般化する。 -->
+<div class="slide-body">
+<h2>2026前期：公式解説からの教訓</h2>
+<div class="grid-2 small">
+<div class="card bad"><h3>実際の失敗</h3><p>「大幅に増加」だけ<br>学士と修士を誤読<br>女性割合を見落とす<br>現状に字数を使いすぎ<br>提案が薄い</p></div>
+<div class="card good"><h3>一般化</h3><p>具体的数値を添える<br>凡例を慎重に追う<br>主流以外の系列も見る<br>分析と提案へ字数配分</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_69.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+公式解説は、感覚的な増加表現、凡例の取り違え、女性割合の見落としを挙げています。
+また、概観に字数を使いすぎず、自分の考えと対応策を論理的に展開することを重視しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 六試験で繰り返された失敗のうち設問と図表に関する4項目を整理する。 -->
+<div class="slide-body">
+<h2>よくある失敗 1–4</h2>
+<div class="grid-2 small">
+<div class="card bad"><h3>1 設問に答えない</h3><p>対象・動詞・主体がずれる</p></div>
+<div class="card bad"><h3>2 図表を使わない</h3><p>意見や知識だけになる</p></div>
+<div class="card bad"><h3>3 感覚語だけ</h3><p>多い・少ない・増えたで終わる</p></div>
+<div class="card bad"><h3>4 定義を誤読</h3><p>軸・凡例・単位を取り違える</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_70.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+最初の四つは、設問から外れる、図表を使わない、感覚語だけ、定義の誤読です。
+書く前の確認で防げる失敗です。設問の五項目と図表の八項目を必ず確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 六試験で繰り返された失敗のうち情報選択に関する4項目を整理する。 -->
+<div class="slide-body">
+<h2>よくある失敗 5–8</h2>
+<div class="grid-2 small">
+<div class="card bad"><h3>5 一面だけ</h3><p>比較軸が一つ</p></div>
+<div class="card bad"><h3>6 全部書く</h3><p>要点が消える</p></div>
+<div class="card bad"><h3>7 都合よく選ぶ</h3><p>反対材料を無視</p></div>
+<div class="card bad"><h3>8 主張がない</h3><p>意見の羅列になる</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_71.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+次の四つは、情報の選び方に関する失敗です。一面だけでも、全部を詰め込んでもよくありません。
+設問に必要な代表情報を選び、反対の材料にも触れたうえで、自分の結論を明確にします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 六試験で繰り返された失敗のうち提案と字数に関する4項目を整理する。 -->
+<div class="slide-body">
+<h2>よくある失敗 9–12</h2>
+<div class="grid-2 small">
+<div class="card bad"><h3>9 根拠と提案が離れる</h3><p>図表の課題に効かない</p></div>
+<div class="card bad"><h3>10 説明で字数を消費</h3><p>提案が薄い</p></div>
+<div class="card bad"><h3>11 抽象的</h3><p>「啓発する」で終わる</p></div>
+<div class="card bad"><h3>12 主体を落とす</h3><p>国・企業・個人などが不足</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_72.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+最後の四つは提案です。図表で見つけた課題と施策を直接つなぎます。
+提案に字数を残し、誰が、誰に、何を、どのように行うかまで具体化します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 公式解説から横断整理した高評価につながる10特徴を自己評価表にする。 -->
+<div class="slide-body">
+<h2>高評価につながる10の特徴</h2>
+<div class="grid-2 small">
+<ol>
+<li>設問へ正面から答える</li><li>図表を正確に読む</li><li>具体的な数値を使う</li><li>複数の観点を使う</li><li>重要情報を選ぶ</li>
+</ol>
+<ol start="6">
+<li>図表を関連づける</li><li>根拠と主張がつながる</li><li>提案が具体的</li><li>視野が広い</li><li>簡潔で読みやすい</li>
+</ol>
+</div>
+<p class="source-line"><span class="badge synthesis">横断整理</span> 6件の公式「出題の意図と解答の傾向」から一般化</p>
+</div>
+<audio controls src="./voiceovers/slide_73.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+高評価につながる特徴を十項目に整理しました。これは一つの年度の採点表ではなく、六つの公式解説からの横断整理です。
+答案を書き直すときに、一項目ずつ丸、三角、ばつで自己評価してみてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 事実・解釈・意見を分けて記述する文章構造を示す。 -->
+<div class="slide-body">
+<h2>文章技術：3つを混ぜない</h2>
+<div class="grid-3">
+<div class="card"><h3>事実</h3><p>図表で確認できる数値・傾向</p></div>
+<div class="card"><h3>解釈</h3><p>事実が示唆する課題や意味</p></div>
+<div class="card"><h3>意見</h3><p>自分の判断と提案</p></div>
+</div>
+<p class="callout">「図表では」→「このことから」→「私は」の境界を意識。</p>
+</div>
+<audio controls src="./voiceovers/slide_74.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+文章では、図表の事実、その意味の解釈、自分の意見を区別します。
+境界が明確だと、どこまでがデータで、どこからが自分の推察や提案かを読み手が判断できます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 簡潔で論理の見える文章にする一文一義と接続語の使い方を示す。 -->
+<div class="slide-body">
+<h2>文章技術：一文一義</h2>
+<div class="grid-2">
+<div class="card bad"><h3>長い一文</h3><p>事実、理由、提案、効果を「が」「ので」でつなぎ続ける。</p></div>
+<div class="card good"><h3>短く分ける</h3><p>一文に一つの中心。接続語で関係を示す。</p></div>
+</div>
+<p class="callout">しかし＝逆接／そのため＝因果／一方＝対比。意味があるときだけ使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_75.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+一文には中心となる内容を一つ置きます。事実、解釈、提案、効果を分けると読みやすくなります。
+接続語は飾りではありません。逆接、因果、対比など、文どうしの論理を見せるために使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 過去問を一度書いて終わらせず反復改善する練習単位を示す。 -->
+<div class="slide-body">
+<h2>練習法：1問を5回使う</h2>
+<div class="answer-flow">
+<div>30秒で図表要約</div><div>比較を3つ探す</div><div>100字で概観</div><div>主体別提案</div>
+</div>
+<p class="callout">最後に「根拠 → 主張」を一組だけ抜き出し、論理が切れていないか確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_76.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+毎回すぐ長文を書く必要はありません。一つの過去問を、要約、比較、短い概観、主体別提案に分けます。
+最後に根拠と主張を一組だけ取り出して、データから結論へ飛躍がないか確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 書く前の読解だけを集中的に鍛える短時間練習を提示する。 -->
+<div class="slide-body">
+<h2>練習法：書く前を鍛える</h2>
+<div class="grid-3">
+<div class="card"><h3>設問マーキング</h3><p>対象・資料・動詞・条件・字数</p></div>
+<div class="card"><h3>図表メモ</h3><p>一図表を一文で要約</p></div>
+<div class="card"><h3>選択理由</h3><p>なぜその数字を使うか説明</p></div>
+</div>
+<p class="lead">読解だけの練習も、立派な小論文対策。</p>
+</div>
+<audio controls src="./voiceovers/slide_77.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+答案を書く時間がない日も、設問のマーキングと図表の一文要約はできます。
+使う数字を一つ選び、なぜその数字が設問の結論を支えるかを声に出して説明します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 日常のニュース・白書を図表小論文の教材へ変える5問を示す。 -->
+<div class="slide-body">
+<h2>ニュース・白書の読み方</h2>
+<ol>
+<li>誰が、誰を対象に調べたか</li>
+<li>数字は実数・割合・指数・予測のどれか</li>
+<li>最も大きな特徴は何か</li>
+<li>別の説明可能性はないか</li>
+<li>誰が何を変えられるか</li>
+</ol>
+<p class="callout">記事の結論だけでなく、元の図表と注記へ戻る習慣をつける。</p>
+</div>
+<audio controls src="./voiceovers/slide_78.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+日常のニュースや白書も練習教材です。調査対象、数字の種類、大きな特徴、別の説明、対応主体を考えます。
+可能なら記事だけでなく、元の統計資料や図表を開き、タイトル、軸、凡例、注記を確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 本番前の準備を資料読解と答案設計の観点で点検できるようにする。 -->
+<div class="slide-body">
+<h2>本番前チェックリスト</h2>
+<div class="grid-2 small">
+<div class="card"><h3>読解</h3><p>□ 設問の5項目<br>□ 図表の8項目<br>□ 複数の比較軸<br>□ 代表的な数字</p></div>
+<div class="card"><h3>設計</h3><p>□ 結論を一文で言える<br>□ 根拠が対応する<br>□ 主体がそろう<br>□ 字数を配分した</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_79.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+本番前には、読み方と設計の手順をチェックリストで再現できるか確認します。
+新しい知識を増やすだけでなく、初見の図表で同じ手順を使える状態を目指します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 書き終えた答案を設問・根拠・表現の3層で最終点検する。 -->
+<div class="slide-body">
+<h2>書いた後の最終確認</h2>
+<div class="grid-3">
+<div class="card"><h3>設問</h3><p>対象・動詞・主体に答えたか</p></div>
+<div class="card"><h3>根拠</h3><p>図表番号・意味・数値は正しいか</p></div>
+<div class="card"><h3>表現</h3><p>主語述語・一文・誤字・字数</p></div>
+</div>
+<p class="callout">最後の一分は、新しい内容を足すより「問いへ戻る」。</p>
+</div>
+<audio controls src="./voiceovers/slide_80.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+書いた後は、設問、根拠、表現の三層で確認します。
+最後に設問を読み直し、自分の結論が問われた対象と動詞に正面から答えているかを確かめます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 高校生が抱きやすい数学・国語・プログラミングへの不安を解消する。 -->
+<div class="slide-body">
+<h2>高校生FAQ：得意科目は？</h2>
+<div class="grid-3 small">
+<div class="card"><h3>国語だけ？</h3><p>文章力に加え、図表を正確に扱う力が必要。</p></div>
+<div class="card"><h3>数学が苦手</h3><p>高度な計算より、割合・比較・単位の意味を丁寧に読む。</p></div>
+<div class="card"><h3>プログラミング</h3><p>六試験ではコードを書く問題ではない。社会とデータへの関心を磨く。</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_81.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+国語だけ、数学だけの試験ではありません。文章とデータをつなぐ試験です。
+高度な計算やプログラム作成より、割合、軸、単位、比較を丁寧に扱い、論理的に説明する力を練習します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 高校生が抱きやすい正解・数字・全図表・知識量への疑問に答える。 -->
+<div class="slide-body">
+<h2>高校生FAQ：どう書けば？</h2>
+<div class="grid-2 small">
+<div class="card"><h3>意見に正解は？</h3><p>立場だけでなく、図表との整合性と論理が評価の鍵。</p></div>
+<div class="card"><h3>数字はいくつ？</h3><p>主張を支える代表値を必要なだけ。</p></div>
+<div class="card"><h3>全図表を書く？</h3><p>指定範囲を読み、重要情報を選ぶ。</p></div>
+<div class="card"><h3>知識量で決まる？</h3><p>背景知識は助けになるが、設問と資料が先。</p></div>
+</div>
+</div>
+<audio controls src="./voiceovers/slide_82.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+意見の方向だけで正解が決まるのではなく、図表の根拠と論理が重要です。
+数字も図表も多ければ良いのではありません。設問に必要な情報を選び、結論を支える形で使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 保護者へ試験で見ようとしている力と家庭で支援できる練習を説明する。 -->
+<div class="slide-body">
+<h2>保護者の方へ</h2>
+<div class="grid-2">
+<div class="card"><h3>見ようとしている力</h3><p>データを正しく扱う姿勢<br>社会課題を構造的に考える力<br>根拠を他者へ説明する力</p></div>
+<div class="card"><h3>支援できること</h3><p>結論を教えるより「根拠はどこ？」「別の見方は？」と問い返す。</p></div>
+</div>
+<p class="callout">過去問と公式解説をセットで読み、書き直しを見守る。</p>
+</div>
+<audio controls src="./voiceovers/slide_83.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+この小論文では、データを正しく扱い、社会課題を構造的に考え、他者へ説明する力が問われています。
+家庭では答えを教えるより、根拠はどこか、別の見方はないかと問い返すことが練習になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 問題と公式解説を使った改善ループを再現可能な手順として残す。 -->
+<div class="slide-body">
+<h2>過去問学習ループ</h2>
+<div class="answer-flow">
+<div>時間を決めて解く</div><div>公式解説と照合</div><div>根拠・構成を診断</div><div>書き直して説明</div>
+</div>
+<p class="callout">模範文の暗記ではなく、自分の読み方を修正する。</p>
+</div>
+<audio controls src="./voiceovers/slide_84.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+過去問は一回で終わりません。解く、公式解説と照合する、弱点を診断する、書き直すという循環で使います。
+書き直したあとは、どの図表のどの特徴を使ったかを他者へ説明すると、方法が定着します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 各図表の定義・特徴・役割を短時間で記録するメモ型を提供する。 -->
+<div class="slide-body">
+<h2>図表メモ・テンプレート</h2>
+<div class="grid-2 small">
+<div class="card"><h3>取扱説明書</h3><p>図表番号：<br>対象・期間：<br>軸・単位・凡例：<br>注記：</p></div>
+<div class="card"><h3>答案への部品</h3><p>一言要約：<br>代表値：<br>比較軸：<br>この設問での役割：</p></div>
+</div>
+<p class="callout">一図表を一枚のメモにし、答案で使うものだけ選ぶ。</p>
+</div>
+<audio controls src="./voiceovers/slide_85.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+図表メモは、定義の欄と答案への部品の欄に分けます。
+一言要約、代表値、比較軸、この設問での役割まで書くと、複数図表を組み合わせやすくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 図表の課題から主体別施策と効果を設計する提案型を提供する。 -->
+<div class="slide-body">
+<h2>提案テンプレート</h2>
+<ol>
+<li>図表から見える課題</li>
+<li>なぜ問題なのか</li>
+<li>自分の目指す方向</li>
+<li>誰が、誰に、何を、どう行うか</li>
+<li>その策が効く理由</li>
+<li>想定される注意点</li>
+<li>結論</li>
+</ol>
+<p class="callout">主体を変えた提案を三つ作り、設問に最も合うものを選ぶ。</p>
+</div>
+<audio controls src="./voiceovers/slide_86.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+提案は七つの欄で作ります。図表の課題、理由、目指す方向、主体と行動、効果、注意点、結論です。
+国、企業、大学、学校、地域、個人など主体を変えて案を出し、設問に合うものを選びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: このデッキで使用した一次資料と補助資料を追跡可能な形で列挙する。 -->
+<div class="slide-body">
+<h2>出典一覧</h2>
+<div class="grid-2 small">
+<div class="card"><h3>公式問題</h3><p><code>exam_ds_suisen_24.pdf</code><br><code>exam_ds_zenki_24.pdf</code><br><code>exam_ds_suisen_25.pdf</code><br><code>exam_ds_zenki_25.pdf</code><br><code>exam_ds_suisen_26.pdf</code><br><code>exam_ds_zenki_26.pdf</code></p></div>
+<div class="card"><h3>公式解説・補助</h3><p><code>ds_suisen_24.pdf</code> ほか6件<br><code>OC2025.pdf</code><br><code>oc2026_essay_preparation_master.md</code><br><code>EXAM_DATA.md</code> は索引のみ</p></div>
+</div>
+<p class="source-line">SHA-256、ページ数、役割、図表資産の来歴は presentation/README.md と各マニフェストに記載。</p>
+</div>
+<audio controls src="./voiceovers/slide_87.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+この資料は、六つの公式問題と六つの公式解説を中心に作成しました。
+前年度資料は構成の参考、母艦版は横断整理、試験データ文書は索引として使い、詳細な来歴は説明文書に残しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- intent: 許諾情報・推論の限界・今回実施しない音声生成と公開を明確にする。 -->
+<div class="slide-body">
+<h2>利用上の境界</h2>
+<ul>
+<li>問題・解説は、Web公開済みで利用許諾済みとのユーザー提供情報に基づく。</li>
+<li>図表は問題PDFのページを再利用し、数値を描き直していない。</li>
+<li>過去3年の分析は、将来の出題・配点・採点基準の予告ではない。</li>
+<li>MP3生成、投影確認、HTML書き出し、公開は今回の作業範囲外。</li>
+</ul>
+<p class="callout">最新の入試情報・募集要項は、必ず大学公式情報で確認してください。</p>
+</div>
+<audio controls src="./voiceovers/slide_88.mp3" type="audio/mpeg"></audio>
+<aside class="notes">
+最後に利用上の境界です。問題と解説は、公開済みで許諾があるという提供情報に基づいて使用しています。
+過去問分析は将来の予告ではありません。最新情報は公式資料で確認し、音声生成と公開は別工程で行います。
+</aside>
+<script src="./image-zoom.js"></script>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'fade',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+			height: 720,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
