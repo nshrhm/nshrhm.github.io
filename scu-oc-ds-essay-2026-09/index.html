@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Reveal JS presentation</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <!-- intent: 開催情報と、小論文で身につける力を伝える。 timing: 00:00–00:30 / 30秒 -->
+                    <div class="slide-body title-block">
+                        <p class="eyebrow">2026.09.27 SUN · 学部探求型オープンキャンパス</p>
+                        <h1>小論文対策</h1>
+                        <p class="hero-subtitle">データを根拠に、考えを伝える</p>
+                        <p>下関市立大学 データサイエンス学部</p>
+                        <p class="event-info">
+                            入試対策説明会（小論文）
+                            <br>
+                            2026年9月27日（日）11:50–12:20
+                            <br>
+                            D棟1階 D-101教室
+                        </p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        皆さん、こんにちは。ここからは、データサイエンス学部の小論文対策をお話しします。
+                        小論文と聞くと、長い文章を書くのが苦手だから心配、何を勉強すればよいか分からない、と思う方もいるでしょう。今日は、過去問を使って考え方を体験し、自分の学年に合う準備の仕方を持ち帰ってください。最後の三分は質問の時間です。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 不安を具体的な二つの到達目標へ置き換える。 timing: 00:30–02:00 / 90秒 -->
+                    <div class="slide-body">
+                        <h2>「何を書けばいい？」を解消しよう</h2>
+                        <div class="card-grid">
+                            <div class="definition-card">
+                                <h3>どう考えて書く？</h3>
+                                <p>
+                                    問いをつかむ
+                                    <br>
+                                    データを根拠にする
+                                    <br>
+                                    考えを筋道立てて伝える
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <h3>今日から何をする？</h3>
+                                <p>
+                                    高3は、受験日から逆算
+                                    <br>
+                                    高1・2は、日常の習慣から
+                                </p>
+                            </div>
+                        </div>
+                        <p class="bottom-message">設問 → データ → 解釈 → 主張</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        小論文への疑問を二つに分けてみましょう。一つ目は、答案をどう考えて書くのか。二つ目は、その力をどうやって身につけるのかです。
+                        文章を書くのが得意な人だけの試験だと思う必要はありません。これまでの問題と公式解説を見ると、設問に合った情報を読み取り、根拠を示しながら考えを伝えることが大切だと分かります。文章の表現も必要ですが、その前に、何を問われ、何を根拠にできるかを整理する工程があります。
+                        今日の合言葉は、設問、データ、解釈、主張です。意見を先に決めて都合のよい数字を探すのではなく、問われたことに答えるために資料を読み、その意味を考えます。
+                        受験が近い三年生と、一年、二年の準備 期間がある皆さんでは、取り組み方が違います。後半では、それぞれが今週から始められることを具体的に紹介します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 過去問の共通構造を示し、題材暗記から方法の練習へ導く。 timing: 02:00–04:00 / 120秒 -->
+                    <div class="slide-body">
+                        <h2>題材が変わっても、使える考え方</h2>
+                        <div class="card-grid">
+                            <div class="definition-card">
+                                <span class="step-label">まず</span>
+                                <h3>現状を説明する</h3>
+                                <p>
+                                    図表から、大きな特徴と
+                                    <br>
+                                    それを支える数値を選ぶ。
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <span class="step-label">そのうえで</span>
+                                <h3>意見・提案を述べる</h3>
+                                <p>
+                                    資料から見える課題に対し、
+                                    <br>
+                                    理由を添えて考えを示す。
+                                </p>
+                            </div>
+                        </div>
+                        <p class="callout primary-message">生成AI、健康、人材育成など、過去の題材はさまざま。</p>
+                        <p class="source-line">2024–2026年度 推薦・前期の6試験を横断整理。将来の出題形式・テーマを予告するものではありません。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        これまでの三年、推薦と前期を合わせた六つの小論文を見てみると、生成エーアイ、健康、情報通信産業、人材育成など、題材は幅広く変わっています。次の題材を当てて、その知識だけを覚える準備には限界があります。
+                        一方、現状を図表から説明し、その理解を使って自分の意見や対応策を述べる、という流れは繰り返し見られました。左側は、今どうなっているか。右側は、それを踏まえてどう考え、何をするかです。
+                        例えば、現状を説明する問いに、自分が知っている対策だけを書いても答えにはなりません。反対に、対応策を問われているのに、数字を丁寧に並べるだけでも足りません。二つの仕事を区別できることが大事です。
+                        専門用語をたくさん書くこと自体が目的ではありません。分からない言葉があれば、問題文の説明や注記を丁寧に読み、資料に基づいて考えます。もちろん、普段の授業や社会への関心は、その理解を助けます。
+                        ここで紹介しているのは過去問から学べる方法です。今年も同じ形で出るという予告ではありません。では、実際に問題を開いたら、どこから始めるとよいでしょうか。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 設問の要求を五つの確認項目で具体化する。 timing: 04:00–05:30 / 90秒 -->
+                    <div class="slide-body">
+                        <h2>書く前に、設問へ印をつける</h2>
+                        <div class="question-example">
+                            <p>
+                                <strong>日本のICT産業の状況</strong>について、<strong>図表1〜4</strong>をもとに、
+                                <br>
+                                <strong>概観</strong>を<strong>300字以内</strong>で述べる。
+                            </p>
+                            <p class="source-line">2026年度推薦・設問1の要約（ICT＝情報通信技術）</p>
+                        </div>
+                        <p class="check-ribbon">対象 ／ 資料 ／ 動詞 ／ 条件 ／ 字数</p>
+                        <p class="callout primary-message">「概観」なら全体像。「提案」なら行動と理由まで。</p>
+                        <p class="source-line">出典：2026年度推薦・試験問題 p.1（PDF 2ページ目）。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        最初に読むのは設問です。ここに示したのは、二〇二六年度推薦の設問一を短くまとめたものです。アイシーティーとは情報通信技術のことです。
+                        対象は日本の情報通信産業。使う資料は図表一から四。求められる仕事は概観、つまり全体像と重要な特徴をまとめること。字数は三百字以内です。このように設問を分けて読みます。
+                        五つ目の確認欄として、条件も忘れないでください。例えば同じ試験の設問二では、国や企業、個人として何をするかが問われています。個人が努力するという話だけでは、その指定に十分答えられません。
+                        練習では、設問の対象や動詞に線を引き、余白に短く書き出してみましょう。立派なことを書こうとする前に、求められた仕事を確かめます。このあと、図表の一部で読み取りを練習します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 図表を読む前に対象・定義・条件を確認する習慣をつける。 timing: 05:30–07:00 / 90秒 -->
+                    <div class="slide-body">
+                        <h2>数字の前に「何の数字？」</h2>
+                        <div class="three-cards">
+                            <div class="definition-card">
+                                <h3>何を・いつ？</h3>
+                                <p>
+                                    タイトル
+                                    <br>
+                                    対象・期間
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <h3>どう表す？</h3>
+                                <p>
+                                    縦軸・横軸
+                                    <br>
+                                    単位・凡例
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <h3>条件は？</h3>
+                                <p>
+                                    注記・出典
+                                    <br>
+                                    実績か予測か
+                                </p>
+                            </div>
+                        </div>
+                        <p class="bottom-message">凡例の記号 → 線 → 対応する軸、の順にたどる。</p>
+                        <p class="source-line">出典：2026年度推薦・前期「出題の意図と解答の傾向」。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        図表を見ると、すぐに一番高いところを探したくなります。その前に、何の数字なのかを確かめましょう。
+                        最初は、何を、いつ調べたか。次は、どの軸、どの単位で表され、記号が何を意味するか。最後に、注記や出典に条件がないかを見ます。例えば将来の予測を、すでに起きた事実として書かないことも大切です。
+                        折れ線が何本もあるときは、凡例の記号を一つ選び、その記号の線を追い、対応する軸へ戻ります。線の高さだけを見て、金額や人数を決めないでください。
+                        実際に公式解説でも、左右の軸や学位の凡例を取り違えた答案が指摘されています。難しい計算をする前に、この確認で防げる失敗があります。
+                        次は皆さんにも一枚の図表を見てもらいます。全部の数字を読む必要はありません。問いに必要な線と軸を探してみてください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 日本の輸出額の推移を45秒で読み取る。 timing: 07:00–09:00 / 120秒（黙考45秒を含む） -->
+                    <div class="slide-body exercise">
+                        <h2>45秒で考えよう：日本はどう変わった？</h2>
+                        <p class="exercise-prompt">2000年と2022年を比べ、根拠になる数値を探そう。</p>
+                        <img class="scientific-figure"
+                             src="assets/2026-suisen-p05.png"
+                             alt="2026年度推薦の図表3。2000年から2022年までの各国のICT機器・端末輸出額。日本は四角、中国は三角で右軸。">
+                        <p class="source-line">2026年度推薦・図表3（問題冊子 p.4）。ここでは一図表の読み取りだけを練習します。クリックで拡大。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        こちらは、二〇二六年度の推薦で使われた図表です。各国の情報通信機器や端末の輸出額が示されています。今日はこの一枚だけで、日本の二〇〇〇年と二〇二二年を比べてみましょう。
+                        まず日本の線を見つけ、どの軸を使うかを確認してください。増えたか減ったかだけでなく、根拠になる数値も考えます。読み取った値は、およそで構いません。ここから四十五秒、声に出さずに考えてみてください。
+                        いかがでしょうか。日本に対応する記号を確かめられましたか。始まりと終わりを、同じ軸で読みましたか。まだ答えがまとまらなくても大丈夫です。どこを確認すればよいかが分かれば、それが練習の第一歩です。
+                        次のスライドで、たどる順序と、読み取ったことを短い文章へ変える方法を一緒に確認しましょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 正しい軸による概数を用い、観察を根拠ある短文にする。 timing: 09:00–11:00 / 120秒 -->
+                    <div class="slide-body">
+                        <h2>「減った」を、根拠のある一文に</h2>
+                        <p class="check-ribbon">日本＝■・左軸　／　中国＝▲・右軸</p>
+                        <div class="comparison">
+                            <div class="definition-card">
+                                <span class="step-label">傾向だけ</span>
+                                <p>日本の輸出額は減った。</p>
+                            </div>
+                            <div class="definition-card emphasized">
+                                <span class="step-label">説明用の作例</span>
+                                <p>
+                                    日本のICT機器・端末の輸出額は、
+                                    <br>
+                                    2000年の<strong>約1,100億USドル</strong>から、
+                                    <br>
+                                    2022年の<strong>約600億USドル</strong>へ減少した。
+                                </p>
+                            </div>
+                        </div>
+                        <p class="source-line">
+                            図表3からの概数。左軸の単位は「100万USドル」：約110,000 → 約60,000。
+                            <br>
+                            一図表を説明する作例であり、設問1全体の解答例ではありません。
+                        </p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        日本は四角の記号です。その線の二〇〇〇年を見ると、左軸でおよそ十一万、二〇二二年はおよそ六万です。単位は百万米ドルですので、それぞれ約千百億米ドル、約六百億米ドルと表せます。グラフからの概数なので、約を付けています。
+                        中国の三角の線だけは右軸です。日本の終点を右側の目盛りで読んでしまうと、意味が変わります。公式解説でも、この取り違えが指摘されていました。
+                        文章では、減ったという傾向に加えて、何の数値か、いつといつを比べたか、どの程度だったかを示します。こうすると、読み手は根拠を確かめられます。数字をたくさん入れることが目的ではありません。言いたいことを支える数字を選びます。
+                        画面の文は、その練習のために作った短文です。これだけで設問一の答案が完成するわけではありません。実際には指定された図表一から四を確認し、日本の情報通信産業の全体像を説明する必要があります。
+                        また、始点より終点が低いからといって、毎年ずっと減ったと書くのも正確ではありません。途中には増減があります。図表が示す範囲に合った言葉を選びましょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 指定資料を読み、関連する特徴を選んで複数図表をつなぐ。 timing: 11:00–13:00 / 120秒 -->
+                    <div class="slide-body">
+                        <h2>「目立つ数字」より「問いに必要な根拠」</h2>
+                        <div class="three-cards">
+                            <div class="definition-card">
+                                <h3>図表1</h3>
+                                <p>
+                                    情報通信産業は
+                                    <br>
+                                    実質GDPの<strong>10.7％</strong>
+                                </p>
+                                <span class="step-label">日本経済での重要性</span>
+                            </div>
+                            <div class="definition-card">
+                                <h3>図表2</h3>
+                                <p>
+                                    スマートフォンの
+                                    <br>
+                                    出荷台数は<strong>成長予測</strong>
+                                </p>
+                                <span class="step-label">市場の成長余地</span>
+                            </div>
+                            <div class="definition-card">
+                                <h3>図表3・4</h3>
+                                <p>
+                                    日本は輸出が減少、
+                                    <br>
+                                    輸入は横ばい傾向
+                                </p>
+                                <span class="step-label">日本の課題</span>
+                            </div>
+                        </div>
+                        <p class="callout primary-message">重要な産業だが、市場の成長を十分に取り込めていない。</p>
+                        <p class="source-line">2026年度推薦・図表1–4と公式解説 pp.1–2の要点を整理。数値・予測は当該問題資料のもの。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        設問一は、日本の情報通信産業の状況を、図表一から四を使って説明する問いでした。そこで、先ほどの輸出額を、ほかの図表とつなげてみます。
+                        図表一と公式解説からは、この産業が実質国内総生産の10.7パーセントを占め、日本経済で重要な役割を持つことが分かります。これは問題資料の数値で、今日現在の割合という意味ではありません。
+                        図表二では、スマートフォンの出荷台数に成長が見込まれています。将来の予測なので、すでに成長したとは言いません。一方、図表三と四では、日本の輸出は減少し、輸入は横ばい傾向でした。
+                        これらを結ぶと、重要で成長余地のある産業なのに、日本はその成長を十分に取り込めていない、という全体像になります。グラフの数字を順番に読み上げるだけとは違い、図表がどんな役割を持つかを考えています。
+                        公式解説では、情報通信産業を問うているのに、不動産が一番大きいことへ着目した答案も指摘されています。最大値だから重要、ではありません。指定された資料全体に目を通したうえで、問いに必要な特徴を選びましょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 概観の答案を結論と複数の根拠から設計する。 timing: 13:00–15:00 / 120秒 -->
+                    <div class="slide-body">
+                        <h2>書き出す前に「全体像」を一文で</h2>
+                        <div class="workflow" aria-label="全体像、代表的な根拠、設問への答えの順に構成する">
+                            <div class="workflow-step emphasized">
+                                全体像
+                                <br>
+                                結論を一文で
+                            </div>
+                            <div class="workflow-arrow">→</div>
+                            <div class="workflow-step">
+                                根拠
+                                <br>
+                                数値・比較で支える
+                            </div>
+                            <div class="workflow-arrow">→</div>
+                            <div class="workflow-step">
+                                問いに戻る
+                                <br>
+                                何が言えるか
+                            </div>
+                        </div>
+                        <p class="callout primary-message">図表ごとの箇条書きから、つながりのある説明へ。</p>
+                        <p class="caption-note">事実と推察を区別する。「同時に変化した」だけでは原因と断定しない。</p>
+                        <p class="source-line">構成は練習用の方法です。実際の設問と字数に合わせて調整しましょう。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        ここから文章にしていきます。いきなり一行目を書き始める前に、全体として何を言いたいかを一文で決めましょう。
+                        先ほどなら、重要な産業である一方、市場の成長を十分に取り込めていない、が全体像でした。その次に、産業の規模や市場の予測、輸出入の推移という根拠を置きます。最後に、設問が求めた対象について説明できているかを確かめます。
+                        この順番は、必ずこの型で書かなければならないという規則ではなく、練習のための組み立て方です。字数や設問に合わせて調整してください。指定された重要な観点を落とさず、同じ話を繰り返さないことが大切です。
+                        もう一つ、事実と推察を分けます。例えば、輸出額が減ったということは図表から確認できます。しかし、減った原因が何かは、この図表だけでは確定できません。背景を考える場合は、別の資料や知識で支え、可能性がある、考えられる、と推察だと分かる表現にします。
+                        文章は、一文に一つの中心を置くと伝わりやすくなります。長い一文に事実と理由と結論を全部入れるより、短く分けて、その関係が読み手に見えるようにしましょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 図表の課題から主体・行動・効果のある提案へつなぐ。 timing: 15:00–17:00 / 120秒 -->
+                    <div class="slide-body">
+                        <h2>提案は「誰が、何を、なぜ」まで</h2>
+                        <div class="proposal-stack">
+                            <p><span class="step-label">資料の根拠</span> 情報通信分野で、人手不足の傾向が続いている。</p>
+                            <p><span class="step-label">提案の作例</span> 企業が、働きながら学べる研修時間を確保する。</p>
+                            <p><span class="step-label">期待する効果</span> 必要な技能を学ぶ機会を増やし、人材育成につなげる。</p>
+                        </div>
+                        <p class="callout primary-message">指定された主体をそろえ、提案を書く字数を残そう。</p>
+                        <p class="source-line">
+                            根拠：2026年度推薦・図表5、公式解説 p.2。提案・効果は説明用の作例。
+                            <br>
+                            実際の設問2は図表1–7に基づき、国・企業・個人について問うため、この一例だけでは不十分です。
+                        </p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        次は提案です。現状を説明したあと、ではどうすればよいかを考えます。図表の課題と、提案する行動を直接つなぐのがポイントです。
+                        同じ推薦問題の図表五では、情報通信分野で人手不足の傾向が続いていることが示され、公式解説もそこを挙げています。この課題に対して、人材を育てるべきだ、だけでは行動が見えません。
+                        例えば、企業が、働きながら学べる研修時間を確保する、とします。誰が何をするかが明確になりました。さらに、必要な技能を学ぶ機会を増やすことで人材育成につなげる、と理由を添えます。これは説明用に作った案であり、公式の模範解答ではありません。実際の効果が保証されているわけでもありません。
+                        さらに考えるなら、研修中の仕事をどう分担するか、費用をどう支えるか、といった実行上の条件もあります。設問で国や個人が指定されていれば、企業の話だけで終えず、それぞれの役割も考えます。
+                        二〇二六年度の推薦と前期の公式解説では、現状説明に字数を使いすぎて提案が薄くなった答案が指摘されました。書く前に、説明と提案の両方へ字数を確保しましょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 公式解説の失敗例を三つの実行可能な点検へまとめる。 timing: 17:00–19:00 / 120秒 -->
+                    <div class="slide-body">
+                        <h2>書いたら、三つだけ確かめる</h2>
+                        <div class="three-cards">
+                            <div class="definition-card">
+                                <h3>① 問い</h3>
+                                <p>
+                                    対象・動詞・主体に
+                                    <br>
+                                    答えている？
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <h3>② 根拠</h3>
+                                <p>
+                                    数値・単位は正しい？
+                                    <br>
+                                    主張を支えている？
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <h3>③ 伝え方</h3>
+                                <p>
+                                    提案まで書けた？
+                                    <br>
+                                    字数・文は整った？
+                                </p>
+                            </div>
+                        </div>
+                        <p class="bottom-message">「うまく書けた？」より「問いと根拠がつながった？」</p>
+                        <p class="source-line">2026年度推薦・前期の公式解説から整理した点検の観点。公式採点表ではありません。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        答案を書いたあと、なんとなく読み直すだけでは、直す場所が見つかりにくいものです。三つの観点に分けましょう。
+                        一つ目は問いです。何を説明する問題でしたか。自分の結論は、その対象について答えていますか。国や企業など、指定された主体を落としていませんか。設問と答案を交互に見て確かめます。
+                        二つ目は根拠です。凡例や軸、単位を確かめ、書いた数値と照合します。そして、その数字が自分の結論を支えているかを確認します。数字が正しくても、問われていない話をしていれば、よい根拠とはいえません。
+                        三つ目は伝え方です。提案を求められたのに説明だけで終わっていないか。誰が何をするのかが分かるか。一文が長すぎないか。最後に誤字や指定字数も確認します。
+                        これは公式の点数表ではなく、公式解説にある失敗を自分で点検するための方法です。先生に見てもらうときも、この三つのうち、特にどこを直したいのかを伝えると、書き直しの目的が明確になります。
+                        ここまでが、読む、考える、書くという手順でした。次は、それを入試までにどう練習していくかを考えます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 現高3向けの日程を示して、学習計画の残り期間を把握させる。 timing: 19:00–20:30 / 90秒 -->
+                    <div class="slide-body">
+                        <h2>高3：受験日から逆算しよう</h2>
+                        <p class="caption-note">2027年度入試 · データサイエンス学部 · 小論文（図表理解）が課される選抜</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>選抜</th>
+                                    <th>出願期間</th>
+                                    <th>試験日</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>全国推薦・地域推薦</td>
+                                    <td>2026年11月2日（月）〜9日（月）</td>
+                                    <td><strong>2026年11月21日（土）</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>一般選抜・前期</td>
+                                    <td>2027年1月25日（月）〜2月3日（水）</td>
+                                    <td><strong>2027年2月25日（木）</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="date-pair">
+                            <p>推薦まで <strong>約8週間</strong></p>
+                            <p>前期まで <strong>約5か月</strong></p>
+                        </div>
+                        <p class="source-line">
+                            9月27日起点。地域推薦の学校所在地・居住地等の要件は募集要項で確認。
+                            <br>
+                            出典：大学公式「2027年度入試日程」・「2027年度入学者選抜要項」pp.17–19（2026年9月25日確認）。
+                            <br>
+                            高1・2の受験年度とは異なります。出願時は最新の募集要項を必ず確認してください。
+                        </p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        現在の三年生が主に受験する二〇二七年度入試の日程です。推薦の試験日は十一月二十一日で、今日から約八週間。一般前期は来年二月二十五日で、約五か月あります。
+                        全国推薦と地域推薦は、出願が十一月二日から九日です。一般前期の出願は、一月二十五日から二月三日です。試験日だけでなく、出願の準備も先に確認してください。
+                        地域推薦には、下関市と山陽小野田市の学校所在地や、本人または扶養者の居住地などに関わる要件があります。自分が出願できるかは、先生に相談し、最新の募集要項で確認してください。
+                        この日程は、一年生、二年生が受ける年度のものではありません。今は準備の見通しを持つ参考にしてください。次の三枚では、推薦を目指す三年生、前期を目指す三年生、一・二年生の順に、取り組み方を紹介します。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 推薦まで約8週間の高3に、診断・改善・実戦の計画を示す。 timing: 20:30–22:00 / 90秒 -->
+                    <div class="slide-body">
+                        <h2>高3・推薦：一度書いて、直す時間を作る</h2>
+                        <div class="three-cards">
+                            <div class="definition-card">
+                                <span class="step-label">最初の1週間</span>
+                                <h3>弱点を知る</h3>
+                                <p>
+                                    過去問を1回解く。
+                                    <br>
+                                    公式解説と照合する。
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <span class="step-label">その後、毎週</span>
+                                <h3>改善を重ねる</h3>
+                                <p>
+                                    答案作成 → 添削
+                                    <br>
+                                    → 書き直しを1セット。
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <span class="step-label">直前2週間</span>
+                                <h3>時間内に仕上げる</h3>
+                                <p>
+                                    読む・組む・書く。
+                                    <br>
+                                    見直しまで時間内に。
+                                </p>
+                            </div>
+                        </div>
+                        <p class="callout primary-message">平日は10分：設問を確認し、図表一つを一文に。</p>
+                        <p class="source-line">学習計画の例。頻度・時間は学校の予定や習熟度に合わせて調整しましょう。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        推薦を目指す三年生は、まず今週、過去問を一度解いてみましょう。最初からよい答案が書けなくても構いません。軸の確認に時間がかかるのか、何を書くか決まらないのか、提案まで書き切れないのか。自分の弱点を知ることが目的です。
+                        その後は、週に一回、答案を書く、先生などに見てもらう、書き直す、という一組の練習を提案します。新しい問題を解いた数だけでなく、前の答案から何を改善できたかを確かめます。添削をお願いする予定も早めに相談するとよいでしょう。
+                        平日にまとまった時間が取れない日は、十分程度で設問の確認や図表一つの要約をします。短い練習にも意味があります。
+                        直前の二週間は、本番を想定して時間を計り、読む、構成を作る、書く、見直すという流れを通します。具体的な試験時間は受験する年度の募集要項等で確かめます。この頻度は一つの例なので、ほかの学習や学校の予定に合わせて調整してください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 一般前期を目指す高3に共通テストと両立する段階的計画を示す。 timing: 22:00–23:30 / 90秒 -->
+                    <div class="slide-body">
+                        <h2>高3・前期：今から小さく、後半は実戦へ</h2>
+                        <div class="card-grid">
+                            <div class="definition-card">
+                                <span class="step-label">共通テストまで</span>
+                                <h3>読む・組み立てる習慣</h3>
+                                <p>
+                                    短時間の図表要約を続ける。
+                                    <br>
+                                    週1回、答案の構成を作る。
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <span class="step-label">共通テスト後〜2月25日</span>
+                                <h3>書く・直す練習を増やす</h3>
+                                <p>
+                                    時間を計って答案を作る。
+                                    <br>
+                                    公式解説・添削で書き直す。
+                                </p>
+                            </div>
+                        </div>
+                        <p class="callout primary-message">「本格的に書くのは後」でも、読み方の練習は今から。</p>
+                        <p class="source-line">学習計画の例。一般前期は共通テストと小論文による総合評価（2027年度選抜要項 p.19）。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        一般前期を目指す三年生は、共通テスト対策との両立が必要です。小論文だけに時間を使うことはできませんが、すべてを共通テスト後に始める必要もありません。
+                        今からできるのは、短時間で図表を一文にする練習です。さらに週一回程度、過去問の設問を読み、結論と根拠、提案の構成だけをメモしてみます。全文を書けない日にも、書く前の工程を練習できます。
+                        共通テスト後は、時間を計って答案を完成させ、公式解説や添削を使って直す練習を増やします。そのとき、これまでの短時間練習で見つかった弱点を優先して直してください。
+                        同じ過去問を使い直しても構いません。ただし、文章を覚えるためではなく、どの根拠を選び、どの飛躍を直したかを自分で説明できるようにします。
+                        推薦と前期の両方を考えている人も、基礎となる読み方や組み立て方は共通して練習できます。自分の受験計画と学校の予定に合わせて、続けられる量を決めましょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 高1・2の長い準備期間を日常の観察・比較・表現に結びつける。 timing: 23:30–25:00 / 90秒 -->
+                    <div class="slide-body">
+                        <h2>高1・2：週に一度、数字を言葉にする</h2>
+                        <p class="lead">ニュースの元図表から、<strong>事実・疑問・自分の考え</strong>を書く。</p>
+                        <div class="card-grid">
+                            <div class="definition-card">
+                                <h3>高1：正確に読み、短く伝える</h3>
+                                <p>
+                                    割合・単位を確認する。
+                                    <br>
+                                    図表を一文で要約する。
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <h3>高2：比べて、理由を考える</h3>
+                                <p>
+                                    二つの資料を比較する。
+                                    <br>
+                                    課題と対応策を説明する。
+                                </p>
+                            </div>
+                        </div>
+                        <p class="callout primary-message">授業や探究でも「その根拠は？」「別の見方は？」を習慣に。</p>
+                        <p class="source-line">学習計画の例。学年による到達基準ではありません。興味や習熟度に合わせて取り組みましょう。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        一年生、二年生には、受験までの期間を使って、身の回りの数字を言葉にする習慣を勧めます。例えば週一回、気になったニュースを一つ選び、できれば元の図表まで開いてみましょう。
+                        メモするのは三つです。図表から確認できる事実。疑問に思ったこと。そこから自分が考えたこと。この三つを分けます。記事に書かれた結論をそのまま写すだけで終わらないようにします。
+                        一年生は、割合や単位を確認し、まず一文で要約してみましょう。二年生は、二つの資料を比べたり、その課題に誰が何をできるかを考えたりして、少しずつ広げます。もちろん、学年で区切った必須の到達基準ではありません。
+                        国語、数学、情報、探究など、普段の授業も練習の場になります。友達や先生、家族に説明して、その根拠はどこか、別の見方はないか、と聞いてもらうことも役立ちます。長い期間があるからこそ、短くても繰り返す習慣を作ってください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 二つの到達目標を回収し、今日の具体的な行動へつなぐ。 timing: 25:00–27:00 / 120秒 -->
+                    <div class="slide-body">
+                        <h2>今日、まず一つの図表から</h2>
+                        <div class="closing-layout">
+                            <div>
+                                <p class="lead">
+                                    設問を読む。
+                                    <br>
+                                    図表一つを、一文にする。
+                                    <br>
+                                    根拠が伝わるか、確かめる。
+                                </p>
+                                <p class="callout primary-message">
+                                    次は答案へ。
+                                    <br>
+                                    解く → 公式解説を読む → 書き直す
+                                </p>
+                            </div>
+                            <div class="qr-card">
+                                <img src="assets/qr-past-exams.png" alt="下関市立大学の公式過去問ページへのQRコード">
+                                <p><a href="https://www.shimonoseki-cu.ac.jp/nyushi/admiss/mondai-menu">公式過去問・出題の意図と解答の傾向</a></p>
+                            </div>
+                        </div>
+                        <p class="source-line">大学公式サイト → 入試情報 → 過去の入試問題。問題と公式解説を一組で使いましょう。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        今日の話を、自分の一歩に変えましょう。まず公式過去問のページを開き、問題と出題の意図と解答の傾向を一組で確認します。こちらの二次元コード、または大学公式サイトの入試情報からたどれます。
+                        最初は、設問を読んで、一つの図表を一文にするところからで構いません。何の数字か、何と何を比べたか、その数値が言いたいことを支えているかを確かめてください。
+                        三年生は、その練習を答案作成と書き直しにつなげます。一年生、二年生は、ニュースや授業の資料でも繰り返せます。時間がある人は、今日扱わなかった図表を読み、全体像を自分でまとめてみてください。
+                        小論文にどう取り組めばよいか、という最初の疑問に戻ります。設問に答えるためにデータを読み、根拠から考えを組み立てて、読み手へ伝える。その工程は、練習することができます。公式解説は、どのように読んで考えることが期待されたかを振り返る材料です。
+                        今週、いつ、何を一つ練習するか、ここで心の中で決めてみてください。短い時間でも、自分で選んだ根拠を言葉にすることから始めましょう。それでは、残りの時間で質問を受けます。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 会場の疑問を受け、必要な補足だけ参照する。 timing: 27:00–30:00 / 180秒 -->
+                    <div class="slide-body questions-slide">
+                        <h2>質疑応答</h2>
+                        <p class="lead">
+                            読み方・書き方・準備の仕方で、
+                            <br>
+                            気になったことはありますか？
+                        </p>
+                        <p class="caption-note">
+                            「根拠をどこから選ぶ？」
+                            <br>
+                            「先生に何を見てもらう？」
+                            <br>
+                            「今の学年で何から始める？」
+                        </p>
+                        <p class="source-line">出願資格・手続きの個別確認は、最新の募集要項・入試課へ。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        ここからは質問の時間です。図表の読み方、答案の組み立て方、今からの準備など、気になったことを聞いてください。
+                        質問がすぐに浮かばなければ、先ほど決めた今週の練習で、難しそうなところを一つ考えてみましょう。必要に応じて、後ろの補足も使って説明します。
+                        出願資格や手続きに関わる個別の条件は、最新の募集要項や入試課で確かめてください。今日はありがとうございました。問いと根拠をつなぐ練習を、ぜひ一つ始めてみてください。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: よくある疑問へ、資料読解と設問への対応を軸に答える。 timing: 補足・定時説明外 -->
+                    <div class="slide-body">
+                        <h2>補足：よくある疑問</h2>
+                        <div class="card-grid faq">
+                            <div class="definition-card">
+                                <h3>知識や国語力だけで決まる？</h3>
+                                <p>
+                                    背景知識と文章力は助けになる。
+                                    <br>
+                                    そのうえで、設問とデータが出発点。
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <h3>意見に一つの正解がある？</h3>
+                                <p>
+                                    立場だけでなく、根拠との整合性と
+                                    <br>
+                                    筋道が重要。
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <h3>図表は全部書く？</h3>
+                                <p>
+                                    指定資料を読み、重要な特徴を落とさず
+                                    <br>
+                                    必要な情報を選ぶ。
+                                </p>
+                            </div>
+                            <div class="definition-card">
+                                <h3>字数を埋めればよい？</h3>
+                                <p>
+                                    字数の指示を守り、問われた説明や
+                                    <br>
+                                    提案へ内容を配分する。
+                                </p>
+                            </div>
+                        </div>
+                        <p class="source-line">2024–2026年度の過去問・公式解説から整理。字数などの条件は各設問に従いましょう。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        よくある疑問を四つにまとめました。知識や文章力は役立ちますが、それだけで問いに答えられるわけではありません。まず設問と資料を確かめます。
+                        意見の方向だけでなく、どの根拠から、なぜその結論に進むかが大切です。図表も、全部の数値を書くのではなく、指定範囲の重要な特徴を押さえます。都合のよい一つだけを選ぶこととは違います。
+                        字数は、上限や範囲など問題の指示を守ってください。一定割合まで埋めれば高評価になるという共通基準は、この説明では設けていません。説明や提案に必要な内容があるかを確認しましょう。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 添削と書き直しに使える点検表を提供する。 timing: 補足・定時説明外 -->
+                    <div class="slide-body">
+                        <h2>補足：書き直しのチェックリスト</h2>
+                        <ul>
+                            <li>□ 設問の対象・動詞・指定された主体に答えた</li>
+                            <li>□ 図表の軸・凡例・数値・単位を確かめた</li>
+                            <li>□ 指定資料の重要な特徴を、根拠として使った</li>
+                            <li>□ 事実と推察を分け、根拠から主張をつないだ</li>
+                            <li>□ 提案は「誰が・何を・なぜ」まで書いた</li>
+                            <li>□ 字数・一文の長さ・誤字を確認した</li>
+                        </ul>
+                        <p class="callout primary-message">先生には「この結論を、この根拠で支えられていますか？」</p>
+                        <p class="source-line">過去問・公式解説に基づく練習用チェックリスト。公式採点表ではありません。</p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        書き直すときは、この六項目で自分の答案を見ます。全部を一度に完璧にしようとせず、まず直す項目を一つ決めても構いません。
+                        先生に添削をお願いするときは、どの図表を根拠に選んだか、自分はそこから何を言おうとしたかを説明します。見てもらったあと、指摘を読むだけで終わらず、その箇所を実際に書き直しましょう。
+                        ご家族や先生方には、結論を教えるだけでなく、その根拠はどこか、別の見方はないか、と問いかけてもらうと、考えを確かめる練習になります。
+                    </aside>
+                </section>
+                <section>
+                    <!-- intent: 過去問の根拠と最新の公式入試情報への入口を示す。 timing: 補足・定時説明外 -->
+                    <div class="slide-body">
+                        <h2>補足：出典と最新情報</h2>
+                        <div class="closing-layout">
+                            <div>
+                                <h3>読み方・書き方の根拠</h3>
+                                <p>
+                                    2024–2026年度 推薦・前期の試験問題
+                                    <br>
+                                    および「出題の意図と解答の傾向」
+                                </p>
+                                <h3>日程・出願条件</h3>
+                                <p>
+                                    <a href="https://www.shimonoseki-cu.ac.jp/nyushi/admiss/nyushi_guidelines#datascience">2027年度入試日程</a>
+                                    <br>
+                                    <a href="https://www.shimonoseki-cu.ac.jp/nyushi/admiss/yoko">入学者選抜要項・学生募集要項</a>
+                                </p>
+                            </div>
+                            <div class="qr-card">
+                                <img src="assets/qr-admissions.png" alt="下関市立大学の公式入試情報ページへのQRコード">
+                                <p>大学公式 入試情報</p>
+                            </div>
+                        </div>
+                        <p class="source-line">
+                            公式情報確認：2026年9月25日。過去問の傾向は将来の出題予告ではありません。
+                            <br>
+                            学習計画・短文・提案の作例は説明のためのものです。出願時は最新の募集要項を確認してください。
+                        </p>
+                    </div>
+                    <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
+                    <aside class="notes">
+                        小論文の説明は、過去三年、推薦と前期の六試験と、それぞれの公式解説をもとにしています。入試日程や出願条件は、大学の公式情報を確認しています。
+                        過去問の読み方や書き方は学べますが、将来の出題内容を予告するものではありません。学習計画や説明用の短文も、練習のための例です。出願にあたっては、ご自身が受験する年度の最新の募集要項を確認してください。
+                    </aside>
+                    <script src="./image-zoom.js"></script>
+                </section>
+            </div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'fade',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+			height: 720,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+        </script>
+    </body>
+</html>

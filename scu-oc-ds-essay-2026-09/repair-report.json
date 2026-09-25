@@ -1,0 +1,677 @@
+{
+  "target": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/export",
+  "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927",
+  "library_source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3",
+  "copy_operations": [
+    {
+      "destination": "assets/2026-suisen-p05.png",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/assets/2026-suisen-p05.png",
+      "action": "replace",
+      "before_sha256": "4ea6071e0918913f7de702b034f7aec8322dc84830d23ca8cf45556163e6c48e",
+      "after_sha256": "25555c5282180583084ad31204d76f56de567c8ca85cc65e854fe0ab35601dc6",
+      "file_type": "PNG image data, 1388 x 815, 8-bit/color RGB, non-interlaced"
+    },
+    {
+      "destination": "assets/qr-admissions.png",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/assets/qr-admissions.png",
+      "action": "replace",
+      "before_sha256": "ead43ceed5aa414d3565d8641b1de680a177d665eee73acb9df516925269faeb",
+      "after_sha256": "265c481577ac47c5f2cb6e873c5cbb511b7bcaf30d846cc67b05a69a9a13e7ef",
+      "file_type": "PNG image data, 330 x 330, 1-bit colormap, non-interlaced"
+    },
+    {
+      "destination": "assets/qr-past-exams.png",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/assets/qr-past-exams.png",
+      "action": "replace",
+      "before_sha256": "9cff24c855ced9746f445db203c15b1c713248de9c077aa0755e7e5568376ce7",
+      "after_sha256": "ba4c700e65bce0909e42a712c1f72e65edc903000171d1dcecc8a390d67e88f2",
+      "file_type": "PNG image data, 370 x 370, 1-bit colormap, non-interlaced"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/chalkboard/img/blackboard.png",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/chalkboard/img/blackboard.png",
+      "action": "replace",
+      "before_sha256": "be631f9000d937b1b07ea506cdda8b004d01f72487f2e2b927d7a11d553885cf",
+      "after_sha256": "a29572c59cb29034525dfd7962d134984bd05bf1f68375eeea1bc5858b641d05",
+      "file_type": "PNG image data, 300 x 300, 8-bit grayscale, non-interlaced"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/chalkboard/img/boardmarker-black.png",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/chalkboard/img/boardmarker-black.png",
+      "action": "replace",
+      "before_sha256": "c506777f45f2c105833b5639953498a745a15c5c906fd5a003a2dfe200f082d1",
+      "after_sha256": "a86ce4916d6683a4633dba1749fa046150cd42d0e09351e0b59cde45f997a329",
+      "file_type": "PNG image data, 40 x 46, 8-bit/color RGBA, non-interlaced"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/chalkboard/img/chalk-white.png",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/chalkboard/img/chalk-white.png",
+      "action": "replace",
+      "before_sha256": "f1d89581d192ee5b04fff509b4c2ba5117053f8f686a22e6e0162d08aea39d7a",
+      "after_sha256": "fe14e5c7c07c66efea14a356e76e787198e844f1418c0c7e86561dc0863b7ee0",
+      "file_type": "PNG image data, 40 x 50, 8-bit/color RGBA, non-interlaced"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/chalkboard/img/sponge.png",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/chalkboard/img/sponge.png",
+      "action": "replace",
+      "before_sha256": "33c8bc69ac7e2ee79e4b41bf502d63889e375e610dce0a8bc6750f67702c4cc4",
+      "after_sha256": "5433ff456b5de3de20659d4ffb8d6132ad22198050247240cace95ffae68992b",
+      "file_type": "PNG image data, 40 x 50, 8-bit/color RGBA, non-interlaced"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.eot",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.eot",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "eebd12ec00a2dbdebba4cb55e15cb6f5a5fc57036718388c0167815cd4a6db27",
+      "file_type": "Embedded OpenType (EOT), Font Awesome 5 Brands family"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.svg",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.svg",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "07d841265db8bdbe1cab605ab715df9ef9fb4c3b91d158ee5138c94019699b21",
+      "file_type": "SVG Scalable Vector Graphics image, Unicode text, UTF-8 text, with very long lines (65454), with no line terminators"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.ttf",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.ttf",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "54e3158f5e55ba02b21658e7d2fc661fec3c286d27834d99e56396ed66870580",
+      "file_type": "TrueType Font data, 11 tables, 1st \"GSUB\", 18 names, Macintosh, Font AwesomeFont Awesome 5 BrandsRegularFont Awesome 5 Brands RegularFont Awesome 5 Brands Regul"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.woff",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.woff",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "c82c3aa4c57f8ee8ce750e18822cba0f265a66fda67a1620e42c749dadef6b74",
+      "file_type": "Web Open Font Format, TrueType, length 73920, version 1.0"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.woff2",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.woff2",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "62b5e7ae9e2ed60dcd7cb2e0823dd0884575f2176aff629f2df1e912dfae20e1",
+      "file_type": "Web Open Font Format (Version 2), TrueType, length 63376, version 1.0"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.eot",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.eot",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "3836ea5ffb2099e508f2ea451bf04841543cf7461a9b48c2254f505c828d852e",
+      "file_type": "Embedded OpenType (EOT), Font Awesome 5 Free family"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.svg",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.svg",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "270b2bac9c35a87c99ad7e407cacac8cf14a1e12d1dd1294c4999056c6bdf3b4",
+      "file_type": "SVG Scalable Vector Graphics image, Unicode text, UTF-8 text, with very long lines (65380), with no line terminators"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.ttf",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.ttf",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "400d73d1aa3a677117ea9749b84c3877d4473cb034800a9daa7b23d5b6ddbe15",
+      "file_type": "TrueType Font data, 11 tables, 1st \"GSUB\", 18 names, Macintosh, Font AwesomeFont Awesome 5 FreeRegularFont Awesome 5 Free RegularFont Awesome 5 Free RegularVers"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.woff",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.woff",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "7e9f081c56acc9b1f1b4c7eae32acc5124146f8002ba89ab64046d78069be1f2",
+      "file_type": "Web Open Font Format, TrueType, length 18212, version 1.0"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.woff2",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.woff2",
+      "action": "replace",
+      "before_sha256": "0554a5ed124282c2889e380a588991997f631a563cb6ba0897965f5fe032deb5",
+      "after_sha256": "1669bec36f12c35a00a2d23cf71b6061c85b8435f5c26445aab338f88dfe6629",
+      "file_type": "Web Open Font Format (Version 2), TrueType, length 14952, version 1.0"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.eot",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.eot",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "b415dcb0cc4f8eac654a4f3cfbe2d36fcd401dd2cedcad06a2fe2abf0b73af23",
+      "file_type": "Embedded OpenType (EOT), Font Awesome 5 Free family"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.svg",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.svg",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "fe249e55d6168623dbf21ec9a04788bd0a21ce98db7c2e8428c951391a4092c0",
+      "file_type": "SVG Scalable Vector Graphics image, Unicode text, UTF-8 text, with very long lines (65362), with no line terminators"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.ttf",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.ttf",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "6cb9a9f7dbb6e66f08b1615612d5db166e08621dd84b945d6bd554a60f814c17",
+      "file_type": "TrueType Font data, 11 tables, 1st \"GSUB\", 18 names, Macintosh, Font AwesomeFont Awesome 5 FreeSolidFont Awesome 5 Free SolidFont Awesome 5 Free SolidVersion 5."
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.woff",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.woff",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "414aa75a28572ae9ae2a84f4d5f055593ecb425c48924a183f9bdf0aed4f9bfc",
+      "file_type": "Web Open Font Format, TrueType, length 76632, version 1.0"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.woff2",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.woff2",
+      "action": "replace",
+      "before_sha256": "1398d2600ab7ef51c19bcb0ec3cabd46fa7d89d63419b08a4dd7419c51759d5c",
+      "after_sha256": "a83079124373d924ad1402fbc08d2e24d0043234d4c26565f1c368745f55f5d9",
+      "file_type": "Web Open Font Format (Version 2), TrueType, length 59572, version 1.0"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-italic.eot",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-italic.eot",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "ad4b0799608b5dc860cc3bd7ff4781f2d9e13144e48a2e3d9321ce57c5a12f2a",
+      "file_type": "Embedded OpenType (EOT), Source Sans Pro family"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-italic.ttf",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-italic.ttf",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "d13268affb2204223a1b6b8483afd989a0e2b20bff853eae05fe5d0d32de8ed9",
+      "file_type": "TrueType Font data, 20 tables, 1st \"BASE\", 28 names, Macintosh, type 256 string, Straight lAlternate aAlternate gSerifed ISlashed zero"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-italic.woff",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-italic.woff",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "05d3615fdbe7d35c62d6a1308dc48e3985016b69e65926ed37b99fe7e6b297dc",
+      "file_type": "Web Open Font Format, TrueType, length 98556, version 1.0"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-regular.eot",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-regular.eot",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "dce8869d25c3abcecb33a3486a3c70bb76aed17c21a74069ee83949b1d209c9b",
+      "file_type": "Embedded OpenType (EOT), Source Sans Pro family"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-regular.ttf",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-regular.ttf",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "c1865d89d798bc2119872b17774361c7406974b9568121a617007e02af344981",
+      "file_type": "TrueType Font data, 20 tables, 1st \"BASE\", 26 names, Macintosh, type 256 string, Straight lAlternate aAlternate gSerifed ISlashed zero"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-regular.woff",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-regular.woff",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "d4eaa48ba450f4dd2d024ab5b0e895c73c81475718e5453fd1890254c16b7a57",
+      "file_type": "Web Open Font Format, TrueType, length 114324, version 1.0"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibold.eot",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibold.eot",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "ebb8918da92bae172dfe322a3947929b3df2330dccc6f13c7d8e8ed3815e1696",
+      "file_type": "Embedded OpenType (EOT), Source Sans Pro Semibold family"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibold.ttf",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibold.ttf",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "a53e27232eff5f0bc1ba1c0af7e0759f0aaaf5c0636370b4c54f83c4652ba924",
+      "file_type": "TrueType Font data, 20 tables, 1st \"BASE\", 28 names, Macintosh, type 256 string, Straight lAlternate aAlternate gSerifed ISlashed zero"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibold.woff",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibold.woff",
+      "action": "replace",
+      "before_sha256": "991fcec8ccfde4f4e15a60b96c8fbc12b03a6b2fbf69385272c5ea895a8b4ce7",
+      "after_sha256": "b0abd2736335424f9fd3eb27974a36d03783b3db141e0801dca7d3a635218b46",
+      "file_type": "Web Open Font Format, TrueType, length 115648, version 1.0"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.eot",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.eot",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "dfe0b47abfa0fdb0504d7be14015fa3f1cf9647b97ffd8b3bfcceb25c60f4fa6",
+      "file_type": "Embedded OpenType (EOT), Source Sans Pro Semibold family"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.ttf",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.ttf",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "e8ec22b619599ef4088c788ec410ea3e70481acc9ec43cc0a7fcd00da6441646",
+      "file_type": "TrueType Font data, 20 tables, 1st \"BASE\", 30 names, Macintosh, type 256 string, Straight lAlternate aAlternate gSerifed ISlashed zero"
+    },
+    {
+      "destination": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.woff",
+      "source": "/home/naruki/.vscode-server/extensions/evilz.vscode-reveal-4.3.3/libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.woff",
+      "action": "add",
+      "before_sha256": null,
+      "after_sha256": "7225cacc06c2f360367c138daa4ce727c2a0d26e42875b1f9e802f181fdb81c5",
+      "file_type": "Web Open Font Format, TrueType, length 98816, version 1.0"
+    },
+    {
+      "destination": "voiceovers/slide_01.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_01.mp3",
+      "action": "replace",
+      "before_sha256": "1132cb92326b2ba872b60c8994b83131cb17dc20c34d838ac0b05a157c269c7e",
+      "after_sha256": "904d4cb06af3d1eac406d8b69630543c39a5023ba58395460aa573797094a915",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_02.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_02.mp3",
+      "action": "replace",
+      "before_sha256": "35e01689d4447ad1f56472590cb4f9dec407febd906edae3cad76e194465a3ff",
+      "after_sha256": "abaff453b8d0627cc4921ca1655e420037df5c3d33041d465a873d5aa63f8cbd",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_03.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_03.mp3",
+      "action": "replace",
+      "before_sha256": "8f812a6bfa55641343abac97eab0f244dc11480a8f6bed07507442f0f44c1b34",
+      "after_sha256": "2846ddfa2434e953318237519d71029070c503c7d6c8dca2056f0c415b050019",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_04.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_04.mp3",
+      "action": "replace",
+      "before_sha256": "5e2f358ee3ee22837c624094598821c95db595e9c69c5e85d269eb81d7dc39ca",
+      "after_sha256": "12c47bf63f07995de8510f3b8e5a6c1807774b88a3705cd07507c2ec7f465919",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_05.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_05.mp3",
+      "action": "replace",
+      "before_sha256": "c5e7661ba4b13d34dd33bdaeb7ee25416903745974c3c40ffd77caeb4588676c",
+      "after_sha256": "5e64d1f0684a15b18bdd4e0a2e8840746e683016149701d1fbe2d3d3842eeb41",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_06.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_06.mp3",
+      "action": "replace",
+      "before_sha256": "c3a9da43258bb263d74e1de6bfb5e718b312a0ba94f969c948b16d38265bb200",
+      "after_sha256": "886593dcc9fe4b4ccec02c47bff04ae9e529fbf6f778424eec016bc62034ad43",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_07.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_07.mp3",
+      "action": "replace",
+      "before_sha256": "21cd29816b0db9dbc6154993721bdb473f581a36c75675a5bf09e649ab589329",
+      "after_sha256": "8ae055ad2045bd65e236dd17c3d3480f8e07ff3a547e2a2821e72a7a109fa978",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_08.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_08.mp3",
+      "action": "replace",
+      "before_sha256": "e725ceb15e8158e837d442a1a48ead29324ca5760b2d5f47a77db5197fa85375",
+      "after_sha256": "d007171d2fba16a47a0f7dd4a70ca39fb7badd333aa67afcb73672e2a20bad7a",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_09.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_09.mp3",
+      "action": "replace",
+      "before_sha256": "2301f72ee02ef7d0c8747f46578a126e72c5f03c3e062c89b7bc74c13fd48037",
+      "after_sha256": "a4ce2079aa0f85c2d575a60dcdbce38a3e2ea77cf798a9e1c0e7113271ff8735",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_10.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_10.mp3",
+      "action": "replace",
+      "before_sha256": "3bdc658d6c59cac47cd37a76392d00ba1aaf01386d44943a6f328694df37f9f2",
+      "after_sha256": "efe234ff5fe1d2edf8c735ba89e943e5b73681ae9173fffa9ce230f733375da8",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_11.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_11.mp3",
+      "action": "replace",
+      "before_sha256": "4e47122ece78054883aa6e3433328e2dc678b28788c1585aeb9366b80ec2549b",
+      "after_sha256": "cc62f2d4770564588be3db32f5ec5406910fc830aefe7484d713601a126aa5be",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_12.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_12.mp3",
+      "action": "replace",
+      "before_sha256": "1b97d14f1b97b96f514b268cb24918522176cc839316ae15270dc3516cc22afe",
+      "after_sha256": "1b7aec62aa9a483ede744aaf0ab0aa05e1943987fd529ad671e07d1c1a26d33e",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_13.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_13.mp3",
+      "action": "replace",
+      "before_sha256": "c210ea8a9dbdb87e94a1c0a749fbc400f98a81e985fe8ad37be09027eac1cef5",
+      "after_sha256": "21881468ef84e37e41bd9ca060f822fd04863bd6d1e998184b9ea4ddd51717bb",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_14.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_14.mp3",
+      "action": "replace",
+      "before_sha256": "bfe27f439333b4bda7eb91216ab3646d661ae47cb8034be0c45f14c775240f05",
+      "after_sha256": "0a0e0f27ceda76a3997d6b59d8bd52b91b2518db8e25d861d6560ac887f83aad",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_15.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_15.mp3",
+      "action": "replace",
+      "before_sha256": "6322d909ba42e07a1bd4de4296aa735725ace02b420cebef0d10196c84793535",
+      "after_sha256": "7d615850c739d395825ad305da78aa4bf78b0ce0dd59d2394086fe265fcfc356",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_16.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_16.mp3",
+      "action": "replace",
+      "before_sha256": "1c362955f501d806c3dac00bf6805b0965aadddab3443bf3680241bd9bfa7767",
+      "after_sha256": "255906a9a5e344b9f5a20101d92ea2bbc977fd251796d71f6a2dc0b50ed6972c",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_17.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_17.mp3",
+      "action": "replace",
+      "before_sha256": "40695df14d6de1136be5ce4304255bd5f0cac9d2ef43b3a98d762659ad1098ed",
+      "after_sha256": "72cdb463d3b42ac854b82ce8e7c8619976ac52455742e7b9fec553e72dbedfe6",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_18.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_18.mp3",
+      "action": "replace",
+      "before_sha256": "d1cde910681efc48021c22eff949f6f5671955b128031fcfca994bb4b9be0c45",
+      "after_sha256": "c91b364cd8afc45542a5744ed3af7d97ba1e56f6cf728af914006498dcd15de8",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_19.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_19.mp3",
+      "action": "replace",
+      "before_sha256": "97e5c3201aa4e334f5dd20a90567e5d3155f5aca0f9e90e2b6de34f72e8159a7",
+      "after_sha256": "36f9e69ff7ba0fddf46890ec942b5e8e27febe58759e1d9f2d15682024cbcaf6",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    },
+    {
+      "destination": "voiceovers/slide_20.mp3",
+      "source": "/home/naruki/GitHub/slide-oc2026-essay/presentation-20260927/voiceovers/slide_20.mp3",
+      "action": "replace",
+      "before_sha256": "c6c82ee984fec341ad105d8f7541bda3323019afcf57aadaef831f9661b02d74",
+      "after_sha256": "9d4fd7f57a63eb352c7993619e26c98f63f402394c6246babfe06d4f4b3f544c",
+      "file_type": "MPEG ADTS, layer III, v2,  48 kbps, 24 kHz, Monaural",
+      "reason": "再エクスポート後に検出したMP3破損を元音声から復元"
+    }
+  ],
+  "html": {
+    "css_before": "./style.css",
+    "css_after": "./style.css",
+    "font_awesome_before": "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",
+    "font_awesome_after": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "formatted": true,
+    "content_and_structure_preserved": true,
+    "before_sha256": "791cd633ddd069efc1fcec10fab7656513e63986f8dad32578f36b6b2e9576d7",
+    "after_sha256": "f1b8cffbc3cd7821fa02e65444bd25b8bb7363aa4bf5a543c1f5b209cdec69b5"
+  },
+  "verification": {
+    "local_references": 93,
+    "missing_local_references": 0,
+    "slides": 20,
+    "notes": 20,
+    "source_identical_mp3": 20,
+    "png_valid": 7,
+    "fonts_valid": 27,
+    "protected_files_unchanged": 201,
+    "djlint_check": "0 files would be updated",
+    "djlint_lint_errors": 0,
+    "djlint_ignored": [
+      "H014",
+      "H021",
+      "H031"
+    ],
+    "make_check_audio": "PASS (includes make check)",
+    "browser": {
+      "checkedAt": "2026-09-25T01:19:45.567Z",
+      "inputs": {
+        "index.html": "f1b8cffbc3cd7821fa02e65444bd25b8bb7363aa4bf5a543c1f5b209cdec69b5",
+        "style.css": "17e57ad8e28ddf2df88c42104a19172b17486e0d32a33f806c24d318d6462c1e",
+        "image-zoom.js": "a221db5929ef3f14f4be7bf3cd3e14b32b62eb4e5daeb954e312f0a3d5687549"
+      },
+      "browser": "HeadlessChrome/151.0.7922.34",
+      "reveal": "4.3.1",
+      "renderer": "vscode-reveal export HTML",
+      "viewport": "1280x720",
+      "results": [
+        {
+          "slide": 1,
+          "title": "小論文対策",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 2,
+          "title": "「何を書けばいい？」を解消しよう",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 3,
+          "title": "題材が変わっても、使える考え方",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 4,
+          "title": "書く前に、設問へ印をつける",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 5,
+          "title": "数字の前に「何の数字？」",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 6,
+          "title": "45秒で考えよう：日本はどう変わった？",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 7,
+          "title": "「減った」を、根拠のある一文に",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 8,
+          "title": "「目立つ数字」より「問いに必要な根拠」",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 9,
+          "title": "書き出す前に「全体像」を一文で",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 10,
+          "title": "提案は「誰が、何を、なぜ」まで",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 11,
+          "title": "書いたら、三つだけ確かめる",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 12,
+          "title": "高3：受験日から逆算しよう",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 2
+        },
+        {
+          "slide": 13,
+          "title": "高3・推薦：一度書いて、直す時間を作る",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 14,
+          "title": "高3・前期：今から小さく、後半は実戦へ",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 15,
+          "title": "高1・2：週に一度、数字を言葉にする",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 16,
+          "title": "今日、まず一つの図表から",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 17,
+          "title": "質疑応答",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 18,
+          "title": "補足：よくある疑問",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 19,
+          "title": "補足：書き直しのチェックリスト",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        },
+        {
+          "slide": 20,
+          "title": "補足：出典と最新情報",
+          "overflow": [],
+          "missingImages": [],
+          "notesHidden": true,
+          "tableRows": 0
+        }
+      ],
+      "zoom": {
+        "clickOpen": true,
+        "escapeClose": true,
+        "enterOpen": true,
+        "backdropClose": true,
+        "slideChangeClose": true,
+        "tabindex": "0"
+      }
+    }
+  },
+  "unresolved_files": [],
+  "checked_at": "2026-09-25T01:20:39.067286+00:00",
+  "source_frontmatter": "CSSは既にリスト形式。元スライドは変更していない。",
+  "concurrent_export": "最初の修復後に別のエクスポート処理が画像・HTML等を上書き。ユーザーによるエクスポート完了の確認後、再検査・再修復。追加で破損MP3全20件を元音声から復元した。",
+  "limits": [
+    "ブラウザー確認はHTTP(S)通信を遮断して実施。外部CDNの応答は未確認。",
+    "音声はMPEG形式と元音声とのハッシュ一致を確認。全音声の通し聴取は未実施。"
+  ]
+}
