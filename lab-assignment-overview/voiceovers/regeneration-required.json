@@ -1,10 +1,37 @@
 {
-  "revision": "2026-09-28 remove student detailed-deck guidance",
+  "revision": "2026-09-28 five-person round-1 closure",
   "status": "REGENERATION_REQUIRED",
-  "policy": "Existing audio retained. Slide 22 notes no longer refer students to the teacher-only detailed deck. Other audio content has not been verified. Notes hashes cover raw trimmed text.",
+  "policy": "Existing audio retained. Slide 22 notes no longer refer students to the teacher-only detailed deck. Other audio content has not been verified. Notes hashes cover raw trimmed text. Five-person closure revision: retained MP3 files unchanged; current hashes for newly changed notes use raw trimmed text.",
   "before_deck_sha256": "d0805b020b0a42d5e8e53fb18069207a8d2290adbbaf654ad336cd966e079065",
-  "current_deck_sha256": "974db10d38414a0ac8c2a656d6b893e851af7d4b3819b615d68dc66ea5619508",
+  "current_deck_sha256": "8775b3399ddb862d6d5a13b850ec7a8407d6279c391036b635d9ab48e2ff2058",
   "slides": [
+    {
+      "slide": 14,
+      "file": "slide_14.mp3",
+      "reason": "第1回5名確定・第2回以降対象外の方針を反映",
+      "previous_notes_sha256": "12038c92e023782c6b97b6adfb92082828562d622995778308a53edcfa843e7f",
+      "retained_mp3_sha256": "74f589d82c8c2e7f8104939b352aa4bca5d860add41404bf304b5ac932a7a489",
+      "before_five_person_policy_notes_sha256": "12038c92e023782c6b97b6adfb92082828562d622995778308a53edcfa843e7f",
+      "current_notes_sha256": "f57827fbc0b6bc07e249edf6da1c0a5f7591a340a9010d2265acc7d43bd47053"
+    },
+    {
+      "slide": 16,
+      "file": "slide_16.mp3",
+      "reason": "第1回5名確定・第2回以降対象外の方針を反映",
+      "previous_notes_sha256": "f02944caaab9fb707aa93c9804783c47491c6552706e5be61039cc52c2d2beb4",
+      "retained_mp3_sha256": "3651cee7a10aeb177345c17729999f34b69b32083aecea2e8d3b93a0313ba965",
+      "before_five_person_policy_notes_sha256": "f02944caaab9fb707aa93c9804783c47491c6552706e5be61039cc52c2d2beb4",
+      "current_notes_sha256": "151c688674b082d8e76d6edf020e7f6a24792249852bcb634a61269e4b2e3d11"
+    },
+    {
+      "slide": 18,
+      "file": "slide_18.mp3",
+      "reason": "第1回5名確定・第2回以降対象外の方針を反映",
+      "previous_notes_sha256": "f185b5d3a17365c5d4963efb41e331bb1fed4ec79cbdd297975bc7275e3b36ba",
+      "retained_mp3_sha256": "d302c7de158647801b833e25fd065789f521fdcefd7c6e318b2c20c633854487",
+      "before_five_person_policy_notes_sha256": "f185b5d3a17365c5d4963efb41e331bb1fed4ec79cbdd297975bc7275e3b36ba",
+      "current_notes_sha256": "6b8f93b4a639baf6d7c3f7935f4a58a390d20a2fe3937b46b958e5eb36434d89"
+    },
     {
       "slide": 22,
       "file": "slide_22.mp3",
@@ -13,5 +40,6 @@
       "current_notes_sha256": "745b8e265230f27f5cffc299080a7d939046b2e8c4b975d41d2fbb561b16c388",
       "retained_mp3_sha256": "e5b70218854307b1c4834a13e194a23e2046c71c3abc7982242067fe90e96b58"
     }
-  ]
+  ],
+  "before_five_person_policy_deck_sha256": "974db10d38414a0ac8c2a656d6b893e851af7d4b3819b615d68dc66ea5619508"
 }

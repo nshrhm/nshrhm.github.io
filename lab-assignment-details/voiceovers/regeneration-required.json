@@ -1,9 +1,9 @@
 {
-  "revision": "2026-09-28 day-of rules",
+  "revision": "2026-09-28 five-person round-1 closure",
   "status": "REGENERATION_REQUIRED",
-  "policy": "MP3 files retained unchanged at user request. Changed notes compared using the existing voiceover parser. Unchanged notes do not prove audio content matches.",
+  "policy": "MP3 files retained unchanged at user request. Changed notes compared using the existing voiceover parser. Unchanged notes do not prove audio content matches. Five-person closure revision: retained MP3 files unchanged; current hashes for newly changed notes use raw trimmed text.",
   "before_deck_sha256": "c916852be77db52962d878ff4e549f1d02a52ec9652d29b3b2c265108151fa45",
-  "current_deck_sha256": "0bff0168abaadd62a36212ce133294efa13992ee813d0c149a509a589dfda817",
+  "current_deck_sha256": "8f16af3fc8594235d08e80d8f92ab51ad37a662a423b4f406f589957ff5e599d",
   "slides": [
     {
       "slide": 1,
@@ -32,10 +32,11 @@
     {
       "slide": 12,
       "file": "slide_12.mp3",
-      "reason": "加点は第1回の最終的な第1希望のみ、第2回以降は加点なし",
+      "reason": "加点は第1回の最終的な第1希望のみ、第2回以降は加点なし；第1回5名確定・第2回以降対象外の方針を反映",
       "previous_notes_sha256": "b6ee9e5ea6616d367827ae863e4595765165e7811a77355f5c2445885d83eafe",
-      "current_notes_sha256": "48d7f0a87a5e93234bd40cc5eb20908c1ecada585555abcfba10c5e1d97dd98b",
-      "retained_mp3_sha256": "b2caf53d4e9967f27304049ec55c53af292ebe21ee5726c621a25de0e0efb7ca"
+      "current_notes_sha256": "44c103f1b3f7ee76d88936190371fb47095a1566eeb114f1b1e522969a839fd3",
+      "retained_mp3_sha256": "b2caf53d4e9967f27304049ec55c53af292ebe21ee5726c621a25de0e0efb7ca",
+      "before_five_person_policy_notes_sha256": "039db2faeea738e01326a8ea36a430dcde9f2a6a0c69b77471be7fc82b73e4a2"
     },
     {
       "slide": 13,
@@ -96,18 +97,20 @@
     {
       "slide": 22,
       "file": "slide_22.mp3",
-      "reason": "配属方法の説明が第1回であることを明記",
+      "reason": "配属方法の説明が第1回であることを明記；第1回5名確定・第2回以降対象外の方針を反映",
       "previous_notes_sha256": "0bd8328ee14c328684f2e5d048793c5f14fc288bcae203f1d64933a6e8671f54",
-      "current_notes_sha256": "66b2c0f505fbc9b386e1a83ad4ec0499ee6e57a498fb00610c602638fcb9899d",
-      "retained_mp3_sha256": "9a6fce2783679aa5fa28eb9bc9448e1509000cfade9b179c5c2dac7e349f3ab9"
+      "current_notes_sha256": "9487c69d6884d1a6f2e1b0608dab9e576d63270fa2618834c3e7ab9ec61d8aa8",
+      "retained_mp3_sha256": "9a6fce2783679aa5fa28eb9bc9448e1509000cfade9b179c5c2dac7e349f3ab9",
+      "before_five_person_policy_notes_sha256": "eb2d01ec2192616514f60454836b13017add4f7ef1aa5d8079f9eb6140440cc5"
     },
     {
       "slide": 26,
       "file": "slide_26.mp3",
-      "reason": "第2回以降は加点なしと明記し、別途案内の範囲を訂正",
+      "reason": "第2回以降は加点なしと明記し、別途案内の範囲を訂正；第1回5名確定・第2回以降対象外の方針を反映",
       "previous_notes_sha256": "76e3deb9014e4c39051a41539c39b5ef61004ad2f17253b8d96e130c44ce16ad",
-      "current_notes_sha256": "056b3c5b8c5b03b31d85b4eb3362b716ac634f3cadd072a9465495edc124f8a7",
-      "retained_mp3_sha256": "42e06160f1fbaf026b37edfa7ae4eb48b4972612b5497865f4fe0fe7b0b82801"
+      "current_notes_sha256": "5ca0d028f267cfdfdc83af066c86a63a9016ce6ca7e875c701347b69c22751f9",
+      "retained_mp3_sha256": "42e06160f1fbaf026b37edfa7ae4eb48b4972612b5497865f4fe0fe7b0b82801",
+      "before_five_person_policy_notes_sha256": "8565c0d58b624363b7fbfe2bd6baa8657e5698bc693264de77c5f0376f32fb24"
     },
     {
       "slide": 27,
@@ -116,6 +119,15 @@
       "previous_notes_sha256": "8c417dd2cfc698ca52676970760ae3ecb72e9beb65b67d91c98e3e819fc4edf5",
       "current_notes_sha256": "424a55e96b61e873a43981b373d1408b873ac83641e36afc1fce3df11d49c06b",
       "retained_mp3_sha256": "585e29eab5681e42ea7b7768202ac5830dcf4db320c4682c8d039d705686e2df"
+    },
+    {
+      "slide": 28,
+      "file": "slide_28.mp3",
+      "reason": "第1回5名確定・第2回以降対象外の方針を反映",
+      "previous_notes_sha256": "131985c8a04e7ee7155c1e5db0a2a54b120ffe26ddeb5b998bcba6efc2c43f88",
+      "retained_mp3_sha256": "90764d82df666c14ba20328b2caee4ad55df9ef1605d6b01b0ab4eef7b9b4891",
+      "before_five_person_policy_notes_sha256": "131985c8a04e7ee7155c1e5db0a2a54b120ffe26ddeb5b998bcba6efc2c43f88",
+      "current_notes_sha256": "70ddc1edac27cc0d0cc2b099867ccc53ba19bb89658c09bea17265a1f59c4bbe"
     },
     {
       "slide": 30,
@@ -141,5 +153,6 @@
       "current_notes_sha256": "7ebabb82fbe4bcf5e4cd46bc96b54d46274e41c6b9997472b79d4de780fb27a9",
       "retained_mp3_sha256": "a059a7cf73a30ebcb80e9fc73ab2666d01f3fdeaabc4d8de43d1edf076b79d46"
     }
-  ]
+  ],
+  "before_five_person_policy_deck_sha256": "58569b98f75c9813d769c232d4e6f18c99ecb4e9ebc5bd6f6588b7c4c2376692"
 }
