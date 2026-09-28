@@ -1,0 +1,145 @@
+{
+  "revision": "2026-09-28 day-of rules",
+  "status": "REGENERATION_REQUIRED",
+  "policy": "MP3 files retained unchanged at user request. Changed notes compared using the existing voiceover parser. Unchanged notes do not prove audio content matches.",
+  "before_deck_sha256": "c916852be77db52962d878ff4e549f1d02a52ec9652d29b3b2c265108151fa45",
+  "current_deck_sha256": "0bff0168abaadd62a36212ce133294efa13992ee813d0c149a509a589dfda817",
+  "slides": [
+    {
+      "slide": 1,
+      "file": "slide_01.mp3",
+      "reason": "会場をD棟1階 D-101教室と明記",
+      "previous_notes_sha256": "32efd5cd083d719937938cda2412245976a2ae228f1505e691865146408284ae",
+      "current_notes_sha256": "37f4637a2f2b10a0a92adc7a2197e1e7da5b87fa4da6d25f879cc1ee945ba6ef",
+      "retained_mp3_sha256": "d79b33d262cde5c95de0ab66732b2f25c550f72519ba235da986ce2d95992da4"
+    },
+    {
+      "slide": 9,
+      "file": "slide_09.mp3",
+      "reason": "面接を実施する研究室としない研究室があることを明記",
+      "previous_notes_sha256": "7f366247ee6e90ac433b169f3c4a88c7150ca9c8b8df4e189a9e7f043eae6e82",
+      "current_notes_sha256": "cc8327b7b73776e4e03cdc8c59c6966d35f11a76fbe1abbbabbd6c80ac0786bf",
+      "retained_mp3_sha256": "ed7ec3c5531f997a34a3fd4a1f1d7403915c477fb8a0f1111fd16b76e8f4d535"
+    },
+    {
+      "slide": 10,
+      "file": "slide_10.mp3",
+      "reason": "前半の面接推奨を面接実施研究室に限定",
+      "previous_notes_sha256": "cf5ce7178b8a46960d1e4902871c1c6de0fe8911350542255cbe2c66e08c04fd",
+      "current_notes_sha256": "456d5a8d4baa360b2b7c47657bb3b24d05b9514bf3200f5a925a4a3f4a49c5d5",
+      "retained_mp3_sha256": "60b6bead1fd3864b1cba56e7f224492325209325e02e2994d5b9f9c7faa11a38"
+    },
+    {
+      "slide": 12,
+      "file": "slide_12.mp3",
+      "reason": "加点は第1回の最終的な第1希望のみ、第2回以降は加点なし",
+      "previous_notes_sha256": "b6ee9e5ea6616d367827ae863e4595765165e7811a77355f5c2445885d83eafe",
+      "current_notes_sha256": "48d7f0a87a5e93234bd40cc5eb20908c1ecada585555abcfba10c5e1d97dd98b",
+      "retained_mp3_sha256": "b2caf53d4e9967f27304049ec55c53af292ebe21ee5726c621a25de0e0efb7ca"
+    },
+    {
+      "slide": 13,
+      "file": "slide_13.mp3",
+      "reason": "架空の計算例が第1回配属の例であることを明記",
+      "previous_notes_sha256": "5a120f82ad42321f565f2f25af129696d2d883b8bb827888be05150a2d91cc7c",
+      "current_notes_sha256": "cef646d970726eaa584449b7189d235c48fc8a5942ba27a85855a596052b7ccb",
+      "retained_mp3_sha256": "bef22809f2cf9e33d87d913b884ad2d1e6257e18e9bb2445f61e330ee5f900e9"
+    },
+    {
+      "slide": 14,
+      "file": "slide_14.mp3",
+      "reason": "合計最大0.5点の適用範囲を第1回の最終第1希望に限定",
+      "previous_notes_sha256": "29596beece258d6c7f4f7c2f02deb501ace891ccc1bc2a80190ffd441f79ea45",
+      "current_notes_sha256": "a4fb1a5453277252db9beef4ccce275e0e0433fbb5b66deea4897912bd3970ee",
+      "retained_mp3_sha256": "f085017496157a031d6ee3d3d9c25d3df356317e0839c6b006918d2e9cc626d4"
+    },
+    {
+      "slide": 15,
+      "file": "slide_15.mp3",
+      "reason": "最終申請先への加点は第1回のみと明記",
+      "previous_notes_sha256": "2834c8da2a37509a8c49ec7f565234944657e10af9ea905a4c0b667b7f1403cf",
+      "current_notes_sha256": "a7d7bd93f0c00d3a6843f32acd68ffb9909559fe2a2ba2b87c602b9007034cd4",
+      "retained_mp3_sha256": "9b95e830687ef7e0aa0c886c1d1bd4ec5592b6ef40ae34af8b17d92a11c94cff"
+    },
+    {
+      "slide": 16,
+      "file": "slide_16.mp3",
+      "reason": "希望変更時の加点説明を第1回配属に限定",
+      "previous_notes_sha256": "01b03ac485e0787ca58fcde7bba6281a4a64ee17f56433b98ed1155d2979e7f3",
+      "current_notes_sha256": "7b7f9885ce9f28d156b2c8c6ca8120f1bb2582b59d67696ba691d4dafef43534",
+      "retained_mp3_sha256": "74b24808692500e16d0219a23da4d9e92374fd49cac72444c4245ca51acaf3d5"
+    },
+    {
+      "slide": 17,
+      "file": "slide_17.mp3",
+      "reason": "早めの面接推奨を面接実施研究室に限定",
+      "previous_notes_sha256": "9093d0b60dcf35d1e7661ceb731bd58f354306e1410fede428b843359104baa8",
+      "current_notes_sha256": "f5185d1f10b0e7bb72df39e073743751ad86740fd17e5211a3646781c338a59c",
+      "retained_mp3_sha256": "2028e18f93af7d36b7473de63fcbf2d11d612c2015a14c565adb121686fed3f0"
+    },
+    {
+      "slide": 18,
+      "file": "slide_18.mp3",
+      "reason": "前半の面接完了期限は面接実施研究室で受ける場合の条件と明記",
+      "previous_notes_sha256": "7c76b9efafa0537eabe6312da07afe745882ce06b57c45d946fcdaf61d944b04",
+      "current_notes_sha256": "a8f6c5ff1663a9f69d6eb0cafd9af4ee1d554d343cc62af2ca98b99bcc0fc0ba",
+      "retained_mp3_sha256": "1dc4eab1bcdb0667df7cc3ae4c1f467a9cb704d00be2fd19354f526964f69298"
+    },
+    {
+      "slide": 19,
+      "file": "slide_19.mp3",
+      "reason": "Google Classroomによるフォーム案内と既存QRコードに言及",
+      "previous_notes_sha256": "eba9830d4696284f1775acba3d7c13d7f815516f25b953c7998e35d847d4dfd1",
+      "current_notes_sha256": "59af118a3df4d6796fedefba96ade1a8b521b7ac6d129b0418800ca589a89670",
+      "retained_mp3_sha256": "841452ddd1cdc39ea8f19174a005f284b92c4a115d111b7d50f900b61ff5f40a"
+    },
+    {
+      "slide": 22,
+      "file": "slide_22.mp3",
+      "reason": "配属方法の説明が第1回であることを明記",
+      "previous_notes_sha256": "0bd8328ee14c328684f2e5d048793c5f14fc288bcae203f1d64933a6e8671f54",
+      "current_notes_sha256": "66b2c0f505fbc9b386e1a83ad4ec0499ee6e57a498fb00610c602638fcb9899d",
+      "retained_mp3_sha256": "9a6fce2783679aa5fa28eb9bc9448e1509000cfade9b179c5c2dac7e349f3ab9"
+    },
+    {
+      "slide": 26,
+      "file": "slide_26.mp3",
+      "reason": "第2回以降は加点なしと明記し、別途案内の範囲を訂正",
+      "previous_notes_sha256": "76e3deb9014e4c39051a41539c39b5ef61004ad2f17253b8d96e130c44ce16ad",
+      "current_notes_sha256": "056b3c5b8c5b03b31d85b4eb3362b716ac634f3cadd072a9465495edc124f8a7",
+      "retained_mp3_sha256": "42e06160f1fbaf026b37edfa7ae4eb48b4972612b5497865f4fe0fe7b0b82801"
+    },
+    {
+      "slide": 27,
+      "file": "slide_27.mp3",
+      "reason": "第2回の面接日程は維持し、面接評価点の加算なしと明記",
+      "previous_notes_sha256": "8c417dd2cfc698ca52676970760ae3ecb72e9beb65b67d91c98e3e819fc4edf5",
+      "current_notes_sha256": "424a55e96b61e873a43981b373d1408b873ac83641e36afc1fce3df11d49c06b",
+      "retained_mp3_sha256": "585e29eab5681e42ea7b7768202ac5830dcf4db320c4682c8d039d705686e2df"
+    },
+    {
+      "slide": 30,
+      "file": "slide_30.mp3",
+      "reason": "面接がある場合の連絡・準備と明記",
+      "previous_notes_sha256": "333439e0be3a42eb359509957acf1284dfd1fd5b40fb44c53f30a1d273b16395",
+      "current_notes_sha256": "29843c90f07ba4c05f84503682c23523a5c209666898a8d09e5185667b036647",
+      "retained_mp3_sha256": "66615802a55851cfaaeec874848b9be1650262a949c981d39655df85f96abb53"
+    },
+    {
+      "slide": 32,
+      "file": "slide_32.mp3",
+      "reason": "GPAに加算するのは第1回の最終第1希望のみと明記",
+      "previous_notes_sha256": "9b64962153563c34b600ad7c72b4f24559ac1f88505431726ab933d1a18f6006",
+      "current_notes_sha256": "35f8727dd83bd9154bb9f3fe6c1a0d4d80a2945e121efdbc6f81a63ea65bd331",
+      "retained_mp3_sha256": "cc1c16c52c63074a4ea08ed0cdb57755d00bbf6ff9252111ceb5fc7b6de46ef0"
+    },
+    {
+      "slide": 34,
+      "file": "slide_34.mp3",
+      "reason": "当日版の3原則を反映した詳細資料であることを説明",
+      "previous_notes_sha256": "bc0e1f526492aab4ce6244524ecff65a7dde4429b9206092095b2d28e5060aed",
+      "current_notes_sha256": "7ebabb82fbe4bcf5e4cd46bc96b54d46274e41c6b9997472b79d4de780fb27a9",
+      "retained_mp3_sha256": "a059a7cf73a30ebcb80e9fc73ab2666d01f3fdeaabc4d8de43d1edf076b79d46"
+    }
+  ]
+}
