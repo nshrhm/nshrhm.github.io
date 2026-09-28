@@ -1,0 +1,17 @@
+{
+  "revision": "2026-09-28 remove student detailed-deck guidance",
+  "status": "REGENERATION_REQUIRED",
+  "policy": "Existing audio retained. Slide 22 notes no longer refer students to the teacher-only detailed deck. Other audio content has not been verified. Notes hashes cover raw trimmed text.",
+  "before_deck_sha256": "d0805b020b0a42d5e8e53fb18069207a8d2290adbbaf654ad336cd966e079065",
+  "current_deck_sha256": "974db10d38414a0ac8c2a656d6b893e851af7d4b3819b615d68dc66ea5619508",
+  "slides": [
+    {
+      "slide": 22,
+      "file": "slide_22.mp3",
+      "reason": "最終スライド削除に伴い、詳細版への案内を当日配布資料・学部案内の確認に変更",
+      "previous_notes_sha256": "6b7e9991c5cf596ef28dc58d7bf41ca8fa51b1d137e3eecf6b6a65cf676c9140",
+      "current_notes_sha256": "745b8e265230f27f5cffc299080a7d939046b2e8c4b975d41d2fbb561b16c388",
+      "retained_mp3_sha256": "e5b70218854307b1c4834a13e194a23e2046c71c3abc7982242067fe90e96b58"
+    }
+  ]
+}
