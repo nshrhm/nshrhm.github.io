@@ -1,0 +1,1118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>3.5 1次元データの(非)類似度</h1>
+<h2>距離・類似度で「似ている」を定量化</h2>
+<p>データサイエンスプログラミング入門</p>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+こんにちは。今日はデータ同士の「似ている」を、距離・類似度として数値化する方法を学びます。
+<p>推薦、クラスタリング、異常検知など、使う場面は非常に多いです。PythonとRを同じゴールに向けて並走します。途中で手を動かす時間も入れます。</p>
+<p>では始めましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日の内容</h2>
+<ol>
+<li>類似度／非類似度の読み方</li>
+<li>4つの指標：ユークリッド／マンハッタン／コサイン／相関</li>
+<li>距離行列（データフレームで一括計算）</li>
+<li>統合演習：都市の気候データ</li>
+<li>まとめ</li>
+</ol>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の流れです。前半で指標を一つずつ理解して、後半で“まとめて計算する形”にします。
+<p>結論が指標によって変わることが、今日の一番重要なポイントです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習目標（到達目標）</h2>
+<ul>
+<li>4指標を <strong>Python/R両方</strong>で計算できる</li>
+<li>距離（小さいほど似る）と類似度（大きいほど似る）を取り違えない</li>
+<li>距離行列／類似度行列を作り、最近傍を抽出できる</li>
+<li>「何を似ていると見なしたいか」から指標を選べる</li>
+</ul>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+ゴールを確認します。計算、解釈、そして指標選択までが到達点です。
+<p>特に、距離と類似度の大小関係を逆に読まないこと。これだけで結論が逆転します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>導入クイズ：Aに似ているのは？</h2>
+<p>次の3つのデータ（3次元ベクトル）を考えます。</p>
+<table>
+<thead>
+<tr>
+<th>記号</th>
+<th>ベクトル</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>(3, 4, 5)</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>(3, 4, 29)</td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td>(9, -18, 8)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>質問</strong>：Aに似ているのは <strong>B</strong> と <strong>C</strong> のどちら？（直感でOK）</p>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+まず直感で答えてみましょう。30秒、隣の人と相談してください。
+<p>（30秒）</p>
+<p>挙手で確認します。Bだと思う人？Cだと思う人？</p>
+<p>この問いは“指標を言わないと答えられない”のが今日の結論です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>類似度と非類似度</h2>
+<h3>非類似度（Dissimilarity）</h3>
+<ul>
+<li><strong>小さいほど似ている</strong>（0が最小：完全一致）</li>
+<li>例：ユークリッド距離、マンハッタン距離</li>
+</ul>
+<h3>類似度（Similarity）</h3>
+<ul>
+<li><strong>大きいほど似ている</strong>（1が最大、-1まで取ることも）</li>
+<li>例：コサイン類似度、相関係数</li>
+</ul>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+用語の整理です。距離は小さいほど似ています。類似度は大きいほど似ています。
+<p>このあと、SciPyの関数が距離を返すのか類似度を返すのか、必ず確認する癖を付けましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>4指標の全体像</h2>
+<div style="font-size: 0.6em;">
+<table>
+<thead>
+<tr>
+<th>指標</th>
+<th>種類</th>
+<th>直感</th>
+<th>よく合う場面</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ユークリッド距離</td>
+<td>非類似度</td>
+<td>直線距離</td>
+<td>位置・量そのもの</td>
+</tr>
+<tr>
+<td>マンハッタン距離</td>
+<td>非類似度</td>
+<td>縦横の移動</td>
+<td>スパース／外れ値に比較的強い</td>
+</tr>
+<tr>
+<td>コサイン類似度</td>
+<td>類似度</td>
+<td>向き（角度）</td>
+<td>テキスト・埋め込み</td>
+</tr>
+<tr>
+<td>相関係数</td>
+<td>類似度</td>
+<td>増減パターン</td>
+<td>時系列・波形</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>キーワード：<strong>目的に合わせて“似ている”を定義する</strong></p>
+</blockquote>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから各指標を見ていきます。距離は値の近さ、コサインは方向、相関は形。
+<p>当然、絶対ではありませんが、まずはこの直感で整理すると理解が速いです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ユークリッド距離（Euclidean）</h2>
+<p>2点間の<strong>直線距離</strong></p>
+<p>$$
+d(x,y)=\sqrt{\sum_{i=1}^{n} (x_i-y_i)^2}
+$$</p>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+まずはユークリッド距離。いわゆる定規で測る距離です。
+<p>差を二乗するので、大きい差が強く効きます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ユークリッド距離の注意点</h2>
+<ul>
+<li>外れ値に敏感（差を二乗するため）</li>
+<li>スケール（単位）に依存
+<ul>
+<li>例：cmとkgを混ぜると距離が歪む</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>実務では標準化など前処理を検討</p>
+</blockquote>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+ユークリッド距離は基本ですが、単位や外れ値に弱いです。
+<p>だから実務では標準化やスケーリングがセットになりやすい。今日はまず指標の性質を押さえます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>例（ユークリッド）</h2>
+<p>A=(3,4,5), B=(3,4,29), C=(9,-18,8)</p>
+<ul>
+<li>$d(A,B)=24$</li>
+<li>$d(A,C)=23$</li>
+</ul>
+<p><strong>結論</strong>：ユークリッド距離では <strong>C</strong> が近い</p>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+例の結果です。AとBは3つ目だけ大きく違うので24。AとCは複数違いますが合算すると23。
+<p>直感と違ってもOKです。指標が何を重視するかで結論が変わります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>実装（ユークリッド：Python / R）</h2>
+<pre><code class="language-python">from scipy.spatial import distance
+A = [3,4,5]; B = [3,4,29]; C = [9,-18,8]
+print(distance.euclidean(A, B))
+print(distance.euclidean(A, C))
+</code></pre>
+<pre><code class="language-r">A &lt;- c(3,4,5); B &lt;- c(3,4,29); C &lt;- c(9,-18,8)
+sqrt(sum((B-A)^2))
+sqrt(sum((C-A)^2))
+</code></pre>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+実装はこの形です。PythonはSciPy、Rはベクトル演算。
+<p>ここは各自の環境で一度動かして、出力が一致することを確認してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>マンハッタン距離（Manhattan）</h2>
+<p>碁盤目状に移動する距離（タクシー距離）</p>
+<p>$$
+d(x,y)=\sum_{i=1}^{n}|x_i-y_i|
+$$</p>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+次はマンハッタン距離です。差の絶対値を足します。
+<p>ユークリッドと違い二乗しないので、差を素直に合計する感覚です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>例（マンハッタン）— 結論が逆転</h2>
+<ul>
+<li>$d(A,B)=24$</li>
+<li>$d(A,C)=31$</li>
+</ul>
+<p><strong>結論</strong>：マンハッタン距離では <strong>B</strong> が近い</p>
+<blockquote>
+<p>同じデータでも指標で最近傍が変わる</p>
+</blockquote>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+重要ポイントです。ユークリッドではCが近かったのに、マンハッタンではBが近い。
+<p>つまり「Aに似ているのは？」は、指標を言わないと答えられません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>実装</h2>
+<h3>マンハッタン：Python / R</h3>
+<pre><code class="language-python">from scipy.spatial import distance
+print(distance.cityblock(A, B))
+print(distance.cityblock(A, C))
+</code></pre>
+<pre><code class="language-r">sum(abs(B-A))
+sum(abs(C-A))
+</code></pre>
+<ul>
+<li>外れ値の影響を少し抑えたい／スパースな特徴量で有利なことがある</li>
+</ul>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+実装は簡単です。Pythonはcityblock、Rはabsを取って足すだけ。
+<p>使いどころとしては、スパースなベクトルや外れ値の影響を少し抑えたい場面が典型です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>コサイン類似</h2>
+<h3>Cosine similarity</h3>
+<p>ベクトルの <strong>向き（角度）</strong> の近さ</p>
+<p>$$
+\cos(\theta)=\frac{x\cdot y}{|x|,|y|}
+$$</p>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからは類似度です。コサイン類似度は向きを見ます。
+<p>文章ベクトルなどでは、長さより方向が重要なので頻出です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>角度で読む（直感）</h2>
+<ul>
+<li>同じ方向（$\theta\approx0^\circ$）→ 1</li>
+<li>直交（$\theta=90^\circ$）→ 0</li>
+<li>逆方向（$\theta=180^\circ$）→ -1</li>
+</ul>
+<blockquote>
+<p>「大きさ」より「パターン（方向）」を重視</p>
+</blockquote>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+コサインは角度です。同じ方向なら1、直交なら0、逆なら-1。
+<p>距離と違い、ベクトルの大きさそのものは主役ではありません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>例（コサイン）</h2>
+<ul>
+<li>cos(A,B)=<strong>0.8170</strong></li>
+<li>cos(A,C)=<strong>-0.0327</strong></li>
+</ul>
+<p><strong>結論</strong>：コサイン類似度では <strong>B</strong> が似ている</p>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+結果です。AとBは方向がかなり近い。AとCはほぼ0で、方向としては似ていません。
+<p>距離系と観点が違うことを意識してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>実装（コサイン）— 距離に注意</h2>
+<pre><code class="language-python">from scipy.spatial import distance
+# distance.cosine は「距離」= 1 - 類似度
+sim_AB = 1 - distance.cosine(A, B)
+</code></pre>
+<pre><code class="language-r">library(proxy)
+sim_AB &lt;- simil(A, B, method = &quot;cosine&quot;)
+</code></pre>
+<ul>
+<li>Pythonでは「距離」を返す関数があるので注意</li>
+</ul>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+SciPyのdistance.cosineは“距離”を返します。1から引いて類似度に戻します。
+<p>関数名で勘違いしやすいので、コメントを必ず残してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>相関係数（Pearson correlation）</h2>
+<p>2つのデータの<strong>線形な関係</strong>の強さ（ここでは類似度として使う）</p>
+<p>$$
+r=\frac{\sum_{i}(x_i-\bar x)(y_i-\bar y)}{\sqrt{\sum_i(x_i-\bar x)^2}\sqrt{\sum_i(y_i-\bar y)^2}}
+$$</p>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+相関係数を“類似度”として使います。
+<p>平均からの偏差で考えるので、レベル差より増減の形に注目します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>相関とコサインの関係</h2>
+<ul>
+<li>相関係数は、
+<ol>
+<li>ベクトルを<strong>平均との差</strong>に変換し</li>
+<li>その上での<strong>コサイン類似度</strong>に相当</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>原点基準（コサイン）と平均基準（相関）の違い</p>
+</blockquote>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+相関とコサインは親戚です。
+<p>コサインは原点基準、相関は平均基準。だから相関は“オフセット”に強く、パターン比較に向きます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>例（相関）</h2>
+<ul>
+<li>$r(A,B)$=<strong>0.8825</strong>（強い相関）</li>
+<li>$r(A,C)$=<strong>-0.0327</strong>（弱い相関）</li>
+</ul>
+<p><strong>結論</strong>：相関係数では <strong>$B$ が似ている</strong></p>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+結果です。AとBは強い正相関。AとCはほぼ0。
+<p>相関は距離と違い、“同じように動くか”を見る指標だと理解してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>実装（相関：Python / R）</h2>
+<pre><code class="language-python">from scipy.spatial import distance
+from scipy.stats import pearsonr
+
+r_AB = 1 - distance.correlation(A, B)  # 1-相関距離
+r2, p = pearsonr(A, B)                 # 相関係数とp値
+</code></pre>
+<pre><code class="language-r">cor(A, B)
+</code></pre>
+<ul>
+<li><code>distance.correlation</code> は「距離」なので 1 から引く</li>
+</ul>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここも混同ポイントです。distance.correlationは“相関距離”。1から引くと相関係数になります。
+<p>pearsonrはp値も返すので、必要なときに使い分けます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>距離行列・類似度行列</h2>
+<ul>
+<li>データが増えるとペア数は急増
+<ul>
+<li>10個 → 45ペア</li>
+<li>100個 → 4950ペア</li>
+</ul>
+</li>
+</ul>
+<h3>行列にする</h3>
+<ul>
+<li>対称行列</li>
+<li>対角：距離なら0、類似度なら1</li>
+</ul>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから一括計算の形にします。
+<p>全ペアを行列で持つと、最近傍探索やクラスタリングにそのまま使えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>データフレームの置き方</h2>
+<p>原則：<strong>1つの対象 = 1行</strong>、<strong>特徴量 = 列</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:right">x</th>
+<th style="text-align:right">y</th>
+<th style="text-align:right">z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">5</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">29</td>
+</tr>
+<tr>
+<td>C</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right">-18</td>
+<td style="text-align:right">8</td>
+</tr>
+</tbody>
+</table>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+距離行列で最も多いミスは、行と列の置き方です。
+<p>1行が1データ（1ベクトル）になるように置いてから距離を計算してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>一括計算（Python：cdist）</h2>
+<pre><code class="language-python">import pandas as pd
+from scipy.spatial import distance
+
+df = pd.DataFrame({
+  &quot;x&quot;:[3,3,9], &quot;y&quot;:[4,4,-18], &quot;z&quot;:[5,29,8]
+}, index=[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;])
+
+D_eu  = distance.cdist(df, df, metric=&quot;euclidean&quot;)
+D_man = distance.cdist(df, df, metric=&quot;cityblock&quot;)
+S_cos = 1 - distance.cdist(df, df, metric=&quot;cosine&quot;)
+S_cor = 1 - distance.cdist(df, df, metric=&quot;correlation&quot;)
+</code></pre>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonはcdistで一括計算できます。
+<p>コサインと相関は距離が返るので1から引いて類似度に戻す点がポイントです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>一括計算（R：proxy）</h2>
+<pre><code class="language-r">library(proxy)
+
+df &lt;- data.frame(
+  x=c(3,3,9), y=c(4,4,-18), z=c(5,29,8),
+  row.names=c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;)
+)
+
+D_eu  &lt;- proxy::dist(df, method=&quot;euclidean&quot;)
+D_man &lt;- proxy::dist(df, method=&quot;manhattan&quot;)
+S_cos &lt;- proxy::simil(df, method=&quot;cosine&quot;)
+S_cor &lt;- cor(t(df))  # 行同士の相関
+</code></pre>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rはproxyのdist/similが便利です。
+<p>相関は、行同士の相関を取りたいので、データの向きを意識して t(df) を使います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>統合演習：都市の気候データ</h2>
+<ul>
+<li>都市ごとの月平均気温（12ヶ月）をベクトルとして比較</li>
+</ul>
+<h3>対象</h3>
+<ul>
+<li>東京、札幌、那覇、ロンドン、シドニー</li>
+</ul>
+<h3>タスク</h3>
+<ol>
+<li>4指標の行列を計算</li>
+<li>東京の最近傍を指標ごとに求める</li>
+<li>理由を言語化する</li>
+</ol>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+統合演習です。12ヶ月分の気温を12次元ベクトルと見なします。
+<p>東京に似ている都市が、指標でどう変わるかを確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>演習の実装イメージ（Python）</h2>
+<pre><code class="language-python"># climate_df: 行=都市、列=1〜12月（12次元）
+D_eu  = distance.cdist(climate_df, climate_df, &quot;euclidean&quot;)
+D_man = distance.cdist(climate_df, climate_df, &quot;cityblock&quot;)
+S_cos = 1 - distance.cdist(climate_df, climate_df, &quot;cosine&quot;)
+S_cor = 1 - distance.cdist(climate_df, climate_df, &quot;correlation&quot;)
+
+# 東京の最近傍を探す（距離は最小、類似度は最大）
+</code></pre>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+コードはこの形です。データの向き、距離か類似度か、を必ず確認して進めましょう。
+<p>Rでも同じ考え方で実装できます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>結果：東京の最近傍（要点）</h2>
+<ul>
+<li>ユークリッド距離：<strong>ロンドン</strong></li>
+<li>マンハッタン距離：<strong>ロンドン</strong></li>
+<li>コサイン類似度：<strong>ロンドン</strong></li>
+<li>相関係数：<strong>札幌</strong></li>
+</ul>
+<blockquote>
+<p>指標によって結論が変わる</p>
+</blockquote>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+結果の要点です。
+<p>距離・コサインはロンドンが最も近い。一方、相関は札幌が最も似ている。</p>
+<p>この違いを説明できれば、今日の内容はかなり理解できています。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>なぜ相関は札幌？</h2>
+<ul>
+<li>相関は「平均との差」で**形（波形）**を比較</li>
+<li>東京と札幌は
+<ul>
+<li>夏に高く、冬に低い</li>
+<li>季節変動のパターンが似ている</li>
+</ul>
+</li>
+<li>ロンドンは絶対値として近い月が多く、距離で有利になりやすい</li>
+</ul>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+理由づけです。
+<p>相関は“季節の波形”を見ます。東京と札幌は寒暖差のある波形が似ている。</p>
+<p>ロンドンは絶対値が近い月が多いので、距離だと近くなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ペアワーク（5分）：指標を選ぶ</h2>
+<ul>
+<li>次の用途に合う指標を選び、理由を1行で記述してください。</li>
+</ul>
+<ol>
+<li>文章の類似（埋め込み）</li>
+<li>季節変動が似た都市</li>
+<li>アンケート回答の量的な近さ</li>
+</ol>
+<ul>
+<li>（可能なら「選ばない指標」も理由付きで）</li>
+</ul>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで5分、隣の人と相談してください。
+<p>選ぶだけでなく、理由を言語化します。いくつかのペアに発表してもらうのもいいですね。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>まとめ（チェックリスト）</h2>
+<ul>
+<li>距離：<strong>小さいほど似る</strong>／類似度：<strong>大きいほど似る</strong></li>
+<li>SciPyは「距離」を返す関数がある（コサイン／相関）</li>
+<li>指標が変わると、最近傍も変わり得る</li>
+<li>距離行列で一括計算 → 最近傍・クラスタリングへ</li>
+</ul>
+<h3>Copilotに頼るときの指示</h3>
+<ul>
+<li>目的／入力／出力形式／注意点（距離vs類似度）を明記</li>
+</ul>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後にチェックリストです。
+<p>そして、Copilotに頼るときは“距離か類似度か”を必ず書く。ここを曖昧にすると、1-距離の変換を忘れて間違った結論になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>次回予告</h2>
+<p>3.6：<strong>Rのパッケージ</strong>／<strong>Pythonのモジュール</strong></p>
+<ul>
+<li>コードを再利用できる形に整理する</li>
+<li><code>library()</code> / <code>import</code> の周辺を体系的に理解する</li>
+</ul>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+次回は、作ったコードを再利用するための作法として、RのパッケージとPythonのモジュールに入ります。
+<p>今日の内容は距離・類似度の“計算と解釈”。次回は“管理と再利用”です。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>

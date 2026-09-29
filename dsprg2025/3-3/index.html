@@ -1,0 +1,1216 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>第3章: データをまとめる</h1>
+<h2>3.3 コレクション</h2>
+<p>データサイエンスプログラミング入門</p>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+おはようございます。今日は第3章の中でも重要なテーマ、「コレクション」を扱います。データサイエンスでは、単発の値よりも“値のまとまり”を扱う時間の方が圧倒的に長いです。
+<p>この回は R と Python を並走させます。両方で同じ結果を出すこと、そして結果がズレたときに理由が説明できることを目標に進めます。途中で手を動かす時間を入れるので、ターミナルを開いて準備してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日の内容</h2>
+<ol>
+<li>コレクションとは何か（なぜ必要か）</li>
+<li>1次元データ（R: ベクタ / Python: リスト・配列）</li>
+<li>等間隔データの作り方（<code>seq</code>, <code>range</code>, <code>linspace</code>）</li>
+<li>1次元データの演算（集計・要素ごとの計算）</li>
+<li>複数種類のデータ（リスト）とキー・バリュー（辞書）</li>
+<li>コピーと参照／統合演習／まとめ</li>
+</ol>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>今日の流れです。前半は「コレクション」という考え方の導入と、1次元データの基本操作を固めます。中盤で等間隔データの生成と演算、後半で“異なる型をまとめる”リストや、キーと値の辞書を扱います。</p>
+<p>最後にコピーと参照の落とし穴を整理して、統合演習の設計まで行きます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習目標（到達目標）</h2>
+<ul>
+<li>コレクション（データのまとまり）の意義を説明できる</li>
+<li>1次元データを <strong>R/Python 両方</strong>で作成し、要素数・アクセス・更新ができる</li>
+<li>等間隔データを生成できる（開始/終了/刻み、要素数指定）</li>
+<li>1次元データの集計と要素ごとの演算を、ループを書かずに実行できる</li>
+<li>リスト／辞書を使い、複数種類データ・キー対応表を表現できる</li>
+<li>Pythonの参照（ミュータブル）に注意し、必要に応じてコピーできる</li>
+</ul>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>ここでゴールを明確にします。今日のポイントは“書ける”だけではなく、“選べる”ようになることです。</p>
+<p>同じ型のまとまりならベクタや配列、異なる型のまとまりならリスト、キー対応なら辞書。状況に応じて最適な入れ物を選べるようになってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>コレクションとは</h2>
+<ul>
+<li>実務のデータはたいてい <strong>複数の値のまとまり</strong></li>
+<li>その“まとまり”を扱う仕組みが <strong>コレクション</strong>
+<ul>
+<li>例：試験成績の一覧、月別売上、アンケート回答、ID↔名前対応表</li>
+</ul>
+</li>
+</ul>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>これまでの節では、数値や文字列など“一つの値”を扱ってきました。でも現実の分析では、値は必ずまとまりで現れます。</p>
+<p>そのまとまりを扱いやすくするのがコレクションです。ここを押さえると、後のデータフレームや可視化、機械学習の前処理まで一気につながります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>なぜ必要か：10人の成績</h2>
+<p>❌ コレクションなし（非効率）<br>
+<code>score1, score2, ... score10</code></p>
+<p>✅ コレクションあり（効率）<br>
+<code>scores = [85, 92, 78, 88, 95, 73, 89, 91, 76, 84]</code></p>
+<ul>
+<li>繰り返し処理が簡単</li>
+<li>一括で計算できる</li>
+<li>コードが短くなる</li>
+</ul>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>10人の成績を扱うとき、変数を10個作るのは現実的ではありません。平均を出すだけでも大変です。</p>
+<p>コレクションに入れてしまえば、合計や平均、最大値などが一発で計算できます。今日の授業は、この“まとめて扱える強さ”を体で覚える回です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本節で扱うコレクション</h2>
+<h3>1次元データ</h3>
+<ul>
+<li><strong>R</strong>: ベクタ（vector）</li>
+<li><strong>Python</strong>: リスト（list）、配列（<code>np.array</code>）</li>
+</ul>
+<h3>複数種類のデータ</h3>
+<ul>
+<li><strong>R</strong>: リスト（list）</li>
+<li><strong>Python</strong>: リスト（list）</li>
+</ul>
+<h3>キー・バリュー型</h3>
+<ul>
+<li><strong>R</strong>: 名前付きリスト</li>
+<li><strong>Python</strong>: 辞書（dict）</li>
+</ul>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>今日は3種類を中心に扱います。</p>
+<p>まずは同じ型の1次元データ。次に、異なる型をまとめるリスト。そして最後に、キーと値で対応付ける辞書（Rは名前付きリスト）です。</p>
+<p>この3つが分かれば、多くの現場のデータ表現ができるようになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R と Python の重要な違い</h2>
+<ul>
+<li>
+<p><strong>インデックス</strong></p>
+<ul>
+<li>R：1から数える（1始まり）</li>
+<li>Python：0から数える（0始まり）</li>
+</ul>
+</li>
+<li>
+<p><strong>コピーと参照（あとで事故るポイント）</strong></p>
+<ul>
+<li>Python：リストは参照。代入＝同じ箱を指すことがある</li>
+<li>R：基本はコピー（ただし内部最適化あり）</li>
+</ul>
+</li>
+</ul>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>結果がズレる典型はインデックスです。Rの2番目は <code>x[2]</code>、Pythonの2番目は <code>x[1]</code>。</p>
+<p>もう1つが参照の問題です。Pythonで“別物のつもり”で変更したら、元まで変わってしまう事故が起きます。後半でデモします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作業の流れ（ファイル実行）</h2>
+<ul>
+<li>R：<code>Rscript ファイル名.R</code></li>
+<li>Python：<code>python ファイル名.py</code></li>
+<li>ファイル作成：<code>touch my3-3-xx_xxx.R</code> / <code>touch my3-3-xx_xxx.py</code></li>
+<li>VS Code + WSL ターミナルで実行・確認</li>
+<li>GitHub Copilot：小さな“ひな形”作成に使う（丸投げしない）</li>
+</ul>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>ここは授業をスムーズに進めるための確認です。RはRscript、Pythonはpythonで実行します。</p>
+<p>Copilotは便利ですが、答えを丸ごと出させると“なぜそうなるか”が抜けます。今日は、1) 関数の骨格、2) 例外処理のヒント、くらいに使って、理解の主導権は皆さんが持ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.3.1 1次元データ</h2>
+<p>同じ型のデータを1列に並べたコレクション</p>
+<ul>
+<li>R：<strong>ベクタ</strong></li>
+<li>Python：<strong>リスト</strong>（必要なら <code>numpy</code> 配列）</li>
+</ul>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>ここから具体操作に入ります。1次元データは、最も基本的で、最も頻繁に使う“入れ物”です。</p>
+<p>まずは作る、長さを見る、取り出す、更新する。これをRとPythonでセットで覚えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作成（R：ベクタ）</h2>
+<pre><code class="language-r">x &lt;- c(&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;)
+print(x)
+</code></pre>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>Rでは <code>c()</code> でベクタを作ります。<code>c</code> は combine の意味です。</p>
+<p>この例は文字列ベクタです。同様に数値なら <code>c(1, 2, 3)</code> のように作れます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>作成（Python：リスト／配列）</h2>
+<pre><code class="language-python">x = [&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;]
+print(x)
+
+# 数値計算なら（任意）
+import numpy as np
+a = np.array([1, 2, 3])
+</code></pre>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+<p>Pythonでは角括弧 <code>[]</code> でリストを作ります。</p>
+<p>数値計算を多用するなら <code>numpy</code> 配列が便利です。今日はまず“基本のリスト”を押さえて、必要に応じて配列に進みます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>要素数（length / len）</h2>
+<h3>R</h3>
+<pre><code class="language-r">length(x)
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">len(x)
+</code></pre>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+要素数は頻繁に使います。Rは length()関数、Pythonは len()関数です。
+<p>ここで確認です。皆さんの手元で、今作った x は要素数いくつですか？ その場で実行して確かめてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>要素アクセス（インデックス）</h2>
+<ul>
+<li><strong>R（1始まり）</strong>：<code>x[1]</code> が最初</li>
+<li><strong>Python（0始まり）</strong>：<code>x[0]</code> が最初</li>
+</ul>
+<h3>R</h3>
+<pre><code class="language-r">x[2]   # 2番目
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">x[1]   # 2番目
+</code></pre>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここが最重要ポイントの1つです。Rは1から数えます。Pythonは0から数えます。
+<p>今から小テストです。「baz」を取り出すコードを、RとPythonでそれぞれ書いてみてください。30秒考えて、実行まで。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>スライス（範囲の取り出し）</h2>
+<h3>R</h3>
+<pre><code class="language-r">x[2:3]         # 2番目〜3番目
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">x[1:3]         # 2番目〜3番目（終端は含まない）
+</code></pre>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+範囲の取り出しも違いが出ます。Rの 2:3 は両端を含みます。
+<p>Pythonのスライスは“終端を含まない”のが基本です。x[1:3] は 1 と 2 を取って、3は含まれません。この仕様は慣れると非常に便利です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>要素の更新</h2>
+<h3>R</h3>
+<pre><code class="language-r">x[2] &lt;- &quot;BAR&quot;
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">x[1] = &quot;BAR&quot;
+</code></pre>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+更新は両方ともインデックス指定で代入です。
+<p>ただしPythonのリストは“ミュータブル”で、その場で中身が変わります。後で参照の話につながるので、覚えておいてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>要素の追加</h2>
+<h3>R</h3>
+<pre><code class="language-r">x &lt;- c(x, &quot;qux&quot;)
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">x.append(&quot;qux&quot;)
+</code></pre>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+末尾に追加する基本操作です。Rは新しいベクタを作って代入、Pythonは append でその場で追加します。
+<p>ここで質問です。Rのほうが“書き換え”に見えるけれど、実際は新しい箱に入れ直している、というイメージを持てていますか？</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>負のインデックスの違い</h2>
+<ul>
+<li><strong>R</strong>：負は「除外」
+<ul>
+<li><code>x[-1]</code> → 1番目を除く</li>
+</ul>
+</li>
+<li><strong>Python</strong>：負は「末尾から」
+<ul>
+<li><code>x[-1]</code> → 最後の要素</li>
+</ul>
+</li>
+</ul>
+<div><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" /></div>
+<aside class="notes">
+負のインデックスは混乱しやすいので、今日のうちに整理します。
+<p>Rの -1 は“除外”です。一方Pythonの -1 は“最後”です。</p>
+<p>この違いを知らないと、意図と逆の処理をしてしまいます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>繰り返し処理：まずは for</h2>
+<h3>次にベクトル化</h3>
+<ul>
+<li>for で書ける（分かりやすい）</li>
+<li>でも、1次元データは <strong>ベクトル化</strong>が強い
+<ul>
+<li>ループを書かずに一括処理</li>
+<li>コードが短く速い</li>
+</ul>
+</li>
+</ul>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+最初は for で書いて理解するのが正攻法です。
+<p>ただ、データサイエンスでは“ベクトル化”が主役です。次の節で、合計や平均、要素ごとの計算をループなしで書いていきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ミニ演習：平均点を出す</h2>
+<h3>お題</h3>
+<p><code>scores = [85, 92, 78, 88, 95]</code></p>
+<ul>
+<li>R：平均を計算して表示</li>
+<li>Python：平均を計算して表示</li>
+</ul>
+<ul>
+<li><strong>ヒント</strong>：Rは <code>mean()</code>、Pythonは <code>sum()/len()</code> または <code>np.mean()</code></li>
+</ul>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで手を動かします。5人分の点数の平均を出してください。
+<p>まずRは mean()関数 が使えます。Pythonはまず素朴に sum(scores)/len(scores) でOK。numpyを使う人は np.mean() でも構いません。</p>
+<p>2分取ります。終わった人は、RとPythonで同じ値になることを確認してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.3.1.1 等間隔の数値データ</h2>
+<p>グラフ・シミュレーション・時系列で頻出</p>
+<ul>
+<li>連続整数</li>
+<li>開始/終了/刻み</li>
+<li>要素数指定（等間隔）</li>
+</ul>
+<div><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" /></div>
+<aside class="notes">
+等間隔データは、横軸を作るとき、シミュレーションで時間を刻むときなど、頻繁に出ます。
+<p>“終了値を含むかどうか”“要素数で指定するか刻みで指定するか”を整理していきましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>連続整数：<code>:</code> と <code>range()</code></h2>
+<h3>R</h3>
+<pre><code class="language-r">1:10
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">list(range(1, 11))   # 11は含まない
+</code></pre>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rの 1:10 は直感的です。
+<p>Pythonの range(1, 11) は終端を含まないので、1から10なら11を指定します。ここもスライスと同じ発想ですね。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>刻み指定：<code>seq()</code> と <code>np.arange()</code></h2>
+<h3>R</h3>
+<pre><code class="language-r">seq(from = 0, to = 1, by = 0.2)
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">import numpy as np
+np.arange(0, 1.01, 0.2)
+</code></pre>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+刻み幅で作る方法です。Rは seq、Pythonは np.arangeです。
+<p>浮動小数の刻みは誤差が出ることがあります。Python例では 1.01 のように少し余裕を持たせていますが、用途によっては linspace のほうが安全です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>要素数指定：<code>length.out</code> と <code>np.linspace()</code></h2>
+<h3>R</h3>
+<pre><code class="language-r">seq(from = 0, to = 1, length.out = 6)
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">np.linspace(0, 1, 6)   # 0〜1を6点に分割
+</code></pre>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+今度は“点の数”で指定します。これはグラフのサンプル点や、一定数の代表点を作るときに便利です。
+<p>linspace は端点を含むのが基本です。arange と使い分けましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>繰り返し：<code>rep()</code> と <code>[値] * n</code></h2>
+<h3>R</h3>
+<pre><code class="language-r">rep(&quot;A&quot;, times = 5)
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">[&quot;A&quot;] * 5
+</code></pre>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+同じ値を繰り返すのもよく使います。カテゴリのダミー生成や、初期値ベクトルの作成などですね。
+<p>Pythonの [値] * n は手軽ですが、要素がリストなど“入れ物”だと参照が共有されることがあるので注意です。後で触れます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.3.1.2 ファクタ（Rのみ）</h2>
+<ul>
+<li><strong>カテゴリ変数</strong>を表すためのRの仕組み</li>
+<li>文字列よりも「水準（levels）」として管理する</li>
+<li>集計・可視化・回帰などで重要</li>
+</ul>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここはR特有の話です。ファクタは“カテゴリ変数”のためのデータ型です。
+<p>アンケートの回答（満足/普通/不満）や、性別、地域など、カテゴリとして扱いたい変数はファクタにしておくと、集計やモデルが安定します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ファクタの作成と確認</h2>
+<h3>R</h3>
+<pre><code class="language-r">y &lt;- factor(c(&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;C&quot;))
+levels(y)
+table(y)
+</code></pre>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+factor()関数 で作成し、levels()関数 で水準を確認します。
+<p>table()関数 で頻度を出せるので、アンケートの集計に直結します。ここは“Rらしさ”が出るところです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python側の考え方（参考）</h2>
+<ul>
+<li>Python標準のリストはカテゴリ専用ではない</li>
+<li>実務では <code>pandas.Categorical</code> を使うことが多い</li>
+<li>ただし今日の主役は <strong>list / np.array</strong></li>
+</ul>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonにもカテゴリ表現はありますが、今日は深入りしません。
+<p>まずはリストと配列で“まとまり”を扱えるようになることが最優先です。カテゴリは次回以降、pandasを入れるタイミングで扱うと理解がスムーズです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.3.2 1次元データの演算</h2>
+<ul>
+<li>集計：合計・平均・最大・最小</li>
+<li>要素ごとの演算（ベクトル化）</li>
+<li>条件による抽出（フィルタ）</li>
+</ul>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからが“コレクションを使うと強い”場面です。
+<p>ループを書かなくても、集計も変換もフィルタもできます。まず基本の集計から行きます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>集計関数（R / Python）</h2>
+<h3>R</h3>
+<pre><code class="language-r">sum(x); mean(x); min(x); max(x)
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">sum(x); min(x); max(x)
+# 平均
+sum(x) / len(x)
+# または
+import numpy as np
+np.mean(x)
+</code></pre>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+集計は最頻出です。Rは mean が素直に使えます。
+<p>Pythonは標準でも合計・最小・最大は使えますが、平均は自分で割るか、numpyに任せるのが一般的です。ここは“標準”と“科学計算スタック”の役割分担だと思ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>要素ごとの演算（ベクトル化）</h2>
+<ul>
+<li>“全部に2を掛ける”のような処理</li>
+</ul>
+<h3>R</h3>
+<pre><code class="language-r">x * 2
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">import numpy as np
+a = np.array([1, 2, 3])
+a * 2
+</code></pre>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+ベクトル化の代表例です。Rのベクタは要素ごとの演算が自然にできます。
+<p>Pythonのリストは *2 だと繰り返しになってしまうので、数値計算は numpy 配列にするのが基本です。ここがRとPythonの思想の違いです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>並べ替え・ユニーク</h2>
+<h3>R</h3>
+<pre><code class="language-r">sort(x)
+unique(x)
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">sorted(x)
+set(x)     # 順序は保持されない点に注意
+</code></pre>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+次に並べ替えとユニークです。
+<p>Rは unique が便利。Pythonの set は重複を消せますが、順序が消えることがあります。順序が大事なら sorted(set(x)) のように組み合わせます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>条件で抽出（フィルタ）</h2>
+<h3>R</h3>
+<pre><code class="language-r">scores[scores &gt;= 80]
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">[v for v in scores if v &gt;= 80]
+# numpy配列なら
+a[a &gt;= 80]
+</code></pre>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+条件で抽出できると、データ分析っぽくなってきます。
+<p>Rはそのまま scores[条件]。Pythonは内包表記で書けます。numpy配列ならRに近い書き味になります。</p>
+<p>ここも“どの入れ物を使うか”で書き方が変わります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.3.3 複数種類のデータを<br />ひとまとめに</h2>
+<ul>
+<li><strong>同じ型</strong>だけとは限らない</li>
+<li>例：学生1人 = （学籍番号, 氏名, 点数ベクタ）</li>
+<li>R / Python ともに <strong>リスト</strong>が基本</li>
+</ul>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
+<aside class="notes">
+現実の1レコードは、数値だけ、文字列だけ、ということは少ないです。
+<p>学生情報のように、IDは文字列、名前も文字列、点数は数値のまとまり。こういう“異なる型の集合”を扱うのがリストです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>例：学生1人を表す</h2>
+<h3>R</h3>
+<pre><code class="language-r">student &lt;- list(id=&quot;S001&quot;, name=&quot;Aさん&quot;, scores=c(85, 92, 78))
+student$name
+</code></pre>
+<h3>Python</h3>
+<pre><code class="language-python">student = {&quot;id&quot;:&quot;S001&quot;, &quot;name&quot;:&quot;Aさん&quot;, &quot;scores&quot;:[85, 92, 78]}
+student[&quot;name&quot;]
+</code></pre>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは実務でよく出る表現です。Rはリストに名前を付けてアクセスします。
+<p>Pythonは辞書を使うのが自然ですが、考え方は同じです。“属性名で取り出す”と読みやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ネスト（入れ子）で<br />複数人を表す</h2>
+<ul>
+<li>「学生のリスト」＝学生オブジェクトの配列</li>
+</ul>
+<h3>Python</h3>
+<pre><code class="language-python">students = [
+  {&quot;id&quot;:&quot;S001&quot;,&quot;name&quot;:&quot;Aさん&quot;,&quot;scores&quot;:[85,92,78]},
+  {&quot;id&quot;:&quot;S002&quot;,&quot;name&quot;:&quot;Bさん&quot;,&quot;scores&quot;:[73,88,90]},
+]
+</code></pre>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
+<aside class="notes">
+複数人を扱うなら、学生1人の辞書をリストに並べるのが素直です。
+<p>この形にしておくと、“全員の平均点”や“最高点の学生”などの処理が書けます。統合演習でこの形を使います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.3.4 文字列と値のペア（キー・バリュー）</h2>
+<ul>
+<li>
+<p>「名前→値」の対応表</p>
+<ul>
+<li>ユーザーID→名前</li>
+<li>商品ID→在庫数</li>
+<li>都市名→人口</li>
+</ul>
+</li>
+<li>
+<p><strong>Python</strong>：<code>dict</code></p>
+</li>
+<li>
+<p><strong>R</strong>：名前付きリスト</p>
+</li>
+</ul>
+<div><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" /></div>
+<aside class="notes">
+キー・バリューは“辞書”という名前通り、引き当て表です。
+<p>データ分析でも、カテゴリ名から値を引く場面は多いです。例えば都道府県名から人口、商品IDから価格、などですね。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>基本操作（取得・追加・一覧）</h2>
+<h3>Python</h3>
+<pre><code class="language-python">d = {&quot;Tokyo&quot;: 1400, &quot;Osaka&quot;: 880}
+d[&quot;Tokyo&quot;]
+d[&quot;Nagoya&quot;] = 230
+d.keys(); d.values()
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">d &lt;- list(Tokyo=1400, Osaka=880)
+d$Tokyo
+d$Nagoya &lt;- 230
+names(d)
+</code></pre>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" />
+<aside class="notes">
+辞書は、キーで取り出せるのが強みです。
+<p>Pythonは d[“Tokyo”]、Rは d$Tokyo のように書けます。キー一覧も取れるので、ループと組み合わせると“全キーの処理”が簡単になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.3.5 補足：コピーと参照（Python注意）</h2>
+<pre><code class="language-python">a = [1, 2, 3]
+b = a        # 参照の共有
+b[0] = 99
+print(a)     # aも変わる
+</code></pre>
+<p>対策：<code>b = a.copy()</code> または <code>b = list(a)</code></p>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonで一番事故るところです。b = a は“コピー”ではなく“同じ箱を指す”です。
+<p>意図せず元データを壊すと、分析結果が再現できなくなります。必要なら copy() で明示的にコピーしましょう。</p>
+<p>Rは基本的にコピーの挙動ですが、内部最適化があるので、感覚として“安全寄り”くらいに捉えてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.3.6 統合演習（設計）</h2>
+<h3>演習1：学生成績管理</h3>
+<ul>
+<li>5人分（学籍番号・氏名・3科目）</li>
+<li>各学生の平均、科目平均、最高点など</li>
+</ul>
+<h3>演習2：在庫管理（キー・バリュー）</h3>
+<ul>
+<li>商品ID→（名前・価格・在庫・カテゴリ）</li>
+<li>平均価格、在庫警告（5個以下）など</li>
+</ul>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に統合演習です。今日は“全部実装”までは行かなくても、データ構造の設計を固めるのがゴールです。
+<p>演習1は「リスト（配列）の中に辞書（学生）」という形が自然です。演習2は「商品ID→商品情報」の辞書が効きます。</p>
+<p>次回、データフレームに入ると、同じ問題を別の表現で解けるようになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日のまとめ・自己チェック</h2>
+<h3>まとめ（重要ポイント）</h3>
+<ol>
+<li>まとまり＝コレクション（分析の基本単位）</li>
+<li>同じ型 → ベクタ/配列、異なる型 → リスト、対応表 → 辞書</li>
+<li>Rは1始まり、Pythonは0始まり（スライスは終端を含まない）</li>
+<li>Pythonの参照に注意（必要ならコピー）</li>
+</ol>
+<h3>次のアクション</h3>
+<ul>
+<li>チェックリストで自分の弱点を特定</li>
+<li>演習1のデータ構造だけでも自分で書いてみる</li>
+</ul>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に整理します。コレクションは、後のデータフレームや機械学習の前処理の土台です。
+<p>今日の合格ラインは、RとPythonで同じことができること、そして“インデックス”と“参照”の落とし穴を説明できることです。</p>
+<p>授業後はチェックリストを見て、できない項目を1つずつ潰してください。次回は、これらを表形式データに接続していきます。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h2>第3章：プログラムの部品化</h2>
+<h1>3.2 関数</h1>
+<p>データサイエンスプログラミング入門</p>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+こんにちは。今日は 3.2「関数」です。ここは、プログラミングの“書き方”が一段上がる回です。
+同じ計算を何度も書くのをやめて、処理を「部品」にして再利用できるようにします。
+<p>この回も、Python と R を同じゴールに向けて並走します。文法は違っても、考え方は同じです。
+途中で手を動かす時間を取り、最後は統合演習で「作って、確かめて、組み合わせる」までやります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日の内容</h2>
+<ol>
+<li><strong>関数の役割</strong>：なぜ必要か</li>
+<li><strong>関数を使う</strong>：平方根・対数・引数</li>
+<li><strong>Rのパイプ</strong>：処理を左→右に読む</li>
+<li><strong>関数を作る</strong>：Python/R の定義と戻り値</li>
+<li><strong>統合演習</strong>：温度変換／統計計算</li>
+</ol>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の流れです。前半は関数を“使う”側として、引数と戻り値に慣れます。
+次に、Rのパイプで「処理の流れ」を読みやすくする話をします。
+<p>後半は関数を“作る”側です。自分で定義して、テストして、部品として再利用します。
+最後は統合演習で、複数の関数を組み合わせて動くプログラムにします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習目標（到達目標）</h2>
+<ul>
+<li>関数呼び出し <code>関数名(引数)</code> を <strong>Python/R 両方</strong>で説明できる</li>
+<li>引数（位置／名前）と <strong>デフォルト引数</strong>の意味を説明できる</li>
+<li>自分で関数を定義し、<strong>戻り値</strong>を意識して設計できる</li>
+<li>テストデータで動作確認し、関数を<strong>組み合わせて</strong>使える</li>
+</ul>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+ゴールは4つです。まず「関数名(引数)」が何を意味するかを言葉で説明できること。
+次に、引数の指定方法とデフォルト引数。ここは“結果がズレる事故”が起きやすいので丁寧にやります。
+<p>そして、自分で関数を定義できること。最後に、テストして組み合わせる。
+この4つができれば、関数の基礎は十分です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>この節の地図</h2>
+<ul>
+<li>3.2.0 この節について（概念と狙い）</li>
+<li>3.2.1 関数の利用（既存関数の呼び出し）</li>
+<li>3.2.2 関数の定義（自分で関数を作る）</li>
+<li>3.2.3 統合演習（温度変換／統計計算）</li>
+<li>3.2.4 まとめ／チェックリスト</li>
+</ul>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+この節は大きく4ブロックです。
+最初に「なぜ関数か」を腹落ちさせて、次に既存関数を使います。
+そこから自分で関数を作り、最後に統合演習で実践します。
+<p>“理解→利用→作成→統合”の順番です。順番どおりに進めると自然に身につきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>なぜ関数を学ぶのか</h2>
+<p>関数は「処理をひとかたまりにする仕組み」</p>
+<ul>
+<li><strong>再利用</strong>：同じ処理を何度も書かない</li>
+<li><strong>見通し</strong>：処理の意味が関数名で伝わる</li>
+<li><strong>修正容易</strong>：変更箇所を1か所に集約できる</li>
+</ul>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+関数を学ぶ理由は、プログラムを“楽に”“安全に”するためです。
+コピペで同じ処理を増やすと、必ず修正漏れが起きます。これはほぼ法則です。
+<p>関数にすると、処理のまとまりに名前が付きます。読む人が理解しやすい。
+そして仕様変更が来ても、関数の中だけ直せば全体が更新されます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>利点1：コードの再利用</h2>
+<p>同じ計算を3回書く → <strong>バグが増える</strong></p>
+<ul>
+<li>関数なし：同じ式をあちこちに書く</li>
+<li>関数あり：<strong>1回定義して</strong>何度でも呼ぶ</li>
+</ul>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+再利用の話です。同じ計算を3か所に書いたら、修正も3か所必要です。
+1か所だけ直して、残りを忘れる。よくあるバグです。
+<p>関数にしておけば、計算式は1回だけ書けばよい。
+あとは呼び出すだけ。これが一番大きなメリットです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>利点2：見通しが良くなる</h2>
+<p>関数名で「何をしているか」が分かる</p>
+<p>例：</p>
+<ul>
+<li><code>calculate_bmi(height_cm, weight_kg)</code></li>
+<li><code>celsius_to_fahrenheit(c)</code></li>
+<li><code>calculate_total(price, tax_rate)</code></li>
+</ul>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+見通しの話です。関数名が“説明書”になります。
+式そのものよりも、名前のほうが意図が伝わります。
+<p>将来の自分が読み返したときに、すぐ理解できるのが理想です。
+データ分析でも「前処理」「特徴量計算」を関数で分けると一気に読みやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>利点3：修正が簡単</h2>
+<ul>
+<li>税率変更／単位変更／仕様変更が入っても
+→ <strong>関数の中だけ直す</strong></li>
+</ul>
+<p>保守の基本：
+「変更が入る場所を1か所に」</p>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+現場では仕様変更が必ず来ます。
+税率が変わる、単位が変わる、丸め方が変わる。そういう時に、関数化していると修正が速い。
+<p>“変更点を1か所に閉じ込める”のが保守の基本です。
+関数は、そのための最初の道具だと思ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>関数の基本構造</h2>
+<pre><code>関数名(引数1, 引数2, ...) → 戻り値
+</code></pre>
+<ul>
+<li><strong>引数</strong>：関数に渡す入力</li>
+<li><strong>戻り値</strong>：関数が返す出力</li>
+</ul>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+関数は「入力→出力」の箱です。
+入力が引数、出力が戻り値。まずはこの図式で理解してください。
+<p>ここで確認です。sqrt(4) の 4 は何でしたか？ 引数ですね。
+戻ってくる 2 が戻り値です。これが基本の型です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>関数呼び出しの基本</h2>
+<ul>
+<li>形：<code>関数名(引数)</code></li>
+<li>返ってきた値を使う：<code>y = 関数名(x)</code></li>
+<li>結果を見る：<code>print(...)</code> / <code>cat(...)</code></li>
+</ul>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+関数を呼び出すと、値が返ってきます。
+その値を変数に入れて次の処理に回す。これが“部品”の強みです。
+<p>表示は、関数の外側でやるのが基本です。
+関数の中で何でも表示してしまうと再利用しにくくなるので、今日は意識して分けます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>関数の種類</h2>
+<ol>
+<li><strong>組み込み関数／ライブラリ関数</strong>（すでにある）</li>
+<li><strong>ユーザー定義関数</strong>（自分で作る）</li>
+</ol>
+<p>今日は両方扱う</p>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+関数には、すでに用意されているものと、自分で作るものがあります。
+前半は“既存の関数”を使って、呼び出し方に慣れます。
+<p>後半は“自分で作る”。ここが今日の山場です。
+自分で作れるようになると、プログラムの自由度が一気に上がります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Pythonの数学関数</h2>
+<p>Pythonは <code>math</code> を使うことが多い</p>
+<pre><code class="language-python">import math
+math.sqrt(4)
+math.log(100, 10)
+math.log10(100)
+math.log2(1024)
+</code></pre>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+Pythonでは数学関数は `math` モジュールに入っています。
+まず `import math` して、`math.sqrt` のように呼び出します。
+<p>ここでポイントは、関数の“名前空間”です。
+math. を付けることで、どのライブラリの関数かが明確になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Rの数学関数</h2>
+<p>Rは多くがそのまま使える</p>
+<pre><code class="language-r">sqrt(4)
+log(100, base=10)
+log10(100)
+log2(1024)
+</code></pre>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+Rは数学関数が最初から使えるものが多いです。
+同じ sqrt でも、Pythonは math.sqrt、Rは sqrt。
+<p>ただし“できること”は同じです。
+言語が違っても、関数呼び出しの考え方は変わりません。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>RとPythonの違い</h2>
+<div style="font-size: 0.8em;">
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>Python</th>
+<th>R</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>関数定義</td>
+<td><code>def f(x):</code></td>
+<td><code>f &lt;- function(x) {}</code></td>
+</tr>
+<tr>
+<td>戻り値</td>
+<td><code>return</code> を明示しがち</td>
+<td>最後の式が返ることが多い</td>
+</tr>
+<tr>
+<td>ブロック</td>
+<td><strong>インデント</strong></td>
+<td><code>{}</code></td>
+</tr>
+<tr>
+<td>引数</td>
+<td>位置のみ引数がある</td>
+<td>名前付き指定が柔軟</td>
+</tr>
+<tr>
+<td>パイプ</td>
+<td>標準はなし</td>
+<td><code>%&gt;%</code> / <code>|&gt;</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+違いを俯瞰で押さえます。
+一番大事なのは「引数の指定」と「戻り値の返し方」です。
+<p>文法は違っても、設計の原理は同じです。
+今日は“同じ処理をPython/Rで書ける”状態を目指します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot準備確認</h2>
+<ul>
+<li>VS Code が <strong>WSL2（Ubuntu）</strong> に接続</li>
+<li>Copilot が有効（右下アイコン）</li>
+<li>作業ディレクトリが開けている</li>
+<li>実行方法が分かる（Python / R）</li>
+</ul>
+<ul>
+<li>困ったら：
+Copilot Chat で「やりたいこと」を短く言う</li>
+</ul>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+この回は Copilot を補助輪として使ってよい回です。
+ただし、生成されたコードは必ず自分で読み、実行して確認します。理解が第一です。
+<p>今のうちに接続と動作だけ確認しましょう。1分取ります。
+できた人は手を挙げてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot活用方針</h2>
+<ul>
+<li>良い使い方：
+<ul>
+<li>関数名が分からない時の“辞書”</li>
+<li>ひな形の生成、テストデータの作成</li>
+</ul>
+</li>
+<li>注意：
+<ul>
+<li>そのまま採用しない</li>
+<li>返り値／引数／例外を確認する</li>
+</ul>
+</li>
+</ul>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+Copilotの使いどころを明確にしておきます。
+“考える部分”を丸投げするのではなく、調べ物と下書きに使う。
+<p>そして、最後は自分で検証する。
+関数は特に「引数が何か」「何を返すか」が命です。そこを必ず確認してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.2.1 関数の利用</h2>
+<p>ねらい：既存の関数を正しく呼び出す</p>
+<ul>
+<li>引数（入力）と戻り値（出力）</li>
+<li>位置指定／名前指定</li>
+<li>デフォルト引数</li>
+</ul>
+<div><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" /></div>
+<aside class="notes">
+ここからが 3.2.1「関数の利用」です。
+既存の関数で、呼び出しの型を身体に入れます。
+<p>この後、平方根と対数で練習します。
+数学の内容というより、関数の呼び出し方を練習すると思ってください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル01：平方根（sqrt）</h2>
+<h3>Python</h3>
+<pre><code class="language-python">import math
+print(math.sqrt(4))  # 2.0
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">print(sqrt(4))       # 2
+</code></pre>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+最初は sqrt。これは関数呼び出しの入門に最適です。
+Python は math.sqrt、Rは sqrt。
+<p>ここで確認です。引数は 4、戻り値は 2。
+このセットで、常に考える癖を付けましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>対数：log₁₀(100) の意味</h2>
+<p>「10を何乗すると100？」 → 答えは2（10²=100）</p>
+<ul>
+<li>常用対数：底10</li>
+<li>自然対数：底 e</li>
+</ul>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+次は対数です。ここは引数が増えるので練習に良いです。
+常用対数は底10、自然対数は底e。
+<p>プログラミングでは「底を省略したら何になるか」が重要になります。
+この後、まさにそこを確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル02：底を指定して対数</h2>
+<h3>Python</h3>
+<pre><code class="language-python">import math
+print(math.log(100, 10))  # 2.0
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">print(log(100, base=10))  # 2
+</code></pre>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+同じ計算をPythonとRで書きました。
+Rは base=10 と名前付きで指定できるので、意図が明確です。
+<p>Pythonの math.log は math.log(x, base) の形です。
+ここで「引数をどう渡すか」の違いが見えてきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>位置のみ引数：Pythonの注意点</h2>
+<p>Rは名前付き指定が柔軟：</p>
+<h3>R</h3>
+<pre><code class="language-r">log(base=10, x=100)  # OK
+</code></pre>
+<p>Pythonの <code>math.log</code> は名前付き指定ができない：</p>
+<h3>Python</h3>
+<pre><code class="language-python">math.log(x=100, base=10)  # エラー
+</code></pre>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは事故ポイントです。
+Rは引数名を付けて順序を変えても動きます。
+<p>一方、Pythonには「位置のみ引数」という仕組みがあり、
+math.log は名前付きで渡せません。だから math.log(100, 10) と書きます。</p>
+<p>“名前付きがいつも安全”ではない、という点を押さえてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>デフォルト引数</h2>
+<h3>底を省略すると？</h3>
+<p>底を省略すると <strong>自然対数</strong>（底 e）</p>
+<h3>Python</h3>
+<pre><code class="language-python">import math
+print(math.log(100))  # ln(100)
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">print(log(100))       # ln(100)
+</code></pre>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+次はデフォルト引数です。
+log(100) は常用対数ではなく、自然対数です。
+<p>ここは本当に間違えやすいので、覚え方は1つ。
+「底を指定しない log は ln」。
+迷ったら log10 を使う。これが安全です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>デフォルトの検証</h2>
+<h3>$e$を明示する</h3>
+<h3>Python</h3>
+<pre><code class="language-python">import math
+print(math.log(100))
+print(math.log(100, math.e))  # 同じ
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">print(log(100))
+print(log(100, base=exp(1)))  # 同じ
+</code></pre>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+デフォルトが本当に e か、明示して一致するかを確認します。
+この「検証する癖」がデータ分析では非常に重要です。
+<p>Copilotが出したコードでも同じで、必ず小さなテストで確かめてください。
+一致した人は手を挙げてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>専用関数：log10 / log2</h2>
+<p>読みやすく、誤解が減る</p>
+<h3>Python</h3>
+<pre><code class="language-python">import math
+math.log10(100)  # 2
+math.log2(1024)  # 10
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">log10(100)
+log2(1024)
+</code></pre>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+よく使う底（10や2）は専用関数があるので、そちらを優先します。
+理由はシンプルで、読み手が誤解しにくいからです。
+<p>log(100, 10) より log10(100) のほうが、意味が一目で分かります。
+“読みやすさ”は品質です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Rのパイプ演算子</h2>
+<h3><code>%&gt;% や |&gt;</code></h3>
+<ul>
+<li><code>%&gt;%</code>：左の値を右の関数へ（第1引数）</li>
+<li><code>|&gt;</code>：Rの標準パイプ（新しめ）</li>
+</ul>
+<p>例：
+<code>16 %&gt;% sqrt</code> は <code>sqrt(16)</code> と同じ</p>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからRのパイプです。
+パイプは「左から右へ読む」ための記法で、処理の流れが理解しやすくなります。
+<p>16 %&gt;% sqrt は、16をsqrtに渡す、という意味です。
+数が長い処理やデータ処理で威力を発揮します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル：パイプの基本</h2>
+<h3>R</h3>
+<pre><code class="language-r">library(tidyverse)
+
+sqrt(16)
+16 %&gt;% sqrt
+</code></pre>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+まずは同じ結果になることを確認します。
+パイプは“新しい計算”をするのではなく、書き方を変えて読みやすくする仕組みです。
+<p>ここで小テスト。81 %&gt;% sqrt はいくつ？
+すぐ答えられたら、パイプの基本はOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル：パイプの連鎖</h2>
+<h3>R</h3>
+<pre><code class="language-r">library(tidyverse)
+
+5 %&gt;% log %&gt;% exp   # 結果は 5 に戻る
+</code></pre>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+パイプの真価は連鎖です。
+exp(log(5)) だと内側から読まないといけませんが、
+パイプなら左から右へ処理順に読めます。
+<p>データ分析の前処理で、同じデータに処理を連続で当てる時に便利です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>関数のドキュメントを読む</h2>
+<ul>
+<li>Python：<code>help(関数)</code> / <code>関数.__doc__</code></li>
+<li>R：<code>?関数</code> / <code>help(関数)</code></li>
+</ul>
+<p>例：</p>
+<ul>
+<li>Python：<code>help(math.log)</code></li>
+<li>R：<code>?log</code></li>
+</ul>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+関数を使いこなすコツは、ドキュメントを読むことです。
+引数の意味、デフォルト、返り値、注意点が書いてあります。
+<p>分からない時は、まずドキュメント。
+それでも難しければ、Copilotで「この関数の引数と戻り値を説明して」と聞く。
+最後に自分で小さく検証する。これが基本ループです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>よくある落とし穴</h2>
+<ul>
+<li><code>log(100)</code> を <strong>log10</strong> と勘違い</li>
+<li>引数の順序を取り違える</li>
+<li>“動いた”だけで検証しない</li>
+<li>表示と計算を混ぜて再利用できない</li>
+</ul>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+よくある落とし穴を先に潰します。
+特に log(100) 問題は、実務でも頻出です。底が何かを必ず意識してください。
+<p>そして“動いた”だけで安心しない。
+小さなテストデータで期待値と照らす。ここまでやって初めて安心できます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.2.2 関数の定義</h2>
+<p>ねらい：自分で関数を作り、部品化する</p>
+<ul>
+<li>入力（引数）を設計する</li>
+<li>出力（戻り値）を設計する</li>
+<li>小さく作ってテストする</li>
+</ul>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここからは関数を“作る”側です。
+自分で関数を作れるようになると、コードの構造が一気に良くなります。
+<p>ポイントは、引数と戻り値を先に決めること。
+そして小さく作ってテスト。これを繰り返します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>関数定義の基本構文</h2>
+<h3>Python</h3>
+<pre><code class="language-python">def f(x, y):
+    # 処理
+    return result
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">f &lt;- function(x, y) {
+  # 処理
+  result   # 最後の式が返ることが多い
+}
+</code></pre>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+PythonとRの基本構文です。
+Pythonは def とインデント。Rは function と 中かっこ。
+<p>Rは最後の式が返るのが便利ですが、意図を明確にしたい時は return() を使うこともあります。
+今日はまず基本形を押さえます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル：引き算関数</h2>
+<h3>Python</h3>
+<pre><code class="language-python">def subtract(a, b):
+    return a - b
+print(subtract(10, 3))  # 7
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">subtract &lt;- function(a, b) {
+  a - b
+}
+print(subtract(10, 3))  # 7
+</code></pre>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+最小例です。2つ受け取って1つ返す。
+この型が作れれば、ほとんどの関数が作れます。
+<p>ここで意識してほしいのは、関数は“値を返す”こと。
+返ってきた値を次の関数に渡して、処理をつなげられます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>戻り値：計算と表示を分ける</h2>
+<ul>
+<li>良い：計算は戻り値、表示は呼び出し側</li>
+<li>避けたい：関数の中で何でも <code>print</code> する</li>
+</ul>
+<p>例：
+<code>bmi = calculate_bmi(h, w)</code> → <code>print(bmi)</code></p>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
+<aside class="notes">
+関数設計で最初に覚えるコツです。
+関数の中で表示までやると、別の場面で使い回しにくくなります。
+<p>計算は戻り値として返す。表示は必要な場所で行う。
+この分離ができると、コードがきれいになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サンプル：温度変換</h2>
+<h3>Python</h3>
+<pre><code class="language-python">def celsius_to_fahrenheit(c):
+    return c * 9/5 + 32
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">celsius_to_fahrenheit &lt;- function(c) {
+  c * 9/5 + 32
+}
+</code></pre>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
+<aside class="notes">
+実用例として温度変換です。式がシンプルでテストしやすいので練習に最適です。
+テストは2点でOK。0℃→32℉、100℃→212℉。
+<p>関数を作ったら必ずテストする。
+この“テストの習慣”が、後のデータ分析の信頼性につながります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size: 0.9em;">
+<h2>サンプル：BMI計算</h2>
+<p>BMI = 体重(kg) / 身長(m)²</p>
+<h3>Python</h3>
+<pre><code class="language-python">def calculate_bmi(height_cm, weight_kg):
+    h = height_cm / 100
+    return weight_kg / (h ** 2)
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">calculate_bmi &lt;- function(height_cm, weight_kg) {
+  h &lt;- height_cm / 100
+  weight_kg / (h ^ 2)
+}
+</code></pre>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
+<aside class="notes">
+BMIは“単位変換”が入るので、関数化の良い題材です。
+入力はcmで受け取り、内部でmに直して計算する。
+<p>このように、関数の中に前処理を閉じ込めて、最後に結果だけ返す。
+部品化の基本パターンとして覚えてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>デフォルト引数（例：消費税）</h2>
+<h3>Python</h3>
+<pre><code class="language-python">def calculate_total(price, tax_rate=0.10):
+    return price * (1 + tax_rate)
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">calculate_total &lt;- function(price, tax_rate=0.10) {
+  price * (1 + tax_rate)
+}
+</code></pre>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" />
+<aside class="notes">
+デフォルト引数は「省略したらこれを使う」という設定です。
+税率のように“たいてい同じ”値には便利です。
+<p>ただし、将来変わる値をデフォルトにするのは設計判断が必要です。
+現場では、呼び出し側で明示させる方が安全な場合もあります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>無名関数（lambda / function）</h2>
+<p>短い処理をその場で書く</p>
+<h3>Python</h3>
+<pre><code class="language-python">square = lambda x: x ** 2
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">square &lt;- function(x) x ^ 2
+</code></pre>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" />
+<aside class="notes">
+無名関数は“その場限り”の小さな関数に使います。
+Pythonは lambda、Rは function(x) ...。
+<p>ただし、複雑な処理を無名関数に詰め込むと読みづらくなります。
+読みづらいなら、素直に名前を付けて関数化する。これが原則です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>参考：より実践的な書き方</h2>
+<p>Pythonの発展要素（必要に応じて）</p>
+<ul>
+<li><strong>型ヒント</strong>：<code>x: float -&gt; float</code></li>
+<li><strong>docstring</strong>：関数の説明を残す</li>
+<li><strong>入力チェック</strong>：不正値を早めに弾く</li>
+<li><strong>例外処理</strong>：<code>try/except</code> で安全に</li>
+</ul>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは参考です。今すぐ全部できる必要はありません。
+ただ、関数を仕事で使うときは、型や説明、入力チェックがあると事故が減ります。
+<p>授業の段階では「小さく作ってテスト」が最優先。
+余力がある人は、docstringなどを少しずつ取り入れてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.2.3 統合演習：温度変換</h2>
+<p>実装する関数（例）</p>
+<ul>
+<li><code>celsius_to_fahrenheit(c)</code> / <code>fahrenheit_to_celsius(f)</code></li>
+<li><code>celsius_to_kelvin(c)</code> / <code>kelvin_to_celsius(k)</code></li>
+<li><code>convert_temperature(temp, from_unit, to_unit)</code>（“C”,“F”,“K”）</li>
+</ul>
+<p>テスト例：
+<code>0C→32F</code> / <code>0C→273.15K</code> / <code>77F→298.15K</code></p>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから統合演習です。まず温度変換。
+ポイントは「個別関数を作ってテストしてから、総合関数でつなぐ」ことです。
+<p>いきなり convert_temperature を作ると混乱しがちなので、
+必ず個別変換を先に作って、テストが通ることを確認してから統合してください。</p>
+<p>ペアで仕様を読み合わせてOKです。10分取ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>統合演習：統計計算</h2>
+<h3>本日のまとめ</h3>
+<p>統計計算（例）</p>
+<ul>
+<li><code>calculate_mean(numbers)</code></li>
+<li><code>calculate_median(numbers)</code>（偶数は平均）</li>
+<li><code>calculate_variance(numbers)</code> / <code>calculate_std(numbers)</code></li>
+</ul>
+<p>チェック：</p>
+<ul>
+<li>引数／戻り値を説明できる</li>
+<li>デフォルト引数を意識できる</li>
+<li>小さく作ってテストし、組み合わせられる</li>
+</ul>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後は統計計算です。平均・中央値・分散・標準偏差を関数に分けて作ります。
+特に std は variance を呼ぶ形にして、再利用を体験してください。
+<p>今日のまとめです。関数は部品化で、再利用・見通し・修正が楽になります。
+そして、引数・戻り値・デフォルトを意識する。最後に、小さく作ってテストして組み合わせる。
+この型が身につけば、次の章のデータ処理でも強くなります。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>

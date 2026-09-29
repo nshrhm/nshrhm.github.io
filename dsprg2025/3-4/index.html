@@ -1,0 +1,1235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>第3章: データの表現と基本操作</h1>
+<h2>3.4 データフレーム</h2>
+<p>データサイエンスプログラミング入門</p>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+おはようございます。今日は「データフレーム」を扱います。データサイエンスの実務では、ほとんどのデータは“表”の形で出てきます。今日の目標は、その表を Python と R の両方で同じように作って、追加して、取り出して、並べ替えて、最後に整然データ（縦型）へ変形できるようになることです。途中で手を動かす時間も取ります。分からなくなったら遠慮なく止めてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日の内容</h2>
+<ol>
+<li><strong>データフレームの考え方</strong>：用語と注意点</li>
+<li><strong>作成</strong>：列ごと／行ごと、サイズ、名前</li>
+<li><strong>追加</strong>：行の追加／列の追加</li>
+<li><strong>取り出し</strong>：値・列・行、条件抽出、並べ替え</li>
+<li><strong>補足</strong>：行列、横型⇄縦型（tidy data）</li>
+<li><strong>統合演習</strong>：学生成績データの分析</li>
+</ol>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の流れです。前半でデータフレームの基本と作り方を固め、次に追加と取り出しを実装で確認します。後半は、行列の考え方と横型・縦型の変形を押さえて、最後に統合演習で「作る→加工する→結論を出す」を一通りやります。Python と R は必ず並走します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習目標（到達目標）</h2>
+<ul>
+<li>データフレームを <strong>Python/R 両方</strong>で作成できる</li>
+<li>行数・列数、列名・行名（index）を確認・変更できる</li>
+<li>行・列の追加、条件抽出、並べ替えができる</li>
+<li>**0始まり（Python）/1始まり（R）**の違いを説明できる</li>
+<li>横型⇄縦型（tidy data）の変換ができる</li>
+</ul>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでゴールを明確にします。今日は“関数を覚える”よりも、「同じ操作を Python と R で書き分けられる」「結果がズレたら理由を説明できる」ことが重要です。特に、インデックスが 0 からか 1 からか、ここが一番事故ります。後半の演習でも必ず出てくるので、意識して進めましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ウォームアップ：表データを思い出す</h2>
+<ul>
+<li>行（row）：<strong>インスタンス</strong>（人・商品・日付など）</li>
+<li>列（column）：<strong>変数</strong>（英語点、数学点、性別など）</li>
+<li>セル（cell）：<strong>観測値</strong>（60点、“m” など）</li>
+</ul>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+まず頭を揃えます。データフレームは「行×列」の表です。行は“対象”、列は“属性”、セルは“値”。この3つが分かれていれば、ほとんどのデータ分析はスタートできます。では、皆さんの手元の CSV を思い浮かべてください。行は何で、列は何でしたか。30秒だけ考えてみましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>データフレームのイメージ</h2>
+<p>例：学生成績データ</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">name</th>
+<th style="text-align:right">english</th>
+<th style="text-align:right">math</th>
+<th style="text-align:center">gender</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">A</td>
+<td style="text-align:right">60</td>
+<td style="text-align:right">70</td>
+<td style="text-align:center">f</td>
+</tr>
+<tr>
+<td style="text-align:left">B</td>
+<td style="text-align:right">90</td>
+<td style="text-align:right">80</td>
+<td style="text-align:center">m</td>
+</tr>
+<tr>
+<td style="text-align:left">C</td>
+<td style="text-align:right">70</td>
+<td style="text-align:right">90</td>
+<td style="text-align:center">m</td>
+</tr>
+<tr>
+<td style="text-align:left">D</td>
+<td style="text-align:right">90</td>
+<td style="text-align:right">100</td>
+<td style="text-align:center">f</td>
+</tr>
+</tbody>
+</table>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+この表が今日ずっと出てくる基本例です。1人が1行、科目や性別が列、セルが観測値です。こういうデータがあるときに、何をしたくなるか。例えば「男性だけ」「英語が高い順」「合計点上位3人」などですね。今日の操作は、その全部の基本部品です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>用語対応（重要）</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">用語</th>
+<th style="text-align:left">意味</th>
+<th style="text-align:left">例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">サンプル</td>
+<td style="text-align:left">データ全体</td>
+<td style="text-align:left">この表全体</td>
+</tr>
+<tr>
+<td style="text-align:left">サンプルサイズ</td>
+<td style="text-align:left">行数</td>
+<td style="text-align:left">4人</td>
+</tr>
+<tr>
+<td style="text-align:left">インスタンス</td>
+<td style="text-align:left">1行</td>
+<td style="text-align:left">Aさん</td>
+</tr>
+<tr>
+<td style="text-align:left">変数</td>
+<td style="text-align:left">1列</td>
+<td style="text-align:left">english</td>
+</tr>
+<tr>
+<td style="text-align:left">観測値</td>
+<td style="text-align:left">1セル</td>
+<td style="text-align:left">Aのenglish=60</td>
+</tr>
+</tbody>
+</table>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+用語を揃えます。サンプルはデータ全体、サンプルサイズは行数です。インスタンスは1行、変数は1列、観測値は1セル。研究でもレポートでも、この言い方が標準です。用語がズレると議論が破綻するので、ここは丁寧にいきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>よくある誤用（避ける）</h2>
+<ul>
+<li>「サンプル数」→ <strong>サンプルサイズ</strong>（行数）</li>
+<li>「母数」→ 統計学では <strong>母集団の大きさ</strong>（N）を指すことが多い</li>
+<li>“データの個数”の意味で雑に使わない</li>
+</ul>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+誤用の注意です。「サンプル数」という言い方は曖昧なので、授業では使いません。必ずサンプルサイズと言いましょう。「母数」も、分野によって意味がぶれます。統計学の文脈では“母集団サイズ”の意味が強いので、気軽に“データの数”として使うのは避けます。レポートで用語の精度は評価対象です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>環境の準備（Python / R）</h2>
+<h3>Python</h3>
+<ul>
+<li><code>import pandas as pd</code></li>
+</ul>
+<h3>R</h3>
+<ul>
+<li><code>library(tidyverse)</code>（tidyr/dplyr を含む）</li>
+</ul>
+<p><strong>確認</strong>：DataFrame を1つ作って表示できればOK</p>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+環境を確認します。Python は pandas、R は tidyverse を使います。今日は“最小セット”で行きます。まだ入れていない人は、手元の環境でインポートに失敗しないか確認してください。ここで詰まると後半が全部止まるので、今のうちに直しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.4.1 データフレームの作成</h2>
+<p>作り方は2系統</p>
+<ul>
+<li><strong>列ごと</strong>：列を辞書（Python）／引数（R）で渡す</li>
+<li><strong>行ごと</strong>：行をそのまま列挙（小さな例で便利）</li>
+</ul>
+<p>以降、基本例（name/english/math/gender）で統一</p>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから作成です。作り方は大きく2つ。列ごとに作る方法は実務で最頻出。行ごとは小さいサンプルや手入力のときに便利です。以降のスライドは、同じデータを使い回して操作だけに集中できるようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size: 0.75em;">
+<h2>作成：列ごと（基本）</h2>
+<h3>Python（pandas）</h3>
+<pre><code class="language-python">import pandas as pd
+df = pd.DataFrame({
+  &quot;name&quot;: [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;],
+  &quot;english&quot;: [60,90,70,90],
+  &quot;math&quot;: [70,80,90,100],
+  &quot;gender&quot;: [&quot;f&quot;,&quot;m&quot;,&quot;m&quot;,&quot;f&quot;],
+})
+</code></pre>
+<h3>R（data.frame）</h3>
+<pre><code class="language-r">library(tidyverse)
+df &lt;- data.frame(
+  name=c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;),
+  english=c(60,90,70,90),
+  math=c(70,80,90,100),
+  gender=c(&quot;f&quot;,&quot;m&quot;,&quot;m&quot;,&quot;f&quot;)
+)
+</code></pre>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+列ごとに作る最も標準的な方法です。Python は辞書、R は列名=ベクタを並べます。ここで意識してほしいのは「列は同じ長さ」であること。列の長さがズレるとエラーになったり、意図せずリサイクルされたりします。まずはこの形を“型”として覚えてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <div style="font-size: 0.9em;">
+<h2>作成：行ごと（小規模データ向き）</h2>
+<h3>Python（行のリスト）</h3>
+<pre><code class="language-python">df = pd.DataFrame(
+  [[&quot;A&quot;,60,70,&quot;f&quot;], [&quot;B&quot;,90,80,&quot;m&quot;]],
+  columns=[&quot;name&quot;,&quot;english&quot;,&quot;math&quot;,&quot;gender&quot;]
+)
+</code></pre>
+<h3>R（tribble：見やすい）</h3>
+<pre><code class="language-r">df &lt;- tribble(
+  ~name, ~english, ~math, ~gender,
+  &quot;A&quot;, 60, 70, &quot;f&quot;,
+  &quot;B&quot;, 90, 80, &quot;m&quot;
+)
+</code></pre>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+行ごとに書く方法です。行数が少ない例では、こちらの方が“表に見える”ので理解しやすいです。Python は行のリスト＋columns、R は tribble を使うと整形が効きます。実務では列ごとが多いですが、授業では両方できるようにしておきましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>サイズ確認（行数・列数）</h2>
+<h3>Python</h3>
+<ul>
+<li><code>df.shape</code> → (行数, 列数)</li>
+</ul>
+<h3>R</h3>
+<ul>
+<li><code>dim(df)</code> → (行数, 列数)</li>
+<li><code>nrow(df)</code>, <code>ncol(df)</code></li>
+</ul>
+<div><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" /></div>
+<aside class="notes">
+データを読んだら最初にやるのがサイズ確認です。まず“何行何列か”を言えるようにします。これをやらずに分析を始めると、欠損や読み込みミスに気づけません。今後の授業でも「まず shape/dim」を癖にしてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>組合せデータの作成（直積）</h2>
+<p>例：$X\in{1,2,3}$ と $Y\in{10,100}$ の全組合せ</p>
+<h3>Python</h3>
+<pre><code class="language-python">from itertools import product
+df = pd.DataFrame(product([1,2,3],[10,100]), columns=[&quot;X&quot;,&quot;Y&quot;])
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">df &lt;- expand.grid(X=c(1,2,3), Y=c(10,100))
+</code></pre>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+次は組合せ、つまり直積です。実験計画やパラメータ探索、表の補完でよく使います。Python は itertools.product、R は expand.grid。覚えるというより、こういう“全組合せ”を作る発想自体を押さえましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>列名・行名（index）の扱い</h2>
+<ul>
+<li>
+<p>列名：<strong>変数名</strong>（分析の入口）</p>
+<ul>
+<li>Python：<code>df.columns</code></li>
+<li>R：<code>colnames(df)</code></li>
+</ul>
+</li>
+<li>
+<p>行名（index）：<strong>行の識別子</strong></p>
+<ul>
+<li>Python：<code>df.index</code>（既定は 0,1,2,…）</li>
+<li>R：<code>row.names(df)</code>（既定は 1,2,3,…）</li>
+</ul>
+</li>
+</ul>
+<p><strong>注意</strong>：Python=0始まり / R=1始まり</p>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+列名は変数名なので、読みやすく一貫した命名が重要です。行名は“識別子”ですが、Python と R でデフォルトが違います。Python は 0 始まり、R は 1 始まり。ここが今日の最大の落とし穴です。操作のたびに「いま何を指定しているか」を口に出して確認しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot活用（作成パート）</h2>
+<p>例：プロンプト（そのまま貼ってOK）</p>
+<ul>
+<li>「pandasで、name/english/math/genderのDataFrameを作って表示。列はこの順で」</li>
+<li>「Rのtidyverseで、同じデータをtribbleで作って」</li>
+</ul>
+<p><strong>ルール</strong>：生成結果は必ず <code>print(df)</code> で確認</p>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから Copilot を使ってよい場面です。データフレーム作成は定型なので、Copilot が得意です。ただし、生成されたコードをそのまま信じない。必ず表示して、行数・列数・列名の順序が想定通りか確認します。Copilot は“下書き”で、検証は自分、という役割分担です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.4.2 データの追加</h2>
+<p>2種類に分ける</p>
+<ul>
+<li><strong>行の追加</strong>：観測が増える（新しい人・新しい日）</li>
+<li><strong>列の追加</strong>：特徴量が増える（合計点・平均との差など）</li>
+</ul>
+<p>どちらも“元データを壊さない”意識</p>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+次はデータの追加です。行を足すのは“サンプルサイズが増える”という意味です。列を足すのは“変数が増える”、つまり特徴量エンジニアリングの第一歩です。実務では元データを破壊せず、新しいデータフレームとして作るか、コピーしてから更新する癖をつけましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>行の追加</h2>
+<h3>Python（concatが安全）</h3>
+<pre><code class="language-python">new_row = pd.DataFrame({&quot;name&quot;:[&quot;E&quot;],&quot;english&quot;:[80],&quot;math&quot;:[80],&quot;gender&quot;:[&quot;m&quot;]})
+df2 = pd.concat([df, new_row], ignore_index=True)
+</code></pre>
+<h3>R（rbind / bind_rows）</h3>
+<pre><code class="language-r">new_row &lt;- data.frame(name=&quot;E&quot;, english=80, math=80, gender=&quot;m&quot;)
+df2 &lt;- rbind(df, new_row)
+</code></pre>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+行の追加です。Python は concat が安全で、index を振り直すなら ignore_index=True。R は rbind で縦に結合します。ここで注意は「列の型」と「列の順」。追加する行の列名がズレていると欠損が入ります。必ず追加後に df2 を表示して確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>列の追加</h2>
+<h3>Python</h3>
+<pre><code class="language-python">df2 = df.assign(id=[1,2,3,4])   # 新しいdf
+df3 = df.copy(); df3[&quot;id&quot;]=[1,2,3,4]  # 直接更新
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">df2 &lt;- df %&gt;% mutate(id=c(1,2,3,4))
+df3 &lt;- df; df3[&quot;id&quot;] &lt;- c(1,2,3,4)
+</code></pre>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+列の追加です。Python は assign で“新しいデータフレーム”を返すのが綺麗です。直接更新もできますが、授業ではコピーしてから更新する癖を推奨します。R は mutate が定番。ここも“長さが合うか”が重要で、行数と同じ長さのベクタを渡す必要があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>派生列（合計・平均）の例</h2>
+<h3>Python</h3>
+<pre><code class="language-python">df = df.assign(total=df[&quot;english&quot;] + df[&quot;math&quot;])
+df = df.assign(avg=df[&quot;total&quot;] / 2)
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">df &lt;- df %&gt;% mutate(
+  total = english + math,
+  avg = total / 2
+)
+</code></pre>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+実務で頻出の“派生列”です。合計点や平均点、平均との差、カテゴリ化など、分析の前処理はほとんどこれです。ポイントは「列演算はベクトル演算」だということ。for で回さなくても列同士で計算できます。ここで躓く人は、まず1列だけ取り出してベクタとして動くことを確認すると良いです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot活用（追加パート）</h2>
+<ul>
+<li>「pandasで total と avg 列を追加。元のdfは残して df2 を作る」</li>
+<li>「Rで mutate を使って同じ列を追加」</li>
+</ul>
+<p><strong>チェック</strong>：<code>df2.head()</code> / <code>print(head(df2))</code></p>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+追加操作も Copilot が得意です。ただし、列名のスペルミスや、整数割り算など細かい事故が起きます。作ったら必ず先頭数行を表示して、値が想定通りか確認します。特に平均は小数になるので、型や表示形式にも注意してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.4.3 データの取り出し</h2>
+<p>頻出操作を6つに整理</p>
+<ol>
+<li>観測値（1セル）</li>
+<li>1列（ベクタ/Series）</li>
+<li>複数列（DataFrame）</li>
+<li>複数行（DataFrame）</li>
+<li>条件抽出（filter）</li>
+<li>並べ替え（sort）</li>
+</ol>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+取り出しができると分析が始まります。今日は6種類に分解して練習します。覚えるコツは「結果の形が何になるか」を意識すること。1列は1次元、複数列は表、という感覚を持つと、後の可視化や統計処理につながります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>観測値（1セル）の取り出し</h2>
+<p>例：Aのenglish</p>
+<ul>
+<li>Python：<code>df.iloc[0, 1]</code>（0始まり）</li>
+<li>R：<code>df[1, 2]</code>（1始まり）</li>
+</ul>
+<p><strong>最重要</strong>：インデックスの開始が違う</p>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+まず1セルです。Python は iloc で“行番号・列番号”を 0 から指定します。R は角括弧で 1 から指定します。同じ「1行目」を指しても、数字がズレます。ここで混乱したら、表の行番号を紙に書いて「Pythonなら0、Rなら1」と対応を確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>1列の取り出し（1次元になる）</h2>
+<ul>
+<li>
+<p>Python</p>
+<ul>
+<li><code>df[&quot;english&quot;]</code> → Series</li>
+<li><code>df[[&quot;english&quot;]]</code> → DataFrame（表のまま）</li>
+</ul>
+</li>
+<li>
+<p>R</p>
+<ul>
+<li><code>df$english</code> または <code>df[[&quot;english&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>注意</strong>：ドット記法は列名に制約あり</p>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+1列を取り出すと、結果は1次元になります。Python は `df["col"]` が Series で、表ではありません。表として扱いたいときは二重の角括弧にします。R は `$` が便利ですが、列名にスペースがある、予約語とぶつかる、列名が変数で渡される、といった場合に使えません。角括弧を使えるようにしておくのが安全です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>複数列の取り出し（表のまま）</h2>
+<ul>
+<li>Python：<code>df[[&quot;name&quot;, &quot;math&quot;]]</code></li>
+<li>R：<code>df %&gt;% select(name, math)</code> / <code>df[, c(&quot;name&quot;,&quot;math&quot;)]</code></li>
+</ul>
+<p><strong>ポイント</strong>：結果は DataFrame（行×列）</p>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+複数列を取ると、結果は表のままです。Python は列名のリスト、R は select が読みやすいです。分析で“説明変数だけ抜く”“目的変数だけ抜く”など、この操作は毎回出てきます。結果が DataFrame の形であることを意識して、次の処理につなげましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>複数行の取り出し（行スライス）</h2>
+<ul>
+<li>Python：<code>df.iloc[[0,2], :]</code> / <code>df.iloc[0:3, :]</code></li>
+<li>R：<code>df[c(1,3), ]</code> / <code>df[1:3, ]</code></li>
+</ul>
+<p><strong>確認</strong>：欲しい行が取れているか表示</p>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+複数行の取り出しです。Python は iloc で行番号をリストやスライスで指定します。R も同様ですが 1 始まり。ここは慣れなので、実際に表示して「AとCが取れているか」など目で確認してください。数行だけ抜くのはデバッグにも使えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>条件抽出（filter）</h2>
+<p>例：gender==“m”</p>
+<ul>
+<li>Python：<code>df[df[&quot;gender&quot;] == &quot;m&quot;]</code></li>
+<li>R：<code>df %&gt;% filter(gender == &quot;m&quot;)</code></li>
+</ul>
+<p>複数条件（AND）</p>
+<ul>
+<li>Python：<code>(cond1) &amp; (cond2)</code></li>
+<li>R：<code>filter(cond1, cond2)</code></li>
+</ul>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+条件抽出は分析の中心です。Python はブール配列で行を選びます。複数条件は必ず括弧を付けて `&` を使う。R は filter に条件を並べるのが読みやすいです。ここでの典型ミスは、Pythonで `and` を使ってしまうこと。Series同士は `&` です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>並べ替え（sort）</h2>
+<ul>
+<li>Python：<code>df.sort_values(&quot;english&quot;, ascending=True/False)</code></li>
+<li>R：<code>df %&gt;% arrange(english)</code> / <code>arrange(-english)</code></li>
+</ul>
+<p>複数キー</p>
+<ul>
+<li>Python：<code>sort_values([&quot;english&quot;,&quot;math&quot;], ascending=[False,True])</code></li>
+<li>R：<code>arrange(-english, math)</code></li>
+</ul>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" />
+<aside class="notes">
+並べ替えです。ランキングを作るときに必須です。英語を降順、同点なら数学を昇順、など“キーの優先順位”を指定できます。並べ替え後は index がそのままの場合があるので、必要なら振り直す、という点も意識しておきましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot活用（取り出しパート）</h2>
+<ul>
+<li>「pandasで、gender=='m’だけ抽出して表示」</li>
+<li>「英語の降順、同点は数学の昇順で並べ替え」</li>
+<li>「Rでも同じ処理を dplyr で」</li>
+</ul>
+<p><strong>検証</strong>：抽出結果の行数・並び順を目視</p>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+取り出し系はミスが結果に直結します。Copilot を使う場合でも、最後は必ず“行数が合うか”“並び順が合うか”を目で確認します。特に条件抽出は、条件の括弧や演算子の種類で結果が変わります。結果が直感と違うときは、条件式だけを print して確認すると原因が分かります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.4.4 補足：行列（matrix）</h2>
+<ul>
+<li><strong>行列</strong>：同じ型の数値が並ぶ2次元配列</li>
+<li><strong>データフレーム</strong>：列ごとに型が混在してよい表</li>
+</ul>
+<p>使い分け</p>
+<ul>
+<li>統計・機械学習の計算：行列</li>
+<li>前処理・集計・ラベル付き：データフレーム</li>
+</ul>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+補足として行列を押さえます。データフレームは列に文字列も入りますが、行列は基本的に同じ型、特に数値が前提です。機械学習の内部計算はほぼ行列なので、データフレームから数値列だけ取り出して行列に変換する、という流れがよく出ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>行列の作成とサイズ</h2>
+<h3>Python（numpy）</h3>
+<pre><code class="language-python">import numpy as np
+A = np.array(data).reshape(3,4)
+A.shape  # (3, 4)
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">A &lt;- matrix(data, nrow=3, ncol=4, byrow=TRUE)
+dim(A)   # (3, 4)
+</code></pre>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+行列を作ってサイズを確認します。Python は numpy の reshape、R は matrix。ここで重要なのは「行列は形がすべて」ということです。掛け算ができるかどうかは形で決まります。機械学習で次元が合わないエラーは、ほとんどが形のミスです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>データフレーム ⇄ 行列</h2>
+<p>数値列だけを取り出す</p>
+<h3>Python</h3>
+<pre><code class="language-python">A = df[[&quot;english&quot;,&quot;math&quot;]].values
+df2 = pd.DataFrame(A, columns=[&quot;english&quot;,&quot;math&quot;])
+</code></pre>
+<h3>R</h3>
+<pre><code class="language-r">A &lt;- as.matrix(df[, c(&quot;english&quot;,&quot;math&quot;)])
+df2 &lt;- as.data.frame(A)
+</code></pre>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+データフレームから行列へ。ポイントは“数値列だけ抜く”ことです。文字列列が混ざると、行列にした瞬間に全部が文字列になってしまうことがあります。逆に、行列からデータフレームに戻すときは列名が消えるので、必要なら付け直します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>転置（Transpose）</h2>
+<ul>
+<li>Python：<code>A.T</code></li>
+<li>R：<code>t(A)</code></li>
+</ul>
+<p>形： (m, n) → (n, m)</p>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+転置は、行と列を入れ替える操作です。統計でも線形代数でも頻出です。形が入れ替わるので、掛け算の前に転置が必要になることがよくあります。ここでは「転置したら shape/dim が反転する」と覚えてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>行列積（Matrix Multiply）</h2>
+<ul>
+<li>Python：<code>A_T @ A</code></li>
+<li>R：<code>t(A) %*% A</code></li>
+</ul>
+<p><strong>条件</strong>：左の列数 = 右の行数</p>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
+<aside class="notes">
+行列積です。Python は `@`、R は `%*%`。計算自体よりも、次元条件が重要です。「左の列数と右の行数が一致」これを暗記します。エラーが出たらまず dim を確認する。これが鉄則です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilot活用（行列パート）</h2>
+<ul>
+<li>「DataFrameの数値列だけを numpy 配列にして A^T A を計算」</li>
+<li>「Rでも同じことを as.matrix と %*% で」</li>
+</ul>
+<p><strong>検証</strong>：<code>A.shape</code> / <code>dim(A)</code> と出力行列の形</p>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
+<aside class="notes">
+行列計算も Copilot が得意ですが、次元が合わないときの修正は自分でできる必要があります。生成されたコードは、まず形を表示して確認。次に計算結果の形も確認。ここまでやって初めて“正しい”と言えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>3.4.5 横型（wider）と縦型（longer）</h2>
+<ul>
+<li>横型：1行に1インスタンス、列に測定項目が広がる</li>
+<li>縦型：1行に1観測、列は「項目名」と「値」</li>
+</ul>
+<p>縦型 = <strong>整然データ（tidy data）</strong> の基本</p>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後の重要テーマが横型と縦型です。横型は人間が見やすい形、縦型は分析・可視化・集計に強い形、というイメージで押さえます。特に tidyverse の“tidy”は縦型を前提にします。ここを押さえると、可視化やモデリングが一気に楽になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>横型 → 縦型</h2>
+<p>例：day / min / max</p>
+<h3>Python（melt）</h3>
+<pre><code class="language-python">long = wide.melt(id_vars=&quot;day&quot;, var_name=&quot;type&quot;, value_name=&quot;temp&quot;)
+</code></pre>
+<h3>R（pivot_longer）</h3>
+<pre><code class="language-r">long &lt;- wide %&gt;% pivot_longer(cols=-day, names_to=&quot;type&quot;, values_to=&quot;temp&quot;)
+</code></pre>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" />
+<aside class="notes">
+横型から縦型へ変換します。Python は melt、R は pivot_longer。ポイントは、残したい識別子列を id_vars あるいは cols=-day で指定し、その他の列名を type、値を temp に落とし込むことです。これができると、科目データを科目名×点数に変形して、科目別の集計や箱ひげ図が簡単に作れます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>縦型 → 横型</h2>
+<h3>Python（pivot）</h3>
+<pre><code class="language-python">wide = long.pivot(index=&quot;day&quot;, columns=&quot;type&quot;, values=&quot;temp&quot;)
+</code></pre>
+<h3>R（pivot_wider）</h3>
+<pre><code class="language-r">wide &lt;- long %&gt;% pivot_wider(names_from=type, values_from=temp)
+</code></pre>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" />
+<aside class="notes">
+縦型から横型へ戻します。Python は pivot、R は pivot_wider。ここで注意は、同じ index×columns に複数行があると pivot できません。つまり、縦型が“きれいに”整っている必要があります。重複がある場合は集約してから変形します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>統合演習：学生成績データの総合分析</h2>
+<p>課題（要件の抜粋）</p>
+<ol>
+<li>10人分の学生データ（english/math/science/gender）を作る</li>
+<li>科目平均、最高平均の科目</li>
+<li>total/average 列を追加</li>
+<li>条件抽出（例：total≥240、英語≥80かつ数学≥70）</li>
+<li>合計点で並べ替え→トップ3表示</li>
+<li>縦型へ変換して先頭を表示</li>
+<li>トップ3を保存して表示</li>
+</ol>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に統合演習です。ここまでの操作を“全部つなげる”だけです。今から10分取るので、ペアで相談しながら、まずは Python か R のどちらかで完成させてください。できたらもう一方の言語に移植します。途中で詰まったら、操作を分解して「まずデータ作成だけ」「次に total 追加だけ」と小さく確認しながら進めましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日のまとめと次の一歩</h2>
+<h3>今日の重要ポイント</h3>
+<ul>
+<li>データフレーム＝行（インスタンス）×列（変数）</li>
+<li>0始まり（Python）/1始まり（R）を常に意識</li>
+<li>追加（行/列）→ 取り出し（値/列/行/条件/並べ替え）</li>
+<li>横型⇄縦型（tidy data）で分析が楽になる</li>
+</ul>
+<h3>次回</h3>
+<ul>
+<li>3.5（次の節）へ進みます</li>
+</ul>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日はデータフレームの基本操作を一通り押さえました。次の章・次の演習では、ここで学んだ操作が前提になります。復習のコツは、チェックリストで弱い項目を1つ選び、短いデータで“同じ操作をPythonとRで書く”ことです。最後に確認です。今日一番危なかったポイントはどこでしたか。インデックス、条件抽出、変形。このどれかを口に出して、来週までの復習テーマにしてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習チェック（自己点検）</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9915203"><label class="task-list-item-label" for="task-item-9915203"> pandas / tidyverse を読み込める</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3496183"><label class="task-list-item-label" for="task-item-3496183"> 作成（列ごと／行ごと）</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1675047"><label class="task-list-item-label" for="task-item-1675047"> 行数・列数、列名・行名（index）</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3587147"><label class="task-list-item-label" for="task-item-3587147"> 行・列の追加、派生列</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7877874"><label class="task-list-item-label" for="task-item-7877874"> 値・列・行の取り出し、条件抽出、並べ替え</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1949604"><label class="task-list-item-label" for="task-item-1949604"> 横型⇄縦型(Python)（melt, pivot）</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1206962"><label class="task-list-item-label" for="task-item-1206962"> 横型⇄縦型(R)（pivot_longer, pivot_wider）</label></li>
+</ul>
+<ul>
+<li>理解不足の箇所は、該当スライドのコードを <strong>小さいデータ</strong>で再実行</li>
+</ul>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に自己点検です。ここにある項目は、今後の分析課題で“必須技能”になります。全部完璧でなくて構いませんが、どこが弱いかを自分で把握しておくことが重要です。復習は、大きいデータで頑張るより、小さいデータで確実に動くことを確認する方が効果的です。次回までに、チェックが付かなかった項目を最低1つだけ潰してきてください。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>

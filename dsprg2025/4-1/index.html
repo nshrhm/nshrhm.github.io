@@ -1,0 +1,1320 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>データサイエンスプログラミング入門</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <h1>第4章: 統計入門</h1>
+<h2>4.1 記述統計</h2>
+<p>データサイエンスプログラミング入門</p>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" />
+<aside class="notes">
+おはようございます。今日は第4章の入り口として「記述統計」を扱います。データを扱うとき、最初に必ずやるのが“ざっくり全体像を掴む”作業です。平均や標準偏差、カテゴリ別の件数や平均など、いわばデータの健康診断ですね。
+<p>この回は、Python と R を同じゴールに向けて並走させます。両方で同じ結論が出せるようになることが目的です。途中で手を動かす時間も取ります。分からないところはその場で止めて質問してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日の内容</h2>
+<ol>
+<li><strong>1次元データの要約</strong>：平均・分散・標準偏差</li>
+<li><strong>ズレの原因</strong>：不偏分散・標本分散と <code>ddof</code></li>
+<li><strong>データフレーム集計</strong>：列ごとの統計量・要約</li>
+<li><strong>分割表とグループ集計</strong>：件数表・カテゴリ別平均</li>
+<li><strong>統合演習</strong>：同じ入力→同じ集計→同じ結論（Python/R）</li>
+</ol>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の流れを確認します。最初に、1次元データ、つまりベクタの統計量として平均・分散・標準偏差を押さえます。次に、R と Python で分散が一致しない“典型的な落とし穴”である ddof を整理します。
+<p>後半は実務寄りです。表形式のデータ、つまりデータフレームを列ごとに集計し、カテゴリ変数を分割表とグループ平均で要約します。最後に、CSV を自分で作って、Python と R の両方で同じプログラムを作成して締めます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>学習目標（到達目標）</h2>
+<ul>
+<li>平均・分散・標準偏差を <strong>Python/R 両方</strong>で計算できる</li>
+<li><strong>不偏分散と標本分散の違い</strong>を説明し、Pythonでは <code>ddof</code> を明示できる</li>
+<li>データフレームの<strong>数値列だけ</strong>を選び、列ごとの統計量をまとめて出せる</li>
+<li>分割表とグループ集計で、<strong>カテゴリ別の件数・平均</strong>を出せる</li>
+</ul>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここでゴールを明確にしておきます。単に計算できるだけではなく、R と Python で結果がズレたときに、理由を説明して自力で直せることが重要です。
+<p>特に ddof は、現場でも事故が起きやすいポイントです。今日の終盤で「同じ入力から同じ結論」を出す統合演習をやりますが、その時に ddof を意識できるかが合否ラインです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>記述統計とは</h2>
+<ul>
+<li><strong>記述統計</strong>：手元のデータ（標本）を整理・要約する</li>
+<li><strong>統計的推測</strong>：標本から母集団について推測する（次の段階）</li>
+<li>まずは「全体像」を掴む：代表値＋ばらつき＋集計</li>
+</ul>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" />
+<aside class="notes">
+統計には大きく2種類あります。今日やるのは記述統計。いま持っているデータを、平均や分散、表などで“見える化”して理解する段階です。
+<p>もう一つの統計的推測は、標本から母集団を推測する話で、検定や推定、区間推定などに繋がります。今日はまだそこへは行きません。まずは、データ分析の最初の一歩として、要約の型を身につけましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>標本（サンプル）と母集団</h2>
+<ul>
+<li><strong>母集団</strong>：本当は知りたい“全体”</li>
+<li><strong>標本</strong>：母集団から取り出した“一部のデータ”</li>
+<li>標本を要約して「傾向・ばらつき・偏り」を把握する</li>
+</ul>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" />
+<aside class="notes">
+例えば「この学年の身長の平均を知りたい」とします。学年全員を測れれば母集団ですが、現実には難しいことも多いので、何人か測って標本にします。
+<p>このとき、標本から得た平均や分散は、母集団そのものではありません。標本は“揺れ”ます。だからこそ、ばらつきまで含めて要約することが重要になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.1.1 平均・分散・標準偏差</h1>
+<h2>1次元データを要約する基本セット</h2>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここから 4.1.1 節です。1次元データ、つまり数の列を、平均・分散・標準偏差で要約するところから始めます。
+<p>この3つは、統計の“九九”のようなものです。以降の章でも、データフレームの集計でも、機械学習の評価でも、頻繁に出てきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>平均（mean）</h2>
+<p>$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
+$$</p>
+<ul>
+<li>“代表値”として便利（ただし外れ値に弱い）</li>
+<li>まずは <strong>手計算で検算</strong>できるようにする</li>
+</ul>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" />
+<aside class="notes">
+平均は一番なじみがある代表値ですね。式自体は「全部足して n で割る」です。
+<p>ここで強調したいのは、統計ソフトに頼る前に、手計算レベルで検算できる感覚を持つことです。例えばデータが 5 個なら、電卓で合計して割って確認できる。これがあると、コードが間違った時に気づけます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>例：身長データ（x と y）</h2>
+<ul>
+<li>$x={165,170,175,180,185}$</li>
+<li>$y={173,174,175,176,177}$</li>
+<li>どちらも平均は同じ（=175）</li>
+</ul>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日は例としてこの2つのデータを使います。x は 165 から 185 まで 5cm 刻みで広がっていて、y は 173 から 177 にギュッと固まっています。
+<p>まず平均を計算すると、どちらも 175 になります。ここがポイントです。“平均だけだと区別がつかない”。この後、分散と標準偏差で違いがはっきり見えます。</p>
+<p>では、今30秒だけ使って、x の合計がいくつになるか、頭の中で計算してみてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>分散（variance）</h2>
+<p>$$s^2=\frac{1}{n-1} \sum_{i=1}^n (x_i-\bar{x})^2$$</p>
+<ul>
+<li>平均からの“ズレ”を二乗して足し合わせる</li>
+<li>ばらつきの指標（単位は <strong>二乗</strong>）</li>
+</ul>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" />
+<aside class="notes">
+分散は「平均からどれだけ散らばっているか」を数字にします。平均との差を二乗するのは、プラスとマイナスが打ち消し合わないようにするためです。
+<p>ただし注意。分散は単位が二乗になります。身長なら cm² です。直感的には少し分かりにくい。そこで次に出てくるのが標準偏差です。</p>
+<p>ここではまず“ズレの二乗の平均（に近いもの）”というイメージを掴んでください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>標準偏差（standard deviation）</h2>
+<p>$$
+s=\sqrt{s^2}
+$$</p>
+<ul>
+<li>分散の平方根</li>
+<li>元データと <strong>同じ単位</strong>になる（cm なら cm）</li>
+<li>直感的に「だいたい±どれくらい？」が言える</li>
+</ul>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" />
+<aside class="notes">
+標準偏差は分散の平方根です。これで単位が元に戻ります。身長なら cm になるので、体感に近い説明ができます。
+<p>例えば「平均175、標準偏差8」なら、“だいたい 175±8 あたりに多い”という言い方ができます。厳密な確率の話はまだしませんが、ばらつきの大きさを一言で語れるのが強いです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>x と y：同じ平均、違うばらつき</h2>
+<ul>
+<li>平均：どちらも 175</li>
+<li>分散・標準偏差：<strong>x が大きい、y が小さい</strong></li>
+<li>「平均だけ」では情報が足りない</li>
+</ul>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで、さっきの x と y に戻ります。平均は同じ 175 でした。でも、散らばり方は全然違います。x は広く、y は狭い。
+<p>つまり、データの特徴を掴むには、代表値（平均）とばらつき（標準偏差）をセットで見る必要があります。</p>
+<p>この後、R と Python のコードで、実際に数字として確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：平均・分散・標準偏差（ベクタ）</h2>
+<pre><code class="language-r">x &lt;- c(165, 170, 175, 180, 185)
+y &lt;- c(173, 174, 175, 176, 177)
+
+cat(&quot;mean(x) =&quot;, mean(x), &quot;\n&quot;)
+cat(&quot;var(x)  =&quot;, var(x),  &quot;\n&quot;)
+cat(&quot;sd(x)   =&quot;, sd(x),   &quot;\n&quot;)
+</code></pre>
+<ul>
+<li><code>Rscript</code> 実行では <strong>cat()/print() が必要</strong></li>
+</ul>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" />
+<aside class="notes">
+R のベクタでは、mean/var/sd という非常に素直な関数が使えます。
+<p>ただし、つまずきポイントその1。RStudio で実行すると <code>mean(x)</code> と書くだけでも表示されるのですが、<code>Rscript</code> で実行すると“式を書いただけ”では表示されません。必ず cat() か print() を使ってください。</p>
+<p>この差は、授業環境（ターミナル実行）では頻出なので、今日のうちに体に入れておきましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：平均・分散・標準偏差（NumPy）</h2>
+<pre><code class="language-python">import numpy as np
+
+x = [165, 170, 175, 180, 185]
+y = [173, 174, 175, 176, 177]
+
+print(&quot;mean(x) =&quot;, np.mean(x))
+print(&quot;var(x)  =&quot;, np.var(x, ddof=1))
+print(&quot;sd(x)   =&quot;, np.std(x, ddof=1))
+</code></pre>
+<ul>
+<li>R と揃えるなら <code>ddof=1</code> を明示</li>
+</ul>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python は NumPy を使います。平均は np.mean でOKですが、分散と標準偏差は ddof に注意です。
+<p>このスライドでは最初から ddof=1 を入れています。理由は次の節で説明しますが、R の var() が n-1 で割る不偏分散に対応しているからです。</p>
+<p>まずは「R と同じ数字を出したいなら ddof=1」という実務的なルールを覚えてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>よくあるミス：数字が合わないとき</h2>
+<ul>
+<li>データ入力ミス（165/175/185…）を先に疑う</li>
+<li>R：<code>cat()</code>/<code>print()</code> を忘れる</li>
+<li>Python：<code>ddof</code> を省略している（次節）</li>
+<li>表示形式の違い（<code>175</code> vs <code>175.0</code>）は問題ではない</li>
+</ul>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" />
+<aside class="notes">
+結果が合わないときのデバッグ手順を先に決めておきましょう。
+<p>まずデータの打ち間違い。次に、Rscript の出力忘れ。最後に ddof。統計は定義が1つ違うだけで結果が変わるので、“どの定義で計算しているか”を確認するのが基本です。</p>
+<p>小数点表示の違いは気にしなくてよいです。175 と 175.0 は同じ値です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.1.2 不偏分散・標本分散と ddof</h1>
+<h2>R と Python がズレる最頻出ポイント</h2>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここが今日の山場です。R と Python を比較して学ぶときに、必ず出てくる問題が「分散が一致しない」です。
+<p>原因はほぼ ddof です。ここを理解できると、以降の章で“なんか数字が違う”という不安が激減します。逆にここを曖昧にすると、分析結果の信頼性が崩れます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>分散は2種類ある</h2>
+<ul>
+<li><strong>不偏分散</strong>：分母が <code>n-1</code>（R の <code>var()</code>）</li>
+<li><strong>標本分散（ここでの呼び方）</strong>：分母が <code>n</code>（NumPy のデフォルト <code>ddof=0</code>）</li>
+<li>「どっちが正しい？」ではなく「どっちを使う？」</li>
+</ul>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" />
+<aside class="notes">
+分散は実は2種類あります。平均との差の二乗和を、n-1 で割るか、n で割るか。
+<p>R の var() は n-1 で割る不偏分散。NumPy の np.var() はデフォルトで n で割る、つまり ddof=0 です。これがズレの原因です。</p>
+<p>どっちが正しいか、という議論に引っ張られがちですが、実務では“目的に応じて使い分ける”が正解です。今日は「R と揃えるため ddof=1」を採用します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ddof（自由度調整）とは</h2>
+<ul>
+<li><code>ddof</code> は <strong>分母を (n - ddof)</strong> にする指定</li>
+<li><code>ddof=0</code> → 分母 n（標本分散）</li>
+<li><code>ddof=1</code> → 分母 n-1（不偏分散）</li>
+</ul>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" />
+<aside class="notes">
+ddof は delta degrees of freedom の略で、分母の自由度を調整します。感覚としては「割り算の分母を1つ減らす」指定です。
+<p>NumPy の var と std は、ddof を与えることで分母を n-ddof にします。したがって ddof=1 にすると n-1 で割ることになり、R の var() と一致します。</p>
+<p>ここを丸暗記ではなく、分母が変わるという構造で理解してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>対応表（R / NumPy / pandas）</h2>
+<div style="font-size: 0.5em;">
+<table>
+<thead>
+<tr>
+<th>目的</th>
+<th>R</th>
+<th>NumPy</th>
+<th>pandas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不偏分散</td>
+<td><code>var(x)</code></td>
+<td><code>np.var(x, ddof=1)</code></td>
+<td><code>Series.var(ddof=1)</code></td>
+</tr>
+<tr>
+<td>標本分散（nで割る）</td>
+<td><code>mean((x-mean(x))^2)</code></td>
+<td><code>np.var(x, ddof=0)</code></td>
+<td><code>Series.var(ddof=0)</code></td>
+</tr>
+<tr>
+<td>標準偏差</td>
+<td><code>sd(x)</code></td>
+<td><code>np.std(x, ddof=1)</code></td>
+<td><code>Series.std(ddof=1)</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここは“事故防止の表”です。R は var/sd が不偏寄り。NumPy はデフォルトが ddof=0。pandas はメソッドによって ddof のデフォルトが不偏寄りだったりするので、混ぜると混乱しがちです。
+<p>授業ではルールを統一します。R と揃えるなら Python 側は ddof=1 を明示する。これで比較学習ができるようになります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>例：ddof=0 と ddof=1 を両方出す</h2>
+<ul>
+<li>同じデータでも <strong>分散が変わる</strong></li>
+<li>x の場合：<code>50</code>（ddof=0）と <code>62.5</code>（ddof=1）</li>
+<li>差が出たら、まず ddof を疑う</li>
+</ul>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" />
+<aside class="notes">
+講義資料の例だと、x の分散は ddof=0 で 50、ddof=1 で 62.5 になります。
+<p>ここで確認したいのは、ddof=1 の方が“少し大きい”ということです。n-1 で割るので、同じ二乗和をより小さい数で割る分、値は大きくなります。</p>
+<p>この数字（50 と 62.5）は、今日の検算用のキーワードです。手元の実行結果がこれと合うかを確認しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>標準誤差（SE）も区別する</h2>
+<ul>
+<li><strong>標準偏差</strong>：データのばらつき（個体差）</li>
+<li><strong>標準誤差</strong>：平均のばらつき（推定の不確かさ）
+$$SE(\bar{x})=\frac{s}{\sqrt{n}}$$</li>
+</ul>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで混同しやすい概念を整理します。標準偏差はデータそのものの散らばり。標準誤差は“平均という推定値”の不確かさです。
+<p>標準誤差は sd を √n で割るので、サンプルサイズが増えるほど小さくなります。つまり、たくさん測ると平均は安定する、という直感に一致します。</p>
+<p>今日は標準誤差の計算式だけ押さえ、統計的推測に入るときに改めて意味を深掘りします。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>ここでミニ演習（1分）</h2>
+<p>x = {165,170,175,180,185} のとき</p>
+<ol>
+<li>平均は？</li>
+<li>ddof=0 の分散は？（ヒント：50）</li>
+<li>ddof=1 の分散は？（ヒント：62.5）</li>
+</ol>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" />
+<aside class="notes">
+いったんここで1分だけ演習します。ノートでも頭の中でもいいです。平均は 175。分散は ddof=0 が 50、ddof=1 が 62.5。
+<p>「なぜ ddof=1 の方が大きいのか」を、分母が小さくなるから、と説明できればOKです。</p>
+<p>できた人は手を挙げてください。まだの人はこの後のコード実行で確認しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.1.3 データフレームの列ごとの集計</h1>
+<h2>表データを一括で要約する</h2>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" />
+<aside class="notes">
+後半はデータフレームです。実務のデータはほとんど表形式なので、ここを押さえると一気に“使える感”が出ます。
+<p>ポイントは2つ。数値列だけを選んで集計すること。そして、同じ集計を Python と R で再現できること。ここも比較学習でいきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>例データフレーム（英語・数学・性別）</h2>
+<ul>
+<li>数値列：<code>english</code>, <code>math</code></li>
+<li>文字列列：<code>name</code>, <code>gender</code></li>
+<li>集計では <strong>数値列だけ</strong>を対象にする</li>
+</ul>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" />
+<aside class="notes">
+例としてこのような小さなデータフレームを作ります。英語点と数学点が数値列、名前と性別が文字列列です。
+<p>ここでの落とし穴は、データフレーム全体に対して分散や平均を取りたくなることです。しかし文字列列が混ざると、意味が曖昧になったり、エラーになったりします。入門では必ず列を限定してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：列ごとの分散（複数列）</h2>
+<pre><code class="language-r">my_df &lt;- data.frame(
+  name=c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;),
+  english=c(60,90,70,90),
+  math=c(70,80,90,100),
+  gender=c(&quot;f&quot;,&quot;m&quot;,&quot;m&quot;,&quot;f&quot;)
+)
+
+print(sapply(my_df[c(&quot;english&quot;,&quot;math&quot;)], var))
+</code></pre>
+<ul>
+<li><code>my_df[c(&quot;english&quot;,&quot;math&quot;)]</code> で数値列を選ぶ</li>
+</ul>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" />
+<aside class="notes">
+R では data.frame を作って、列を取り出すのは `$` か `[...]` です。複数列なら `my_df[c("english","math")]` のように列名で指定します。
+<p>そして sapply を使って var を適用すると、2列まとめて分散が出ます。こういう“まとめ出し”ができると、記述統計の作業が一気に速くなります。</p>
+<p>実務では dplyr なども使いますが、まずは base R でこの型を身につけましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：列ごとの分散（複数列）</h2>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({
+  &quot;name&quot;: [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;],
+  &quot;english&quot;: [60,90,70,90],
+  &quot;math&quot;: [70,80,90,100],
+  &quot;gender&quot;: [&quot;f&quot;,&quot;m&quot;,&quot;m&quot;,&quot;f&quot;],
+})
+
+print(df[[&quot;english&quot;,&quot;math&quot;]].var(ddof=1))
+</code></pre>
+<ul>
+<li>ddof は <strong>明示</strong>して揃える</li>
+</ul>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python は pandas です。ここでも列選択をしてから集計するのが基本です。`df[["english","math"]]` のように、二重の角括弧で複数列を指定します。
+<p>そして var(ddof=1)。前半でやった ddof を、ここでも忘れずに明示します。pandas のメソッドは ddof のデフォルトが不偏寄りなことが多いですが、授業では“明示して混乱をゼロにする”方針でいきます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>要約統計：五数要約と四分位数</h2>
+<ul>
+<li><strong>五数要約</strong>：最小・Q1・中央値・Q3・最大</li>
+<li>R：<code>summary(df)</code>（入門の第一候補）</li>
+<li>Python：<code>df.describe()</code>（数値列の要約）</li>
+</ul>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" />
+<aside class="notes">
+次に、分散や平均を個別に計算するのではなく、まとめて要約する関数を使います。
+<p>R の summary は非常に便利で、数値列には Min, 1st Qu., Median, Mean, 3rd Qu., Max が出ます。Python の describe も同様で、count/mean/std と四分位数 25%/50%/75% が出ます。</p>
+<p>ここで「25%は第1四分位」「50%は中央値」「75%は第3四分位」という対応を理解してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：<code>summary()</code> の読み方</h2>
+<ul>
+<li>数値列：Min / 1Q / Median / Mean / 3Q / Max</li>
+<li>文字列列：頻度や文字列の概要</li>
+<li>最初の“全体把握”に最適</li>
+</ul>
+<aside class="notes">
+R の summary は、データを受け取ったらまず叩く、というくらい定番です。数値列は五数要約が出て、文字列列は水準の情報が出ます。
+<p>まだ可視化をしていない段階でも、異常値がありそうか、欠損が多そうか、分布が歪んでいそうか、などの当たりがつきます。</p>
+<p>ただし summary はあくまで概要です。疑問が出たら、ヒストグラムや箱ひげ図に進む、という順番を意識してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：<code>describe()</code> の読み方</h2>
+<ul>
+<li><code>count</code>：欠損を除いた件数</li>
+<li><code>mean</code> / <code>std</code>：平均・標準偏差（ここでは ddof は別途意識）</li>
+<li><code>25%/50%/75%</code>：四分位数（Q1/中央値/Q3）</li>
+</ul>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python の describe は数値列中心の要約です。count は欠損を除いた数なので、列によって count が違う場合は欠損が疑われます。
+<p>四分位数は、データを小さい順に並べたときの“区切り”です。50% が中央値。箱ひげ図の箱の境界が 25% と 75% なので、将来の可視化にも繋がります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>デバッグのコツ（データフレーム編）</h2>
+<ul>
+<li>「列選択」ができているか確認する
+<ul>
+<li>R：<code>df[c(&quot;english&quot;,&quot;math&quot;)]</code></li>
+<li>Python：<code>df[[&quot;english&quot;,&quot;math&quot;]]</code></li>
+</ul>
+</li>
+<li>文字列列が混ざると結果が曖昧／エラーになりやすい</li>
+<li>ddof を省略しない（比較学習の鉄則）</li>
+</ul>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" />
+<aside class="notes">
+データフレーム集計での最重要デバッグポイントは、列選択です。意図せず文字列列が混ざると、警告や NaN、あるいは勝手な型変換が起きます。
+<p>そして ddof。特に分散・標準偏差は、同じ“variance”でも定義が揺れるので、比較するなら必ず明示してください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.1.4 分割表とグループごとの集計</h1>
+<h2>カテゴリ変数を要約する2つの型</h2>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後のトピックはカテゴリ変数です。性別、都道府県、クラスなど、文字で表される変数は平均では要約できません。
+<p>まずは件数を数える。これが分割表です。そして次に、カテゴリ別に平均点を出す。これがグループ集計です。実務で最頻出の集計パターンなので、ここも型として覚えましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>分割表（contingency table）</h2>
+<ul>
+<li>1変数：カテゴリごとの件数</li>
+<li>2変数：カテゴリ×カテゴリのクロス集計</li>
+<li>まずは「数える」が基本</li>
+</ul>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" />
+<aside class="notes">
+分割表は“数える”だけです。シンプルですが強力です。例えば gender の人数が偏っていないか、クラス別の人数が妥当か、などを一瞬で確認できます。
+<p>2変数の分割表はクロス集計とも呼ばれます。カテゴリ同士の関係の第一歩です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：<code>table()</code> で人数と分割表</h2>
+<pre><code class="language-r">print(table(my_df$gender))
+
+my_df2 &lt;- data.frame(
+  gender=my_df$gender,
+  excel=(my_df$math &gt;= 80)
+)
+print(table(my_df2$gender, my_df2$excel))
+</code></pre>
+<ul>
+<li><code>TRUE/FALSE</code> は論理値（条件で作れる）</li>
+</ul>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" />
+<aside class="notes">
+R は table が定番です。1変数ならカテゴリ別件数。2変数なら分割表です。
+<p>ここでは excel という列を “math が 80 以上か” で作っています。こういう条件列を作ってクロス集計するのは、実務でもとてもよくやります。</p>
+<p>TRUE/FALSE という表記に慣れてください。Python 側は True/False になりますが意味は同じです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：<code>value_counts()</code> と <code>crosstab()</code></h2>
+<pre><code class="language-python">print(df[&quot;gender&quot;].value_counts())
+
+df2 = df.assign(excel=df[&quot;math&quot;] &gt;= 80)
+print(pd.crosstab(df2[&quot;gender&quot;], df2[&quot;excel&quot;]))
+</code></pre>
+<ul>
+<li><code>crosstab(行, 列)</code> の形で覚える</li>
+</ul>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python では、1変数の件数は value_counts。2変数の分割表は pd.crosstab です。
+<p>crosstab は “行に何を置くか、列に何を置くか” を意識すると読みやすくなります。ここでは行が gender、列が excel（数学80以上か）です。</p>
+<p>出力の True/False を見て、「数学80以上の人数が gender ごとにどう違うか」を読み取れるようになりましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>グループ集計（カテゴリ別平均）</h2>
+<ul>
+<li>「gender 別の平均点」を出したい</li>
+<li>手順：<strong>グループに分ける → 数値列を集計</strong></li>
+</ul>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" />
+<aside class="notes">
+次はグループ集計です。分割表が“件数”だったのに対して、グループ集計は“平均や合計”です。
+<p>ここで大事なのは、集計対象は数値列であること。カテゴリ列で平均を取っても意味がないので、必ず列選択とセットで扱います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R：<code>aggregate()</code> で gender 別平均</h2>
+<pre><code class="language-r">print(
+  aggregate(cbind(english, math) ~ gender,
+            data=my_df,
+            mean)
+)
+</code></pre>
+<ul>
+<li><code>cbind(english, math)</code> で複数列をまとめる</li>
+</ul>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" />
+<aside class="notes">
+R の入門では aggregate が分かりやすいです。`english と math を gender ごとに平均` という意味を、式の形で表現できます。
+<p>dplyr の group_by/summarise も有名ですが、まずは aggregate の最小構成を押さえましょう。</p>
+<p>ここで出た平均値は、Python の groupby と同じになるはずです。必ず突き合わせてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python：<code>groupby()</code> で gender 別平均</h2>
+<pre><code class="language-python">print(df.groupby(&quot;gender&quot;)[[&quot;english&quot;,&quot;math&quot;]].mean())
+</code></pre>
+<ul>
+<li>返り値で <code>gender</code> が index になる（入門ではOK）</li>
+</ul>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python は groupby が定番です。groupby("gender") でグループを作り、数値列を選んで mean を取ります。
+<p>結果の表で gender が index 側に来ますが、入門ではそれでOKです。もし列として必要なら reset_index を使いますが、今日はそこまでで十分です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>よくあるミス（分割表・グループ集計）</h2>
+<ul>
+<li>条件列（<code>math &gt;= 80</code>）の向き・列名を間違える</li>
+<li>Python：groupby 後に列選択を忘れてエラー／意図不明</li>
+<li>R：<code>table(gender, excel)</code> の引数を逆にして読み違える</li>
+</ul>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" />
+<aside class="notes">
+このパートのミスは“うっかり系”が多いです。比較演算子の向き、列名のタイポ、行列の取り違え。
+<p>対策は、出力の合計をチェックすること。分割表の合計はデータ行数と一致するはずです。グループ平均は一部手計算で検算できます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h1>4.1.5 統合演習</h1>
+<h2>同じ入力 → 同じ集計 → 同じ結論</h2>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" />
+<aside class="notes">
+仕上げの統合演習です。今日やったことを一つにまとめます。
+<p>ここでのゴールは、Python と R の両方で、同じ CSV を読み込んで、同じ内容の記述統計レポートをターミナルに出すことです。実務での“再現性”の練習でもあります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>まず CSV を作る（共通入力）</h2>
+<pre><code class="language-bash">cat &gt; scores.csv &lt;&lt; 'EOF'
+name,gender,english,math
+A,f,60,70
+B,m,90,80
+C,m,70,90
+D,f,90,100
+EOF
+</code></pre>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" />
+<aside class="notes">
+まずは入力データを固定します。ここが揃っていないと比較ができません。
+<p>ターミナルでこのコマンドを打って scores.csv を作ってください。コピペでもOKです。作れたら <code>cat scores.csv</code> で中身を確認します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>出力要件</h2>
+<ol>
+<li><strong>全体の平均・標準偏差</strong>（english, math）</li>
+<li><strong>gender 別の平均</strong>（english, math）</li>
+<li><strong>分割表</strong>（gender × (math&gt;=80)）</li>
+</ol>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" />
+<aside class="notes">
+ここで出力要件を固定します。今日の学習目標が、この3つに凝縮されています。
+<p>この3つが揃っていれば、記述統計として最低限のレポートになります。実務でも、最初にこれが出せるかどうかで、その後の分析の質が決まります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Python</h2>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv(&quot;scores.csv&quot;)
+
+print(&quot;全体平均&quot;)
+print(df[[&quot;english&quot;, &quot;math&quot;]].mean())
+
+print(&quot;\n全体標準偏差（ddof=1）&quot;)
+print(df[[&quot;english&quot;, &quot;math&quot;]].std(ddof=1))
+
+df2 = df.assign(excel=df[&quot;math&quot;] &gt;= 80)
+print(&quot;\n分割表（gender × excel）&quot;)
+print(pd.crosstab(df2[&quot;gender&quot;], df2[&quot;excel&quot;]))
+
+print(&quot;\ngender別平均&quot;)
+print(df.groupby(&quot;gender&quot;)[[&quot;english&quot;, &quot;math&quot;]].mean())
+</code></pre>
+<audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg" />
+<aside class="notes">
+Python 版はこの形が最小構成です。ポイントは3つ。列選択、ddof=1、そして crosstab と groupby。
+<p>行数を増やして関数化したくなるかもしれませんが、今日は“短くて透明”を優先します。1行ずつ読んで、何をしているか説明できるようにしてください。</p>
+<p>実行は python my4-1-exercise_basic.py です。出力が要件3つを満たしているか確認しましょう。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>R</h2>
+<pre><code class="language-r">df &lt;- read.csv(&quot;scores.csv&quot;, stringsAsFactors = FALSE)
+
+cat(&quot;全体平均\n&quot;)
+print(colMeans(df[c(&quot;english&quot;, &quot;math&quot;)]))
+
+cat(&quot;\n全体標準偏差（Rは不偏寄り）\n&quot;)
+print(sapply(df[c(&quot;english&quot;, &quot;math&quot;)], sd))
+
+df2 &lt;- data.frame(gender=df$gender, excel=(df$math &gt;= 80))
+cat(&quot;\n分割表（gender × excel）\n&quot;)
+print(table(df2$gender, df2$excel))
+
+cat(&quot;\ngender別平均\n&quot;)
+print(aggregate(cbind(english, math) ~ gender, data=df, mean))
+</code></pre>
+<audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg" />
+<aside class="notes">
+R 版も同じ方針です。短く、透明に。
+<p>colMeans は列平均を一気に出せます。標準偏差は sd。分割表は table。そしてグループ平均は aggregate。全て今日のスライドで出てきた“型”だけで構成されています。</p>
+<p>実行は Rscript my4-1-exercise_basic.R。Python と同じ結論になっているか突き合わせてください。小数点の表示差は気にしなくてOKです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>結果が合わないときのチェック順</h2>
+<ol>
+<li>CSV の中身（入力ミス）</li>
+<li>Python の <code>ddof</code>（std/var）</li>
+<li>列選択（数値列だけになっているか）</li>
+<li>分割表の合計＝行数になっているか</li>
+</ol>
+<audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg" />
+<aside class="notes">
+合わないときは、当てずっぽうで直さないで、チェック順を固定します。
+<p>統計で一番多い事故は、定義のズレ（ddof）と入力ミスです。列選択ミスも多い。分割表の合計チェックは強力で、合計が行数と一致しないなら、条件列や欠損が怪しい、という判断ができます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>Copilotの使いどころ</h2>
+<ul>
+<li>コードの“たたき台”作成には有効</li>
+<li>ただし統計は **定義の差（ddof）**で事故る</li>
+<li>制約を明記する：
+<ul>
+<li>行数（10〜15行）</li>
+<li><code>ddof=1</code></li>
+<li>出力形式（Rは <code>cat()</code>）</li>
+<li>期待出力（例：<code>62.5</code>）</li>
+</ul>
+</li>
+</ul>
+<audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg" />
+<aside class="notes">
+最後に Copilot の使い方です。データフレーム集計は定型なので、Copilot は当たりやすいです。
+<p>しかし ddof のような定義の差は、誤った前提で生成されやすい典型例です。必ず制約を明記してください。行数、ddof、出力方法、期待出力。これをセットで書くと、生成結果の品質が上がり、検証もしやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>本日のまとめ</h2>
+<ul>
+<li>平均＋標準偏差で「中心」と「ばらつき」をセットで捉える</li>
+<li>R と Python の分散がズレたら <strong>ddof を疑う</strong></li>
+<li>表データは「数値列を選んで集計」が基本</li>
+<li>分割表（件数）＋グループ平均（平均）でカテゴリを要約</li>
+<li>統合演習で「同じ入力→同じ結論」を再現する</li>
+</ul>
+<audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg" />
+<aside class="notes">
+今日の要点をまとめます。平均と標準偏差はセット。分散のズレは ddof。データフレームは列選択。カテゴリは分割表とグループ平均。
+<p>そして最後の統合演習ができれば、今日の到達目標はクリアです。自分のPCで、Python と R の両方で同じ結論が出るところまで確認しておいてください。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <h2>次回予告</h2>
+<ul>
+<li>推奨：統合演習スクリプトを <strong>自分の言葉のコメント</strong>を追記する
+<ul>
+<li><code>my4-1-exercise_basic.py</code></li>
+<li><code>my4-1-exercise_basic.R</code></li>
+<li><code>scores.csv</code></li>
+</ul>
+</li>
+<li>次回：可視化（箱ひげ図・ヒストグラム）へ接続</li>
+</ul>
+<audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg" />
+<aside class="notes">
+自主的な演習として、統合演習を推奨します。ただし“動けばOK”ではなく、各ブロックが何をしているかを、日本語コメントで説明してください。自分の言葉で書ければ理解できています。
+<p>次回は、今日の四分位数や五数要約を、箱ひげ図やヒストグラムなどの可視化と繋げていきます。記述統計の理解がそのまま可視化の理解になります。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
