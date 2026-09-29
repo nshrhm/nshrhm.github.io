@@ -1,0 +1,1309 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>DSプログラミング入門｜第1回 ガイダンス</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: 科目と初回ガイダンスの位置づけを共有する -->
+<div class="title-block">
+<h2>DSプログラミング入門</h2>
+<p class="subtitle">第1回　ガイダンス</p>
+<p class="authors"><strong>白濵 成希</strong></p>
+<p class="affiliations">2026年度 秋学期 · 1年生 · 2単位</p>
+<p class="source-note">出典：シラバス 科目情報・第1回計画</p>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この授業では、データサイエンスで使われる分析手法を、実際のプログラムを通して学びます。初回はガイダンスです。授業で何を学び、どこまでできることを目指すのか、そして何が評価の対象になるのかを確認しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: 分析手法をコードの実行と結果の確認を通して学ぶことを伝える -->
+<div class="slide-body">
+<h2>コードを動かし、結果を確かめる</h2>
+<p>データサイエンスの分析手法を、<strong>具体的なプログラム</strong>を通じて学びます。</p>
+<div class="workflow" aria-label="各テーマについてコードを実行し、結果を確認する">
+<div class="workflow-step">分析手法を学ぶ</div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step emphasized">コードを実行する</div>
+<div class="workflow-arrow">→</div>
+<div class="workflow-step">結果を確認する</div>
+</div>
+<p>前半で基本事項を学び、後半で分析プログラムを作成・実行します。</p>
+<p class="source-note">出典：シラバス 授業概要</p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+シラバスでは、週ごとのテーマについてコードを実行し、結果を確認できることを求めています。分析手法の説明を理解することと、実際の出力を確かめることを結びつけていきます。そのために、はじめはコンピュータやネットワーク、実行環境についても学びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: 到達目標の三つを学生が把握できるようにする -->
+<div class="slide-body">
+<h2>この授業で目指す3つのこと</h2>
+<ol>
+<li><strong>環境を構築できる</strong><br>
+データサイエンスに必要なプログラミング環境を整える。</li>
+<li><strong>基本事項を理解できる</strong><br>
+記述統計・可視化・統計的推測・前処理を理解する。</li>
+<li><strong>分析手法を実行できる</strong><br>
+RまたはPythonを用いて、主要な分析手法を実行する。</li>
+</ol>
+<p class="source-note">出典：シラバス 到達目標</p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+到達目標は三つです。一つ目はプログラムを実行する環境を自分で整えること。二つ目は、データを要約したり、可視化したり、分析のために整えたりする基本事項を理解すること。三つ目は、主要な分析手法をアールまたはパイソンで実行できることです。学期の終わりに目指す姿として確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: 紹介する言語と到達目標の表現を区別して説明する -->
+<div class="slide-body">
+<h2>RとPythonの両方に触れる</h2>
+<div class="two-column">
+<div class="definition-card">
+<h3>授業で紹介するコード</h3>
+<p><strong>RとPythonの両方</strong></p>
+<p>共通する考え方と、それぞれの特徴を学びます。</p>
+</div>
+<div class="definition-card">
+<h3>到達目標</h3>
+<p><strong>RまたはPythonで実行</strong></p>
+<p>主要な分析手法をプログラムで確かめます。</p>
+</div>
+</div>
+<p>第3回では、それぞれの強み・用途・基本文法を扱います。</p>
+<p class="source-note">出典：シラバス 授業概要・到達目標・第3回計画</p>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+分析手法を学ぶときには、アールとパイソンの両方のコードを紹介します。これは、実践には両者に共通する部分と、それに加わる知識が必要だというシラバスの考え方に基づいています。一方、到達目標は、アールまたはパイソンを用いて主要な分析手法を実行できることです。課題で使う言語などの具体的な条件は、それぞれの課題の指示で確認していきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: 前半の授業計画と第7回の総合演習を示す -->
+<div class="slide-body">
+<h2>第1〜7回：分析の土台をつくる</h2>
+<table>
+<thead>
+<tr>
+<th>回</th>
+<th>テーマ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>ガイダンス</td>
+</tr>
+<tr>
+<td>2</td>
+<td>DS用プログラミング環境</td>
+</tr>
+<tr>
+<td>3</td>
+<td>DS用プログラミング言語</td>
+</tr>
+<tr>
+<td>4</td>
+<td>記述統計とデータの可視化</td>
+</tr>
+<tr>
+<td>5</td>
+<td>乱数と統計的推測</td>
+</tr>
+<tr>
+<td>6</td>
+<td>前処理</td>
+</tr>
+<tr>
+<td>7</td>
+<td>総合演習</td>
+</tr>
+</tbody>
+</table>
+<p class="source-note">出典：シラバス 授業の計画 第1〜7回</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+前半は、環境と言語の準備から始めます。続いて、データの特徴を要約して図で表すこと、サンプルから母集団について考えることを学びます。第6回の前処理では、さまざまな形式のデータを読み込み、分析に使える形に変換します。第7回は、ここまでの概念と技術を活用する課題レポートに取り組みます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: 機械学習と回帰分析を学ぶ順序を示す -->
+<div class="slide-body">
+<h2>第8〜12回：機械学習と回帰分析</h2>
+<table>
+<thead>
+<tr>
+<th>回</th>
+<th>テーマ</th>
+<th>学ぶ内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8</td>
+<td>機械学習</td>
+<td>基本概念・データの準備・基本手法</td>
+</tr>
+<tr>
+<td>9</td>
+<td>単回帰分析1</td>
+<td>1つの説明変数から予測する</td>
+</tr>
+<tr>
+<td>10</td>
+<td>単回帰分析2</td>
+<td>モデルの当てはまりを調べる</td>
+</tr>
+<tr>
+<td>11</td>
+<td>重回帰分析1</td>
+<td>複数の説明変数から予測する</td>
+</tr>
+<tr>
+<td>12</td>
+<td>重回帰分析2</td>
+<td>変数の数の影響と変数選択</td>
+</tr>
+</tbody>
+</table>
+<p class="source-note">出典：シラバス 授業の計画 第8〜12回</p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+後半は機械学習の基本から始まり、回帰分析に進みます。単回帰分析では、一つの説明変数を用いて連続的な応答変数を予測する方法と、そのモデルがどの程度データに合っているかを学びます。重回帰分析では、説明変数を複数に広げ、変数の数が解釈や予測精度に与える影響、そして変数を選ぶ方法を扱います。用語の詳しい意味は、それぞれの回で学びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: 学期末の分析手法と総合演習を示す -->
+<div class="slide-body">
+<h2>第13〜15回：分析手法を広げ、活用する</h2>
+<table>
+<thead>
+<tr>
+<th>回</th>
+<th>テーマ</th>
+<th>学ぶ内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>13</td>
+<td>主成分分析</td>
+<td>高次元データの次元削減</td>
+</tr>
+<tr>
+<td>14</td>
+<td>クラスタ分析</td>
+<td>階層的・非階層的クラスタリング</td>
+</tr>
+<tr>
+<td>15</td>
+<td>総合演習</td>
+<td>学期全体の学びを活用する課題レポート</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">
+<p>基本概念・分析手法・プログラミング技術を組み合わせて使います。</p>
+</div>
+<p class="source-note">出典：シラバス 授業の計画 第13〜15回</p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第13回は、多くの変数を持つデータの次元を減らす主成分分析を学びます。第14回は、データをグループに分けるクラスタ分析を扱います。最後の総合演習では、学期を通じて学んだ基本概念、分析手法、プログラミング技術を活用して課題レポートに取り組みます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: 評価割合と評価対象を正確に示す -->
+<div class="slide-body">
+<h2>評価は、授業中の課題とレポート</h2>
+<div class="two-column">
+<div class="definition-card">
+<h3>平常点　50％</h3>
+<p><strong>各授業中に指示する課題</strong>で評価します。</p>
+</div>
+<div class="definition-card">
+<h3>レポート　50％</h3>
+<p><strong>総合演習で指示するレポート</strong>で評価します。</p>
+</div>
+</div>
+<p>総合演習は <strong>第7回・第15回</strong> に予定されています。</p>
+<p class="source-note">出典：シラバス 評価の方法と基準・第7回／第15回計画</p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+評価は、平常点が50パーセント、レポートが50パーセントです。平常点の評価対象として示されているのは、各授業中に指示する課題です。レポートは、総合演習で指示するものが対象です。総合演習は第7回と第15回にあります。それぞれのレポートの配点や提出方法、期限については、個別の指示を確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: 授業外で確認する基礎分野を示す -->
+<div class="slide-body">
+<h2>事前・事後学習で確認すること</h2>
+<ul>
+<li><strong>プログラミング</strong>：R・Pythonの基本文法とデータ構造</li>
+<li><strong>記述統計</strong>：平均・中央値・分散・標準偏差</li>
+<li><strong>統計学</strong>：確率分布・推定・仮説検定</li>
+<li><strong>数学</strong>：ベクトル・行列、微分積分の基礎</li>
+<li><strong>環境構築</strong>：RとPythonを実行できる環境</li>
+</ul>
+<p class="source-note">出典：シラバス 事前・事後学習</p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+シラバスの事前・事後学習には、この五つの分野が挙げられています。プログラミングの文法だけでなく、統計や数学の基礎ともつながる授業です。どの言葉に見覚えがあり、どの部分を復習したいかを確認しておくと、各回の学習につなげやすくなります。環境構築は、第2回の授業計画にも含まれています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: 推奨科目を必須条件と混同せず伝える -->
+<div class="slide-body">
+<h2>これまでの学びとつなげる</h2>
+<p>シラバスで<strong>事前受講を推奨</strong>している科目</p>
+<ul>
+<li>データサイエンス入門</li>
+<li>コンピュータ科学</li>
+<li>情報社会及び情報倫理</li>
+</ul>
+<p class="source-note">出典：シラバス 事前受講を推奨する科目</p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+事前受講を推奨する科目として、データサイエンス入門、コンピュータ科学、情報社会及び情報倫理が挙げられています。シラバスでの位置づけは推奨科目です。これまでに学んだ内容を振り返りながら、この授業でのプログラムの実行や結果の確認につなげてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: シラバス部分の要点をまとめ後続資料への接続を作る -->
+<div class="slide-body">
+<h2>まず押さえておきたい3点</h2>
+<ol>
+<li><strong>学び方</strong>：コードを実行し、結果を確認する。</li>
+<li><strong>到達目標</strong>：環境構築・基本事項の理解・分析手法の実行。</li>
+<li><strong>評価</strong>：授業中の課題50％、総合演習レポート50％。</li>
+</ol>
+<p class="source-note">出典：シラバス 授業概要・到達目標・評価の方法と基準</p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここまでがシラバスから確認した授業の全体像です。学び方、到達目標、評価の三点を押さえておきましょう。実際にコードを動かして確かめることを軸に、毎回の課題と総合演習に取り組んでいきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: Windowsで準備する二つのソフトと用途を共有する -->
+<div class="slide-body">
+<h2>授業で使う2つのソフトを準備する</h2>
+<p><strong>Windows向けの準備</strong>です。どちらも無料で利用できます。</p>
+<table>
+<thead>
+<tr>
+<th>ソフト</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Visual Studio Code（VS Code）</strong></td>
+<td>プログラムを書く</td>
+</tr>
+<tr>
+<td><strong>PowerShell</strong></td>
+<td>文字で命令を入力し、パソコンを操作する</td>
+</tr>
+</tbody>
+</table>
+<p>PowerShellの使い方は、授業で練習します。</p>
+<p><strong>初めての方は、できるところまでで大丈夫です。</strong></p>
+<p class="source-note">出典：初回授業の準備資料 冒頭・1・2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここからは、授業で使うパソコンの準備を確認します。準備するのは、ビジュアル・スタジオ・コードと、パワーシェルの二つです。どちらも無料で使えます。これから示すのは、ウィンドウズのパソコンでの手順です。ブイエス・コードはプログラムを書くために、パワーシェルは文字で命令を入力してパソコンを操作するために使います。初めての方は、できるところまでで大丈夫です。わからないところや、うまくいかないところは初回授業で一緒に確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: VS Codeを公式サイトからインストールし起動する手順を示す -->
+<div class="slide-body">
+<h2>VS Code：インストールして起動する</h2>
+<ol>
+<li><a href="https://code.visualstudio.com/download">公式ダウンロードページ</a>を開き、<strong>「Windows」</strong> を選ぶ。</li>
+<li>ダウンロードしたファイルを開き、利用規約を確認する。<br>
+画面の案内に沿ってインストールする。</li>
+<li><strong>「Visual Studio Code」</strong> を起動する。</li>
+</ol>
+<p>設定は、基本的に<strong>最初に表示されたまま</strong>で構いません。</p>
+<div class="callout primary-message">
+<p><strong>画面が開けば、今回の準備は完了です。</strong><br>
+日本語表示や授業に必要な追加設定は、授業で説明します。</p>
+</div>
+<p class="source-note">出典：初回授業の準備資料 1．Visual Studio Code</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+まず、ブイエス・コードを準備します。スライドのリンクから公式ダウンロードページを開き、ウィンドウズのダウンロードボタンを選んでください。ダウンロードしたファイルを開き、利用規約を確認してから、画面の案内に沿ってインストールします。設定は、基本的に最初に表示されたままで構いません。インストールが終わったら、ビジュアル・スタジオ・コードを起動してください。画面が開けば、今回の準備は完了です。日本語表示や追加設定は授業で説明するので、今は起動できるところまでで大丈夫です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: Microsoft Storeで通常版PowerShellを選び起動する手順を示す -->
+<div class="slide-body">
+<h2>PowerShell：Storeからインストールする</h2>
+<ol>
+<li>スタートメニューから <strong>「Microsoft Store」</strong> を開く。</li>
+<li><strong>「PowerShell」</strong> を検索する。</li>
+<li><strong>Microsoftが提供する「PowerShell」</strong> を選び、<br>
+「入手」または「インストール」を押す。</li>
+<li>インストール後に <strong>「開く」</strong> を押す。</li>
+</ol>
+<p><strong>「PowerShell Preview」ではなく、通常の「PowerShell」を選びます。</strong></p>
+<div class="callout primary-message">
+<p>文字を入力する画面が開けば完了です。<br>
+<strong>何も入力せず、閉じて構いません。</strong></p>
+</div>
+<p class="source-note">出典：初回授業の準備資料 2．PowerShell</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+次はパワーシェルです。ウィンドウズのスタートメニューからマイクロソフト・ストアを開き、検索欄にパワーシェルと入力します。提供元がマイクロソフトの、通常のパワーシェルを選んでください。パワーシェル・プレビューではありません。入手、またはインストールのボタンを押し、終わったら開くを押します。文字を入力する画面が開けば、今回の準備は完了です。ここで命令を入力する必要はありません。そのまま閉じて構いません。使い方は授業で練習します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: Windows PowerShellと今回追加するPowerShell 7の取り違えを防ぐ -->
+<div class="slide-body">
+<h2>「Windows PowerShell」があっても追加する</h2>
+<table>
+<thead>
+<tr>
+<th>名前</th>
+<th>今回の準備での扱い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows PowerShell</td>
+<td>Windowsに最初から入っているもの。削除不要。</td>
+</tr>
+<tr>
+<td>PowerShell 7</td>
+<td>今回、Microsoft Storeから追加するもの。</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">
+<p><strong>この2つは別のものです。</strong><br>
+「Windows PowerShell」が見つかっても、前の手順で追加してください。</p>
+</div>
+<p class="source-note">出典：初回授業の準備資料 2．PowerShell の注記</p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+名前が似ているため、ここを確認しておきましょう。ウィンドウズに最初から入っているウィンドウズ・パワーシェルと、今回インストールするパワーシェル・セブンは別のものです。パソコンの中にウィンドウズ・パワーシェルが見つかっても、先ほどのマイクロソフト・ストアの手順で追加してください。もともと入っているソフトを削除する必要はありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: 準備の完了条件と困ったときの対応および持参物を確認する -->
+<div class="slide-body">
+<h2>できるところまでで大丈夫です</h2>
+<ul>
+<li><strong>準備の目安</strong>：VS CodeとPowerShellの画面が開く。</li>
+<li><strong>困ったら</strong>：無理に先へ進めず、初回授業で一緒に確認する。</li>
+<li><strong>エラーが出たら</strong>：画面の写真やスクリーンショットを残す。</li>
+<li><strong>初回授業の持参物</strong>：パソコンと充電器。</li>
+</ul>
+<div class="callout primary-message">
+<p><strong>インストールが完了していなくても、そのまま参加して大丈夫です。</strong></p>
+</div>
+<p class="source-note">出典：初回授業の準備資料 1・2・困ったときは</p>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+準備の目安は、ブイエス・コードとパワーシェルをそれぞれ起動して、画面が開くことです。途中でわからなくなったときは、無理に先へ進めなくて大丈夫です。エラーなどが表示された場合は、画面の写真やスクリーンショットを残しておくと、授業で一緒に確認しやすくなります。初回授業にはパソコンと充電器を持参してください。インストールが終わっていなくても、そのまま参加して大丈夫です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: 授業でのVS Code利用とCopilotの推奨を区別して伝える -->
+<div class="slide-body">
+<h2>授業はVS Codeで進めます</h2>
+<ul>
+<li>授業では <strong>Visual Studio Codeを全面的に使います</strong>。</li>
+<li>学習を支援する <strong>GitHub Copilotの使用を推奨</strong>します。</li>
+<li>GitHub Educationの学生認証を受け、<br>
+<strong>Copilot StudentをVS Codeで使える状態</strong>を目指します。</li>
+</ul>
+<div class="callout primary-message">
+<p>AIの利用範囲・準備の期限は、担当教員の指示を確認してください。</p>
+</div>
+<p class="source-note">出典：担当教員の授業方針・申請マニュアル 冒頭</p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この授業では、ビジュアル・スタジオ・コードを全面的に使っていきます。あわせて、学習の支援にギットハブ・コパイロットを使うことを推奨します。これから、ギットハブ・エデュケーションの学生認証を受け、学生向けのコパイロットをブイエス・コードで使うまでの流れを確認します。授業でのエーアイの利用範囲や準備の期限は、担当教員の指示に従ってください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: 学生認証からVS Codeでの利用までの五段階を示す -->
+<div class="slide-body">
+<h2>申請から利用までの5ステップ</h2>
+<ol>
+<li>自分の <strong>GitHubアカウント</strong>を準備する。</li>
+<li><strong>大学メール・在学を示す書類</strong>を準備する。</li>
+<li><strong>GitHub Educationの学生申請</strong>を送信する。</li>
+<li>承認後、<strong>Copilot Studentを有効にする</strong>。</li>
+<li><strong>VS Codeで同じアカウント</strong>にサインインし、確認する。</li>
+</ol>
+<div class="callout primary-message">
+<p><strong>学生認証の承認と、Copilotの有効化は別の手続きです。</strong></p>
+</div>
+<p class="source-note">出典：申請マニュアル 0（確認・更新日：2026-09-28）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+全体は五つの段階です。アカウントを準備し、大学メールと在学を示す書類をそろえて、学生申請を送ります。承認されたら、コパイロット・スチューデントを有効にし、同じアカウントでブイエス・コードにサインインします。学生認証に通ることと、コパイロットを有効にすることは別の手続きです。審査にかかる時間は一律ではなく、承認後の特典反映にも数日かかる場合があるため、早めに申請しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: 申請に必要な準備物と在学証明の条件を確認する -->
+<div class="slide-body">
+<h2>大学メールと在学を示す書類を準備する</h2>
+<ul>
+<li>自分専用の <strong>GitHubアカウント</strong>。</li>
+<li><strong>大学メール</strong>と、その受信トレイへのアクセス。</li>
+<li><strong>現在の在学を示す書類</strong>：学生証・時間割・在学証明書など。</li>
+<li>パソコン・VS Code・安定したインターネット接続。</li>
+<li>2要素認証に使うスマートフォン等。</li>
+</ul>
+<div class="callout primary-message">
+<p>書類は <strong>氏名・学校名・在学を確認できる日付や有効期限</strong>が読めるもの。<br>
+必要な情報が欠けないよう、鮮明に撮影します。</p>
+</div>
+<p class="source-note">出典：申請マニュアル 1</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+大学から付与されたメールアドレスだけでなく、受信トレイを開けることを確認します。在学を示す書類は、氏名、学校名、現在の在学を確認できる日付や有効期限が読み取れるものを用意してください。学生証だけでは現在の在学を確認しにくい場合は、時間割や在学証明書なども準備します。写真は必要な情報が欠けないよう、文字が読める明るさで撮影します。日付や氏名を書き換えてはいけません。提出方法は実際の申請画面に従います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: 既存アカウントの利用と大学メールの確認を案内する -->
+<div class="slide-body">
+<h2>アカウントを準備し、大学メールを確認する</h2>
+<ol>
+<li>アカウントがあれば <strong>そのまま使う</strong>。<br>
+初めてなら <a href="https://github.com/signup">GitHubのアカウント作成ページ</a>で登録する。</li>
+<li><strong>Settings → Emails</strong> で大学メールを追加する。</li>
+<li>大学Gmailに届くメールで <strong>Verify</strong> 等の確認を完了する。</li>
+</ol>
+<ul>
+<li><strong>Username</strong>は実名でなくてよい。学籍番号等を避ける。</li>
+<li>申請する氏名は、<strong>提出書類の表記とそろえる</strong>。</li>
+<li>Usernameと公開プロフィールの <strong>Nameは別</strong>。不安があれば相談する。</li>
+</ul>
+<p class="source-note">出典：申請マニュアル 2.1〜2.3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+すでにギットハブのアカウントがある人は、新しく作らず、そのアカウントにログインしてください。初めての人は、リンク先から登録し、メールの確認まで終えます。設定のイーメールズで大学メールを追加し、大学の受信トレイに届いたメールで確認します。卒業後も使える個人メールを同じアカウントに追加しておくことも推奨されています。メールを公開プロフィールに表示する必要はありません。ユーザーネームは実名でなくて構いませんが、申請する氏名は証明書とそろえます。公開名とユーザーネームは別で、公開名の設定に不安があれば相談してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: 二要素認証と復旧コードの保管を案内する -->
+<div class="slide-body">
+<h2>2要素認証でアカウントを守る</h2>
+<p>申請前の設定を <strong>推奨</strong>します。必須の案内が出た場合は従ってください。</p>
+<ol>
+<li><strong>Settings → Password and authentication</strong> を開く。</li>
+<li><strong>Two-factor authentication</strong> の設定を開始する。</li>
+<li>認証アプリを使う場合は、QRコードを読み取り、確認コードを入力する。</li>
+<li><strong>Recovery codes（復旧コード）</strong> を保存する。</li>
+</ol>
+<div class="callout primary-message">
+<p>復旧コードは <strong>人に見せず、安全に保管</strong>してください。<br>
+設定に迷ったら、担当教員に相談しましょう。</p>
+</div>
+<p class="source-note">出典：申請マニュアル 2.4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+アカウントを守るため、申請前に二要素認証を設定することを推奨します。ギットハブから必須とする案内が出た場合は、その案内に従ってください。認証アプリを使う場合は、表示されたキューアールコードを読み取り、アプリの確認コードを入力します。最後に発行される復旧コードは、スマートフォンを使えなくなったときに備えて、安全に保管してください。パスキーは生体認証やピンなどを使う認証方法で、単にスマートフォンでコードを読み取ることだけを指すものではありません。迷ったら無理に認証方法を増やさず、担当教員に相談しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22: 学生として正確な情報を申請し結果を確認する流れを示す -->
+<div class="slide-body">
+<h2>GitHub Educationに学生申請する</h2>
+<ol>
+<li><a href="https://github.com/settings/education/benefits">Education benefits</a> を開く。</li>
+<li><strong>Start an application</strong> から、<strong>学生</strong>として申請する。</li>
+<li>大学名・メールなどを入力し、求められた在学証明を提出する。</li>
+<li>内容を確認し、<strong>Submit application</strong> 等で送信する。</li>
+<li><strong>登録メールとEducation benefits</strong> で結果を確認する。</li>
+</ol>
+<div class="callout primary-message">
+<p>追加確認・不承認の場合は、通知された理由と不足点を確認します。<br>
+<strong>大学が見つからなくても、別の大学を選ばないでください。</strong></p>
+</div>
+<p class="source-note">出典：申請マニュアル 3・5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+申請に使うアカウントでログインして、エデュケーション・ベネフィッツを開きます。学生として申請を開始し、大学名やメールアドレスなど、求められた項目を正確に入力します。在学証明を求められたら、指定の方法で提出し、内容を確認して送信してください。結果は登録メールと設定ページで確認します。追加確認や不承認の通知が来た場合は、その理由を読んで不足点を修正します。大学名やメールドメインが認識されない場合は、事実と異なる情報で進めず、担当教員やサポートに相談します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23: 承認後に学生向けCopilotを有効にし課金画面で止まることを伝える -->
+<div class="slide-body">
+<h2>承認後にCopilot Studentを有効にする</h2>
+<ol>
+<li><a href="https://github.com/settings/education/benefits">Education benefits</a> を開く。</li>
+<li><strong>Free GitHub developer resources for students and teachers</strong><br>
+の欄で <strong>Learn more</strong> を選び、案内に沿って有効化する。</li>
+<li><a href="https://github.com/settings/copilot">Copilotの設定ページ</a>で <strong>学生向け特典の適用</strong>を確認する。</li>
+</ol>
+<p><strong>「GitHub Pro」の表示だけでは、Copilotの有効化は確認できません。</strong></p>
+<div class="callout warning-callout">
+<p><strong>無料トライアル・カード入力・購入画面が出たら、契約せずに止めます。</strong><br>
+特典反映を待ち、数日たっても解決しなければサポートへ相談します。</p>
+</div>
+<p class="source-note">出典：申請マニュアル 4.1（確認・更新日：2026-09-28）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+学生認証が承認されたら、もう一度エデュケーション・ベネフィッツを開きます。学生と教員向けの無料リソースの欄から、ラーン・モアを選び、案内に従ってコパイロット・スチューデントを有効にします。最後に、コパイロット側の設定ページで学生向け特典が適用されていることを確認してください。ギットハブ・プロと表示されるだけでは確認になりません。無料トライアルやカード入力、購入画面が出た場合は契約せずに止めます。特典の反映を待ち、それでも解決しなければギットハブ・サポートに相談してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: プランごとの学習用データ設定と外部送信の違いを説明する -->
+<div class="slide-body">
+<h2>データ利用設定を確認する</h2>
+<ul>
+<li><strong>Copilot Student</strong>：マニュアルでは、2026年4月24日からの<br>
+個人向けCopilotの学習用データ利用変更の対象外と説明。</li>
+<li><strong>Copilot Free</strong>を使う場合：<a href="https://github.com/settings/copilot">Copilotの設定ページ</a>を確認する。</li>
+<li><strong>Allow GitHub to use my data for AI model training</strong> が<br>
+表示される場合は、<strong>Disabled</strong> にすることを推奨。</li>
+</ul>
+<div class="callout primary-message">
+<p><strong>学習用データの扱いと、入力内容の外部送信は別です。</strong><br>
+入力・添付する情報を確認してから利用します。</p>
+</div>
+<p class="source-note">出典：申請マニュアル 4.2（確認・更新日：2026-09-28）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここはデータの扱いについての確認です。申請マニュアルでは、コパイロット・スチューデントは、2026年4月24日からの個人向けプランの学習用データ利用変更の対象外と説明されています。ただし、入力した情報が外部に送信されないという意味ではありません。承認待ちなどでコパイロット・フリーを使う場合は、設定ページを確認し、学習用データの利用を許可する設定が表示されれば、ディセーブルドにすることを推奨しています。どのプランでも、送信する内容を自分で確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: 情報保護と人による確認と学習目的を守るAI利用を伝える -->
+<div class="slide-body">
+<h2>AIを学習に使うときの3つの約束</h2>
+<ol>
+<li><strong>送信する情報を確認する</strong><br>
+パスワード・APIキー・学生証・他人の個人情報・未公開データを入力しない。</li>
+<li><strong>変更・実行の内容を確認する</strong><br>
+AIの説明やコードが正しいとは限らない。理解せずに承認しない。</li>
+<li><strong>自分で理解することを優先する</strong><br>
+完成した解答をそのまま提出せず、説明やヒントを求めて確認する。</li>
+</ol>
+<div class="callout primary-message">
+<p><strong>課題ごとのAI利用条件は、担当教員の指示を優先します。</strong></p>
+</div>
+<p class="source-note">出典：申請マニュアル 4.2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+利用するときは三つのことを守りましょう。一つ目は、送信する情報の確認です。パスワードやエーピーアイキー、学生証、他人の個人情報、未公開の研究や業務のデータを入力したり添付したりしないでください。学生証を学生認証の申請画面に提出することと、エーアイに添付することは別です。二つ目は、ファイルの変更やコマンドの実行を、理解しないまま承認しないことです。三つ目は、完成した答えをそのまま提出するのではなく、説明やヒントを求めて自分で確認することです。課題ごとの利用条件は、担当教員の指示を優先してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26: 学生認証済みの同じアカウントでVS Codeを設定する -->
+<div class="slide-body">
+<h2>VS Codeで同じアカウントにサインイン</h2>
+<ol>
+<li><strong>VS Code</strong>を開く。</li>
+<li>下部のCopilotアイコンから <strong>Use AI Features</strong> 等で設定を開始する。</li>
+<li><strong>学生認証を受けたGitHubアカウント</strong>でサインインする。</li>
+<li>ブラウザでの認証を終え、<strong>VS Codeに戻る</strong>。</li>
+<li>必要な公式拡張機能は、案内に従って有効化・インストールする。</li>
+</ol>
+<div class="callout primary-message">
+<p>拡張機能を検索して追加する場合は、<strong>発行元がGitHub</strong>かを確認します。<br>
+WSL2を使う場合も、Windows側のVS Codeで授業用フォルダを開きます。</p>
+</div>
+<p class="source-note">出典：申請マニュアル 4.3（確認・更新日：2026-09-28）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ブイエス・コードを開き、画面下部のコパイロットのアイコンから、ユーズ・エーアイ・フィーチャーズなどの案内に沿って設定を開始します。サインインには、学生認証を受けたのと同じギットハブのアカウントを使ってください。ブラウザで認証が終わったら、ブイエス・コードに戻ります。公式拡張機能の有効化やインストールを求められたら、画面の案内に従います。自分で検索する場合は発行元がギットハブかを確認し、重複して追加しないようにします。ダブリューエスエル・ツーを使う場合も、ウィンドウズ側のブイエス・コードから授業用フォルダを開きます。申請のために別の開発環境へ移る必要はありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27: 説明だけを求めるプロンプトでチャット接続を確認する -->
+<div class="slide-body">
+<h2>チャットに「説明だけ」を頼んでみる</h2>
+<p>Copilotのチャットを開き、次のように質問します。</p>
+<blockquote>
+<p>Pythonのprint(“Hello”)は何をする命令ですか。<br>
+プログラミング初心者向けに、日本語で短く説明してください。<br>
+ファイルの変更やコマンドの実行はせず、説明だけしてください。</p>
+</blockquote>
+<div class="callout primary-message">
+<p>返答が出れば、<strong>チャットの接続を確認</strong>できます。<br>
+実行の確認が出ても承認せず、説明だけを求め直してください。</p>
+</div>
+<p class="source-note">出典：申請マニュアル 4.4（チャットの確認）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+接続の確認には、スライドにある質問を使います。パイソンのプリントでハローと表示する命令について、初心者向けに短く説明するよう頼んでいます。さらに、ファイルの変更やコマンドの実行はせず、説明だけを求めています。返答が出れば、チャットの接続を確認できます。この確認のために、ファイル変更やコマンド実行を承認する必要はありません。もし実行の確認が出たら承認せず、説明だけを求め直してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28: 練習ファイルでコード補完の表示を確認する -->
+<div class="slide-body">
+<h2>コード補完も確認する</h2>
+<p>練習用の <strong><code>copilot_check.py</code></strong> を作り、次の内容を入力します。</p>
+<pre><code class="language-python">numbers = [1, 2, 3, 4, 5]
+# numbersの合計を計算して表示する
+</code></pre>
+<ul>
+<li>その下の行で少し待ち、<strong>薄い文字の候補</strong>が出るか確認する。</li>
+<li>候補は常に表示されるとは限らない。</li>
+<li>出ないときは、<strong>Copilotの有効・無効とサインイン状態</strong>を確認する。</li>
+</ul>
+<p class="source-note">出典：申請マニュアル 4.4（コード補完の確認）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+チャットとは別に、コード補完も確認します。練習用のコパイロット・チェックというパイソンファイルを作り、スライドの二行を入力してください。一行目は数値のリスト、二行目はその合計を計算して表示するというコメントです。その下の行で少し待ちます。続きの候補が薄い文字で表示されれば、コード補完が利用できています。ただし、候補は常に出るとは限りません。表示されない場合は、コパイロットが有効か、正しいアカウントでサインインしているかを確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29: 無料プランの制限と更新時の確認方法を伝える -->
+<div class="slide-body">
+<h2>無料でも、すべてが無制限ではありません</h2>
+<table>
+<thead>
+<tr>
+<th>プラン</th>
+<th>コード補完</th>
+<th>チャット等</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Copilot Student</td>
+<td>無制限</td>
+<td>GitHub AI Creditsによる利用枠あり</td>
+</tr>
+<tr>
+<td>Copilot Free</td>
+<td>月2,000回まで</td>
+<td>利用枠あり</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>StudentのAIモデルはAuto（自動選択）</strong>。残量は利用状況で確認する。</li>
+<li>上限に達しても、<strong>追加予算や有料契約を設定しない</strong>。</li>
+<li>学生資格は毎月再評価。ただし、<strong>毎月最初から申請する意味ではない</strong>。</li>
+</ul>
+<p>Educationの有効期限・更新案内を確認し、必要な場合に再申請します。</p>
+<p class="source-note">出典：申請マニュアル 0・4.5（確認・更新日：2026-09-28）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+マニュアルの確認日時点では、学生向けプランのコード補完は無制限ですが、チャットやエージェントにはギットハブ・エーアイ・クレジットによる利用枠があります。長い会話や複数の処理では消費が増えるため、質問一回で一定量とは限りません。モデルはオートによる自動選択です。承認前にも使えるフリープランは、コード補完が月二千回までで、チャットなどにも枠があります。上限に達しても有料契約や追加予算で解決せず、エーアイを使わない作業を進め、必要なら相談してください。すでに有料契約などがある人は、その課金設定も確認します。学生資格の毎月の再評価は、毎月初めから申請し直す意味ではありません。有効期限と更新案内を確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30: よくある停止箇所に応じて確認先と相談方法を示す -->
+<div class="slide-body">
+<h2>困ったら、止まった段階を確認する</h2>
+<table>
+<thead>
+<tr>
+<th>状況</th>
+<th>確認すること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大学メールが届かない</td>
+<td>入力・迷惑メール・受信状態・再送</td>
+</tr>
+<tr>
+<td>学生認証が通らない</td>
+<td>通知理由・氏名・学校名・日付・画像の鮮明さ</td>
+</tr>
+<tr>
+<td>承認後もFreeのまま</td>
+<td>Copilotの有効化・特典の反映待ち</td>
+</tr>
+<tr>
+<td>VS Codeで使えない</td>
+<td>学生認証したアカウントでサインインしているか</td>
+</tr>
+<tr>
+<td>支払い画面や利用上限が出た</td>
+<td>契約せずに止め、状態を確認して相談</td>
+</tr>
+</tbody>
+</table>
+<p>**「どの段階で」「何と表示されたか」**を控え、担当教員や<br>
+<a href="https://support.github.com/">GitHub Support</a>に相談します。共有画像に個人情報・認証コードを含めないでください。</p>
+<p class="source-note">出典：申請マニュアル 5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+困ったときは、どの段階で止まったかを整理します。メールが届かない場合は、入力や迷惑メール、受信状態を確認します。学生認証が通らない場合は、通知された理由と証明書の内容を見直します。大学が認識されない場合は、正式名称、公式サイト、メールドメインを確認して、担当教員や学内窓口、サポートに相談してください。承認後もフリーのままなら有効化と反映待ちを確認します。ブイエス・コードだけで使えない場合はアカウントを確認し、必要ならサインインし直します。複数アカウントの場合は拡張機能が使うアカウント設定も確認します。相談時の画像にメールアドレス、学生証、認証コードなどが写らないようにしましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31: 申請から動作までの確認状況を整理し未完了時の相談を促す -->
+<div class="slide-body">
+<h2>準備の確認：どこまでできましたか</h2>
+<ul>
+<li><strong>Educationの学生認証</strong>が承認されている。</li>
+<li><strong>Copilot側で学生向け特典</strong>が有効になっている。</li>
+<li><strong>VS Codeで同じGitHubアカウント</strong>にサインインしている。</li>
+<li><strong>チャットの応答</strong>を確認し、<strong>コード補完の表示・設定</strong>も確認した。</li>
+</ul>
+<div class="callout primary-message">
+<p>未完了でも、<strong>アカウントを作り直したり、有料契約をしたりせず</strong>、<br>
+どこで止まったかを担当教員に伝えてください。</p>
+</div>
+<p class="source-note">出典：申請マニュアル 冒頭・4.4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、準備がどこまで進んだか確認しましょう。学生認証は承認されましたか。コパイロット側の学生向け特典は有効ですか。ブイエス・コードには同じアカウントでサインインしていますか。チャットの応答と、コード補完の表示や設定を確認できましたか。完了していない項目があっても、新しいアカウントを作り直したり、有料契約をしたりする必要はありません。承認が間に合わない場合も含め、止まった段階を担当教員に伝えてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32: 授業内容や評価方法について質問を受ける -->
+<div class="slide-body">
+<h2>質問・確認</h2>
+<ul>
+<li>授業で扱う内容について</li>
+<li>到達目標について</li>
+<li>課題や評価方法について</li>
+</ul>
+<p class="source-note">出典：シラバス 第1回計画</p>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+授業の全体像について、確認したいことはありますか。授業内容や到達目標、課題や評価方法について、わからない点を確認しましょう。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
