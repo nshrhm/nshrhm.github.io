@@ -1,9 +1,9 @@
 {
-  "revision": "2026-09-28 five-person round-1 closure",
+  "revision": "2026-09-30 A-101 venue change",
   "status": "REGENERATION_REQUIRED",
-  "policy": "MP3 files retained unchanged at user request. Changed notes compared using the existing voiceover parser. Unchanged notes do not prove audio content matches. Five-person closure revision: retained MP3 files unchanged; current hashes for newly changed notes use raw trimmed text.",
+  "policy": "MP3 files retained unchanged at user request. Changed notes compared using the existing voiceover parser. Unchanged notes do not prove audio content matches. Five-person closure revision: retained MP3 files unchanged; current hashes for newly changed notes use raw trimmed text. Venue change: retained MP3 unchanged; the introduction venue in the updated notes is A-101教室.",
   "before_deck_sha256": "c916852be77db52962d878ff4e549f1d02a52ec9652d29b3b2c265108151fa45",
-  "current_deck_sha256": "8f16af3fc8594235d08e80d8f92ab51ad37a662a423b4f406f589957ff5e599d",
+  "current_deck_sha256": "eac4bd22bdf39c03f94c7dad69918d8a5c011fc26039b1628173da3b9600ee1c",
   "slides": [
     {
       "slide": 1,
@@ -12,6 +12,14 @@
       "previous_notes_sha256": "32efd5cd083d719937938cda2412245976a2ae228f1505e691865146408284ae",
       "current_notes_sha256": "37f4637a2f2b10a0a92adc7a2197e1e7da5b87fa4da6d25f879cc1ee945ba6ef",
       "retained_mp3_sha256": "d79b33d262cde5c95de0ab66732b2f25c550f72519ba235da986ce2d95992da4"
+    },
+    {
+      "slide": 8,
+      "file": "slide_08.mp3",
+      "reason": "数理・情報系の紹介会場をA-101教室に変更",
+      "previous_notes_sha256": "5abcb18953cc6c37cb6c8aaa19a156386c220726e9f47465d51f7e4a84c85a3f",
+      "current_notes_sha256": "771f8910accb65bb047714808d7543c650348470b6afe578bbf72ac5291d8dbc",
+      "retained_mp3_sha256": "8fea118dd23688adb01401023aa018467e5d8d4e8487df5cc8f0de5de32712ec"
     },
     {
       "slide": 9,
@@ -154,5 +162,6 @@
       "retained_mp3_sha256": "a059a7cf73a30ebcb80e9fc73ab2666d01f3fdeaabc4d8de43d1edf076b79d46"
     }
   ],
-  "before_five_person_policy_deck_sha256": "58569b98f75c9813d769c232d4e6f18c99ecb4e9ebc5bd6f6588b7c4c2376692"
+  "before_five_person_policy_deck_sha256": "58569b98f75c9813d769c232d4e6f18c99ecb4e9ebc5bd6f6588b7c4c2376692",
+  "before_a101_venue_change_deck_sha256": "8f16af3fc8594235d08e80d8f92ab51ad37a662a423b4f406f589957ff5e599d"
 }

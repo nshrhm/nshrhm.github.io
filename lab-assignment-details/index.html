@@ -1,1367 +1,1172 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>令和8（2026）年度 研究室配属について</title>
-        <meta name="description"
-              content="A framework for easily creating beautiful presentations using HTML">
-        <meta name="author" content="Hakim El Hattab">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style"
-              content="black-translucent">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
-        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <!-- highlight Theme -->
-        <link rel="stylesheet"
-              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
-        <link rel="stylesheet"
-              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
-        <link rel="stylesheet"
-              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
-        <!-- Revealjs Theme -->
-        <link rel="stylesheet"
-              href="libs/reveal.js/4.3.1/theme/white.css"
-              id="theme">
-        <link rel="stylesheet" href="libs/styles/tasklist.css">
-        <link rel="stylesheet" href="libs/styles/iota.css">
-        <link rel="stylesheet" href="libs/styles/layout.css">
-        <!-- Revealjs Theme -->
-        <!-- css list -->
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div class="reveal">
-            <!-- Any section element inside of this container is displayed as a slide -->
-            <div class="slides">
-                <section>
-                    <!-- 1: 説明会と後日の確認に使う資料の対象と目的を示す -->
-                    <div class="title-block">
-                        <p class="eyebrow">令和8（2026）年度 ／ 下関市立大学 データサイエンス学部 3年生</p>
-                        <h2>研究室配属について</h2>
-                        <p class="subtitle">研究室を知る・希望を決める・手続きを進める</p>
-                        <p class="conference">2026年9月28日（月）16:30 ／ D棟1階 D-101教室</p>
-                        <p class="caption-note">説明会・欠席者の確認・後日の参照に使う資料です。</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        下関市立大学データサイエンス学部3年生のみなさんに、研究室配属の流れを説明します。研究室の研究内容を理解したうえで希望先を選び、希望調査と選考を経て配属を決めます。
-                        説明会の会場はD棟1階のD-101教室です。説明会は30分程度の予定ですが、このスライドには後から確認できるように補足も収めています。欠席した方も、順番に読んで必要な準備と手続きを確認してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 2: 資料内で必要な情報を探す道筋と特に重要な論点を示す -->
-                    <div class="slide-body">
-                        <h2>この資料で確認すること</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>確認したいこと</th>
-                                    <th>スライド</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>研究室を知る・訪問する</td>
-                                    <td>4～9</td>
-                                </tr>
-                                <tr>
-                                    <td>面接と評価点を理解する</td>
-                                    <td>10～18</td>
-                                </tr>
-                                <tr>
-                                    <td>希望調査・選考・配属日程を確認する</td>
-                                    <td>19～28</td>
-                                </tr>
-                                <tr>
-                                    <td>履修条件と、これから行うことを確認する</td>
-                                    <td>29～30</td>
-                                </tr>
-                                <tr>
-                                    <td>質問・GPA・日程早見表・関連資料</td>
-                                    <td>31～34</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="callout primary-message">
-                            特に確認：<strong>2つの入力締切／面接評価点／配属後の履修条件</strong>
-                        </div>
-                        <p class="source-label">出典：学生配布資料 全体</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        最初は全体を読み、後から確認するときはこの一覧を使ってください。各スライドの下に、学生配布資料の対応する節を示しています。
-                        手続きを間違えないために、最初の入力締切と入力調整締切の違い、面接評価点の条件、配属後にも必要な履修条件に注目してください。制度上の大切な条件は、スライド本文にも掲載しています。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 3: 配属までの流れと未配属の場合の経路を見渡す -->
-                    <div class="slide-body">
-                        <h2>配属までの全体像</h2>
-                        <ol class="timeline">
-                            <li>
-                                <strong>9～10月：研究室を知る</strong><span>冊子を読む → 紹介・訪問・個別面接</span>
-                            </li>
-                            <li>
-                                <strong>10月：希望を申請する</strong><span>希望調査に回答 → 申請状況を確認 → 入力調整</span>
-                            </li>
-                            <li>
-                                <strong>10月30日（金）：第1回の配属発表</strong><span>定員超過研究室では選考・後半の個別面接</span>
-                            </li>
-                            <li>
-                                <strong>未配属の場合：第2回配属・最終調整</strong><span>11月24日（火）に第2回の配属発表</span>
-                            </li>
-                            <li>
-                                <strong>11月30日（月）：配属確定</strong><span>その後も卒業研究の履修条件を確認</span>
-                            </li>
-                        </ol>
-                        <p class="source-label">出典：学生配布資料 冒頭・第4～7節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        研究室選びは、冊子を読んで終わりではありません。説明を聞き、訪問や面接で研究内容と指導方針を確かめ、希望を申請します。
-                        第1回で希望先に配属されなかった場合は、第2回の募集と選考に進み、必要に応じて最終調整を行います。配属確定は11月30日ですが、卒業研究を履修するための条件はその後も確認が必要です。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 4: 卒業研究の位置付けと選べる研究室の全体を示す -->
-                    <div class="slide-body">
-                        <h2>16研究室から、1つの研究室へ</h2>
-                        <div class="callout primary-message">
-                            <strong>卒業研究：4年次の必修科目・通年4単位</strong>
-                            <br>
-                            「ゼミ」と呼ばれることもあります。
-                        </div>
-                        <div class="field-grid">
-                            <div class="definition-card">
-                                <h3>数理・情報系</h3>
-                                <p class="big-number">
-                                    6<span>研究室</span>
-                                </p>
-                            </div>
-                            <div class="definition-card">
-                                <h3>
-                                    ビジネス
-                                    <br>
-                                    データサイエンス系
-                                </h3>
-                                <p class="big-number">
-                                    5<span>研究室</span>
-                                </p>
-                            </div>
-                            <div class="definition-card">
-                                <h3>
-                                    ヘルス
-                                    <br>
-                                    データサイエンス系
-                                </h3>
-                                <p class="big-number">
-                                    5<span>研究室</span>
-                                </p>
-                            </div>
-                        </div>
-                        <p>初めから一つの分野に絞らず、複数の研究室を比較しましょう。</p>
-                        <p class="source-label">出典：学生配布資料 第1節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        卒業研究は、4年次に取り組む通年4単位の必修科目です。今回、みなさんは合計16研究室の中から1つに配属されます。
-                        分野名だけで候補を決めず、実際の研究テーマや研究の進め方を読んでみてください。身につけたい力を考えながら、複数の研究室を比較することが大切です。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 5: 冊子の配布対象とPDFの閲覧経路を明示する -->
-                    <div class="slide-body">
-                        <h2>まず「研究室紹介冊子」を読む</h2>
-                        <ul>
-                            <li>
-                                各研究室の<strong>研究内容・卒業研究のテーマ例・ゼミや研究指導の進め方</strong>を掲載。
-                            </li>
-                            <li>
-                                本日の説明会で、<strong>3年生に1人1冊</strong>を配布します。
-                            </li>
-                            <li>
-                                同じ内容のPDFを<strong>学部Google Classroom</strong>でも配布します。
-                            </li>
-                            <li>PDFは1・2年生も閲覧できます。今回の紙の冊子は3年生への配布です。</li>
-                        </ul>
-                        <div class="callout primary-message">
-                            所在地・連絡先は、冊子の<strong>目次や各研究室の紹介</strong>で確認。
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第1節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        研究室紹介冊子には、研究内容だけでなく、テーマの例や研究指導の進め方もまとめられています。3年生には紙の冊子を1人1冊配布し、同じ内容のPDFを学部のグーグルクラスルームで配布します。
-                        訪問したい研究室が見つかったら、目次や各研究室の紹介を使って、所在地と連絡先を確かめてください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 6: 冊子を研究室比較と質問の準備に使う方法を示す -->
-                    <div class="slide-body">
-                        <h2>比較するのは「テーマ」だけではありません</h2>
-                        <div class="three-points">
-                            <div class="definition-card">
-                                <h3>何を研究するか</h3>
-                                <p>
-                                    興味のあるテーマや
-                                    <br>
-                                    キーワードを探す。
-                                </p>
-                            </div>
-                            <div class="definition-card">
-                                <h3>どう進めるか</h3>
-                                <p>
-                                    研究やゼミの進め方、
-                                    <br>
-                                    指導方針を確かめる。
-                                </p>
-                            </div>
-                            <div class="definition-card">
-                                <h3>何を身につけたいか</h3>
-                                <p>
-                                    学びたいことと
-                                    <br>
-                                    必要な準備を考える。
-                                </p>
-                            </div>
-                        </div>
-                        <ul>
-                            <li>
-                                目次・キーワードを手がかりに、<strong>複数の研究室</strong>を読む。
-                            </li>
-                            <li>質問したいことを整理してから、説明・相談に参加する。</li>
-                        </ul>
-                        <div class="callout primary-message">
-                            冊子31ページ「研究室訪問の準備と質問例」
-                            <br>
-                            冊子32ページ「研究室比較メモ」を活用。
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第1節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        研究室を選ぶときは、研究テーマに加えて、どのように研究を進めるのか、自分はどのような力を身につけたいのかも考えてみましょう。
-                        冊子の31ページには訪問の準備と質問例、32ページには比較メモがあります。読んで気になった点を整理し、説明や相談で確認するために使ってください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 7: 第1回の研究室紹介期間と情報収集の方法を示す -->
-                    <div class="slide-body">
-                        <h2>9月29日（火）～10月9日（金）は研究室紹介期間</h2>
-                        <div class="callout primary-message">
-                            <strong>冊子を読む ＋ 説明を聞く ＋ 相談する</strong>
-                        </div>
-                        <ul>
-                            <li>分野別の研究室紹介に参加しましょう。</li>
-                            <li>各教員が、個別説明会やWeb等で情報を提供する場合もあります。</li>
-                            <li>
-                                <strong>ビジネスデータサイエンス系・ヘルスデータサイエンス系</strong>の紹介日時・会場は、それぞれの案内を確認してください。
-                            </li>
-                        </ul>
-                        <p>数理・情報系の紹介は、次のスライドで案内します。</p>
-                        <p class="source-label">出典：学生配布資料 第2節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        第1回の研究室紹介期間は9月29日から10月9日です。冊子だけでなく、説明を聞いたり、相談したりして理解を深めてください。
-                        ビジネスデータサイエンス系とヘルスデータサイエンス系の日時や会場は、それぞれの案内で確認します。研究室によっては個別説明会やウェブでの情報提供もあります。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 8: 数理・情報系の紹介に参加するための具体的情報を示す -->
-                    <div class="slide-body">
-                        <h2>数理・情報系6研究室の紹介</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>項目</th>
-                                    <th>内容</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>日時</td>
-                                    <td>
-                                        <strong>10月1日（木）16:30から</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>会場</td>
-                                    <td>
-                                        <strong>D棟4階・D-408学生研究室</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>説明時間</td>
-                                    <td>各研究室10～15分程度</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="callout primary-message">
-                            <strong>実施順</strong>
-                            <br>
-                            福田 → 酒井 → 山根 → 坂東 → 近藤 → 白濵
-                        </div>
-                        <p>各研究室の紹介を聞き、冊子で気になった点を確かめましょう。</p>
-                        <p class="source-label">出典：学生配布資料 第2節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        数理・情報系の紹介は10月1日木曜日、午後4時30分からです。会場はD棟4階のD-408学生研究室です。
-                        福田研究室、酒井研究室、山根研究室、坂東研究室、近藤研究室、白濵研究室の順に、各研究室10分から15分程度の説明があります。関心のある研究室を比較する機会として活用してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 9: 研究室訪問の連絡方法と面接案内の確認事項を示す -->
-                    <div class="slide-body">
-                        <h2>訪問・相談は、各研究室の案内を確認</h2>
-                        <ul>
-                            <li>訪問・相談の方法は、研究室によって異なります。</li>
-                            <li>
-                                予約が必要な場合は、<strong>氏名・相談内容・希望日時</strong>を添えて連絡してください。
-                            </li>
-                            <li>
-                                <strong>面接を実施する研究室と、実施しない研究室があります。</strong>
-                            </li>
-                            <li>
-                                加点対象の個別面接については、<strong>実施有無・評価基準・申込方法</strong>を確認してください。
-                            </li>
-                        </ul>
-                        <div class="callout warning-callout">
-                            研究室紹介期間と、加点対象の個別面接期間は異なります。
-                            <br>
-                            <strong>面接には「前半」「後半」の2つの期間があります。</strong>
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第2～3節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        訪問や相談の方法は研究室ごとに違います。予約が必要であれば、氏名、相談したい内容、希望する日時を添えて連絡してください。
-                        面接を実施する研究室と、実施しない研究室があります。また、研究室を知るための相談と、配属判定の加点対象となる面接の扱いは、各研究室の案内で確認する必要があります。ここから、個別面接の期間と評価点のルールを説明します。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 10: 前半と後半の個別面接期間と対象の違いを示す -->
-                    <div class="slide-body">
-                        <h2>第1回配属の個別面接は、前半と後半</h2>
-                        <div class="two-column">
-                            <div class="definition-card">
-                                <h3>前半：入力調整締切前</h3>
-                                <p class="date-line">
-                                    9月29日（火）09:00
-                                    <br>
-                                    ～10月21日（水）13:00
-                                </p>
-                                <p>面接を実施する研究室の希望者が対象。</p>
-                            </div>
-                            <div class="definition-card">
-                                <h3>後半：定員超過研究室</h3>
-                                <p class="date-line">
-                                    10月22日（木）
-                                    <br>
-                                    ～10月29日（木）
-                                </p>
-                                <p>最終的な申請先で、前半に加点対象の個別面接を受けていない学生が加点対象。</p>
-                            </div>
-                        </div>
-                        <div class="callout primary-message">
-                            希望先が面接を実施する場合は、<strong>できるだけ前半に面接</strong>を受けましょう。
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第3節・第5節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        第1回配属の面接には2つの期間があります。前半は9月29日午前9時から10月21日午後1時までです。後半は10月22日から29日までで、定員を超過した研究室が対象です。
-                        後半に加点できるのは、最終的な申請先の研究室で、前半に加点対象の個別面接を受けていない学生です。希望先が面接を実施する場合は、研究室選びのためにも、なるべく前半に面接を受けてください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 11: 面接を受ける前に準備し確認する事項を整理する -->
-                    <div class="slide-body">
-                        <h2>面接では、研究への関心と希望理由を伝える</h2>
-                        <div class="two-column">
-                            <div class="definition-card">
-                                <h3>教員に確認すること</h3>
-                                <ul>
-                                    <li>研究内容</li>
-                                    <li>研究指導の方針</li>
-                                    <li>面接の評価基準・申込方法</li>
-                                </ul>
-                            </div>
-                            <div class="definition-card">
-                                <h3>自分から伝えること</h3>
-                                <ul>
-                                    <li>取り組みたい研究</li>
-                                    <li>関心のあるテーマ</li>
-                                    <li>その研究室を希望する理由</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <ul>
-                            <li>面接日程は、担当教員と調整して決めます。</li>
-                            <li>
-                                <strong>希望する研究室が面接を実施する場合は、案内に従って受けてください。</strong>
-                            </li>
-                        </ul>
-                        <p class="source-label">出典：学生配布資料 第3節・第4節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        面接は、研究内容や指導方針を確かめるとともに、自分の希望を担当教員に伝える機会です。どんな研究に取り組みたいか、なぜその研究室を希望するかを整理しておきましょう。
-                        面接の実施有無、評価基準、申込方法は各研究室が案内します。希望する研究室が面接を実施する場合は、その案内に従い、担当教員と日時を調整してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 12: 選考に用いるGPAと面接評価点の基本式を示す -->
-                    <div class="slide-body">
-                        <h2>第1回：定員超過時は面接の有無で選考</h2>
-                        <div class="formula-box">
-                            <strong>第1回配属の判定に用いる合計点
-                                <br>
-                            ＝ GPA ＋ 面接評価点（最大0.5点）</strong>
-                        </div>
-                        <ul>
-                            <li>
-                                <strong>第1回配属の最終的な第1希望研究室のみ</strong>に加点します。
-                            </li>
-                            <li>面接評価点は、各研究室の評価基準に基づいて教員が付与します。</li>
-                            <li>
-                                GPAは、<strong>3年次春学期までの全科目通算GPA</strong>です。
-                            </li>
-                            <li>
-                                面接を実施しない研究室は、<strong>GPAの高い順</strong>に選考します。
-                            </li>
-                        </ul>
-                        <p class="caption-note">上限は6名ですが、第1回は5名で締め切る場合があります。5名で決定した研究室は第2回以降の対象外です。</p>
-                        <p class="source-label">出典：学生配布資料 第3節・第5節・参考</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        第1回配属で希望者が当該研究室の受入人数を超えた場合、面接を実施する研究室では、ジーピーエーに最大0.5点の面接評価点を加えた合計点で選考します。加点は入力調整締切時点の第1希望研究室のみで、第2回以降は加点しません。
-                        使うジーピーエーは3年次春学期までの全 科目 通算の値です。面接を実施しない研究室はジーピーエーの高い順となります。上限は6名ですが、第1回は5名で募集を締め切る場合があります。第1回で5名の配属を決定した研究室は、その人数で確定し、第2回以降の配属対象としません。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 13: 原資料の架空の計算例で面接評価点の影響を示す -->
-                    <div class="slide-body">
-                        <h2>面接評価点で、合計点の順序が変わることも</h2>
-                        <p class="example-label">第1回配属で同じ研究室を希望する2人の、架空の計算例</p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>希望者</th>
-                                    <th style="text-align:right">GPA</th>
-                                    <th style="text-align:right">面接評価点</th>
-                                    <th style="text-align:right">合計点</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>学生A</td>
-                                    <td style="text-align:right">2.80</td>
-                                    <td style="text-align:right">0.50</td>
-                                    <td style="text-align:right">
-                                        <strong>3.30</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>学生B</td>
-                                    <td style="text-align:right">3.10</td>
-                                    <td style="text-align:right">0.10</td>
-                                    <td style="text-align:right">
-                                        <strong>3.20</strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <ul>
-                            <li>
-                                GPAは学生Bの方が高くても、<strong>合計点は学生Aの方が高くなります</strong>。
-                            </li>
-                            <li>面接評価点は配属判定に影響します。</li>
-                        </ul>
-                        <div class="callout primary-message">
-                            希望する研究室の<strong>面接案内を必ず確認</strong>してください。
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第3節「加点の影響を示す計算例」</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        これは第1回配属を想定した、配布資料にある架空の計算例です。実際の学生の成績ではありません。学生Aは2.80に0.50を加えて3.30、学生Bは3.10に0.10を加えて3.20になります。
-                        元のジーピーエーだけを見ると学生Bの方が高いですが、合計点では学生Aの方が高くなります。面接評価点は選考に影響するため、希望する研究室の案内を確かめてください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 14: 加点上限と一律加点でないこと及び成績との区別を明示する -->
-                    <div class="slide-body">
-                        <h2>第1回の面接評価点は、合計最大0.5点</h2>
-                        <div class="callout warning-callout">
-                            <strong>1回ごとに0.5点ではありません。</strong>
-                            <br>
-                            2回面接を受けても、0.5点ずつ加算して1.0点にはなりません。
-                        </div>
-                        <ul>
-                            <li>
-                                面接を受けた全員に、<strong>一律0.5点が付くわけではありません</strong>。
-                            </li>
-                            <li>前半に当該研究室で加点対象の面接を受けた場合、後半の追加加点はありません。</li>
-                            <li>
-                                加点は<strong>第1回の最終的な第1希望のみ</strong>。<strong>第2回以降は加点しません。</strong>
-                            </li>
-                            <li>
-                                <strong>成績上のGPAそのものは変更しません。</strong>
-                            </li>
-                        </ul>
-                        <p class="source-label">出典：学生配布資料 第3節・第5節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        0.5点は、面接1回あたりの上限ではなく、第1回配属で加える面接評価点全体の上限です。前半と後半を通じて合計最大0.5点で、面接回数を増やして点数を積み上げる制度ではありません。
-                        また、点数は各研究室の評価基準に基づくため、一律に0.5点が付くわけではありません。加点は第1回配属の最終的な第1希望のみで、第2回以降は加点しません。この加点で成績上のジーピーエーは変更されません。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 15: 第1希望の意味と各回1研究室だけ申請する方式を示す -->
-                    <div class="slide-body">
-                        <h2>「第1希望」は、最後に申請している1研究室</h2>
-                        <div class="callout primary-message">
-                            <strong>10月21日（水）13:00の入力調整締切時点</strong>で、
-                            <br>
-                            第1希望として申請している研究室を使います。
-                        </div>
-                        <ul>
-                            <li>最初に入力した研究室という意味ではありません。</li>
-                            <li>
-                                各回につき申請する研究室は<strong>1つ</strong>です。
-                            </li>
-                            <li>第2希望・第3希望をまとめて申請する方式ではありません。</li>
-                            <li>
-                                加点は<strong>第1回配属のみ</strong>。複数で面接を受けても、<strong>最終的な申請先の評価点のみ</strong>を使います。
-                            </li>
-                        </ul>
-                        <p class="source-label">出典：学生配布資料 第3節・第4節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        この資料でいう第1希望は、最初にフォームへ入力した研究室ではありません。入力調整を終え、10月21日午後1時の締切時点で申請している1研究室のことです。
-                        各回で申請するのは1研究室だけで、第2希望や第3希望を同時に登録する方式ではありません。複数の研究室で面接を受けることはできますが、加点は第1回配属の最終的な申請先のものだけです。第2回以降には加点しません。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 16: 希望変更時は点数を引き継がず変更先での面接歴を確認する -->
-                    <div class="slide-body">
-                        <h2>第1回で希望を変更したら、変更先の面接案内を確認</h2>
-                        <div class="workflow" aria-label="希望変更後は変更先の研究室の面接評価点を使用する">
-                            <div class="workflow-step">
-                                変更前の研究室
-                                <br>
-                                評価点は引継ぎ不可
-                            </div>
-                            <div class="workflow-arrow" aria-hidden="true">→</div>
-                            <div class="workflow-step emphasized">
-                                変更後の研究室
-                                <br>
-                                この研究室の評価点を使用
-                            </div>
-                        </div>
-                        <ul>
-                            <li>
-                                複数の研究室の評価点を<strong>合算することもできません</strong>。
-                            </li>
-                            <li>変更後の研究室が面接を実施する場合は、その案内を確認します。</li>
-                            <li>
-                                変更先で前半の加点対象面接を受けていなくても、<strong>変更先が定員超過で後半の面接を実施する場合</strong>は、後半の加点対象です。
-                            </li>
-                        </ul>
-                        <p class="caption-note">「未面接」は、最終的な申請先で加点対象の個別面接を受けたかどうかで判断します。</p>
-                        <p class="source-label">出典：学生配布資料 第3節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        第1回配属の入力調整で希望を変更した場合、変更前の研究室の点数は引き継ぎません。使うのは変更後の研究室の評価点だけで、複数の研究室の点数の合算もできません。
-                        変更先で前半に加点対象の面接を受けていない場合、変更先が定員超過となって後半の面接を実施すれば、後半の加点対象になります。他の研究室で面接を受けたことがあるかどうかではなく、最終的な申請先での面接歴を確認してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 17: 早めの面接の推奨と申請状況公開後の面接機会を区別する -->
-                    <div class="slide-body">
-                        <h2>面接は、できるだけ10月16日（金）17:00までに</h2>
-                        <ul>
-                            <li>
-                                <strong>希望先が面接を実施する場合</strong>は、研究室選びのために、最初の入力締切までの面接を推奨します。
-                            </li>
-                            <li>これは早めの面接を勧めるもので、前半の面接終了日時ではありません。</li>
-                        </ul>
-                        <div class="definition-card">
-                            <h3>10月19日（月）09:00の申請状況公開後も</h3>
-                            <p>
-                                新たな研究室での面接を申し出ることができます。
-                                <br>
-                                日程調整が必要なので、<strong>早めに担当教員へ連絡</strong>してください。
-                            </p>
-                        </div>
-                        <p>
-                            前半の面接は、入力調整締切までに<strong>受け終える</strong>必要があります。
-                        </p>
-                        <p class="source-label">出典：学生配布資料 第3節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        希望する研究室が面接を実施する場合は、できるだけ10月16日午後5時までに面接を受けてください。これは早めの面接を勧める日付で、前半の面接そのものの終了期限ではありません。
-                        10月19日午前9時に申請状況が公開された後、新たな研究室に面接を申し出ることもできます。ただし、担当教員との日程調整が必要です。入力調整の締切までに受け終えられるよう、早めに連絡しましょう。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 18: 10月21日13時が前半の面接完了期限であることを明示する -->
-                    <div class="slide-body">
-                        <h2>10月21日（水）13:00までに、前半の面接を終える</h2>
-                        <div class="two-column">
-                            <div class="definition-card">
-                                <h3>この時刻に終了すること</h3>
-                                <ul>
-                                    <li>希望調査の入力調整</li>
-                                    <li>前半の個別面接</li>
-                                    <li>前半に受けた面接の評価点の確定</li>
-                                </ul>
-                            </div>
-                            <div class="definition-card">
-                                <h3>間違えやすい点</h3>
-                                <p>
-                                    前半に面接を受ける場合は、<strong>この時刻までに完了</strong>。
-                                    <br>
-                                    申込締切ではありません。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="callout warning-callout">
-                            後半の対象者は10月22～29日も加点対象です。
-                            <br>
-                            <strong>全員の評価点が10月21日13:00に確定するわけではありません。</strong>
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第3節・第4節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        10月21日午後1時は、入力調整と前半の面接が終了する時刻です。この時刻までに面接を申し込めばよい、という意味ではありません。希望先が面接を実施し、前半に受ける場合は、ここまでに面接を終え、その評価点も確定します。
-                        一方で、後半の加点対象者は10月22日から29日に面接を受けられます。そのため、全員の面接評価点の確定期限が10月21日になるわけではありません。希望の入力締切とは分けて理解してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 19: 第1回希望調査の入口と準備すべき回答内容を示す -->
-                    <div class="slide-body">
-                        <h2>Google Classroomで案内するフォームから回答</h2>
-                        <div class="form-qr-layout">
-                            <div>
-                                <div class="callout primary-message">
-                                    <strong>各回につき、希望する研究室を1つ入力します。</strong>
-                                </div>
-                                <p class="form-link">
-                                    <a href="https://forms.gle/oDz98titVzbYvqf47">研究室希望調査（第1回）を開く</a>
-                                    <br>
-                                    <span>https://forms.gle/oDz98titVzbYvqf47</span>
-                                </p>
-                                <ul>
-                                    <li>
-                                        回答項目は、<strong>希望研究室・希望理由</strong>を予定しています。
-                                    </li>
-                                    <li>
-                                        取り組みたい研究や関心のあるテーマを
-                                        <br>
-                                        整理しておきましょう。
-                                    </li>
-                                    <li>
-                                        <strong>具体的な入力項目はフォームの案内を確認</strong>してください。
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="form-qr-panel">
-                                <p>
-                                    <a href="https://forms.gle/oDz98titVzbYvqf47">
-                                        <img class="form-qr"
-                                             src="./images/research-preference-round1-qr.png"
-                                             width="320"
-                                             height="320"
-                                             alt="研究室希望調査（第1回）のフォームを開くQRコード">
-                                    </a>
-                                </p>
-                                <p>
-                                    <strong>研究室希望調査（第1回）</strong>
-                                    <br>
-                                    スマートフォンで読み取り
-                                </p>
-                            </div>
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第4節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        第1回の希望調査は、学部のグーグルクラスルームで案内するグーグルフォームから回答します。画面のリンクやQRコードも使えます。各回につき、希望する研究室を1つ入力してください。
-                        希望研究室と希望理由を回答項目として予定しています。冊子や説明会で分かったことをもとに、取り組みたい研究や関心のあるテーマを整理しておきましょう。実際の入力項目はフォームの案内で確認してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 20: 最初の希望調査の入力期間と必須の締切を強調する -->
-                    <div class="slide-body">
-                        <h2>まずは10月16日（金）17:00までに回答</h2>
-                        <div class="workflow" aria-label="希望調査は10月12日9時開始、10月16日17時締切">
-                            <div class="workflow-step">
-                                入力開始
-                                <br>
-                                <strong>10月12日（月）09:00</strong>
-                            </div>
-                            <div class="workflow-arrow" aria-hidden="true">→</div>
-                            <div class="workflow-step emphasized">
-                                入力締切
-                                <br>
-                                <strong>10月16日（金）17:00</strong>
-                            </div>
-                        </div>
-                        <div class="callout warning-callout">
-                            <strong>個別面接期間が続いていても、最初の入力締切は変わりません。</strong>
-                        </div>
-                        <p>最初の入力締切と、その後の入力調整締切は別です。</p>
-                        <p class="source-label">出典：学生配布資料 第4節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        希望調査の入力は10月12日午前9時に始まり、10月16日午後5時に締め切ります。まずはこの期間に回答してください。
-                        個別面接の前半はその後も続きますが、面接期間が続いているからといって希望調査の回答を後回しにはできません。最初の入力締切と、次に説明する入力調整の締切は別です。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 21: 入力調整期間と後半面接でも申請先を先に確定することを示す -->
-                    <div class="slide-body">
-                        <h2>申請状況を確認し、10月21日（水）13:00までに確定</h2>
-                        <ol class="timeline">
-                            <li>
-                                <strong>10月19日（月）09:00</strong><span>申請状況ページ公開・入力調整開始</span>
-                            </li>
-                            <li>
-                                <strong>希望を変更する場合</strong><span>変更先の面接案内を確認。必要な面接は早めに調整。</span>
-                            </li>
-                            <li>
-                                <strong>10月21日（水）13:00</strong><span>入力調整締切・前半の個別面接終了</span>
-                            </li>
-                        </ol>
-                        <ul>
-                            <li>
-                                状況ページへのアクセス方法・調整手順は、<strong>学部からの案内</strong>を確認。
-                            </li>
-                            <li>
-                                <strong>後半に面接を受ける場合も、申請先はこの締切までに確定</strong>します。
-                            </li>
-                        </ul>
-                        <p class="caption-note">最初の締切は17:00、入力調整の締切は13:00です。後半の面接で締切は延長しません。</p>
-                        <p class="source-label">出典：学生配布資料 第3節・第4節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        10月19日午前9時から申請状況ページが公開され、入力調整が始まります。アクセス方法と操作手順は、学部からの案内で確認してください。
-                        入力調整は10月21日午後1時に締め切ります。後半に面接を受ける場合も、申請する研究室はこの時刻までに確定しなければなりません。最初の入力締切は午後5時ですが、入力調整は午後1時なので、時刻の違いにも注意しましょう。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 22: 希望者数と面接有無に応じた配属方法の分岐を示す -->
-                    <div class="slide-body">
-                        <h2>配属上限は6名：第1回は5名で締め切る場合あり</h2>
-                        <p>
-                            第1回配属の判定基準：<strong>10月21日（水）13:00時点の申請結果</strong>
-                        </p>
-                        <div class="decision-tree"
-                             aria-label="上限6名。ただし第1回は5名で締め切る場合あり。受入人数を超える場合は面接の有無で選考">
-                            <div class="decision-root">研究室間の偏りを抑えるため、全体の希望状況を踏まえて受入人数を調整</div>
-                            <div class="two-column">
-                                <div class="definition-card">
-                                    <h3>受入人数以内</h3>
-                                    <p>当該研究室の受入人数に基づいて配属します。</p>
-                                </div>
-                                <div class="definition-card">
-                                    <h3>受入人数を超える → 選考</h3>
-                                    <p>
-                                        <strong>面接あり：</strong>GPA＋面接評価点（最大0.5点）
-                                        <br>
-                                        <strong>面接なし：</strong>GPA
-                                        <br>
-                                        高い順に受入人数まで配属します。
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="caption-note">
-                            <strong>第1回で5名の配属を決定した研究室は、その人数で確定し、第2回以降の配属対象としません。</strong>
-                            <br>
-                            面接ありの場合は、後半の対象者の評価も反映して最終順位を決定します。
-                        </p>
-                        <p class="source-label">出典：学生配布資料 第5節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        第1回配属の決め方です。各研究室の配属上限は6名です。ただし、研究室間の配属人数の偏りを抑えるため、全体の希望状況を踏まえ、第1回は5名で募集を締め切る場合があります。第1回で5名の配属を決定した研究室は、その人数で確定し、第2回以降の配属対象としません。希望者が当該研究室の受入人数を超えた場合は、面接ありの研究室では合計点、面接なしの研究室ではジーピーエーの高い順に配属します。
-                        面接ありの研究室では、前半の評価点に加え、後半に初めてその研究室の加点対象面接を受ける学生の評価も反映して、最終的な順位を決めます。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 23: 後半の加点対象になる条件をすべて示す -->
-                    <div class="slide-body">
-                        <h2>後半に加点対象となるのは、次の学生</h2>
-                        <p class="date-line">後半：10月22日（木）～10月29日（木）</p>
-                        <ol>
-                            <li>
-                                <strong>10月21日（水）13:00時点の申請先</strong>が定員超過。
-                            </li>
-                            <li>その研究室が、後半の個別面接を実施。</li>
-                            <li>
-                                <strong>その研究室で、前半に加点対象の個別面接を受けていない。</strong>
-                            </li>
-                        </ol>
-                        <div class="callout primary-message">
-                            教員は、各研究室の評価基準により<strong>最大0.5点</strong>を付与できます。
-                            <br>
-                            他研究室での面接歴ではなく、<strong>最終的な申請先での面接歴</strong>を確認します。
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第3節・第5節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        後半の加点対象になる条件を確認します。入力調整締切時点の申請先が定員超過となり、その研究室が後半の面接を実施し、本人がその研究室で前半の加点対象面接を受けていない場合です。
-                        その場合、教員は研究室の評価基準に基づいて最大0.5点の面接評価点を付与できます。他の研究室で面接を受けた経験があっても、それだけで後半の対象外になるわけではありません。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 24: 前半面接済みの場合は後半で評価点を変更しないことを示す -->
-                    <div class="slide-body">
-                        <h2>前半に面接済みなら、後半の追加加点はありません</h2>
-                        <ul>
-                            <li>
-                                <strong>当該研究室で前半の加点対象面接を受けた学生</strong>は、その評価点を使います。
-                            </li>
-                            <li>確認のため、後半に再度面接を行う場合があります。</li>
-                            <li>
-                                その場合も、<strong>既に確定した点数を使用し、評価点を変更しません</strong>。
-                            </li>
-                        </ul>
-                        <div class="formula-box">
-                            例：前半の面接評価点が<strong>0.30点</strong>
-                            <br>
-                            → 後半に確認面接を受けても、使用するのは<strong>0.30点</strong>
-                        </div>
-                        <p class="caption-note">両期間を通じて合計最大0.5点。再面接による上乗せはありません。</p>
-                        <p class="source-label">出典：学生配布資料 第5節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        前半にその研究室で加点対象の面接を受けた学生は、既に確定した評価点を使います。後半に確認のための面接があっても、それによって評価点を変更したり、加点を上乗せしたりはしません。
-                        配布資料の例では、前半が0.30点だった場合、後半に確認面接を受けても0.30点を使います。最大0.5点まで追加してもらえる、という意味ではないことに注意してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 25: 後半面接の完了期限と第1回の配属発表日を示す -->
-                    <div class="slide-body">
-                        <h2>後半の面接を終え、10月30日（金）の発表を確認</h2>
-                        <ol class="timeline">
-                            <li>
-                                <strong>10月22日（木）～10月29日（木）</strong><span>定員超過研究室の選考・後半の個別面接</span>
-                            </li>
-                            <li>
-                                <strong>10月29日（木）まで</strong><span>加点対象者は、教員と調整した日時に面接を終える。</span>
-                            </li>
-                            <li>
-                                <strong>10月30日（金）</strong><span>研究室配属発表（第1回）</span>
-                            </li>
-                        </ol>
-                        <ul>
-                            <li>対象者・具体的な日時・方法は、該当研究室の案内で確認。</li>
-                            <li>
-                                <strong>後半は、希望研究室の再入力や変更を受け付ける期間ではありません。</strong>
-                            </li>
-                        </ul>
-                        <p class="source-label">出典：学生配布資料 第5節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        後半の面接を受ける学生は、研究室の案内を確認し、10月29日までの期間内に、教員と調整した日時に面接を終えてください。対象者や方法は研究室ごとに案内されます。
-                        この期間は希望先を再入力したり変更したりする期間ではありません。必要な選考と面接を経て、第1回の配属発表は10月30日に行われます。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 26: 第2回の対象と第1回ルールを自動適用しないことを示す -->
-                    <div class="slide-body">
-                        <h2>第1回で配属されなかった場合は、第2回へ</h2>
-                        <ul>
-                            <li>
-                                対象は、<strong>第1回で希望する研究室に配属されなかった学生</strong>です。
-                            </li>
-                            <li>
-                                <strong>受入れを継続する研究室</strong>が再募集・選考を行います。
-                            </li>
-                            <li>
-                                <strong>第1回で5名の配属を決定した研究室は、第2回以降の配属対象外</strong>です。
-                            </li>
-                            <li>
-                                第2回も、希望する研究室を<strong>1つ</strong>入力します。
-                            </li>
-                        </ul>
-                        <div class="callout warning-callout">
-                            <strong>第2回以降は、面接評価点を加算しません。</strong>
-                            <br>
-                            フォーム・開始／締切時刻・面接の日時や方法は、別途案内。
-                        </div>
-                        <p class="caption-note">第2回も面接の日程はありますが、面接評価点の加算は行いません。</p>
-                        <p class="source-label">出典：学生配布資料 第6節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        第1回で希望する研究室に配属されなかった学生には、受入れを継続する研究室について再募集と選考を行います。第1回で5名の配属を決定した研究室は、第2回以降の配属対象としません。第2回も申請する研究室は1つです。
-                        第2回以降の配属では、面接評価点を加算しません。第2回にも面接の日程はありますが、加点は行いません。回答フォーム、入力開始と締切の時刻、面接の具体的な日時や方法は、別途の案内を確認してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 27: 第2回の全日程と2つの入力最終日を示す -->
-                    <div class="slide-body">
-                        <h2>第2回のスケジュール</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>期間・日付</th>
-                                    <th>内容</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>10月30日（金）～11月5日（木）</td>
-                                    <td>研究室紹介期間（第2回）</td>
-                                </tr>
-                                <tr>
-                                    <td>11月6日（金）～11月10日（火）</td>
-                                    <td>
-                                        希望研究室入力期間／<strong>11月10日が入力締切</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>11月11日（水）～11月13日（金）</td>
-                                    <td>
-                                        入力調整期間／<strong>11月13日が最終日</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>11月16日（月）～11月20日（金）</td>
-                                    <td>研究室面接（定員超過分）</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>11月24日（火）</strong>
-                                    </td>
-                                    <td>
-                                        <strong>研究室配属発表（第2回）</strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="callout primary-message">
-                            <strong>第2回は面接評価点の加算なし。</strong>
-                            <br>
-                            開始・締切時刻、面接の日時・方法などは、別途案内を確認。
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第6節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        第2回の紹介期間は10月30日から11月5日です。希望入力は11月6日から10日、入力調整は11月11日から13日です。それぞれの最終日を確認してください。
-                        定員超過分の面接は11月16日から20日、第2回の配属発表は11月24日です。第2回の面接では、面接評価点の加算は行いません。ここに載っているのは日付で、開始や締切の時刻は別途の案内を確認する必要があります。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 28: 未配属者の最終調整と配属確定日及び変更可能性を示す -->
-                    <div class="slide-body">
-                        <h2>最終調整を経て、11月30日（月）に配属確定</h2>
-                        <ul>
-                            <li>
-                                未配属の学生は、<strong>受入れを継続する研究室を確認したうえで個別に調整</strong>します。
-                            </li>
-                        </ul>
-                        <p class="caption-note">第1回で5名の配属を決定した研究室は、最終調整でも配属対象としません。</p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>期間・日付</th>
-                                    <th>内容</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <strong>11月23日（月）～11月27日（金）</strong>
-                                    </td>
-                                    <td>最終調整期間</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>11月30日（月）</strong>
-                                    </td>
-                                    <td>研究室配属確定</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="callout warning-callout">
-                            スケジュールは一部変更される可能性があります。
-                            <br>
-                            <strong>学部からの最新の案内を確認してください。</strong>
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第6節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        未配属の学生については、受入れを継続する研究室を確認したうえで個別に配属を調整します。第1回で5名の配属を決定した研究室は、最終調整でも配属対象としません。資料に示された最終調整期間は11月23日から27日、配属確定は11月30日です。
-                        日程の一部が変更される可能性もあります。自分の配属結果と次の手続きを確認するとともに、学部からの最新の案内を継続して確認してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 29: 配属確定後も卒業研究の履修条件をすべて満たす必要を示す -->
-                    <div class="slide-body">
-                        <h2>配属が確定しても、卒業研究の履修条件を確認</h2>
-                        <p>
-                            2027年度の卒業研究には、次の<strong>すべて</strong>が必要です。
-                        </p>
-                        <ol class="conditions">
-                            <li>
-                                在学期間が<strong>3年間以上</strong>であること。
-                            </li>
-                            <li>
-                                修得単位数が<strong>80単位以上</strong>であること（自由科目を除く）。
-                            </li>
-                            <li>
-                                <strong>DSプロジェクト</strong>の単位を修得していること。
-                            </li>
-                        </ol>
-                        <div class="callout warning-callout">
-                            修得単位数・DSプロジェクトは<strong>2027年3月の成績公表</strong>で確認。
-                            <br>
-                            <strong>条件を満たさない学生は、2027年度は研究室に所属できません。</strong>
-                        </div>
-                        <p class="source-label">出典：学生配布資料 第7節（データサイエンス学部履修規程第11条の条件を掲載）</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        配属手続きと卒業研究の履修条件は、両方を確認する必要があります。条件は、在学期間が3年以上、自由科目を除く修得単位数が80単位以上、そしてディーエスプロジェクトの単位を修得していることです。3つすべてを満たす必要があります。
-                        特に単位数とディーエスプロジェクトの修得は、配属確定後の2027年3月の成績公表で確認されます。条件を満たさない場合は2027年度に研究室へ所属できないので、今後の単位修得にも注意してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 30: 学生がこれから行うことを期限とともにまとめる -->
-                    <div class="slide-body">
-                        <h2>これから行うこと</h2>
-                        <ul class="checklist">
-                            <li>
-                                <strong>冊子を読む：</strong>複数の研究室を比較し、質問・希望理由を整理。
-                            </li>
-                            <li>
-                                <strong>案内を確認：</strong>紹介・訪問・面接の実施方法と予約を確認。
-                            </li>
-                            <li>
-                                <strong>10月16日（金）17:00まで：</strong>第1回希望調査に回答。
-                            </li>
-                            <li>
-                                <strong>10月21日（水）13:00まで：</strong>入力調整を完了。前半に受ける面接も完了。
-                            </li>
-                            <li>
-                                <strong>後半の面接対象なら：</strong>教員と調整し、10月29日（木）までに完了。
-                            </li>
-                            <li>
-                                <strong>結果と履修条件を確認：</strong>配属発表・最新案内・必要な単位修得。
-                            </li>
-                        </ul>
-                        <p class="source-label">出典：学生配布資料 第1～7節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        まず冊子を読み、気になる研究室を比較し、質問と希望理由を整理してください。紹介や訪問の案内を確認し、希望先が面接を実施する場合は、必要な連絡を早めに行いましょう。
-                        10月16日午後5時が最初の回答締切、10月21日午後1時が入力調整と前半面接の終了です。後半の対象者は10月29日までに面接を終えます。その後は配属結果と次の案内を確認し、卒業研究に必要な単位の修得も進めてください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 31: 質問の観点と欠席者が確認する情報源を示す -->
-                    <div class="slide-body">
-                        <h2>質問・確認</h2>
-                        <div class="callout primary-message">自分が次に何をするか、確認できましたか。</div>
-                        <ul>
-                            <li>2つの入力締切と、前半の面接を終える期限は分かりましたか。</li>
-                            <li>希望変更時の評価点と、後半の対象者は分かりましたか。</li>
-                            <li>配属確定後の履修条件は確認できましたか。</li>
-                        </ul>
-                        <p>
-                            後から確認する場合は、<strong>学生配布資料・学部の最新案内・各研究室の案内</strong>も参照してください。
-                        </p>
-                        <p class="caption-note">次の3枚は補足：GPA計算方法／第1回の日程早見表／出典・関連資料</p>
-                        <p class="source-label">参照：学生配布資料 第3～7節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        ここまでの内容について、質問や確認したいことを受け付けます。特に、自分がいつまでに何をするかを確認してください。
-                        欠席した方や後から読んでいる方は、学生配布資料と、学部や各研究室からの案内も確認しましょう。続く補足では、ジーピーエーの計算方法と第1回の日程をまとめています。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 32: 選考に使うGPAの評価表と計算方法を全文相当で残す -->
-                    <div class="slide-body compact">
-                        <h2>補足：GPAの計算方法</h2>
-                        <p>
-                            選考に用いるのは、<strong>3年次春学期までの全科目通算GPA</strong>です。
-                        </p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>評価</th>
-                                    <th>得点</th>
-                                    <th style="text-align:right">GP</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>秀</td>
-                                    <td>90～100点</td>
-                                    <td style="text-align:right">4</td>
-                                </tr>
-                                <tr>
-                                    <td>優</td>
-                                    <td>80～89点</td>
-                                    <td style="text-align:right">3</td>
-                                </tr>
-                                <tr>
-                                    <td>良</td>
-                                    <td>70～79点</td>
-                                    <td style="text-align:right">2</td>
-                                </tr>
-                                <tr>
-                                    <td>可</td>
-                                    <td>60～69点</td>
-                                    <td style="text-align:right">1</td>
-                                </tr>
-                                <tr>
-                                    <td>不可</td>
-                                    <td>59点以下</td>
-                                    <td style="text-align:right">0</td>
-                                </tr>
-                                <tr>
-                                    <td>失格</td>
-                                    <td>―</td>
-                                    <td style="text-align:right">0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="formula-box">
-                            <strong>GPA ＝（GP × 当該科目の単位数）の総和 ÷ 履修単位数合計</strong>
-                        </div>
-                        <p class="caption-note">面接評価点はGPA計算に含めず、第1回の最終的な第1希望の選考でのみ加算。第2回以降は加算せず、成績上のGPAも変更しません。</p>
-                        <p class="source-label">出典：学生配布資料「参考：選考に用いるGPAの計算方法」</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        ジーピーエーは、各科目のジーピーと単位数を掛けた値を合計し、履修単位数の合計で割って計算します。秀は4、優は3、良は2、可は1、不可と失格は0です。
-                        選考では3年次春学期までの全科目 通算ジーピーエーを使用します。面接評価点はこの計算式には入れず、第1回配属の最終的な第1希望研究室での選考に限り加算します。第2回以降は加算しません。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 33: 第1回の入力と面接と発表を一つの早見表にまとめる -->
-                    <div class="slide-body compact">
-                        <h2>補足：第1回の日程早見表</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>日時</th>
-                                    <th>内容</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>9月29日（火）09:00</td>
-                                    <td>前半の個別面接開始</td>
-                                </tr>
-                                <tr>
-                                    <td>10月12日（月）09:00</td>
-                                    <td>希望調査の入力開始</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>10月16日（金）17:00</strong>
-                                    </td>
-                                    <td>
-                                        <strong>希望調査の入力締切</strong>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>10月19日（月）09:00</td>
-                                    <td>申請状況ページ公開・入力調整開始</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>10月21日（水）13:00</strong>
-                                    </td>
-                                    <td>
-                                        <strong>入力調整締切・前半の面接終了</strong>／前半の評価点確定
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>10月22日（木）～10月29日（木）</td>
-                                    <td>定員超過研究室の選考・後半の個別面接</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>10月30日（金）</strong>
-                                    </td>
-                                    <td>
-                                        <strong>配属発表（第1回）</strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p class="caption-note">
-                            後半は当該研究室の未面接者が加点対象。後半の面接で入力締切は延長しません。
-                            <br>
-                            研究室紹介期間：9月29日（火）～10月9日（金）。日程変更は学部の最新案内を確認。
-                        </p>
-                        <p class="source-label">出典：学生配布資料 第2～6節</p>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        第1回の日程を確認するときは、この表を使ってください。特に10月16日の午後5時と、10月21日の午後1時を区別してください。
-                        前半の面接評価点は入力調整締切までに確定しますが、後半には、定員超過研究室で未面接者を対象とする加点対象の面接が続きます。第1回の配属発表は10月30日です。変更がある場合に備えて、学部の最新案内も確認してください。
-                    </aside>
-                </section>
-                <section>
-                    <!-- 34: 根拠資料と学生が参照できる関連資料を示す -->
-                    <div class="slide-body">
-                        <h2>補足：出典・関連資料</h2>
-                        <ul>
-                            <li>
-                                <strong>主資料：</strong>「令和8（2026）年度 データサイエンス学部 研究室配属について」
-                                <br>
-                                9月28日（月）説明会配布資料（全7節・参考）。当日版の修正方針を反映。
-                            </li>
-                            <li>
-                                **研究室紹介冊子：**研究内容・テーマ例・指導の進め方、所在地・連絡先。
-                                <br>
-                                紙の冊子、または学部Google ClassroomのPDFを参照。
-                            </li>
-                            <li>
-                                <strong>研究室希望調査（第1回）：</strong>
-                                <br>
-                                <a href="https://forms.gle/oDz98titVzbYvqf47">https://forms.gle/oDz98titVzbYvqf47</a>
-                            </li>
-                            <li>**更新情報：**学部と各研究室の最新の案内を確認してください。</li>
-                        </ul>
-                        <div class="callout primary-message">当日版の3原則を反映し、詳細な説明・計算例を収録しています。</div>
-                    </div>
-                    <p>
-                        <audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio>
-                    </p>
-                    <aside class="notes">
-                        このスライドは、9月28日の研究室配属の配布資料に、当日版の修正方針を反映したものです。面接実施は研究室ごとに異なること、加点は最大0.5点で第1回の最終的な第1希望のみであることを明確にしました。手続きの詳細は配布資料を、各研究室の研究内容や連絡先は研究室紹介冊子を参照してください。
-                        研究室紹介冊子のPDFは学部のグーグルクラスルームでも確認できます。日程の変更や各研究室の面接案内、第2回の詳細については、学部や研究室からの最新の案内を確認してください。
-                    </aside>
-                </section>
-            </div>
-        </div>
-        <div class="line top"></div>
-        <div class="line bottom"></div>
-        <div class="line left"></div>
-        <div class="line right"></div>
-        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
-        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
-        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
-        <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
-        <script>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>令和8（2026）年度 研究室配属について</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: 説明会と後日の確認に使う資料の対象と目的を示す -->
+<div class="title-block">
+<p class="eyebrow">令和8（2026）年度 ／ 下関市立大学 データサイエンス学部 3年生</p>
+<h2>研究室配属について</h2>
+<p class="subtitle">研究室を知る・希望を決める・手続きを進める</p>
+<p class="conference">2026年9月28日（月）16:30 ／ D棟1階 D-101教室</p>
+<p class="caption-note">説明会・欠席者の確認・後日の参照に使う資料です。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+下関市立大学データサイエンス学部3年生のみなさんに、研究室配属の流れを説明します。研究室の研究内容を理解したうえで希望先を選び、希望調査と選考を経て配属を決めます。
+説明会の会場はD棟1階のD-101教室です。説明会は30分程度の予定ですが、このスライドには後から確認できるように補足も収めています。欠席した方も、順番に読んで必要な準備と手続きを確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: 資料内で必要な情報を探す道筋と特に重要な論点を示す -->
+<div class="slide-body">
+<h2>この資料で確認すること</h2>
+<table>
+<thead>
+<tr>
+<th>確認したいこと</th>
+<th>スライド</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>研究室を知る・訪問する</td>
+<td>4～9</td>
+</tr>
+<tr>
+<td>面接と評価点を理解する</td>
+<td>10～18</td>
+</tr>
+<tr>
+<td>希望調査・選考・配属日程を確認する</td>
+<td>19～28</td>
+</tr>
+<tr>
+<td>履修条件と、これから行うことを確認する</td>
+<td>29～30</td>
+</tr>
+<tr>
+<td>質問・GPA・日程早見表・関連資料</td>
+<td>31～34</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">特に確認：<strong>2つの入力締切／面接評価点／配属後の履修条件</strong></div>
+<p class="source-label">出典：学生配布資料 全体</p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最初は全体を読み、後から確認するときはこの一覧を使ってください。各スライドの下に、学生配布資料の対応する節を示しています。
+手続きを間違えないために、最初の入力締切と入力調整締切の違い、面接評価点の条件、配属後にも必要な履修条件に注目してください。制度上の大切な条件は、スライド本文にも掲載しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: 配属までの流れと未配属の場合の経路を見渡す -->
+<div class="slide-body">
+<h2>配属までの全体像</h2>
+<ol class="timeline">
+<li><strong>9～10月：研究室を知る</strong><span>冊子を読む → 紹介・訪問・個別面接</span></li>
+<li><strong>10月：希望を申請する</strong><span>希望調査に回答 → 申請状況を確認 → 入力調整</span></li>
+<li><strong>10月30日（金）：第1回の配属発表</strong><span>定員超過研究室では選考・後半の個別面接</span></li>
+<li><strong>未配属の場合：第2回配属・最終調整</strong><span>11月24日（火）に第2回の配属発表</span></li>
+<li><strong>11月30日（月）：配属確定</strong><span>その後も卒業研究の履修条件を確認</span></li>
+</ol>
+<p class="source-label">出典：学生配布資料 冒頭・第4～7節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+研究室選びは、冊子を読んで終わりではありません。説明を聞き、訪問や面接で研究内容と指導方針を確かめ、希望を申請します。
+第1回で希望先に配属されなかった場合は、第2回の募集と選考に進み、必要に応じて最終調整を行います。配属確定は11月30日ですが、卒業研究を履修するための条件はその後も確認が必要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: 卒業研究の位置付けと選べる研究室の全体を示す -->
+<div class="slide-body">
+<h2>16研究室から、1つの研究室へ</h2>
+<div class="callout primary-message"><strong>卒業研究：4年次の必修科目・通年4単位</strong><br>「ゼミ」と呼ばれることもあります。</div>
+<div class="field-grid">
+<div class="definition-card"><h3>数理・情報系</h3>
+<p class="big-number">6<span>研究室</span></p></div>
+<div class="definition-card"><h3>ビジネス<br>データサイエンス系</h3>
+<p class="big-number">5<span>研究室</span></p></div>
+<div class="definition-card"><h3>ヘルス<br>データサイエンス系</h3>
+<p class="big-number">5<span>研究室</span></p></div>
+</div>
+<p>初めから一つの分野に絞らず、複数の研究室を比較しましょう。</p>
+<p class="source-label">出典：学生配布資料 第1節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+卒業研究は、4年次に取り組む通年4単位の必修科目です。今回、みなさんは合計16研究室の中から1つに配属されます。
+分野名だけで候補を決めず、実際の研究テーマや研究の進め方を読んでみてください。身につけたい力を考えながら、複数の研究室を比較することが大切です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: 冊子の配布対象とPDFの閲覧経路を明示する -->
+<div class="slide-body">
+<h2>まず「研究室紹介冊子」を読む</h2>
+<ul>
+<li>各研究室の<strong>研究内容・卒業研究のテーマ例・ゼミや研究指導の進め方</strong>を掲載。</li>
+<li>本日の説明会で、<strong>3年生に1人1冊</strong>を配布します。</li>
+<li>同じ内容のPDFを<strong>学部Google Classroom</strong>でも配布します。</li>
+<li>PDFは1・2年生も閲覧できます。今回の紙の冊子は3年生への配布です。</li>
+</ul>
+<div class="callout primary-message">所在地・連絡先は、冊子の<strong>目次や各研究室の紹介</strong>で確認。</div>
+<p class="source-label">出典：学生配布資料 第1節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+研究室紹介冊子には、研究内容だけでなく、テーマの例や研究指導の進め方もまとめられています。3年生には紙の冊子を1人1冊配布し、同じ内容のPDFを学部のグーグルクラスルームで配布します。
+訪問したい研究室が見つかったら、目次や各研究室の紹介を使って、所在地と連絡先を確かめてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: 冊子を研究室比較と質問の準備に使う方法を示す -->
+<div class="slide-body">
+<h2>比較するのは「テーマ」だけではありません</h2>
+<div class="three-points">
+<div class="definition-card"><h3>何を研究するか</h3>
+<p>興味のあるテーマや<br>キーワードを探す。</p></div>
+<div class="definition-card"><h3>どう進めるか</h3>
+<p>研究やゼミの進め方、<br>指導方針を確かめる。</p></div>
+<div class="definition-card"><h3>何を身につけたいか</h3>
+<p>学びたいことと<br>必要な準備を考える。</p></div>
+</div>
+<ul>
+<li>目次・キーワードを手がかりに、<strong>複数の研究室</strong>を読む。</li>
+<li>質問したいことを整理してから、説明・相談に参加する。</li>
+</ul>
+<div class="callout primary-message">冊子31ページ「研究室訪問の準備と質問例」<br>冊子32ページ「研究室比較メモ」を活用。</div>
+<p class="source-label">出典：学生配布資料 第1節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+研究室を選ぶときは、研究テーマに加えて、どのように研究を進めるのか、自分はどのような力を身につけたいのかも考えてみましょう。
+冊子の31ページには訪問の準備と質問例、32ページには比較メモがあります。読んで気になった点を整理し、説明や相談で確認するために使ってください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: 第1回の研究室紹介期間と情報収集の方法を示す -->
+<div class="slide-body">
+<h2>9月29日（火）～10月9日（金）は研究室紹介期間</h2>
+<div class="callout primary-message"><strong>冊子を読む ＋ 説明を聞く ＋ 相談する</strong></div>
+<ul>
+<li>分野別の研究室紹介に参加しましょう。</li>
+<li>各教員が、個別説明会やWeb等で情報を提供する場合もあります。</li>
+<li><strong>ビジネスデータサイエンス系・ヘルスデータサイエンス系</strong>の紹介日時・会場は、それぞれの案内を確認してください。</li>
+</ul>
+<p>数理・情報系の紹介は、次のスライドで案内します。</p>
+<p class="source-label">出典：学生配布資料 第2節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回の研究室紹介期間は9月29日から10月9日です。冊子だけでなく、説明を聞いたり、相談したりして理解を深めてください。
+ビジネスデータサイエンス系とヘルスデータサイエンス系の日時や会場は、それぞれの案内で確認します。研究室によっては個別説明会やウェブでの情報提供もあります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: 数理・情報系の紹介に参加するための具体的情報を示す -->
+<div class="slide-body">
+<h2>数理・情報系6研究室の紹介</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日時</td>
+<td><strong>10月1日（木）16:30から</strong></td>
+</tr>
+<tr>
+<td>会場</td>
+<td><strong>A-101教室</strong></td>
+</tr>
+<tr>
+<td>説明時間</td>
+<td>各研究室10～15分程度</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message"><strong>実施順</strong><br>福田 → 酒井 → 山根 → 坂東 → 近藤 → 白濵</div>
+<p>各研究室の紹介を聞き、冊子で気になった点を確かめましょう。</p>
+<p class="source-label">出典：学生配布資料 第2節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+数理・情報系の紹介は10月1日木曜日、午後4時30分からです。会場はA-101教室です。
+福田研究室、酒井研究室、山根研究室、坂東研究室、近藤研究室、白濵研究室の順に、各研究室10分から15分程度の説明があります。関心のある研究室を比較する機会として活用してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: 研究室訪問の連絡方法と面接案内の確認事項を示す -->
+<div class="slide-body">
+<h2>訪問・相談は、各研究室の案内を確認</h2>
+<ul>
+<li>訪問・相談の方法は、研究室によって異なります。</li>
+<li>予約が必要な場合は、<strong>氏名・相談内容・希望日時</strong>を添えて連絡してください。</li>
+<li><strong>面接を実施する研究室と、実施しない研究室があります。</strong></li>
+<li>加点対象の個別面接については、<strong>実施有無・評価基準・申込方法</strong>を確認してください。</li>
+</ul>
+<div class="callout warning-callout">研究室紹介期間と、加点対象の個別面接期間は異なります。<br><strong>面接には「前半」「後半」の2つの期間があります。</strong></div>
+<p class="source-label">出典：学生配布資料 第2～3節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+訪問や相談の方法は研究室ごとに違います。予約が必要であれば、氏名、相談したい内容、希望する日時を添えて連絡してください。
+面接を実施する研究室と、実施しない研究室があります。また、研究室を知るための相談と、配属判定の加点対象となる面接の扱いは、各研究室の案内で確認する必要があります。ここから、個別面接の期間と評価点のルールを説明します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: 前半と後半の個別面接期間と対象の違いを示す -->
+<div class="slide-body">
+<h2>第1回配属の個別面接は、前半と後半</h2>
+<div class="two-column">
+<div class="definition-card"><h3>前半：入力調整締切前</h3>
+<p class="date-line">9月29日（火）09:00<br>～10月21日（水）13:00</p><p>面接を実施する研究室の希望者が対象。</p></div>
+<div class="definition-card"><h3>後半：定員超過研究室</h3>
+<p class="date-line">10月22日（木）<br>～10月29日（木）</p><p>最終的な申請先で、前半に加点対象の個別面接を受けていない学生が加点対象。</p></div>
+</div>
+<div class="callout primary-message">希望先が面接を実施する場合は、<strong>できるだけ前半に面接</strong>を受けましょう。</div>
+<p class="source-label">出典：学生配布資料 第3節・第5節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回配属の面接には2つの期間があります。前半は9月29日午前9時から10月21日午後1時までです。後半は10月22日から29日までで、定員を超過した研究室が対象です。
+後半に加点できるのは、最終的な申請先の研究室で、前半に加点対象の個別面接を受けていない学生です。希望先が面接を実施する場合は、研究室選びのためにも、なるべく前半に面接を受けてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: 面接を受ける前に準備し確認する事項を整理する -->
+<div class="slide-body">
+<h2>面接では、研究への関心と希望理由を伝える</h2>
+<div class="two-column">
+<div class="definition-card"><h3>教員に確認すること</h3>
+<ul><li>研究内容</li><li>研究指導の方針</li><li>面接の評価基準・申込方法</li></ul></div>
+<div class="definition-card"><h3>自分から伝えること</h3>
+<ul><li>取り組みたい研究</li><li>関心のあるテーマ</li><li>その研究室を希望する理由</li></ul></div>
+</div>
+<ul>
+<li>面接日程は、担当教員と調整して決めます。</li>
+<li><strong>希望する研究室が面接を実施する場合は、案内に従って受けてください。</strong></li>
+</ul>
+<p class="source-label">出典：学生配布資料 第3節・第4節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+面接は、研究内容や指導方針を確かめるとともに、自分の希望を担当教員に伝える機会です。どんな研究に取り組みたいか、なぜその研究室を希望するかを整理しておきましょう。
+面接の実施有無、評価基準、申込方法は各研究室が案内します。希望する研究室が面接を実施する場合は、その案内に従い、担当教員と日時を調整してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: 選考に用いるGPAと面接評価点の基本式を示す -->
+<div class="slide-body">
+<h2>第1回：定員超過時は面接の有無で選考</h2>
+<div class="formula-box"><strong>第1回配属の判定に用いる合計点<br>＝ GPA ＋ 面接評価点（最大0.5点）</strong></div>
+<ul>
+<li><strong>第1回配属の最終的な第1希望研究室のみ</strong>に加点します。</li>
+<li>面接評価点は、各研究室の評価基準に基づいて教員が付与します。</li>
+<li>GPAは、<strong>3年次春学期までの全科目通算GPA</strong>です。</li>
+<li>面接を実施しない研究室は、<strong>GPAの高い順</strong>に選考します。</li>
+</ul>
+<p class="caption-note">上限は6名ですが、第1回は5名で締め切る場合があります。5名で決定した研究室は第2回以降の対象外です。</p>
+<p class="source-label">出典：学生配布資料 第3節・第5節・参考</p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回配属で希望者が当該研究室の受入人数を超えた場合、面接を実施する研究室では、ジーピーエーに最大0.5点の面接評価点を加えた合計点で選考します。加点は入力調整締切時点の第1希望研究室のみで、第2回以降は加点しません。
+使うジーピーエーは3年次春学期までの全 科目 通算の値です。面接を実施しない研究室はジーピーエーの高い順となります。上限は6名ですが、第1回は5名で募集を締め切る場合があります。第1回で5名の配属を決定した研究室は、その人数で確定し、第2回以降の配属対象としません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: 原資料の架空の計算例で面接評価点の影響を示す -->
+<div class="slide-body">
+<h2>面接評価点で、合計点の順序が変わることも</h2>
+<p class="example-label">第1回配属で同じ研究室を希望する2人の、架空の計算例</p>
+<table>
+<thead>
+<tr>
+<th>希望者</th>
+<th style="text-align:right">GPA</th>
+<th style="text-align:right">面接評価点</th>
+<th style="text-align:right">合計点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学生A</td>
+<td style="text-align:right">2.80</td>
+<td style="text-align:right">0.50</td>
+<td style="text-align:right"><strong>3.30</strong></td>
+</tr>
+<tr>
+<td>学生B</td>
+<td style="text-align:right">3.10</td>
+<td style="text-align:right">0.10</td>
+<td style="text-align:right"><strong>3.20</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>GPAは学生Bの方が高くても、<strong>合計点は学生Aの方が高くなります</strong>。</li>
+<li>面接評価点は配属判定に影響します。</li>
+</ul>
+<div class="callout primary-message">希望する研究室の<strong>面接案内を必ず確認</strong>してください。</div>
+<p class="source-label">出典：学生配布資料 第3節「加点の影響を示す計算例」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+これは第1回配属を想定した、配布資料にある架空の計算例です。実際の学生の成績ではありません。学生Aは2.80に0.50を加えて3.30、学生Bは3.10に0.10を加えて3.20になります。
+元のジーピーエーだけを見ると学生Bの方が高いですが、合計点では学生Aの方が高くなります。面接評価点は選考に影響するため、希望する研究室の案内を確かめてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: 加点上限と一律加点でないこと及び成績との区別を明示する -->
+<div class="slide-body">
+<h2>第1回の面接評価点は、合計最大0.5点</h2>
+<div class="callout warning-callout"><strong>1回ごとに0.5点ではありません。</strong><br>2回面接を受けても、0.5点ずつ加算して1.0点にはなりません。</div>
+<ul>
+<li>面接を受けた全員に、<strong>一律0.5点が付くわけではありません</strong>。</li>
+<li>前半に当該研究室で加点対象の面接を受けた場合、後半の追加加点はありません。</li>
+<li>加点は<strong>第1回の最終的な第1希望のみ</strong>。<strong>第2回以降は加点しません。</strong></li>
+<li><strong>成績上のGPAそのものは変更しません。</strong></li>
+</ul>
+<p class="source-label">出典：学生配布資料 第3節・第5節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+0.5点は、面接1回あたりの上限ではなく、第1回配属で加える面接評価点全体の上限です。前半と後半を通じて合計最大0.5点で、面接回数を増やして点数を積み上げる制度ではありません。
+また、点数は各研究室の評価基準に基づくため、一律に0.5点が付くわけではありません。加点は第1回配属の最終的な第1希望のみで、第2回以降は加点しません。この加点で成績上のジーピーエーは変更されません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: 第1希望の意味と各回1研究室だけ申請する方式を示す -->
+<div class="slide-body">
+<h2>「第1希望」は、最後に申請している1研究室</h2>
+<div class="callout primary-message"><strong>10月21日（水）13:00の入力調整締切時点</strong>で、<br>第1希望として申請している研究室を使います。</div>
+<ul>
+<li>最初に入力した研究室という意味ではありません。</li>
+<li>各回につき申請する研究室は<strong>1つ</strong>です。</li>
+<li>第2希望・第3希望をまとめて申請する方式ではありません。</li>
+<li>加点は<strong>第1回配属のみ</strong>。複数で面接を受けても、<strong>最終的な申請先の評価点のみ</strong>を使います。</li>
+</ul>
+<p class="source-label">出典：学生配布資料 第3節・第4節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この資料でいう第1希望は、最初にフォームへ入力した研究室ではありません。入力調整を終え、10月21日午後1時の締切時点で申請している1研究室のことです。
+各回で申請するのは1研究室だけで、第2希望や第3希望を同時に登録する方式ではありません。複数の研究室で面接を受けることはできますが、加点は第1回配属の最終的な申請先のものだけです。第2回以降には加点しません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: 希望変更時は点数を引き継がず変更先での面接歴を確認する -->
+<div class="slide-body">
+<h2>第1回で希望を変更したら、変更先の面接案内を確認</h2>
+<div class="workflow" aria-label="希望変更後は変更先の研究室の面接評価点を使用する">
+<div class="workflow-step">変更前の研究室<br>評価点は引継ぎ不可</div>
+<div class="workflow-arrow" aria-hidden="true">→</div>
+<div class="workflow-step emphasized">変更後の研究室<br>この研究室の評価点を使用</div>
+</div>
+<ul>
+<li>複数の研究室の評価点を<strong>合算することもできません</strong>。</li>
+<li>変更後の研究室が面接を実施する場合は、その案内を確認します。</li>
+<li>変更先で前半の加点対象面接を受けていなくても、<strong>変更先が定員超過で後半の面接を実施する場合</strong>は、後半の加点対象です。</li>
+</ul>
+<p class="caption-note">「未面接」は、最終的な申請先で加点対象の個別面接を受けたかどうかで判断します。</p>
+<p class="source-label">出典：学生配布資料 第3節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回配属の入力調整で希望を変更した場合、変更前の研究室の点数は引き継ぎません。使うのは変更後の研究室の評価点だけで、複数の研究室の点数の合算もできません。
+変更先で前半に加点対象の面接を受けていない場合、変更先が定員超過となって後半の面接を実施すれば、後半の加点対象になります。他の研究室で面接を受けたことがあるかどうかではなく、最終的な申請先での面接歴を確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: 早めの面接の推奨と申請状況公開後の面接機会を区別する -->
+<div class="slide-body">
+<h2>面接は、できるだけ10月16日（金）17:00までに</h2>
+<ul>
+<li><strong>希望先が面接を実施する場合</strong>は、研究室選びのために、最初の入力締切までの面接を推奨します。</li>
+<li>これは早めの面接を勧めるもので、前半の面接終了日時ではありません。</li>
+</ul>
+<div class="definition-card"><h3>10月19日（月）09:00の申請状況公開後も</h3>
+<p>新たな研究室での面接を申し出ることができます。<br>日程調整が必要なので、<strong>早めに担当教員へ連絡</strong>してください。</p></div>
+<p>前半の面接は、入力調整締切までに<strong>受け終える</strong>必要があります。</p>
+<p class="source-label">出典：学生配布資料 第3節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+希望する研究室が面接を実施する場合は、できるだけ10月16日午後5時までに面接を受けてください。これは早めの面接を勧める日付で、前半の面接そのものの終了期限ではありません。
+10月19日午前9時に申請状況が公開された後、新たな研究室に面接を申し出ることもできます。ただし、担当教員との日程調整が必要です。入力調整の締切までに受け終えられるよう、早めに連絡しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: 10月21日13時が前半の面接完了期限であることを明示する -->
+<div class="slide-body">
+<h2>10月21日（水）13:00までに、前半の面接を終える</h2>
+<div class="two-column">
+<div class="definition-card"><h3>この時刻に終了すること</h3>
+<ul><li>希望調査の入力調整</li><li>前半の個別面接</li><li>前半に受けた面接の評価点の確定</li></ul></div>
+<div class="definition-card"><h3>間違えやすい点</h3>
+<p>前半に面接を受ける場合は、<strong>この時刻までに完了</strong>。<br>申込締切ではありません。</p></div>
+</div>
+<div class="callout warning-callout">後半の対象者は10月22～29日も加点対象です。<br><strong>全員の評価点が10月21日13:00に確定するわけではありません。</strong></div>
+<p class="source-label">出典：学生配布資料 第3節・第4節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+10月21日午後1時は、入力調整と前半の面接が終了する時刻です。この時刻までに面接を申し込めばよい、という意味ではありません。希望先が面接を実施し、前半に受ける場合は、ここまでに面接を終え、その評価点も確定します。
+一方で、後半の加点対象者は10月22日から29日に面接を受けられます。そのため、全員の面接評価点の確定期限が10月21日になるわけではありません。希望の入力締切とは分けて理解してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: 第1回希望調査の入口と準備すべき回答内容を示す -->
+<div class="slide-body">
+<h2>Google Classroomで案内するフォームから回答</h2>
+<div class="form-qr-layout">
+<div>
+<div class="callout primary-message"><strong>各回につき、希望する研究室を1つ入力します。</strong></div>
+<p class="form-link"><a href="https://forms.gle/oDz98titVzbYvqf47">研究室希望調査（第1回）を開く</a><br><span>https://forms.gle/oDz98titVzbYvqf47</span></p>
+<ul>
+<li>回答項目は、<strong>希望研究室・希望理由</strong>を予定しています。</li>
+<li>取り組みたい研究や関心のあるテーマを<br>整理しておきましょう。</li>
+<li><strong>具体的な入力項目はフォームの案内を確認</strong>してください。</li>
+</ul>
+</div>
+<div class="form-qr-panel">
+<p><a href="https://forms.gle/oDz98titVzbYvqf47"><img class="form-qr" src="./images/research-preference-round1-qr.png" width="320" height="320" alt="研究室希望調査（第1回）のフォームを開くQRコード"></a></p>
+<p><strong>研究室希望調査（第1回）</strong><br>スマートフォンで読み取り</p>
+</div>
+</div>
+<p class="source-label">出典：学生配布資料 第4節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回の希望調査は、学部のグーグルクラスルームで案内するグーグルフォームから回答します。画面のリンクやQRコードも使えます。各回につき、希望する研究室を1つ入力してください。
+希望研究室と希望理由を回答項目として予定しています。冊子や説明会で分かったことをもとに、取り組みたい研究や関心のあるテーマを整理しておきましょう。実際の入力項目はフォームの案内で確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: 最初の希望調査の入力期間と必須の締切を強調する -->
+<div class="slide-body">
+<h2>まずは10月16日（金）17:00までに回答</h2>
+<div class="workflow" aria-label="希望調査は10月12日9時開始、10月16日17時締切">
+<div class="workflow-step">入力開始<br><strong>10月12日（月）09:00</strong></div>
+<div class="workflow-arrow" aria-hidden="true">→</div>
+<div class="workflow-step emphasized">入力締切<br><strong>10月16日（金）17:00</strong></div>
+</div>
+<div class="callout warning-callout"><strong>個別面接期間が続いていても、最初の入力締切は変わりません。</strong></div>
+<p>最初の入力締切と、その後の入力調整締切は別です。</p>
+<p class="source-label">出典：学生配布資料 第4節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+希望調査の入力は10月12日午前9時に始まり、10月16日午後5時に締め切ります。まずはこの期間に回答してください。
+個別面接の前半はその後も続きますが、面接期間が続いているからといって希望調査の回答を後回しにはできません。最初の入力締切と、次に説明する入力調整の締切は別です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: 入力調整期間と後半面接でも申請先を先に確定することを示す -->
+<div class="slide-body">
+<h2>申請状況を確認し、10月21日（水）13:00までに確定</h2>
+<ol class="timeline">
+<li><strong>10月19日（月）09:00</strong><span>申請状況ページ公開・入力調整開始</span></li>
+<li><strong>希望を変更する場合</strong><span>変更先の面接案内を確認。必要な面接は早めに調整。</span></li>
+<li><strong>10月21日（水）13:00</strong><span>入力調整締切・前半の個別面接終了</span></li>
+</ol>
+<ul>
+<li>状況ページへのアクセス方法・調整手順は、<strong>学部からの案内</strong>を確認。</li>
+<li><strong>後半に面接を受ける場合も、申請先はこの締切までに確定</strong>します。</li>
+</ul>
+<p class="caption-note">最初の締切は17:00、入力調整の締切は13:00です。後半の面接で締切は延長しません。</p>
+<p class="source-label">出典：学生配布資料 第3節・第4節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+10月19日午前9時から申請状況ページが公開され、入力調整が始まります。アクセス方法と操作手順は、学部からの案内で確認してください。
+入力調整は10月21日午後1時に締め切ります。後半に面接を受ける場合も、申請する研究室はこの時刻までに確定しなければなりません。最初の入力締切は午後5時ですが、入力調整は午後1時なので、時刻の違いにも注意しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22: 希望者数と面接有無に応じた配属方法の分岐を示す -->
+<div class="slide-body">
+<h2>配属上限は6名：第1回は5名で締め切る場合あり</h2>
+<p>第1回配属の判定基準：<strong>10月21日（水）13:00時点の申請結果</strong></p>
+<div class="decision-tree" aria-label="上限6名。ただし第1回は5名で締め切る場合あり。受入人数を超える場合は面接の有無で選考">
+<div class="decision-root">研究室間の偏りを抑えるため、全体の希望状況を踏まえて受入人数を調整</div>
+<div class="two-column">
+<div class="definition-card"><h3>受入人数以内</h3>
+<p>当該研究室の受入人数に基づいて配属します。</p></div>
+<div class="definition-card"><h3>受入人数を超える → 選考</h3>
+<p><strong>面接あり：</strong>GPA＋面接評価点（最大0.5点）<br><strong>面接なし：</strong>GPA<br>高い順に受入人数まで配属します。</p></div>
+</div>
+</div>
+<p class="caption-note"><strong>第1回で5名の配属を決定した研究室は、その人数で確定し、第2回以降の配属対象としません。</strong><br>面接ありの場合は、後半の対象者の評価も反映して最終順位を決定します。</p>
+<p class="source-label">出典：学生配布資料 第5節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回配属の決め方です。各研究室の配属上限は6名です。ただし、研究室間の配属人数の偏りを抑えるため、全体の希望状況を踏まえ、第1回は5名で募集を締め切る場合があります。第1回で5名の配属を決定した研究室は、その人数で確定し、第2回以降の配属対象としません。希望者が当該研究室の受入人数を超えた場合は、面接ありの研究室では合計点、面接なしの研究室ではジーピーエーの高い順に配属します。
+面接ありの研究室では、前半の評価点に加え、後半に初めてその研究室の加点対象面接を受ける学生の評価も反映して、最終的な順位を決めます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23: 後半の加点対象になる条件をすべて示す -->
+<div class="slide-body">
+<h2>後半に加点対象となるのは、次の学生</h2>
+<p class="date-line">後半：10月22日（木）～10月29日（木）</p>
+<ol>
+<li><strong>10月21日（水）13:00時点の申請先</strong>が定員超過。</li>
+<li>その研究室が、後半の個別面接を実施。</li>
+<li><strong>その研究室で、前半に加点対象の個別面接を受けていない。</strong></li>
+</ol>
+<div class="callout primary-message">教員は、各研究室の評価基準により<strong>最大0.5点</strong>を付与できます。<br>他研究室での面接歴ではなく、<strong>最終的な申請先での面接歴</strong>を確認します。</div>
+<p class="source-label">出典：学生配布資料 第3節・第5節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+後半の加点対象になる条件を確認します。入力調整締切時点の申請先が定員超過となり、その研究室が後半の面接を実施し、本人がその研究室で前半の加点対象面接を受けていない場合です。
+その場合、教員は研究室の評価基準に基づいて最大0.5点の面接評価点を付与できます。他の研究室で面接を受けた経験があっても、それだけで後半の対象外になるわけではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: 前半面接済みの場合は後半で評価点を変更しないことを示す -->
+<div class="slide-body">
+<h2>前半に面接済みなら、後半の追加加点はありません</h2>
+<ul>
+<li><strong>当該研究室で前半の加点対象面接を受けた学生</strong>は、その評価点を使います。</li>
+<li>確認のため、後半に再度面接を行う場合があります。</li>
+<li>その場合も、<strong>既に確定した点数を使用し、評価点を変更しません</strong>。</li>
+</ul>
+<div class="formula-box">例：前半の面接評価点が<strong>0.30点</strong><br>→ 後半に確認面接を受けても、使用するのは<strong>0.30点</strong></div>
+<p class="caption-note">両期間を通じて合計最大0.5点。再面接による上乗せはありません。</p>
+<p class="source-label">出典：学生配布資料 第5節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+前半にその研究室で加点対象の面接を受けた学生は、既に確定した評価点を使います。後半に確認のための面接があっても、それによって評価点を変更したり、加点を上乗せしたりはしません。
+配布資料の例では、前半が0.30点だった場合、後半に確認面接を受けても0.30点を使います。最大0.5点まで追加してもらえる、という意味ではないことに注意してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: 後半面接の完了期限と第1回の配属発表日を示す -->
+<div class="slide-body">
+<h2>後半の面接を終え、10月30日（金）の発表を確認</h2>
+<ol class="timeline">
+<li><strong>10月22日（木）～10月29日（木）</strong><span>定員超過研究室の選考・後半の個別面接</span></li>
+<li><strong>10月29日（木）まで</strong><span>加点対象者は、教員と調整した日時に面接を終える。</span></li>
+<li><strong>10月30日（金）</strong><span>研究室配属発表（第1回）</span></li>
+</ol>
+<ul>
+<li>対象者・具体的な日時・方法は、該当研究室の案内で確認。</li>
+<li><strong>後半は、希望研究室の再入力や変更を受け付ける期間ではありません。</strong></li>
+</ul>
+<p class="source-label">出典：学生配布資料 第5節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+後半の面接を受ける学生は、研究室の案内を確認し、10月29日までの期間内に、教員と調整した日時に面接を終えてください。対象者や方法は研究室ごとに案内されます。
+この期間は希望先を再入力したり変更したりする期間ではありません。必要な選考と面接を経て、第1回の配属発表は10月30日に行われます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26: 第2回の対象と第1回ルールを自動適用しないことを示す -->
+<div class="slide-body">
+<h2>第1回で配属されなかった場合は、第2回へ</h2>
+<ul>
+<li>対象は、<strong>第1回で希望する研究室に配属されなかった学生</strong>です。</li>
+<li><strong>受入れを継続する研究室</strong>が再募集・選考を行います。</li>
+<li><strong>第1回で5名の配属を決定した研究室は、第2回以降の配属対象外</strong>です。</li>
+<li>第2回も、希望する研究室を<strong>1つ</strong>入力します。</li>
+</ul>
+<div class="callout warning-callout"><strong>第2回以降は、面接評価点を加算しません。</strong><br>フォーム・開始／締切時刻・面接の日時や方法は、別途案内。</div>
+<p class="caption-note">第2回も面接の日程はありますが、面接評価点の加算は行いません。</p>
+<p class="source-label">出典：学生配布資料 第6節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回で希望する研究室に配属されなかった学生には、受入れを継続する研究室について再募集と選考を行います。第1回で5名の配属を決定した研究室は、第2回以降の配属対象としません。第2回も申請する研究室は1つです。
+第2回以降の配属では、面接評価点を加算しません。第2回にも面接の日程はありますが、加点は行いません。回答フォーム、入力開始と締切の時刻、面接の具体的な日時や方法は、別途の案内を確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27: 第2回の全日程と2つの入力最終日を示す -->
+<div class="slide-body">
+<h2>第2回のスケジュール</h2>
+<table>
+<thead>
+<tr>
+<th>期間・日付</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10月30日（金）～11月5日（木）</td>
+<td>研究室紹介期間（第2回）</td>
+</tr>
+<tr>
+<td>11月6日（金）～11月10日（火）</td>
+<td>希望研究室入力期間／<strong>11月10日が入力締切</strong></td>
+</tr>
+<tr>
+<td>11月11日（水）～11月13日（金）</td>
+<td>入力調整期間／<strong>11月13日が最終日</strong></td>
+</tr>
+<tr>
+<td>11月16日（月）～11月20日（金）</td>
+<td>研究室面接（定員超過分）</td>
+</tr>
+<tr>
+<td><strong>11月24日（火）</strong></td>
+<td><strong>研究室配属発表（第2回）</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message"><strong>第2回は面接評価点の加算なし。</strong><br>開始・締切時刻、面接の日時・方法などは、別途案内を確認。</div>
+<p class="source-label">出典：学生配布資料 第6節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第2回の紹介期間は10月30日から11月5日です。希望入力は11月6日から10日、入力調整は11月11日から13日です。それぞれの最終日を確認してください。
+定員超過分の面接は11月16日から20日、第2回の配属発表は11月24日です。第2回の面接では、面接評価点の加算は行いません。ここに載っているのは日付で、開始や締切の時刻は別途の案内を確認する必要があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28: 未配属者の最終調整と配属確定日及び変更可能性を示す -->
+<div class="slide-body">
+<h2>最終調整を経て、11月30日（月）に配属確定</h2>
+<ul>
+<li>未配属の学生は、<strong>受入れを継続する研究室を確認したうえで個別に調整</strong>します。</li>
+</ul>
+<p class="caption-note">第1回で5名の配属を決定した研究室は、最終調整でも配属対象としません。</p>
+<table>
+<thead>
+<tr>
+<th>期間・日付</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>11月23日（月）～11月27日（金）</strong></td>
+<td>最終調整期間</td>
+</tr>
+<tr>
+<td><strong>11月30日（月）</strong></td>
+<td>研究室配属確定</td>
+</tr>
+</tbody>
+</table>
+<div class="callout warning-callout">スケジュールは一部変更される可能性があります。<br><strong>学部からの最新の案内を確認してください。</strong></div>
+<p class="source-label">出典：学生配布資料 第6節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+未配属の学生については、受入れを継続する研究室を確認したうえで個別に配属を調整します。第1回で5名の配属を決定した研究室は、最終調整でも配属対象としません。資料に示された最終調整期間は11月23日から27日、配属確定は11月30日です。
+日程の一部が変更される可能性もあります。自分の配属結果と次の手続きを確認するとともに、学部からの最新の案内を継続して確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29: 配属確定後も卒業研究の履修条件をすべて満たす必要を示す -->
+<div class="slide-body">
+<h2>配属が確定しても、卒業研究の履修条件を確認</h2>
+<p>2027年度の卒業研究には、次の<strong>すべて</strong>が必要です。</p>
+<ol class="conditions">
+<li>在学期間が<strong>3年間以上</strong>であること。</li>
+<li>修得単位数が<strong>80単位以上</strong>であること（自由科目を除く）。</li>
+<li><strong>DSプロジェクト</strong>の単位を修得していること。</li>
+</ol>
+<div class="callout warning-callout">修得単位数・DSプロジェクトは<strong>2027年3月の成績公表</strong>で確認。<br><strong>条件を満たさない学生は、2027年度は研究室に所属できません。</strong></div>
+<p class="source-label">出典：学生配布資料 第7節（データサイエンス学部履修規程第11条の条件を掲載）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+配属手続きと卒業研究の履修条件は、両方を確認する必要があります。条件は、在学期間が3年以上、自由科目を除く修得単位数が80単位以上、そしてディーエスプロジェクトの単位を修得していることです。3つすべてを満たす必要があります。
+特に単位数とディーエスプロジェクトの修得は、配属確定後の2027年3月の成績公表で確認されます。条件を満たさない場合は2027年度に研究室へ所属できないので、今後の単位修得にも注意してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30: 学生がこれから行うことを期限とともにまとめる -->
+<div class="slide-body">
+<h2>これから行うこと</h2>
+<ul class="checklist">
+<li><strong>冊子を読む：</strong>複数の研究室を比較し、質問・希望理由を整理。</li>
+<li><strong>案内を確認：</strong>紹介・訪問・面接の実施方法と予約を確認。</li>
+<li><strong>10月16日（金）17:00まで：</strong>第1回希望調査に回答。</li>
+<li><strong>10月21日（水）13:00まで：</strong>入力調整を完了。前半に受ける面接も完了。</li>
+<li><strong>後半の面接対象なら：</strong>教員と調整し、10月29日（木）までに完了。</li>
+<li><strong>結果と履修条件を確認：</strong>配属発表・最新案内・必要な単位修得。</li>
+</ul>
+<p class="source-label">出典：学生配布資料 第1～7節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+まず冊子を読み、気になる研究室を比較し、質問と希望理由を整理してください。紹介や訪問の案内を確認し、希望先が面接を実施する場合は、必要な連絡を早めに行いましょう。
+10月16日午後5時が最初の回答締切、10月21日午後1時が入力調整と前半面接の終了です。後半の対象者は10月29日までに面接を終えます。その後は配属結果と次の案内を確認し、卒業研究に必要な単位の修得も進めてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31: 質問の観点と欠席者が確認する情報源を示す -->
+<div class="slide-body">
+<h2>質問・確認</h2>
+<div class="callout primary-message">自分が次に何をするか、確認できましたか。</div>
+<ul>
+<li>2つの入力締切と、前半の面接を終える期限は分かりましたか。</li>
+<li>希望変更時の評価点と、後半の対象者は分かりましたか。</li>
+<li>配属確定後の履修条件は確認できましたか。</li>
+</ul>
+<p>後から確認する場合は、<strong>学生配布資料・学部の最新案内・各研究室の案内</strong>も参照してください。</p>
+<p class="caption-note">次の3枚は補足：GPA計算方法／第1回の日程早見表／出典・関連資料</p>
+<p class="source-label">参照：学生配布資料 第3～7節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここまでの内容について、質問や確認したいことを受け付けます。特に、自分がいつまでに何をするかを確認してください。
+欠席した方や後から読んでいる方は、学生配布資料と、学部や各研究室からの案内も確認しましょう。続く補足では、ジーピーエーの計算方法と第1回の日程をまとめています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32: 選考に使うGPAの評価表と計算方法を全文相当で残す -->
+<div class="slide-body compact">
+<h2>補足：GPAの計算方法</h2>
+<p>選考に用いるのは、<strong>3年次春学期までの全科目通算GPA</strong>です。</p>
+<table>
+<thead>
+<tr>
+<th>評価</th>
+<th>得点</th>
+<th style="text-align:right">GP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>秀</td>
+<td>90～100点</td>
+<td style="text-align:right">4</td>
+</tr>
+<tr>
+<td>優</td>
+<td>80～89点</td>
+<td style="text-align:right">3</td>
+</tr>
+<tr>
+<td>良</td>
+<td>70～79点</td>
+<td style="text-align:right">2</td>
+</tr>
+<tr>
+<td>可</td>
+<td>60～69点</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td>不可</td>
+<td>59点以下</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>失格</td>
+<td>―</td>
+<td style="text-align:right">0</td>
+</tr>
+</tbody>
+</table>
+<div class="formula-box"><strong>GPA ＝（GP × 当該科目の単位数）の総和 ÷ 履修単位数合計</strong></div>
+<p class="caption-note">面接評価点はGPA計算に含めず、第1回の最終的な第1希望の選考でのみ加算。第2回以降は加算せず、成績上のGPAも変更しません。</p>
+<p class="source-label">出典：学生配布資料「参考：選考に用いるGPAの計算方法」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ジーピーエーは、各科目のジーピーと単位数を掛けた値を合計し、履修単位数の合計で割って計算します。秀は4、優は3、良は2、可は1、不可と失格は0です。
+選考では3年次春学期までの全科目 通算ジーピーエーを使用します。面接評価点はこの計算式には入れず、第1回配属の最終的な第1希望研究室での選考に限り加算します。第2回以降は加算しません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 33: 第1回の入力と面接と発表を一つの早見表にまとめる -->
+<div class="slide-body compact">
+<h2>補足：第1回の日程早見表</h2>
+<table>
+<thead>
+<tr>
+<th>日時</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9月29日（火）09:00</td>
+<td>前半の個別面接開始</td>
+</tr>
+<tr>
+<td>10月12日（月）09:00</td>
+<td>希望調査の入力開始</td>
+</tr>
+<tr>
+<td><strong>10月16日（金）17:00</strong></td>
+<td><strong>希望調査の入力締切</strong></td>
+</tr>
+<tr>
+<td>10月19日（月）09:00</td>
+<td>申請状況ページ公開・入力調整開始</td>
+</tr>
+<tr>
+<td><strong>10月21日（水）13:00</strong></td>
+<td><strong>入力調整締切・前半の面接終了</strong>／前半の評価点確定</td>
+</tr>
+<tr>
+<td>10月22日（木）～10月29日（木）</td>
+<td>定員超過研究室の選考・後半の個別面接</td>
+</tr>
+<tr>
+<td><strong>10月30日（金）</strong></td>
+<td><strong>配属発表（第1回）</strong></td>
+</tr>
+</tbody>
+</table>
+<p class="caption-note">後半は当該研究室の未面接者が加点対象。後半の面接で入力締切は延長しません。<br>研究室紹介期間：9月29日（火）～10月9日（金）。日程変更は学部の最新案内を確認。</p>
+<p class="source-label">出典：学生配布資料 第2～6節</p>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回の日程を確認するときは、この表を使ってください。特に10月16日の午後5時と、10月21日の午後1時を区別してください。
+前半の面接評価点は入力調整締切までに確定しますが、後半には、定員超過研究室で未面接者を対象とする加点対象の面接が続きます。第1回の配属発表は10月30日です。変更がある場合に備えて、学部の最新案内も確認してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 34: 根拠資料と学生が参照できる関連資料を示す -->
+<div class="slide-body">
+<h2>補足：出典・関連資料</h2>
+<ul>
+<li><strong>主資料：</strong>「令和8（2026）年度 データサイエンス学部 研究室配属について」<br>9月28日（月）説明会配布資料（全7節・参考）。当日版の修正方針を反映。</li>
+<li>**研究室紹介冊子：**研究内容・テーマ例・指導の進め方、所在地・連絡先。<br>紙の冊子、または学部Google ClassroomのPDFを参照。</li>
+<li><strong>研究室希望調査（第1回）：</strong><br><a href="https://forms.gle/oDz98titVzbYvqf47">https://forms.gle/oDz98titVzbYvqf47</a></li>
+<li>**更新情報：**学部と各研究室の最新の案内を確認してください。</li>
+</ul>
+<div class="callout primary-message">当日版の3原則を反映し、詳細な説明・計算例を収録しています。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+このスライドは、9月28日の研究室配属の配布資料に、当日版の修正方針を反映したものです。面接実施は研究室ごとに異なること、加点は最大0.5点で第1回の最終的な第1希望のみであることを明確にしました。手続きの詳細は配布資料を、各研究室の研究内容や連絡先は研究室紹介冊子を参照してください。
+研究室紹介冊子のPDFは学部のグーグルクラスルームでも確認できます。日程の変更や各研究室の面接案内、第2回の詳細については、学部や研究室からの最新の案内を確認してください。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
   const printPlugins = [
       RevealNotes,
       RevealHighlight,
@@ -1568,6 +1373,8 @@
 			  }, 2500);
 			
     }
-        </script>
-    </body>
+</script>
+
+</body>
+
 </html>
