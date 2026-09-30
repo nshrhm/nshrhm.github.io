@@ -1,10 +1,18 @@
 {
-  "revision": "2026-09-28 five-person round-1 closure",
+  "revision": "2026-09-30 A-101 venue change",
   "status": "REGENERATION_REQUIRED",
-  "policy": "Existing audio retained. Slide 22 notes no longer refer students to the teacher-only detailed deck. Other audio content has not been verified. Notes hashes cover raw trimmed text. Five-person closure revision: retained MP3 files unchanged; current hashes for newly changed notes use raw trimmed text.",
+  "policy": "Existing audio retained. Slide 22 notes no longer refer students to the teacher-only detailed deck. Other audio content has not been verified. Notes hashes cover raw trimmed text. Five-person closure revision: retained MP3 files unchanged; current hashes for newly changed notes use raw trimmed text. Venue change: retained MP3 unchanged; the introduction venue in the updated notes is A-101教室.",
   "before_deck_sha256": "d0805b020b0a42d5e8e53fb18069207a8d2290adbbaf654ad336cd966e079065",
-  "current_deck_sha256": "8775b3399ddb862d6d5a13b850ec7a8407d6279c391036b635d9ab48e2ff2058",
+  "current_deck_sha256": "ddbd2c87e31c78c8bd3572e40a3438e34a2ed3b88847525099d40c069b101d7f",
   "slides": [
+    {
+      "slide": 6,
+      "file": "slide_06.mp3",
+      "reason": "数理・情報系の紹介会場をA-101教室に変更",
+      "previous_notes_sha256": "5b8e5b3f64f617fcd3518e241ae093bd53081b72ed919634db8c1e705254ecb0",
+      "current_notes_sha256": "41b6ce3849e7f2a0916695c2ce82f376f32d2f4da21f2ecf396081a5587dec8f",
+      "retained_mp3_sha256": "4a85500aa023a75e5b31bfd7b8e2a3be9b9555b0281df47370cd22983e78669c"
+    },
     {
       "slide": 14,
       "file": "slide_14.mp3",
@@ -41,5 +49,6 @@
       "retained_mp3_sha256": "e5b70218854307b1c4834a13e194a23e2046c71c3abc7982242067fe90e96b58"
     }
   ],
-  "before_five_person_policy_deck_sha256": "974db10d38414a0ac8c2a656d6b893e851af7d4b3819b615d68dc66ea5619508"
+  "before_five_person_policy_deck_sha256": "974db10d38414a0ac8c2a656d6b893e851af7d4b3819b615d68dc66ea5619508",
+  "before_a101_venue_change_deck_sha256": "8775b3399ddb862d6d5a13b850ec7a8407d6279c391036b635d9ab48e2ff2058"
 }
