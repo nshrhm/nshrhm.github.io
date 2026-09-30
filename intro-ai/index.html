@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description"
+              content="下関市立大学データサイエンス学部の科目「人工知能概論」の講義資料ポータルです。人工知能の基礎技術と具体的な応用を学び、プログラムでその動きを確認します。">
+        <title>人工知能概論 | 下関市立大学 データサイエンス学部</title>
+        <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #526179;
+      --subtle: #e5edf6;
+      --line: rgba(15, 23, 42, 0.1);
+      --panel: rgba(255, 255, 255, 0.78);
+      --panel-solid: #ffffff;
+      --cyan: #0891b2;
+      --indigo: #3730a3;
+      --lime: #84cc16;
+      --bg: #f7fafc;
+      --shadow: 0 20px 55px rgba(15, 23, 42, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic", "YuGothic", "Noto Sans JP", sans-serif;
+      line-height: 1.8;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(8, 145, 178, 0.16), transparent 34rem),
+        radial-gradient(circle at 88% 0%, rgba(55, 48, 163, 0.13), transparent 32rem),
+        linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 44px 44px, 44px 44px, auto;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .site-shell {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 84vh;
+      display: grid;
+      align-items: center;
+      padding: 48px 0 64px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: clamp(10px, 6vw, 80px);
+      bottom: 48px;
+      width: min(34vw, 360px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(8, 145, 178, 0.26);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.1)),
+        repeating-linear-gradient(90deg, transparent 0 26px, rgba(8, 145, 178, 0.12) 27px),
+        repeating-linear-gradient(0deg, transparent 0 26px, rgba(55, 48, 163, 0.1) 27px);
+      transform: rotate(8deg);
+      z-index: -1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 22px;
+      color: var(--indigo);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--lime));
+    }
+
+    h1 {
+      max-width: 880px;
+      margin: 0;
+      font-size: clamp(3rem, 9vw, 7.6rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 28px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 30px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hero-meta li {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 13px;
+      background: rgba(255, 255, 255, 0.64);
+      color: #334155;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 38px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      border-radius: 8px;
+      padding: 0 18px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--indigo), var(--cyan));
+      color: #fff;
+      box-shadow: 0 14px 32px rgba(8, 145, 178, 0.2);
+    }
+
+    .button.secondary {
+      border: 1px solid rgba(55, 48, 163, 0.18);
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--indigo);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    main {
+      padding: 0 0 72px;
+    }
+
+    .section {
+      margin-top: 32px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      line-height: 1.22;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 520px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .feature {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .feature-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border: 1px solid rgba(8, 145, 178, 0.24);
+      border-radius: 8px;
+      color: var(--cyan);
+      font-weight: 800;
+      background: linear-gradient(135deg, rgba(8, 145, 178, 0.12), rgba(132, 204, 22, 0.13));
+    }
+
+    .feature h3,
+    .lecture-title {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    .feature h3 {
+      font-size: 1.08rem;
+    }
+
+    .feature p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .lecture-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .lecture-card {
+      min-height: 184px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: var(--panel-solid);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+      text-decoration: none;
+    }
+
+    a.lecture-card {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(8, 145, 178, 0.18);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    a.lecture-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--lime));
+    }
+
+    a.lecture-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(8, 145, 178, 0.34);
+      box-shadow: 0 18px 42px rgba(8, 145, 178, 0.13);
+    }
+
+    .lecture-card.is-disabled {
+      color: #64748b;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .lecture-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .is-disabled .lecture-kicker {
+      color: #64748b;
+    }
+
+    .status {
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: rgba(8, 145, 178, 0.09);
+      color: var(--indigo);
+      white-space: nowrap;
+    }
+
+    .is-disabled .status {
+      background: rgba(100, 116, 139, 0.12);
+      color: #64748b;
+    }
+
+    .lecture-title {
+      font-size: 1.04rem;
+      line-height: 1.62;
+    }
+
+    .lecture-foot {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .site-footer {
+      margin-top: 52px;
+      padding: 28px 0 44px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        min-height: auto;
+        padding-top: 42px;
+      }
+
+      .hero::after {
+        width: 280px;
+        opacity: 0.55;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 10px;
+      }
+
+      .feature-grid,
+      .lecture-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .site-shell {
+        width: min(100% - 28px, 1120px);
+      }
+
+      .hero {
+        padding: 32px 0 44px;
+      }
+
+      .hero::after {
+        right: -56px;
+        bottom: 18px;
+        width: 220px;
+      }
+
+      .hero-copy {
+        margin-top: 22px;
+      }
+
+      .hero-meta {
+        margin-top: 24px;
+      }
+
+      .hero-actions {
+        display: grid;
+        margin-top: 28px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .feature-grid,
+      .lecture-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature,
+      .lecture-card {
+        padding: 18px;
+      }
+
+      .lecture-card {
+        min-height: 156px;
+      }
+    }
+
+    .hero { overflow: hidden; }
+    a:focus-visible { outline: 3px solid var(--indigo); outline-offset: 5px; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .button, a.lecture-card { transition: none; }
+    }
+        </style>
+    </head>
+    <body>
+        <header class="hero">
+            <div class="site-shell">
+                <p class="eyebrow">下関市立大学 データサイエンス学部</p>
+                <h1>人工知能概論</h1>
+                <p class="hero-copy">
+                    人工知能の基礎技術と具体的な応用を体系的に学ぶ講義資料ポータルです。
+                    生活や仕事との関わりから技術の特徴を理解し、プログラムでアルゴリズムの動きを確かめます。
+                </p>
+                <ul class="hero-meta" aria-label="授業情報">
+                    <li>2026年度 秋学期</li>
+                    <li>2年生・2単位</li>
+                    <li>担当教員：白濵 成希</li>
+                </ul>
+                <div class="hero-actions">
+                    <a class="button primary" href="./guidance/">ガイダンスを開く</a>
+                    <a class="button secondary" href="./chap01/">第1回 AI概観を開く</a>
+                </div>
+            </div>
+        </header>
+        <main class="site-shell">
+            <section class="section" id="features" aria-labelledby="features-title">
+                <div class="section-head">
+                    <h2 id="features-title">授業のテーマ</h2>
+                    <p>技術の特徴を説明することと、プログラムで動きを確認することを結び付けます。</p>
+                </div>
+                <div class="feature-grid">
+                    <article class="feature">
+                        <div class="feature-mark" aria-hidden="true">01</div>
+                        <h3>基礎技術</h3>
+                        <p>機械学習、知識表現と推論、ニューラルネットワークなど、人工知能を支える技術・手法を学びます。</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-mark" aria-hidden="true">02</div>
+                        <h3>具体的な応用</h3>
+                        <p>生活や仕事との関わりを通して、人工知能がどのような場面で使われるかを学びます。</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-mark" aria-hidden="true">03</div>
+                        <h3>プログラムによる確認</h3>
+                        <p>人工知能に関するアルゴリズムをプログラムで確認し、学んだ内容を動きや実行結果と結び付けます。</p>
+                    </article>
+                </div>
+            </section>
+            <section class="section" id="lectures" aria-labelledby="lectures-title">
+                <div class="section-head">
+                    <h2 id="lectures-title">講義スライド</h2>
+                    <p>2026年10月1日（木）の初回授業資料です。ガイダンス、第1回の順に進みます。</p>
+                </div>
+                <div class="lecture-grid">
+                    <a class="lecture-card" href="./guidance/">
+                        <div>
+                            <div class="lecture-kicker">
+                                <span>ガイダンス</span><span class="status">公開中</span>
+                            </div>
+                            <h3 class="lecture-title">初回ガイダンス</h3>
+                            <p>授業の目的、到達目標、成績評価、学習の進め方と授業日程を確認します。</p>
+                        </div>
+                        <div class="lecture-foot">スライドを開く</div>
+                    </a>
+                    <a class="lecture-card" href="./chap01/">
+                        <div>
+                            <div class="lecture-kicker">
+                                <span>第1回</span><span class="status">公開中</span>
+                            </div>
+                            <h3 class="lecture-title">AI概観</h3>
+                            <p>身近なAIの働きから技術のつながりを捉え、出力を利用する前の確認点を考えます。</p>
+                        </div>
+                        <div class="lecture-foot">スライドを開く</div>
+                    </a>
+                </div>
+            </section>
+            <footer class="site-footer">
+                <p>人工知能概論 ／ 下関市立大学 データサイエンス学部 ／ 2026年度 秋学期</p>
+            </footer>
+        </main>
+    </body>
+</html>

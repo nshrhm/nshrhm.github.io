@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>第1回 AI概観</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: ガイダンスからAIの内容に入り講義の視点を示す -->
+<div class="slide-body title-block" >
+<h2>第1回 AI概観</h2>
+<p class="eyebrow">人工知能概論 ／ 2026年度 秋学期</p>
+<p class="lead">身近な働きから、技術のつながりを捉える</p>
+<p class="authors"><strong>白濵 成希</strong></p>
+<p class="conference">2026年10月1日（木）</p>
+<p class="source-note">出典：2026年度シラバス・schedule.md</p>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここからは、人工知能が扱う領域と、その具体的な応用を見ていきます。
+身近なサービスには、どのような情報が入り、どのような処理が行われ、何が出てくるのでしょうか。この問いを手がかりに、人工知能のさまざまな技術をつなげていきます。
+今日は個々のアルゴリズムを詳しく実装する前に、これから学ぶ内容の全体像をつかみましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: 今日の到達目標 -->
+<div class="slide-body " >
+<h2>今日の到達目標</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>働きを説明する</h3>
+<p>身近なAIを、<strong>入力・処理・出力</strong>で説明できる。</p>
+</div>
+<div class="definition-card">
+<h3>関係を説明する</h3>
+<p>機械学習・深層学習・生成AIの<strong>位置づけ</strong>を説明できる。</p>
+</div>
+<div class="definition-card">
+<h3>確認点を挙げる</h3>
+<p>出力を利用する前に、<strong>何を確かめるか</strong>を挙げられる。</p>
+</div>
+</div>
+<p class="source-note">出典：シラバス到達目標を踏まえた本回の学習目標</p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の目標は三つです。まず、身近な人工知能の働きを、入力、処理、出力に分けて説明することです。
+次に、機械学習、深層学習、生成AIといった言葉の関係を説明できるようになることです。これらはすべて同じ意味ではありません。
+最後に、得られた出力を使うときに何を確認するかを考えます。まずは、皆さんが目にする具体的な働きから始めましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: 身近なAIは、何をしている？ -->
+<div class="slide-body " >
+<h2>身近なAIは、何をしている？</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>見分ける</h3>
+<p>画像から物体や文字を認識する。</p>
+</div>
+<div class="definition-card">
+<h3>予測・推薦する</h3>
+<p>需要を予測し、商品や動画の候補を並べる。</p>
+</div>
+<div class="definition-card">
+<h3>作る</h3>
+<p>指示に応じて文章や画像を生成する。</p>
+</div>
+</div><div class="callout primary-message">
+<p>同じ「AI」でも、目的と出力はさまざまです。</p>
+</div>
+<p class="source-note">出典：S1 §1.3–1.4／S4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+画像の中の物体を見分ける、商品を推薦する、文章を作る。いずれも人工知能が使われる場面ですが、出力の種類は違います。
+推薦は候補の提示、予測は将来の値などの見積もり、生成は内容を作り出す処理です。一つのサービスで複数の働きが組み合わされることもあります。
+ここでは製品名を覚えるより、何をするための技術なのかに注目してください。その共通の見方を次に示します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: 入力から、目的に応じた出力をつくる -->
+<div class="slide-body " >
+<h2>入力から、目的に応じた出力をつくる</h2>
+<div class="flow" role="group" aria-label="入力、処理、出力">
+<div class="flow-box"><strong>入力</strong><span>画像・文章・音声・数値など</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>処理</strong><span>学習したモデル・知識・推論など</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>出力</strong><span>予測・内容・推薦・判断など</span></div>
+</div><div class="callout primary-message">
+<p>AIシステムは、目的に応じて入力から出力を導き、環境に働きかけます。</p>
+</div>
+<p class="caption-note">OECDの定義を授業向けに要約。自律性や利用開始後の適応の程度は、システムによって異なります。</p>
+<p class="source-note">出典：S2（授業用の要約・概念図）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+人工知能の定義にはさまざまな立場があります。ここでは、入力、処理、出力、目的という観点で整理します。
+OECDの定義では、入力から予測や内容、推薦、判断などの出力を導くシステムを扱っています。人がどの程度関与するか、利用開始後も適応するかは一律ではありません。
+また、生物を模倣することだけが条件ではありません。知識を使う方法も、データから学ぶ方法も含めて見ていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: AIは、さまざまな学問とつながる -->
+<div class="slide-body " >
+<h2>AIは、さまざまな学問とつながる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>計算機科学・数学・統計</h3>
+<p>情報を表現し、計算し、データから推定する。</p>
+</div>
+<div class="definition-card">
+<h3>認知科学・心理学・神経科学</h3>
+<p>知覚や学習など、人や生物の働きから着想を得る。</p>
+</div>
+<div class="definition-card">
+<h3>言語学・哲学</h3>
+<p>言葉の構造や意味、知能や理解の捉え方を考える。</p>
+</div>
+</div><div class="callout primary-message">
+<p>学問間の関係と、AIの具体的な作り方を区別して考えます。</p>
+</div>
+<p class="source-note">出典：S1 §1.2／S2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+人工知能は計算機科学と深く関係し、数学や統計も重要な基盤です。一方で、知覚や学習の仕組みについて、人や生物を研究する学問から着想を得ることもあります。
+言語学は言葉の構造や意味を考えるうえで、哲学は知能や理解とは何かを問ううえで関わります。
+ただし、人の仕組みを参考にすることと、その仕組みをそのまま再現することは同じではありません。次に、技術と応用を整理します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: 手法・扱う情報・応用を分けて見る -->
+<div class="slide-body table-slide" >
+<h2>手法・扱う情報・応用を分けて見る</h2>
+<table>
+<thead>
+<tr>
+<th>見る観点</th>
+<th>例</th>
+<th>問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>手法</td>
+<td>知識に基づく推論、機械学習、探索・最適化</td>
+<td>どう処理する？</td>
+</tr>
+<tr>
+<td>扱う情報・課題</td>
+<td>言語、音声、画像、数値、行動</td>
+<td>何を扱う？</td>
+</tr>
+<tr>
+<td>応用システム</td>
+<td>翻訳、推薦、検査、ロボット、ゲーム</td>
+<td>何に使う？</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">
+<p>一つの応用に複数の手法が使われ、同じ手法が複数の応用を支えます。</p>
+</div>
+<p class="source-note">出典：S1 §1.2／S2（分類の整理は授業用）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+昨年度資料には、人工知能の諸領域を一枚で紹介する図がありました。今回は、関係が分かるように三つの観点に分けます。
+機械学習は作り方に関する言葉です。自然言語処理や画像認識は、扱う情報や課題に関する言葉です。推薦サービスやロボットは、複数の技術を組み合わせた応用として見ることができます。
+この表は網羅的な分類ではありません。同じ言葉が複数の観点で使われる場合もありますが、まず何の観点の話かを確かめましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: 知識を表し、組み合わせて推論する -->
+<div class="slide-body " >
+<h2>知識を表し、組み合わせて推論する</h2>
+<div class="flow" role="group" aria-label="知識、事実、結論">
+<div class="flow-box"><strong>知識</strong><span>すべての正方形は四角形</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>事実</strong><span>図形Aは正方形</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>結論</strong><span>図形Aは四角形</span></div>
+</div><div class="callout primary-message">
+<p>知識やルールと、いま分かっている事実を組み合わせます。</p>
+</div>
+<p>例：知識表現と推論、エキスパートシステム</p>
+<p class="source-note">出典：S1 §1.4／S2（図形の例は授業用）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+知識を使う方法では、まずコンピュータが扱える形で知識を表します。ここでは、すべての正方形は四角形だという知識と、図形Aは正方形だという事実を用意しました。
+この二つから、図形Aは四角形だという結論を導けます。知識表現は知識の持ち方、推論はそこから結論を導く過程です。
+専門知識を利用するエキスパートシステムも、この流れに関係します。次は、知識を人が記述するだけでなく、データから規則性を学ぶ方法です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: 機械学習は、データから規則性を学ぶ -->
+<div class="slide-body " >
+<h2>機械学習は、データから規則性を学ぶ</h2>
+<div class="flow" role="group" aria-label="学習用の例、学習、新しい例に適用">
+<div class="flow-box"><strong>学習用の例</strong><span>重さ・直径と果物の種類</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>学習</strong><span>特徴と種類の関係を学ぶ</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>新しい例に適用</strong><span>未知の果物の種類を予測</span></div>
+</div><div class="callout primary-message">
+<p>学習した例以外にも役立つかを、別のデータで確かめます。</p>
+</div>
+<p class="source-note">出典：S1 §1.2／昨年度第3章（架空の教材例）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+機械学習は、データから規則性を学び、それを予測などに利用する方法です。ここでは、果物の重さと直径から種類を予測する架空の例を考えます。
+種類が分かっている例を用意して関係を学び、その結果を新しい例に適用します。ただし、学習用の例で正しく答えられるだけでは十分ではありません。
+新しいデータでも役立つことを汎化と呼び、その程度を確かめます。詳しい学習方法や評価は、機械学習の回で扱います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: 利用時の応答とモデルの学習を混同しない -->
+<div class="slide-body " >
+<h2>学習する段階と、使う段階</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>学習する</h3>
+<p>データを使って、モデルの内部の値や規則を調整する。</p>
+</div>
+<div class="definition-card">
+<h3>使う：推論</h3>
+<p>新しい入力に対し、学習済みのモデルから出力を得る。</p>
+</div>
+</div><div class="callout primary-message">
+<p>入力するたびに、その場でモデルの学習が進むとは限りません。</p>
+</div>
+<p class="source-note">出典：S2／S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+学習と推論は、区別しておきたい言葉です。学習では、データを使ってモデルを調整します。利用時の推論では、そのモデルに入力を与えて出力を得ます。
+たとえば会話の続きに応じて回答が変わっても、それだけでモデルの内部の値が更新されたとは言えません。会話の文脈を入力として使うことと、再学習は別の操作です。
+一方、運用中に追加学習するシステムもあります。ここでは典型的な二段階を示しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: 機械学習と深層学習の関係 -->
+<div class="slide-body " >
+<h2>機械学習と深層学習の関係</h2>
+<div class="nested-map" role="group" aria-label="AIの中に機械学習があり、その手法にニューラルネットワークによる学習と深層学習がある">
+<div class="nest"><strong>人工知能（AI）</strong><span>知識に基づく方法や探索なども含む</span>
+<div class="nest"><strong>機械学習</strong><span>決定木やk近傍法など、多様な方法がある</span>
+<div class="nest"><strong>ニューラルネットワークによる学習</strong>
+<div class="nest"><strong>深層学習</strong><span>多層の表現を学ぶ</span></div>
+</div></div></div>
+</div>
+<p class="caption-note">本授業で扱う代表的な包含関係。生成AIは「何を出力するか」という別の観点でも捉えます。</p>
+<p class="source-note">出典：S1 §1.2／S3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+人工知能、機械学習、深層学習は同じ意味ではありません。人工知能には、データから学ぶ方法のほか、知識や探索を使う方法もあります。
+機械学習にも多様な手法があり、その一つがニューラルネットワークを使う学習です。深層学習は、多層の表現を学ぶ方法として位置づけられます。
+生成AIは後で説明しますが、内容を生成するという働きに着目した呼び方です。この入れ子に、すべての用語を無理に押し込めないことが大切です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: 深層学習は、表現を段階的に学ぶ -->
+<div class="slide-body " >
+<h2>深層学習は、表現を段階的に学ぶ</h2>
+<div class="flow" role="group" aria-label="入力、中間の表現、出力">
+<div class="flow-box"><strong>入力</strong><span>画像の画素など</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>中間の表現</strong><span>複数の層で特徴を変換する</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>出力</strong><span>分類結果など</span></div>
+</div><div class="concept-grid">
+<div class="definition-card">
+<h3>ニューラルネットワーク</h3>
+<p>計算を行う単位をつなぎ、重みなどを学習する。</p>
+</div>
+<div class="definition-card">
+<h3>深層学習</h3>
+<p>多層の変換を通じて、課題に役立つ表現を学習する。</p>
+</div>
+</div>
+<p class="source-note">出典：S1 §1.2／S3（概念図）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ニューラルネットワークは、計算を行う単位をつないだ仕組みです。学習では、そのつながりの重みなどを調整します。生物の神経系から着想を得ていますが、脳そのものの忠実な再現と考える必要はありません。
+深層学習では、複数の層で情報を変換し、課題に役立つ表現を学びます。単に計算機を大きくするという意味ではなく、表現を段階的に学ぶ点に注目します。
+図は入力から出力への概念図で、層の数や役割がすべてのモデルで同じという意味ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: 進化や群れをヒントに、解を探す -->
+<div class="slide-body " >
+<h2>進化や群れをヒントに、解を探す</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>進化的計算</h3>
+<p>候補の解を集め、選択・交叉・突然変異などで探索する。</p>
+</div>
+<div class="definition-card">
+<h3>群知能</h3>
+<p>複数の個体の相互作用や情報共有を、探索に利用する。</p>
+</div>
+</div><div class="callout primary-message">
+<p>例：遺伝的アルゴリズム、粒子群最適化法、蟻コロニー最適化法</p>
+</div>
+<p class="source-note">出典：S1 §1.2／昨年度第7章</p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+人工知能には、よりよい解を探索する方法もあります。進化的計算は生物の進化から、群知能は群れの振る舞いから着想を得ています。
+遺伝的アルゴリズムでは解の候補を集め、選択、交叉、突然変異などを使います。粒子群最適化法では、複数の粒子が持つ探索の情報を利用します。
+どちらも、何をよい解とみなすかという評価が重要です。毎回必ず改善する、必ず最良の解が見つかる、という保証を意味しません。詳しい手順は第7章で学びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: 言葉と音声：扱う情報を区別する -->
+<div class="slide-body " >
+<h2>言葉と音声：扱う情報を区別する</h2>
+<div class="flow" role="group" aria-label="音声認識、自然言語処理、音声合成">
+<div class="flow-box"><strong>音声認識</strong><span>音声 → 文字列</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>自然言語処理</strong><span>文章の分類・翻訳・要約など</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>音声合成</strong><span>文字列 → 音声</span></div>
+</div><div class="callout primary-message">
+<p>音として扱う処理と、言葉の内容を扱う処理を組み合わせます。</p>
+</div>
+<p class="source-note">出典：S1 §1.2–1.3（役割を分けた概念図）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+音声と言葉は密接に関係しますが、同じ情報ではありません。音声認識は、音声を文字列として取り出す処理です。自然言語処理では、日本語や英語などの言葉を扱い、分類、翻訳、要約などを行います。
+音声合成は、文字列などから音声を作る処理です。この図は役割の違いを示したもので、自然言語処理が必ず音声認識を必要とするわけではありません。
+また、すべてのシステムがこの三つの箱に分かれているわけでもありません。画像についても、入力と出力から見てみましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: 画像から、必要な情報を取り出す -->
+<div class="slide-body " >
+<h2>画像から、必要な情報を取り出す</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>分類する</h3>
+<p>画像に何が写っているかを分類する。</p>
+</div>
+<div class="definition-card">
+<h3>場所を見つける</h3>
+<p>対象がどこにあるかを検出する。</p>
+</div>
+<div class="definition-card">
+<h3>文字を読み取る</h3>
+<p>画像の文字を文字列に変換する（OCR）。</p>
+</div>
+</div><div class="callout primary-message">
+<p>画像を入力する認識と、画像を出力する生成は、異なる課題です。</p>
+</div>
+<p class="source-note">出典：S1 §1.2–1.3／昨年度第9章／S4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+画像認識では、画像から課題に必要な情報を取り出します。画像全体を分類する場合もあれば、対象の位置を検出する場合、文字を読み取る場合もあります。
+画像認識の出力は、分類名、位置、文字列などです。一方、画像生成では画像そのものを出力します。同じ画像に関係していても、何を入力し何を出力するのかが違います。
+照明や撮影方向などが変わると結果も変わり得るため、実際の利用条件に合うかを確かめる必要があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: エージェントは、環境と相互作用する -->
+<div class="slide-body " >
+<h2>エージェントは、環境と相互作用する</h2>
+<div class="flow" role="group" aria-label="観測、行動選択、環境への作用">
+<div class="flow-box"><strong>観測</strong><span>環境の情報を得る</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>行動選択</strong><span>目的に応じて行動を選ぶ</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>環境への作用</strong><span>行動の結果を次の観測へ</span></div>
+</div><div class="concept-grid">
+<div class="definition-card">
+<h3>エージェント</h3>
+<p>ソフトウェアでも、ロボットでも構成できる。</p>
+</div>
+<div class="definition-card">
+<h3>強化学習</h3>
+<p>行動による報酬を手がかりに、行動の選び方を学ぶ方法。</p>
+</div>
+</div>
+<p class="source-note">出典：S1 §1.2・1.4／昨年度第10章（概念図）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+エージェントは、環境から情報を得て、行動し、その結果をまた観測するものとして捉えられます。ロボットならセンサと動作、ソフトウェアならデータの取得と外部の操作などが対応します。
+強化学習は、こうした相互作用の中で、報酬を手がかりに行動の選び方を学ぶ方法です。エージェントというシステムの見方と、強化学習という学習方法は区別しましょう。
+すべてのエージェントが強化学習を使うわけではありません。ここまでの技術を、次から具体的な応用につなげます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: 音声アシスタントを分解する -->
+<div class="slide-body " >
+<h2>音声アシスタントを分解する</h2>
+<div class="flow" role="group" aria-label="入力、処理、出力">
+<div class="flow-box"><strong>入力</strong><span>「明日の天気を教えて」</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>処理</strong><span>音声認識・要求の解釈・情報取得</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>出力</strong><span>結果を文章や音声で提示</span></div>
+</div><div class="callout primary-message">
+<p>一つの応答にも、認識・言語処理・検索・生成などが関わります。</p>
+</div>
+<p class="caption-note">教材用の構成例。実際の製品の内部構成や対応機能を示す図ではありません。</p>
+<p class="source-note">出典：S1 §1.3／S4・S6（教材用の構成例）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+音声で明日の天気を尋ねる場面を考えます。この構成例では、音声を認識し、何を求めているかを解釈し、天気の情報を取得して、文章や音声で返します。
+知識を保持したモデルだけで最新の天気を知るのではなく、必要に応じて外部の情報を取得する部分があることに注目してください。
+これは役割を説明するための教材例です。音声を直接扱うモデルなどもあり、すべての製品がこの順序や部品で動くわけではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: 推薦は、候補の順番を決める -->
+<div class="slide-body " >
+<h2>推薦は、候補の順番を決める</h2>
+<div class="flow" role="group" aria-label="入力、処理、出力">
+<div class="flow-box"><strong>入力</strong><span>閲覧履歴・評価・商品の情報など</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>処理</strong><span>関心に合いそうな候補を評価</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>出力</strong><span>おすすめ候補の一覧</span></div>
+</div><div class="callout primary-message">
+<p>「合いそう」という推定です。本人の希望を完全に把握するわけではありません。</p>
+</div>
+<p class="source-note">出典：S1 §1.3（手法は一例）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+推薦では、閲覧履歴、評価、商品の属性などを手がかりに、候補の順番を決めます。似た利用者の行動を使う方法も、商品の特徴を使う方法もあります。
+出力は、利用者に合いそうだと推定された候補です。過去の行動がその時点での希望を完全に表すとは限りませんし、見たことのない候補に関する情報も限られます。
+一つの正解を知っている装置というより、利用できる情報から候補を評価する仕組みとして理解してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: 需要予測は、判断の材料をつくる -->
+<div class="slide-body " >
+<h2>需要予測は、判断の材料をつくる</h2>
+<div class="flow" role="group" aria-label="入力、処理、出力">
+<div class="flow-box"><strong>入力</strong><span>過去の販売数・曜日・天候など</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>処理</strong><span>売上の変化をモデルで予測</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>出力</strong><span>翌日の需要の見積もり</span></div>
+</div><div class="callout primary-message">
+<p>予測結果を、在庫・廃棄・欠品などの条件と合わせて仕入れ判断に使います。</p>
+</div>
+<p class="caption-note">架空の店舗を想定した教材例。予測精度や売上改善の実績を示していません。</p>
+<p class="source-note">出典：S1 §1.4（架空の教材例）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+架空の店舗で、翌日に必要な商品の数を見積もる例です。過去の販売数に曜日や天候などの情報を合わせ、需要を予測します。
+ここで、予測と仕入れ判断は別です。同じ予測でも、在庫量や廃棄のしやすさによって、仕入れる量は変わり得ます。
+また、天候と売上に関係が見つかったとしても、それだけで原因と結果が証明されたことにはなりません。この例では、根拠のない具体的な改善率や予測値は設定しません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: 製造現場では、複数の技術を組み合わせる -->
+<div class="slide-body " >
+<h2>製造現場では、複数の技術を組み合わせる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>外観検査の例</h3>
+<p>カメラ画像 → 傷などの候補を検出 → 再確認へ</p>
+</div>
+<div class="definition-card">
+<h3>ロボットの例</h3>
+<p>センサ情報 → 位置・動作を判断 → 移動や把持</p>
+</div>
+</div><div class="callout primary-message">
+<p>認識の結果と、実際にどう動かすかの判断をつなぎます。</p>
+</div>
+<p class="source-note">出典：S1 §1.4／昨年度第9・10章（一般的な構成例）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+製造現場では、外観検査とロボットの動作など、さまざまな課題があります。外観検査では、画像から傷などの候補を見つけ、必要な確認につなげます。
+ロボットでは、周囲の認識、動作の計画、制御などを組み合わせます。制御の一部に学習を利用する場合もありますが、すべての産業用ロボットが強化学習で動くわけではありません。
+同じ技術名を使っていても、見逃しや誤検出の影響、実際に動作させる条件を含めて評価する必要があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: 生成AIは、内容をつくる働きに注目する -->
+<div class="slide-body " >
+<h2>生成AIは、内容をつくる働きに注目する</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>識別・予測の例</h3>
+<p>文章を分類する。数値を予測する。</p>
+</div>
+<div class="definition-card">
+<h3>生成の例</h3>
+<p>文章、画像、音声などの内容をつくる。</p>
+</div>
+</div><div class="callout primary-message">
+<p>自然言語処理にも画像処理にも、生成を行う課題があります。</p>
+</div>
+<p class="source-note">出典：S4／S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+生成AIという言葉は、文章や画像などの内容を作る働きに注目した呼び方です。機械学習や深層学習という作り方の区分と、同じ軸で並べないようにしましょう。
+たとえば自然言語処理には、文章の分類も文章の生成もあります。画像に関する技術にも、認識する課題と生成する課題があります。
+生成と識別を組み合わせる仕組みもあります。何を入力し、何を出力するかを確かめるという今日の見方は、生成AIにも使えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: LLMと、複数の種類の情報を扱うモデル -->
+<div class="slide-body " >
+<h2>LLMと、複数の種類の情報を扱うモデル</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>大規模言語モデル（LLM）</h3>
+<p>大量の言語データなどから学び、文章の生成などに使うモデル。</p>
+</div>
+<div class="definition-card">
+<h3>マルチモーダルなモデル</h3>
+<p>文字・画像・音声など、複数の種類の情報を扱うモデル。</p>
+</div>
+</div><div class="callout primary-message">
+<p>扱える入力・出力や得意な課題は、モデルごとに確かめます。</p>
+</div>
+<p class="source-note">出典：S6・S7</p>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+大規模言語モデル、エルエルエムは、大量の言語データなどを使って学習するモデルです。代表的な生成型の言語モデルは、文脈に続く言葉の並びを予測しながら文章を生成します。
+マルチモーダルは、複数の種類の情報を扱うという意味です。たとえば画像と文章を入力して、文章を出力する構成があります。ただし、すべてのモデルがあらゆる種類の入力と出力に対応するわけではありません。
+ここでは仕組みへの入口にとどめ、詳細は深層学習や自然言語処理につなげます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22: モデルと、利用するサービスを区別する -->
+<div class="slide-body " >
+<h2>モデルと、利用するサービスを区別する</h2>
+<div class="flow" role="group" aria-label="利用者、サービス、出力と行動">
+<div class="flow-box"><strong>利用者</strong><span>質問・指示・資料</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>サービス</strong><span>モデル＋検索・計算・画面など</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>出力と行動</strong><span>回答・候補・許可された操作</span></div>
+</div><div class="callout primary-message">
+<p>モデルの出力だけでなく、外部の情報や道具との組み合わせで働きが変わります。</p>
+</div>
+<p class="source-note">出典：S4・S6／S1 §1.2（教材用の構成例）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+私たちが操作するサービスは、モデルだけで構成されているとは限りません。画面、検索、計算、データベースなどとモデルを組み合わせる場合があります。
+したがって、サービスが検索できることと、モデル自体が最新情報を記憶していることは別です。モデルの出力を受けて道具を使い、結果を次の処理につなぐ構成は、先ほどのエージェントという見方にもつながります。
+図は構成例です。実行できる操作や権限、確認の手順はサービスによって異なります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23: もっともらしい出力でも、正しいとは限らない -->
+<div class="slide-body " >
+<h2>もっともらしい出力でも、正しいとは限らない</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>起こり得ること</h3>
+<p>誤った説明、存在しない出典、入力条件と矛盾する回答。</p>
+</div>
+<div class="definition-card">
+<h3>確かめること</h3>
+<p>元資料と照合する。計算は再計算する。出典の実在と内容を確認する。</p>
+</div>
+</div><div class="callout primary-message">
+<p>流暢さや自信のある言い方は、正確さの証拠になりません。</p>
+</div>
+<p class="source-note">出典：S4 §2.2・MS-2.5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+生成AIは、自然な文章で誤った内容を提示することがあります。一般にハルシネーションとも呼ばれ、NISTの資料ではコンファビュレーションとして扱われています。
+大切なのは、出力の言い方だけで判断しないことです。元資料と合うか、数値を計算し直せるか、示された出典が実在して内容を支えているかを確認します。
+検索などを組み合わせる工夫はありますが、それだけで誤りがなくなるとは限りません。次に、生成AI以外にも共通する評価の考え方を見ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: データと評価が、使えるかを左右する -->
+<div class="slide-body " >
+<h2>データと評価が、使えるかを左右する</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>データ</h3>
+<p>学ぶ材料は何か。偏りや誤りがないか。</p>
+</div>
+<div class="definition-card">
+<h3>評価</h3>
+<p>未知の例や実際の利用条件で、どの程度役立つか。</p>
+</div>
+<div class="definition-card">
+<h3>利用</h3>
+<p>誤りが起きたらどう確認し、判断につなげるか。</p>
+</div>
+</div><div class="callout primary-message">
+<p>例が一つうまく動いたことと、幅広い条件で使えることを区別します。</p>
+</div>
+<p class="source-note">出典：昨年度第3章／S4／S8</p>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+人工知能の評価は、一つの実演が成功したかどうかだけでは決まりません。どのようなデータで学び、どの条件で確かめ、どのような誤りが残るかを見る必要があります。
+データが多くても、利用したい場面を十分に表していなければ問題が残ります。また、学習に使った例での成績を、新しい例での成績と取り違えないようにします。
+ビッグデータも、インターネットから集めたデータだけを意味する言葉ではありません。規模、種類、発生速度なども関係します。データの質と利用目的を結び付けて考えましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: 「できることの広さ」と「理解・心」は別の問い -->
+<div class="slide-body " >
+<h2>「できることの広さ」と「理解・心」は別の問い</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>工学的な問い</h3>
+<p>どの課題を、どの条件で、どの程度できるか。</p>
+</div>
+<div class="definition-card">
+<h3>汎用性の問い</h3>
+<p>異なる課題や環境へ、どこまで能力を適用できるか。</p>
+</div>
+<div class="definition-card">
+<h3>哲学的な問い</h3>
+<p>計算するシステムに、理解や心があると言えるか。</p>
+</div>
+</div><div class="callout primary-message">
+<p>強いAI・弱いAIという立場の区別を、そのまま性能の高低や汎用性の軸と重ねません。</p>
+</div>
+<p class="source-note">出典：S1 §1.5／S5（問いの整理は授業用）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+昨年度資料は、ソフトウェア技術としてAIを捉える立場と、知能や知性そのものを作る立場を、弱いAIと強いAIとして紹介しています。
+Searleの議論では、強いAIは、適切なプログラムを実行するコンピュータが文字通り理解や認知状態を持つという主張に関わります。これは哲学上の論点であり、ここで結論が確定しているものとして扱いません。
+多くの課題をこなすことと、心があると主張することは別です。汎用人工知能という言葉も、何を汎用性と呼ぶかを明確にして議論する必要があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26: 発展を支えるのは、計算・データ・方法 -->
+<div class="slide-body " >
+<h2>発展を支えるのは、計算・データ・方法</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>計算資源</h3>
+<p>大きな計算を実行できるハードウェアと仕組み。</p>
+</div>
+<div class="definition-card">
+<h3>データ</h3>
+<p>学習に利用できるデータの蓄積と整備。</p>
+</div>
+<div class="definition-card">
+<h3>方法</h3>
+<p>モデル構造・学習方法・評価方法の研究。</p>
+</div>
+</div><div class="callout primary-message">
+<p>三つが組み合わさって進展します。規模を増やすだけで、すべての課題が解決するわけではありません。</p>
+</div>
+<p class="source-note">出典：S1 §1.5／S3・S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+昨年度資料にあった三つの背景は、今も技術の発展を考える手がかりになります。計算資源、利用できるデータ、そして学習方法やモデルの研究です。
+ただし、スマートフォンと過去のスーパーコンピュータの性能を、条件なしに比較するような説明は避けます。計算の規模だけでなく、どのようなデータと方法を使い、何を評価したのかが重要です。
+ここまでの見方を使って、次の例を自分の言葉で説明してみましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27: 確認：入力・処理・出力を説明してみよう -->
+<div class="slide-body table-slide" >
+<h2>確認：入力・処理・出力を説明してみよう</h2>
+<table>
+<thead>
+<tr>
+<th>場面</th>
+<th>説明すること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>写真の文字を、編集できる文字列にする</td>
+<td>入力と出力は何か。どの分野に関係するか。</td>
+</tr>
+<tr>
+<td>過去の販売数から、翌日の需要を見積もる</td>
+<td>何を学び、何を出力するか。</td>
+</tr>
+<tr>
+<td>文章を自然に生成する</td>
+<td>それだけで、内容が正しいと言えるか。</td>
+</tr>
+</tbody>
+</table>
+<p class="caption-note">採点・提出は伴いません。ここまでの内容を言葉で確かめるための問いです。</p>
+<p class="source-note">出典：本回の内容に基づく理解確認</p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+三つの場面について、入力、処理、出力を言葉にしてみてください。写真の文字を取り出すとき、写真そのものと出力される文字列はどう違うでしょうか。
+翌日の需要予測では、何を学び、何を見積もっているでしょうか。文章生成では、文章が自然であることから何が言えて、何が言えないでしょうか。
+提出や採点のための問題ではありません。技術の名前だけでなく、働きを説明できるかを確かめます。次のスライドで、説明の例を確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28: 確認の解説：名前と働きを結び付ける -->
+<div class="slide-body " >
+<h2>確認の解説：名前と働きを結び付ける</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>文字の読み取り</h3>
+<p>画像 → 文字の認識 → 文字列。OCR・画像認識に関係する。</p>
+</div>
+<div class="definition-card">
+<h3>需要の見積もり</h3>
+<p>販売データなど → 学習したモデル → 予測値。仕入れ判断は別に行う。</p>
+</div>
+<div class="definition-card">
+<h3>文章の生成</h3>
+<p>自然な文章でも誤り得る。事実や出典を、別の根拠と照合する。</p>
+</div>
+</div>
+<p class="source-note">出典：S1／S4（解答例）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+一つ目は、画像を入力して文字列を出力する文字認識、OCRの例です。認識した文字を使って、別の処理につなげることもできます。
+二つ目は、過去のデータから学んだモデルを使う需要予測です。予測値をそのまま仕入れ量と同じものだと考えないことも大切です。
+三つ目は、流暢さと正確さの区別です。生成された内容を使う前に、事実や出典を確認します。表現が多少違っていても、この関係を説明できれば、今日の見方を使えています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29: 今日のまとめ -->
+<div class="slide-body " >
+<h2>今日のまとめ</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>AIの働き</h3>
+<p>目的に応じて、入力から予測・判断・内容などを出力する。</p>
+</div>
+<div class="definition-card">
+<h3>技術の関係</h3>
+<p>手法・扱う情報・応用を分け、組み合わせを捉える。</p>
+</div>
+<div class="definition-card">
+<h3>利用するとき</h3>
+<p>データ、評価条件、出力の根拠を確かめる。</p>
+</div>
+</div><div class="callout primary-message">
+<p>身近なAIを見たら、「入力・処理・出力は何か」と問い直してみましょう。</p>
+</div>
+<p class="source-note">出典：S1〜S4（本回のまとめ）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日のまとめです。人工知能にはさまざまな技術がありますが、目的、入力、処理、出力という観点で、働きを説明できます。
+機械学習や深層学習は手法の観点、言語や画像は扱う情報の観点、推薦やロボットは応用の観点で見られます。生成AIも、この全体の中に位置づけられます。
+最後に、出力が役立つかどうかは、データや評価、利用条件と合わせて確かめます。この見取り図を持って、次回から各技術を詳しく学んでいきましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30: 次回：人工知能研究の歴史 -->
+<div class="slide-body " >
+<h2>次回：人工知能研究の歴史</h2>
+<div class="callout primary-message">
+<p><strong>10月8日（木）／第2回</strong><br>1940年から現代までの人工知能研究の歴史を学びます。</p>
+</div><div class="flow" role="group" aria-label="今回、次回、その後">
+<div class="flow-box"><strong>今回</strong><span>何を扱う技術か</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>次回</strong><span>どう発展してきたか</span></div>
+<span class="flow-arrow" aria-hidden="true">→</span>
+<div class="flow-box"><strong>その後</strong><span>仕組みを学び、プログラムで確かめる</span></div>
+</div>
+<p class="source-note">出典：2026年度schedule.md 第2回／シラバス</p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+次回は10月8日、人工知能研究の歴史です。1940年から現代まで、何を課題とし、どのような方法が考えられてきたのかを学びます。
+今日紹介した知識に基づく方法、機械学習、ニューラルネットワークなどを、研究の流れの中で位置づけ直します。
+その後は個々の仕組みを学び、プログラムで確認していきます。今日の内容について、質問を受け付けます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31: 質疑応答 -->
+<div class="slide-body questions-slide" >
+<h2>質疑応答</h2>
+<p class="lead">どの技術のつながりを、もう少し確認したいですか？</p>
+<p>AIの定義 ／ 手法と応用 ／ 生成AI ／ 出力の確かめ方</p>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+人工知能の定義、技術同士の関係、具体的な応用、生成AIの位置づけについて、質問はありますか。
+気になったサービスや身近な例を、入力、処理、出力に分けて考えてみてもよいでしょう。
+この後には、教科書との対応と、手順の補足、出典を付録としてまとめています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32: 付録：教科書第1章との対応 -->
+<div class="slide-body table-slide" >
+<h2>付録：教科書第1章との対応</h2>
+<table>
+<thead>
+<tr>
+<th>昨年度資料の節</th>
+<th>今回の主な対応スライド</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.1 人工知能の概要</td>
+<td>3〜4：身近な働き・定義</td>
+</tr>
+<tr>
+<td>1.2 人工知能分野内の諸領域</td>
+<td>5〜15：隣接分野・技術の見取り図</td>
+</tr>
+<tr>
+<td>1.3 生活の基盤技術としての人工知能</td>
+<td>16〜17：音声アシスタント・推薦</td>
+</tr>
+<tr>
+<td>1.4 人工知能の産業応用</td>
+<td>18〜19：需要予測・製造現場</td>
+</tr>
+<tr>
+<td>1.5 人工知能の定義</td>
+<td>4・25〜26：定義・立場・発展の背景</td>
+</tr>
+</tbody>
+</table>
+<p>20〜24は、生成AIと評価の観点を補う部分です。</p>
+<p class="source-note">出典：S1（教科書原本のページ番号は未確認）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+教科書第1章を学ぶ際には、この表で今回の説明と対応させてください。節名と内容の対応は、昨年度のスライドと講義ノートで確認しています。
+今回は具体例から入って全体像を整理したため、説明の順序を入れ替えています。生成AIや出力の評価については、原資料に新しい説明を補っています。
+教科書のページ番号は、原本と照合していないため記載していません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 33: 付録：探索の手順をもう一歩 -->
+<div class="slide-body " >
+<h2>付録：探索の手順をもう一歩</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>遺伝的アルゴリズムの典型例</h3>
+<p>候補を表現 → 初期集団 → 評価 → 選択・交叉・突然変異 → 次の世代へ</p>
+</div>
+<div class="definition-card">
+<h3>粒子群最適化法の典型例</h3>
+<p>粒子を配置 → 評価 → 自身と仲間の探索情報で移動 → 再び評価</p>
+</div>
+</div><div class="callout primary-message">
+<p>評価の方法と終了条件を決めます。改善の仕方は問題や設定に依存します。</p>
+</div>
+<p class="source-note">出典：S1 §1.2／昨年度第7章</p>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第12スライドで紹介した探索の手順を補足します。遺伝的アルゴリズムでは、まず解の候補の表し方を決めます。初期集団を作り、評価と遺伝的操作を繰り返して探索します。
+粒子群最適化法では、粒子を配置して評価し、それぞれの探索の経験や仲間の情報を利用して位置を更新します。
+どちらも、評価の仕方や終了条件が必要です。示した手順は典型例であり、細かな順序や操作にはさまざまな方式があります。第7章で詳しく扱います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 34: 付録：出典 ① 基礎概念と教科書 -->
+<div class="slide-body references-slide" >
+<h2>付録：出典 ① 基礎概念と教科書</h2>
+<ul>
+<li><strong>S1｜昨年度の第1章資料</strong><br>指定教科書：小高知宏『基礎から学ぶ 人工知能の教科書』オーム社、2019年。</li>
+<li><strong>S2｜OECD（2024）</strong><br><a href="https://www.oecd.org/en/publications/explanatory-memorandum-on-the-updated-oecd-definition-of-an-ai-system_623da898-en.html">Explanatory memorandum on the updated OECD definition of an AI system</a></li>
+<li><strong>S3｜LeCun, Bengio &amp; Hinton（2015）</strong><br><a href="https://www.nature.com/articles/nature14539">Deep learning</a></li>
+<li><strong>S8｜NIST：Big data</strong><br><a href="https://csrc.nist.gov/topics/technologies/big-data">データの規模・種類・発生速度などに関する定義</a></li>
+</ul>
+<p class="caption-note">外部資料確認日：2026年9月30日。主張と出典の詳しい対応はREADMEに記録。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+基礎概念の説明には、昨年度資料と、指定されたシラバスを使用しました。教科書に関する記載は、提供された昨年度資料との対応に基づきます。
+定義の整理にはOECD、深層学習の説明にはルカン、ベンジオ、ヒントンの論文を参照しています。ビッグデータの意味はNISTの説明とも照合しました。
+いずれも原文の長い引用ではなく、授業の目的に沿って要約しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 35: 付録：出典 ② 生成AIと哲学的な論点 -->
+<div class="slide-body references-slide" >
+<h2>付録：出典 ② 生成AIと哲学的な論点</h2>
+<ul>
+<li><strong>S4｜NIST（2024）</strong><br><a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf">Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile</a></li>
+<li><strong>S5｜Searle（1980）</strong><br><a href="https://www.cs.uky.edu/~sgware/reading/papers/searle1980minds.pdf">Minds, Brains, and Programs</a></li>
+<li><strong>S6｜Bommasani et al.（2021、参照版2022）</strong><br><a href="https://arxiv.org/abs/2108.07258">On the Opportunities and Risks of Foundation Models</a></li>
+<li><strong>S7｜Brown et al.（2020）</strong><br><a href="https://arxiv.org/abs/2005.14165">Language Models are Few-Shot Learners</a></li>
+</ul>
+<p class="caption-note">外部資料確認日：2026年9月30日。将来予測や製品の性能ランキングは扱っていません。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+生成AIの限界と評価には、NISTの資料を参照しました。大規模言語モデルや基盤モデルについては、ここに示した研究論文・報告書を補助資料としています。
+強いAIと弱いAIの区別については、Searleの原論文における用法を確認しました。これは一つの哲学的立場の紹介であり、論争が解決したと述べるものではありません。
+追加資料の使用箇所と確認日は、READMEにも記録しています。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+			height: 720,
+			margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
