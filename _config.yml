@@ -1,0 +1,3 @@
+# Include the Reveal.js runtime used by iceccme2026.
+include:
+  - _reveal
