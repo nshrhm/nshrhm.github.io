@@ -1,0 +1,160 @@
+{
+  "target": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/export",
+  "source_directory": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation",
+  "copies": [
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/fig/figure2_ja_ranking.png",
+      "destination": "fig/figure2_ja_ranking.png",
+      "action": "replace",
+      "sha256": "bdb4c62d86f3eeb325000d5dd573bba4fab2f2e2a42e28a0d7a61fb42c47b92d",
+      "file_type": "PNG image data, 3136 x 1323, 8-bit/color RGBA, non-interlaced",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/fig/figure3_cross_language_drift.png",
+      "destination": "fig/figure3_cross_language_drift.png",
+      "action": "replace",
+      "sha256": "8e750c268a1b8cbac4cae512e695573294af80f85921fbc73d6af8eaf705faf0",
+      "file_type": "PNG image data, 2455 x 1050, 8-bit/color RGBA, non-interlaced",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.eot",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.eot",
+      "action": "add",
+      "sha256": "dce8869d25c3abcecb33a3486a3c70bb76aed17c21a74069ee83949b1d209c9b",
+      "file_type": "Embedded OpenType (EOT), Source Sans Pro family",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.woff",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.woff",
+      "action": "add",
+      "sha256": "d4eaa48ba450f4dd2d024ab5b0e895c73c81475718e5453fd1890254c16b7a57",
+      "file_type": "Web Open Font Format, TrueType, length 114324, version 1.0",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.ttf",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.ttf",
+      "action": "add",
+      "sha256": "c1865d89d798bc2119872b17774361c7406974b9568121a617007e02af344981",
+      "file_type": "TrueType Font data, 20 tables, 1st \"BASE\", 26 names, Macintosh, type 256 string, Straight lAlternate aAlternate gSerifed ISlashed zero",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-italic.eot",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-italic.eot",
+      "action": "add",
+      "sha256": "ad4b0799608b5dc860cc3bd7ff4781f2d9e13144e48a2e3d9321ce57c5a12f2a",
+      "file_type": "Embedded OpenType (EOT), Source Sans Pro family",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-italic.woff",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-italic.woff",
+      "action": "add",
+      "sha256": "05d3615fdbe7d35c62d6a1308dc48e3985016b69e65926ed37b99fe7e6b297dc",
+      "file_type": "Web Open Font Format, TrueType, length 98556, version 1.0",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-italic.ttf",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-italic.ttf",
+      "action": "add",
+      "sha256": "d13268affb2204223a1b6b8483afd989a0e2b20bff853eae05fe5d0d32de8ed9",
+      "file_type": "TrueType Font data, 20 tables, 1st \"BASE\", 28 names, Macintosh, type 256 string, Straight lAlternate aAlternate gSerifed ISlashed zero",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.eot",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.eot",
+      "action": "add",
+      "sha256": "ebb8918da92bae172dfe322a3947929b3df2330dccc6f13c7d8e8ed3815e1696",
+      "file_type": "Embedded OpenType (EOT), Source Sans Pro Semibold family",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.woff",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.woff",
+      "action": "add",
+      "sha256": "b0abd2736335424f9fd3eb27974a36d03783b3db141e0801dca7d3a635218b46",
+      "file_type": "Web Open Font Format, TrueType, length 115648, version 1.0",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.ttf",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.ttf",
+      "action": "add",
+      "sha256": "a53e27232eff5f0bc1ba1c0af7e0759f0aaaf5c0636370b4c54f83c4652ba924",
+      "file_type": "TrueType Font data, 20 tables, 1st \"BASE\", 28 names, Macintosh, type 256 string, Straight lAlternate aAlternate gSerifed ISlashed zero",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.eot",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.eot",
+      "action": "add",
+      "sha256": "dfe0b47abfa0fdb0504d7be14015fa3f1cf9647b97ffd8b3bfcceb25c60f4fa6",
+      "file_type": "Embedded OpenType (EOT), Source Sans Pro Semibold family",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.woff",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.woff",
+      "action": "add",
+      "sha256": "7225cacc06c2f360367c138daa4ce727c2a0d26e42875b1f9e802f181fdb81c5",
+      "file_type": "Web Open Font Format, TrueType, length 98816, version 1.0",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.ttf",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.ttf",
+      "action": "add",
+      "sha256": "e8ec22b619599ef4088c788ec410ea3e70481acc9ec43cc0a7fcd00da6441646",
+      "file_type": "TrueType Font data, 20 tables, 1st \"BASE\", 30 names, Macintosh, type 256 string, Straight lAlternate aAlternate gSerifed ISlashed zero",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/LICENSE",
+      "destination": "_reveal/LICENSE",
+      "action": "add",
+      "sha256": "7bb84c4caefae9642631aab7cbd380e81d8e98fbf7186687cb09b712315b5100",
+      "file_type": "ASCII text",
+      "method": "shutil.copyfile(source, destination)"
+    },
+    {
+      "source": "/home/naruki/GitHub/eq-fuzzy-research-workbench/paper/iceccme2026/presentation/_reveal/dist/theme/fonts/source-sans-pro/LICENSE",
+      "destination": "_reveal/dist/theme/fonts/source-sans-pro/LICENSE",
+      "action": "add",
+      "sha256": "bb5f5f9b59ff3ab358efed2c5436e8aa2e12444959c4bde82167b874d5db1b1c",
+      "file_type": "Unicode text, UTF-8 text, with very long lines (591)",
+      "method": "shutil.copyfile(source, destination)"
+    }
+  ],
+  "validation": {
+    "local_reference_occurrences": 30,
+    "unique_local_resources": 25,
+    "missing_references": [],
+    "html_tag_balance": "pass",
+    "slides": 13,
+    "notes": 13,
+    "javascript_syntax_files": 6,
+    "all_export_assets_match_source": 28,
+    "html_changed": false,
+    "html_reformatted": false,
+    "css_links_changed": false,
+    "font_awesome_reference": "absent; no change",
+    "source_front_matter": "CSS list already correct; unchanged",
+    "djlint_ignore": [
+      "H014",
+      "H021",
+      "H031"
+    ],
+    "djlint_lint_errors": 0,
+    "djlint_check": "1 file would be updated; original formatting preserved",
+    "browser_validation": "not performed in this repair",
+    "unresolved_files": [],
+    "embedded_data_uri_count": 3,
+    "external_references": []
+  }
+}
