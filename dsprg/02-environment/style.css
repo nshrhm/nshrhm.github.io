@@ -531,6 +531,19 @@ body.image-zoom-open {
 .reveal .source-note { line-height: 1.35; margin-top: 0.6em; }
 .reveal .setup-screenshot { height: auto; }
 
+/* File execution: retain legible task names and the terminal output. */
+.reveal .task-flow {
+  font-size: 0.63em;
+  line-height: 1.5;
+  margin: 0 0 0.7em;
+}
+.reveal .task-menu-slide .step-image-layout { font-size: 0.86em; }
+.reveal .task-select-slide .caption-note,
+.reveal .task-result-slide .caption-note { font-size: 0.62em; }
+.reveal .task-select-screenshot { width: 85%; max-height: 120px; }
+.reveal .task-result-screenshot { width: 100%; max-height: 220px; }
+.reveal .task-result-slide ul { font-size: 0.84em; }
+
 /* Slide 9: show the address field beside the file-placement instructions. */
 .folder-setup-layout {
   align-items: start;

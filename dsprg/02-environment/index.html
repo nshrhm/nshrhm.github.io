@@ -978,9 +978,9 @@ Retype new password:
     
         <section >
             
-            <!-- 27: Python：作る → 保存する → 実行する -->
-<div class="slide-body " data-step="27">
-<h2>Python：作る → 保存する → 実行する</h2>
+            <!-- 27: Pythonファイルを作成して保存する -->
+<div class="slide-body" data-step="27">
+<h2>Pythonファイルを作成して保存する</h2>
 <p class="operation-place">VS Code｜exercises/lesson01</p>
 <ol>
 <li><code>lesson01</code> を右クリック → 「新しいファイル」→ <code>ex01.py</code>。</li>
@@ -988,17 +988,51 @@ Retype new password:
 </ol>
 <pre><code class="language-python">print(&quot;こんにちは、Python!&quot;)
 </code></pre>
-<ol start="3">
-<li><code>ex01.py</code> のタブを選びます。</li>
-<li>「ターミナル → タスクの実行…」→ <strong>授業: Pythonファイルを実行</strong>。</li>
-</ol>
-<div class="checkpoint">下部のターミナルに「こんにちは、Python!」が表示されましたか。</div>
+<p>実行する前に、まずファイルを保存します。</p>
+<div class="checkpoint">exercises/lesson01にex01.pyを保存できましたか。</div>
 <p class="source-note">出典：マニュアル「新しいPython・Rファイルを作る」</p>
 </div>
 <p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
-最初にパイソンのファイルを作ります。拡張子まで付けて名前を入力し、一行のプログラムを書いたら保存します。実行前に、目的のファイルのタブが選ばれていることを確認してください。
-ターミナルのメニューからタスクの実行を選び、授業用のパイソン実行タスクを使います。結果は下部のターミナルです。教員は、ノートブックのセル操作と混同していないか、文字が表示されたかを確認します。
+最初にパイソンのファイルを作ります。レッスン・ゼロ・ワンを右クリックし、新しいファイルを選びます。名前は、イーエックス・ゼロ・ワン、ドット・ピー・ワイです。
+画面の一行を書いたら、コントロール・エスで保存してください。実行するのは保存したファイルなので、書き換えたときも実行前に保存します。
+ここで学生の操作を待ちます。教員は、授業用ワークを開いたまま、指定した場所へ拡張子付きで保存できたかを確認してください。次の画面から、実行するためのメニュー操作を一つずつ示します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 28: 実行したいタブを選び、メニューを開く -->
+<div class="slide-body task-menu-slide" data-step="28">
+<h2>実行したいタブを選び、メニューを開く</h2>
+<p class="operation-place">WSL接続中のVS Code｜ファイルのタブ・上部メニュー</p>
+<p class="task-flow">保存 → 実行したいファイルのタブを開く →［ターミナル］→［タスクの実行…］→ 言語に合う授業用タスクを選ぶ → 結果を確認する</p>
+<div class="step-image-layout">
+<div>
+<img class="zoomable-image setup-screenshot" src="./images/ss-14.png" width="765" height="368" alt="VS CodeでPythonファイルのタブを開き、上部のターミナルメニューからタスクの実行を選ぶ画面。">
+<p class="caption-note">クリックで拡大。画像のhello.pyは撮影時の例です。</p>
+</div>
+<div>
+<ol>
+<li>保存した <strong><code>ex01.py</code> のタブ</strong>を開きます。</li>
+<li><strong>［ターミナル］</strong>を開きます。</li>
+<li><strong>［タスクの実行…］</strong>を選びます。</li>
+</ol>
+<p>メニューが見えない場合は、VS Codeを最大化します。</p>
+</div>
+</div>
+<div class="checkpoint">タスクの選択一覧が開いたら、次へ進みます。</div>
+<p class="source-note">出典：マニュアル「保存したファイルを実行する」／ss-14／ユーザー提示の実行手順</p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+実行の流れは、保存、実行したいファイルのタブを開く、ターミナル、タスクの実行、言語に合う授業用タスクを選ぶ、結果を確認する、です。
+まず、先ほど保存したイーエックス・ゼロ・ワン、ドット・ピー・ワイのタブをクリックしてください。画像ではハロー、ドット・ピー・ワイを開いていますが、これは撮影時の例です。皆さんは自分が作ったファイルを選びます。
+上部のターミナルから、タスクの実行を選びます。メニューが見えなければ、ブイエスコードを最大化してください。教員は操作を待ち、別のタブを選んでいないか、タスクの一覧が開いたかを確認します。
 </aside>
             </section>
     
@@ -1008,8 +1042,78 @@ Retype new password:
     
         <section >
             
-            <!-- 28: R：同じ流れでファイルを実行する -->
-<div class="slide-body " data-step="28">
+            <!-- 29: 言語に合う授業用タスクを選ぶ -->
+<div class="slide-body task-select-slide" data-step="29">
+<h2>言語に合う授業用タスクを選ぶ</h2>
+<p class="operation-place">WSL接続中のVS Code｜実行するタスクの選択</p>
+<img class="zoomable-image setup-screenshot task-select-screenshot" src="./images/ss-15.png" width="616" height="88" alt="実行するタスクの一覧。授業: Pythonファイルを実行と授業: Rファイルを実行が表示されている。">
+<p class="caption-note">画像はクリックで拡大できます。</p>
+<table>
+<thead>
+<tr>
+<th>開いているファイル</th>
+<th>選ぶ授業用タスク</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.py</code></td>
+<td><strong>［授業: Pythonファイルを実行］</strong></td>
+</tr>
+<tr>
+<td><code>.R</code></td>
+<td><strong>［授業: Rファイルを実行］</strong></td>
+</tr>
+</tbody>
+</table>
+<p>今は <strong><code>ex01.py</code> → Pythonのタスク</strong>を選びます。</p>
+<div class="checkpoint">選ぶ前に、ファイルの拡張子とタスクの言語が合っているか確認。</div>
+<p class="source-note">出典：マニュアル「保存したファイルを実行する」／ss-15</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+一覧には、授業、パイソンファイルを実行、と、授業、アールファイルを実行、があります。開いているファイルの言語に合うほうを選びます。
+今は拡張子がドット・ピー・ワイのファイルなので、パイソンのタスクを選んでください。この後、アールのファイルを実行するときは、アールのタスクに切り替えます。
+教員は、選択する前にタブのファイル名とタスク名を確認する時間を取ってください。授業用タスクが見当たらない場合は、授業用ワーク全体を開いているかを確認します。選ぶと下部のターミナルに結果が出ます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 30: 下部のターミナルで結果を確認する -->
+<div class="slide-body task-result-slide" data-step="30">
+<h2>下部のターミナルで結果を確認する</h2>
+<p class="operation-place">WSL接続中のVS Code｜下部のターミナル</p>
+<img class="zoomable-image setup-screenshot task-result-screenshot" src="./images/ss-16.png" width="924" height="242" alt="ターミナルの実行結果。自動表示された実行コマンド、Hello, World!というプログラムの出力、ターミナル再利用の案内が並ぶ。">
+<p class="caption-note">クリックで拡大。画像のhello.pyとHello, World!は撮影時の例です。</p>
+<ul>
+<li>上の <strong>実行コマンドは自動表示</strong>されます。手入力は不要です。</li>
+<li>確認するのは <strong>自分のプログラムが出した文字</strong>です。</li>
+<li>「ターミナルはタスクで再利用されます」はVS Codeの案内です。</li>
+</ul>
+<div class="checkpoint">今回は「こんにちは、Python!」が表示されれば成功です。</div>
+<p class="source-note">出典：マニュアル「保存したファイルを実行する」／ss-16</p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+結果は画面下部のターミナルに表示されます。上にある長い実行コマンドは、授業用タスクが自動で表示したものです。皆さんが書き写したり、手入力したりする必要はありません。
+画像では、撮影時のハロー、ドット・ピー・ワイを実行した結果として、ハロー・ワールドと出ています。皆さんが作ったファイルでは、こんにちは、パイソン、という文字が出たかを確認してください。
+その下の、ターミナルはタスクで再利用されます、という文はブイエスコードの案内です。自分のプログラムの出力とは区別します。教員は実行を待ち、結果が出たかを確認してください。エラーが出た場合は画面を残して相談します。次は同じ流れをアールで試します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 31: R：同じ流れでファイルを実行する -->
+<div class="slide-body " data-step="31">
 <h2>R：同じ流れでファイルを実行する</h2>
 <p class="operation-place">VS Code｜exercises/lesson01</p>
 <ol>
@@ -1025,7 +1129,7 @@ Retype new password:
 <div class="checkpoint">下部のターミナルに「こんにちは、R!」を含む結果が表示されましたか。</div>
 <p class="source-note">出典：マニュアル「新しいPython・Rファイルを作る」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 続いてアールのファイルを作ります。ファイル名の最後は、大文字のアールです。同じように一行を書いて保存し、今度はアールのファイルのタブを選んで、アール用の授業タスクを実行します。
 パイソンのタスクを選んでいないか確認してください。出力の見た目がパイソンと完全に同じとは限りませんが、書いた日本語のメッセージが結果に含まれているかを見ます。
@@ -1038,8 +1142,8 @@ Retype new password:
     
         <section >
             
-            <!-- 29: 確認③：両方のファイルを開き直す -->
-<div class="slide-body " data-step="29">
+            <!-- 32: 確認③：両方のファイルを開き直す -->
+<div class="slide-body " data-step="32">
 <h2>確認③：両方のファイルを開き直す</h2>
 <p class="operation-place">VS Code｜ファイルのタブ・ターミナル</p>
 <ul>
@@ -1069,7 +1173,7 @@ Retype new password:
 <div class="checkpoint">「作る・書く・保存・実行・開き直す」が両言語でできましたか。</div>
 <p class="source-note">出典：マニュアル「保存したファイルを実行する」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 二つのファイルで結果が出たら、保存されていることも確かめます。タブを閉じ、左側の一覧から同じファイルを開き直してください。自分のコードが残っていれば確認できています。
 教員は、どちらか一方だけで止まっている人がいないか確認します。今回の一行は入力を求めませんが、今後入力が必要なプログラムでは、ターミナルをクリックして入力します。次はノートブックを扱います。
@@ -1082,8 +1186,8 @@ Retype new password:
     
         <section >
             
-            <!-- 30: Notebookは、セルごとに実行する -->
-<div class="slide-body " data-step="30">
+            <!-- 33: Notebookは、セルごとに実行する -->
+<div class="slide-body " data-step="33">
 <h2>Notebookは、セルごとに実行する</h2>
 <p class="operation-place">VS Code｜notebooks</p>
 <p><strong>Notebook（<code>.ipynb</code>）</strong> は、説明・プログラム・結果を一緒に保存するファイルです。</p>
@@ -1097,7 +1201,7 @@ Retype new password:
 <div class="checkpoint">ファイル全体の実行タスクと、Notebookのセル実行を区別します。</div>
 <p class="source-note">出典：マニュアル「NotebookをVS Codeで実行する」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 ノートブックは、説明文とプログラム、実行結果をまとめて保存できるファイルです。コードのかたまりがセル、そのコードを実行する環境がカーネルです。
 さきほどのパイソンやアールのファイルとは実行方法が違います。ノートブックではセルの横の三角ボタンを使い、授業用タスクは使いません。授業では引き続きブイエスコードの中で操作します。
@@ -1110,8 +1214,8 @@ Retype new password:
     
         <section >
             
-            <!-- 31: Python Notebookのカーネルを選ぶ -->
-<div class="slide-body " data-step="31">
+            <!-- 34: Python Notebookのカーネルを選ぶ -->
+<div class="slide-body " data-step="34">
 <h2>Python Notebookのカーネルを選ぶ</h2>
 <p class="operation-place">VS Code｜notebooks/hello_python.ipynb</p>
 <ol>
@@ -1125,7 +1229,7 @@ Retype new password:
 <div class="checkpoint">DSProg2026とPythonが一致し、文字・計算結果・日本語グラフが出ましたか。</div>
 <p class="source-note">出典：マニュアル「Notebookを開く」「右上の『カーネルの選択』をクリックする」「セル横の『▶』をクリックする」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 配布されているハロー・パイソンのノートブックを開きます。右上からカーネルを選び、ジュピターのカーネル一覧で授業名とパイソンが一致するものを選んでください。表記の順序が画面によって変わる場合があります。
 セルは上から順番に実行します。配布ノートブックの文字、計算結果、日本語のグラフを確認しましょう。候補が見えない場合は、別のカーネルを選択からジュピター・カーネルズへ進みます。
@@ -1138,8 +1242,8 @@ Retype new password:
     
         <section >
             
-            <!-- 32: R Notebookも、Rのカーネルで実行する -->
-<div class="slide-body " data-step="32">
+            <!-- 35: R Notebookも、Rのカーネルで実行する -->
+<div class="slide-body " data-step="35">
 <h2>R Notebookも、Rのカーネルで実行する</h2>
 <p class="operation-place">VS Code｜notebooks/hello_r.ipynb</p>
 <ol>
@@ -1153,7 +1257,7 @@ Retype new password:
 <div class="checkpoint">DSProg2026とRが一致し、文字・計算結果・日本語グラフが出ましたか。</div>
 <p class="source-note">出典：マニュアル「右上の『カーネルの選択』をクリックする」「セル横の『▶』をクリックする」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 アールのノートブックでも同じ流れを確認します。今度は、カーネルの言語がアールであることが大切です。パイソンの環境一覧の中から探すのではなく、ジュピターのカーネル一覧へ進みます。
 上から実行して、アールでも文字、計算結果、日本語のグラフが表示されるかを確かめます。カーネルが見つからない場合は自分で新しい環境を作らず、接続先や拡張機能を教員と確認してください。
@@ -1166,8 +1270,8 @@ Retype new password:
     
         <section >
             
-            <!-- 33: 確認④：保存し、順番をそろえて実行する -->
-<div class="slide-body " data-step="33">
+            <!-- 36: 確認④：保存し、順番をそろえて実行する -->
+<div class="slide-body " data-step="36">
 <h2>確認④：保存し、順番をそろえて実行する</h2>
 <p class="operation-place">VS Code｜Python・RのNotebook</p>
 <ul>
@@ -1181,7 +1285,7 @@ Retype new password:
 <div class="checkpoint">PythonとRの両方で「正しいカーネル・実行結果・保存」を確認。</div>
 <p class="source-note">出典：マニュアル「保存・再実行する」「セットアップ完了の確認」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 ノートブックは、実行した順番によって状態が変わります。途中のセルだけを動かすと、それ以前に作った変数が残ったままになる場合があります。順番が分からなくなったら、カーネルを再起動し、上から実行し直します。
 二つのノートブックを保存し、開き直して内容を確認してください。教員はここで、両言語のカーネル、文字、計算、日本語グラフのどこまで確認できたかを聞き取ります。
@@ -1194,8 +1298,8 @@ Retype new password:
     
         <section >
             
-            <!-- 34: 課題ファイルはUbuntu側のworkへコピー -->
-<div class="slide-body " data-step="34">
+            <!-- 37: 課題ファイルはUbuntu側のworkへコピー -->
+<div class="slide-body " data-step="37">
 <h2>課題ファイルはUbuntu側のworkへコピー</h2>
 <p class="operation-place">Windows｜エクスプローラー → VS Code</p>
 <ol>
@@ -1211,7 +1315,7 @@ Retype new password:
 <div class="checkpoint">Windows側のDSProg2026-setupは導入・起動用。課題の保存先ではありません。</div>
 <p class="source-note">出典：マニュアル「ダウンロードしたファイルをUbuntu側へコピーする」「作業場所を取り違えない」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 今後、クラスルームから課題ファイルを受け取るときは、まず授業用ブイエスコードを起動しておきます。ダウンロードしたファイルを、画面の共有パスからウブントゥのワークへコピーします。
 保存先や名前は、その回の指示に従います。タスクで動くプログラムの作業場所はワークなので、データや出力の指定もそこを基準にします。ノートブックでは作業場所が異なる場合があるため、課題の指示を確認してください。
@@ -1224,8 +1328,8 @@ Retype new password:
     
         <section >
             
-            <!-- 35: 提出するのは、保存した課題ファイル -->
-<div class="slide-body " data-step="35">
+            <!-- 38: 提出するのは、保存した課題ファイル -->
+<div class="slide-body " data-step="38">
 <h2>提出するのは、保存した課題ファイル</h2>
 <p class="operation-place">Windows／Classroom｜提出・バックアップ</p>
 <ol>
@@ -1241,7 +1345,7 @@ Retype new password:
 <div class="checkpoint">課題ファイルを、指示された場所に提出・バックアップします。</div>
 <p class="source-note">出典：マニュアル「提出とバックアップ」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 タールは初期環境のコピーです。皆さんが書いた課題が、元のタールへ自動的に戻って保存されるわけではありません。提出前に必ず保存し、指示された課題ファイルを選んでください。
 共有パスから選べない場合は、完成した課題ファイルだけをウィンドウズ側へコピーして提出します。提出期限や具体的な名前は、その回の指示で確認します。
@@ -1254,8 +1358,8 @@ Retype new password:
     
         <section >
             
-            <!-- 36: 終了するとき・次の授業で始めるとき -->
-<div class="slide-body " data-step="36">
+            <!-- 39: 終了するとき・次の授業で始めるとき -->
+<div class="slide-body " data-step="39">
 <h2>終了するとき・次の授業で始めるとき</h2>
 <p class="operation-place">VS Codeで終了 → Windowsから次回起動</p>
 <p><strong>今日の終了</strong></p>
@@ -1268,7 +1372,7 @@ Retype new password:
 <div class="checkpoint">次回はStart.cmd。ダウンロード・インポート・パスワード設定は繰り返しません。</div>
 <p class="source-note">出典：マニュアル「授業を終えるとき」「起動用ファイルを実行する」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 授業を終えるときは、ファイルを保存し、実行中の処理を終了してからブイエスコードを閉じます。元のタールと初回設定用ファイルは、少なくとも導入確認が終わるまでは保管してください。
 次の授業では、普通のパワーシェルからスタート・シーエムディーで開きます。今日と同じワークに戻り、保存したファイルを使います。初回設定を毎回繰り返す必要はありません。
@@ -1281,8 +1385,8 @@ Retype new password:
     
         <section >
             
-            <!-- 37: 今日、どこまでできましたか -->
-<div class="slide-body " data-step="37">
+            <!-- 40: 今日、どこまでできましたか -->
+<div class="slide-body " data-step="40">
 <h2>今日、どこまでできましたか</h2>
 <p class="operation-place">到達点の確認</p>
 <table>
@@ -1315,7 +1419,7 @@ Retype new password:
 <div class="checkpoint">未完了でも、エラーの画面を残して教員へ相談できます。</div>
 <p class="source-note">出典：マニュアル「セットアップ完了の確認」「困ったときは、ここを確認する」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 今日の到達点を四つに分けて確認します。ウブントゥを取り込めたか、授業用の画面へ接続できたか、自作ファイルを両言語で実行できたか、ノートブックまで確認できたかです。
 終わらなかった項目があっても、環境を削除して最初からやり直す必要はありません。できた段階と、止まった操作を伝えてください。教員は未完了の段階を確認し、続きのフォローにつなげます。
@@ -1328,8 +1432,8 @@ Retype new password:
     
         <section >
             
-            <!-- 38: 質問・未完了箇所の確認 -->
-<div class="slide-body " data-step="38">
+            <!-- 41: 質問・未完了箇所の確認 -->
+<div class="slide-body " data-step="41">
 <h2>質問・未完了箇所の確認</h2>
 <p class="operation-place">相談するとき</p>
 <p><strong>どの段階で、何をしたら、どうなりましたか。</strong></p>
@@ -1343,7 +1447,7 @@ Retype new password:
 <div class="checkpoint">削除・再インポートの繰り返し・セキュリティ機能の無効化は行いません。</div>
 <p class="source-note">出典：マニュアル「困ったときは、ここを確認する」「共有してよいもの・共有しないもの」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 ここで質問と、まだ完了していないところを確認します。どの段階で、どの操作をしたら、何が表示されたかを教えてください。画面やエラー文があると確認しやすくなります。
 画面写真を共有する場合も、パスワードやジュピターのトークンが写っていないか確認してください。この先は補足です。全員に追加の操作を求めるものではなく、必要な場面で教員と一緒に参照します。
@@ -1356,8 +1460,8 @@ Retype new password:
     
         <section >
             
-            <!-- 39: 補足：導入時に止まったとき -->
-<div class="slide-body trouble-slide" data-step="39">
+            <!-- 42: 補足：導入時に止まったとき -->
+<div class="slide-body trouble-slide" data-step="42">
 <h2>補足：導入時に止まったとき</h2>
 <p class="operation-place">Windows｜画面を残して確認</p>
 <table>
@@ -1394,7 +1498,7 @@ Retype new password:
 <div class="checkpoint">パスワード入力で文字が出ないのは通常の動作。失敗後も再インポートしません。</div>
 <p class="source-note">出典：マニュアル「困ったときは、ここを確認する」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 導入時のエラーは、まずどの段階のものかを確認します。ファイルがない場合は、展開先、配置、名前、ダウンロード完了を見ます。ハッシュが違う場合は、そのファイルで続行せず、教員配布のものかを確認してください。
 すでに環境があるという表示では、導入済みか途中かを教員が判断します。削除してやり直す操作は行いません。権限や仮想化、容量についても、画面を残して相談します。
@@ -1407,8 +1511,8 @@ Retype new password:
     
         <section >
             
-            <!-- 40: 補足：VS Codeで実行できないとき -->
-<div class="slide-body trouble-slide" data-step="40">
+            <!-- 43: 補足：VS Codeで実行できないとき -->
+<div class="slide-body trouble-slide" data-step="43">
 <h2>補足：VS Codeで実行できないとき</h2>
 <p class="operation-place">VS Code｜接続先・work・拡張機能</p>
 <table>
@@ -1445,7 +1549,7 @@ Retype new password:
 <div class="checkpoint">新しい環境を作らず、現在の接続先と設定を教員と確認します。</div>
 <p class="source-note">出典：マニュアル「困ったときは、ここを確認する」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 ブイエスコードで実行できない場合は、接続先と開いているフォルダーから確認します。タスクがなければワーク全体を開いているか、カーネルがなければ授業用接続とジュピター拡張を見ます。
 制限モードを解除する場合も、教員配布のワークであることを確認してください。システムディーの警告が出たときも、別のダブリューエスエルでの作業を勝手に止めず、教員に相談します。
@@ -1458,8 +1562,8 @@ Retype new password:
     
         <section >
             
-            <!-- 41: 補足：Start.cmdを使わない起動方法 -->
-<div class="slide-body " data-step="41">
+            <!-- 44: 補足：Start.cmdを使わない起動方法 -->
+<div class="slide-body " data-step="44">
 <h2>補足：Start.cmdを使わない起動方法</h2>
 <p class="operation-place">WindowsのPowerShell → Ubuntuの画面</p>
 <p><strong>① 普通のPowerShellで実行</strong></p>
@@ -1472,7 +1576,7 @@ Retype new password:
 <div class="checkpoint">開いたVS Codeで、WSL: DSProg2026とworkを確認します。</div>
 <p class="source-note">出典：マニュアル「起動用ファイルを使わない予備の方法」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 普段はスタート・シーエムディーを使いますが、必要になった場合の予備の起動方法です。最初の一行は、ウィンドウズの普通のパワーシェルで入力します。
 ウブントゥの画面に切り替わってから、コード、半角空白、点と入力します。二つのコマンドを同じ操作場所で入力しないように注意してください。開いた後の接続先とフォルダーの確認は、通常の起動と同じです。
@@ -1485,8 +1589,8 @@ Retype new password:
     
         <section >
             
-            <!-- 42: 補足：JupyterLabは教員の案内時だけ -->
-<div class="slide-body " data-step="42">
+            <!-- 45: 補足：JupyterLabは教員の案内時だけ -->
+<div class="slide-body " data-step="45">
 <h2>補足：JupyterLabは教員の案内時だけ</h2>
 <p class="operation-place">VS Code｜新しいターミナル（Ubuntu側）</p>
 <pre><code class="language-bash">cd /home/datasci/work
@@ -1501,7 +1605,7 @@ uv run --locked jupyter lab
 <div class="checkpoint">トークンを共有せず、認証を無効にしません。通常はVS CodeでNotebookを実行。</div>
 <p class="source-note">出典：マニュアル「ブラウザーのJupyterLabは予備として使える」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 ジュピターラボは予備の方法です。教員から案内されたときだけ、授業用ブイエスコードで新しいターミナルを開き、ウブントゥ側でこの二行を実行します。
 表示されたローカルホストのアドレスには認証用のトークンが含まれます。アドレス全体を他人へ送らないでください。終了するときは起動したターミナルでコントロールとシーを押し、表示に従います。見えている管理ファイルは変更しません。
@@ -1514,8 +1618,8 @@ uv run --locked jupyter lab
     
         <section >
             
-            <!-- 43: 補足：管理ファイルと参考資料 -->
-<div class="slide-body " data-step="43">
+            <!-- 46: 補足：管理ファイルと参考資料 -->
+<div class="slide-body " data-step="46">
 <h2>補足：管理ファイルと参考資料</h2>
 <p class="operation-place">必要になったときに参照</p>
 <table>
@@ -1553,7 +1657,7 @@ uv run --locked jupyter lab
 <div class="checkpoint">元資料・各スライドの対応と参考URLは、この資料のsources.mdに収録。</div>
 <p class="source-note">出典：マニュアル「非表示になっている主な管理ファイル」「参考資料と、この手順の対象」</p>
 </div>
-<p><audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg" preload="none"></audio></p>
 <aside class="notes">
 管理ファイルには、授業用の実行環境やパッケージの版、ブイエスコードのタスクなどの設定が入っています。普段の画面で見えないのは削除されたからではありません。教員の指示なしに移動や編集はしないでください。
 詳しい操作は学生用マニュアルへ戻って確認できます。公式資料の一覧と、このスライドがマニュアルのどこに対応するかは、資料の出典一覧にもまとめます。
