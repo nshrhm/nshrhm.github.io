@@ -1,0 +1,1719 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>第4回 機械学習2</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: 第3回の評価の考え方から具体的手法へつなぐ -->
+<div class="slide-body title-block">
+<h2>第4回 機械学習2</h2>
+<p class="eyebrow">人工知能概論 ／ 2026年度 秋学期</p>
+<p class="lead">似た例・分岐・組合せ・境界で分類する</p>
+<p class="authors"><strong>白濵 成希</strong></p>
+<p class="conference">2026年10月22日（木）</p>
+<p class="source-note">出典：2026年度シラバス・schedule.md</p>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日は機械学習の二回目です。前回は何を学習に使い、何で評価するかを学びました。
+今回は具体的な分類の方法を比べます。同じ入力でも、予測の決め方や設定が違えば結果は変わります。
+名前だけでなく、どの情報を使ってその答えを出したのかを説明しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: 五つの手法を予測の仕組みと評価から理解する -->
+<div class="slide-body ">
+<h2>今日の到達目標</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>追う</h3>
+<p>k近傍法と決定木の予測を、<strong>小さな例</strong>で追う。</p>
+</div>
+<div class="definition-card">
+<h3>区別する</h3>
+<p>アンサンブルとランダムフォレスト、SVMの<strong>仕組み</strong>を区別する。</p>
+</div>
+<div class="definition-card">
+<h3>確かめる</h3>
+<p>設定の選択と最終評価を分け、<strong>プログラムで確認</strong>する。</p>
+</div>
+</div>
+<p class="source-note">出典：2026年度授業計画／授業用の到達目標</p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+目標は三つです。まず近い例を探す方法と、質問で枝分かれする方法を自分で追います。
+次に、複数モデルの組合せや境界の余白という考え方を理解します。
+完成コードを実行し、説明と出力が一致するかを確認します。数学やPythonの既習を前提にせず、小さな表から読みます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: 具体的手法でも評価分離を維持する -->
+<div class="slide-body ">
+<h2>前回の三つの役割を使い続ける</h2>
+<div class="flow" role="img" aria-label="学習 → 検証 → テスト">
+<div class="flow-box"><strong>学習</strong><span>モデル・前処理を決める</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>検証</strong><span>k・深さなどを選ぶ</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>テスト</strong><span>選択後の成績を確認</span></div>
+</div><div class="callout primary-message">手法が変わっても、テストを設定選びに使わない。</div>
+<p class="source-note">出典：第3回本文16〜19／S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+学習、検証、テストという三つの役割を思い出してください。近傍数や木の深さは、モデルを選ぶときの設定です。
+検証結果で選んだ後に、独立したテストで確認します。前処理も学習側で決めます。
+テストを見るたびに設定を変えると、そのテストは独立した最終評価ではなくなります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: 手法比較の軸を提示する -->
+<div class="slide-body table-slide">
+<h2>同じ分類でも、答えの決め方が違う</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>予測を決める主な手掛かり</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k近傍法</td>
+<td>入力に近い学習例のラベル</td>
+</tr>
+<tr>
+<td>決定木</td>
+<td>特徴についての分岐と葉</td>
+</tr>
+<tr>
+<td>アンサンブル</td>
+<td>複数モデルの出力の組合せ</td>
+</tr>
+<tr>
+<td>ランダムフォレスト</td>
+<td>ランダム性を入れて作った複数の木</td>
+</tr>
+<tr>
+<td>SVM</td>
+<td>学習した分類境界</td>
+</tr>
+</tbody>
+</table>
+<p class="source-note">出典：S2〜S5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+これから扱う方法を一つの表で見ます。k近傍法は学習例との距離を調べ、決定木は分岐をたどります。
+アンサンブルは組み合わせる考え方の総称で、ランダムフォレストはその一種です。SVMは境界を学習します。
+この表は分類の場合の入口です。回帰にも使われる方法がありますが、今日はラベルを出す例を中心にします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: 実物や性能実績と混同しない固定例を示す -->
+<div class="slide-body table-slide">
+<h2>共通の架空データ：特徴とラベル</h2>
+<div class="two-column">
+<div>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th style="text-align:right">x</th>
+<th style="text-align:right">y</th>
+<th>正解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td>A</td>
+</tr>
+<tr>
+<td>T2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">2</td>
+<td>A</td>
+</tr>
+<tr>
+<td>T3</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">0</td>
+<td>A</td>
+</tr>
+<tr>
+<td>T4</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">2</td>
+<td>B</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th style="text-align:right">x</th>
+<th style="text-align:right">y</th>
+<th>正解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T5</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">6</td>
+<td>B</td>
+</tr>
+<tr>
+<td>T6</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">8</td>
+<td>B</td>
+</tr>
+<tr>
+<td>T7</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">6</td>
+<td>B</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>x・yは<strong>教材用の架空の数値</strong>。IDは距離に使わない。</li>
+<li>新しい入力 <strong>(2, 3)</strong> をA／Bに分類する。</li>
+<li>この段階では、新しい入力の正解は使わない。</li>
+</ul>
+<p class="source-note">出典：新規の架空データ／neighbors_and_trees.py</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+七件の固定データを用意しました。各行は一つの観測で、xとyが特徴、AかBが正解です。
+左右の表に分けて七件を示しています。例えばT3は二、零、A、T4は二、二、Bです。
+実物の高さや面積ではありません。IDは行を識別するために使い、予測の距離には含めません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: 近傍探索とラベル集約を分ける -->
+<div class="slide-body ">
+<h2>k近傍法：近いk件のラベルを集める</h2>
+<div class="flow" role="img" aria-label="距離を計算 → k件を選ぶ → 投票する">
+<div class="flow-box"><strong>距離を計算</strong><span>入力と学習例を比べる</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>k件を選ぶ</strong><span>近い順に取り出す</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>投票する</strong><span>ラベルを集約する</span></div>
+</div><div class="callout primary-message">今日は各近傍が1票を持つ分類を使う。</div>
+<p class="source-note">出典：S2 §1.6.2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ケーきんぼうほうは、入力に近い学習例を探して予測する方法です。ケーは使う近傍の件数です。
+今日は各例が一票を持つ多数決を使います。距離が近いほど重く扱う方法もあります。
+学習例を保持することと、入力が来てから近傍を調べることを分けて考えましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: 距離の計算を手で追えるようにする -->
+<div class="slide-body table-slide">
+<h2>距離の二乗で、近い順に並べる</h2>
+<p>二つの特徴の差を、それぞれ二乗して足す。</p>
+<p><strong>距離の二乗 = (xの差)² + (yの差)²</strong></p>
+<table>
+<thead>
+<tr>
+<th>入力(2, 3)から</th>
+<th>計算</th>
+<th style="text-align:right">距離の二乗</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T4：(2, 2), B</td>
+<td>0² + 1²</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td>T2：(0, 2), A</td>
+<td>2² + 1²</td>
+<td style="text-align:right">5</td>
+</tr>
+<tr>
+<td>T3：(2, 0), A</td>
+<td>0² + 3²</td>
+<td style="text-align:right">9</td>
+</tr>
+</tbody>
+</table>
+<p>平方根を取っても順序は同じ。小さいほど近い。</p>
+<p class="source-note">出典：S2／架空例の手計算・実装</p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この演習ではユークリッド距離の二乗を使います。平方根は近い順の並びを変えないため、省略できます。
+入力は二、三です。T4との違いは零と一なので二乗の和は一、T2とは二と一なので五、T3とは零と三なので九です。
+残り四件も計算すると、この三件が最も近いことを確かめられます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: 近傍数で変わる予測を計数する -->
+<div class="slide-body ">
+<h2>k=1とk=3で、予測が変わる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>k = 1</h3>
+<p>最も近いT4だけ：<strong>Bが1票 → B</strong></p>
+</div>
+<div class="definition-card">
+<h3>k = 3</h3>
+<p>T4・T2・T3：<strong>Bが1票、Aが2票 → A</strong></p>
+</div>
+</div><div class="callout primary-message">予測の違いだけでは、どちらが正しいかは決まらない。</div>
+<p class="source-note">出典：S2／固定例</p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+一件だけを使うと、最も近いT4のラベルであるBになります。三件ならAが二票なのでAになります。
+ここでは入力の正解を使っていないので、予測が変わっただけで、どちらが正しいとは言えません。
+近傍数を選ぶには、正解の分かった検証用データで成績を比較します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: kの大小の傾向と非保証を説明する -->
+<div class="slide-body ">
+<h2>kを変えると、見ている範囲が変わる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>小さいk</h3>
+<p>ごく近い例を重視する。<strong>局所的な違い・ノイズ</strong>の影響を受けやすい。</p>
+</div>
+<div class="definition-card">
+<h3>大きいk</h3>
+<p>より広い範囲を集約する。<strong>細かな境界が薄れる</strong>ことがある。</p>
+</div>
+</div><div class="callout primary-message">適したkはデータと目的による。検証で選ぶ。</div>
+<p class="source-note">出典：S2 §1.6.2／S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+近傍数が小さいと局所的な形に反応しますが、近い一件が不安定なら予測も動きやすくなります。
+大きくすると集約する範囲が広がりますが、異なる領域の例まで混ざることがあります。
+大きいほどよい、奇数なら必ずよいという規則ではありません。検証で選びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: 単位と変換が距離に影響することを示す -->
+<div class="slide-body table-slide">
+<h2>特徴の尺度で「近い」が変わる</h2>
+<table>
+<thead>
+<tr>
+<th>入力(0, 0)から</th>
+<th style="text-align:right">元の距離の二乗</th>
+<th style="text-align:right">yを3で割った後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1：(0, 3), A</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td>S2：(2, 0), B</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>k=1：変換前はB、変換後はA。</strong></p>
+<ul>
+<li>この変換は尺度の影響を見るために指定した架空例。</li>
+<li>標準化の平均・尺度を推定する場合は、<strong>学習側で決める</strong>。</li>
+</ul>
+<p class="source-note">出典：S6／架空例の手計算</p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+距離は数値の尺度に依存します。二件の例を原点から比べると、元の数値ではBの例が近くなります。
+yだけを三で割るとAの例が近くなります。今回は効果を見るために指定した変換で、自動で標準化した結果ではありません。
+平均や標準偏差を使うときは学習側だけで推定し、検証やテストにも同じ変換を適用します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: 同点規約と奇数の限界を説明する -->
+<div class="slide-body ">
+<h2>同じ距離・同じ票数の扱いも決める</h2>
+<ul>
+<li>この演習：距離が同じなら<strong>IDの文字列順</strong>で選ぶ。</li>
+<li>得票数が同じなら<strong>Aを選ぶ</strong>。</li>
+<li>二クラス・奇数kなら票は同数にならない。</li>
+<li><strong>三クラスならk=3でも1票ずつになり得る</strong>。</li>
+</ul>
+<div class="callout primary-message">同点規約は教材の設計。データ順への依存にも注意する。</div>
+<p class="source-note">出典：S2の同距離の注意／教材の実装規約</p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+近い順を並べたとき、境目の距離が同じなら、どの例を取るかを決める必要があります。
+この教材はID順、同票ならAという規約を公開しています。一般に必ずAを選ぶわけではありません。
+奇数なら同票がなくなるのは二クラスの場合です。三クラスなら三票が一票ずつに分かれます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: 保持型の学習と総当たり実装を位置付ける -->
+<div class="slide-body ">
+<h2>k近傍法の学習と推論の負担</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>学習側</h3>
+<p>特徴とラベルを保持する。今回の実装は複雑な境界を事前に作らない。</p>
+</div>
+<div class="definition-card">
+<h3>推論側</h3>
+<p>入力と全学習例の距離を計算する。例が増えると保持・探索の負担も増える。</p>
+</div>
+</div><div class="callout primary-message">今回の総当たり探索の性質を、すべての実装へ一般化しない。</div>
+<p class="source-note">出典：S2 §1.6.2・1.6.4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+このプログラムでは学習例をそのまま保持し、入力が来てから全例との距離を計算します。
+例が増えるほど必要な記憶と計算も増えます。実用の実装には木などを使って探索する方法もあります。
+例を保持する方法でも未知の入力を予測できます。汎化できない方法という意味で暗記と呼ぶのではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: 決定木の構造と推論を図示する -->
+<div class="slide-body ">
+<h2>決定木：質問をたどって葉へ進む</h2>
+<div class="tree-diagram" role="img" aria-label="xが4以下なら左の葉A、それ以外は右の葉B">
+<div class="tree-root">x ≤ 4 ?</div>
+<div class="tree-branches"><div class="definition-card">はい ↓<br><strong>葉：A</strong></div><div class="definition-card">いいえ ↓<br><strong>葉：B</strong></div></div>
+</div>
+<p>入力(2, 3)：x=2なので左へ → <strong>A</strong>。</p>
+<p class="source-note">出典：S3／架空例</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+決定木は特徴についての質問を枝分かれで表現します。末端の葉で予測を決めます。
+この図は一回だけ分岐する木で、xが四以下かを調べます。入力が二、三なら、二は四以下なのでAです。
+一般の木では次の質問へ進む場合もあります。予測のときは、既に決まった木をたどります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: 学習で決まる分岐と推論を区別する -->
+<div class="slide-body ">
+<h2>木を作ることと、木をたどること</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>学習</h3>
+<p>特徴・しきい値の候補を比較し、<strong>学習データのラベル</strong>から分岐と葉を決める。</p>
+</div>
+<div class="definition-card">
+<h3>推論</h3>
+<p>新しい入力の<strong>特徴</strong>で枝を選ぶ。入力の正解ラベルは使わない。</p>
+</div>
+</div><div class="callout primary-message">人が書いた固定の分岐図と、データから学習した木を区別する。</div>
+<p class="source-note">出典：S3 §1.10.7</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+木の形だけを見ると、人が書いたルールにも見えます。機械学習では、分岐の条件や葉のラベルを学習データから決めます。
+予測では新しい入力の特徴だけを使います。正解を見て枝を変えることはしません。
+どの候補からどんな基準で木を選んだのかを、次の例で確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: 不純度の役割を簡単な例で説明する -->
+<div class="slide-body table-slide">
+<h2>ラベルの混ざり方が減る分岐を探す</h2>
+<p>架空の4件：A・A・B・Bを二つの枝に分ける。</p>
+<table>
+<thead>
+<tr>
+<th>分岐候補</th>
+<th>左側</th>
+<th>右側</th>
+<th>分割後の混ざり</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>候補1</td>
+<td>A・A</td>
+<td>B・B</td>
+<td>小さい（この例では0）</td>
+</tr>
+<tr>
+<td>候補2</td>
+<td>A・B</td>
+<td>A・B</td>
+<td>大きい</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>不純度</strong>：ラベルの混ざり方を測る値。</li>
+<li>この例は両側2件。一般には枝ごとの<strong>件数も考慮</strong>する。</li>
+</ul>
+<p class="source-note">出典：S3 §1.10.7／新規の架空例</p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+同じ四件でも、分け方によってラベルの混ざり方が変わります。AだけとBだけに分ける候補は、この例では混ざりがありません。
+AとBが一つずつになる候補は、両側とも混ざっています。Gini不純度などでこの違いを数値にします。
+枝の件数が違う場合は件数で重みを付けます。式は付録に置き、本文では何を比べる値かを理解しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: 演習の学習結果をデータ分布と結び付ける -->
+<div class="slide-body table-slide">
+<h2>七件から、1段の木を学習する</h2>
+<ul>
+<li>x・yごとに、異なる値の<strong>中点</strong>をしきい値候補にする。</li>
+<li>各候補の加重Gini不純度を比べる。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>選んだ分岐</th>
+<th>左：x ≤ 4</th>
+<th>右：x &gt; 4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x ≤ 4</td>
+<td>T1〜T4：Aが3件、Bが1件</td>
+<td>T5〜T7：Bが3件</td>
+</tr>
+<tr>
+<td>葉の予測</td>
+<td>A</td>
+<td>B</td>
+</tr>
+</tbody>
+</table>
+<p>同じ不純度ならx優先、その後は小さいしきい値。</p>
+<p class="source-note">出典：S3／fit_stump(TRAIN)・手計算</p>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+七件の演習では特徴の値の中点を候補にし、加重Gini不純度が最小の分岐を選びます。
+xが四以下の枝にはAが三件、Bが一件、もう一方にはBが三件入り、葉はそれぞれの多数派になります。
+xとyの候補が同成績になるので、この教材はxを優先します。一回だけの分岐に限定した小さな決定木です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: 木の複雑さと検証をつなぐ -->
+<div class="slide-body ">
+<h2>深い木は、細かな違いまで分けられる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>分岐を増やす</h3>
+<p>学習例の細かな違いを表現できる。<strong>少数例やノイズ</strong>にも合わせることがある。</p>
+</div>
+<div class="definition-card">
+<h3>複雑さを制御する</h3>
+<p>最大深さ、葉に必要な件数、枝刈りなどを使う。<strong>効果は検証で確認</strong>する。</p>
+</div>
+</div><div class="callout primary-message">学習例を細かく分けたことだけでは、汎化は分からない。</div>
+<p class="source-note">出典：S3の利点・欠点・停止条件／第3回の汎化</p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+木を深くすると、学習例を細かく分けられます。ただし、その細かさが未知の入力にも必要とは限りません。
+最大深さや葉に必要な件数を制限し、枝刈りをする方法もあります。前回の過学習とつなげて考えてください。
+今回の実装は一段に固定しています。深さを自動調整する実験を行ったとは言いません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: 解釈可能性を因果や性能と区別する -->
+<div class="slide-body ">
+<h2>木の説明は、予測の根拠を示す</h2>
+<ul>
+<li>「x ≤ 4を満たしたのでA」と<strong>経路を説明</strong>できる。</li>
+<li>浅い木は読みやすい。大きい木は読む負担が増える。</li>
+<li>学習した関連は、現実の<strong>原因</strong>を証明するものではない。</li>
+<li>説明しやすさと、未知の入力での正確さは別に確認する。</li>
+</ul>
+<p class="source-note">出典：S3／授業上の解釈の区別</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+浅い木は、どの質問にどう答えてその葉に着いたかを示せます。これは予測の経路の説明です。
+しかし、特徴が結果を引き起こしたと証明するものではありません。また、分岐が非常に多い木は読むのが難しくなります。
+読みやすさを評価するときも、未知のデータで役立つかという確認は必要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: アンサンブルの包含関係を修正する -->
+<div class="slide-body ">
+<h2>アンサンブル：複数モデルの出力を組み合わせる</h2>
+<div class="flow" role="img" aria-label="同じ入力 → 複数モデル → 集約">
+<div class="flow-box"><strong>同じ入力</strong><span>一つの予測対象</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>複数モデル</strong><span>それぞれの出力</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>集約</strong><span>投票・平均など</span></div>
+</div><div class="callout primary-message">異なる種類の手法でも、同じ種類の手法でも構成できる。</div>
+<p class="source-note">出典：S4／昨年度の「異なる手法が必須」を修正</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+アンサンブルは複数のモデルの出力を組み合わせて一つの予測にする考え方です。
+異なる手法を使う場合も、同じ種類の手法から違うモデルを作る場合もあります。必ず別種類のアルゴリズムが必要ではありません。
+分類の投票、確率の平均、回帰の数値の平均など、出力に応じて集約します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: ハード投票の具体例を示す -->
+<div class="slide-body table-slide">
+<h2>三つの予測を、1票ずつ集める</h2>
+<table>
+<thead>
+<tr>
+<th>入力(2, 3)</th>
+<th>予測</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k=1の近傍法</td>
+<td>B</td>
+</tr>
+<tr>
+<td>k=3の近傍法</td>
+<td>A</td>
+</tr>
+<tr>
+<td>学習した1段の決定木</td>
+<td>A</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Aが2票、Bが1票 → 最終予測はA。</strong></p>
+<p>この例はハード投票。三つのモデルを選び直した最終評価ではない。</p>
+<p class="source-note">出典：S4のVoting／固定例</p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+同じ入力を三つの予測方法に渡します。近傍数一ではB、近傍数三と一段の木ではAになります。
+各出力を一票にするとAが二票で、集約した予測はAです。
+この投票例は仕組みを観察するために構成しました。実データで三つを組み合わせれば必ずよいという結果ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: 誤りの重なりとアンサンブルの限界を説明する -->
+<div class="slide-body ">
+<h2>モデルを増やすだけでは、誤りは消えない</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>違う誤りがある場合</h3>
+<p>あるモデルの誤りを、他のモデルの正しい予測が補う可能性がある。</p>
+</div>
+<div class="definition-card">
+<h3>同じ誤りが重なる場合</h3>
+<p>三つとも同じ入力を誤分類すると、<strong>多数決でも誤る</strong>。</p>
+</div>
+</div><div class="callout primary-message">組合せの効果は、未知のデータで確かめる。</div>
+<p class="source-note">出典：S4の平均型アンサンブル・Random Forests</p>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+組み合わせる効果は、個々のモデルがどこで間違うかにも左右されます。
+同じ誤りが三つ重なると、多数決でもその誤りが残ります。モデルをコピーして票数だけ増やしても情報は増えません。
+違う誤りを補える可能性はありますが、改善したかは実際の評価で確かめます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22: 代表的な組合せ方法を区別する -->
+<div class="slide-body table-slide">
+<h2>バギングとブースティングは、作り方が違う</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>モデルを作る主な考え方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>バギング</td>
+<td>学習例を再抽出して複数モデルを作り、集約する</td>
+</tr>
+<tr>
+<td>ブースティング</td>
+<td>先行するモデルの誤りなどを踏まえ、順にモデルを追加する</td>
+</tr>
+<tr>
+<td>投票</td>
+<td>用意した複数モデルの予測を集約する</td>
+</tr>
+</tbody>
+</table>
+<p>同じ「組合せ」でも、学習の進め方や集約の仕方が異なる。</p>
+<p class="source-note">出典：S4のBagging・Boosting・Voting</p>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+アンサンブルの作り方にも種類があります。バギングは再抽出した例を使って複数モデルを作ります。
+ブースティングは先行するモデルの誤りなどを踏まえて順に追加します。具体的な重み付けや目的関数は手法によって違います。
+投票は複数モデルの出力をどう集約するかに注目した方法です。ここでは名称と主な違いを押さえます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23: 決定木とアンサンブルの接点を示す -->
+<div class="slide-body ">
+<h2>ランダムフォレスト：違いを持つ木を組み合わせる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>使うモデル</h3>
+<p>複数の<strong>決定木</strong>。異なる種類の手法を必須にしない。</p>
+</div>
+<div class="definition-card">
+<h3>違いを作る</h3>
+<p>代表的な設定では、<strong>学習例の復元抽出</strong>と<strong>分岐候補の特徴の抽出</strong>を使う。</p>
+</div>
+</div><div class="callout primary-message">木を作る過程にランダム性を入れ、出力を集約する。</div>
+<p class="source-note">出典：S4 §1.11.2.1</p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ランダムフォレストは決定木を組み合わせるアンサンブルです。木に違いを持たせるため、作る過程にランダム性を入れます。
+代表的には学習例を復元抽出し、さらに各分岐で検討する特徴の候補を抽出します。
+同じ決定木という種類でも別の木ができます。木を作ること自体を無作為な当てずっぽうと捉えないでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: 標本の再抽出を具体的に示す -->
+<div class="slide-body table-slide">
+<h2>復元抽出：同じ例を、もう一度選べる</h2>
+<p>元の学習ID：<strong>1・2・3・4</strong>（架空の抽出例）</p>
+<table>
+<thead>
+<tr>
+<th>木</th>
+<th>4回の復元抽出の例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>木1</td>
+<td>1・1・3・4</td>
+</tr>
+<tr>
+<td>木2</td>
+<td>2・3・3・4</td>
+</tr>
+<tr>
+<td>木3</td>
+<td>1・2・2・4</td>
+</tr>
+</tbody>
+</table>
+<p>同じIDが重なる場合や、選ばれないIDがある。</p>
+<p><strong>元の学習データから抽出する。テスト例を混ぜない。</strong></p>
+<p class="source-note">出典：S4のbootstrap／架空の抽出図</p>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+復元抽出では、選んだ例を戻してから次を選びます。四回選んでも四種類すべてが入るとは限りません。
+表は仕組みを示すために作った抽出列です。実行した乱数生成の結果ではありません。
+異なる標本で木を作ることが、木の違いを作る一つの手段です。元の学習側から取り、最終テストは混ぜません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: RFの特徴抽出と最良分岐を区別する -->
+<div class="slide-body ">
+<h2>各分岐で、候補にする特徴も選ぶ</h2>
+<p>特徴がx・y・z・wある場合の概念例。</p>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>ある分岐</h3>
+<p>候補の特徴を<strong>x・z</strong>に限定し、その候補の中で分岐を比較。</p>
+</div>
+<div class="definition-card">
+<h3>別の分岐</h3>
+<p>候補の特徴を<strong>y・w</strong>に限定し、その候補の中で分岐を比較。</p>
+</div>
+</div><div class="callout primary-message">ランダムに選ぶ候補と、候補内で選ぶ良い分岐を分ける。</div>
+<p class="source-note">出典：S4 §1.11.2.1／概念図</p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+もう一つのランダム性は、各分岐で調べる特徴の候補を選ぶことです。
+候補がxとzなら、その中で不純度などを比較して分岐を決めます。一般に全分岐の条件を無作為に決めるという意味ではありません。
+抽出する特徴数などは設定で変わります。図は四特徴の概念例で、七件のプログラムの実行結果ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26: ハード投票と確率平均を区別する -->
+<div class="slide-body table-slide">
+<h2>分類結果と確率は、集約の意味が違う</h2>
+<table>
+<thead>
+<tr>
+<th>木</th>
+<th style="text-align:right">Aへの確率出力（架空）</th>
+<th>木単体の予測</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>木1</td>
+<td style="text-align:right">0.6</td>
+<td>A</td>
+</tr>
+<tr>
+<td>木2</td>
+<td style="text-align:right">0.6</td>
+<td>A</td>
+</tr>
+<tr>
+<td>木3</td>
+<td style="text-align:right">0.0</td>
+<td>B</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>ハード投票</strong>：Aが2票 → A。</li>
+<li><strong>確率の平均</strong>：Aは(0.6+0.6+0)/3 = 0.4 → B。</li>
+<li>scikit-learnのRF分類は確率出力を平均。回帰は数値出力を平均。</li>
+</ul>
+<p class="source-note">出典：S4 §1.11.2.1の実装上の区別／架空例</p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+集約の意味を区別します。ラベルだけを一票ずつ数える方法と、確率出力を平均する方法では、結果が違う場合があります。
+この二クラスの架空例は、木単体ではAが二票でも、Aの確率の平均が零点四なので、平均後の分類はBです。
+サイキットラーンのランダムフォレスト分類器は確率を平均します。確率出力が現実の確率として校正済みとは限りません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27: RFの非保証と再現性を明示する -->
+<div class="slide-body ">
+<h2>森にも、設定と評価が必要</h2>
+<ul>
+<li>木の本数、最大深さ、候補の特徴数などを設定する。</li>
+<li>乱数シードの固定は、同じ条件の結果を<strong>再現</strong>するため。</li>
+<li>本数や複雑さを増やせば、保持・計算の負担も変わる。</li>
+<li>単独の木より良いかは<strong>同じ評価条件</strong>で比べる。</li>
+</ul>
+<div class="callout primary-message">乱数固定は、正しさや汎化性能の保証ではない。</div>
+<p class="source-note">出典：S4／S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+森を作る場合も設定を選ぶ必要があります。木の本数や深さ、候補の特徴数は結果と計算の負担に関わります。
+乱数シードは同じ条件を再現するために固定します。固定したことは、よい成績を保証しません。
+今回のプログラムは乱数を使わず、ランダムフォレストを実装しません。ここまでは公式資料に基づく概念の説明です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28: 線形分離可能な例でマージンを導入する -->
+<div class="slide-body ">
+<h2>SVM：分ける境界と、余白を考える</h2>
+<div class="number-line" role="img" aria-label="x軸の1と2にA、6と7にB。支持点は2と6、境界は4。境界から支持点までの余白は左右とも2">
+<div class="axis-point">1<br><strong>A</strong></div>
+<div class="axis-point support-point">2<br><strong>A</strong><br><small>支持点</small></div>
+<div class="axis-point margin-interval">3<br>← 余白2 →</div>
+<div class="axis-point boundary-point">4<br><strong>境界</strong></div>
+<div class="axis-point margin-interval">5<br>← 余白2 →</div>
+<div class="axis-point support-point">6<br><strong>B</strong><br><small>支持点</small></div>
+<div class="axis-point">7<br><strong>B</strong></div>
+</div>
+<p>分離できる一次元の概念例。<strong>近い学習点までの余白</strong>を大きく取る。</p>
+<p class="source-note">出典：S5 §1.4.7／架空の分離可能例</p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+サポートベクターマシン、略してエスブイエムを見ます。まず線形に分離できる一次元の例です。
+Aは一と二、Bは六と七にあります。境界を四に置くと、最も近い点までの余白は両側二です。
+これはマージンの考え方を示す図で、今回のPythonによるSVMの学習結果ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29: 単純な支持点の説明の範囲を明示する -->
+<div class="slide-body ">
+<h2>サポートベクター：境界を支える学習点</h2>
+<ul>
+<li>前の分離可能例：境界に近い<strong>x=2とx=6</strong>が支持点。</li>
+<li>これらの位置が、取れる余白に関わる。</li>
+<li>一般には特徴が多い空間で境界を考える。</li>
+<li>マージンの内側や誤分類された点が関わる場合もある。</li>
+</ul>
+<div class="callout primary-message">「最も近い2点」だけで一般のSVMを定義しない。</div>
+<p class="source-note">出典：S5 §1.4.7</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+先ほどのきれいに分けられる例では、二と六の点が境界を支える点です。これをサポートベクターと呼びます。
+実際の多次元のデータでは、二点だけとは限りません。分離できない場合には、マージンの内側の点なども関わります。
+まず余白と支持点の関係を理解し、単純な図の性質をすべてのSVMへ広げないようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30: ソフトマージンとCの役割を説明する -->
+<div class="slide-body ">
+<h2>分け切れないデータでは、違反も考慮する</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>ソフトマージン</h3>
+<p>余白を確保することと、<strong>マージンへの侵入・誤分類</strong>のペナルティを両立させる。</p>
+</div>
+<div class="definition-card">
+<h3>Cの役割</h3>
+<p>他の条件が同じなら、<strong>Cが大きいほど違反を重く扱う</strong>。Cも検証で選ぶ。</p>
+</div>
+</div><div class="callout primary-message">すべての学習点を正しく分けることを、汎化の保証にしない。</div>
+<p class="source-note">出典：S5 §1.4.5・1.4.7.1</p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+実データは一本の境界できれいに分けられるとは限りません。ソフトマージンではマージンへの侵入や誤分類にペナルティを設けます。
+シーという設定は余白と違反の扱いの釣合いに関わり、大きいほど違反を重く扱います。
+学習例を全部分けようとしても未知の成績がよくなるとは限りません。シーも検証で選びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31: 非線形境界と選択条件を導入する -->
+<div class="slide-body ">
+<h2>カーネル：直線だけでは表せない境界へ</h2>
+<ul>
+<li>カーネルは、特徴の変換後の<strong>内積に対応する計算</strong>を使う。</li>
+<li>元の特徴空間では、曲線状の境界になる場合がある。</li>
+<li>線形・RBFなどの選択や設定は、検証で比較する。</li>
+<li>尺度も重要。前処理は学習側で決め、同じ変換を適用する。</li>
+</ul>
+<div class="callout primary-message">カーネルを使えば、どんなデータでも正しく分類できるわけではない。</div>
+<p class="source-note">出典：S5 §1.4.5〜1.4.7／S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+カーネルは、特徴を変換した空間の内積に対応する計算を使う考え方です。変換後の特徴をすべて明示的に並べずに扱える場合があります。
+元の特徴空間では曲線状の境界を表せますが、正しく分類できることは保証されません。
+線形やアールビーエフの選択、設定、尺度を検証で比べます。詳しい式や実装は今回の演習範囲には含めません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32: 理解と選択の軸をまとめる -->
+<div class="slide-body table-slide">
+<h2>手法を、同じ問いで比べる</h2>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>何を保持・学習する？</th>
+<th>調整・確認の例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k近傍法</td>
+<td>学習例とラベル</td>
+<td>k・距離・尺度・同点</td>
+</tr>
+<tr>
+<td>決定木</td>
+<td>分岐条件と葉の出力</td>
+<td>深さ・葉の件数</td>
+</tr>
+<tr>
+<td>RF</td>
+<td>ランダム性を入れた複数の木</td>
+<td>本数・深さ・特徴数</td>
+</tr>
+<tr>
+<td>SVM</td>
+<td>境界を定めるモデル</td>
+<td>C・カーネル・尺度</td>
+</tr>
+</tbody>
+</table>
+<p>アンサンブルは組合せの考え方。<strong>万能な優勝手法を決める表ではない。</strong></p>
+<p class="source-note">出典：S2〜S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+四つの具体的手法を同じ問いで比べます。何を保持し、何を学習するか、どんな設定があるかを見てください。
+この表からデータを見ずに最良の方法を決めることはできません。評価条件と計算の負担も必要です。
+アンサンブルは組合せの考え方なので、一つのアルゴリズムと同じ段に固定して扱わないようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 33: 実装と到達目標の対応を明確にする -->
+<div class="slide-body ">
+<h2>演習：予測を追ってから、検証でkを選ぶ</h2>
+<ul>
+<li><a href="../programs/neighbors_and_trees.py">Python完成版</a>／<a href="../programs/neighbors_and_trees.ipynb">単体Notebook</a></li>
+<li><strong>学習7件・検証4件・テスト4件</strong>の架空固定例。乱数なし。</li>
+<li>k=1／3、1段の決定木、3モデルのハード投票を観察する。</li>
+<li>投票は仕組みの例。RF・SVMの実装や性能比較は行わない。</li>
+</ul>
+<pre><code class="language-bash">python neighbors_and_trees.py --demo
+</code></pre>
+<p class="source-note">出典：新規演習／S2・S3・S4・S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+演習ではまず入力二、三の近い順と投票を読み、その後に検証用四件で近傍数を選びます。
+完成したPythonと、同じ処理を収録した単体ノートブックがあります。同梱Pythonを読み込まずにNotebookだけでも動きます。
+実装する範囲は近傍法、一段の木、ハード投票です。RFとSVMを実行して比較した結果ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 34: 固定例の成績を評価分離と結び付ける -->
+<div class="slide-body table-slide">
+<h2>学習の全問正解と、検証での選択は違う</h2>
+<table>
+<thead>
+<tr>
+<th>k</th>
+<th>学習7件</th>
+<th>検証4件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>7 / 7</td>
+<td>2 / 4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>6 / 7</td>
+<td>4 / 4</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>検証で <strong>k=3</strong> を選ぶ。同成績なら小さいkを選ぶ規約。</li>
+<li>選択後の独立テスト：<strong>4 / 4</strong>。</li>
+<li>この固定例の結果。他のデータでの性能を保証しない。</li>
+</ul>
+<p class="source-note">出典：固定例の手計算・CLI／S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+学習例自身を分類すると、近傍数一では自分が距離零の近傍になるため、この例では全問正解です。
+しかし検証では二件しか正しくなく、近傍数三は四件正解でした。検証で三を選び、その後にテストを確認すると四件正解です。
+これは固定例の計数です。三が一般に最適という結論でも、投票の性能評価でもありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 35: 観察可能な変更を提示する -->
+<div class="slide-body ">
+<h2>一つずつ変え、結果の理由を説明する</h2>
+<ul>
+<li>入力だけ変更：近い順と投票がどう変わるか。</li>
+<li>kだけ変更：採用される例と得票数がどう変わるか。</li>
+<li>尺度だけ変更：「近い」の順がどう変わるか。</li>
+<li>学習ラベル変更：木を<strong>再学習</strong>すると分岐や葉がどう変わるか。</li>
+</ul>
+<pre><code class="language-bash">python neighbors_and_trees.py --query 2 3 --k 1
+</code></pre>
+<p>テスト結果を見て変更した後は、同じテストを独立した最終評価と呼ばない。</p>
+<p class="source-note">出典：学習用実装／第3回本文17・33</p>
+</div>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+まず一つの条件だけを変えます。入力を変える場合は推論、学習ラベルを変えて木を作り直す場合は再学習です。
+なぜ結果が変わったのかを、近い順や分岐から説明してください。Notebookには尺度の比較や再学習を観察するセルを置いています。
+テスト結果を見て設計し直したら、その同じテストを独立した最終評価として報告することはできません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 36: 仕組みと評価を自分の言葉で説明する -->
+<div class="slide-body ">
+<h2>理解確認と、次回への接続</h2>
+<ul>
+<li>k=1とk=3の予測が違う理由を、近傍のラベルから説明。</li>
+<li>木の学習と、木をたどる推論を区別。</li>
+<li>同じ手法のモデルでもアンサンブルを作れるか。</li>
+<li>SVMのマージンを大きくする考え方は、汎化の保証か。</li>
+</ul>
+<div class="callout primary-message">次回：知識表現と推論。分岐による判断から、知識を表す方法へ。</div>
+<p class="source-note">出典：本文6〜34／2026年度schedule.md</p>
+</div>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の説明を自分の言葉で確認します。予測が変わる理由を、手法名だけでなく使った情報から説明してください。
+木の学習と推論、同じ種類のモデルの組合せ、マージンと汎化の違いも振り返ります。
+次回は知識表現と推論です。今日の木をたどる判断を手掛かりに、知識を表す別の方法へ進みます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 37: 本文の理解と演習の疑問を確認する -->
+<div class="slide-body questions-slide">
+<h2>質疑応答</h2>
+<p class="questions-title">質問・確認</p>
+<ul>
+<li>近傍・分岐・組合せ・境界のどこが難しかったか。</li>
+<li>予測と評価を、どのデータで行ったか。</li>
+<li>プログラムの出力で説明できなかった点はあるか。</li>
+</ul>
+<p class="source-note">出典：本回の内容</p>
+</div>
+<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここまでの内容や、演習で分かりにくかった点を確認しましょう。
+疑問があれば、どの入力、どの近傍数、どの出力を見たかを合わせて示してください。
+この後の付録はGini不純度、昨年度との対応、出典です。本文のクイズは付録の式を前提にしません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 38: 本文の混ざり方の説明を数式で補う -->
+<div class="slide-body ">
+<h2>付録：Gini不純度を、今回の木で計算する</h2>
+<p><strong>Gini = 1 − (Aの割合)² − (Bの割合)²</strong></p>
+<ul>
+<li>左4件：Aが3、Bが1 → 1 − (3/4)² − (1/4)² = <strong>3/8</strong>。</li>
+<li>右3件：Bだけ → <strong>0</strong>。</li>
+<li>加重Gini：(4/7)×(3/8) + (3/7)×0 = <strong>3/14</strong>。</li>
+<li>分岐前：1 − (3/7)² − (4/7)² = <strong>24/49</strong>。</li>
+</ul>
+<p>コードは分数で厳密に比較。葉は多数派、同票ならA。</p>
+<p class="source-note">出典：S3 §1.10.7.1／手計算</p>
+</div>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+付録では混ざり方の計算を示します。割合の二乗を足し、一から引くのが今回使うGini不純度です。
+左の四件は八分の三、右の三件は零なので、件数で重みを付けると十四分の三です。
+プログラムは分数として厳密に比較します。この式の計算は本文クイズには含めません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 39: 採用範囲と修正理由を残す -->
+<div class="slide-body references-slide">
+<h2>付録：昨年度資料からの変更</h2>
+<ul>
+<li>旧49〜61：具体的手法を第4回として整理。</li>
+<li>アンサンブル：<strong>異なる種類の手法が必須</strong>という説明を修正。</li>
+<li>RF：特徴候補の抽出と、確率平均・投票の違いを追加。</li>
+<li>k近傍法：単位・尺度・同点、学習／検証／テストを明示。</li>
+<li>旧 <code>kneighbor.py</code> は距離順の表示まで。分類・評価は新規実装。</li>
+<li>旧図・旧コード・今年度原資料は参照用として保持。</li>
+</ul>
+<p class="source-note">出典：S1／source-map.md</p>
+</div>
+<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+昨年度の第3章の後半を、今年度の第四回として再構成しました。
+そのまま引き継ぐと誤解しやすい説明を公式資料で確認して修正し、変更理由を対応表に記録しています。
+旧プログラムは距離順に並べるところまでなので、今回の完成版では投票や評価を新たに作りました。元の資料は変更していません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 40: 原資料と公式一次資料の所在を示す -->
+<div class="slide-body references-slide">
+<h2>付録：出典1 — 原資料と分類手法</h2>
+<ul>
+<li><strong>S1</strong> 昨年度 <code>textbook-ai-2025/chap03/slide.md</code>・<code>lecture_notes.md</code>・<code>kneighbor.py</code>。旧49〜68の構成・説明・演習。</li>
+<li><strong>S2</strong> scikit-learn, <a href="https://scikit-learn.org/stable/modules/neighbors.html">Nearest Neighbors</a>：近傍分類、k、同距離、探索。</li>
+<li><strong>S3</strong> scikit-learn, <a href="https://scikit-learn.org/stable/modules/tree.html">Decision Trees</a>：学習、分岐、停止、不純度。</li>
+</ul>
+<p>確認日：2026年10月1日。条件は今年度シラバス・日程を優先。教科書原本のページは未確認。</p>
+<p class="source-note">出典：S1〜S3／今年度原資料</p>
+</div>
+<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+出典の一枚目です。旧資料を構成の手掛かりにし、近傍法と決定木の説明を公式資料で確認しました。
+具体的な確認範囲とファイルのハッシュはREADMEと対応表に残しています。
+教材用のデータや計数は自作で、外部の実測結果ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 41: 補足した説明の一次資料と確認範囲を示す -->
+<div class="slide-body references-slide">
+<h2>付録：出典2 — 組合せ・SVM・評価</h2>
+<ul>
+<li><strong>S4</strong> scikit-learn, <a href="https://scikit-learn.org/stable/modules/ensemble.html">Ensemble methods</a>：バギング、ブースティング、投票、RFの標本・特徴の抽出、確率平均。</li>
+<li><strong>S5</strong> scikit-learn, <a href="https://scikit-learn.org/stable/modules/svm.html">Support Vector Machines</a>：マージン、支持点、C、カーネル、尺度。</li>
+<li><strong>S6</strong> scikit-learn, <a href="https://scikit-learn.org/stable/modules/cross_validation.html">Cross-validation</a>・<a href="https://scikit-learn.org/stable/common_pitfalls.html">Common pitfalls</a>：モデル選択、独立テスト、前処理の漏洩。</li>
+</ul>
+<p>確認日：2026年10月1日。実装は標準ライブラリのみ。RF・SVMの性能実験は未実施。</p>
+<p class="source-note">出典：S4〜S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+出典の二枚目です。組合せとランダムフォレスト、SVM、評価分離の説明を公式資料で確認しました。
+この授業用の実装はサイキットラーンを依存に追加せず、標準ライブラリだけで小さな計算を観察します。
+実物のデータの性能や、最終配信の動作を検証した教材ではありません。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+			height: 720,
+			margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>

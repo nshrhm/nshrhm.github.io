@@ -1,0 +1,1658 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>第3回 機械学習1</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: 授業を2回に分け、今年度の日付と第3回の範囲を明示 -->
+<div class="slide-body title-block">
+<h2>第3回 機械学習1</h2>
+<p class="eyebrow">人工知能概論 ／ 2026年度 秋学期</p>
+<p class="lead">データから学び、未知の入力で確かめる</p>
+<p class="authors"><strong>白濵 成希</strong></p>
+<p class="conference">2026年10月15日（木）</p>
+<p class="source-note">出典：2026年度シラバス・schedule.md</p>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回は機械学習の第一回です。データから予測の仕組みを作ることと、その仕組みが未知の入力にも役立つかを確かめることを分けて学びます。
+第2回の簡易エライザでは、人が書いた規則をたどりました。今回はデータから決まる部分を持つプログラムを観察します。
+アルゴリズム名をたくさん覚える前に、何を学習に使い、何で結果を評価したかを説明できるようになりましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: 到達目標を第3回の学習設定・評価へ絞る -->
+<div class="slide-body ">
+<h2>今日の到達目標</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>区別する</h3>
+<p>教師あり・教師なし・強化学習を、<strong>何を手掛かりに学ぶか</strong>から区別する。</p>
+</div>
+<div class="definition-card">
+<h3>説明する</h3>
+<p>学習・検証・テストの<strong>役割</strong>を説明する。</p>
+</div>
+<div class="definition-card">
+<h3>確かめる</h3>
+<p>学習時の正解率だけで<strong>汎化</strong>を判断できない理由を、プログラムで確かめる。</p>
+</div>
+</div>
+<p class="source-note">出典：2026年度シラバス・承認済み計画</p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日は三つの目標があります。学習の種類、評価用データの役割、そして未知の入力への対応です。
+数学の導出よりも、データと処理の関係を図や短い例から読みます。プログラムは完成コードを用意しているので、実行して観察するところから始められます。
+これらの考え方は、次回の近傍法や決定木などを比較するときにも使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: 前回との接続と設計・学習の区別を追加 -->
+<div class="slide-body ">
+<h2>規則を書くことと、規則を学ぶこと</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>第2回：簡易ELIZA</h3>
+<p>人が<strong>キーワード・応答・順序</strong>を決める。</p>
+<p>入力を変えても、規則が自動で学習されるわけではない。</p>
+</div>
+<div class="definition-card">
+<h3>今回：しきい値の学習</h3>
+<p>人が<strong>候補の作り方・選び方</strong>を決める。</p>
+<p>具体的なしきい値は、学習データから選ばれる。</p>
+</div>
+</div><div class="callout primary-message">学習する仕組みにも、人が決める設計と評価の条件がある。</div>
+<p class="source-note">出典：第2回本文11〜14・31〜33／S1・S2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+前回のエライザで応答が変わったのは、文字列の一致や規則の順序、対話の状態によるものでした。規則を人が書き換えたことを自動学習とは呼びませんでしたね。
+今回のプログラムでは、しきい値の候補をどう比較するかは人が書き、どの候補を使うかを学習データから決めます。
+人が関わるかどうかではなく、どの部分がデータによって決まるかに注目しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: 収集・学習・評価・適用を目的と評価条件につなぐ -->
+<div class="slide-body ">
+<h2>学習と評価を、ひと続きの流れで見る</h2>
+<div class="flow" role="img" aria-label="目的 → データ → 学習 → 評価">
+<div class="flow-box"><strong>目的</strong><span>何を予測したいか</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>データ</strong><span>入力と手掛かり</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>学習</strong><span>モデルを作る</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>評価</strong><span>未知の入力で確かめる</span></div>
+</div><div class="callout primary-message">目的・入力・モデル・評価条件を一緒に説明する。</div>
+<p class="source-note">出典：S1・S2・S3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+機械学習は、データを入れる一つの箱だけではありません。何を予測したいかを決め、データを用意し、モデルを作り、その目的に合う評価をします。
+評価では、すでに見たデータで答え合わせするだけでなく、未知の入力に対応できるかを確かめます。
+この流れを、学習の種類を変えても使える見取り図として持っておきましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: 生物模倣への限定を避け、モデル表現を具体化 -->
+<div class="slide-body ">
+<h2>機械学習は、データからモデルを作る</h2>
+<div class="flow" role="img" aria-label="学習データ → 学習方法 → モデル">
+<div class="flow-box"><strong>学習データ</strong><span>観測した例</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>学習方法</strong><span>例から関係を取り出す</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>モデル</strong><span>予測に使う表現</span></div>
+</div><div class="concept-grid">
+<div class="definition-card">
+<h3>モデルの形</h3>
+<p>数式、規則、重み、記憶した例など。</p>
+</div>
+<div class="definition-card">
+<h3>学習の目的</h3>
+<p>対象と評価指標に照らして、役立つ予測や表現を得る。</p>
+</div>
+</div>
+<p class="source-note">出典：S1・S2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+機械学習では、与えられた例から予測や表現に使うモデルを作ります。モデルは必ずしも人の知識を文章で書いたものではありません。
+数式の係数だったり、規則だったり、学習済みの重みだったりします。例を記憶して予測に使う形式もあります。
+生物の学習の再現だけに限定せず、何を入力し、何がモデルに残ったかから考えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: 特徴・ラベル・IDの役割を明示 -->
+<div class="slide-body table-slide">
+<h2>特徴とラベルは、役割が違う</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>特徴：入力に使う値</th>
+<th>ラベル：予測したい答え</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tr01</td>
+<td>10</td>
+<td>0</td>
+</tr>
+<tr>
+<td>tr03</td>
+<td>30</td>
+<td>1</td>
+</tr>
+<tr>
+<td>tr04</td>
+<td>40</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">この教材では、予測時に渡すのは特徴。ラベルは後で答え合わせに使う。</div>
+<p>IDは観測を区別する印。<strong>この演習では予測の特徴にしない。</strong></p>
+<p class="source-note">出典：S2／承認済み架空データ</p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+表の特徴は予測に使う入力、ラベルは予測したい答えです。ここでは架空の整数を一つの特徴にしています。
+アイディーは行を区別するための印で、この演習では分類に使いません。実際のデータでも、管理用の番号が目的に合う特徴かを確認する必要があります。
+予測時に答えのラベルを渡してしまえば、未知の入力を予測したことにはなりません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: 学習と利用を独立した処理として示す -->
+<div class="slide-body ">
+<h2>学習と推論を分ける</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>学習</h3>
+<p>例を使ってモデルを作る・更新する。</p>
+<p>例：学習誤りを比べて、<strong>しきい値を25にする</strong>。</p>
+</div>
+<div class="definition-card">
+<h3>推論</h3>
+<p>学習済みモデルで、新しい入力を予測する。</p>
+<p>例：25以上なら1というモデルで、<strong>入力35を1と予測</strong>する。</p>
+</div>
+</div><div class="callout primary-message">入力を変えて予測するだけでは、モデルを再学習したことにならない。</div>
+<p class="source-note">出典：S2／学習用実装</p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+学習はモデルを作る段階で、推論はそのモデルを使う段階です。今日の例では、しきい値を選ぶことが学習です。
+選んだしきい値を固定して新しい数を分類するのが推論です。入力を変えて出力を見るだけでは、しきい値は変わりません。
+学習しながら利用するシステムもありますが、その場合も更新と予測の役割を区別できます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: 演繹・帰納を抽象から具体という方向だけで定義しない -->
+<div class="slide-body ">
+<h2>帰納は、観測した例から一般化を試みる</h2>
+<div class="flow" role="img" aria-label="観測した例 → 候補の関係 → 未知の入力">
+<div class="flow-box"><strong>観測した例</strong><span>10→0、20→0、60→1</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>候補の関係</strong><span>小さい値は0、大きい値は1？</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>未知の入力</strong><span>まだ見ていない値を予測</span></div>
+</div><div class="callout warning-callout">観測した例に合っても、未知の例に必ず合うとは限らない。</div>
+<p>演繹は、前提・規則から結論を導くこと。<strong>どの規則を選ぶか</strong>とは別の問い。</p>
+<p class="source-note">出典：S1・S3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+帰納では、見た例からまだ見ていない例にも使えそうな関係を考えます。ただし、有限の例だけで未知のすべてを保証できるわけではありません。
+演繹は、前提や規則を受け入れたときに何が導けるかを考えるものです。選ばれた規則を使って結論を出す段階と、その規則を例から選ぶ段階を区別しましょう。
+だからこそ、学習に使わなかった例による評価が必要になります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: ラベルの役割と教師という用語を説明 -->
+<div class="slide-body ">
+<h2>教師あり学習：入力と答えの組から学ぶ</h2>
+<div class="flow" role="img" aria-label="例とラベル → 学習 → 予測">
+<div class="flow-box"><strong>例とラベル</strong><span>画像と「イヌ／ネコ」など</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>学習</strong><span>入力と答えの関係を学ぶ</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>予測</strong><span>未知の入力の答えを推定</span></div>
+</div><div class="callout primary-message">「教師」は各学習例に付いた答えの手掛かり。常に人が横で教えるという意味ではない。</div>
+<p class="source-note">出典：S1・S2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+教師あり学習では、学習例に期待する答えが付いています。イヌやネコの画像にラベルを付けるのは分かりやすい例です。
+教師という言葉は、学習の手掛かりとしての答えを指します。人がその場で毎回指示することだけを意味しません。
+答えの内容と入力の取り方が適切かも確認しなければ、学習結果を目的に使えるとは言えません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: 分類と回帰を出力の意味から区別 -->
+<div class="slide-body ">
+<h2>分類と回帰：何を出力するかが違う</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>分類</h3>
+<p>カテゴリーを予測する。</p>
+<p>例：<strong>0か1か</strong>、イヌかネコか。</p>
+</div>
+<div class="definition-card">
+<h3>回帰</h3>
+<p>数値を予測する。</p>
+<p>例：<strong>所要時間</strong>、温度。</p>
+</div>
+</div><div class="callout primary-message">今回の演習は0／1の分類。特徴が数値でも、回帰とは限らない。</div>
+<p class="source-note">出典：S2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+分類と回帰は、入力の見た目ではなく予測したい出力で区別します。カテゴリーなら分類、量としての数値なら回帰です。
+今回の入力も答えも数字ですが、ゼロと一は二つのカテゴリーなので分類として扱います。
+学習の種類を説明するときは、入力の形式だけではなく、何を答えにしたいのかを確認しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: 構造の発見と意味の解釈を区別 -->
+<div class="slide-body ">
+<h2>教師なし学習：答えのラベルなしに構造を探す</h2>
+<div class="flow" role="img" aria-label="ラベルなしの例 → 構造を探す → 解釈する">
+<div class="flow-box"><strong>ラベルなしの例</strong><span>長さ・幅などの特徴</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>構造を探す</strong><span>似た例をまとめる、少ない軸で表す</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>解釈する</strong><span>何を表しているか人が確認する</span></div>
+</div><div class="callout warning-callout">見つけた集まりが、そのまま人の望むカテゴリーになるとは限らない。</div>
+<p class="source-note">出典：S1・S2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+教師なし学習では、各例の正解ラベルを学習の手掛かりとして与えず、データの構造を探します。似た例をまとめたり、少ない軸で表現したりします。
+似ているという基準や特徴の選び方で結果は変わります。見つかった集まりを自動的にイヌやネコの意味に結び付けることはできません。
+ラベルがないから何でも分かる、という意味ではありません。結果の解釈と目的に合う評価が必要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: 報酬・時間的影響と最適性の非保証を明示 -->
+<div class="slide-body ">
+<h2>強化学習：行動と報酬の経験から学ぶ</h2>
+<div class="flow" role="img" aria-label="エージェント → 環境 → 学習">
+<div class="flow-box"><strong>エージェント</strong><span>状態を見て行動する</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>環境</strong><span>変化し、報酬を返す</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>学習</strong><span>将来も含む報酬を得る行動を探す</span></div>
+</div><div class="callout warning-callout">報酬は各入力の正解ラベルと同じものではない。必ず最適な行動を得る保証もない。</div>
+<p class="source-note">出典：S1・S5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+強化学習では、エージェントが環境で行動し、報酬や状態の変化を経験しながら行動の選び方を学びます。
+ある行動の影響が後になって表れる場合もあり、各入力に一つの正解ラベルを用意する形とは違います。目指すのは将来も含む報酬ですが、探索の条件や方法によって結果は変わります。
+今日は仕組みの位置付けまでとし、エージェントやキュー学習の詳細は第12回で扱います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: 学習設定と具体的アルゴリズムの混在を整理 -->
+<div class="slide-body table-slide">
+<h2>学習の種類は、手掛かりから区別する</h2>
+<table>
+<thead>
+<tr>
+<th>設定</th>
+<th>学習の主な手掛かり</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>教師あり</td>
+<td>入力と期待する答え</td>
+<td>分類・数値予測</td>
+</tr>
+<tr>
+<td>教師なし</td>
+<td>ラベルなしのデータの構造</td>
+<td>似た例の集まり</td>
+</tr>
+<tr>
+<td>強化学習</td>
+<td>行動の結果と報酬</td>
+<td>行動方針の改善</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">同じシステムで複数の学習設定を組み合わせることもある。</div>
+<p class="source-note">出典：S1・S2・S5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+三つを手掛かりの違いから見直しましょう。ラベル、データの構造、行動と報酬です。
+これはシステム全体を必ず三つのどれか一つだけに分類するための表ではありません。同じシステムの異なる段階に別の学習設定が使われることがあります。
+名前だけを当てるのではなく、どのデータの何を学習の手掛かりにしたかを説明してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: 更新方式を学習設定と分離し、オンラインとミニバッチの重なりを説明 -->
+<div class="slide-body ">
+<h2>更新する単位も、学習設定とは別の軸</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>バッチ</h3>
+<p>まとめたデータ全体を使って学習する。</p>
+</div>
+<div class="definition-card">
+<h3>オンライン</h3>
+<p>到着したデータを使って逐次更新する。</p>
+</div>
+<div class="definition-card">
+<h3>ミニバッチ</h3>
+<p>小さなまとまりを使って更新する。</p>
+</div>
+</div><div class="callout primary-message">教師あり／なしと、更新単位は別の問い。オンライン更新にミニバッチを使うこともある。</div>
+<p class="source-note">出典：S1・S2・S8</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここでは、学習の手掛かりではなく更新する単位に注目します。まとめて処理する、逐次更新する、小さなまとまりで更新するという見方です。
+オンラインという言葉は、インターネットにつながっているという意味ではありません。データを受け取りながらモデルを更新することを指します。
+ミニバッチはオンライン更新でも使われるため、三つを完全に排他的なカテゴリーとして覚えないでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: 記憶による全問正解を評価分離の動機にする -->
+<div class="slide-body ">
+<h2>学習したデータだけで評価すると？</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>モデルA</h3>
+<p>見た特徴と答えを、すべて記憶する。</p>
+<p>同じ例なら<strong>全問正解</strong>できる。</p>
+</div>
+<div class="definition-card">
+<h3>未知の入力</h3>
+<p>記憶にない特徴を与える。</p>
+<p>全問正解という成績だけでは、<strong>答え方が分からない</strong>。</p>
+</div>
+</div><div class="callout primary-message">学習への適合と、未知データでの成績を分けて確認する。</div>
+<p class="source-note">出典：S1・S3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+学習例の答えを全部記憶すれば、同じ例をもう一度与えたときには全問正解できます。それだけで役立つ予測ができたと判断してよいでしょうか。
+未知の特徴にどう答えるかは、記憶した例の答え合わせでは分かりません。記憶にないときの規則も含めて考える必要があります。
+これは今日の記憶モデルを読む入口です。学習への適合を調べることと、未知の例で評価することを分けます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: 旧検査という用語を3用途へ明確化 -->
+<div class="slide-body ">
+<h2>学習・検証・テストは、役割を分ける</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>学習用</h3>
+<p><strong>モデルを作る</strong>。</p>
+<p>しきい値や重みなどを決める。</p>
+</div>
+<div class="definition-card">
+<h3>検証用</h3>
+<p><strong>方法や設定を選ぶ</strong>。</p>
+<p>どのモデルを採用するか比べる。</p>
+</div>
+<div class="definition-card">
+<h3>テスト用</h3>
+<p>選択を確定した後に<strong>最終評価</strong>する。</p>
+<p>結果を見て選び直さない。</p>
+</div>
+</div><div class="callout primary-message">旧資料の「検査データ」を、今年度は検証用と最終テスト用に区別する。</div>
+<p class="source-note">出典：S1・S3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+学習用はモデルを作るデータです。検証用は、作ったモデルや人が決める設定を比較し、採用するものを選ぶデータです。
+テスト用は選び終わってから最終評価に使います。テストの結果を見て繰り返し選び直すと、テストも選択の手掛かりになってしまいます。
+昨年度の資料では検査という言葉で評価用データを説明しています。今年度は役割を明確にするため、検証と最終テストを分けて呼びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: 検証による選択と独立テストの順序を追加 -->
+<div class="slide-body ">
+<h2>モデル選択を終えてから、テストする</h2>
+<div class="flow" role="img" aria-label="学習用で作る → 検証用で選ぶ → 選択を固定 → テスト用で評価">
+<div class="flow-box"><strong>学習用で作る</strong><span>候補A・候補B</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>検証用で選ぶ</strong><span>今回はAを採用</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>選択を固定</strong><span>設定を変えない</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>テスト用で評価</strong><span>Aの未知データ成績</span></div>
+</div><div class="callout warning-callout">検証を繰り返し使うことでも偏りは生じる。独立した最終評価を残す。</div>
+<p class="source-note">出典：S3・S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+二つの候補を学習用データで作り、検証用で比較します。採用するモデルを決めた後に、テスト用で評価します。
+検証の結果を見てたくさん試すと、検証用のデータに合うものを選び過ぎる可能性もあります。そのため最終評価は別に残します。
+この順序は、モデルを作ること、選ぶこと、評価することを混同しないための手順です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: ファイル重複だけでなく対象単位の依存を追加 -->
+<div class="slide-body table-slide">
+<h2>同じ観測の使い回しは、評価を甘くする</h2>
+<table>
+<thead>
+<tr>
+<th>学習側</th>
+<th>評価側</th>
+<th>問題</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>写真A</td>
+<td>写真Aのコピー</td>
+<td>答えを覚えた例で評価</td>
+</tr>
+<tr>
+<td>人Xの記録</td>
+<td>同じ人Xの別の記録</td>
+<td>未知の人への評価とずれることがある</td>
+</tr>
+</tbody>
+</table>
+<div class="callout warning-callout">IDの重複を避けるだけでなく、同じ対象・類似記録の関係も点検する。</div>
+<p class="source-note">出典：S3・S4／授業用の架空例</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+同じ観測を学習側と評価側に置けば、未知の入力に対応する力を測ることが難しくなります。ファイル名を変えた写真も、元が同じなら独立した例とは言えません。
+同じ人の別の記録を使うことが目的に合う場合もありますが、未知の人への対応を評価したいなら、その人の記録を同じ側にまとめる必要があります。
+アイディーの重複検査は有用ですが、それだけですべての漏洩を検出できるわけではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: ラベル以外の漏洩と前処理の手順を追加 -->
+<div class="slide-body ">
+<h2>前処理にも、学習用だけを使う</h2>
+<div class="flow" role="img" aria-label="先に分割 → 学習側で決める → 同じ変換を適用">
+<div class="flow-box"><strong>先に分割</strong><span>学習・検証・テスト</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>学習側で決める</strong><span>平均・尺度など</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>同じ変換を適用</strong><span>検証・テストへ使う</span></div>
+</div><div class="callout warning-callout">全データの平均で変換すると、テスト側の情報が学習過程に入る。</div>
+<p>正解ラベルを直接見なくても、<strong>情報の漏洩</strong>は起こり得る。</p>
+<p class="source-note">出典：S3・S4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+データの平均を引くなどの前処理にも注意が必要です。変換に使う平均や尺度は学習側で決め、検証やテストには決まった変換を適用します。
+先に全データから平均を計算してしまうと、テスト側の情報が学習過程に入ります。正解ラベルを直接見ていないから安全、とは言えません。
+交差検証でも、各回の学習側だけで前処理を決める必要があります。今日の小さな演習では前処理を行いませんが、役割は覚えておきましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: 固定割合を必須にせず、時間・対象単位の分割へ拡張 -->
+<div class="slide-body ">
+<h2>分割は、使う場面に合わせる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>時間の順序がある</h3>
+<p>将来を予測したいなら、<strong>過去で学び、後の期間で評価</strong>する。</p>
+</div>
+<div class="definition-card">
+<h3>同じ対象の記録がある</h3>
+<p>未知の対象へ使いたいなら、<strong>対象ごとに分けて評価</strong>する。</p>
+</div>
+</div><div class="callout primary-message">ランダムに行を混ぜる方法が、いつでも適切とは限らない。</div>
+<p class="source-note">出典：S3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+分割は重複がなければ終わりではなく、使う場面に合っていることが大切です。将来の予測なら、未来の情報が過去の学習へ入らないようにします。
+未知の人や機器に使うなら、対象単位で分けて評価する方法が必要になります。何を未知として扱いたいかを先に考えるのです。
+何割で分けるかも、データ数や目的によって変わります。八対二などの割合を普遍的な規則にはしません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: 指標・分母・偏りを明示 -->
+<div class="slide-body ">
+<h2>正解率は、何件を何と比べた値か</h2>
+<div class="formula-box">正解率 ＝ 正解した件数 ／ 評価した件数</div>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>例：3件／4件</h3>
+<p>正解率は <strong>3/4＝75%</strong>。</p>
+<p>4件の架空例での結果。</p>
+</div>
+<div class="definition-card">
+<h3>偏ったデータの例</h3>
+<p>0が9件、1が1件なら、全部0でも<strong>9/10</strong>。</p>
+<p>1を一度も当てていない。</p>
+</div>
+</div><div class="callout primary-message">用途・データ数・ラベルの内訳・どの誤りかも確認する。</div>
+<p class="source-note">出典：S7／架空の計数例</p>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+正解率は正解した件数を評価した件数で割った値です。分母が何件なのかも一緒に確認してください。
+架空の例でゼロが九件、一が一件なら、全部ゼロと答えるだけで九割になります。でも一の例を一つも当てていません。
+高い数字だけで目的に合うと判断せず、ラベルの内訳や、どの誤りが重要かを確認します。小さな教材の成績から一般的な性能を保証することもできません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22: 最終テストと交差検証の評価を区別 -->
+<div class="slide-body table-slide">
+<h2>交差検証：学習側の中で役割を交代する</h2>
+<table>
+<thead>
+<tr>
+<th>回</th>
+<th>グループA</th>
+<th>グループB</th>
+<th>グループC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>検証</td>
+<td>学習</td>
+<td>学習</td>
+</tr>
+<tr>
+<td>2</td>
+<td>学習</td>
+<td>検証</td>
+<td>学習</td>
+</tr>
+<tr>
+<td>3</td>
+<td>学習</td>
+<td>学習</td>
+<td>検証</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">各回でモデルを作り直し、検証結果を集約する。最終テストは別に残す。</div>
+<p>前処理も各回の学習側で決める。時間・対象の関係も守る。</p>
+<p class="source-note">出典：S1・S3・S4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+交差検証では、学習側のデータをいくつかの組に分け、どの組を検証に使うかを交代します。表は三分割の概念図です。
+各回でモデルを作り直し、各回の検証結果をまとめて比較に使います。前処理も各回の学習側だけで決めます。
+交差検証の結果で方法を選ぶなら、最終テストは別に残します。役割を交代することは、テストを何度も見て調整してよいという意味ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23: 汎化を適用条件と結び付け、全入力への保証を避ける -->
+<div class="slide-body ">
+<h2>汎化：未知の入力にも役立つか</h2>
+<div class="flow" role="img" aria-label="学習した例 → 未知の例 → 利用する場面">
+<div class="flow-box"><strong>学習した例</strong><span>見た入力での適合</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>未知の例</strong><span>見ていない入力での予測</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>利用する場面</strong><span>目的に合うか確認</span></div>
+</div><div class="callout primary-message">汎化は、どんな入力にも必ず正解するという保証ではない。</div>
+<p class="source-note">出典：S1・S3・S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+汎化は、学習に使っていない入力にも学んだ関係が役立つことです。今回なら、初めて見る数でも分類できるかを考えます。
+ただし、どんな入力でも正しく答えるという意味ではありません。評価に使うデータと、実際に使う場面がどれだけ対応しているかも重要です。
+学習と評価で条件が大きく変わった場合には、成績の差を過学習だけで説明しないようにしましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: 図に合わせた形だけで過学習を断定せず、評価で確認 -->
+<div class="slide-body ">
+<h2>過学習：見た例への適合が、未知に届かない</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>学習用では良い</h3>
+<p>細かい特徴や偶然の違いまで合わせる。</p>
+<p>見た例での誤りは小さい。</p>
+</div>
+<div class="definition-card">
+<h3>未知の例では悪い</h3>
+<p>その合わせ方が、未知の例には役立たない。</p>
+<p>評価用での誤りが大きい。</p>
+</div>
+</div><div class="callout warning-callout">学習と評価の差は過学習を疑う手掛かり。漏洩・条件の違いなども確認する。</div>
+<p class="source-note">出典：S1・S3・S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+過学習は、見た例に細かく合わせた結果、未知の例ではその関係が役立たない状態です。偶然の違いやノイズまで拾ってしまう場合があります。
+学習成績が良く評価成績が悪いという差は手掛かりになります。ただし、それだけで原因が過学習だと確定するわけではありません。
+データの取り方や分割、使う条件の違いも確認します。今日の記憶モデルは、この問題を見やすくした小さな例です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: 計画の未学習を技術用語として学習不足と明確化 -->
+<div class="slide-body ">
+<h2>学習不足：必要な関係を捉えられていない</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>単純すぎる表現</h3>
+<p>入力が違っても、<strong>いつも同じ答え</strong>しか出せない。</p>
+</div>
+<div class="definition-card">
+<h3>確かめること</h3>
+<p>学習・評価の両方で悪い場合、表現や学習の条件を点検する。</p>
+</div>
+</div><div class="callout primary-message">学習不足（underfitting）は、学習を一度もしていないこととは違う。</div>
+<p class="source-note">出典：S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+過学習の反対側には、必要な関係を捉えられていない学習不足があります。たとえば入力にかかわらず同じ答えだけを返すモデルでは、分けたい関係を表現できない場合があります。
+学習も評価も悪いなら、表現が十分か、学習の条件が合っているかを確認します。単純さだけを求めればよいわけではありません。
+学習不足は、学習をまったくしていないという意味の未学習とは区別します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26: 表現力と汎化を同一視せず、概念図として明示 -->
+<div class="slide-body ">
+<h2>複雑さを増やしても、未知の成績は保証されない</h2>
+<div class="flow" role="img" aria-label="表現が足りない → 目的に合う表現 → 細かく合わせ過ぎる">
+<div class="flow-box"><strong>表現が足りない</strong><span>関係を捉えにくい</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>目的に合う表現</strong><span>必要な関係を捉える</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>細かく合わせ過ぎる</strong><span>偶然の違いまで拾う</span></div>
+</div><div class="callout primary-message">「複雑なら良い」「単純なら良い」ではなく、独立した例で比べる。</div>
+<p class="source-note">出典：S1・S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+表現を増やせば学習例に合いやすくなることがありますが、未知の例にも役立つとは限りません。一方で単純すぎる表現では必要な関係を捉えられません。
+図は考え方の概念図で、すべてのモデルで成績がこの順番に変化するという実測グラフではありません。
+必要な関係を捉えられたかを、学習と検証の両方で比べて判断することが大切です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27: 外れた点を自動的に誤りと判断しない -->
+<div class="slide-body table-slide">
+<h2>ノイズを、必ず学ぶべき規則にしない</h2>
+<table>
+<thead>
+<tr>
+<th>特徴</th>
+<th>学習ラベル</th>
+<th>観察</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20</td>
+<td>0</td>
+<td>小さい側の例</td>
+</tr>
+<tr>
+<td>30</td>
+<td>1</td>
+<td>周囲と異なるラベル</td>
+</tr>
+<tr>
+<td>40</td>
+<td>0</td>
+<td>小さい側の例</td>
+</tr>
+</tbody>
+</table>
+<div class="callout warning-callout">周囲と違う例が、必ず誤りとは限らない。記録・ラベル・対象の条件を確認する。</div>
+<p class="source-note">出典：S1／承認済み架空データ</p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の架空データでは三十のラベルだけが周囲と違います。これは小さな例外を見せるために作った配置です。
+実データで同じような点を見ても、見た目だけでラベルを誤りと決めたり削除したりしてはいけません。記録の誤りか、実際に例外なのか、対象が違うのかを確認します。
+学習例のすべてに合わせることと、必要な関係を学ぶことは同じではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28: オッカムの剃刀を条件付きの選択規範として扱う -->
+<div class="slide-body ">
+<h2>同程度なら、単純さも選択の理由になる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>比較条件をそろえる</h3>
+<p>同じ目的・評価データ・指標で比べる。</p>
+</div>
+<div class="definition-card">
+<h3>単純さの利点</h3>
+<p>説明・維持・計算のしやすさを検討する。</p>
+</div>
+</div><div class="callout primary-message">単純なモデルが、いつでも予測性能で優れるという定理ではない。</div>
+<p class="source-note">出典：S1・S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+昨年度のオッカムの剃刀は、同じ程度の結果ならより単純な表現を選ぶという考え方でした。ここでは比較する条件がそろっていることを先に確認します。
+単純さには説明しやすい、維持しやすいなどの利点がありますが、いつでも未知の成績が高いという保証ではありません。
+今回も記憶モデルとしきい値モデルを独立した例で比べます。見た目の単純さだけで選ぶのではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29: 対処と評価の役割を分け、効果を保証しない -->
+<div class="slide-body table-slide">
+<h2>対処したら、評価し直す</h2>
+<table>
+<thead>
+<tr>
+<th>候補となる対処</th>
+<th>確認すること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>適切なデータを増やす</td>
+<td>対象やラベルの質は目的に合うか</td>
+</tr>
+<tr>
+<td>表現を単純化・正則化する</td>
+<td>必要な関係まで失っていないか</td>
+</tr>
+<tr>
+<td>検証・交差検証で比較する</td>
+<td>選択に偏りがないか、漏洩がないか</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">交差検証は評価・選択の方法。実行するだけでモデルの過学習が消えるわけではない。</div>
+<p class="source-note">出典：S1・S3・S6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+過学習が疑われたときの候補には、適切な例を増やす、表現を単純にする、複雑さに制約を加えるなどがあります。どれも条件に応じて効果を確かめる必要があります。
+正則化は、複雑な合わせ方を抑える工夫としてここでは紹介します。詳しい式を覚えることは今回の目的ではありません。
+交差検証は比較の手段です。それ自体がモデルを修正して過学習を消す処理ではありません。選択した後に独立した最終評価を行います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30: k近傍法を先取りせず評価用の新規演習を配置 -->
+<div class="slide-body table-slide">
+<h2>演習の固定データ：8件・4件・4件</h2>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>特徴とラベルの組</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学習8件</td>
+<td>(10,0), (20,0), (30,1), (40,0)<br>(60,1), (70,1), (80,1), (90,1)</td>
+</tr>
+<tr>
+<td>検証4件</td>
+<td>(15,0), (35,0), (65,1), (85,1)</td>
+</tr>
+<tr>
+<td>テスト4件</td>
+<td>(5,0), (25,0), (75,1), (95,1)</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">架空データ。各行には一意のIDを付ける。乱数・外部APIは使わない。</div>
+<p class="source-note">出典：承認済み計画／学習用実装</p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+これから使う固定データです。学習用八件、検証用四件、テスト用四件をあらかじめ分けています。
+特徴は一つの整数で、ゼロと一がカテゴリーです。各行にはアイディーが付き、同じ行を別の用途で使い回していないことを検査します。
+この数の少ない架空例は仕組みを見せるためのものです。実用のデータ量や性能の基準ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31: 学習規則・同点処理・未知への規則を明示 -->
+<div class="slide-body ">
+<h2>二つのモデルを、学習データだけで作る</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>しきい値モデル</h3>
+<p>候補は隣接値の<strong>中点と範囲外</strong>。</p>
+<p>学習誤りが最少のものを選ぶ。</p>
+<p>同点なら<strong>小さいしきい値</strong>。</p>
+</div>
+<div class="definition-card">
+<h3>記憶モデル</h3>
+<p>学習した特徴のラベルを記憶する。</p>
+<p>未知の特徴は<strong>学習多数派</strong>。</p>
+<p>同数なら<strong>0</strong>。</p>
+</div>
+</div>
+<pre><code class="language-python"># 学習済みしきい値で予測する
+prediction = int(feature &gt;= threshold)
+</code></pre>
+<p class="source-note">出典：学習用実装／S3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+しきい値モデルでは、小さい側と大きい側を一つの境界で分けます。候補は隣り合う特徴の中点と範囲外で、学習誤りが最も少ないものを選びます。同点なら小さい値にします。
+記憶モデルでは、見た特徴の答えをそのまま記憶します。初めて見る特徴には学習データの多数派を返し、同数ならゼロにします。
+これらの決め方は人が書いた設計です。具体的なしきい値や多数派ラベルがデータから決まる部分です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32: 実行可能な分類例で学習・検証・テストを比較 -->
+<div class="slide-body table-slide">
+<h2>学習時の全問正解が、検証で逆転する</h2>
+<table>
+<thead>
+<tr>
+<th>モデル</th>
+<th>学習用</th>
+<th>検証用</th>
+<th>テスト用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>しきい値25</td>
+<td>7/8</td>
+<td>3/4</td>
+<td>3/4</td>
+</tr>
+<tr>
+<td>記憶・未知は1</td>
+<td>8/8</td>
+<td>2/4</td>
+<td>2/4</td>
+</tr>
+</tbody>
+</table>
+<div class="flow" role="img" aria-label="検証で選択 → 固定してテスト">
+<div class="flow-box"><strong>検証で選択</strong><span>3/4のしきい値モデル</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>固定してテスト</strong><span>選んだモデルは3/4</span></div>
+</div><div class="callout primary-message">記憶モデルは学習用で100%。この例の未知データでは50%。</div>
+<p class="source-note">出典：固定例をPythonで確認／S3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+実行すると、しきい値は二十五になります。学習では八件中七件、検証とテストでは四件中三件が正解です。
+記憶モデルは学習例では全問正解ですが、未知の特徴をすべて一にするため、検証もテストも半分しか当たりません。検証結果でしきい値モデルを選びます。
+比較教材として両方のテスト結果も表示しますが、その結果で選び直しません。テストは選択確定後の成績として読んでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 33: 入力変更・再学習・評価の違いを観察 -->
+<div class="slide-body table-slide">
+<h2>一つずつ変え、何が変わったか説明する</h2>
+<table>
+<thead>
+<tr>
+<th>変更するもの</th>
+<th>観察すること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>推論の入力：24、25、26</td>
+<td>しきい値モデルの答えは0、1、1</td>
+</tr>
+<tr>
+<td>学習のtr03ラベル：1→0</td>
+<td>再学習後のしきい値は50</td>
+</tr>
+<tr>
+<td>学習からtr03を除く</td>
+<td>新しい学習集合で、検証結果を比較</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">元データをコピーして比較。変更例は学習・検証で観察し、最終テストで調整しない。</div>
+<p><code>python generalization.py --demo</code> ／ 単体Notebookで全セル実行</p>
+<p class="source-note">出典：学習用実装／S4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最初に学習済みモデルの入力だけを変えて、境界で答えがどう変わるか見ます。次に学習ラベルを一つ変え、再学習して境界が変わることを確かめます。
+学習集合から一件除く例も用意しました。元データはコピーして保持し、一度に一つの条件を変えます。
+変更例では学習と検証を使って観察します。すでに見た最終テストに合うように何度も調整する手順にはしません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 34: 本文から説明できる確認へ置き換え -->
+<div class="slide-body ">
+<h2>理解確認：どの情報を、何に使った？</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>問い1</h3>
+<p>学習時に全問正解した。</p>
+<p>それだけで未知の入力に強いと言える？</p>
+</div>
+<div class="definition-card">
+<h3>問い2</h3>
+<p>テストを見て設定を選び直した。</p>
+<p>そのデータは何の役割になった？</p>
+</div>
+<div class="definition-card">
+<h3>問い3</h3>
+<p>正解ラベルを見ずに全データの平均を計算した。</p>
+<p>漏洩の心配はない？</p>
+</div>
+</div>
+<p class="source-note">出典：本文15〜19の理解確認</p>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+三つの問いを、データの役割から考えてみてください。学習例の全問正解だけでは、未知の入力での成績は分かりません。
+テストを見て選び直せば、そのデータは選択の手掛かりになり、独立した最終評価として使えなくなります。
+平均を全データから決める前処理でも、テスト側の情報が学習へ入り得ます。ラベルを見たかどうかだけで判断しないことが要点です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 35: 具体的手法を第4回へ分離 -->
+<div class="slide-body ">
+<h2>次回は、同じ評価の見方で手法を比べる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>今日の見取り図</h3>
+<p><strong>手掛かり</strong>：ラベル・構造・報酬。</p>
+<p><strong>役割</strong>：学習・検証・テスト。</p>
+<p><strong>問い</strong>：未知の入力にも役立つか。</p>
+</div>
+<div class="definition-card">
+<h3>第4回「機械学習2」</h3>
+<p>アンサンブル、k近傍法、決定木、ランダムフォレスト、SVM。</p>
+<p>それぞれの仕組みを、今日の見取り図につなぐ。</p>
+</div>
+</div>
+<p class="source-note">出典：2026年度schedule.md／本文のまとめ</p>
+</div>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日は、学習の手掛かりとデータの役割を区別して、未知の入力にどう対応するかを考えました。
+プログラムでは、学習成績の良さだけでは選べないことを確かめました。同じ目的と評価条件で比較するという考え方は、次回にも引き継ぎます。
+次回は近い例を使う方法や、質問で分ける方法など、具体的な手法を学びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 36: 質疑応答の後に付録を配置 -->
+<div class="slide-body questions-slide">
+<h2>質疑応答</h2>
+<p class="lead">学習の手掛かり、データの役割、未知の入力への対応</p>
+<p>図や演習のどこで、情報がモデルに入ったでしょうか。</p>
+<p class="source-note">出典：本回の質疑応答</p>
+</div>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここまでの内容について質問を受けます。学習の種類、データの分割、演習の予測など、どの部分からでも構いません。
+質問では、入力やラベルがどの段階に入ったかを一緒にたどります。未知の入力の意味が場面で変わる点も確認しましょう。
+この後は、原資料との対応や補足の学習設定、出典の付録です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 37: 2回分への分離と原資料保持を記録 -->
+<div class="slide-body table-slide">
+<h2>付録：昨年度第3章との対応</h2>
+<table>
+<thead>
+<tr>
+<th>旧資料の範囲</th>
+<th>今回の扱い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>旧1〜48：基礎・学習設定・汎化</td>
+<td>重複を整理し、評価と用語を明確化</td>
+</tr>
+<tr>
+<td>旧49〜61：アンサンブル・各手法</td>
+<td>第4回の対象として保持</td>
+</tr>
+<tr>
+<td>旧62〜68：まとめ・章末演習</td>
+<td>評価の問いを採用。k近傍法は第4回へ</td>
+</tr>
+</tbody>
+</table>
+<div class="callout primary-message">全文の対応・省略理由は source-map.md。昨年度原本は変更しない。</div>
+<p class="source-note">出典：S1／2026年度schedule.md</p>
+</div>
+<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+昨年度第3章は一つの資料に機械学習の基礎と具体的な手法が入っています。今年度の日程に合わせて二回に分けます。
+今回の中心は学習設定と評価で、重複する説明と図をまとめ、検証と最終テストの役割を補いました。
+近傍法のコードや章末問題は次回の対象として原本を保持しています。今回の分類演習は別に作成した教材です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 38: 半教師あり・複数タスクを付録へ置き、自己教師ありとの接続を補足 -->
+<div class="slide-body ">
+<h2>付録：三つの設定以外の学び方もある</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>半教師あり学習</h3>
+<p>一部のラベル付き例と、ラベルなしの例を使う。</p>
+</div>
+<div class="definition-card">
+<h3>自己教師あり学習</h3>
+<p>データの一部から予測の手掛かりを作る。</p>
+<p>例：文中の語を隠して予測する。</p>
+</div>
+<div class="definition-card">
+<h3>複数タスクの学習</h3>
+<p>関連する複数の予測課題を一緒に学ぶ。</p>
+</div>
+</div><div class="callout primary-message">学習設定・課題の組み合わせ・更新単位は、それぞれ違う軸。</div>
+<p class="source-note">出典：S1・S2・S9</p>
+</div>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+三つの基本設定だけで、すべての学習を説明し切るわけではありません。一部のラベルを使う半教師ありや、データから予測の手掛かりを作る自己教師ありもあります。
+文中の語を隠して予測する例では、元の語が手掛かりになります。バートの原論文にその学習課題が記載されています。
+複数タスクを一緒に学ぶことも別の軸です。これらの詳細は今回の本文の出題範囲には含めません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 39: 確認範囲と一次資料を明示 -->
+<div class="slide-body references-slide">
+<h2>付録：出典1 — 原資料・定義・評価</h2>
+<ul>
+<li><strong>S1</strong> 昨年度第3章：<code>slide.md</code>、lecture_notes.md、図版、<code>kneighbor.py</code>、docs/。採用・変更・省略は対応表に記録。</li>
+<li><strong>S2</strong> scikit-learn, <a href="https://scikit-learn.org/stable/glossary.html">Glossary</a>：特徴、ラベル、分類・回帰、教師あり／なし、partial_fit。</li>
+<li><strong>S3</strong> scikit-learn, <a href="https://scikit-learn.org/stable/modules/cross_validation.html">Cross-validation</a>：学習・検証・テスト、交差検証、時間・対象単位の分割。</li>
+<li><strong>S4</strong> scikit-learn, <a href="https://scikit-learn.org/stable/common_pitfalls.html">Common pitfalls</a>：前処理とデータ漏洩。</li>
+<li><strong>S5</strong> Sutton &amp; Barto, <em>Reinforcement Learning: An Introduction</em>, 2nd ed. (2018), <a href="https://mitpress.mit.edu/9780262039246/reinforcement-learning/">MIT Press紹介</a>：相互作用と報酬の説明。</li>
+</ul>
+<p class="source-note">出典：S1〜S5／確認日2026-10-01</p>
+</div>
+<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+主要な原資料と、定義・評価に使った資料です。昨年度資料は構成と対応の基礎として使い、評価の手順は公式文書で確認しています。
+強化学習は著者の教科書の出版社紹介で、環境との相互作用と報酬という説明を確認しました。書籍全体を読んだという記録にはしていません。
+確認箇所と確認日はリードミーに記録しています。プログラムの具体的な結果は、今回の固定例の検証結果です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 40: 補足の根拠と架空例の範囲を明示 -->
+<div class="slide-body references-slide">
+<h2>付録：出典2 — 過学習・指標・補足</h2>
+<ul>
+<li><strong>S6</strong> scikit-learn, <a href="https://scikit-learn.org/stable/modules/learning_curve.html">Validation and learning curves</a>：学習不足・過学習と評価。</li>
+<li><strong>S7</strong> scikit-learn, <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">Model evaluation</a>：正解率、ラベルの偏りと指標。</li>
+<li><strong>S8</strong> scikit-learn, <a href="https://scikit-learn.org/stable/modules/sgd.html">Stochastic Gradient Descent</a>：逐次更新。ミニバッチとの関係はS2も参照。</li>
+<li><strong>S9</strong> Devlin et al., <em>BERT</em> (<a href="https://arxiv.org/abs/1810.04805">arXiv初稿2018</a>、<a href="https://arxiv.org/html/1810.04805v2">改訂版2019 §3.1</a>)：語を隠して予測する学習。</li>
+<li>図表・入力例は今回の授業用に作成。結果は架空の固定例に限定。全URL・確認箇所・原資料ハッシュはREADMEとsources.sha256に記録。</li>
+</ul>
+<p class="source-note">出典：S6〜S9／確認日2026-10-01</p>
+</div>
+<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+過学習や指標、更新方法についての公式文書と、補足に使ったバートの原論文です。原論文の初稿と改訂版の年を分けて記録しています。
+グラフやデータの性能数値を外部資料から転記したのではなく、今回の架空例から正解数を計算しています。モデル一般の性能を保証するものではありません。
+ノート、図解、出題対応、検証記録を合わせて、次の担当者が根拠と作り方を追えるようにしています。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+			height: 720,
+			margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
