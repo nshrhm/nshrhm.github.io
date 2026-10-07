@@ -1,0 +1,1688 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>第2回 人工知能研究の歴史</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: 今年度の日付・目標へ更新 -->
+<div class="slide-body title-block">
+<h2>第2回 人工知能研究の歴史</h2>
+<p class="eyebrow">人工知能概論 ／ 2026年度 秋学期</p>
+<p class="lead">何ができるようになり、何が課題として残ったか</p>
+<p class="authors"><strong>白濵 成希</strong></p>
+<p class="conference">2026年10月8日（木）</p>
+<p class="source-note">出典：2026年度シラバス・schedule.md</p>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回は人工知能研究の歴史を学びます。年号を並べるだけではなく、それぞれの技術がどんな問いに取り組んだかを考えます。
+第1回では、身近なAIを入力・処理・出力から見ました。その見方を、昔の研究にも当てはめてみましょう。
+最後には、短い対話プログラムを動かし、応答の仕組みを自分で確かめます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: 本回の学習目標を明示 -->
+<div class="slide-body ">
+<h2>今日の到達目標</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>説明する</h3>
+<p>代表的なAIの<strong>仕組み・できたこと・限界</strong>を説明する。</p>
+</div>
+<div class="definition-card">
+<h3>比較する</h3>
+<p>人が知識を書く方法と、データから学ぶ方法を比較する。</p>
+</div>
+<div class="definition-card">
+<h3>確かめる</h3>
+<p>簡易ELIZAを動かし、入力と規則が応答をどう変えるか観察する。</p>
+</div>
+</div>
+<p class="source-note">出典：2026年度シラバス・承認済み計画</p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+シラバスの目標は、人工知能の特徴を説明し、アルゴリズムをプログラムで確認することです。今日はその目標を歴史の具体例で確かめます。
+暗記した年号の数よりも、技術の仕組みと適用できる範囲を説明できることを大切にします。
+プログラムは完成したものを用意します。最初は動かして結果を読み、その後に入力や規則を変えてみましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: 第1回との接続と比較軸を新設 -->
+<div class="slide-body ">
+<h2>第1回の見方を、歴史にも使う</h2>
+<div class="flow" role="img" aria-label="入力：文章・盤面・画像など、次に処理：規則・探索・学習、次に出力：応答・次の手・分類など">
+<div class="flow-box"><strong>入力</strong><span>文章・盤面・画像など</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>処理</strong><span>規則・探索・学習</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>出力</strong><span>応答・次の手・分類など</span></div>
+</div>
+<p><strong>同じように見える出力でも、つくり方は異なります。</strong></p>
+<p>対話するAIにも、規則で文章を変えるものと、学習したモデルで生成するものがあります。</p>
+<p class="source-note">出典：今年度第1回本文／S5・S12</p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+第1回の入力・処理・出力という見方を思い出してください。文章で答えるという見た目だけでは、内部の処理は分かりません。
+例えば、決められた語を見つけて応答を選ぶ方法と、データから学んだモデルで応答を生成する方法があります。
+今日は、何が入って何が出るかに加えて、その間の仕組みと評価の条件を見るようにします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: 単一路線の発展という誤解を避ける -->
+<div class="slide-body table-slide">
+<h2>歴史は、複数の研究が重なる流れ</h2>
+<table>
+<thead>
+<tr>
+<th>時期</th>
+<th>代表的な問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1940〜50年代</td>
+<td>計算・神経・知能をどうモデル化するか</td>
+</tr>
+<tr>
+<td>1950〜70年代</td>
+<td>言葉・知識・ゲームをどう扱うか</td>
+</tr>
+<tr>
+<td>1980〜2000年代</td>
+<td>知識と学習をどう実用につなぐか</td>
+</tr>
+<tr>
+<td>2010年代以降</td>
+<td>多層の学習・探索・生成をどう組み合わせるか</td>
+</tr>
+</tbody>
+</table>
+<p><strong>規則・探索・学習は、今も組み合わされます。</strong></p>
+<p class="source-note">出典：S1・S8〜S12（授業用の時期区分）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この表は、研究の重なりを見るための授業用の整理です。ある年代に一つの方法しか存在しなかったという意味ではありません。
+ニューラルネットのモデルは1940年代からあり、学習するゲームプログラムも1950年代に研究されています。
+新しい方法が登場しても、それまでの方法がすべてなくなるわけではありません。この点を全体の見取り図として持っておきましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: 稼働・公開・完成と最初の条件を区別 -->
+<div class="slide-body table-slide">
+<h2>計算機の発展が、研究の土台になった</h2>
+<table>
+<thead>
+<tr>
+<th>出来事</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1946年：ENIACの公開</td>
+<td>電子式の計算を大規模に実行</td>
+</tr>
+<tr>
+<td>1949年：EDSACの完成</td>
+<td>記憶したプログラムによる計算サービス</td>
+</tr>
+<tr>
+<td>プログラム内蔵方式</td>
+<td>命令とデータを記憶し、命令を順に実行</td>
+</tr>
+</tbody>
+</table>
+<p>「最初のコンピュータ」は、電子式・汎用・プログラム内蔵など、<strong>条件をそろえて比較</strong>します。</p>
+<p class="source-note">出典：S1 §2.1／S2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+1940年代には電子式計算機の開発が進みました。ここでは公開や完成の年を区別して、二つの例を挙げています。
+フォン・ノイマンのEDVACに関する報告も、プログラム内蔵方式の歴史で重要です。ただし、計算機の成立は一人の発明だけで説明できません。
+世界で最初という言葉を使うときは、何を条件にしているかを確かめる必要があります。計算できる環境が整い、知能の働きをプログラムで研究する土台になりました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: 図と説明を統合し、状態変化と学習を区別 -->
+<div class="slide-body ">
+<h2>セル・オートマトン：局所的な規則と全体</h2>
+<div class="flow" role="img" aria-label="今の状態：各セルは状態を持つ、次に更新規則：近くのセルの状態を見る、次に次の状態：全セルを同時に更新">
+<div class="flow-box"><strong>今の状態</strong><span>各セルは状態を持つ</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>更新規則</strong><span>近くのセルの状態を見る</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>次の状態</strong><span>全セルを同時に更新</span></div>
+</div>
+<ul>
+<li>単純な局所規則の繰り返しで、全体の模様が変化する。</li>
+<li>フォン・ノイマンらの研究は、人工生命にもつながった。</li>
+<li><strong>規則に従って変化することと、学習することは異なる。</strong></li>
+</ul>
+<p class="source-note">出典：S1 §2.1.1（授業用概念図）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+セルは、小さな区画や要素という意味です。ここでは、自分と近くのセルの状態から次の状態を決める仕組みを考えます。
+全体の複雑な動きを、一つ一つの要素と規則から調べるという考え方が重要です。図は原図の写真ではなく、処理の順序を示す授業用の概念図です。
+規則を繰り返しただけで、規則自体を学習したことにはなりません。この区別は、後の演習にも使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: 哲学的な問いと評価手続きを分ける -->
+<div class="slide-body ">
+<h2>チューリング：知能の問いを対話へ</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>計算の問い</h3>
+<p>機械はどのような手続きを実行できるか。</p>
+</div>
+<div class="definition-card">
+<h3>1950年の論文</h3>
+<p>「機械は考えるか」という問いを、<strong>模倣ゲーム</strong>の形で考える。</p>
+</div>
+</div>
+<p>内部の「心」を直接見る代わりに、条件を定めて振る舞いを調べる。</p>
+<p class="source-note">出典：S1 §2.1.2／S3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+チューリングは、計算を形式的に考える研究と、機械の知能を考える研究の双方で重要な人物です。
+1950年の論文では、考えるという語を定義することから始める代わりに、模倣ゲームを使って問いを考え直しています。
+この提案を授業では文字による対話の評価として紹介します。現代のAIのすべてを、この一つの試験だけで評価するわけではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: 原論文からの簡略化を明示 -->
+<div class="slide-body ">
+<h2>チューリングテストの見取り図</h2>
+<div class="flow" role="img" aria-label="質問者：文字で質問する、次に回答者：人間と機械が答える、次に判断：対話から区別できるか">
+<div class="flow-box"><strong>質問者</strong><span>文字で質問する</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>回答者</strong><span>人間と機械が答える</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>判断</strong><span>対話から区別できるか</span></div>
+</div>
+<ul>
+<li>質問者は、回答者の姿や声を直接見聞きしない。</li>
+<li>ここでは機械と人間の対話を比べる形に簡略化する。</li>
+<li>結果は、質問・時間・参加者などの<strong>試験条件</strong>に依存する。</li>
+</ul>
+<p class="source-note">出典：S3 §1–2（簡略化した概念図）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+質問者が回答者の外見から答えを当てられないように、文字によるやり取りを使います。原論文の模倣ゲームには、男女を判別する設定からの導入があります。
+ここで示した図は、その歴史的な細部を省き、機械と人間の応答を区別できるかを見る授業用の図です。
+どの質問をどれだけの時間で行ったかによって結果は変わります。試験の名前だけでなく、条件を見ることが大切です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: 知能・理解の断定を評価範囲へ修正 -->
+<div class="slide-body ">
+<h2>対話の成功から、何が言えるか</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>観察できること</h3>
+<p>指定した条件で、人間らしい応答をしたか。</p>
+</div>
+<div class="definition-card">
+<h3>別に確かめること</h3>
+<p>内容の正確さ、別の課題での能力、実際の利用での有用性。</p>
+</div>
+</div>
+<p><strong>対話で区別されなかったことだけで、理解・心や全課題の能力を証明したとは扱いません。</strong></p>
+<p class="source-note">出典：S3／今年度第1回本文25（評価上の整理）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+試験で測った性質と、それ以外の性質を分けましょう。人間らしい文章を出すことと、文章の内容が正しいことは同じではありません。
+チューリング自身も論文でさまざまな反論を取り上げています。ここではその哲学的議論に結論を出すのではなく、結果を試験条件の範囲で読む姿勢を学びます。
+この評価の見方は、昔の対話システムにも現在の生成AIにも使えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: 用語を使った提案と研究会開催の年を区別 -->
+<div class="slide-body ">
+<h2>ダートマス：研究の名前と構想</h2>
+<div class="flow" role="img" aria-label="1955年：AIという語を含む提案書、次に1956年夏：ダートマスの研究会、次に研究の問い：言語・学習・推論など">
+<div class="flow-box"><strong>1955年</strong><span>AIという語を含む提案書</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>1956年夏</strong><span>ダートマスの研究会</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>研究の問い</strong><span>言語・学習・推論など</span></div>
+</div>
+<p>提案者：McCarthy・Minsky・Rochester・Shannon</p>
+<p>知能の働きを機械で表せるという<strong>研究上の仮説</strong>。実現が証明済みという意味ではない。</p>
+<p class="source-note">出典：S4（1955年提案書・McCarthyの回顧）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+人工知能という分野の歴史で、ダートマスの研究会は重要な節目です。提案書は1955年8月31日付で、翌1956年の夏の研究を提案しています。
+提案したのは、マッカーシー、ミンスキー、ロチェスター、シャノンの四人です。提案書には言語、ニューラルネット、学習など複数の問いが含まれます。
+学習や知能の働きを機械で表せるという考えは、研究を進める仮説として書かれています。会議が開かれたことと、仮説が証明されたことを混同しないでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: 1965年掲載を1966年に訂正し、原実装と教材版を区別 -->
+<div class="slide-body ">
+<h2>ELIZA：規則から対話をつくる</h2>
+<div class="flow" role="img" aria-label="入力文：キーワードを見つける、次に規則：文を分解・組み替える、次に応答文：決めた型から返す">
+<div class="flow-box"><strong>入力文</strong><span>キーワードを見つける</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>規則</strong><span>文を分解・組み替える</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>応答文</strong><span>決めた型から返す</span></div>
+</div>
+<ul>
+<li>Weizenbaumの原論文は<strong>1966年</strong>に掲載。</li>
+<li>対話の型を記述したスクリプトを使う。</li>
+<li>データから応答規則を学ぶ方法とは異なる。</li>
+</ul>
+<p class="source-note">出典：S5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+イライザは、ワイゼンバウムによる自然言語の対話プログラムです。原論文の掲載年は1966年で、開発の時期と分けて記録します。
+入力のキーワードを手がかりに分解規則を選び、組み替え規則から応答を作ります。規則を収録するスクリプトはプログラムから分けられています。
+このように対話ができる仕組みを説明することが、この回の重要な例です。授業のPython版は原システムの完全な再実装ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: 実行例と処理を同じスライドで示す -->
+<div class="slide-body ">
+<h2>自然な応答でも、仕組みを確かめる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>教材用の入力</h3>
+<p>「試験が心配です」</p>
+</div>
+<div class="definition-card">
+<h3>規則による応答</h3>
+<p>「試験は心配ですか？」</p>
+</div>
+</div>
+<p>文字列「が心配です」を「は心配ですか？」へ置換した例。</p>
+<p><strong>返答の自然さだけで、話題を理解したと判断しない。</strong></p>
+<p class="source-note">出典：S5／昨年度doctor.py（日本語教材例）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この例は、今年度の簡易ELIZA教材で実際に使う規則です。原論文の英語対話を日本語に翻訳したものではありません。
+試験という話題の中身を調べる処理はなく、決められた文字列を置き換えているだけです。同じ規則を別の文章に使ったとき、どんな返答になるかを考えてみましょう。
+自然に見える応答から内部の処理を想像するだけでなく、規則を見て確かめることが重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: 開発期間・論文年・仮想環境を区別 -->
+<div class="slide-body ">
+<h2>SHRDLU：言葉を、世界の状態につなぐ</h2>
+<div class="flow" role="img" aria-label="命令・質問：積み木についての英語、次に世界の表現：物体・位置・関係、次に行動・回答：操作と結果の説明">
+<div class="flow-box"><strong>命令・質問</strong><span>積み木についての英語</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>世界の表現</strong><span>物体・位置・関係</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>行動・回答</strong><span>操作と結果の説明</span></div>
+</div>
+<p>WinogradがMITで<strong>1968〜1970年に開発</strong>。</p>
+<p>積み木の限定された世界で、言語処理・知識・推論・行動を組み合わせた。</p>
+<p class="source-note">出典：S6（著者による1980年の回顧）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+シュルドゥルーは、ウィノグラードがMITで1968年から1970年に開発したシステムです。1971年の学位論文と1972年の書き直し版は、開発期間と分けます。
+このシステムは、画面上の積み木の世界を表現し、言葉の指示に応じて操作したり、質問に答えたりします。操作するのはシミュレーション内の腕です。
+イライザとは異なり、言葉を対象世界の状態や操作につなげる点が重要です。ただし、対象となる世界には強い制約がありました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: AGIの現状断定を避け、対象範囲の問いにする -->
+<div class="slide-body table-slide">
+<h2>対象を広げると、何が難しくなる？</h2>
+<table>
+<thead>
+<tr>
+<th>比較する点</th>
+<th>ELIZA</th>
+<th>SHRDLU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主な仕組み</td>
+<td>文の変換規則</td>
+<td>世界の表現と推論</td>
+</tr>
+<tr>
+<td>対象</td>
+<td>スクリプトで定める対話</td>
+<td>限定された積み木世界</td>
+</tr>
+<tr>
+<td>見るべき範囲</td>
+<td>どの入力規則が働くか</td>
+<td>どの物体・操作を扱えるか</td>
+</tr>
+</tbody>
+</table>
+<p>限定世界の成功を、そのまま<strong>あらゆる課題を扱う能力</strong>へ広げない。</p>
+<p class="source-note">出典：S5・S6／今年度第1回本文25</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+二つとも文章でやり取りしますが、内部で扱っているものが違います。シュルドゥルーには、積み木の世界に関する表現や処理があります。
+現実の世界へ広げると、物体の種類、曖昧な言葉、常識、予期しない状況などが増えます。限定された環境の成功だけでは、そのすべてに対応できるとは言えません。
+汎用性は、異なる課題や環境へ能力を適用できる範囲の問いです。理解や心の有無とは分けて考えましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: 知識と推論を役割別に図解 -->
+<div class="slide-body ">
+<h2>エキスパートシステム：知識を明示する</h2>
+<div class="flow" role="img" aria-label="事例の情報：対象の状態・観測、次に知識＋推論：条件と結論を組み合わせる、次に出力：助言・説明">
+<div class="flow-box"><strong>事例の情報</strong><span>対象の状態・観測</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>知識＋推論</strong><span>条件と結論を組み合わせる</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>出力</strong><span>助言・説明</span></div>
+</div>
+<p><strong>知識ベース</strong>：専門知識を記述する。</p>
+<p><strong>推論機構</strong>：どの知識をどう使うかを処理する。</p>
+<p class="source-note">出典：S1 §2.4／S7 Ch.1</p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+1970年代以降の重要な研究として、専門家の知識に基づくエキスパートシステムがあります。
+知識ベースには、事実や条件と結論の関係を記述します。推論機構はそれらを使って、与えられた事例に対する結論を導きます。
+データから規則を学習する方法と比べると、知識を人が明示的に書く点が特徴です。すべてのエキスパートシステムを一つの構成に限定する図ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: 研究目的と運用実績を区別 -->
+<div class="slide-body ">
+<h2>MYCIN：専門領域の助言を目指した</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>対象</h3>
+<p>感染症の診断・治療に関する助言を研究。</p>
+</div>
+<div class="definition-card">
+<h3>構成</h3>
+<p>患者情報＋専門知識の規則＋推論機構。</p>
+</div>
+<div class="definition-card">
+<h3>説明</h3>
+<p>どの情報・規則を使ったか説明する機能。</p>
+</div>
+</div>
+<p>1970年代、Stanfordで研究されたシステム。</p>
+<p><strong>研究上の成果と、医療現場での運用は区別する。</strong></p>
+<p class="source-note">出典：S7 Ch.1（歴史的システムの紹介）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+マイシンは、スタンフォードで研究されたエキスパートシステムです。感染症に関する情報を集め、診断や治療の助言を行うことを目指しました。
+ここでは医学の判断を学ぶのではなく、専門知識を規則として表し、推論と説明に使う構成を学びます。
+研究で有用な結果が得られたことと、医療現場で日常運用されたことは別です。授業では、後者を確認済みの実績として主張しません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: 実用化の話に対象範囲・維持を補足 -->
+<div class="slide-body ">
+<h2>知識を書けば、完成するだろうか</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>記述</h3>
+<p>専門家の判断を、条件や結論として表す。</p>
+</div>
+<div class="definition-card">
+<h3>維持</h3>
+<p>例外・矛盾・新しい知識を点検し更新する。</p>
+</div>
+<div class="definition-card">
+<h3>範囲</h3>
+<p>知識が対象とする領域と、入力情報の条件を確かめる。</p>
+</div>
+</div>
+<p>知識ベースの方法にも、<strong>知識を集めて整備する仕事</strong>が必要。</p>
+<p class="source-note">出典：S7 Ch.1（知識工学を踏まえた整理）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+専門家の頭の中にある知識を、プログラムが使える形にする仕事は簡単ではありません。これを知識工学という観点で捉えることができます。
+ルールを追加しても、すでにあるルールと矛盾したり、想定外の入力に対応できなかったりする場合があります。
+このスライドは研究史を踏まえた運用上の整理です。知識ベースは失敗したから消えたという筋書きにせず、維持と対象範囲の重要性を見ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: モデル・生物・後の学習方法を区別 -->
+<div class="slide-body ">
+<h2>人工ニューロンのモデルは1943年から</h2>
+<div class="flow" role="img" aria-label="複数の入力：信号を受け取る、次に計算：入力をまとめる、次に出力：条件に応じて信号を出す">
+<div class="flow-box"><strong>複数の入力</strong><span>信号を受け取る</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>計算</strong><span>入力をまとめる</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>出力</strong><span>条件に応じて信号を出す</span></div>
+</div>
+<p>McCulloch・Pitts（1943）：神経の働きを単純化した数学的モデル。</p>
+<p><strong>生物の神経細胞を、そのまま再現したものではない。</strong></p>
+<p class="source-note">出典：S8a</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+マカロックとピッツの1943年の論文は、神経の働きを形式的に考える重要な研究です。ニューラルネットの考え方は、2010年代に突然生まれたものではありません。
+ここでは、複数の入力から出力を決めるという最小限の見方を示しています。実際の生物の神経には、この図にない多くの性質があります。
+また、1943年の論理モデルと、後の学習するモデルは区別します。次に、データを使って重みを変える例を見ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: 学習の役割を示し歴史的構成の単純化を明示 -->
+<div class="slide-body ">
+<h2>パーセプトロン：誤りから重みを変える</h2>
+<div class="flow" role="img" aria-label="入力と正解：学習用の例を用意、次に予測：重み付きの計算で分類、次に更新：間違いに応じて重みを変更">
+<div class="flow-box"><strong>入力と正解</strong><span>学習用の例を用意</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>予測</strong><span>重み付きの計算で分類</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>更新</strong><span>間違いに応じて重みを変更</span></div>
+</div>
+<p>Rosenblatt（1958年論文）：学習するモデルの研究。</p>
+<p>規則を一つずつ書く代わりに、<strong>例から分類の境界を調整</strong>する。</p>
+<p class="source-note">出典：S1 §2.5／S8b（入門用の概念図）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ローゼンブラットの1958年の論文は、パーセプトロンの研究として重要です。この図は、その学習を現在の入門的な説明に簡略化したものです。
+入力ごとの重みを使って予測し、正解と異なる場合には重みを変えます。イライザの文字列規則を人が書き換える操作とは違います。
+歴史的なパーセプトロンの構成すべてを、この一つの図で表しているわけではありません。ここでは、例から重みを調整するという特徴を押さえます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: 単層の限界を全モデルへ一般化しない -->
+<div class="slide-body table-slide">
+<h2>単層モデルには、表現できる範囲がある</h2>
+<table>
+<thead>
+<tr>
+<th>入力A</th>
+<th>入力B</th>
+<th>XORの正解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>単純な単層パーセプトロンは、<strong>一本の直線で分けられる分類</strong>を扱う。</p>
+<p>このXORの配置は一本の直線では分けられない。</p>
+<p>これは、すべてのニューラルネットの限界を示すものではない。</p>
+<p class="source-note">出典：S1 §2.5（XORは授業用の数学例）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+二つの入力が異なるときだけ1を出す例を、エックスオアと呼びます。二つの入力を横と縦の軸に置くと、同じラベルの点が対角に位置します。
+一本の直線で0と1を分ける単純なモデルでは、この配置を分類できません。データを増やすだけで、モデルの表現上の制約が消えるわけではありません。
+ここでいう限界は、単純な単層モデルの話です。層を増やしたり表現を変えたりする研究につながりますが、すべてのニューラルネットが不可能だという意味ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: 勾配の計算と最適化、普及上の節目と起源を区別 -->
+<div class="slide-body ">
+<h2>誤差逆伝播：多層の重みを調整する</h2>
+<div class="flow" role="img" aria-label="前向きの計算：入力から出力を計算、次に誤差の評価：予測と正解のずれを見る、次に逆向きの計算：重みへの影響を求める">
+<div class="flow-box"><strong>前向きの計算</strong><span>入力から出力を計算</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>誤差の評価</strong><span>予測と正解のずれを見る</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>逆向きの計算</strong><span>重みへの影響を求める</span></div>
+</div>
+<p>Rumelhart・Hinton・Williams（1986）：多層の表現学習を示した論文。</p>
+<p>誤差逆伝播で更新に使う情報を求め、<strong>最適化法で重みを更新</strong>する。</p>
+<p class="source-note">出典：S8c</p>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+バックプロパゲーションは、日本語では誤差逆伝播と呼びます。1986年の論文は、多層ネットワークの学習を示した重要な文献です。
+まず入力から出力を計算し、正解とのずれを調べます。それから、そのずれが重みとどう関係するかを逆向きの計算で求めます。
+その情報を使って重みを更新するのが最適化の処理です。誤差逆伝播だけで最適解が保証されるわけではなく、1986年を関連手法すべての最初の発明年とも扱いません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22: 発展・停滞の原因を単一要因にしない -->
+<div class="slide-body ">
+<h2>発展を支えるのは、方法・データ・計算</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>方法</h3>
+<p>層の構成、学習・最適化の工夫。</p>
+</div>
+<div class="definition-card">
+<h3>データ</h3>
+<p>学ぶ例と、確かめるための例。</p>
+</div>
+<div class="definition-card">
+<h3>計算</h3>
+<p>必要な計算と記憶を実行する資源。</p>
+</div>
+</div>
+<p><strong>規模を大きくするだけで、すべての課題が解決するわけではない。</strong></p>
+<p class="source-note">出典：S8c・S10／今年度第1回本文26</p>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+研究の発展には、計算機の高速化だけでなく、学習方法やデータの準備が関わっています。第1回で見た三つの要素を、ここでも使いましょう。
+モデルが表現できる範囲、学習例の偏り、未知の例での評価など、計算を増やすだけでは解決しない問題もあります。
+次はゲームの研究です。ルールが定まり、結果を比べやすい環境で、探索と学習を組み合わせる研究が進みました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23: 探索と学習を分けて比較 -->
+<div class="slide-body ">
+<h2>Samuel：ゲームから評価を学ぶ</h2>
+<div class="flow" role="img" aria-label="盤面：次の手の候補を見る、次に探索・評価：先を読み、有望さを比べる、次に経験：評価の方法を改善する">
+<div class="flow-box"><strong>盤面</strong><span>次の手の候補を見る</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>探索・評価</strong><span>先を読み、有望さを比べる</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>経験</strong><span>評価の方法を改善する</span></div>
+</div>
+<p>1950年代のチェッカー研究。1959年に学習に関する論文。</p>
+<p><strong>探索</strong>は候補を調べること、<strong>学習</strong>は経験から処理を改善すること。</p>
+<p class="source-note">出典：S9a</p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+サミュエルは、チェッカーのプログラムを使って機械学習を研究しました。1959年の論文は、その歴史上の重要な例です。
+ゲームでは、現在の盤面だけでなく、次の手やその先の盤面を調べます。すべてを調べられない場合には、有望さを評価する必要があります。
+候補を調べる探索と、経験を使って評価などを改善する学習は、異なる役割です。どちらか一つだけがAIというわけではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: 対戦年・成果・対象範囲を区別 -->
+<div class="slide-body ">
+<h2>Deep Blue：探索と評価でチェスに挑む</h2>
+<div class="flow" role="img" aria-label="候補の手：多くの局面を探索、次に局面の評価：チェスの知識を使う、次に選択：有望な手を選ぶ">
+<div class="flow-box"><strong>候補の手</strong><span>多くの局面を探索</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>局面の評価</strong><span>チェスの知識を使う</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>選択</strong><span>有望な手を選ぶ</span></div>
+</div>
+<p><strong>1997年</strong>、世界王者Kasparovとの6局の対戦で勝利。</p>
+<p>専用ハードウェアと探索・評価を組み合わせた。</p>
+<p>チェスでの成果を、そのまま他の課題の能力へ広げない。</p>
+<p class="source-note">出典：S9b</p>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ディープブルーは、1997年にカスパロフとの六局の対戦で勝ちました。1996年の対戦とは結果を分けて記録します。
+高速に多くの局面を調べる仕組みと、チェスの局面を評価する方法、専用のハードウェアを組み合わせています。単に計算を速くしただけという説明にはしません。
+重要なのは、この成果がチェスの定められたルールと対戦条件で得られたことです。文章の生成など別の課題をこなすことの証拠ではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: 論文の対戦とLee Sedol戦、後続版を区別 -->
+<div class="slide-body ">
+<h2>AlphaGo：学習した評価と探索を組み合わせる</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>方策ネット</h3>
+<p>有望な手の候補</p>
+</div>
+<div class="definition-card">
+<h3>価値ネット</h3>
+<p>局面の有望さ</p>
+</div>
+<div class="definition-card">
+<h3>木探索</h3>
+<p>候補の先を調べて選択</p>
+</div>
+</div>
+<p>2016年の論文：深層ニューラルネットと木探索の組み合わせ。</p>
+<p>2016年3月：Lee Sedolとの対戦で4勝1敗。</p>
+<p><strong>学習だけ／探索だけ</strong>という二択ではない。</p>
+<p class="source-note">出典：S9c（2016年論文・DeepMind公式対戦記録）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+アルファ碁は、次の手の候補を考える方策ネットと、局面を評価する価値ネットを、木探索と組み合わせました。図は役割を示す概念図であり、内部の全処理を順番に再現した図ではありません。
+2016年の論文に載った欧州王者との対戦と、同年3月のイ・セドルとの対戦は異なる出来事です。ここでは両方の時期と出典を分けます。
+研究版や後のアルファ碁ゼロには違いがあります。すべての版が同じデータや学習方法を使ったと説明しないようにしましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26: 深層学習の発見という表現を節目に修正 -->
+<div class="slide-body ">
+<h2>AlexNet：2012年は重要な節目</h2>
+<div class="flow" role="img" aria-label="画像とラベル：多数の学習例、次に多層のCNN：特徴を段階的に学ぶ、次に評価：画像分類の課題で比較">
+<div class="flow-box"><strong>画像とラベル</strong><span>多数の学習例</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>多層のCNN</strong><span>特徴を段階的に学ぶ</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>評価</strong><span>画像分類の課題で比較</span></div>
+</div>
+<p>2012年のImageNet画像分類で、大きな改善を示した。</p>
+<p>GPU・データ・学習の工夫を組み合わせた成果。</p>
+<p><strong>深層学習そのものが2012年に誕生したわけではない。</strong></p>
+<p class="source-note">出典：S10</p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+アレックスネットは、2012年の画像分類で重要な成果を示しました。原論文では、畳み込みニューラルネットをGPUで学習する方法や、過学習を抑える工夫などが述べられています。
+ここでは性能の細かな数字を暗記せず、方法、データ、計算が組み合わさった節目として読みます。
+多層の学習や画像処理の研究は、それ以前からありました。成功した年を、その技術全体の発明年に置き換えないでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27: 現代の生成AIへ必要な接続を新設 -->
+<div class="slide-body ">
+<h2>Transformer：注意を使って関係を捉える</h2>
+<div class="flow" role="img" aria-label="入力の表現：文章の各部分、次に注意の計算：どの部分を参照するか、次に出力の表現：関係を反映して更新">
+<div class="flow-box"><strong>入力の表現</strong><span>文章の各部分</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>注意の計算</strong><span>どの部分を参照するか</span></div>
+<div class="flow-arrow" aria-hidden="true">→</div>
+<div class="flow-box"><strong>出力の表現</strong><span>関係を反映して更新</span></div>
+</div>
+<p>Vaswaniら（2017）「Attention Is All You Need」。</p>
+<p>元の論文は機械翻訳を扱う。のちの言語モデルにもつながる。</p>
+<p>「注意」は計算の仕組みを指し、<strong>人間の意識を意味しない。</strong></p>
+<p class="source-note">出典：S11</p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+トランスフォーマーは、注意と呼ばれる計算を用いて入力中の関係を扱う構成です。専門用語のアテンションは、人間の意識や心理的な集中をそのまま実装したという意味ではありません。
+2017年の原論文は、機械翻訳の問題でこの構成を示しました。このスライドは、複数の箇所の情報を参照して表現を更新するという概念図です。
+すべてのAIがトランスフォーマーになったわけではなく、画像や言語の課題に応じてさまざまな構成が使われます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28: 文脈と学習、生成と正確さを区別 -->
+<div class="slide-body ">
+<h2>大規模言語モデル：文脈を使って生成する</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>学習</h3>
+<p>大量のテキストなどから、予測に使う重みを調整する。</p>
+</div>
+<div class="definition-card">
+<h3>利用</h3>
+<p>入力された文脈に続く文章を、学習済みの重みで生成する。</p>
+</div>
+</div>
+<p>Brownら（2020）は、例示された文脈を使う言語モデルを報告。</p>
+<p><strong>入力に例を示すことと、モデルの重みを更新することは異なる。</strong></p>
+<p>自然な生成だけで、内容の正確さは保証されない。</p>
+<p class="source-note">出典：S12／今年度第1回本文21・23</p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+大規模言語モデルの一つの歴史的な例として、ブラウンらの2020年の論文を紹介します。現在のすべての製品仕様を説明する文献ではありません。
+この研究では、入力に指示や例を与えて、学習済みのモデルで続きを生成する使い方が調べられています。入力中の例を使うことと、その場で重みを学習し直すことを分けましょう。
+イライザの規則を人が編集する方法とは仕組みが異なります。一方で、どちらも自然な文章だけを見て内容の正確さや理解を判断しない、という評価の観点が必要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29: AIから卒業したという排他的な断定を避ける -->
+<div class="slide-body table-slide">
+<h2>身近な技術になると、見え方も変わる</h2>
+<table>
+<thead>
+<tr>
+<th>例</th>
+<th>処理の目的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>コンパイラ</td>
+<td>プログラムを解析し、別の形式へ変換する</td>
+</tr>
+<tr>
+<td>かな漢字変換</td>
+<td>読みと文脈などから、表記の候補を選ぶ</td>
+</tr>
+</tbody>
+</table>
+<p>仕組みが分かり、日常的に使われると、AIとして意識されにくくなる場合がある。</p>
+<p><strong>名前より、何をどう処理しているかを見る。</strong></p>
+<p class="source-note">出典：S1 §2.8／S5 Introduction（位置づけは授業用整理）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+昨年度の資料では、かつて人工知能として語られた技術の例として、コンパイラとかな漢字変換を扱っています。
+ここでは、すべてのコンパイラがAIだ、あるいはAIではなくなったという普遍的な分類にはしません。言葉や記号の解析、候補の選択という処理を見る例として使います。
+技術が普及したときに呼び方が変わることと、処理の仕組みが変わることは別です。AIという名前だけで技術を評価しないようにしましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30: 直線的な言語変遷や未確認の速度比較を省く -->
+<div class="slide-body table-slide">
+<h2>言語は、目的に応じて使い分ける</h2>
+<table>
+<thead>
+<tr>
+<th>言語</th>
+<th>本章で見る役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LISP</td>
+<td>記号やリストを扱う</td>
+</tr>
+<tr>
+<td>Prolog</td>
+<td>事実・規則・問い合わせで処理を記述する</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>汎用の処理を書き、ライブラリと組み合わせる</td>
+</tr>
+</tbody>
+</table>
+<p><strong>LISP → Prolog → Pythonという全面的な置き換えではない。</strong></p>
+<p>学ぶべきなのは、言語名だけでなく、処理の表し方。</p>
+<p class="source-note">出典：S13a〜c／S1 §2.9</p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+リスプは記号処理、プロログは論理に基づく記述という観点で歴史上重要です。パイソンは汎用の言語であり、この授業の演習にも使います。
+三つの言語が順番に前の言語を消していったという歴史ではありません。開発したい処理や利用環境によって選び方が異なります。
+今日は他の言語の文法を実装する演習はしません。次のPython教材では、規則をどう書いたかと、その規則をどう実行するかを観察します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31: 完成コード・再現可能なデモを用意 -->
+<div class="slide-body ">
+<h2>簡易ELIZAを、まず動かしてみる</h2>
+<pre><code class="language-bash">python doctor.py --demo
+</code></pre>
+<pre><code class="language-text">あなた&gt; 先生に相談したいです
+Dr&gt; 私のことでなくあなたのことを話しましょう
+</code></pre>
+<ul>
+<li>教材の完成コードと単体Notebookを用意。</li>
+<li>固定入力20件で、同じ応答を再現できる。</li>
+<li>対話する場合は <code>python doctor.py</code>。</li>
+</ul>
+<p class="source-note">出典：昨年度doctor.pyを基に作成した今年度教材</p>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+演習ファイルは章内のプログラム用フォルダーにあります。授業で使う仮想環境のPythonを選び、まず固定入力を実行してみてください。
+デモでは、二十件の入力をあらかじめ用意しています。ここにある出力は、その最初の一件です。Notebookにも処理コードがあり、Pythonファイルを別に置かなくても動きます。
+対話して試すこともできます。この教材は学習用の簡易版で、原ELIZAのすべての機能を再現するものではありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32: 優先順位・周期・終了条件を正確に示す -->
+<div class="slide-body table-slide">
+<h2>入力から、選ばれた規則を追う</h2>
+<table>
+<thead>
+<tr>
+<th>優先順</th>
+<th>入力に含まれる文字列</th>
+<th>応答の型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>先生</td>
+<td>私のことでなくあなたのことを…</td>
+</tr>
+<tr>
+<td>2</td>
+<td>母</td>
+<td>あなたのお母さんについて…</td>
+</tr>
+<tr>
+<td>3</td>
+<td>父</td>
+<td>あなたのお父さんについて…</td>
+</tr>
+<tr>
+<td>4</td>
+<td>意見</td>
+<td>私の意見を聞きたいのですか？</td>
+</tr>
+<tr>
+<td>5</td>
+<td>が心配です</td>
+<td>文字列を「は心配ですか？」へ置換</td>
+</tr>
+</tbody>
+</table>
+<p>通常は<strong>最初に一致した規則だけ</strong>を使う。該当なしは「続けてください」。</p>
+<p>既定設定：6・11・16回目は規則より先にオウム返し、20回で終了。</p>
+<p class="source-note">出典：昨年度doctor.py・今年度教材（実行確認済みの既定動作）</p>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この表は、今年度教材の初期版の規則です。昨年度のプログラムと同じ順序で調べます。例えば母が心配ですという入力には、母の規則が先に一致します。
+五回分の通常処理の後にオウム返しが入ります。カウンタをリセットしてから増やすため、最初は六回目、その後は十一回目と十六回目です。
+ここは規則の一致だけでなく、対話の状態が影響する例です。Notebookでは、どの規則が選ばれたかも表示して確認できます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 33: 入力・規則・状態を分けて観察する -->
+<div class="slide-body table-slide">
+<h2>入力と規則を、一つずつ変えて比較する</h2>
+<table>
+<thead>
+<tr>
+<th>試す変更</th>
+<th>観察すること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「母が心配です」→「試験が心配です」</td>
+<td>どの規則が選ばれるか</td>
+</tr>
+<tr>
+<td>「母」と「が心配です」の順序を交換</td>
+<td>同じ入力でも応答が変わるか</td>
+</tr>
+<tr>
+<td>「母校の話です」を入力</td>
+<td>文字列「母」の一致が意味と合うか</td>
+</tr>
+</tbody>
+</table>
+<p>同じ対話状態から、変更前・変更後を比較する。</p>
+<p><strong>人が規則を編集することは、データからの自動学習ではない。</strong></p>
+<p class="source-note">出典：今年度教材の比較例</p>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+一度に多くを変えると、応答が変わった理由が分かりにくくなります。まず入力だけ、次に規則の順序だけを変えましょう。
+母校という語には母という文字が含まれますが、お母さんについて話しているとは限りません。文字列の一致と意味の一致が異なる例です。
+比較の前に新しい対話状態を作ってください。オウム返しの回数が違うと、規則の順序だけを比べたつもりでも別の条件が混ざります。変更例と観察の問いはNotebookにあります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 34: 年代暗記だけでなく仕組みの説明を確認 -->
+<div class="slide-body ">
+<h2>確認：仕組みと評価の範囲を説明しよう</h2>
+<ol>
+<li>ELIZAとSHRDLUは、内部で何を扱う点が違う？</li>
+<li>Deep BlueとAlphaGoでは、探索・学習はどう関わる？</li>
+<li>規則を変えて応答が変わった。自動学習したと言える？</li>
+</ol>
+<p><strong>答えるときは「仕組み」と「確認できた範囲」を添える。</strong></p>
+<p class="source-note">出典：本文11〜14・23〜25・31〜33</p>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この三つは、講義の内容を言葉で説明するための理解確認です。提出や採点の条件を新たに設けるものではありません。
+一つ目は、イライザの文変換規則と、シュルドゥルーの世界の表現や推論を比べます。二つ目は、ディープブルーの探索と評価、アルファ碁の学習したネットワークと木探索を比べます。
+三つ目は、人が規則を書き換えたことと、データを使って重みなどを調整する学習を区別します。答えの根拠を、前の図や実行結果で示しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 35: 次回を今年度の日程とテーマへ合わせる -->
+<div class="slide-body ">
+<h2>歴史から、次の「機械学習」へ</h2>
+<div class="concept-grid">
+<div class="definition-card">
+<h3>今日のまとめ</h3>
+<p>規則・知識・探索・学習が、重なりながら発展した。</p>
+</div>
+<div class="definition-card">
+<h3>評価の視点</h3>
+<p>できたことと、試した課題・環境の範囲を一緒に見る。</p>
+</div>
+<div class="definition-card">
+<h3>次回：10月15日（木）</h3>
+<p>教師あり・教師なし・強化学習、学習と検査、汎化と過学習。</p>
+</div>
+</div>
+<p class="source-note">出典：本文全体／2026年度schedule.md</p>
+</div>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+歴史を振り返ると、人が規則を書く方法とデータから学ぶ方法、候補を探索する方法が、重なりながら発展してきたことが分かります。
+成果を見るときには、何の課題をどんな条件で確かめたかを合わせて説明しましょう。自然に見える出力だけから、すべての能力を推測しないことも重要です。
+次回は十月十五日の機械学習一です。ここで見た学習という考え方を、学習の種類、データの役割、未知の例への対応として詳しく学びます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 36: 付録前に質疑応答を置く -->
+<div class="slide-body questions-slide">
+<h2>質疑応答</h2>
+<p class="questions-title">気になった仕組みや演習結果を共有しましょう</p>
+<ul>
+<li>どの時代・システムの話ですか？</li>
+<li>入力・処理・出力のどこが気になりますか？</li>
+<li>どの条件を変えると確かめられそうですか？</li>
+</ul>
+<p class="source-note">出典：承認済み構成</p>
+</div>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここで質問を受け付けます。システム名だけでなく、どんな仕組みのどこが疑問かを言葉にしてみてください。
+演習で予想と違う返答が出た場合は、入力、規則の順序、何回目の応答だったかを一緒に確認しましょう。
+この後の付録には、昨年度との対応、補足の年表、出典があります。質問への補足や復習に使ってください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 37: 主要節を保持し、省略・再構成を追跡 -->
+<div class="slide-body table-slide">
+<h2>付録：昨年度の第2章との対応</h2>
+<table>
+<thead>
+<tr>
+<th>昨年度の節</th>
+<th>今年度のスライド</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.1 計算機・セル・オートマトン・Turing</td>
+<td>5〜9</td>
+</tr>
+<tr>
+<td>2.2〜2.4 Dartmouth・対話・専門知識</td>
+<td>10〜17</td>
+</tr>
+<tr>
+<td>2.5〜2.7 ニューラルネット・ゲーム・深層学習</td>
+<td>18〜28</td>
+</tr>
+<tr>
+<td>2.8〜2.9 身近な技術・プログラミング言語</td>
+<td>29〜30</td>
+</tr>
+<tr>
+<td>章末問題：簡易ELIZA</td>
+<td>31〜33／Python・Notebook</td>
+</tr>
+</tbody>
+</table>
+<p>原資料の節・図番号を介した対応。<strong>教科書原本のページは未確認。</strong></p>
+<p class="source-note">出典：S1／source-map.md</p>
+</div>
+<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+昨年度の章の主要な節は、この表のように今年度へ対応させています。説明だけのスライドと図だけのスライドの重複は整理しました。
+ニューラルネットの細かな数式、LISPやPrologの文法、Pythonの順伝播コードをこの回で詳しく実装することはしません。各言語や方法の役割を歴史の中で説明します。
+詳しい採用箇所、変更理由、各原図の説明目的は出典対応表に記録します。教科書原本を直接確認したページ番号は付けません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 38: 出来事の種類を保持した年表を提供 -->
+<div class="slide-body table-slide">
+<h2>付録：出来事の年を分けて読む</h2>
+<table>
+<thead>
+<tr>
+<th>年</th>
+<th>出来事の種類と例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1943／1950</td>
+<td>論文：人工ニューロンのモデル／Turingの模倣ゲーム</td>
+</tr>
+<tr>
+<td>1955／1956</td>
+<td>提案書／Dartmouthの研究会</td>
+</tr>
+<tr>
+<td>1966／1968〜70</td>
+<td>ELIZAの論文／SHRDLUの開発期間</td>
+</tr>
+<tr>
+<td>1958／1986</td>
+<td>論文：パーセプトロン／多層の誤差逆伝播</td>
+</tr>
+<tr>
+<td>1997／2012</td>
+<td>対戦：Deep Blue／画像分類：AlexNet</td>
+</tr>
+<tr>
+<td>2016／2017／2020</td>
+<td>AlphaGoの論文・対戦／Transformer／大規模言語モデル</td>
+</tr>
+</tbody>
+</table>
+<p><strong>公開・開発・論文・対戦の年を、技術全体の「誕生年」にまとめない。</strong></p>
+<p class="source-note">出典：S3〜S12</p>
+</div>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+本文では仕組みを中心に説明したので、この付録で主要な年を整理します。表では出来事の種類を一緒に書いています。
+シュルドゥルーの開発は1968年から1970年で、学位論文は1971年です。アルファ碁にも論文と複数の対戦、後続版があるので、一つの年だけでは全体を表せません。
+また、話の順序は説明する分野ごとに戻ることがあります。この年表を、すべての研究が一列に進んだという意味で使わないでください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 39: 短縮出典と正式な出典表を対応 -->
+<div class="slide-body references-slide">
+<h2>付録：出典① 歴史の土台</h2>
+<ul>
+<li><strong>S1</strong> 昨年度第2章：slide・lecture_notes・<code>doctor.py</code>・原図一覧</li>
+<li><strong>S2</strong> <a href="https://www.computerhistory.org/timeline/computers/">Computer History Museum：計算機の年表</a></li>
+<li><strong>S3</strong> Turing（1950）<a href="https://www.csee.umbc.edu/courses/471/papers/turing_computing_machinery_and_intelligence.pdf">Computing Machinery and Intelligence</a></li>
+<li><strong>S4</strong> McCarthyら（1955）<a href="https://www-formal.stanford.edu/jmc/history/dartmouth/dartmouth.html">Dartmouth提案書</a></li>
+<li><strong>S5</strong> Weizenbaum（1966）<a href="https://courses.cs.umbc.edu/331/papers/eliza.html">ELIZA</a></li>
+<li><strong>S6</strong> Winograd（1980）<a href="https://hci.stanford.edu/courses/cs047n/readings/winograd-understand.pdf">What Does It Mean to Understand Language?</a></li>
+<li><strong>S7</strong> Buchanan・Shortliffe編（1984）<a href="https://www.shortliffe.net/Buchanan-Shortliffe-1984/Chapter-01.pdf">MYCIN研究の第1章</a></li>
+</ul>
+<p class="source-note">出典：各文献／確認日2026-10-01</p>
+</div>
+<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+こちらは、計算機から対話システム、エキスパートシステムまでの根拠です。昨年度資料は章の構成と説明の採用箇所を確認するために使い、年代などの重要な点は一次資料で照合しました。
+チューリングとイライザの文献は、大学が公開している原論文の複製を確認しています。複製ページの書誌上の誤記はそのまま教材へ移さず、出版社の書誌と区別します。
+詳しい著者、タイトル、確認日、参照した箇所とアクセス上の制約は、この章のREADMEに記録しています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 40: 現代への接続と歴史的記述の根拠を示す -->
+<div class="slide-body references-slide">
+<h2>付録：出典② 学習・探索・生成</h2>
+<ul>
+<li><strong>S8a–c</strong> 人工ニューロン（1943）／パーセプトロン（1958）／<a href="https://www.nature.com/articles/323533a0">誤差逆伝播（1986）</a></li>
+<li><strong>S9a–c</strong> Samuel（1959）／<a href="https://research.ibm.com/publications/deep-blue">Deep Blue</a>／<a href="https://research.google/pubs/mastering-the-game-of-go-with-deep-neural-networks-and-tree-search/">AlphaGo</a></li>
+<li><strong>S10</strong> Krizhevskyら（2012）<a href="https://proceedings.neurips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html">ImageNet Classification with Deep Convolutional Neural Networks</a></li>
+<li><strong>S11</strong> Vaswaniら（2017）<a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></li>
+<li><strong>S12</strong> Brownら（2020）<a href="https://arxiv.org/abs/2005.14165">Language Models are Few-Shot Learners</a></li>
+<li><strong>S13a–c</strong> LISP原論文／Prolog入門／Python公式FAQ</li>
+</ul>
+<p>正式な出典・補助資料・確認範囲は章のREADMEに収録。</p>
+<p class="source-note">出典：各文献／確認日2026-10-01</p>
+</div>
+<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+こちらは、学習とゲーム、現代の言語モデル、プログラミング言語の文献です。まとめた番号の枝番は、章のREADMEでそれぞれの資料へ対応します。
+論文に示された成果は、その論文のモデルや評価条件での結果です。現在のすべての製品の性能や能力を保証する資料として使っていません。
+この教材では、確認できた根拠と、授業用に作った比較図や日本語の対話例を区別しています。必要な詳しさに応じて、本文と出典対応表を行き来してください。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+			height: 720,
+			margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
