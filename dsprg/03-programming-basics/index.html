@@ -1,0 +1,1726 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>DSプログラミング入門｜第3回 DS用プログラミング言語</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 1: 第3回：計算から小さな表へ -->
+<div class="slide-body " data-step="1">
+<h2>第3回：計算から小さな表へ</h2>
+<p class="operation-place">0〜5分｜今日の目標</p>
+<p><strong>DSプログラミング入門2026｜白濵 成希</strong></p>
+<ul>
+<li>数値に名前を付けて、計算・表示する。</li>
+<li>数値列を換算し、小さい表の一列を取り出す。</li>
+<li>PythonとRの両方で変更・確認し、演習コード全文を提出する。</li>
+</ul>
+<div class="workflow" aria-label="予想、実行、照合、小さな変更の順に学ぶ">
+<div class="workflow-step">予想する</div><div class="workflow-arrow">→</div>
+<div class="workflow-step">実行する</div><div class="workflow-arrow">→</div>
+<div class="workflow-step">照合する</div><div class="workflow-arrow">→</div>
+<div class="workflow-step">少し変える</div>
+</div>
+<div class="checkpoint">第2回の8項目（両言語のNotebook・日本語グラフを含む）は確認できましたか。途中の人は教員へ。</div>
+<p class="source-note">出典：学生用ノート §1–2／第2回マニュアル §10</p>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+第2回では、両言語のノートブックと日本語のグラフまで、八つの項目を確認しました。まだ途中の人は、止まった操作を教員に伝えてください。環境設定を自分でやり直す必要はありません。
+今日は同じ問いをパイソンとアールで考えます。書き方をすべて暗記する必要はありません。使う場所を見つけ、予想して動かし、元のデータと比べることが目標です。
+計算から数値列、小さな表へと順に進み、後半は両言語の演習に時間を使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 2: workを開いたまま、lesson03へ -->
+<div class="slide-body " data-step="2">
+<h2>workを開いたまま、lesson03へ</h2>
+<p class="operation-place">0〜5分｜保存先</p>
+<p>Start.cmdで開き、接続先 <strong>WSL: DSProg2026</strong> を確認。</p>
+<table>
+<thead>
+<tr>
+<th>開いておくフォルダー</th>
+<th>作る場所と主例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>work</code> 全体</td>
+<td><code>exercises/lesson03/</code></td>
+</tr>
+<tr>
+<td>Python</td>
+<td><code>lesson03.py</code></td>
+</tr>
+<tr>
+<td>R</td>
+<td><code>lesson03.R</code></td>
+</tr>
+</tbody>
+</table>
+<p>A → B → Cを、各言語の<strong>同じファイルの末尾</strong>へ追加します。</p>
+<div class="checkpoint">lesson03だけを別のフォルダーとして開き直しません。完成主例が配布済みなら、同じコードを重ねて追加しません。</div>
+<p class="source-note">出典：学生用ノート §2</p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+授業用のワーク全体を開いたまま、エクスプローラーでエクササイズ、レッスンゼロスリーへ進みます。実際の保存先はスラッシュホーム、データサイ、ワークの中です。
+最初から入力する人は空のファイルを用意します。全コード入りの主例を使う人は追加ではなく該当箇所を確認します。二つの言語を同じファイルに混ぜないようにしましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 3: 保存して、実行したいタブを選ぶ -->
+<div class="slide-body " data-step="3">
+<h2>保存して、実行したいタブを選ぶ</h2>
+<p class="operation-place">0〜5分｜共通の実行手順 1</p>
+<p><strong>Ctrl + S</strong> → 対象ファイルのタブ → <strong>［ターミナル］→［タスクの実行…］</strong></p>
+<img class="zoomable-image task-menu-image" src="./images/install-12-vscode-task-menu.png" width="765" height="368" alt="VS Codeのターミナルメニューでタスクの実行を選ぶ操作例">
+<p class="caption-note">今日は.py／.Rをタスクで実行。Notebookはセル横の▶です。<br>画像はlesson01/hello.pyの例。今日はlesson03のファイルを選びます。</p>
+<p class="source-note">出典：学生用ノート §2／操作画像 12</p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+第2回のノートブックは、セル横の三角ボタンで実行しました。今日はパイソンとアールのファイルを保存し、授業用タスクで全体を上から実行します。
+コードを書いたら保存し、実行したいファイルのタブをクリックします。その後でターミナルのメニューからタスクの実行を選びます。
+画像は以前のハローの例です。今日選ぶのはレッスンゼロスリーのファイルです。画面に写っているコードやファイル名へ書き換える必要はありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 4: 言語に合うタスクを選び、結果を見る -->
+<div class="slide-body " data-step="4">
+<h2>言語に合うタスクを選び、結果を見る</h2>
+<p class="operation-place">0〜5分｜共通の実行手順 2</p>
+<img class="zoomable-image task-choice-image" src="./images/install-13-vscode-task-select.png" width="616" height="88" alt="授業: Pythonファイルを実行、授業: Rファイルを実行の二つのタスク">
+<p><strong>Python → ［授業: Pythonファイルを実行］</strong><br>
+<strong>R → ［授業: Rファイルを実行］</strong></p>
+<img class="zoomable-image task-output-image" src="./images/install-14-python-success.png" width="924" height="242" alt="Pythonタスク実行後のターミナル。対象ファイル名とHello, World!の結果が表示されている">
+<p class="caption-note">画像はlesson01の出力例。上部のコマンドは入力不要です。「ターミナルはタスクで再利用…」はエラーではありません。</p>
+<p class="source-note">出典：学生用ノート §2／検証報告「実行環境とタスク」／操作画像 13–14</p>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+パイソンかアールかを自分で選びます。選んだタブの言語とタスクが合っているか確認してください。結果は下のターミナルに出ます。
+画像の上部に長い文字列がありますが、これを入力するのではありません。実行先のファイル名を確認するために見ます。再利用というメッセージの上に結果があります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 5: A：120円の商品を2個買うと？ -->
+<div class="slide-body " data-step="5">
+<h2>A：120円の商品を2個買うと？</h2>
+<p class="operation-place">5〜15分｜まず予想する</p>
+<table>
+<thead>
+<tr>
+<th>わかっていること</th>
+<th style="text-align:right">値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>単価</td>
+<td style="text-align:right">120円</td>
+</tr>
+<tr>
+<td>個数</td>
+<td style="text-align:right">2個</td>
+</tr>
+</tbody>
+</table>
+<p><strong>合計はいくらになるでしょうか。</strong></p>
+<p>計算の仕方と答えを、紙か頭の中で予想します。</p>
+<div class="checkpoint">まだ実行せず、自分の予想を一つ持ってから進みましょう。</div>
+<p class="source-note">出典：学生用ノート §3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+単価が百二十円の商品を二個買います。どの計算をすれば合計になるでしょうか。少し待つので、答えと計算の仕方を考えてください。
+これから両言語で同じ計算をします。予想と画面の結果を照合しましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 6: AをPythonで書く -->
+<div class="slide-body " data-step="6">
+<h2>AをPythonで書く</h2>
+<p class="operation-place">5〜15分｜lesson03.pyに入力</p>
+<pre><code class="language-python">price = 120
+quantity = 2
+total = price * quantity
+print(f&quot;合計は{total}円です&quot;)
+</code></pre>
+<p>保存 → <code>lesson03.py</code> のタブ → <strong>Python用の授業タスク</strong>。</p>
+<p>最初の行から実行し、予想と比べましょう。</p>
+<p class="source-note">出典：学生用ノート §3／主例Python A</p>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+パイソンのファイルにこの四行を書きます。プライスは単価、クオンティティは個数、トータルは合計に付けた名前です。
+表示の行はそのまま使って構いません。保存してパイソンのタスクを実行します。入力と結果の確認を待ち、困っている人は四行のどこで止まったか一緒に見ます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 7: AをRでも書く -->
+<div class="slide-body " data-step="7">
+<h2>AをRでも書く</h2>
+<p class="operation-place">5〜15分｜lesson03.Rに入力</p>
+<pre><code class="language-r">price &lt;- 120
+quantity &lt;- 2
+total &lt;- price * quantity
+cat(&quot;合計は&quot;, total, &quot;円です\n&quot;, sep = &quot;&quot;)
+</code></pre>
+<p>保存 → <code>lesson03.R</code> のタブ → <strong>R用の授業タスク</strong>。</p>
+<p>同じ単価・個数で、Pythonと同じ結果になるでしょうか。</p>
+<p class="source-note">出典：学生用ノート §3／主例R A</p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+アールでも同じ名前と同じ値を使います。値を結びつける矢印のような記号に注目してください。表示の行はそのまま使って大丈夫です。
+保存後はアールのファイルを選んで、アールのタスクで実行します。先ほどのパイソンのタブを選んだままにしないよう確かめましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 8: 名前を付けて、計算に使う -->
+<div class="slide-body " data-step="8">
+<h2>名前を付けて、計算に使う</h2>
+<p class="operation-place">5〜15分｜変数・代入・関数の呼び出し</p>
+<table>
+<thead>
+<tr>
+<th>名前</th>
+<th>表すもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>price</code></td>
+<td>単価</td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>個数</td>
+</tr>
+<tr>
+<td><code>total</code></td>
+<td>合計金額</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>変数</strong>：値に名前を付けて扱う。</li>
+<li><strong>代入</strong>：Pythonの <code>=</code>、Rの <code>&lt;-</code>。右の値を左の名前へ。</li>
+<li><code>*</code> は掛け算。<code>print()</code>・<code>cat()</code> は表示する関数。</li>
+</ul>
+<div class="checkpoint">関数は、名前に続く丸括弧へ値を渡して呼び出します。</div>
+<p class="source-note">出典：学生用ノート §3</p>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+値に付けた名前を変数と呼びます。三行目では右の掛け算を先に行い、その結果をトータルに結びつけています。数学の等号と同じ読み方ではない点を押さえましょう。
+関数は道具を呼び出す書き方として使います。今日は関数を自分で作るところまで進みません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 9: 240円を確かめたら、個数だけ変更 -->
+<div class="slide-body " data-step="9">
+<h2>240円を確かめたら、個数だけ変更</h2>
+<p class="operation-place">5〜15分｜照合 → 小さな変更</p>
+<p>両言語の主例の結果：</p>
+<pre><code class="language-text">合計は240円です
+</code></pre>
+<p><strong>120 × 2 = 240</strong> と照合します。</p>
+<p>次は、両言語で <code>quantity</code> だけを <strong>2 → 3</strong> に変更。</p>
+<div class="checkpoint">先に合計を予想 → 保存 → 対象タブ → 授業タスク。ほかの値は変えません。</div>
+<p class="source-note">出典：学生用ノート §3／検証報告「各ケース」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+二個のときは二百四十円でした。自分の手計算と表示が一致したことを確認します。
+次は個数だけを三にします。予想を一つ書いてから両言語を実行してください。別の箇所まで変えると原因を追いにくくなるので、今回は個数の行だけを変えます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10: 個数3なら360円。確認後は2へ -->
+<div class="slide-body " data-step="10">
+<h2>個数3なら360円。確認後は2へ</h2>
+<p class="operation-place">5〜15分｜変更前後を比較する</p>
+<table>
+<thead>
+<tr>
+<th>個数</th>
+<th>手計算</th>
+<th style="text-align:right">両言語の合計</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>120 × 2</td>
+<td style="text-align:right">240円</td>
+</tr>
+<tr>
+<td>3</td>
+<td>120 × 3</td>
+<td style="text-align:right">360円</td>
+</tr>
+</tbody>
+</table>
+<p>値を変えた後、<strong>掛け算と表示も最初から実行</strong>しました。</p>
+<p><strong>確認できたら、個数を2へ戻して保存します。</strong></p>
+<div class="checkpoint">次のBは、このAの下へ追加します。</div>
+<p class="source-note">出典：学生用ノート §3／検証報告「各ケース」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+三個に変えると三百六十円になりました。個数を変えただけでは画面は変わらず、保存して計算し直したことが大切です。
+ここまでを両言語で確認したら二に戻してください。次は同じファイルの下へ、複数の数値を扱うコードを追加します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11: B：4件の学習時間を、時間単位へ -->
+<div class="slide-body " data-step="11">
+<h2>B：4件の学習時間を、時間単位へ</h2>
+<p class="operation-place">15〜30分｜元データと予想</p>
+<p>教材用の架空データです。</p>
+<table>
+<thead>
+<tr>
+<th>記録</th>
+<th style="text-align:right">学習時間（分）</th>
+<th>時間単位では？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align:right">15</td>
+<td>予想する</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align:right">30</td>
+<td>予想する</td>
+</tr>
+<tr>
+<td>C</td>
+<td style="text-align:right">45</td>
+<td>予想する</td>
+</tr>
+<tr>
+<td>D</td>
+<td style="text-align:right">60</td>
+<td>予想する</td>
+</tr>
+</tbody>
+</table>
+<p><strong>60分 = 1時間。各値を何で割ればよいでしょうか。</strong></p>
+<p class="source-note">出典：学生用ノート §4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+今度は架空の四件の学習時間を使います。分の数値を時間単位に変えたいとき、どの計算をすればよいでしょうか。
+まず六十分が一時間になる計算を考え、十五分、三十分、四十五分についても予想します。予想を置いてからコードへ進みます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12: BをPythonのAの下へ追加する -->
+<div class="slide-body " data-step="12">
+<h2>BをPythonのAの下へ追加する</h2>
+<p class="operation-place">15〜30分｜lesson03.pyの末尾へ</p>
+<pre><code class="language-python">import numpy as np
+
+study_minutes = np.array([15, 30, 45, 60])
+study_hours = study_minutes / 60
+print(study_minutes)
+print(study_hours)
+</code></pre>
+<p><strong>Aは残したまま</strong>、保存してPython用の授業タスクで実行。</p>
+<p class="source-note">出典：学生用ノート §4／主例Python B</p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+ナムパイという道具を短い名前エヌピーで使います。インポートの行と数値列を作る行は配布例を使って大丈夫です。
+スタディーミニッツには分、スタディーアワーズには時間単位の結果を入れます。エーの下へ追加して、ファイル全体を実行してください。操作を待ち、元の四個の値がそろっているか確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13: 分と時間、二つの数値列を照合する -->
+<div class="slide-body " data-step="13">
+<h2>分と時間、二つの数値列を照合する</h2>
+<p class="operation-place">15〜30分｜Pythonの実行結果</p>
+<pre><code class="language-text">合計は240円です
+[15 30 45 60]
+[0.25 0.5  0.75 1.  ]
+</code></pre>
+<ul>
+<li>分：15、30、45、60。</li>
+<li>時間：0.25、0.5、0.75、1。</li>
+<li><strong>15 ÷ 60 = 0.25</strong>、<strong>60 ÷ 60 = 1</strong> と照合。</li>
+</ul>
+<div class="checkpoint">Aも残っているので、合計金額が再び表示されます。</div>
+<p class="source-note">出典：学生用ノート §4／検証報告「各ケース」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+上から合計金額、分の数値列、時間の数値列です。合計金額がもう一度出るのは、ファイルの先頭から実行したためです。
+四つの値を自分の予想と比べます。十五分と六十分を手計算で確かめ、単位が変わったことを説明してみましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14: 複数の値を、まとめて割っている -->
+<div class="slide-body " data-step="14">
+<h2>複数の値を、まとめて割っている</h2>
+<p class="operation-place">15〜30分｜Pythonの行を読み直す</p>
+<table>
+<thead>
+<tr>
+<th>コードの箇所</th>
+<th>今日の役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>import numpy as np</code></td>
+<td>NumPyを短い名前で使う</td>
+</tr>
+<tr>
+<td><code>np.array(...)</code></td>
+<td>計算しやすい数値の配列を作る</td>
+</tr>
+<tr>
+<td><code>study_minutes / 60</code></td>
+<td>一つひとつの値を60で割る</td>
+</tr>
+</tbody>
+</table>
+<p><strong>元データ → 換算 → 表示</strong>の場所を、コードで指してください。</p>
+<div class="checkpoint">4行の割り算を書く代わりに、数値列をまとめて計算できます。</div>
+<p class="source-note">出典：学生用ノート §4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+どの行が元データで、どの行が換算でしょうか。自分のファイルを見て指してください。配列の細かな性質を暗記するのではなく、元データと処理のつながりを追います。
+三十分が〇・五時間になった理由も説明してみましょう。ここまでを三十分の区切りにし、未完の人は主例を使って照合に戻れるよう支援します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15: 同じBを、RのAの下へ追加する -->
+<div class="slide-body " data-step="15">
+<h2>同じBを、RのAの下へ追加する</h2>
+<p class="operation-place">30〜45分｜lesson03.Rの末尾へ</p>
+<pre><code class="language-r">study_minutes &lt;- c(15, 30, 45, 60)
+study_hours &lt;- study_minutes / 60
+print(study_minutes)
+print(study_hours)
+</code></pre>
+<p>同じ4件を、同じ <strong>60</strong> で割ります。</p>
+<p>保存 → <code>lesson03.R</code> のタブ → <strong>R用の授業タスク</strong>。</p>
+<p class="source-note">出典：学生用ノート §4／主例R B</p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+次はアールで同じ処理をします。新しい問題ではありません。四つの値も割る数も、パイソンと同じです。
+シーという関数で値をまとめ、ここでは数値のベクトルを作ります。エーの下へ追加して保存し、アールのタスクで実行してください。入力と実行の時間を取ります。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16: Rも同じ数値になったか確かめる -->
+<div class="slide-body " data-step="16">
+<h2>Rも同じ数値になったか確かめる</h2>
+<p class="operation-place">30〜45分｜Rの実行結果</p>
+<pre><code class="language-text">合計は240円です
+[1] 15 30 45 60
+[1] 0.25 0.50 0.75 1.00
+</code></pre>
+<p><strong>0.25、0.5、0.75、1</strong> を、予想・Pythonの結果と照合。</p>
+<p>先頭の <code>[1]</code> は「この行の先頭は第1要素」という表示です。</p>
+<div class="checkpoint">学習時間として1が追加されたわけではありません。</div>
+<p class="source-note">出典：学生用ノート §4／検証報告「各ケース」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+アールでは先頭に角括弧の一が表示されます。これは出力位置を知らせる表示です。データが五個になったのではありません。
+小数点以下の桁や空白が違っても、四個の値と意味が同じかを見ます。予想、パイソン、アールを順に比べてください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17: 書き方が違っても、処理は対応する -->
+<div class="slide-body " data-step="17">
+<h2>書き方が違っても、処理は対応する</h2>
+<p class="operation-place">30〜45分｜PythonとRの対応</p>
+<table>
+<thead>
+<tr>
+<th>したいこと</th>
+<th>Python</th>
+<th>R</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数値をまとめる</td>
+<td><code>np.array(...)</code></td>
+<td><code>c(...)</code></td>
+</tr>
+<tr>
+<td>名前を付ける</td>
+<td><code>=</code></td>
+<td><code>&lt;-</code></td>
+</tr>
+<tr>
+<td>時間に換算する</td>
+<td><code>study_minutes / 60</code></td>
+<td><code>study_minutes / 60</code></td>
+</tr>
+<tr>
+<td>結果を見る</td>
+<td><code>print(...)</code></td>
+<td><code>print(...)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>同じ問い・同じデータ・同じ割り算</strong>です。</p>
+<div class="checkpoint">配列とベクトルの性質が、すべて同じという意味ではありません。</div>
+<p class="source-note">出典：学生用ノート §4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+対応する場所を見比べます。値をまとめる書き方や代入の記号は違いますが、分を六十で割るという考え方は同じです。
+今日の例では、どちらも複数の値をまとめて扱う道具として使っています。細かな性質の違いは、必要になったときに学びましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18: A＋Bを、両言語で実行できましたか -->
+<div class="slide-body " data-step="18">
+<h2>A＋Bを、両言語で実行できましたか</h2>
+<p class="operation-place">30〜45分｜ここまでの確認</p>
+<ul>
+<li>個数は <strong>2</strong> に戻っている。</li>
+<li>元の学習時間は <strong>15、30、45、60</strong>。</li>
+<li>時間単位では <strong>0.25、0.5、0.75、1</strong>。</li>
+<li>両ファイルを保存し、対応するタスクで実行した。</li>
+</ul>
+<p><strong>「どの値を、何で割ったか」を隣の人に一言で説明。</strong></p>
+<div class="checkpoint">止まったら、保存・選んだファイル・言語に合うタスクを確認して相談しましょう。</div>
+<p class="source-note">出典：学生用ノート §3–4／教員用メモ §4</p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+ここで両言語の到達状況を確認します。元データと結果を指しながら、何をしたか短く説明してください。
+四十五分の区切りです。実行で止まっている人には配布主例を使う支援を行い、環境を作り直す作業へ進めません。次は同じ数値列を表の一列に使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19: C：4件の記録を、小さい表にする -->
+<div class="slide-body " data-step="19">
+<h2>C：4件の記録を、小さい表にする</h2>
+<p class="operation-place">45〜60分｜一行は一つの記録</p>
+<p><strong>すべて教材用の架空データです。</strong></p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th style="text-align:right">study_minutes</th>
+<th style="text-align:right">quiz_score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align:right">15</td>
+<td style="text-align:right">40</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align:right">30</td>
+<td style="text-align:right">60</td>
+</tr>
+<tr>
+<td>C</td>
+<td style="text-align:right">45</td>
+<td style="text-align:right">80</td>
+</tr>
+<tr>
+<td>D</td>
+<td style="text-align:right">60</td>
+<td style="text-align:right">70</td>
+</tr>
+</tbody>
+</table>
+<p>4行・3列。学習時間は<strong>分</strong>、得点は<strong>点</strong>。</p>
+<p>横の一行は一つの記録、縦の一列は一種類の情報です。</p>
+<p class="source-note">出典：学生用ノート §5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+学習時間に小テストの得点を加えました。横に読むと一つの記録、縦に読むと同じ種類の情報が並びます。
+この表をデータフレームとして扱います。架空のデータなので、ここから学習効果や因果関係を結論付ける活動ではありません。列名と値の対応を確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20: Python：Bの数値列を表へ渡す -->
+<div class="slide-body " data-step="20">
+<h2>Python：Bの数値列を表へ渡す</h2>
+<p class="operation-place">45〜60分｜Cの前半をBの下へ</p>
+<pre><code class="language-python">import pandas as pd
+
+records = pd.DataFrame({
+    &quot;id&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;],
+    &quot;study_minutes&quot;: study_minutes,
+    &quot;quiz_score&quot;: [40, 60, 80, 70]
+})
+</code></pre>
+<p><code>study_minutes</code> には、<strong>Bで作った数値列</strong>を使います。</p>
+<p class="source-note">出典：学生用ノート §5／主例Python C</p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+パンダスという道具で表を作ります。表を作る部分は配布例を使って構いません。列名と、その右にある中身の組を見てください。
+学習時間の数値をもう一度書かず、ビーで作った変数を渡しています。次のスライドの表示部分を同じファイルの末尾へ続けます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21: Python：表、一列、平均を表示する -->
+<div class="slide-body " data-step="21">
+<h2>Python：表、一列、平均を表示する</h2>
+<p class="operation-place">45〜60分｜Cの後半を続けて追加</p>
+<pre><code class="language-python">print(records)
+print(records[&quot;study_minutes&quot;])
+print(records[&quot;study_minutes&quot;].mean())
+</code></pre>
+<ol>
+<li>表全体を見る。</li>
+<li><code>study_minutes</code> の一列を取り出す。</li>
+<li>その列の平均を計算する。</li>
+</ol>
+<p><strong>保存して、Python用の授業タスクで全体を実行。</strong></p>
+<p class="source-note">出典：学生用ノート §5／主例Python C</p>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+まず表全体、次に学習時間の列、最後にその平均を表示します。引用符の中が列名であることを探してください。
+パイソンでは取り出した列にドットミーンを付けています。細かな文法を一度に説明するのではなく、どの列の平均を求めているかを確認します。ここまでを保存して実行してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22: R：同じ数値列を同じ表へ渡す -->
+<div class="slide-body " data-step="22">
+<h2>R：同じ数値列を同じ表へ渡す</h2>
+<p class="operation-place">45〜60分｜Cの前半をBの下へ</p>
+<pre><code class="language-r">records &lt;- data.frame(
+  id = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;),
+  study_minutes = study_minutes,
+  quiz_score = c(40, 60, 80, 70)
+)
+</code></pre>
+<p>列名と中身を、Pythonの表と見比べます。</p>
+<p><code>study_minutes</code> は、ここでも <strong>Bの数値列</strong>です。</p>
+<p class="source-note">出典：学生用ノート §5／主例R C</p>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+アールではデータフレームという関数で表を作ります。列名とデータはパイソンと同じです。括弧や記号を一つずつ暗記する必要はありません。
+ビーの学習時間を表へ渡している場所を指してから、次の表示部分を追加します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23: R：表、一列、平均を表示する -->
+<div class="slide-body " data-step="23">
+<h2>R：表、一列、平均を表示する</h2>
+<p class="operation-place">45〜60分｜Cの後半を続けて追加</p>
+<pre><code class="language-r">print(records)
+print(records$study_minutes)
+print(mean(records$study_minutes))
+</code></pre>
+<p><code>records$study_minutes</code> は、表の学習時間の列。</p>
+<p><code>mean(...)</code> は、渡した数値列の平均を計算します。</p>
+<p><strong>保存して、R用の授業タスクで全体を実行。</strong></p>
+<p class="source-note">出典：学生用ノート §5／主例R C</p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+アールでは表の名前にドル記号と列名を続けて、一列を取り出します。その列をミーンという関数へ渡しています。
+保存して全体を実行してください。表、四個の学習時間、平均が出ているかを確認する時間を取ります。表示の左側の番号ではなく、列の値を見ましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 24: 平均37.5分を、手計算で確かめる -->
+<div class="slide-body " data-step="24">
+<h2>平均37.5分を、手計算で確かめる</h2>
+<p class="operation-place">45〜60分｜表と数値を照合</p>
+<table>
+<thead>
+<tr>
+<th>確かめるもの</th>
+<th>両言語で確認する内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>表の行・列</td>
+<td>A〜Dの4行、3列</td>
+</tr>
+<tr>
+<td>学習時間</td>
+<td>15、30、45、60</td>
+</tr>
+<tr>
+<td>得点</td>
+<td>40、60、80、70</td>
+</tr>
+<tr>
+<td>学習時間の平均</td>
+<td>37.5分</td>
+</tr>
+</tbody>
+</table>
+<div class="formula-box">15 + 30 + 45 + 60 = 150<br>150 ÷ 4 = <strong>37.5</strong></div>
+<p>空白・行ラベル・型の表示ではなく、<strong>データと数値</strong>を比べます。</p>
+<p class="source-note">出典：学生用ノート §5／検証報告「各ケース」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+表の値を元の四件と照合します。平均は合計を件数で割った値です。合計百五十分を四で割ると三十七・五分になります。
+単にエラーがないことだけでなく、元データと結果がつながっているかを確認します。ここまでを六十分の区切りにし、次の十八分は両言語の演習に使います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 25: 演習：両言語の主例を複製する -->
+<div class="slide-body " data-step="25">
+<h2>演習：両言語の主例を複製する</h2>
+<p class="operation-place">60〜78分｜演習を始める</p>
+<p>同じ <code>exercises/lesson03/</code> の中に保存します。</p>
+<table>
+<thead>
+<tr>
+<th>主例を残す</th>
+<th>複製して作る演習ファイル</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lesson03.py</code></td>
+<td><code>exercise03.py</code></td>
+</tr>
+<tr>
+<td><code>lesson03.R</code></td>
+<td><code>exercise03.R</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>PythonとRの両方で変更・実行し、両方を提出します。</strong></p>
+<div class="checkpoint">A・B・Cを含むファイル全体を複製します。変数名・列名は配布例のまま使います。</div>
+<p class="source-note">出典：学生用ノート §6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+主例を残して、演習用のコピーを二本作ります。名前が似ているので、今どちらを開いているか確認してください。
+先に一方の言語で予想と変更を行い、その後もう一方でも同じ変更をします。演習中は説明を増やさず、自分で操作する時間を確保します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 26: 演習：最初の学習時間を変えたら？ -->
+<div class="slide-body " data-step="26">
+<h2>演習：最初の学習時間を変えたら？</h2>
+<p class="operation-place">60〜78分｜この画面で予想・作業</p>
+<ol>
+<li>Bの最初の値を <strong>15 → 30</strong>。残りの30・45・60はそのまま。</li>
+<li>Cの末尾に、<code>quiz_score</code> 列を<strong>取り出して表示する行</strong>を追加。</li>
+<li>学習時間と平均の表示は残す。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>確かめること</th>
+<th>予想</th>
+<th>Python</th>
+<th>R</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最初の値は何時間？</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>表のAは何分？</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>平均は何分？</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>予想してから、保存・実行・照合しましょう。</strong></p>
+<p class="source-note">出典：学生用ノート §6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+変更する元データは最初の十五だけです。表を作る箇所で同じ数値を書き直す必要があるかも、自分のコードで確かめてください。
+まず表の三つの予想を記録し、その後に両言語を動かします。この画面で作業時間を取ります。ヒントが必要なときだけ次の画面を使い、結果の答え合わせは演習後まで進めません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 27: 共通ヒント：似ている行を探そう -->
+<div class="slide-body " data-step="27">
+<h2>共通ヒント：似ている行を探そう</h2>
+<p class="operation-place">60〜78分｜必要なときだけ見る</p>
+<p><strong>学習時間の一列だけを表示している行はどこですか。</strong></p>
+<p>その行の列名を、表にある得点の列名へ変えると？</p>
+<p>Copilotへ聞く場合も、教員に聞く場合も同じ入口です。</p>
+<blockquote>
+<p>学習時間の列の例を参考に、得点の列も表示したいです。完成コードを先に出さず、変更箇所を見つけるヒントを一つください。</p>
+</blockquote>
+<div class="checkpoint">AIの答えだけで正しさを決めず、元の表・手計算・変更前後で確認します。利用の有無では加点・減点しません。</div>
+<p class="source-note">出典：学生用ノート §6／教員用メモ §7</p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+まず学習時間だけを表示している行を探しましょう。その列名に注目すると、得点の列を取り出す場所を見つけられます。
+コパイロットを使う人も使わない人も、同じヒントから進められます。助言を受けた後は自分で実行し、値を元の表と照合してください。ヒントを確認したら演習の画面へ戻って作業を続けます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 28: 演習ファイルを選んで、両方実行 -->
+<div class="slide-body " data-step="28">
+<h2>演習ファイルを選んで、両方実行</h2>
+<p class="operation-place">60〜78分｜提出前の実行確認</p>
+<table>
+<thead>
+<tr>
+<th>保存して選ぶタブ</th>
+<th>実行する授業タスク</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exercise03.py</code></td>
+<td>授業: Pythonファイルを実行</td>
+</tr>
+<tr>
+<td><code>exercise03.R</code></td>
+<td>授業: Rファイルを実行</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>主例のタブのまま実行していませんか。</strong></li>
+<li>時間への換算・表のA・平均を、予想と比べる。</li>
+<li>得点は元の表と照合し、学習時間の変更前後も比べる。</li>
+<li>確かめた方法を短く記録する。</li>
+</ul>
+<div class="checkpoint">まだ結果が違うときは、保存・Bの元データ・実行対象を一つずつ確認します。</div>
+<p class="source-note">出典：学生用ノート §6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+演習用のファイルを選び直してからタスクを実行します。パイソンができたらアールも同じように確かめます。
+表の値、換算、平均が一緒に変わっているか見てください。演習の残り時間も作業に使います。七十八分までは答え合わせへ進めず、未完の人は止まった箇所と必要な支援を記録します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 29: 演習後：変わった値・変わらない値 -->
+<div class="slide-body " data-step="29">
+<h2>演習後：変わった値・変わらない値</h2>
+<p class="operation-place">78〜85分｜結果を照合する</p>
+<table>
+<thead>
+<tr>
+<th>確かめたもの</th>
+<th>Python・Rの結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>時間単位の数値列</td>
+<td>0.5、0.5、0.75、1</td>
+</tr>
+<tr>
+<td>表のAの学習時間</td>
+<td>30分</td>
+</tr>
+<tr>
+<td>学習時間の平均</td>
+<td>41.25分</td>
+</tr>
+<tr>
+<td>得点の列</td>
+<td>40、60、80、70のまま</td>
+</tr>
+</tbody>
+</table>
+<div class="formula-box">30 + 30 + 45 + 60 = 165<br>165 ÷ 4 = <strong>41.25</strong></div>
+<p><strong>変えたのは学習時間。得点は変えていません。</strong></p>
+<p class="source-note">出典：教員用メモ §5／検証報告「各ケース」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+ここからは演習を終えた後の確認です。先頭は〇・五時間、表のエーは三十分、平均は四十一・二五分になります。
+合計が百六十五分になったので四で割って確かめられます。得点は元のままでした。自分の予想と違った箇所があれば、どの元データから結果が出ているかをたどりましょう。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 30: 演習後：変更する行を確認する -->
+<div class="slide-body " data-step="30">
+<h2>演習後：変更する行を確認する</h2>
+<p class="operation-place">78〜85分｜必要な変更箇所だけ</p>
+<p><strong>Python：Bの行を置き換え、表示の行をCの末尾へ。</strong></p>
+<pre><code class="language-python">study_minutes = np.array([30, 30, 45, 60])
+print(records[&quot;quiz_score&quot;])
+</code></pre>
+<p><strong>R：同じ二つの変更。</strong></p>
+<pre><code class="language-r">study_minutes &lt;- c(30, 30, 45, 60)
+print(records$quiz_score)
+</code></pre>
+<p class="caption-note">全文ではなく変更箇所です。既存の学習時間・平均の表示は残します。</p>
+<p class="source-note">出典：教員用メモ §5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+表示している二行は、続けて貼る完成プログラムではありません。最初の行はビーの元データの行を置き換え、二行目はシーの末尾へ追加します。
+自分の変更箇所と比べてください。表を作る部分はビーの変数を使うため、学習時間を重複して書き直す必要はありません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 31: 「確かめた方法」を一言で伝える -->
+<div class="slide-body " data-step="31">
+<h2>「確かめた方法」を一言で伝える</h2>
+<p class="operation-place">78〜85分｜確認方法を共有する</p>
+<table>
+<thead>
+<tr>
+<th>確認の方法</th>
+<th>自分がしたことの例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>手計算</td>
+<td>学習時間の合計を4で割った</td>
+</tr>
+<tr>
+<td>元データとの照合</td>
+<td>表のAとBの先頭の値を比べた</td>
+</tr>
+<tr>
+<td>変更前後の比較</td>
+<td>学習時間は変わり、得点は同じだった</td>
+</tr>
+</tbody>
+</table>
+<p><strong>実際に行った確認を一つ、隣の人に説明しましょう。</strong></p>
+<div class="checkpoint">「AIが正しいと言った」だけでなく、自分が照合したデータと結果を伝えます。</div>
+<p class="source-note">出典：学生用ノート §6／教員用メモ §7</p>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+どんな方法で確かめたかを一言で説明します。ここにある方法を全部行ったことにする必要はありません。実際にしたことを伝えてください。
+予想と違った点も大切な記録です。次の三問では短い時間だけコパイロットの提案を使わず、自分の理解を確かめます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 32: 自分の理解で、3問に答える -->
+<div class="slide-body " data-step="32">
+<h2>自分の理解で、3問に答える</h2>
+<p class="operation-place">78〜85分｜先に問いだけを見る</p>
+<ol>
+<li><code>quantity</code> を2から3へ変えて最初から実行すると、合計はいくら？</li>
+<li>30分は何時間？ コードでは何で割った？</li>
+<li>表から <code>quiz_score</code> 列を取り出すと、何個の、どんな値が出る？</li>
+</ol>
+<p><strong>ここは数分だけ、Copilotの提案を使わずに考えます。</strong></p>
+<div class="checkpoint">暗記の試験ではなく、次に練習するところを見つける確認です。</div>
+<p class="source-note">出典：学生用ノート §7</p>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+三つの問いを自分の理解で考えてください。すぐに答えを出さず、書く時間を取ります。
+できないところがあっても、その場所が次の練習につながります。考え終えたところで次の画面へ進み、理由も一緒に確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 33: 3問の答えと、確かめる場所 -->
+<div class="slide-body " data-step="33">
+<h2>3問の答えと、確かめる場所</h2>
+<p class="operation-place">78〜85分｜答え合わせ</p>
+<table>
+<thead>
+<tr>
+<th>問い</th>
+<th>答え</th>
+<th>確かめるところ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1：個数3</td>
+<td><strong>360円</strong></td>
+<td>120 × 3を再計算</td>
+</tr>
+<tr>
+<td>2：30分</td>
+<td><strong>0.5時間</strong></td>
+<td>30 ÷ 60</td>
+</tr>
+<tr>
+<td>3：得点列</td>
+<td><strong>4個</strong></td>
+<td>40、60、80、70</td>
+</tr>
+</tbody>
+</table>
+<p>正解したかだけでなく、<strong>どのデータ・計算を見たか</strong>も確認。</p>
+<div class="checkpoint">値に名前を付ける → まとめて計算する → 表の一列を見る、が今日のつながりです。</div>
+<p class="source-note">出典：教員用メモ §5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+一問目は三百六十円です。変えた個数で掛け算をやり直しました。二問目は〇・五時間で、六十で割ります。三問目は四個の得点です。
+答えだけでなく、コードのどこを見れば確かめられるかを振り返ってください。残りの時間で保存と提出を行います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 34: Google Formsへ、両コードの全文を -->
+<div class="slide-body " data-step="34">
+<h2>Google Formsへ、両コードの全文を</h2>
+<p class="operation-place">85〜90分｜保存してから貼り付ける</p>
+<p>授業で案内するフォームの、<strong>別々の段落欄</strong>へ貼ります。</p>
+<table>
+<thead>
+<tr>
+<th>回答欄</th>
+<th>コピーするもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pythonプログラム全文</td>
+<td>保存した <code>exercise03.py</code> 全体</td>
+</tr>
+<tr>
+<td>Rプログラム全文</td>
+<td>保存した <code>exercise03.R</code> 全体</td>
+</tr>
+</tbody>
+</table>
+<p>コード欄で <strong>Ctrl + A → Ctrl + C</strong>。A・B・Cをすべて含めます。</p>
+<div class="checkpoint">変更行だけ・実行結果だけ・スクリーンショット・Markdownの囲み記号は提出しません。</div>
+<p class="source-note">出典：学生用ノート §6「Google Formsで提出する」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+ファイルを保存してから、エディターのコード欄で全体を選択してコピーします。ターミナルの結果をコピーするのではありません。
+フォームのパイソンとアールの欄を取り違えないように貼り付けてください。エー、ビー、シーを含む全体になっているか、先頭と末尾を確認します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 35: 確認方法・実行状況・AI利用も回答 -->
+<div class="slide-body " data-step="35">
+<h2>確認方法・実行状況・AI利用も回答</h2>
+<p class="operation-place">85〜90分｜送信前に確認する</p>
+<ul>
+<li>大学のGoogleアカウントで回答。メールアドレスを収集します（学籍番号・氏名の入力は不要）。</li>
+<li>3項目の<strong>予想と両言語の結果</strong>、短い確認方法。</li>
+<li>実行状況：両方実行／Python・R・両方に支援が必要。</li>
+<li>AI利用：<strong>利用なし</strong>、または用途と使った箇所。</li>
+</ul>
+<p><strong>未完でも、両欄に取り組んだコードを貼ります。</strong></p>
+<div class="checkpoint">AI利用自体で加点・減点しません。期限・再提出は授業の指示に従います。長い会話履歴は不要です。</div>
+<p class="source-note">出典：学生用ノート §6「Google Formsで提出する」</p>
+</div>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+大学のグーグルアカウントで回答してください。メールアドレスを収集するので、学籍番号と氏名の入力は不要です。
+コード以外の欄も短く記入します。予想と結果、確認した方法を自分の言葉で残してください。エーアイを使った場合は、用途と使った箇所を記します。
+途中の人も、両方のコードと支援が必要な言語を残します。全員が送信を確認できるよう、ここは操作時間にします。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 36: 今日の確認と、次回へのつながり -->
+<div class="slide-body " data-step="36">
+<h2>今日の確認と、次回へのつながり</h2>
+<p class="operation-place">85〜90分｜提出と保存を確かめる</p>
+<ul>
+<li>両言語の主例と演習を、保存して実行した。</li>
+<li>元データ・換算・表・平均のつながりを確かめた。</li>
+<li>両コード全文と確認方法を、Google Formsへ提出した。</li>
+</ul>
+<p><strong>まだ難しいところが、次の練習場所です。</strong></p>
+<p>次回：今日のような表から、<strong>平均などの要約とグラフ</strong>で特徴を見る。</p>
+<p class="source-note">出典：学生用ノート §8</p>
+</div>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+今日の到達点を確認しましょう。値を変えたとき、どこを確かめればよいかが少し見えてくれば前進です。
+コードを保存し、フォームの送信を確認してください。次回は、こうした表のデータを要約やグラフで見ていきます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 37: 質問・確認：止まった場所を教えてください -->
+<div class="slide-body " data-step="37">
+<h2>質問・確認：止まった場所を教えてください</h2>
+<p class="operation-place">85〜90分｜提出中の支援・終了確認</p>
+<p><strong>どの言語・どのファイル・どの段階で止まりましたか。</strong></p>
+<ul>
+<li>保存やタスクの選択で困った。</li>
+<li>元データと出力がつながらない。</li>
+<li>表の一列や平均の場所がわからない。</li>
+<li>Google Formsへの貼り付けで困った。</li>
+</ul>
+<div class="checkpoint">画面を残して相談しましょう。できたところと、次に支援が必要なところを確認します。</div>
+<p class="source-note">出典：学生用ノート §2・6・8／教員用メモ §4・6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+提出している間も質問を受け付けます。エラーがある人は、どのファイルでどの操作をしたか、画面を残して教えてください。
+九十分の中で質問と支援を行い、終わらないところは次回のフォローにつなげます。ここから後の補足は、必要なときだけ参照します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 38: 補足：結果が変わらない・実行できない -->
+<div class="slide-body " data-step="38">
+<h2>補足：結果が変わらない・実行できない</h2>
+<p class="operation-place">時間外の参照｜必要な箇所だけ</p>
+<table>
+<thead>
+<tr>
+<th>困ったとき</th>
+<th>最初に確かめること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>値を変えたのに同じ結果</td>
+<td>保存したか、演習ファイルを選んだか</td>
+</tr>
+<tr>
+<td>授業用タスクが出ない</td>
+<td>work全体を開いているか</td>
+</tr>
+<tr>
+<td>最初からエラーになる</td>
+<td>囲み記号や全角の引用符が混ざっていないか</td>
+</tr>
+<tr>
+<td>得点列を取り出せない</td>
+<td>列名のつづり、引用符・角括弧・ドル記号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一度に直すのは一箇所。エラー文と該当行を一緒に確認。</strong></p>
+<div class="checkpoint">自己判断で新しい環境を作り直さず、教員へ相談します。</div>
+<p class="source-note">出典：学生用ノート §2・6／教員用メモ §6</p>
+</div>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+困ったときに参照する補足です。値が変わらない場合、まず保存と対象ファイルを確かめます。タスクが見えない場合はワーク全体を開いているか確認してください。
+エラー文とその行を一緒に見て、一箇所ずつ直しましょう。これだけで環境を作り直す必要があるとは限りません。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 39: 補足：保存して、次回もStart.cmdから -->
+<div class="slide-body " data-step="39">
+<h2>補足：保存して、次回もStart.cmdから</h2>
+<p class="operation-place">時間外の参照｜保存・終了・次回の起動</p>
+<ul>
+<li><strong>Ctrl + Sで保存</strong>してから、VS Codeを閉じます。</li>
+<li>第2回で展開したフォルダーを残し、次回も <strong>Start.cmd</strong> をダブルクリックします。</li>
+<li><strong>再インストールは不要です。</strong> フォルダーの移動・整理は教員に相談します。</li>
+</ul>
+<div class="checkpoint">課題はworkの中に保存されます。配布ZIPへは自動保存されません。提出・バックアップは授業の指示に従います。</div>
+<p class="source-note">出典：学生用ノート §2／第2回マニュアル §9／教員用メモ §9</p>
+</div>
+<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+終わるときは両方のファイルを保存してから、ビジュアルスタジオコードを閉じます。第2回で展開したフォルダーには、次回も使うスタート・シーエムディーが入っています。そのフォルダーを残し、次回も同じファイルをダブルクリックします。再インストールは不要です。
+自分で作った課題はワークの中に保存され、配布されたジップファイルには自動保存されません。授業の指示に従って提出し、バックアップします。フォルダーの移動や整理で迷ったら、削除する前に教員へ相談してください。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 40: 補足：両言語を終えたら、もう一つ予想 -->
+<div class="slide-body " data-step="40">
+<h2>補足：両言語を終えたら、もう一つ予想</h2>
+<p class="operation-place">任意活動｜提出へ追加しなくてよい</p>
+<p><strong>別の練習用コピー</strong>で試します。提出用コードは残します。</p>
+<ol>
+<li>合計金額の個数を <strong>0</strong> にしたら、どうなる？</li>
+<li>引用符がある場合とない場合で、表示はどう違う？</li>
+</ol>
+<pre><code class="language-python">print(&quot;total&quot;)
+print(total)
+</code></pre>
+<p>Rでも同じ2行を使えます。<strong>予想 → 実行 → 比較</strong>しましょう。</p>
+<p class="source-note">出典：学生用ノート「余裕がある人へ」／教員用メモ §5</p>
+</div>
+<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" preload="none"></audio></p>
+<aside class="notes">
+必須演習と提出を終えた人向けの活動です。別のコピーで個数をゼロにしてみます。先に予想し、その後で実行してください。
+次は引用符のあるトータルと、引用符のないトータルを比べます。文字そのものと、変数に入った値という違いを探します。任意なので提出内容へ追加しなくて構いません。
+</aside>
+<script src="./image-zoom.js"></script>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
