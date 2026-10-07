@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
+    <meta charset="utf-8">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-  <title>DSプログラミング入門｜第2回 DS用プログラミング環境</title>
+  <title>DSプログラミング入門｜第2回 授業用環境の準備</title>
 
   <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
   <meta name="author" content="Hakim El Hattab">
@@ -20,26 +21,26 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- highlight Theme -->
-  
+
   <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
-  
-	
-		
+
+
+
 	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
-	
-	
-	
+
+
+
   <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
-  
-	
+
+
 
 
 
   <!-- Revealjs Theme -->
-  
+
   <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
-  
-  
+
+
 
   <link rel="stylesheet" href="libs/styles/tasklist.css">
 	<link rel="stylesheet" href="libs/styles/iota.css">
@@ -47,1624 +48,1009 @@
 
 
   <!-- Revealjs Theme -->
-  
+
 
    <!-- css list -->
-	
-  <link rel="stylesheet" href="style.css">
-  
 
-   
+  <link rel="stylesheet" href="style.css">
+
+
+
 
 </head>
 
 <body>
 
-   
+
 
   <div class="reveal">
 
     <!-- Any section element inside of this container is displayed as a slide -->
     <div class="slides">
 
-      
 
 
-    
+
+
         <section >
-            
-            <!-- 1: 第2回：自分のPCでPython・Rを動かす -->
-<div class="slide-body " data-step="1">
-<h2>第2回：自分のPCでPython・Rを動かす</h2>
+
+            <!-- 1: 第2回：授業用環境の準備 -->
+<div class="slide-body installer-slide" data-step="1">
+<h2>第2回：授業用環境の準備</h2>
 <p class="operation-place">今日の目標</p>
 <p><strong>DSプログラミング入門｜2026年度 秋学期</strong></p>
 <p>白濵 成希</p>
 <ol>
-<li>授業用Ubuntuを自分のPCに取り込む。</li>
-<li>VS CodeでPython・Rのファイルを作り、実行する。</li>
-<li>両言語のNotebookで文字・計算・日本語グラフを確認する。</li>
+<li>DSProg2026をインストールする。</li>
+<li>VS Codeで授業環境を開く。</li>
+<li>Python・RのファイルとNotebookを実行する。</li>
+<li>両方の日本語グラフまで表示する。</li>
 </ol>
-<p>今日は <strong>90分の操作実習</strong> です。</p>
-<div class="checkpoint">困ったら画面を残して相談。できた段階を確認しながら進めます。</div>
-<p class="source-note">出典：マニュアル「授業用環境を準備しよう」「セットアップ完了の確認」／第1回資料／授業計画</p>
+<div class="checkpoint">できたところを、一つずつ確認します。</div>
 </div>
-<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
-今日は、自分のノートパソコンに授業用の環境を準備し、パイソンとアールを実際に動かします。前回用意したブイエスコードとパワーシェルを使います。
-説明の後に操作する時間を取ります。画面が違ったりエラーが出たりしたら、そこで止めて画面を残してください。最後に、どの段階までできたかを一緒に確認します。
+今日は新しい配布ZIPで授業用環境を準備します。Notebookと日本語グラフまでが今日の必須確認です。操作の後には待つ時間を取ります。困ったら画面を閉じずに教員を呼んでください。
 </aside>
             </section>
-    
 
 
 
-    
+
+
         <section >
-            
-            <!-- 2: Windows・Ubuntu・VS Codeの役割 -->
-<div class="slide-body " data-step="2">
-<h2>Windows・Ubuntu・VS Codeの役割</h2>
-<p class="operation-place">全体の見取り図</p>
+
+            <!-- 2: 授業環境は、プログラムを動かす場所 -->
+<div class="slide-body installer-slide" data-step="2">
+<h2>授業環境は、プログラムを動かす場所</h2>
+<p class="operation-place">道具の役割</p>
 <table>
 <thead>
 <tr>
-<th>使うもの</th>
-<th>今日の役割</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PowerShell</td>
-<td>Windows側で導入・起動の指示を出す</td>
-</tr>
-<tr>
-<td>WSL2・Ubuntu</td>
-<td>Windowsの中でPython・Rを動かす</td>
-</tr>
-<tr>
-<td>Windows版VS Code</td>
-<td>Ubuntuに接続して作成・保存・実行する</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Python・Rは配布Ubuntuに入っています。</strong></p>
-<p>Windows側にPython・R・Anacondaなどを追加する手順ではありません。</p>
-<div class="checkpoint">編集する画面はVS Code、授業用プログラムが動く場所はUbuntuです。</div>
-<p class="source-note">出典：マニュアル「この授業で使うもの」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ウィンドウズの中に、授業用のウブントゥを取り込みます。パイソンとアールはその中に準備されています。ブイエスコードは、ウィンドウズ側にインストールしたものからウブントゥへ接続して使います。
-これから操作する場所を各スライドの上に表示します。別の画面へ移るときは、操作場所を確かめてから入力してください。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 3: 初回の準備と、毎回の起動を分ける -->
-<div class="slide-body " data-step="3">
-<h2>初回の準備と、毎回の起動を分ける</h2>
-<p class="operation-place">操作の流れ</p>
-<table>
-<thead>
-<tr>
-<th>初回だけ</th>
-<th>次回から毎回</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>配布ファイルを取得する</td>
-<td><code>Start.cmd</code> で開く</td>
-</tr>
-<tr>
-<td>Windows・WSLを準備する</td>
-<td>プログラムを書く・保存する</td>
-</tr>
-<tr>
-<td><code>Install.ps1</code> でUbuntuを取り込む</td>
-<td>タスク／Notebookの▶で実行する</td>
-</tr>
-<tr>
-<td>VS Code接続・拡張機能を確認する</td>
-<td>保存して終了する</td>
-</tr>
-</tbody>
-</table>
-<p><strong>毎回のインポートは不要です。</strong></p>
-<div class="checkpoint">導入はInstall.ps1、普段の起動はStart.cmdを使います。</div>
-<p class="source-note">出典：マニュアル「初回だけ行うこと」「次の授業から行うこと」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-初回だけ、ダウンロードや取り込み、拡張機能の確認を行います。次の授業からは、スタート・シーエムディーで授業用の画面を開きます。
-大きなファイルのダウンロードを早めに始めます。待っている間にパソコンとダブリューエスエルの準備を確認し、ダウンロードが終わったら配置へ戻る進め方にします。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 4: 取得する配布ファイルは2つ -->
-<div class="slide-body " data-step="4">
-<h2>取得する配布ファイルは2つ</h2>
-<p class="operation-place">ブラウザー｜大学アカウントのClassroom</p>
-<table>
-<thead>
-<tr>
-<th>ファイル名</th>
-<th>扱い</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>DSProg2026-student.tar</code></td>
-<td>授業用Ubuntuの本体。<strong>手動では展開しない</strong></td>
-</tr>
-<tr>
-<td><code>DSProg2026-setup.zip</code></td>
-<td>導入・起動用のファイル。<strong>すべて展開する</strong></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>教員が提示した授業用リンクから取得します。</li>
-<li>PDFの学生用マニュアルも参照できます。</li>
-<li>取得中は <strong>14〜16枚目のPC・WSL確認</strong>へ進みます。</li>
-</ul>
-<div class="checkpoint">ダウンロード完了後、9〜13枚目の展開・配置へ戻ります。</div>
-<p class="source-note">出典：マニュアル「配布ファイルをダウンロードする」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-授業用ウブントゥの本体と、初回設定や起動に使う小さなファイル一式を取得します。拡張子タールと拡張子ジップは扱いが異なります。ジップは展開しますが、タールを自分で展開する必要はありません。
-二つのダウンロードを始めたら、待ち時間を使ってパソコンの準備を確認します。授業では十四枚目へ進み、ダウンロードが終わった人は、九枚目から十三枚目の展開と配置を行います。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 5: Classroomの「授業用環境の準備」を開く -->
-<div class="slide-body " data-step="5">
-<h2>Classroomの「授業用環境の準備」を開く</h2>
-<p class="operation-place">ブラウザー｜Classroom</p>
-<div class="download-layout">
-<div class="screenshot-card">
-<img class="zoomable-image setup-screenshot" src="./images/ss-01.png" width="947" height="438" alt="Classroomの開発環境にある授業用環境の準備。tar、setup.zip、学生用マニュアルが並ぶ。">
-<p class="caption-note">画像をクリックすると拡大できます。</p>
-</div>
-<div class="figure-side-copy">
-<ol>
-<li>「開発環境」を開きます。</li>
-<li>「授業用環境の準備」を確認します。</li>
-<li>tarとsetup.zipを、それぞれ取得します。</li>
-</ol>
-</div>
-</div>
-<div class="checkpoint">授業用の2つの配布ファイルが見つかりましたか。</div>
-<p class="source-note">出典：マニュアル「Classroomの授業用リンクから取得する」／ss-01</p>
-</div>
-<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-大学のアカウントでクラスルームを開き、開発環境の中にある授業用環境の準備を探します。画像には、環境本体、セットアップ用ジップ、学生用マニュアルが並んでいます。
-長い名前は画面で省略されています。表示が小さい場合は画像を拡大して確認しましょう。次の画面では、配布ファイルを別のタブで開きます。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 6: 配布ファイルを新しいタブで開く -->
-<div class="slide-body " data-step="6">
-<h2>配布ファイルを新しいタブで開く</h2>
-<p class="operation-place">ブラウザー｜Classroom</p>
-<div class="download-layout">
-<div class="screenshot-card">
-<img class="zoomable-image setup-screenshot" src="./images/ss-02.png" width="402" height="349" alt="配布ファイルのリンクを右クリックしたメニュー。先頭に新しいタブで開くが表示されている。">
-<p class="caption-note">画像をクリックすると拡大できます。</p>
-</div>
-<div class="figure-side-copy">
-<ol>
-<li>ファイルのリンクを右クリックします。</li>
-<li>「新しいタブで開く」を選びます。</li>
-<li>開いたタブへ移ります。</li>
-</ol>
-</div>
-</div>
-<div class="checkpoint">Google Driveのファイル画面が開いたら次へ進みます。</div>
-<p class="source-note">出典：ss-02／マニュアル「Classroomの授業用リンクから取得する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-配布ファイルのリンクを右クリックし、新しいタブで開くを選びます。開いたタブへ移動してください。この操作なら、クラスルームの画面を残しておけます。
-画像のメニューには別の項目もありますが、ここでは先頭の新しいタブで開くを使います。ダウンロードは次のドライブの画面から行います。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 7: プレビューできなくてもダウンロードできる -->
-<div class="slide-body " data-step="7">
-<h2>プレビューできなくてもダウンロードできる</h2>
-<p class="operation-place">ブラウザー｜Google Drive</p>
-<div class="download-layout">
-<div class="screenshot-card">
-<img class="zoomable-image setup-screenshot" src="./images/ss-03.png" width="790" height="347" alt="Google Driveでファイルが大きいためプレビューできないという表示と、青いダウンロードボタン。">
-<p class="caption-note">画像をクリックすると拡大できます。</p>
-</div>
-<div class="figure-side-copy">
-<ol>
-<li>教員配布の対象ファイルか確認します。</li>
-<li>青い「ダウンロード」を選びます。</li>
-</ol>
-<p>この画面では、サイズが大きいためプレビューできないと表示されています。</p>
-</div>
-</div>
-<div class="checkpoint">プレビュー表示を待たず、ダウンロードの操作へ進みます。</div>
-<p class="source-note">出典：マニュアル「Classroomの授業用リンクから取得する」／ss-03</p>
-</div>
-<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-大きなファイルのため、プレビューできませんという画面が出ています。この表示だけでダウンロードに失敗したとは判断しません。
-授業用の対象ファイルであることを確認し、青いダウンロードボタンを押してください。次に、大容量ファイルについての確認が出る場合があります。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 8: 対象ファイルを確かめ、取得を続ける -->
-<div class="slide-body " data-step="8">
-<h2>対象ファイルを確かめ、取得を続ける</h2>
-<p class="operation-place">ブラウザー｜ダウンロードの確認画面</p>
-<div class="download-layout">
-<div class="screenshot-card">
-<img class="zoomable-image setup-screenshot" src="./images/ss-04.png" width="470" height="150" alt="DSProg2026-student.tar、4.0Gはサイズが大きくウイルススキャンを実行できないという表示と、このままダウンロードのボタン。">
-<p class="caption-note">画像をクリックすると拡大できます。</p>
-</div>
-<div class="figure-side-copy">
-<ul>
-<li>授業用リンクから開いた <code>DSProg2026-student.tar</code> か確認します。</li>
-<li>「このままダウンロード」を選びます。</li>
-<li>setup.zipも取得します。</li>
-</ul>
-<p>「4.0G」は撮影時の表示です。必要空き容量とは異なります。</p>
-</div>
-</div>
-<div class="checkpoint">ブラウザーで取得状況を確認。待つ間は14〜16枚目へ進みます。</div>
-<p class="source-note">出典：ss-04／マニュアル「対象PCと準備」「配布ファイルをダウンロードする」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-この画像では、大きすぎるためウイルススキャンを実行できないと表示されています。授業で教員が配布した対象のタールであることを確認してから、このままダウンロードを選びます。知らないファイルにも同じ操作を勧めるものではありません。
-画像の4.0ギガバイトは撮影時のファイル表示です。展開後のウブントゥも保存されるので、必要な空き容量とは区別します。取得の完了を確認してから配置します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 9: 自分のフォルダーに専用フォルダーを作る -->
-<div class="slide-body " data-step="9">
-<h2>自分のフォルダーに専用フォルダーを作る</h2>
-<p class="operation-place">Windows｜エクスプローラー</p>
-<div class="step-image-layout">
-<div>
-<img class="zoomable-image setup-screenshot " src="./images/ss-05.png" width="364" height="273" alt="エクスプローラー上部のアドレス欄に%USERPROFILE%を入力している。">
-<p class="caption-note">クリックで拡大し、細部を確認できます。</p>
-</div>
-<div>
-<ol>
-<li>画像の <strong>上部のアドレス欄</strong> をクリック。</li>
-<li><code>%USERPROFILE%</code> を入力して <strong>Enter</strong>。</li>
-<li>開いた自分のフォルダー内に <code>DSProg2026-setup</code> を作ります。</li>
-</ol>
-<p>検索欄やブラウザーではなく、エクスプローラーで操作します。</p>
-</div>
-</div>
-<div class="checkpoint">OneDrive・Google Driveの同期フォルダーやUSB内には作りません。</div>
-<p class="source-note">出典：マニュアル「Windows側に専用フォルダーを作る」／ss-05</p>
-</div>
-<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ここからはダウンロードが完了した後の配置です。ウィンドウズのエクスプローラーを開き、画像上部のアドレス欄をクリックします。前後のパーセント記号も含めて画面の文字列を入力し、エンターを押してください。検索欄やブラウザーのアドレス欄ではありません。
-自分のユーザーフォルダーが開いたら、その中にディーエスプログ二〇二六・セットアップという専用フォルダーを作ります。同期フォルダーやユーエスビーの中に作っていないか確認してから、次の展開へ進みます。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 10: ZIPを右クリックして「すべて展開」 -->
-<div class="slide-body " data-step="10">
-<h2>ZIPを右クリックして「すべて展開」</h2>
-<p class="operation-place">Windows｜ダウンロードしたZIP</p>
-<div class="step-image-layout">
-<div>
-<img class="zoomable-image setup-screenshot " src="./images/ss-06.png" width="756" height="589" alt="ZIPの右クリックメニューにある、すべて展開の項目。">
-<p class="caption-note">クリックで拡大し、細部を確認できます。</p>
-</div>
-<div>
-<ol>
-<li>ダウンロードした <code>DSProg2026-setup.zip</code> を探します。</li>
-<li>ZIPを右クリックします。</li>
-<li><strong>「すべて展開…」</strong> を選びます。</li>
-</ol>
-<p>操作するのはZIPです。tarは展開しません。</p>
-</div>
-</div>
-<div class="checkpoint">展開先を指定する画面が開いたら、次へ進みます。</div>
-<p class="source-note">出典：マニュアル「Windows側に専用フォルダーを作る」／ss-06</p>
-</div>
-<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ダウンロードしたセットアップ用のジップを探し、右クリックします。画像のメニューの中にある、すべて展開を選んでください。小さくて見えない場合は画像をクリックすると拡大できます。
-ここで選ぶのはセットアップ用ジップです。授業用ウブントゥの本体であるタールは、手動では展開しません。次の画面で、先ほど作った専用フォルダーを展開先に指定します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 11: 展開先は、自分のDSProg2026-setup -->
-<div class="slide-body " data-step="11">
-<h2>展開先は、自分のDSProg2026-setup</h2>
-<p class="operation-place">Windows｜ZIPの展開画面</p>
-<div class="step-image-layout">
-<div>
-<img class="zoomable-image setup-screenshot " src="./images/ss-07.png" width="636" height="493" alt="ZIPの展開先にCドライブのユーザーフォルダー内のDSProg2026-setupが指定され、下部に展開ボタンがある。">
-<p class="caption-note">クリックで拡大し、細部を確認できます。</p>
-</div>
-<div>
-<ol>
-<li>「参照…」から、先ほど作った専用フォルダーを指定します。</li>
-<li>展開先を確認し、<strong>「展開」</strong> を押します。</li>
-</ol>
-<p>画像の <code>C:\Users\naruk</code> は撮影者の例です。</p>
-<p>自分のユーザーフォルダー内の <code>DSProg2026-setup</code> を使います。</p>
-</div>
-</div>
-<div class="checkpoint">撮影者のユーザー名を、そのまま入力しません。</div>
-<p class="source-note">出典：マニュアル「Windows側に専用フォルダーを作る」／ss-07</p>
-</div>
-<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-展開先は、先ほど自分のユーザーフォルダーに作った専用フォルダーです。参照から選び、表示された展開先を確認してから、展開ボタンを押します。
-画像にあるユーザー名は撮影者の例です。皆さんのパソコンでは異なる名前になります。画像のパス全体をそのまま入力せず、自分のフォルダーを選んでください。展開が終わったら、中にあるファイルを確認します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 12: ZIPの展開後、tarを移動する -->
-<div class="slide-body post-extract-slide" data-step="12">
-<h2>ZIPの展開後、tarを移動する</h2>
-<p class="operation-place">Windows｜DSProg2026-setupフォルダー</p>
-<div class="step-image-layout">
-<div>
-<img class="zoomable-image setup-screenshot " src="./images/ss-08.png" width="264" height="337" alt="ZIP展開直後のフォルダー。Install、Startやsha256ファイルがあり、授業用tar本体はまだない。">
-<p class="caption-note">クリックで拡大し、細部を確認できます。</p>
-</div>
-<div>
-<ol>
-<li>展開したフォルダーを開きます。</li>
-<li><strong>Install.ps1</strong> があることを確認します。</li>
-<li>ダウンロード済みの <strong>DSProg2026-student.tar</strong> を、同じ場所へ移動します。</li>
-</ol>
-<p>画像は <strong>tar移動前</strong> の状態です。</p>
-<p><code>.sha256</code> は照合用のファイルで、tar本体とは別です。</p>
-</div>
-</div>
-<div class="checkpoint">画像では一部の拡張子が非表示です。InstallはInstall.ps1に対応します。</div>
-<p class="source-note">出典：マニュアル「Windows側に専用フォルダーを作る」「配置を確認する」／ss-08</p>
-</div>
-<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-この画像は、ジップを展開した直後の状態です。インストールやスタートなどのファイルがありますが、授業用タール本体はまだ入っていません。名前にタールが含まれるエスエイチエー二五六のファイルは、照合用の別ファイルです。
-画像では一部の拡張子が非表示になっています。インストールという表示はインストール・ピーエスワンに対応します。必要ならファイル名拡張子を表示し、ダウンロード済みのタール本体を同じ場所へ移動してください。二重のフォルダーになっていないかも確認します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 13: tarを置いた後の配置を確認する -->
-<div class="slide-body manifest-slide" data-step="13">
-<h2>tarを置いた後の配置を確認する</h2>
-<p class="operation-place">Windows｜DSProg2026-setupフォルダー</p>
-<div class="manifest-image-layout">
-<div>
-<img class="zoomable-image setup-screenshot " src="./images/ss-09.png" width="634" height="361" alt="tar移動後のフォルダー。DSProg2026-studentの圧縮ファイルと、別のsha256ファイルが並んでいる。">
-<p class="caption-note">クリックで拡大し、細部を確認できます。</p>
-</div>
-<div>
-<pre><code class="language-text">DSProg2026-setup/
-  Install.ps1
-  Start.cmd
-  03-Student-Import.ps1
-  Common.ps1
-  DSProg2026-student.tar
-  DSProg2026-student.tar.sha256
-  DSProg2026-学生用マニュアル.pdf
-  README.txt
-</code></pre>
-</div>
-</div>
-<ul>
-<li><strong>tar本体とInstall.ps1が同じ場所</strong>にあるか確認。</li>
-<li>画像は一部拡張子非表示。「(1)」や二重フォルダーに注意。</li>
-</ul>
-<div class="checkpoint">拡張子は「表示 → 表示 → ファイル名拡張子」で確認できます。</div>
-<p class="source-note">出典：マニュアル「配置を確認する」／ss-09</p>
-</div>
-<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-こちらはタールを移動した後の完成状態です。画像と右の一覧を照らし合わせ、タール本体とインストール・ピーエスワンが同じ場所にあることを確認します。エスエイチエー二五六のファイルだけになっていないか注意してください。
-画像では一部の拡張子が省略されています。必要なら拡張子を表示し、括弧付きの数字や二重のフォルダーも確認します。十四枚目から十六枚目のパソコンとダブリューエスエルの準備も済んだら、十七枚目のインポートへ進みます。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 14: PCの種類・電源・空き容量を確認する -->
-<div class="slide-body " data-step="14">
-<h2>PCの種類・電源・空き容量を確認する</h2>
-<p class="operation-place">Windows｜設定 → システム → バージョン情報</p>
-<ul>
-<li>対象：<strong>Windows 11、x64（Intel・AMD）</strong>。</li>
-<li>「システムの種類」を確認します。</li>
-<li>ARM64（Snapdragonなど）やMacは、取り込まず教員に相談します。</li>
-<li>ACアダプターと安定したネット接続を用意します。</li>
-<li>Cドライブは、<strong>tarと展開後のUbuntuの両方</strong>を置ける空き容量が必要です。</li>
-</ul>
-<p>容量の目安はClassroomの案内を確認します。</p>
-<div class="checkpoint">対象PCか・空き容量が足りるか不明な場合は、導入前に相談します。</div>
-<p class="source-note">出典：マニュアル「対象PCと準備」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ダウンロードを待っている間に、パソコンの種類を確認します。設定のシステムからバージョン情報を開き、システムの種類を見てください。この配布物は、ウィンドウズ十一のエックスろくじゅうよん用です。
-アームろくじゅうよんやマックの場合は、このタールを取り込まず相談してください。電源と空き容量も確認します。具体的な必要容量はクラスルームの案内を使い、画像のファイルサイズだけでは判断しません。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 15: VS CodeとWSLの状態を確認する -->
-<div class="slide-body wsl-status-slide" data-step="15">
-<h2>VS CodeとWSLの状態を確認する</h2>
-<p class="operation-place">Windows｜VS Code・普通のPowerShell</p>
-<p>Windows版VS Codeを準備し、PATHに追加。PowerShellを開き直します。</p>
-<p>MicrosoftのWSL拡張をWindows側へ：<code>ms-vscode-remote.remote-wsl</code></p>
-<div class="step-image-layout">
-<div>
-<img class="zoomable-image setup-screenshot " src="./images/ss-10.png" width="507" height="302" alt="PowerShellでwsl --versionとwsl --list --verboseを実行した例。既存のUbuntu-26.04がWSL2として表示されている。">
-<p class="caption-note">クリックで拡大し、細部を確認できます。</p>
-</div>
-<div>
-<p>普通のPowerShellで1行ずつ実行：</p>
-<pre><code class="language-powershell">wsl --version
-wsl --list --verbose
-</code></pre>
-<p>画像の <strong>Ubuntu-26.04は既存環境の例</strong>。同じ名前やバージョン表示は不要です。</p>
-</div>
-</div>
-<div class="checkpoint">「ディストリビューションがありません」は導入前ならあり得ます。</div>
-<p class="source-note">出典：マニュアル「Windowsを準備する」／ss-10</p>
-</div>
-<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-前回用意したウィンドウズ版ブイエスコードを使います。未導入ならマニュアルの公式サイトから導入し、パスへの追加を有効にしてパワーシェルを開き直します。マイクロソフトのダブリューエスエル拡張は、画面の識別子を検索してウィンドウズ側に入れます。
-普通のパワーシェルで二つのコマンドを一行ずつ実行します。左の画像は、撮影者がすでに持っていたウブントゥが表示された例です。同じ名前や版をそろえる必要はありません。ディストリビューションがないという表示だけなら、導入前にはあり得ます。判断に迷ったら教員へ見せてください。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 16: WSLが未導入の場合だけ準備する -->
-<div class="slide-body admin-setup-slide" data-step="16">
-<h2>WSLが未導入の場合だけ準備する</h2>
-<p class="operation-place">Windows｜管理者PowerShell → 再起動</p>
-<div class="step-image-layout">
-<div>
-<img class="zoomable-image setup-screenshot " src="./images/ss-11.png" width="353" height="262" alt="PowerShellの右クリックメニューに管理者として実行が表示されている。">
-<p class="caption-note">クリックで拡大し、細部を確認できます。</p>
-</div>
-<div>
-<ol>
-<li>普通のPowerShellを閉じます。</li>
-<li>PowerShellを右クリック → <strong>「管理者として実行」</strong>。</li>
-<li>下のコマンドを実行し、完了後にWindowsを再起動します。</li>
-</ol>
-</div>
-</div>
-<pre><code class="language-powershell">wsl --install --no-distribution
-</code></pre>
-<div class="checkpoint">再起動後は普通のPowerShell。配置（9〜13枚目）を確認して17枚目へ。</div>
-<p class="source-note">出典：マニュアル「WSL自体が未導入の場合だけ」／ss-11</p>
-</div>
-<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-この操作はダブリューエスエル自体が未導入の場合だけ行います。画像のようにパワーシェルを右クリックし、管理者として実行を選びます。画面のコマンドはダブリューエスエルの仕組みを入れ、別のウブントゥは追加しません。
-完了後に再起動したら、自分のウィンドウズアカウントで普通のパワーシェルを使います。次の授業用ウブントゥの取り込みを管理者で行うわけではありません。権限、仮想化、更新の問題は教員に相談し、ダウンロードと配置も済んでから次へ進みます。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 17: Install.ps1を1回実行する -->
-<div class="slide-body command-slide" data-step="17">
-<h2>Install.ps1を1回実行する</h2>
-<p class="operation-place">Windows｜普通のPowerShell</p>
-<p><strong>管理者として実行しません。</strong> 自分のWindowsアカウントで操作します。</p>
-<p>次の2行を、1行ずつコピーしてEnterを押します。</p>
-<pre><code class="language-powershell">cd &quot;$HOME\DSProg2026-setup&quot;
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1
-</code></pre>
-<p><code>$HOME</code> は自分のユーザーフォルダーです。名前の書き換えは不要です。</p>
-<div class="checkpoint">処理が始まったら画面を閉じず、案内を待ちます。</div>
-<p class="source-note">出典：マニュアル「普通のWindows PowerShellで実行する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-配布ファイルの配置とウィンドウズの準備が終わったら、普通のパワーシェルでこの二行を実行します。一行目は専用フォルダーへの移動、二行目は初回設定の実行です。ダラー・ホームは自分のユーザーフォルダーに置き換わるので、名前を書き直さなくて大丈夫です。
-この処理に限ってスクリプトを実行する指定です。組織の制限で止まった場合は、制限を解除しようとせず相談してください。教員は全員が管理者ではない画面で進めているか確認します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 18: 照合と取り込みが終わるまで待つ -->
-<div class="slide-body " data-step="18">
-<h2>照合と取り込みが終わるまで待つ</h2>
-<p class="operation-place">Windows｜Install.ps1の実行画面</p>
-<p>スクリプトが順に行います。</p>
-<ol>
-<li>tarの <strong>SHA-256</strong> を教員の指定値と照合する。</li>
-<li><strong>DSProg2026</strong> という名前でWSL2へ取り込む。</li>
-</ol>
-<ul>
-<li>長いハッシュ値を自分で入力する必要はありません。</li>
-<li>同じ名前・導入先がある場合は、上書きせず停止します。</li>
-<li>エラーが出たら、画面をそのまま教員に見せます。</li>
-</ul>
-<div class="checkpoint">処理中は画面を閉じない。停止したら削除・再実行を繰り返さず相談。</div>
-<p class="source-note">出典：マニュアル「照合とインポートが終わるまで、画面を閉じない」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-はじめに、配布されたタールが指定のファイルと一致するかを確かめます。その後、授業用の名前でウブントゥを取り込みます。長いハッシュ値はスクリプトが確認するので、手入力は不要です。
-取り込みには時間がかかることがあります。完了まで画面を閉じずに待ちましょう。同じ名前がすでにあるというエラーや、照合の不一致が出た場合は、環境や指定値を書き換えずに画面を残してください。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 19: 自分用のLinuxパスワードを設定する -->
-<div class="slide-body " data-step="19">
-<h2>自分用のLinuxパスワードを設定する</h2>
-<p class="operation-place">Install.ps1の案内｜パスワード入力</p>
-<pre><code class="language-text">New password:
-Retype new password:
-</code></pre>
-<ol>
-<li>自分で決めたパスワードを入力してEnter。</li>
-<li>同じパスワードをもう一度入力してEnter。</li>
-</ol>
-<p><strong>入力中は文字も●も表示されません。</strong></p>
-<p>Ubuntuのユーザー名は全員 <code>datasci</code>。環境は各自のPCにあります。</p>
-<div class="checkpoint">WindowsのPINや大学パスワードをそのまま入力する必要はありません。</div>
-<p class="source-note">出典：マニュアル「自分用のLinuxパスワードを設定する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ニューパスワードという案内が出たら、自分で決めたパスワードを入力します。画面に文字も丸印も出ませんが、入力は受け付けられています。エンターを押し、次の案内で同じものをもう一度入力してください。
-ウブントゥのユーザー名は全員データサイですが、各自のパソコンに別々の環境があります。パスワードは他人へ送らないでください。失敗した場合も、インポート全体をやり直さず相談します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 20: 画面下部の完了表示を確認する -->
-<div class="slide-body completion-slide" data-step="20">
-<h2>画面下部の完了表示を確認する</h2>
-<p class="operation-place">Windows｜Install.ps1の実行画面</p>
-<img class="zoomable-image setup-screenshot completion-screenshot" src="./images/ss-12.png" width="748" height="531" alt="Install.ps1の実行例。パスワード設定と取り込み後、画面下部にDSProg2026_SETUP_COMPLETEと表示されている。">
-<p class="completion-token"><code>DSProg2026_SETUP_COMPLETE</code></p>
-<div class="checkpoint">この表示で初回導入完了。画像はクリックで拡大できます。</div>
-<p class="source-note">出典：マニュアル「完了を確認する」／ss-12</p>
-</div>
-<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-これはインストール用スクリプトを実行した画面の例です。画像を拡大し、下部にあるディーエスプログ二〇二六・セットアップ・コンプリートの表示を探してください。途中に表示された既存環境の名前ではなく、この完了表示を確認します。
-入力するコマンドは十七枚目のテキストを使います。画像から長いコマンドを書き写す必要はありません。教員はここで、完了した人と途中で止まった人を確認します。完了表示がない場合は、実行中かエラーかを確認し、急がず進めます。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 21: 確認①：DSProg2026がWSL2にある -->
-<div class="slide-body wsl-result-slide" data-step="21">
-<h2>確認①：DSProg2026がWSL2にある</h2>
-<p class="operation-place">Windows｜普通のPowerShell</p>
-<pre><code class="language-powershell">wsl --list --verbose
-</code></pre>
-<img class="zoomable-image setup-screenshot wsl-result-screenshot" src="./images/ss-13.png" width="518" height="81" alt="wsl --list --verboseの結果。既存のUbuntu-26.04に加え、DSProg2026の行にStoppedとVERSION 2が表示されている。">
-<ul>
-<li><strong>DSProg2026の行</strong>で、<strong>VERSIONが2</strong>か確認します。</li>
-<li>状態は <strong>Running／Stoppedのどちらも</strong>あり得ます。</li>
-</ul>
-<p>他のUbuntuは削除しません。画像はクリックで拡大できます。</p>
-<div class="checkpoint">「完了表示」＋「DSProg2026・VERSION 2」を確認できたらVS Codeへ。</div>
-<p class="source-note">出典：マニュアル「完了を確認する」／ss-13</p>
-</div>
-<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-コマンドを実行し、一覧のディーエスプログ二〇二六の行を見てください。画像には既存のウブントゥもありますが、確認するのは授業用の行です。その行のバージョンが二であることを確かめます。
-画像の状態はストップトです。ランニングでもストップトでもあり得るので、そこだけで失敗と判断しないでください。他のウブントゥは削除しません。授業用の名前とバージョンが確認できたら、ブイエスコードを開く操作へ進みます。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 22: Start.cmdで授業用VS Codeを開く -->
-<div class="slide-body " data-step="22">
-<h2>Start.cmdで授業用VS Codeを開く</h2>
-<p class="operation-place">Windows｜普通のPowerShell</p>
-<pre><code class="language-powershell">cd &quot;$HOME\DSProg2026-setup&quot;
-.\Start.cmd
-</code></pre>
-<ul>
-<li>初回も、次回の授業も、この起動方法を使います。</li>
-<li>フォルダー内の <code>Start.cmd</code> をダブルクリックしても構いません。</li>
-<li>初回の接続は、VS Code Serverなどの取得を待ちます。</li>
-</ul>
-<div class="checkpoint">VS Codeが開き、接続処理が終わるまで待ちます。</div>
-<p class="source-note">出典：マニュアル「起動用ファイルを実行する」「接続先とフォルダーを確認する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-スタート・シーエムディーは、取り込み済みの授業用ウブントゥとワークを指定して、ウィンドウズ側のブイエスコードを開くファイルです。再インストールやパッケージ更新をするものではありません。
-初回は接続のためのファイル取得があり、少し待つことがあります。ウブントゥ側へブイエスコード本体を入れ直す必要はありません。画面が開いて接続が落ち着いてから、左下を確認しましょう。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 23: 確認②：接続先とworkを確かめる -->
-<div class="slide-body " data-step="23">
-<h2>確認②：接続先とworkを確かめる</h2>
-<p class="operation-place">VS Code｜左下・エクスプローラー</p>
-<table>
-<thead>
-<tr>
-<th>確認する場所</th>
-<th>正しい状態</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>左下の接続先</td>
-<td><strong>WSL: DSProg2026</strong></td>
-</tr>
-<tr>
-<td>左のエクスプローラー</td>
-<td><strong>work</strong> を開いている</td>
-</tr>
-<tr>
-<td>フォルダーの場所</td>
-<td><code>/home/datasci/work</code></td>
-</tr>
-</tbody>
-</table>
-<p>信頼を尋ねられたら、<strong>教員配布のこのwork</strong> か確認して信頼します。</p>
-<p>ホーム全体や、知らないフォルダーまで信頼する必要はありません。</p>
-<div class="checkpoint">接続先・work・信頼設定を確認。制限モードでは実行が制限されます。</div>
-<p class="source-note">出典：マニュアル「接続先とフォルダーを確認する」「信頼するか尋ねられたら」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-左下が授業用のダブリューエスエル接続になっているか、左側にワークが開いているかを確かめます。ウィンドウズのダウンロードフォルダーを開いている場合は、授業用の接続ではありません。
-作成者を信頼するか尋ねられたら、教員から配布されたワークであることを確認して信頼します。知らないファイルを実行したいからという理由で信頼しないでください。教員は、全員が同じ接続先と作業場所にいるか確認します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 24: 4つの拡張を授業用WSLで確認する -->
-<div class="slide-body " data-step="24">
-<h2>4つの拡張を授業用WSLで確認する</h2>
-<p class="operation-place">VS Code｜拡張機能（WSL: DSProg2026）</p>
-<p>検索欄へIDを1つずつ貼り付け、提供元も確認します。</p>
-<table>
-<thead>
-<tr>
-<th>拡張・提供元</th>
-<th>検索するID</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Python / Microsoft</td>
-<td><code>ms-python.python</code></td>
-</tr>
-<tr>
-<td>Pylance / Microsoft</td>
-<td><code>ms-python.vscode-pylance</code></td>
-</tr>
-<tr>
-<td>Jupyter / Microsoft</td>
-<td><code>ms-toolsai.jupyter</code></td>
-</tr>
-<tr>
-<td>R / REditorSupport</td>
-<td><code>REditorSupport.r</code></td>
-</tr>
-</tbody>
-</table>
-<p><strong>「WSL: DSProg2026にインストール」</strong> があれば選びます。</p>
-<div class="checkpoint">Windows側だけでなく、授業用WSL側で有効になっていますか。</div>
-<p class="source-note">出典：マニュアル「授業用WSLへ接続して、4つの拡張を確認する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ウブントゥにパイソンとアールが入っていても、ブイエスコードの拡張機能は別に確認します。授業用ウブントゥへ接続した画面で、表の識別子を一つずつ検索してください。
-すでに正しい場所で有効なら、重ねて入れる必要はありません。再読み込みの案内があれば、それに従います。ウィンドウズ側に入っているだけになっていないか、教員と確認しましょう。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 25: 授業用のPython環境を使う -->
-<div class="slide-body " data-step="25">
-<h2>授業用のPython環境を使う</h2>
-<p class="operation-place">VS Code｜環境選択・画面表示</p>
-<ul>
-<li>授業用タスクは、設定済みの <strong>uv環境</strong>を使います。</li>
-<li>Python環境の選択を求められたら、授業用の <strong><code>.venv/bin/python</code></strong> を選びます。</li>
-<li>WindowsのPythonや、別の授業・研究用環境は選びません。</li>
-<li>Code RunnerやR Notebook専用拡張は追加しません。</li>
-</ul>
-<p>メニューが見えない場合は、ウィンドウを最大化します。</p>
-<div class="checkpoint">英語表示ではTerminal／Run Task／Select Kernelなどの表記になります。</div>
-<p class="source-note">出典：マニュアル「VS Codeの拡張機能を確認する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-授業用タスクは、あらかじめ設定されたユーブイ環境を使います。パイソン環境を選ぶ案内が出たら、授業用ワークの中にある、ドット・ベンブのビン・パイソンを選んでください。自分で新しい環境を作る段階ではありません。
-この教材は日本語表示を基準にしています。英語表示や狭い画面でメニューが見つからない場合は、ウィンドウを最大化し、画面の名前と対応させて確認します。準備ができたらファイルを作りましょう。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 26: 自分のプログラムはexercisesに保存する -->
-<div class="slide-body " data-step="26">
-<h2>自分のプログラムはexercisesに保存する</h2>
-<p class="operation-place">VS Code｜workのエクスプローラー</p>
-<table>
-<thead>
-<tr>
-<th>場所</th>
-<th>使い方</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>はじめに.md</code></td>
-<td>基本操作を確認する</td>
-</tr>
-<tr>
-<td><code>exercises/lesson01</code></td>
-<td>今日作るPython・Rファイル</td>
-</tr>
-<tr>
-<td><code>notebooks</code></td>
-<td>Python・RのNotebook</td>
-</tr>
-<tr>
-<td><code>data</code></td>
-<td>読み込む授業用データ</td>
-</tr>
-<tr>
-<td><code>output</code></td>
-<td>グラフ・集計結果</td>
-</tr>
-</tbody>
-</table>
-<p><strong>work全体を開いたまま</strong> 操作します。</p>
-<div class="checkpoint">lesson01だけを「フォルダーを開く」で開き直さないでください。</div>
-<p class="source-note">出典：マニュアル「学生が使う場所」「新規作成して保存する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-授業用ワークの中には、役割ごとのフォルダーがあります。今日はエクササイズのレッスン・ゼロ・ワンへ、自分のプログラムを保存します。これはマニュアルが指定している初回練習用の名前で、この授業が第ニ回でもそのまま使います。
-ワーク全体を開いたまま、左側のフォルダーを展開してください。レッスン・ゼロ・ワンだけを別の作業フォルダーとして開くと、授業用タスクが出なくなることがあります。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 27: Pythonファイルを作成して保存する -->
-<div class="slide-body" data-step="27">
-<h2>Pythonファイルを作成して保存する</h2>
-<p class="operation-place">VS Code｜exercises/lesson01</p>
-<ol>
-<li><code>lesson01</code> を右クリック → 「新しいファイル」→ <code>ex01.py</code>。</li>
-<li>次の1行を書き、<strong>Ctrl＋S</strong> で保存します。</li>
-</ol>
-<pre><code class="language-python">print(&quot;こんにちは、Python!&quot;)
-</code></pre>
-<p>実行する前に、まずファイルを保存します。</p>
-<div class="checkpoint">exercises/lesson01にex01.pyを保存できましたか。</div>
-<p class="source-note">出典：マニュアル「新しいPython・Rファイルを作る」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-最初にパイソンのファイルを作ります。レッスン・ゼロ・ワンを右クリックし、新しいファイルを選びます。名前は、イーエックス・ゼロ・ワン、ドット・ピー・ワイです。
-画面の一行を書いたら、コントロール・エスで保存してください。実行するのは保存したファイルなので、書き換えたときも実行前に保存します。
-ここで学生の操作を待ちます。教員は、授業用ワークを開いたまま、指定した場所へ拡張子付きで保存できたかを確認してください。次の画面から、実行するためのメニュー操作を一つずつ示します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 28: 実行したいタブを選び、メニューを開く -->
-<div class="slide-body task-menu-slide" data-step="28">
-<h2>実行したいタブを選び、メニューを開く</h2>
-<p class="operation-place">WSL接続中のVS Code｜ファイルのタブ・上部メニュー</p>
-<p class="task-flow">保存 → 実行したいファイルのタブを開く →［ターミナル］→［タスクの実行…］→ 言語に合う授業用タスクを選ぶ → 結果を確認する</p>
-<div class="step-image-layout">
-<div>
-<img class="zoomable-image setup-screenshot" src="./images/ss-14.png" width="765" height="368" alt="VS CodeでPythonファイルのタブを開き、上部のターミナルメニューからタスクの実行を選ぶ画面。">
-<p class="caption-note">クリックで拡大。画像のhello.pyは撮影時の例です。</p>
-</div>
-<div>
-<ol>
-<li>保存した <strong><code>ex01.py</code> のタブ</strong>を開きます。</li>
-<li><strong>［ターミナル］</strong>を開きます。</li>
-<li><strong>［タスクの実行…］</strong>を選びます。</li>
-</ol>
-<p>メニューが見えない場合は、VS Codeを最大化します。</p>
-</div>
-</div>
-<div class="checkpoint">タスクの選択一覧が開いたら、次へ進みます。</div>
-<p class="source-note">出典：マニュアル「保存したファイルを実行する」／ss-14／ユーザー提示の実行手順</p>
-</div>
-<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-実行の流れは、保存、実行したいファイルのタブを開く、ターミナル、タスクの実行、言語に合う授業用タスクを選ぶ、結果を確認する、です。
-まず、先ほど保存したイーエックス・ゼロ・ワン、ドット・ピー・ワイのタブをクリックしてください。画像ではハロー、ドット・ピー・ワイを開いていますが、これは撮影時の例です。皆さんは自分が作ったファイルを選びます。
-上部のターミナルから、タスクの実行を選びます。メニューが見えなければ、ブイエスコードを最大化してください。教員は操作を待ち、別のタブを選んでいないか、タスクの一覧が開いたかを確認します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 29: 言語に合う授業用タスクを選ぶ -->
-<div class="slide-body task-select-slide" data-step="29">
-<h2>言語に合う授業用タスクを選ぶ</h2>
-<p class="operation-place">WSL接続中のVS Code｜実行するタスクの選択</p>
-<img class="zoomable-image setup-screenshot task-select-screenshot" src="./images/ss-15.png" width="616" height="88" alt="実行するタスクの一覧。授業: Pythonファイルを実行と授業: Rファイルを実行が表示されている。">
-<p class="caption-note">画像はクリックで拡大できます。</p>
-<table>
-<thead>
-<tr>
-<th>開いているファイル</th>
-<th>選ぶ授業用タスク</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>.py</code></td>
-<td><strong>［授業: Pythonファイルを実行］</strong></td>
-</tr>
-<tr>
-<td><code>.R</code></td>
-<td><strong>［授業: Rファイルを実行］</strong></td>
-</tr>
-</tbody>
-</table>
-<p>今は <strong><code>ex01.py</code> → Pythonのタスク</strong>を選びます。</p>
-<div class="checkpoint">選ぶ前に、ファイルの拡張子とタスクの言語が合っているか確認。</div>
-<p class="source-note">出典：マニュアル「保存したファイルを実行する」／ss-15</p>
-</div>
-<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-一覧には、授業、パイソンファイルを実行、と、授業、アールファイルを実行、があります。開いているファイルの言語に合うほうを選びます。
-今は拡張子がドット・ピー・ワイのファイルなので、パイソンのタスクを選んでください。この後、アールのファイルを実行するときは、アールのタスクに切り替えます。
-教員は、選択する前にタブのファイル名とタスク名を確認する時間を取ってください。授業用タスクが見当たらない場合は、授業用ワーク全体を開いているかを確認します。選ぶと下部のターミナルに結果が出ます。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 30: 下部のターミナルで結果を確認する -->
-<div class="slide-body task-result-slide" data-step="30">
-<h2>下部のターミナルで結果を確認する</h2>
-<p class="operation-place">WSL接続中のVS Code｜下部のターミナル</p>
-<img class="zoomable-image setup-screenshot task-result-screenshot" src="./images/ss-16.png" width="924" height="242" alt="ターミナルの実行結果。自動表示された実行コマンド、Hello, World!というプログラムの出力、ターミナル再利用の案内が並ぶ。">
-<p class="caption-note">クリックで拡大。画像のhello.pyとHello, World!は撮影時の例です。</p>
-<ul>
-<li>上の <strong>実行コマンドは自動表示</strong>されます。手入力は不要です。</li>
-<li>確認するのは <strong>自分のプログラムが出した文字</strong>です。</li>
-<li>「ターミナルはタスクで再利用されます」はVS Codeの案内です。</li>
-</ul>
-<div class="checkpoint">今回は「こんにちは、Python!」が表示されれば成功です。</div>
-<p class="source-note">出典：マニュアル「保存したファイルを実行する」／ss-16</p>
-</div>
-<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-結果は画面下部のターミナルに表示されます。上にある長い実行コマンドは、授業用タスクが自動で表示したものです。皆さんが書き写したり、手入力したりする必要はありません。
-画像では、撮影時のハロー、ドット・ピー・ワイを実行した結果として、ハロー・ワールドと出ています。皆さんが作ったファイルでは、こんにちは、パイソン、という文字が出たかを確認してください。
-その下の、ターミナルはタスクで再利用されます、という文はブイエスコードの案内です。自分のプログラムの出力とは区別します。教員は実行を待ち、結果が出たかを確認してください。エラーが出た場合は画面を残して相談します。次は同じ流れをアールで試します。
-</aside>
-            </section>
-
-
-
-
-
-        <section >
-
-            <!-- 31: R：同じ流れでファイルを実行する -->
-<div class="slide-body " data-step="31">
-<h2>R：同じ流れでファイルを実行する</h2>
-<p class="operation-place">VS Code｜exercises/lesson01</p>
-<ol>
-<li><code>lesson01</code> に <code>ex01.R</code> を作ります。</li>
-<li>次の1行を書き、<strong>Ctrl＋S</strong> で保存します。</li>
-</ol>
-<pre><code class="language-r">print(&quot;こんにちは、R!&quot;)
-</code></pre>
-<ol start="3">
-<li><code>ex01.R</code> のタブを選びます。</li>
-<li>「ターミナル → タスクの実行…」→ <strong>授業: Rファイルを実行</strong>。</li>
-</ol>
-<div class="checkpoint">下部のターミナルに「こんにちは、R!」を含む結果が表示されましたか。</div>
-<p class="source-note">出典：マニュアル「新しいPython・Rファイルを作る」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-続いてアールのファイルを作ります。ファイル名の最後は、大文字のアールです。同じように一行を書いて保存し、今度はアールのファイルのタブを選んで、アール用の授業タスクを実行します。
-パイソンのタスクを選んでいないか確認してください。出力の見た目がパイソンと完全に同じとは限りませんが、書いた日本語のメッセージが結果に含まれているかを見ます。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 32: 確認③：両方のファイルを開き直す -->
-<div class="slide-body " data-step="32">
-<h2>確認③：両方のファイルを開き直す</h2>
-<p class="operation-place">VS Code｜ファイルのタブ・ターミナル</p>
-<ul>
-<li>PythonとRの両方で、文字が出たことを確認します。</li>
-<li><strong>Ctrl＋S → タブを閉じる → 左側から開き直す</strong>。</li>
-<li>自分のコードが残っていることを確認します。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>ファイル</th>
-<th>実行方法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>.py</code></td>
-<td>授業: Pythonファイルを実行</td>
-</tr>
-<tr>
-<td><code>.R</code></td>
-<td>授業: Rファイルを実行</td>
-</tr>
-</tbody>
-</table>
-<p>入力を求めるプログラムでは、ターミナルをクリックして入力します。</p>
-<div class="checkpoint">「作る・書く・保存・実行・開き直す」が両言語でできましたか。</div>
-<p class="source-note">出典：マニュアル「保存したファイルを実行する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-二つのファイルで結果が出たら、保存されていることも確かめます。タブを閉じ、左側の一覧から同じファイルを開き直してください。自分のコードが残っていれば確認できています。
-教員は、どちらか一方だけで止まっている人がいないか確認します。今回の一行は入力を求めませんが、今後入力が必要なプログラムでは、ターミナルをクリックして入力します。次はノートブックを扱います。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 33: Notebookは、セルごとに実行する -->
-<div class="slide-body " data-step="33">
-<h2>Notebookは、セルごとに実行する</h2>
-<p class="operation-place">VS Code｜notebooks</p>
-<p><strong>Notebook（<code>.ipynb</code>）</strong> は、説明・プログラム・結果を一緒に保存するファイルです。</p>
-<ul>
-<li>プログラムのひとかたまりを <strong>セル</strong> と呼びます。</li>
-<li>実行する環境を <strong>カーネル</strong> と呼びます。</li>
-<li>実行は <strong>セル横の▶</strong>。結果はセルの下に出ます。</li>
-</ul>
-<p>.py・.R用の授業タスクは使いません。</p>
-<p>ブラウザーのJupyterLabを先に起動する必要もありません。</p>
-<div class="checkpoint">ファイル全体の実行タスクと、Notebookのセル実行を区別します。</div>
-<p class="source-note">出典：マニュアル「NotebookをVS Codeで実行する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ノートブックは、説明文とプログラム、実行結果をまとめて保存できるファイルです。コードのかたまりがセル、そのコードを実行する環境がカーネルです。
-さきほどのパイソンやアールのファイルとは実行方法が違います。ノートブックではセルの横の三角ボタンを使い、授業用タスクは使いません。授業では引き続きブイエスコードの中で操作します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 34: Python Notebookのカーネルを選ぶ -->
-<div class="slide-body " data-step="34">
-<h2>Python Notebookのカーネルを選ぶ</h2>
-<p class="operation-place">VS Code｜notebooks/hello_python.ipynb</p>
-<ol>
-<li><code>hello_python.ipynb</code> を開きます。</li>
-<li>右上の <strong>「カーネルの選択」</strong> をクリックします。</li>
-<li><strong>Jupyter Kernel…／Jupyter Kernels</strong> へ進みます。</li>
-<li><strong>DSProg2026 (Python)</strong> を選びます。</li>
-<li>セル横の▶で、上から順番に実行します。</li>
-</ol>
-<p><code>Python (DSProg2026)</code> と表示される場合もあります。</p>
-<div class="checkpoint">DSProg2026とPythonが一致し、文字・計算結果・日本語グラフが出ましたか。</div>
-<p class="source-note">出典：マニュアル「Notebookを開く」「右上の『カーネルの選択』をクリックする」「セル横の『▶』をクリックする」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-配布されているハロー・パイソンのノートブックを開きます。右上からカーネルを選び、ジュピターのカーネル一覧で授業名とパイソンが一致するものを選んでください。表記の順序が画面によって変わる場合があります。
-セルは上から順番に実行します。配布ノートブックの文字、計算結果、日本語のグラフを確認しましょう。候補が見えない場合は、別のカーネルを選択からジュピター・カーネルズへ進みます。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 35: R Notebookも、Rのカーネルで実行する -->
-<div class="slide-body " data-step="35">
-<h2>R Notebookも、Rのカーネルで実行する</h2>
-<p class="operation-place">VS Code｜notebooks/hello_r.ipynb</p>
-<ol>
-<li><code>hello_r.ipynb</code> を開きます。</li>
-<li>「カーネルの選択」→ <strong>Jupyter Kernels</strong>。</li>
-<li><strong>DSProg2026 ®</strong> を選びます。</li>
-<li>セル横の▶で、上から順番に実行します。</li>
-</ol>
-<p><code>R (DSProg2026)</code> と表示される場合もあります。</p>
-<p><strong>RはPython Environmentsの中から探しません。</strong></p>
-<div class="checkpoint">DSProg2026とRが一致し、文字・計算結果・日本語グラフが出ましたか。</div>
-<p class="source-note">出典：マニュアル「右上の『カーネルの選択』をクリックする」「セル横の『▶』をクリックする」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-アールのノートブックでも同じ流れを確認します。今度は、カーネルの言語がアールであることが大切です。パイソンの環境一覧の中から探すのではなく、ジュピターのカーネル一覧へ進みます。
-上から実行して、アールでも文字、計算結果、日本語のグラフが表示されるかを確かめます。カーネルが見つからない場合は自分で新しい環境を作らず、接続先や拡張機能を教員と確認してください。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 36: 確認④：保存し、順番をそろえて実行する -->
-<div class="slide-body " data-step="36">
-<h2>確認④：保存し、順番をそろえて実行する</h2>
-<p class="operation-place">VS Code｜Python・RのNotebook</p>
-<ul>
-<li>両方のNotebookで、文字・計算結果・日本語グラフを確認。</li>
-<li>変更したら <strong>Ctrl＋S</strong> で保存。</li>
-<li>閉じて開き直し、保存した内容を確認。</li>
-</ul>
-<p><strong>実行順が分からなくなったら</strong></p>
-<p>カーネルを再起動 → 上から実行し直します。</p>
-<p>途中のセルだけを動かすと、以前の変数が残っている場合があります。</p>
-<div class="checkpoint">PythonとRの両方で「正しいカーネル・実行結果・保存」を確認。</div>
-<p class="source-note">出典：マニュアル「保存・再実行する」「セットアップ完了の確認」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ノートブックは、実行した順番によって状態が変わります。途中のセルだけを動かすと、それ以前に作った変数が残ったままになる場合があります。順番が分からなくなったら、カーネルを再起動し、上から実行し直します。
-二つのノートブックを保存し、開き直して内容を確認してください。教員はここで、両言語のカーネル、文字、計算、日本語グラフのどこまで確認できたかを聞き取ります。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 37: 課題ファイルはUbuntu側のworkへコピー -->
-<div class="slide-body " data-step="37">
-<h2>課題ファイルはUbuntu側のworkへコピー</h2>
-<p class="operation-place">Windows｜エクスプローラー → VS Code</p>
-<ol>
-<li><code>Start.cmd</code> で授業用VS Codeを開いておきます。</li>
-<li>Classroomの課題をWindowsへダウンロードします。</li>
-<li>エクスプローラーのアドレス欄に次を入力します。</li>
-</ol>
-<pre><code class="language-text">\\wsl$\DSProg2026\home\datasci\work
-</code></pre>
-<ol start="4">
-<li>指定フォルダーへコピーし、WSL接続中のVS Codeから開きます。</li>
-</ol>
-<div class="checkpoint">Windows側のDSProg2026-setupは導入・起動用。課題の保存先ではありません。</div>
-<p class="source-note">出典：マニュアル「ダウンロードしたファイルをUbuntu側へコピーする」「作業場所を取り違えない」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-今後、クラスルームから課題ファイルを受け取るときは、まず授業用ブイエスコードを起動しておきます。ダウンロードしたファイルを、画面の共有パスからウブントゥのワークへコピーします。
-保存先や名前は、その回の指示に従います。タスクで動くプログラムの作業場所はワークなので、データや出力の指定もそこを基準にします。ノートブックでは作業場所が異なる場合があるため、課題の指示を確認してください。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 38: 提出するのは、保存した課題ファイル -->
-<div class="slide-body " data-step="38">
-<h2>提出するのは、保存した課題ファイル</h2>
-<p class="operation-place">Windows／Classroom｜提出・バックアップ</p>
-<ol>
-<li>提出前に <strong>保存</strong> します。</li>
-<li>WSLの共有パスから、指定されたファイルを選びます。</li>
-<li>選べない場合は、完成した課題ファイルだけWindowsへコピーします。</li>
-</ol>
-<ul>
-<li>提出先・名前・保存先は、<strong>その回の指示</strong>に従います。</li>
-<li>課題は元のtarに自動保存されません。</li>
-<li>Ubuntuの仮想ディスクやwork全体を提出しません。</li>
-</ul>
-<div class="checkpoint">課題ファイルを、指示された場所に提出・バックアップします。</div>
-<p class="source-note">出典：マニュアル「提出とバックアップ」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-タールは初期環境のコピーです。皆さんが書いた課題が、元のタールへ自動的に戻って保存されるわけではありません。提出前に必ず保存し、指示された課題ファイルを選んでください。
-共有パスから選べない場合は、完成した課題ファイルだけをウィンドウズ側へコピーして提出します。提出期限や具体的な名前は、その回の指示で確認します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 39: 終了するとき・次の授業で始めるとき -->
-<div class="slide-body " data-step="39">
-<h2>終了するとき・次の授業で始めるとき</h2>
-<p class="operation-place">VS Codeで終了 → Windowsから次回起動</p>
-<p><strong>今日の終了</strong></p>
-<p>保存 → 実行中の処理を終了 → VS Codeを閉じる。</p>
-<p><strong>次回の起動：普通のPowerShell</strong></p>
-<pre><code class="language-powershell">cd &quot;$HOME\DSProg2026-setup&quot;
-.\Start.cmd
-</code></pre>
-<p>元のtarと初回設定用ファイルは、少なくとも導入確認まで保管します。</p>
-<div class="checkpoint">次回はStart.cmd。ダウンロード・インポート・パスワード設定は繰り返しません。</div>
-<p class="source-note">出典：マニュアル「授業を終えるとき」「起動用ファイルを実行する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-授業を終えるときは、ファイルを保存し、実行中の処理を終了してからブイエスコードを閉じます。元のタールと初回設定用ファイルは、少なくとも導入確認が終わるまでは保管してください。
-次の授業では、普通のパワーシェルからスタート・シーエムディーで開きます。今日と同じワークに戻り、保存したファイルを使います。初回設定を毎回繰り返す必要はありません。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 40: 今日、どこまでできましたか -->
-<div class="slide-body " data-step="40">
-<h2>今日、どこまでできましたか</h2>
-<p class="operation-place">到達点の確認</p>
-<table>
-<thead>
-<tr>
-<th>段階</th>
-<th>自分の画面で確認すること</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>① 導入</td>
-<td>完了表示／DSProg2026・VERSION 2</td>
-</tr>
-<tr>
-<td>② 接続</td>
-<td>WSL: DSProg2026／work</td>
-</tr>
-<tr>
-<td>③ ファイル</td>
-<td>Python・Rの保存、タスク実行、開き直し</td>
-</tr>
-<tr>
-<td>④ Notebook</td>
-<td>両言語のカーネル、文字・計算・日本語グラフ、保存</td>
-</tr>
-</tbody>
-</table>
-<p><strong>できた段階と、止まった操作を確認しておきましょう。</strong></p>
-<div class="checkpoint">未完了でも、エラーの画面を残して教員へ相談できます。</div>
-<p class="source-note">出典：マニュアル「セットアップ完了の確認」「困ったときは、ここを確認する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-今日の到達点を四つに分けて確認します。ウブントゥを取り込めたか、授業用の画面へ接続できたか、自作ファイルを両言語で実行できたか、ノートブックまで確認できたかです。
-終わらなかった項目があっても、環境を削除して最初からやり直す必要はありません。できた段階と、止まった操作を伝えてください。教員は未完了の段階を確認し、続きのフォローにつなげます。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 41: 質問・未完了箇所の確認 -->
-<div class="slide-body " data-step="41">
-<h2>質問・未完了箇所の確認</h2>
-<p class="operation-place">相談するとき</p>
-<p><strong>どの段階で、何をしたら、どうなりましたか。</strong></p>
-<ul>
-<li>導入／接続／ファイル／Notebookのどこか。</li>
-<li>操作した場所と、画面に出たエラー文。</li>
-<li>左下の接続先名と、開いているフォルダー。</li>
-</ul>
-<p><strong>パスワード・Jupyterトークン・トークン付きURLは送らない。</strong></p>
-<p>この後の5枚は、必要になったときに参照する補足です。</p>
-<div class="checkpoint">削除・再インポートの繰り返し・セキュリティ機能の無効化は行いません。</div>
-<p class="source-note">出典：マニュアル「困ったときは、ここを確認する」「共有してよいもの・共有しないもの」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ここで質問と、まだ完了していないところを確認します。どの段階で、どの操作をしたら、何が表示されたかを教えてください。画面やエラー文があると確認しやすくなります。
-画面写真を共有する場合も、パスワードやジュピターのトークンが写っていないか確認してください。この先は補足です。全員に追加の操作を求めるものではなく、必要な場面で教員と一緒に参照します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 42: 補足：導入時に止まったとき -->
-<div class="slide-body trouble-slide" data-step="42">
-<h2>補足：導入時に止まったとき</h2>
-<p class="operation-place">Windows｜画面を残して確認</p>
-<table>
-<thead>
-<tr>
-<th>症状</th>
-<th>確認すること</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Install.ps1が見つからない</td>
-<td>ZIPの展開先・現在のフォルダー</td>
-</tr>
-<tr>
-<td>Missing file: DSProg2026-student.tar</td>
-<td>tarの配置・取得完了・名前の「(1)」</td>
-</tr>
-<tr>
-<td>SHA-256が一致しない</td>
-<td>正しい配布ファイルか。そのtarは使わない</td>
-</tr>
-<tr>
-<td>Distribution already exists</td>
-<td>導入済み／取り込み途中の可能性。削除せず相談</td>
-</tr>
-<tr>
-<td>仮想化・権限・容量のエラー</td>
-<td>画面を残して教員に相談</td>
-</tr>
-</tbody>
-</table>
-<p><strong>指定ハッシュを書き換えて通過させません。</strong></p>
-<div class="checkpoint">パスワード入力で文字が出ないのは通常の動作。失敗後も再インポートしません。</div>
-<p class="source-note">出典：マニュアル「困ったときは、ここを確認する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-導入時のエラーは、まずどの段階のものかを確認します。ファイルがない場合は、展開先、配置、名前、ダウンロード完了を見ます。ハッシュが違う場合は、そのファイルで続行せず、教員配布のものかを確認してください。
-すでに環境があるという表示では、導入済みか途中かを教員が判断します。削除してやり直す操作は行いません。権限や仮想化、容量についても、画面を残して相談します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 43: 補足：VS Codeで実行できないとき -->
-<div class="slide-body trouble-slide" data-step="43">
-<h2>補足：VS Codeで実行できないとき</h2>
-<p class="operation-place">VS Code｜接続先・work・拡張機能</p>
-<table>
-<thead>
-<tr>
-<th>症状</th>
-<th>確認すること</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>codeが見つからない</td>
-<td>PowerShellを開き直す。PATH・接続メニューは教員と確認</td>
-</tr>
-<tr>
-<td>ターミナルが見えない</td>
-<td>ウィンドウ最大化・省略メニュー</td>
-</tr>
-<tr>
-<td>授業用タスクがない</td>
-<td>lesson01だけでなくwork全体を開いているか</td>
-</tr>
-<tr>
-<td>カーネルがない</td>
-<td>授業用WSL接続・WSL側Jupyter・Jupyter Kernels</td>
-</tr>
-<tr>
-<td>Notebookが実行できない</td>
-<td>授業用workか確認し、制限モードを確認</td>
-</tr>
-</tbody>
-</table>
-<p>systemd user sessionの警告は相談。他のWSLの作業を勝手に停止しません。</p>
-<div class="checkpoint">新しい環境を作らず、現在の接続先と設定を教員と確認します。</div>
-<p class="source-note">出典：マニュアル「困ったときは、ここを確認する」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ブイエスコードで実行できない場合は、接続先と開いているフォルダーから確認します。タスクがなければワーク全体を開いているか、カーネルがなければ授業用接続とジュピター拡張を見ます。
-制限モードを解除する場合も、教員配布のワークであることを確認してください。システムディーの警告が出たときも、別のダブリューエスエルでの作業を勝手に止めず、教員に相談します。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 44: 補足：Start.cmdを使わない起動方法 -->
-<div class="slide-body " data-step="44">
-<h2>補足：Start.cmdを使わない起動方法</h2>
-<p class="operation-place">WindowsのPowerShell → Ubuntuの画面</p>
-<p><strong>① 普通のPowerShellで実行</strong></p>
-<pre><code class="language-powershell">wsl -d DSProg2026 --cd /home/datasci/work
-</code></pre>
-<p><strong>② Ubuntuの画面に変わってから実行</strong></p>
-<pre><code class="language-bash">code .
-</code></pre>
-<p><code>code</code> と <code>.</code> の間に、半角の空白を入れます。</p>
-<div class="checkpoint">開いたVS Codeで、WSL: DSProg2026とworkを確認します。</div>
-<p class="source-note">出典：マニュアル「起動用ファイルを使わない予備の方法」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-普段はスタート・シーエムディーを使いますが、必要になった場合の予備の起動方法です。最初の一行は、ウィンドウズの普通のパワーシェルで入力します。
-ウブントゥの画面に切り替わってから、コード、半角空白、点と入力します。二つのコマンドを同じ操作場所で入力しないように注意してください。開いた後の接続先とフォルダーの確認は、通常の起動と同じです。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 45: 補足：JupyterLabは教員の案内時だけ -->
-<div class="slide-body " data-step="45">
-<h2>補足：JupyterLabは教員の案内時だけ</h2>
-<p class="operation-place">VS Code｜新しいターミナル（Ubuntu側）</p>
-<pre><code class="language-bash">cd /home/datasci/work
-uv run --locked jupyter lab
-</code></pre>
-<ul>
-<li>表示されたlocalhostのURLを、<code>token=…</code> まで含めてWindowsのブラウザーで開きます。</li>
-<li>「Password or token」は <strong>Jupyterの認証</strong>です。</li>
-<li>WindowsやUbuntuのパスワードを入力する画面ではありません。</li>
-<li>終了時は起動したターミナルで <strong>Ctrl＋C</strong>、表示に従います。</li>
-</ul>
-<div class="checkpoint">トークンを共有せず、認証を無効にしません。通常はVS CodeでNotebookを実行。</div>
-<p class="source-note">出典：マニュアル「ブラウザーのJupyterLabは予備として使える」</p>
-</div>
-<p><audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg" preload="none"></audio></p>
-<aside class="notes">
-ジュピターラボは予備の方法です。教員から案内されたときだけ、授業用ブイエスコードで新しいターミナルを開き、ウブントゥ側でこの二行を実行します。
-表示されたローカルホストのアドレスには認証用のトークンが含まれます。アドレス全体を他人へ送らないでください。終了するときは起動したターミナルでコントロールとシーを押し、表示に従います。見えている管理ファイルは変更しません。
-</aside>
-            </section>
-    
-
-
-
-    
-        <section >
-            
-            <!-- 46: 補足：管理ファイルと参考資料 -->
-<div class="slide-body " data-step="46">
-<h2>補足：管理ファイルと参考資料</h2>
-<p class="operation-place">必要になったときに参照</p>
-<table>
-<thead>
-<tr>
-<th>主な管理ファイル</th>
+<th>名前</th>
 <th>役割</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>.venv</code>・<code>pyproject.toml</code>・<code>uv.lock</code>・<code>.python-version</code></td>
-<td>Python環境・版の指定</td>
+<td>WSL</td>
+<td>Windowsの中でLinuxを動かす仕組み</td>
 </tr>
 <tr>
-<td><code>renv</code>・<code>renv.lock</code></td>
-<td>R環境・版の記録</td>
+<td>DSProg2026</td>
+<td>Python・Rが入った授業用環境</td>
 </tr>
 <tr>
-<td><code>DESCRIPTION</code>・<code>r-packages.txt</code></td>
-<td>Rパッケージの一覧</td>
-</tr>
-<tr>
-<td><code>.Rprofile</code>・<code>.Renviron</code></td>
-<td>R起動時の設定</td>
-</tr>
-<tr>
-<td><code>.vscode</code>・<code>.gitignore</code></td>
-<td>表示・タスク・変更管理の設定</td>
+<td>VS Code</td>
+<td>プログラムを書いて、実行する画面</td>
 </tr>
 </tbody>
 </table>
-<p>通常は非表示です。<strong>教員の指示なしに移動・編集しません。</strong></p>
-<p>詳しい手順と公式資料[1]〜[12]：学生用マニュアル末尾。</p>
-<div class="checkpoint">元資料・各スライドの対応と参考URLは、この資料のsources.mdに収録。</div>
-<p class="source-note">出典：マニュアル「非表示になっている主な管理ファイル」「参考資料と、この手順の対象」</p>
+<div class="checkpoint">DSProg2026はUbuntu系の環境。Ubuntuの別途インストールは不要です。</div>
 </div>
-<p><audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg" preload="none"></audio></p>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
 <aside class="notes">
-管理ファイルには、授業用の実行環境やパッケージの版、ブイエスコードのタスクなどの設定が入っています。普段の画面で見えないのは削除されたからではありません。教員の指示なしに移動や編集はしないでください。
-詳しい操作は学生用マニュアルへ戻って確認できます。公式資料の一覧と、このスライドがマニュアルのどこに対応するかは、資料の出典一覧にもまとめます。
+授業で使う道具は配布環境に用意されています。Windows側へPythonやRを追加する作業ではありません。仕組みの名前を暗記するより、授業用環境を開けることを目指します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 3: 初回と、次回からの操作 -->
+<div class="slide-body installer-slide" data-step="3">
+<h2>初回と、次回からの操作</h2>
+<p class="operation-place">全体の流れ</p>
+<p><strong>初回だけ</strong></p>
+<p>ZIPを取得 → 展開 → インストール → 拡張機能の準備</p>
+<p><strong>次回から毎回</strong></p>
+<p><code>Start.cmd</code> をダブルクリック</p>
+<div class="checkpoint">初回はPython・RのファイルとNotebookの動作も確認します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+初回はInstall-DSProg2026.cmdを使います。次回からはStart.cmdです。二つの役割をここで確認します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 4: 始める前に、3つを確認 -->
+<div class="slide-body installer-slide" data-step="4">
+<h2>始める前に、3つを確認</h2>
+<p class="operation-place">Windows側の事前準備</p>
+<ul>
+<li>WSL本体</li>
+<li>Visual Studio Code</li>
+<li>VS Codeの「WSL」拡張（Microsoft）</li>
+</ul>
+<p>DSProg2026本体は、取得済みの配布ZIPからオフライン導入できます。</p>
+<div class="checkpoint">VS Code・拡張機能の初回導入にはインターネット接続が必要です。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+配布対象はWindows 11 x64です。ARM64やMacは先に相談してもらいます。電源と空き容量も確認します。未準備・わからない場合は教員と一緒に確認します。WSL本体とVS Codeの準備を済ませてから配布ZIPを使います。学生に確認コマンドを入力させず、WSLの状態は教員が確認してください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 5: VS Codeの「WSL」拡張を確認 -->
+<div class="slide-body installer-slide installer-image-slide" data-step="5">
+<h2>VS Codeの「WSL」拡張を確認</h2>
+<p class="operation-place">Windows｜VS Code</p>
+<img class="zoomable-image installer-screenshot" src="./images/extensions-01-wsl.png" width="630" height="166" alt="MicrosoftのWSL拡張。無効にする・アンインストールがある導入済み画面">
+<p>「拡張機能」で <strong>WSL</strong> を検索。</p>
+<p>Publisherが <strong>Microsoft</strong> のものを確認・導入します。</p>
+<div class="checkpoint">画像は導入済みの例。未導入なら「インストール」。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Windows側のVS Codeで操作します。WSL本体とは別の拡張です。Marketplaceからの初回取得にはインターネット接続が必要です。導入済みなら重ねて操作しません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 6: 教材と同じ日本語表示にする -->
+<div class="slide-body installer-slide installer-image-slide" data-step="6">
+<h2>教材と同じ日本語表示にする</h2>
+<p class="operation-place">Windows｜授業では推奨</p>
+<img class="zoomable-image installer-screenshot" src="./images/extensions-02-japanese-language-pack.png" width="783" height="204" alt="MicrosoftのJapanese Language Pack for Visual Studio Code">
+<p><strong>Japanese Language Pack for Visual Studio Code</strong></p>
+<p>Publisher：<strong>Microsoft</strong></p>
+<div class="checkpoint">必要に応じて導入し、表示言語の変更・再起動の案内に従います。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+日本語Language Packは技術的な必須条件ではありません。本授業の教材とスクリーンショットが日本語UIなので推奨します。英語表示では拡張機能はExtensions、インストールはInstallです。取得にはインターネット接続が必要です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 7: 前回の旧ファイルは使いません -->
+<div class="slide-body installer-slide" data-step="7">
+<h2>前回の旧ファイルは使いません</h2>
+<p class="operation-place">配布物の更新</p>
+<p>10月6日以前の旧setupは使いません。</p>
+<p>Classroomから、新しいファイルを取得します。</p>
+<p><strong>DSProg2026-Setup-2026.zip</strong></p>
+<div class="checkpoint">すでに授業環境を導入した人は、教員に伝えてください。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今回確定した配布ZIPを使います。既存DSProg2026はインストーラが上書きしません。作成済みの課題や環境を学生の判断で削除しないよう案内します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 8: ClassroomからZIPを取得 -->
+<div class="slide-body installer-slide" data-step="8">
+<h2>ClassroomからZIPを取得</h2>
+<p class="operation-place">ブラウザー｜Classroom → Google Drive</p>
+<ol>
+<li>「授業用環境の準備」を開きます。</li>
+<li><strong>DSProg2026-Setup-2026.zip</strong> を開きます。</li>
+<li>「ダウンロード」をクリックします。</li>
+</ol>
+<div class="checkpoint">「プレビューできません」と出ても、ダウンロードへ進めます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+大学のアカウントでClassroomを開きます。リンクは教員が示したものを使い、配布URLはこの教材に推測で記載しません。画面の詳しい流れは学生マニュアルの画像を参照してください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 9: 大容量ファイルの警告が出たら -->
+<div class="slide-body installer-slide installer-image-slide" data-step="9">
+<h2>大容量ファイルの警告が出たら</h2>
+<p class="operation-place">ブラウザー｜Google Drive</p>
+<img class="zoomable-image installer-screenshot" src="./images/install-03-large-file-warning.png" width="480" height="151" alt="大容量ファイルの警告が出たらの実機画面">
+<p>ウイルスが検出されたという意味ではありません。</p>
+<p>ファイルサイズが大きいためGoogle Driveでスキャンできないという表示です。</p>
+<div class="checkpoint">授業の配布ZIPであることを確認して「このままダウンロード」。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+これは画像にあるGoogle Driveの大容量警告についての説明です。別の警告や不明な配布元について判断に迷った場合は教員を呼んでください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 10: ダウンロードが終わるまで待つ -->
+<div class="slide-body installer-slide" data-step="10">
+<h2>ダウンロードが終わるまで待つ</h2>
+<p class="operation-place">Windows｜ダウンロード</p>
+<ul>
+<li>ブラウザーでダウンロード完了を確認します。</li>
+<li>エクスプローラーで「ダウンロード」を開きます。</li>
+<li><strong>DSProg2026-Setup-2026.zip</strong> を探します。</li>
+</ul>
+<div class="checkpoint">拡張子が隠れている場合、種類は「圧縮 (zip 形式) フォルダー」です。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ダウンロードと展開は別の操作です。ファイルが大きいので完了するまで待ちます。遅い場合や通信が止まった場合は教員に知らせてください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 11: ZIPを右クリック →「すべて展開」 -->
+<div class="slide-body installer-slide installer-image-slide" data-step="11">
+<h2>ZIPを右クリック →「すべて展開」</h2>
+<p class="operation-place">Windows｜エクスプローラー</p>
+<img class="zoomable-image installer-screenshot" src="./images/install-05-extract-all.png" width="580" height="446" alt="ZIPを右クリック →「すべて展開」の実機画面">
+<p>ZIPを右クリックし、<strong>「すべて展開…」</strong> を選びます。</p>
+<div class="checkpoint">ZIPの中で直接インストーラを実行しません。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+画面と同じ右クリックメニューを開きます。画像をクリックすると拡大できます。次の画面の展開ボタンを押すところまで一緒に進めます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 12: 展開したフォルダーを開く -->
+<div class="slide-body installer-slide" data-step="12">
+<h2>展開したフォルダーを開く</h2>
+<p class="operation-place">Windows｜エクスプローラー</p>
+<ol>
+<li>表示された展開先のまま「展開」を押します。</li>
+<li>展開が終わるまで待ちます。</li>
+<li>展開した <strong>DSProg2026-Setup-2026</strong> を開きます。</li>
+</ol>
+<div class="checkpoint">種類が「ファイル フォルダー」の方を開きます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+既定の展開先で進められます。特別な場所への移動やフォルダー名の入力は不要です。ZIPと同じ名前に見える場合は種類欄で区別します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 13: 中身は、この5ファイル -->
+<div class="slide-body installer-slide installer-image-slide" data-step="13">
+<h2>中身は、この5ファイル</h2>
+<p class="operation-place">Windows｜展開したフォルダー</p>
+<img class="zoomable-image installer-screenshot" src="./images/install-09-package-files.png" width="493" height="212" alt="中身は、この5ファイルの実機画面">
+<p><strong>Install-DSProg2026.cmd</strong> が見つかれば次へ。</p>
+<p>拡張子が隠れていると「Install-DSProg2026」と表示されます。</p>
+<div class="checkpoint">ほかのファイルも、そのまま同じフォルダーに置いておきます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+五つはInstall-DSProg2026.cmd、Start.cmd、DSProg2026.wsl、DSProg2026.wsl.sha256、README.txtです。画像では拡張子の一部が隠れています。学生は環境本体や確認用ファイルを開く必要はありません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 14: Install-DSProg2026.cmdを開く -->
+<div class="slide-body installer-slide" data-step="14">
+<h2>Install-DSProg2026.cmdを開く</h2>
+<p class="operation-place">初回だけ｜Windows</p>
+<p><strong>Install-DSProg2026.cmd</strong> を</p>
+<p><strong>ダブルクリック</strong> します。</p>
+<p>開いた画面の案内に従います。</p>
+<div class="checkpoint">エラーが出たら、画面を閉じずに教員を呼んでください。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+コマンドの入力は不要です。WSL準備の案内や再起動の案内が出たら、教員と確認します。既存環境があるという表示でも削除してやり直さないでください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 15: インストール中は、そのまま待つ -->
+<div class="slide-body installer-slide installer-image-slide" data-step="15">
+<h2>インストール中は、そのまま待つ</h2>
+<p class="operation-place">開いた実行画面</p>
+<img class="zoomable-image installer-screenshot" src="./images/install-10-installing.png" width="746" height="220" alt="インストール中は、そのまま待つの実機画面">
+<p>ファイルの確認とインストールが進みます。</p>
+<p><strong>画面を閉じずに待ってください。</strong></p>
+<div class="checkpoint">パスワード入力の案内が出たら、次へ進みます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+確認に数分かかる場合があります。画像中の容量やパスは撮影したPCの例です。同じ数値や文字を入力・再現する必要はありません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 16: Linux用パスワードを2回入力 -->
+<div class="slide-body installer-slide" data-step="16">
+<h2>Linux用パスワードを2回入力</h2>
+<p class="operation-place">初回設定｜開いた実行画面</p>
+<ol>
+<li><code>New password:</code> に、自分のパスワードを入力。</li>
+<li>Enterを押します。</li>
+<li><code>Retype new password:</code> に、同じものを入力。</li>
+<li>Enterを押します。</li>
+</ol>
+<div class="checkpoint">入力中は文字も「●」も表示されません。そのまま入力します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Windowsとは別の、Linux用パスワードを本人が設定します。教員や他の学生にパスワードを伝える必要はありません。不一致やエラーが出たら画面を残して教員を呼んでください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 17: ここまで来たらインストール成功 -->
+<div class="slide-body installer-slide installer-image-slide" data-step="17">
+<h2>ここまで来たらインストール成功</h2>
+<p class="operation-place">確認①｜初回設定の完了</p>
+<img class="zoomable-image installer-screenshot" src="./images/install-11-password-complete.png" width="748" height="400" alt="ここまで来たらインストール成功の実機画面">
+<p><strong>passwd: password updated successfully</strong></p>
+<p>が表示され、入力待ちの行に戻れば完了です。</p>
+<div class="checkpoint">成功した人は、次のStart.cmdへ進みます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+画面下部のパスワード更新成功表示を確認します。途中のインストール完了だけでパスワード設定まで成功したとは判断しません。パソコン名の部分は人によって異なります。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 18: 授業を始めるときはStart.cmd -->
+<div class="slide-body installer-slide" data-step="18">
+<h2>授業を始めるときはStart.cmd</h2>
+<p class="operation-place">今回の起動・次回から毎回</p>
+<p>展開したフォルダーの</p>
+<p><strong>Start.cmd をダブルクリック</strong> します。</p>
+<p>拡張子が隠れていると「Start」と表示されます。</p>
+<div class="checkpoint">VS CodeがDSProg2026へ接続して開きます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+初回設定が成功してからStart.cmdを使います。インストーラを再実行する必要はありません。展開したフォルダーを次回も見つけられるようにしておきます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 19: VS Codeの接続先を確認 -->
+<div class="slide-body installer-slide" data-step="19">
+<h2>VS Codeの接続先を確認</h2>
+<p class="operation-place">確認②｜VS Code</p>
+<ul>
+<li>接続先に <strong>WSL: DSProg2026</strong> が見える。</li>
+<li>左側に <strong>work</strong> が開いている。</li>
+<li><strong>exercises</strong> や <strong>notebooks</strong> が見える。</li>
+</ul>
+<div class="checkpoint">この表示を確認してから、Python・Jupyter・Rの拡張を準備します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Start.cmdは授業用workを開きます。信頼を尋ねられたら教員配布の授業用workであることを確かめます。違う表示なら画面を残して相談してもらいます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 20: 拡張機能は、この画面で準備する -->
+<div class="slide-body installer-slide" data-step="20">
+<h2>拡張機能は、この画面で準備する</h2>
+<p class="operation-place">WSL: DSProg2026｜VS Code</p>
+<table>
+<thead>
+<tr>
+<th>必須の拡張</th>
+<th>Publisher</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>Microsoft</td>
+</tr>
+<tr>
+<td>Jupyter</td>
+<td>Microsoft</td>
+</tr>
+<tr>
+<td>R</td>
+<td>REditorSupport</td>
+</tr>
+</tbody>
+</table>
+<div class="checkpoint">Python・Jupyter・Rは、DSProg2026を開いたVS Codeでインストールしてください。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Windows側でWSLと日本語Language Packを準備した後、Start.cmdで接続した画面を使います。PythonとJupyterは次のNotebookの初回案内を優先します。Pylanceは通常Pythonと一緒に導入されるため個別検索は不要です。R SyntaxはR導入後の確認としてマニュアルに補足します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 21: Notebookから拡張の準備を始める -->
+<div class="slide-body installer-slide installer-image-slide" data-step="21">
+<h2>Notebookから拡張の準備を始める</h2>
+<p class="operation-place">WSL: DSProg2026｜notebooks</p>
+<img class="zoomable-image installer-screenshot" src="./images/notebook-python-01-select-kernel.png" width="187" height="128" alt="Notebook右上のカーネルの選択">
+<p><strong>notebooks/hello_python.ipynb</strong> を開きます。</p>
+<p>右上の <strong>「カーネルの選択」</strong> をクリックします。</p>
+<div class="checkpoint">まず拡張機能を準備します。セルの実行は後で確認します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+カーネルはセルを実行する環境のことです。既にカーネル名が表示されている場合は、その名前をクリックします。PythonやJupyterがまだない場合の正常な初回案内を次で説明します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 22: この案内が出たら「Python + Jupyter」 -->
+<div class="slide-body installer-slide installer-image-slide" data-step="22">
+<h2>この案内が出たら「Python + Jupyter」</h2>
+<p class="operation-place">初回のみ｜表示された場合</p>
+<img class="zoomable-image installer-screenshot" src="./images/notebook-python-02-install-python-jupyter.png" width="606" height="116" alt="拡張機能の候補をインストールまたは有効にする Python + Jupyter">
+<p><strong>「Python + Jupyter」</strong> を選んでインストールします。</p>
+<p>導入済みの場合、この画面は表示されません。</p>
+<div class="checkpoint">初回インストールにはインターネット接続が必要です。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この画面はトラブルではなく必要な拡張の正常な初回案内です。導入済みなら次へ進みます。案内がなく拡張が不足する場合だけ、マニュアルの補足でMicrosoftのPythonとJupyterを確認します。導入先はWSL: DSProg2026です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 23: R拡張もインストールする -->
+<div class="slide-body installer-slide installer-image-slide" data-step="23">
+<h2>R拡張もインストールする</h2>
+<p class="operation-place">WSL: DSProg2026｜拡張機能</p>
+<img class="zoomable-image installer-screenshot" src="./images/extensions-06-r.png" width="553" height="174" alt="REditorSupportのR拡張とインストールボタン">
+<p>「拡張機能」で <strong>R</strong> を検索。</p>
+<p>Publisherが <strong>REditorSupport</strong> のものを導入します。</p>
+<div class="checkpoint">「WSL: DSProg2026 にインストールする」と出た場合は、そのボタンを選びます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+引き続きDSProg2026を開いたVS Codeで操作します。インターネット接続が必要です。R SyntaxはRやR Markdownの色分け用です。R導入後の存在確認としてマニュアルの補足に記載し、独立した必須インストール操作にはしません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 24: Pythonのファイルを作って保存 -->
+<div class="slide-body installer-slide" data-step="24">
+<h2>Pythonのファイルを作って保存</h2>
+<p class="operation-place">VS Code｜exercises → lesson01</p>
+<ol>
+<li><code>lesson01</code> を右クリック →「新しいファイル」。</li>
+<li>名前を <code>hello.py</code> にします。</li>
+<li>次の1行を書き、Ctrl＋Sで保存します。</li>
+</ol>
+<pre><code class="language-python">print(&quot;Hello, World!&quot;)
+</code></pre>
+<div class="checkpoint">同じ名前のファイルがある人は、それを開いて確認します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+授業用work全体を開いたまま操作します。既にファイルがあれば上書きして作り直さず内容を確認します。コードの引用符や括弧は半角です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 25: 「ターミナル」→「タスクの実行…」 -->
+<div class="slide-body installer-slide installer-image-slide" data-step="25">
+<h2>「ターミナル」→「タスクの実行…」</h2>
+<p class="operation-place">VS Code｜保存したhello.pyのタブを選ぶ</p>
+<img class="zoomable-image installer-screenshot" src="./images/install-12-vscode-task-menu.png" width="765" height="368" alt="「ターミナル」→「タスクの実行…」の実機画面">
+<p>上の <strong>「ターミナル」→「タスクの実行…」</strong> を選びます。</p>
+<div class="checkpoint">メニューが見えない場合は、VS Codeを最大化します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+実行したいファイルのタブを先に選びます。画像ではhello.pyが開かれています。手入力のコマンドや右上の実行ボタンを案内する必要はありません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 26: ファイルに合うタスクを選ぶ -->
+<div class="slide-body installer-slide installer-image-slide" data-step="26">
+<h2>ファイルに合うタスクを選ぶ</h2>
+<p class="operation-place">VS Code｜タスクの選択</p>
+<img class="zoomable-image installer-screenshot" src="./images/install-13-vscode-task-select.png" width="616" height="88" alt="ファイルに合うタスクを選ぶの実機画面">
+<table>
+<thead>
+<tr>
+<th>開いているファイル</th>
+<th>選ぶタスク</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hello.py</code></td>
+<td>授業: Pythonファイルを実行</td>
+</tr>
+<tr>
+<td><code>hello.R</code></td>
+<td>授業: Rファイルを実行</td>
+</tr>
+</tbody>
+</table>
+<div class="checkpoint">今はhello.pyなので、Pythonのタスクを選びます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+タスク名は配布された授業用設定に基づきます。候補がない場合は学生に設定を作らせず教員が確認します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 27: Hello, World! が出たら成功 -->
+<div class="slide-body installer-slide installer-image-slide" data-step="27">
+<h2>Hello, World! が出たら成功</h2>
+<p class="operation-place">確認③｜VS Code下部のターミナル</p>
+<img class="zoomable-image installer-screenshot" src="./images/install-14-python-success.png" width="924" height="242" alt="Hello, World! が出たら成功の実機画面">
+<p><strong>Hello, World!</strong> が、プログラムの実行結果です。</p>
+<div class="checkpoint">上の長いコマンドや、下の「再利用されます」は入力不要です。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+下部のターミナルに表示された結果を一緒に確認します。実行コマンドはタスクが自動で出しています。ターミナルの再利用案内はエラーではありません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 28: Rも同じ流れで実行 -->
+<div class="slide-body installer-slide" data-step="28">
+<h2>Rも同じ流れで実行</h2>
+<p class="operation-place">VS Code｜exercises → lesson01</p>
+<ol>
+<li><code>hello.R</code> を作り、次の1行を書いて保存。</li>
+</ol>
+<pre><code class="language-r">print(&quot;Hello, World!&quot;)
+</code></pre>
+<ol start="2">
+<li>「タスクの実行…」→「授業: Rファイルを実行」。</li>
+</ol>
+<div class="checkpoint">ターミナルに [1] "Hello, World!" と表示されれば成功です。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+PythonとRでファイルの末尾と選ぶタスクが異なります。同名ファイルがある場合はそれを開いて確認します。Rの結果に付く角括弧の1はエラーではありません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 29: 保存できたことも確認 -->
+<div class="slide-body installer-slide" data-step="29">
+<h2>保存できたことも確認</h2>
+<p class="operation-place">VS Code｜作成したファイル</p>
+<ol>
+<li>Ctrl＋Sで保存します。</li>
+<li>ファイルのタブを閉じます。</li>
+<li>左側から同じファイルを開きます。</li>
+</ol>
+<div class="checkpoint">書いた1行が残っていれば、保存できています。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+PythonとRの両方を確認します。表示された結果と保存されたコードは別です。今後の授業でも保存してから実行する流れを使います。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 30: Notebookで環境の動作を確認する -->
+<div class="slide-body installer-slide" data-step="30">
+<h2>Notebookで環境の動作を確認する</h2>
+<p class="operation-place">必須の到達確認｜Pythonから</p>
+<ol>
+<li><strong>notebooks/hello_python.ipynb</strong> に戻ります。</li>
+<li>右上の「カーネルの選択」または現在の名前をクリック。</li>
+<li><strong>「Python 環境…」</strong> を選びます。</li>
+</ol>
+<div class="checkpoint">Notebookはセル横の▶で実行します。ファイル用のタスクは使いません。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+単なる機能紹介ではなく環境が正しくできたかを確認するテストです。既にカーネルが選択されている場合は「別のカーネルを選択...」からPython環境へ進みます。拡張の初回案内が出た場合は前のPython + Jupyterの手順で導入します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 31: 授業用のPython環境を選ぶ -->
+<div class="slide-body installer-slide installer-image-slide" data-step="31">
+<h2>授業用のPython環境を選ぶ</h2>
+<p class="operation-place">Python Notebook｜カーネル</p>
+<img class="zoomable-image installer-screenshot" src="./images/notebook-python-03-select-environment.png" width="605" height="160" alt="dsprog2026と.venv/bin/pythonを選ぶPython環境一覧">
+<p><strong>dsprog2026</strong></p>
+<p><strong>.venv/bin/python</strong></p>
+<div class="checkpoint">バージョン番号は実環境で変わります。名前とパスを確認します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+画像の3.14.7は撮影時の例です。システムのPythonや別の環境を選ばず、dsprog2026と.venv/bin/pythonを確認します。候補がなければ画面を残して教員を呼んでください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 32: Pythonのセルを上から実行する -->
+<div class="slide-body installer-slide installer-image-slide" data-step="32">
+<h2>Pythonのセルを上から実行する</h2>
+<p class="operation-place">Python Notebook｜セル横の▶</p>
+<img class="zoomable-image installer-screenshot" src="./images/notebook-python-04-run.png" width="1092" height="408" alt="Python Notebookの実行成功とこんにちは、Python!の表示">
+<p>上から順に、セル横の <strong>▶</strong> を押します。</p>
+<p><strong>「こんにちは、Python!」</strong> が表示されます。</p>
+<div class="checkpoint">文字の表示ができたら、その下の計算・グラフのセルへ進みます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Notebookのセルは上から順番に実行します。画像では句読点後に空白がありますが、文字が正常に表示されることを確認します。文字だけで完了とせず、matplotlibの日本語グラフまで確認します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 33: Pythonの日本語グラフを確認 -->
+<div class="slide-body installer-slide notebook-plot-slide" data-step="33">
+<h2>Pythonの日本語グラフを確認</h2>
+<p class="operation-place">Python Notebook｜matplotlib</p>
+<div class="notebook-plot-layout">
+<div class="notebook-plot-window plot-python">
+<img class="zoomable-image notebook-plot-image" src="./images/notebook-python-05-plot.png" width="1063" height="1000" alt="pythonの日本語タイトル「得点のグラフ」と軸ラベル「番号」「得点」">
+</div>
+<div class="notebook-plot-caption">
+<p>タイトル「得点のグラフ」、軸「番号」「得点」を確認。</p>
+<div class="checkpoint">日本語タイトルのグラフまで表示されたらPython環境はOK</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+グラフの形に加え、日本語が四角や文字化けになっていないことを確認します。原画像はクリックで全体を拡大できます。確認後はCtrl＋Sで保存します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 34: R Notebookのカーネルを変更する -->
+<div class="slide-body installer-slide installer-image-slide" data-step="34">
+<h2>R Notebookのカーネルを変更する</h2>
+<p class="operation-place">notebooks/hello_r.ipynb を開く</p>
+<img class="zoomable-image installer-screenshot" src="./images/notebook-r-01-change-kernel.png" width="338" height="94" alt="R NotebookでPythonが現在選択され、別のカーネルを選択を選ぶ画面">
+<p>右上の <strong>現在のカーネル名</strong> をクリック。</p>
+<p><strong>「別のカーネルを選択…」</strong> を選びます。</p>
+<div class="checkpoint">Pythonが選ばれていても、これからRへ変更できます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Python Notebookとは別のファイルhello_r.ipynbを開きます。まだカーネル名がなければ「カーネルの選択」から次のJupyter Kernelへ進みます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 35: 「Jupyter Kernel...」を選ぶ -->
+<div class="slide-body installer-slide installer-image-slide" data-step="35">
+<h2>「Jupyter Kernel…」を選ぶ</h2>
+<p class="operation-place">R Notebook｜カーネルの種類</p>
+<img class="zoomable-image installer-screenshot" src="./images/notebook-r-02-select-jupyter-kernel.png" width="376" height="138" alt="別のカーネルを選択からJupyter Kernelを選ぶ画面">
+<p><strong>「Jupyter Kernel…」</strong> を選びます。</p>
+<div class="checkpoint">次の一覧で、授業用のRを探します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここではPython環境ではなくJupyter Kernelを選びます。表示された候補を一つずつ確認して進めます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 36: 授業用のRカーネルを選ぶ -->
+<div class="slide-body installer-slide installer-image-slide" data-step="36">
+<h2>授業用のRカーネルを選ぶ</h2>
+<p class="operation-place">R Notebook｜カーネル</p>
+<img class="zoomable-image installer-screenshot" src="./images/notebook-r-03-select-r-kernel.png" width="367" height="115" alt="R (DSProg2026)と/usr/lib/R/bin/Rのカーネル候補">
+<p><strong>R (DSProg2026)</strong></p>
+<p><strong>/usr/lib/R/bin/R</strong></p>
+<div class="checkpoint">Pythonではなく、Rの名前とパスを確認します。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この一覧にはPythonも表示されています。R (DSProg2026)を選び、Notebook右上の表示もRに変わったことを確認します。候補がなければ画面を残して教員を呼んでください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 37: Rのセルも上から実行する -->
+<div class="slide-body installer-slide installer-image-slide" data-step="37">
+<h2>Rのセルも上から実行する</h2>
+<p class="operation-place">R Notebook｜セル横の▶</p>
+<img class="zoomable-image installer-screenshot" src="./images/notebook-r-04-run.png" width="1022" height="384" alt="R Notebookの実行成功とこんにちは、R!の表示">
+<p>上から順に、セル横の <strong>▶</strong> を押します。</p>
+<p><strong>「こんにちは、R!」</strong> が表示されます。</p>
+<div class="checkpoint">結果の先頭に付く [1] はエラーではありません。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Rでも文字だけで終えず、計算とggplot2のグラフのセルまで順番に実行します。Rファイルの授業用タスクはNotebookには使いません。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 38: Rの日本語グラフを確認 -->
+<div class="slide-body installer-slide notebook-plot-slide" data-step="38">
+<h2>Rの日本語グラフを確認</h2>
+<p class="operation-place">R Notebook｜ggplot2</p>
+<div class="notebook-plot-layout">
+<div class="notebook-plot-window plot-r">
+<img class="zoomable-image notebook-plot-image" src="./images/notebook-r-05-plot.png" width="1043" height="964" alt="rの日本語タイトル「得点のグラフ」と軸ラベル「番号」「得点」">
+</div>
+<div class="notebook-plot-caption">
+<p>タイトル「得点のグラフ」、軸「番号」「得点」を確認。</p>
+<div class="checkpoint">日本語タイトルのグラフまで表示されたらR環境もOK</div>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+日本語タイトルと軸ラベルが文字化けせず表示されていることを確認します。原画像はクリックで全体を拡大できます。PythonとRの両方が動いたことを確認し、Ctrl＋Sで保存します。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 39: 終わるとき・次の授業 -->
+<div class="slide-body installer-slide" data-step="39">
+<h2>終わるとき・次の授業</h2>
+<p class="operation-place">毎回の操作</p>
+<p><strong>終わるとき</strong></p>
+<p>Ctrl＋Sで保存して、VS Codeを閉じます。</p>
+<p><strong>次の授業</strong></p>
+<p><code>Start.cmd</code> をダブルクリックします。</p>
+<div class="checkpoint">展開したフォルダーを、次回も使えるように残しておきます。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+作成した課題は授業の指示に従って提出・バックアップします。配布ZIPには作成後の課題は保存されません。起動用ファイルの場所を今日のうちに確認しておきます。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 40: 今日の確認①：導入とファイル実行 -->
+<div class="slide-body installer-slide" data-step="40">
+<h2>今日の確認①：導入とファイル実行</h2>
+<p class="operation-place">到達点の確認</p>
+<ul>
+<li>✓ DSProg2026がインストールできた</li>
+<li>✓ Start.cmdでVS Codeが開く</li>
+<li>✓ WSL: DSProg2026 に接続できる</li>
+<li>✓ Pythonファイルを実行できる</li>
+<li>✓ Rファイルを実行できる</li>
+</ul>
+<div class="checkpoint">保存したファイルを開き直せることも確認しましょう。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Linux用パスワード設定までの完了、起動、接続、両言語のファイル実行を分けて確認します。ここで終わりではなく、次のNotebookの確認も必須です。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 41: 今日の確認②：Notebookとグラフ -->
+<div class="slide-body installer-slide" data-step="41">
+<h2>今日の確認②：Notebookとグラフ</h2>
+<p class="operation-place">両方できたら準備完了</p>
+<ul>
+<li>✓ Python Notebookを実行できる</li>
+<li>✓ R Notebookを実行できる</li>
+<li>✓ Python/Rのグラフが日本語付きで表示できる</li>
+</ul>
+<div class="checkpoint">前の5項目とこの3項目がそろえば「授業用環境の準備完了」。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+PythonとRの挨拶、計算、グラフをそれぞれ確認します。タイトルと軸ラベルが読めることが成功条件です。途中の人はできた項目と止まった操作を教員に伝えてください。
+</aside>
+            </section>
+
+
+
+
+
+        <section >
+
+            <!-- 42: 困ったら、画面を閉じずに呼ぶ -->
+<div class="slide-body installer-slide" data-step="42">
+<h2>困ったら、画面を閉じずに呼ぶ</h2>
+<p class="operation-place">エラー・画面が違うとき</p>
+<p><strong>エラーが出たら画面を閉じずに
+教員を呼んでください。</strong></p>
+<p>「何を開いたか」「どこで止まったか」を伝えます。</p>
+<div class="checkpoint">自分で環境を削除したり、最初から入れ直したりしません。</div>
+</div>
+<p><audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+学生には複雑な自己診断を求めません。教員はWSL本体、版取得、既存環境、配布物の破損、容量、VS Codeと拡張を確認します。パスワードは聞き取らないでください。
 </aside>
 <script src="./image-zoom.js"></script>
             </section>
-    
+
 
 
     </div>
@@ -1707,7 +1093,7 @@ uv run --locked jupyter lab
 <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
 <!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
 
-  
+
 
 <script>
   const printPlugins = [
@@ -1822,12 +1208,12 @@ uv run --locked jupyter lab
         playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
         startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
       },
-      
+
       chalkboard: { // font-awesome.min.css must be available
         //src: "chalkboard/chalkboard.json",
         storage: "chalkboard-demo",
       },
-      
+
 			customcontrols: {
 					controls: [
       						{
@@ -1847,7 +1233,7 @@ uv run --locked jupyter lab
         title: 'Toggle notes canvas (C)',
         action: 'RevealChalkboard.toggleNotesCanvas();'
       }
-      
+
 				]
 			},
 			chart: {
@@ -1888,7 +1274,7 @@ uv run --locked jupyter lab
 			// Learn about plugins: https://revealjs.com/plugins/
 			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
 		});
-			
+
 
 
 	    // Change chalkboard theme : 
@@ -1914,7 +1300,7 @@ uv run --locked jupyter lab
       		setTimeout(() => {
 				window.print();
 			  }, 2500);
-			
+
     }
 </script>
 

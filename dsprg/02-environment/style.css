@@ -591,3 +591,71 @@ body.image-zoom-open {
 .reveal .manifest-slide ul { margin-top: 0.25em; margin-bottom: 0.25em; }
 .reveal .wsl-status-slide .setup-screenshot { max-height: 220px; }
 .reveal .slides .admin-setup-slide pre code { padding: 14px 24px; }
+
+/* 2026-10-06 installer: one operation and one large image per slide. */
+.reveal .installer-slide { font-size: 0.88em; }
+.reveal .installer-slide h2 { font-size: 1.20em; }
+.reveal .installer-slide .checkpoint { font-size: 0.84em; }
+.reveal .installer-slide code { overflow-wrap: normal; word-break: normal; }
+.reveal .installer-screenshot {
+  display: block;
+  margin: 0.35em auto 0.55em;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  border: 1px solid var(--academic-line);
+}
+.reveal .installer-image-slide { font-size: 0.82em; }
+.reveal .installer-image-slide .installer-screenshot { min-width: 65%; }
+.reveal .installer-image-slide p { margin: 0.45em 0; }
+.reveal .installer-image-slide .operation-place { margin-bottom: 0.4em; }
+
+/* Notebook success: show the real plot at a readable size without editing PNGs.
+   The existing zoom opens the complete original screenshot. */
+.reveal .notebook-plot-layout {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.reveal .notebook-plot-window {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  border: 1px solid var(--academic-line);
+  background: white;
+  width: 620px;
+  height: 535px;
+}
+.reveal .notebook-plot-window .notebook-plot-image {
+  position: absolute;
+  max-width: none;
+  max-height: none;
+  height: auto;
+  margin: 0;
+  border: 0;
+}
+.reveal .plot-python .notebook-plot-image {
+  width: 1120px;
+  left: -52px;
+  top: -544px;
+}
+.reveal .plot-r .notebook-plot-image {
+  width: 1314px;
+  left: -43px;
+  top: -641px;
+}
+.reveal .notebook-plot-caption { flex: 1; min-width: 0; }
+.reveal .notebook-plot-caption .checkpoint { font-size: 0.92em; }
+.reveal .notebook-plot-slide .operation-place { margin: 0.2em 0; }
+
+/* Wider picker captures keep the Python environment name/path readable. */
+.reveal .installer-image-slide img[src$="notebook-python-02-install-python-jupyter.png"],
+.reveal .installer-image-slide img[src$="notebook-python-03-select-environment.png"] {
+  width: 90%;
+  min-width: 0;
+}
+
+/* Keep graph screenshots full size; place their audio in the caption column. */
+.reveal .notebook-plot-caption audio { width: 100%; min-width: 0; }
