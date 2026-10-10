@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="仮想標本から平均と95%信頼区間を計算する90分の授業">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第5回 乱数と統計的推測</title>
+<link rel="stylesheet" href="reveal/reveal.css">
+<link rel="stylesheet" href="reveal/theme/white.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第5回：平均は、毎回同じ？ -->
+<div class="slide-body">
+<h2 id="第5回平均は毎回同じ">第5回：平均は、毎回同じ？</h2>
+<p class="operation-place">
+0–5分
+</p>
+<p><strong>DSプログラミング入門2026｜乱数と統計的推測</strong></p>
+<ul>
+<li>同じ条件で、結果を再現する。</li>
+<li>新しい標本で、平均の違いを見る。</li>
+<li>区間で、不確かさを表す。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日は平均を一つ出すだけでなく、その値が標本によって変わることを体験します。予想を残してから実行しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 第4回の道具を、もう一度 -->
+<div class="slide-body">
+<h2 id="第4回の道具をもう一度">第4回の道具を、もう一度</h2>
+<ul>
+<li>平均：値を足して、件数で割る。</li>
+<li>標本標準偏差：値のばらつきを表す。</li>
+<li>今回も分母は <strong>n−1</strong>。</li>
+</ul>
+<p><strong>12個なら、分母はいくつ？</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+答えは11です。平均と標準偏差の計算は配布例を使います。覚えていなくても、使う行を見つけるところから始めてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: workを開き、対象ファイルを選ぶ -->
+<div class="slide-body">
+<h2
+id="workを開き対象ファイルを選ぶ">workを開き、対象ファイルを選ぶ</h2>
+<ol type="1">
+<li>Start.cmdからVS Codeを開く。</li>
+<li><code>WSL: DSProg2026</code> と <code>work</code> を確認。</li>
+<li><code>exercises/lesson05/lesson05.R</code> を開く。</li>
+</ol>
+<p><strong>lesson05だけを開き直さない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日はRから始めます。未準備の人には配布済みのファイルを案内します。再インストールは行いません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 予想：12個の平均は50になる？ -->
+<div class="slide-body">
+<h2 id="予想12個の平均は50になる">予想：12個の平均は50になる？</h2>
+<p class="operation-place">
+5–15分
+</p>
+<p>仮想母集団：平均 <strong>50</strong>、標準偏差
+<strong>10</strong></p>
+<p>ここから、独立に12個の値を取り出す。</p>
+<p><strong>平均は、毎回ちょうど50になるでしょうか。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この段階では正解を見せずに予想を聞きます。全体の平均と一部の平均の違いを、実行して確かめるための問いです。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 母集団と標本を分ける -->
+<div class="slide-body">
+<h2 id="母集団と標本を分ける">母集団と標本を分ける</h2>
+<p><strong>母集団</strong>：推測したい全体</p>
+<p>↓ 今回は独立な正規乱数で取り出す</p>
+<p><strong>標本</strong>：今回得た12個の値</p>
+<p>実際の学生の成績・学習時間ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+正規分布は中心付近が多い釣鐘型のモデルです。標本12個の形がきれいな釣鐘型になる必要はありません。単位は授業用の任意単位です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: seedは、開始状態の番号 -->
+<div class="slide-body">
+<h2 id="seedは開始状態の番号">seedは、開始状態の番号</h2>
+<ul>
+<li>同じ環境・同じコード・同じseedで再現。</li>
+<li>seedを変えると、別の標本が得られる。</li>
+<li><strong>最初から実行</strong>して比べる。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+乱数は再現可能な疑似乱数です。標本を作る行だけを続けて実行すると続きの乱数になります。ファイル全体を最初から実行することが今回の操作です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: 二つの言語で、そろえるもの -->
+<div class="slide-body">
+<h2 id="二つの言語でそろえるもの">二つの言語で、そろえるもの</h2>
+<table>
+<thead>
+<tr>
+<th>そろえる</th>
+<th>一致を要求しない</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>母平均50、母標準偏差10</td>
+<td>個々の乱数値</td>
+</tr>
+<tr>
+<td>標本サイズ12</td>
+<td>標本平均の値</td>
+</tr>
+<tr>
+<td>分母n−1、同じ区間の定義</td>
+<td>区間の端点の値</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+同じseed番号でも乱数の作り方が言語で違います。RとPythonの数字を一致させる課題ではありません。両言語で同じ考え方を確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: R：設定と標本を読む -->
+<div class="slide-body">
+<h2 id="r設定と標本を読む">R：設定と標本を読む</h2>
+<p class="operation-place">
+15–30分
+</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>seed <span class="ot">&lt;-</span> <span class="dv">2026</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(seed)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)</span></code></pre></div>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+これらは配布主例の冒頭です。seedと件数を指してください。正規乱数を作る関数がrnormです。新しい関数の定義は不要です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: R：保存して、全体を実行 -->
+<div class="slide-body">
+<h2 id="r保存して全体を実行">R：保存して、全体を実行</h2>
+<ol type="1">
+<li><code>lesson05.R</code> を開き、Ctrl+S。</li>
+<li>［ターミナル］→［タスクの実行…］。</li>
+<li>［授業: Rファイルを実行］を選ぶ。</li>
+<li>標本12個と、平均を確認する。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここは実演後に学生の実行を待ちます。出力はターミナルのタスク終了案内より上にあります。区間の行まで既に出ますが、まず標本と平均を読みます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: R：再実行しても同じ？ -->
+<div class="slide-body">
+<h2 id="r再実行しても同じ">R：再実行しても同じ？</h2>
+<p><strong>同じファイルを、もう一度最初から実行。</strong></p>
+<ul>
+<li>標本の先頭の値を比べる。</li>
+<li>平均を比べる。</li>
+<li>再現できたら、隣の人に確認方法を説明。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+同じ値になったら今回の再現性の確認は成功です。違う場合は保存、seed、実行したタブを一つずつ見ます。環境を作り直す作業はしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: R：標本から求める二つの数 -->
+<div class="slide-body">
+<h2 id="r標本から求める二つの数">R：標本から求める二つの数</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>average <span class="ot">&lt;-</span> <span class="fu">mean</span>(sample)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sd</span>(sample)</span></code></pre></div>
+<p>母集団の50・10と、標本の平均・標準偏差を区別。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+標本平均は約44.215、標本標準偏差は約7.829になります。母集団の設定をそのまま表示する計算ではありません。第4回の分母の定義を再利用します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: 平均を、一点だけで答えない -->
+<div class="slide-body">
+<h2 id="平均を一点だけで答えない">平均を、一点だけで答えない</h2>
+<p><strong>標本が変われば、平均も変わる。</strong></p>
+<p>平均の推測に、幅を持たせる。</p>
+<p>下限 ───── 標本平均 ───── 上限</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここから95パーセント信頼区間を導入します。この幅は個々の値のばらつきそのものではなく、母平均を推測するための幅です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: 配布の式で、区間を計算する -->
+<div class="slide-body">
+<h2 id="配布の式で区間を計算する">配布の式で、区間を計算する</h2>
+<p><strong>標本平均 ± tの臨界値 × 標本標準偏差 / √n</strong></p>
+<ul>
+<li>独立な正規乱数の標本を前提にする。</li>
+<li>今回はn=12、自由度n−1=11。</li>
+<li>証明や手計算の暗記は不要。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+母標準偏差の設定は10ですが、今回は未知として標本標準偏差から推定する方法を学びます。区間がどこから来るかを配布式で確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: R：平均から両端へ -->
+<div class="slide-body">
+<h2 id="r平均から両端へ">R：平均から両端へ</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>critical <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>margin <span class="ot">&lt;-</span> critical <span class="sc">*</span> s <span class="sc">/</span> <span class="fu">sqrt</span>(n)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>lower <span class="ot">&lt;-</span> average <span class="sc">-</span> margin</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>upper <span class="ot">&lt;-</span> average <span class="sc">+</span> margin</span></code></pre></div>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+両側95パーセントでは両端に2.5パーセントずつ残すので0.975を使います。marginは区間全体の幅ではなく、中心から端までの距離です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: Rの主例は、50を含まない -->
+<div class="slide-body">
+<h2 id="rの主例は50を含まない">Rの主例は、50を含まない</h2>
+<p>seed=2026、n=12</p>
+<p><strong>95%信頼区間：約39.241〜49.190</strong></p>
+<p>この一回だけで、計算間違いといえる？</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+実環境で確認した主例は50を含みません。意図的に結果を変えず、この例を使います。まず計算条件を確認し、正しい方法でも含まない区間が出ることを説明します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: 95%は、方法を繰り返したときの割合 -->
+<div class="slide-body">
+<h2
+id="は方法を繰り返したときの割合">95%は、方法を繰り返したときの割合</h2>
+<p>標本を繰り返し取り、同じ方法で区間を作る。</p>
+<p><strong>おおむね95%の区間が、真の母平均を含む。</strong></p>
+<p>一つの区間に母平均が95%の確率で存在する、 という意味ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+母平均は固定された値です。標本を取り直すと区間が変わります。今手元にある区間は母平均を含むか含まないかのいずれかです。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: Python：標本を作る -->
+<div class="slide-body">
+<h2 id="python標本を作る">Python：標本を作る</h2>
+<p class="operation-place">
+30–45分
+</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>seed <span class="op">=</span> <span class="dv">2026</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">12</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> rng.normal(mu, sigma, n)</span></code></pre></div>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+30分でPythonへ切り替えます。配布ファイルを開くので入力時間を増やしません。Rとの共通点と、開始状態の作り方の違いを確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: Python：平均と標本標準偏差 -->
+<div class="slide-body">
+<h2 id="python平均と標本標準偏差">Python：平均と標本標準偏差</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>average <span class="op">=</span> np.mean(sample)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> np.std(sample, ddof<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div>
+<p><strong>ddof=1を残す。分母はn−1。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+NumPyの既定値は分母nなので、明示してそろえます。第4回に使った道具と異なる場合も、関数の既定値を確認する習慣をつけます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: Python：配布の区間計算を使う -->
+<div class="slide-body">
+<h2 id="python配布の区間計算を使う">Python：配布の区間計算を使う</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> t</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>critical <span class="op">=</span> t.ppf(<span class="fl">0.975</span>, df<span class="op">=</span>n <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>margin <span class="op">=</span> critical <span class="op">*</span> s <span class="op">/</span> np.sqrt(n)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>lower <span class="op">=</span> average <span class="op">-</span> margin</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>upper <span class="op">=</span> average <span class="op">+</span> margin</span></code></pre></div>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+学生環境にはSciPyがあります。配布コードにはSciPyのない採点環境向けの処理も付いていますが、学生が編集する必要はありません。固定値はnが12のときに限られます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: Python：保存→実行→再実行 -->
+<div class="slide-body">
+<h2 id="python保存実行再実行">Python：保存→実行→再実行</h2>
+<ol type="1">
+<li><code>lesson05.py</code> を開き、Ctrl+S。</li>
+<li>［授業: Pythonファイルを実行］。</li>
+<li>平均と、区間の両端を読む。</li>
+<li>最初から再実行し、同じ結果か比べる。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+学生の操作を待ちます。平均は約50.022です。Rの約44.215とは異なって構いません。下限と上限の間に標本平均があることも確かめます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: 同じ母集団でも、平均は動く -->
+<div class="slide-body">
+<h2 id="同じ母集団でも平均は動く">同じ母集団でも、平均は動く</h2>
+<p><img width="1440" height="900" class="zoomable-image lesson05-figure" src="./images/means.png" alt="PythonとRでseed2000から2011の各標本平均を比較。母平均50の両側に変動する。"></p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+図は各回12個、母平均50、母標準偏差10を固定した実測です。横が標本平均、縦がseedです。反復コードを書く課題はありません。両言語の点は違っても、平均が変動するという考え方は同じです。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: 演習：変えるのはseedと幅の表示 -->
+<div class="slide-body">
+<h2
+id="演習変えるのはseedと幅の表示">演習：変えるのはseedと幅の表示</h2>
+<p class="operation-place">
+45–65分
+</p>
+<p><strong>seedを2026→2027へ変更する。</strong></p>
+<ul>
+<li>主例を <code>exercise05.py</code> / <code>.R</code> へコピー。</li>
+<li>n=12、mu=50、sigma=10を保つ。</li>
+<li>区間幅＝上限−下限を計算・表示。</li>
+</ul>
+<p><strong>両言語で行う。実行前に予想を一言。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここから45分から65分を作業時間にします。主例と同じ内容の演習ファイルを配布済みならコピー操作は不要です。次の解答のスライドへ先に進まず、作業を待ってください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: ヒント：幅はどこからどこまで？ -->
+<div class="slide-body">
+<h2 id="ヒント幅はどこからどこまで">ヒント：幅はどこからどこまで？</h2>
+<p>下限 ├────────────┤ 上限</p>
+<p><strong>上限から下限を引く。</strong></p>
+<ul>
+<li>計算結果に <code>width</code> という名前を付ける。</li>
+<li>次の行で、その値を表示する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+最初は式のヒントだけを示します。代入や表示で止まった学生には、既にあるaverageやprint、catの行を指します。完成解答は仕上げ時間の後に見せます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: Copilotの提案も、実行して確かめる -->
+<div class="slide-body">
+<h2
+id="copilotの提案も実行して確かめる">Copilotの提案も、実行して確かめる</h2>
+<p>「区間幅を出したい。完成コードではなく、
+引き算と表示のヒントをください」</p>
+<p><strong>検証</strong></p>
+<ul>
+<li>上限−下限を電卓で確かめる。</li>
+<li>同じseedで最初から再実行する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+AIに正しいと言われただけでは確認になりません。使えない学生にも同じヒントを教員から提供します。利用の有無は点数に関係しません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: 両言語を仕上げて照合する -->
+<div class="slide-body">
+<h2 id="両言語を仕上げて照合する">両言語を仕上げて照合する</h2>
+<p class="operation-place">
+65–80分
+</p>
+<ul>
+<li>seedは2027、nは12のまま？</li>
+<li>標本と平均は主例から変わった？</li>
+<li>同じseedで再現した？</li>
+<li>区間幅は正で、上限−下限と一致した？</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+65分から80分は仕上げに使います。終わっていない学生にも保存と提出を促します。両方のファイルが実行できたことを確認してから答え合わせへ進みます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: 演習後：Rの標本と平均 -->
+<div class="slide-body">
+<h2 id="演習後rの標本と平均">演習後：Rの標本と平均</h2>
+<p><img width="1440" height="900" class="zoomable-image lesson05-figure" src="./images/samples_r.png" alt="Rでseed2026と2027の12個の標本と標本平均を比較する。"></p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+丸が標本の値、ひし形が標本平均、破線が母平均です。母集団の条件を変えなくても、標本が変わり平均も動きました。図をクリックすると拡大できます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 演習後：Pythonの標本と平均 -->
+<div class="slide-body">
+<h2 id="演習後pythonの標本と平均">演習後：Pythonの標本と平均</h2>
+<p><img width="1440" height="900" class="zoomable-image lesson05-figure" src="./images/samples_python.png" alt="Pythonでseed2026と2027の12個の標本と標本平均を比較する。"></p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+Pythonではseedを2027へ変えると平均が下がります。Rでは上がりました。同じ方向への変化を要求しません。どちらも標本平均の変動を表しています。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: 演習後：追加する2行 -->
+<div class="slide-body">
+<h2 id="演習後追加する2行">演習後：追加する2行</h2>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> upper <span class="op">-</span> lower</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;区間幅:&quot;</span>, width)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>width <span class="ot">&lt;-</span> upper <span class="sc">-</span> lower</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;区間幅:&quot;</span>, width, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+二つの言語で書き方は違っても、上限から下限を引いて表示するという処理は同じです。答えの数値を定数で書き込まず、自分の標本から計算してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 演習後：数値を照合する -->
+<div class="slide-body">
+<h2 id="演習後数値を照合する">演習後：数値を照合する</h2>
+<table>
+<thead>
+<tr>
+<th>seed=2027</th>
+<th style="text-align: right;">Python</th>
+<th style="text-align: right;">R</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>平均</td>
+<td style="text-align: right;">45.942</td>
+<td style="text-align: right;">46.014</td>
+</tr>
+<tr>
+<td>標本標準偏差</td>
+<td style="text-align: right;">8.141</td>
+<td style="text-align: right;">10.106</td>
+</tr>
+<tr>
+<td>下限</td>
+<td style="text-align: right;">40.769</td>
+<td style="text-align: right;">39.593</td>
+</tr>
+<tr>
+<td>上限</td>
+<td style="text-align: right;">51.114</td>
+<td style="text-align: right;">52.435</td>
+</tr>
+<tr>
+<td>区間幅</td>
+<td style="text-align: right;">10.345</td>
+<td style="text-align: right;">12.842</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+表示は小数第3位へ丸めています。各言語の現行学生環境で実行した結果です。言語間の数値一致ではなく、自分の言語の結果と照合します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: 20回の例を、区間で見る -->
+<div class="slide-body">
+<h2 id="回の例を区間で見る">20回の例を、区間で見る</h2>
+<p><img width="1440" height="900" class="zoomable-image lesson05-figure" src="./images/intervals_r.png" alt="Rのseed2000から2019で作った20個の信頼区間と母平均50の縦線。含まない区間はばつ印で示す。"></p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+母平均50の縦線をまたぐ区間と、またがない区間を読みます。少ない回数でちょうど95パーセントになる保証はありません。この図の反復コードは教員用です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 31: 理解確認：自分の言葉で -->
+<div class="slide-body">
+<h2 id="理解確認自分の言葉で">理解確認：自分の言葉で</h2>
+<p class="operation-place">
+80–85分
+</p>
+<ol type="1">
+<li>同じseedで再実行するとき、何をそろえる？</li>
+<li>同じ母集団でも、平均が50と違うのはなぜ？</li>
+<li>区間が50を含まないとき、直ちに誤り？</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+80分から85分の形成的確認です。一つ目は環境、コード、開始状態。二つ目は標本による変動。三つ目は含まないだけでは誤りと決められない、という答えを引き出します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 32: Formsへ、両コードの全文を提出 -->
+<div class="slide-body">
+<h2 id="formsへ両コードの全文を提出">Formsへ、両コードの全文を提出</h2>
+<p class="operation-place">
+85–90分
+</p>
+<ul>
+<li><code>exercise05.py</code> と <code>exercise05.R</code>
+を保存。</li>
+<li>コード全文を、言語別の段落欄へ貼る。</li>
+<li>予想・結果・確認方法を短く記録。</li>
+<li>同一メールの締切以前の最新回答を採用。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+締切とフォームのURLは教員がClassroomで案内します。学籍番号と氏名の独立欄はありません。AI利用は任意で採点対象外です。実行できていない場合も支援状況を記録します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 33: 今日の到達点と、次回への接続 -->
+<div class="slide-body">
+<h2 id="今日の到達点と次回への接続">今日の到達点と、次回への接続</h2>
+<p><strong>標本平均は変わる。推測には不確かさがある。</strong></p>
+<ul>
+<li>再現・seed変更を区別できた。</li>
+<li>分母n−1と、区間幅を確認した。</li>
+<li>95%を繰り返しの意味で説明した。</li>
+</ul>
+<p>次回：型・件数・欠損を確認する「前処理」。</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回は欠損のない仮想データを使いました。実データでは読み込んで直ちに計算せず、型や欠損などの確認が必要です。両方のファイルを保存して終了します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 34: 質問・確認：止まった箇所を教えて -->
+<div class="slide-body">
+<h2
+id="質問確認止まった箇所を教えて">質問・確認：止まった箇所を教えて</h2>
+<ul>
+<li>ファイルを開く・保存するところ？</li>
+<li>実行と再現を確かめるところ？</li>
+<li>区間の意味を説明するところ？</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+残り時間で質問を受け、未完の学生がどこで止まったかを確認します。次の2枚は授業時間外の補足です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 35: 補足：標本サイズを増やしたら？ -->
+<div class="slide-body">
+<h2 id="補足標本サイズを増やしたら">補足：標本サイズを増やしたら？</h2>
+<p>このモデルでは、標本平均の標準偏差は <strong>σ/√n</strong>。</p>
+<p>nが大きいほど、平均のばらつきは一般に小さい。</p>
+<p>個別の試行の誤差や区間幅が、
+<strong>必ず単調に小さくなるわけではない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+必須演習ではnを12に固定します。nの変更を追加課題にはしません。もし教員が実演する場合は、固定臨界値を他のnへ使わず、その自由度で計算してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 36: 補足：今回の区間の限界 -->
+<div class="slide-body">
+<h2 id="補足今回の区間の限界">補足：今回の区間の限界</h2>
+<ul>
+<li>独立な正規標本を前提にした母平均の区間。</li>
+<li>個々の値の95%が入る区間ではない。</li>
+<li>実データの偏りや依存関係は別途確認が必要。</li>
+</ul>
+<p>出典：学生ノート、教員メモ、実行検証記録。</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+仮想母平均を知っているのは検証のためです。現実の推測では母平均は未知で、サンプリングの偏りなどはこの式だけでは解決しません。仮説検定やベイズ推定は今回は導入しません。
+</aside>
+
+</section></div></div>
+<script src="reveal/reveal.js"></script>
+<script src="image-zoom.js"></script>
+<script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'slide'});</script>
+</body>
+</html>
