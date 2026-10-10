@@ -1,6 +1,6 @@
 // Generated as sw.js by make build. Do not edit the generated copy.
 const CACHE_PREFIX = 'yufuin-bbq-shiori-';
-const CACHE_NAME = CACHE_PREFIX + '69189ff1752ebd5a';
+const CACHE_NAME = CACHE_PREFIX + '3a9b83956ab33b02';
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -11,8 +11,15 @@ const CORE_ASSETS = [
   "./views.js",
   "./app.js",
   "./manifest.webmanifest",
+  "./assets/icons/apple-touch-icon.png",
+  "./assets/icons/favicon-16.png",
+  "./assets/icons/favicon-32.png",
+  "./assets/icons/favicon.ico",
+  "./assets/icons/favicon.svg",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
+  "./assets/icons/maskable-512.png",
+  "./assets/icons/yufuin.svg",
   "./assets/illust/bbq.svg",
   "./assets/illust/family.svg",
   "./assets/illust/map.svg",

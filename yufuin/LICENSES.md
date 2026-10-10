@@ -7,6 +7,8 @@
 - **狭霧台からの湯布院遠望**（`assets/photos/sagiridai.jpg`）：STA3816。 [原典](https://commons.wikimedia.org/wiki/File:Panorama_view_of_Yufuin.jpg) / [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)。Wikimediaの幅960px縮小版を使用。画面ではCSSで表示枠に合わせてトリミング。内容の加筆・色調変更なし。
 - **湯布院の街並みと由布岳**（`assets/photos/town.jpg`）：そらみみ。 [原典](https://commons.wikimedia.org/wiki/File:Mount_Yufudake_and_Yufuin_Showa_Museum.JPG) / [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)。Wikimediaの幅960px縮小版を使用。画面ではCSSで表示枠に合わせてトリミング。内容の加筆・色調変更なし。
 
-イラスト・アイコン・QRコード：このしおり用に作成（従来の素材）。
+イラスト・QRコード：このしおり用に作成（従来の素材）。
+
+アイコン：2026-10-10にこのしおり用に新規制作したSVG図案（由布岳の双峰と湯けむり）。原版は `assets/icons/yufuin.svg` と小サイズ用の `assets/icons/favicon.svg`。PNG・ICOは原版から生成したものです。外部の画像・フォントは使用していません。
 
 取得URL・ファイル寸法・SHA-256は `sources/photos.json` に記録しています。縮小版のCC BY-SA写真はそれぞれ同じCC BY-SAライセンスで提供します。サイト全体のライセンスを意味するものではありません。

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <title>由布岳と湯けむり</title>
+  <rect width="32" height="32" rx="7" fill="#193d37"/>
+  <path fill="#f5efdd" d="m4 19 7-10q1-1 2 0l4 5 3-4q1-1 2 0l7 10q-7-2-13-1T4 19Z"/>
+  <path fill="none" stroke="#dea95c" stroke-width="2.4" stroke-linecap="round" d="M12 27c-3-2 3-3 0-5m8 5c-3-2 3-3 0-5"/>
+</svg>

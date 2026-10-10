@@ -1,5 +1,9 @@
-.PHONY: build check check-browser serve
+.PHONY: build icons check check-browser serve
 build:
+	node tools/build.cjs
+
+icons:
+	node tools/build-icons.cjs
 	node tools/build.cjs
 
 check:

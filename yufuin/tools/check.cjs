@@ -31,4 +31,13 @@ for(const photo of JSON.parse(fs.readFileSync(path.join(root,'sources/photos.jso
  assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),photo.sha256);
  assert(bytes[0]===255&&bytes[1]===216,'JPEG signature');
 }
-console.log(`Checked HTML links, migration IDs, plan consistency, protected wording and photo hashes (${SHOPPING.length} items).`);
+const icons=JSON.parse(fs.readFileSync(path.join(root,'sources/icons.json'),'utf8'));
+for(const [file,hash] of Object.entries({...icons.sources,...icons.outputs})){
+ assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'assets/icons',file))).digest('hex'),hash,`${file}: run make icons after editing icon originals`);
+}
+for(const icon of JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8')).icons){
+ const bytes=fs.readFileSync(path.join(root,icon.src.split('?')[0]));
+ assert.equal(bytes.subarray(1,4).toString(),'PNG');
+ assert.equal(`${bytes.readUInt32BE(16)}x${bytes.readUInt32BE(20)}`,icon.sizes);
+}
+console.log(`Checked HTML links, migration IDs, plan consistency, protected wording, photos and icons (${SHOPPING.length} items).`);

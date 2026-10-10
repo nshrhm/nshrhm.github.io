@@ -1,0 +1,16 @@
+{
+  "renderer": "Chromium 151.0.7922.34",
+  "sources": {
+    "yufuin.svg": "f2036f91ed857f7c783b93df889b8f1160061fbd9879a71a4774ec850c79f77a",
+    "favicon.svg": "417153ce0fdf81308c4148836485cf782c467327af4fff31a66d1eeebe4fe0d7"
+  },
+  "outputs": {
+    "icon-192.png": "cbf5c74b99744fd8526ec233cb304f1c55bf079be9339071ceeeab941547a8f9",
+    "icon-512.png": "73d1d31662230621f3c6ca4b287d95449a1047ea8535339db19a21cf45f62566",
+    "apple-touch-icon.png": "9b51a92bf6a080e00cf204dcb0b97232a59fc59aa205f54d93693062a335cf5f",
+    "maskable-512.png": "3b5ebafb6d04b7cf7e489846fc657a56a61c8c126528e790f56f0631559af954",
+    "favicon-16.png": "f96131357868e9d93485426a7a27c7b017e9eab6a646eabe8980c6e9877332bf",
+    "favicon-32.png": "7fc9b9f1e62a01bb39b5baa38ef6f78b4d6b21dbf43942a76e2fefded22f2fec",
+    "favicon.ico": "a6f06a1fabbbac66ab9c34eef12443071ad9108b87bd646cbee2e5140d94d87c"
+  }
+}
