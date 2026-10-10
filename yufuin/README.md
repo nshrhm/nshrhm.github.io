@@ -52,6 +52,14 @@ CHROMIUM_EXECUTABLE=/absolute/path/to/chrome make check-browser
 
 結果・スクリーンショット・印刷PDFは `/tmp/yufuin-verification/` に出力します（`AUDIT_DIR` で変更可）。テストは外部の埋め込み地図だけを代替し、ファイル配信・Service Worker・オフライン処理は実ブラウザで実行します。地図の実接続、iPhone実機、読み上げ、紙のQR読取りは別途確認する層です。
 
+## アイコンの更新
+
+`assets/icons/yufuin.svg` がホーム画面・サイトロゴの原版、`favicon.svg` が小サイズ専用の原版です。文字や外枠を省いた双峰と湯けむりの図案です。
+
+ブラウザ検証と同じ `PLAYWRIGHT_MODULE` / `CHROMIUM_EXECUTABLE` を指定して `make icons` を実行すると、192/512pxの通常アイコン、180pxのApple Touchアイコン、512pxのmaskableアイコン、16/32px PNGと16/32/48px入りICO、オフラインキャッシュを再生成します。生成環境とハッシュは `sources/icons.json` に記録し、`make check` で変更漏れを確認します。通常の `make build` では画像を再生成しません。
+
+Apple用は角を事前に切り抜かない不透明な正方形です。Android用のmaskable版では背景を全面に敷き、主図案を縮小して中央の安全域に収めています。設計根拠：[AppleのWebアプリ設定](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html)、[Web App Manifestのアイコン仕様](https://www.w3.org/TR/appmanifest/#icon-masks)。既存の通常PNGのURLには更新識別子 `?v=2` を付けています。次の改版時はこの識別子も更新してください。
+
 ## 写真・情報の根拠
 
 写真はWikimedia Commonsの960px縮小版を同梱しています。作者・原典・ライセンス・加工内容は `links.html` と `LICENSES.md`、取得URL・寸法・SHA-256は `sources/photos.json` に記録しています。
