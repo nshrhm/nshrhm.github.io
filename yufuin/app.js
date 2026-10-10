@@ -1,261 +1,215 @@
-(function(){
+(function () {
+  'use strict';
   const $ = (sel, root=document) => root.querySelector(sel);
   const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const prefix = 'yufuin:2026-11:';
+  const memory = new Map();
+  let storageFailed = false;
+  let selectedPlan = 'a';
+  let registration;
+  function storageWarning() {
+    storageFailed = true;
+    const el = $('#storage-status');
+    if (el) { el.hidden=false; el.textContent='このブラウザでは保存できません。再読込・別ページへの移動前に、必要なメモをコピーしてください。'; }
+  }
   const store = {
-    get(k, fallback='') { try { return localStorage.getItem(k) ?? fallback; } catch { return fallback; } },
-    set(k, v) { try { localStorage.setItem(k, v); } catch {} },
-    del(k) { try { localStorage.removeItem(k); } catch {} }
+    get(key, fallback='') {
+      if (memory.has(key)) return memory.get(key);
+      try { return localStorage.getItem(prefix+key) ?? fallback; }
+      catch { storageWarning(); return fallback; }
+    },
+    set(key, value) {
+      memory.set(key,value);
+      try { localStorage.setItem(prefix+key,value); }
+      catch { storageWarning(); }
+    },
+    remove(key) {
+      memory.set(key,'');
+      try { localStorage.removeItem(prefix+key); }
+      catch { storageWarning(); }
+    }
   };
-
-  function setLinks(){
-    $$('[data-url]').forEach(el => {
-      const key = el.getAttribute('data-url');
-      const url = (URLS && URLS[key]) || (MAPS && MAPS[key]) || key;
-      if(url) el.setAttribute('href', url);
+  function migrate() {
+    try {
+      if (localStorage.getItem(prefix+'migrated-v2')) return;
+      const pairs=[['trip-plan','trip-plan'],['field-family-memo','field-family-memo'],
+        ...SHOPPING.filter(i=>Number.isInteger(i.legacyIndex)).map(i=>[`shopping-item-${i.legacyIndex}`,`shopping-${i.id}`])];
+      for(const [oldKey,newKey] of pairs) {
+        const old=localStorage.getItem(oldKey);
+        if(old!==null && localStorage.getItem(prefix+newKey)===null) localStorage.setItem(prefix+newKey,old);
+      }
+      localStorage.setItem(prefix+'migrated-v2','1');
+    } catch { storageWarning(); }
+  }
+  function applyPlan(value) {
+    selectedPlan = value === 'b' ? 'b' : 'a';
+    document.body.classList.toggle('show-plan-a',selectedPlan==='a');
+    document.body.classList.toggle('show-plan-b',selectedPlan==='b');
+    $$('[data-plan-button]').forEach(btn=>{
+      const active=btn.dataset.planButton===selectedPlan;
+      btn.classList.toggle('active',active); btn.setAttribute('aria-pressed',String(active));
     });
+    const values=VIEWS.bindings(TRIP,PLANS,selectedPlan);
+    $$('[data-trip]').forEach(el=>{ if(el.dataset.trip in values) el.textContent=values[el.dataset.trip]; });
+    $$('a[href^="print.html"]').forEach(a=>{a.href=`print.html?plan=${selectedPlan}`;});
+    if($('#print-summary')) $('#print-summary').innerHTML=VIEWS.printSummary(TRIP,PLANS,selectedPlan,ROLES,SAFETY);
   }
-
-  function initCountdown(){
-    const root = $('#countdown');
-    if(!root) return;
-    const target = new Date(TRIP.checkinISO).getTime();
-    const units = { days: $('#cd-days'), hours: $('#cd-hours'), mins: $('#cd-mins'), secs: $('#cd-secs') };
-    function tick(){
-      const now = Date.now();
-      let diff = Math.max(0, target - now);
-      const days = Math.floor(diff / 86400000); diff -= days * 86400000;
-      const hours = Math.floor(diff / 3600000); diff -= hours * 3600000;
-      const mins = Math.floor(diff / 60000); diff -= mins * 60000;
-      const secs = Math.floor(diff / 1000);
-      if(units.days) units.days.textContent = days;
-      if(units.hours) units.hours.textContent = String(hours).padStart(2,'0');
-      if(units.mins) units.mins.textContent = String(mins).padStart(2,'0');
-      if(units.secs) units.secs.textContent = String(secs).padStart(2,'0');
-    }
-    tick(); setInterval(tick, 1000);
+  function initPlan() {
+    const queryPlan=new URLSearchParams(location.search).get('plan');
+    applyPlan(['a','b'].includes(queryPlan)?queryPlan:store.get('trip-plan','a'));
+    $$('[data-plan-button]').forEach(btn=>btn.addEventListener('click',()=>{
+      applyPlan(btn.dataset.planButton); store.set('trip-plan',selectedPlan);
+    }));
   }
-
-  function initPlan(){
-    const plan = store.get('trip-plan', 'a');
-    document.body.classList.toggle('show-plan-a', plan !== 'b');
-    document.body.classList.toggle('show-plan-b', plan === 'b');
-    $$('[data-plan-button]').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.planButton === plan);
-      btn.addEventListener('click', () => {
-        const next = btn.dataset.planButton;
-        store.set('trip-plan', next);
-        document.body.classList.toggle('show-plan-a', next !== 'b');
-        document.body.classList.toggle('show-plan-b', next === 'b');
-        $$('[data-plan-button]').forEach(b => b.classList.toggle('active', b.dataset.planButton === next));
+  function initCountdown() {
+    if(!$('#countdown')) return;
+    const target=new Date(TRIP.checkinISO).getTime(),end=new Date(TRIP.checkoutISO).getTime();
+    const tick=()=>{
+      const now=Date.now(),remaining=Math.max(0,target-now);
+      const units={days:Math.floor(remaining/86400000),hours:Math.floor(remaining/3600000)%24,mins:Math.floor(remaining/60000)%60,secs:Math.floor(remaining/1000)%60};
+      for(const [name,value] of Object.entries(units)) $(`#cd-${name}`).textContent=name==='days'?value:String(value).padStart(2,'0');
+      $('#countdown-title').textContent=now<target?'チェックインまで':now<end?'旅行中です':'旅行の日程は終了しました';
+      if(now>=target) $('.countdown-grid').hidden=true;
+    };
+    tick(); setInterval(tick,1000);
+  }
+  function updateProgress() {
+    const inputs=$$('[data-check-id]'),checked=inputs.filter(i=>i.checked).length;
+    if($('#shopping-progress')) {$('#shopping-progress').max=inputs.length; $('#shopping-progress').value=checked;}
+    if($('#shopping-progress-label')) $('#shopping-progress-label').textContent=`${checked}/${inputs.length} 準備済み`;
+  }
+  function filterShopping() {
+    const query=($('#shopping-search')?.value||'').trim().toLowerCase(),filter=$('#shopping-filter')?.value||'all';
+    let visible=0;
+    $$('.shopping-item').forEach(item=>{
+      const memo=$('[data-allocation]',item)?.value||'';
+      const matches=(!query||(item.dataset.search+' '+memo.toLowerCase()).includes(query)) &&
+        (filter==='all'||(filter==='pending'?!$('[data-check-id]',item).checked:item.dataset.supply===filter));
+      item.hidden=!matches; if(matches)visible++;
+    });
+    $$('.check-group').forEach(group=>{group.hidden=$$('.shopping-item',group).every(i=>i.hidden);});
+    if($('#shopping-empty')) $('#shopping-empty').hidden=visible!==0;
+    if($('#shopping-results')) $('#shopping-results').textContent=`${visible}件を表示`;
+  }
+  function initShopping() {
+    $$('[data-check-id]').forEach(input=>{
+      input.checked=store.get(`shopping-${input.dataset.checkId}`)==='1';
+      input.closest('.check-item').classList.toggle('done',input.checked);
+      input.addEventListener('change',()=>{
+        store.set(`shopping-${input.dataset.checkId}`,input.checked?'1':'0');
+        input.closest('.check-item').classList.toggle('done',input.checked);updateProgress();filterShopping();
       });
     });
-  }
-
-  function renderShopping(){
-    const root = $('#shopping-list');
-    if(!root || !window.SHOPPING) return;
-    const grouped = SHOPPING.reduce((acc, item, i) => {
-      item.id = item.id || `item-${i}`;
-      (acc[item.group] ||= []).push(item);
-      return acc;
-    }, {});
-    root.innerHTML = Object.entries(grouped).map(([group, items]) => `
-      <section class="check-group" data-group="${escapeHTML(group)}">
-        <h3>${escapeHTML(group)} <span class="chip">${items.length}件</span></h3>
-        <div class="checklist">
-          ${items.map(item => {
-            const id = `shop-${item.id}`;
-            return `<label class="check-item" data-search="${escapeHTML((item.item+' '+item.group+' '+item.owner+' '+item.priority).toLowerCase())}">
-              <input type="checkbox" id="${id}" data-check-id="${item.id}">
-              <span><strong>${escapeHTML(item.item)} <span class="tag ${tagClass(item.priority)}">${escapeHTML(item.priority)}</span></strong><small>${escapeHTML(item.amount)}｜${escapeHTML(item.owner)}</small></span>
-            </label>`;
-          }).join('')}
-        </div>
-      </section>
-    `).join('');
-    $$('[data-check-id]', root).forEach(input => {
-      const key = `shopping-${input.dataset.checkId}`;
-      input.checked = store.get(key, '0') === '1';
-      input.closest('.check-item').classList.toggle('done', input.checked);
-      input.addEventListener('change', () => {
-        store.set(key, input.checked ? '1' : '0');
-        input.closest('.check-item').classList.toggle('done', input.checked);
-        updateShoppingProgress();
-      });
+    $$('[data-allocation]').forEach(input=>{
+      input.value=store.get(`allocation-${input.dataset.allocation}`);
+      input.addEventListener('input',()=>store.set(`allocation-${input.dataset.allocation}`,input.value));
     });
-    updateShoppingProgress();
-  }
-
-  function tagClass(priority){
-    if(/必須|宿になし|お酒/.test(priority)) return 'orange';
-    if(/おすすめ|お土産|大分/.test(priority)) return 'gold';
-    return '';
-  }
-
-  function updateShoppingProgress(){
-    const inputs = $$('[data-check-id]');
-    if(!inputs.length) return;
-    const checked = inputs.filter(i => i.checked).length;
-    const pct = Math.round(checked / inputs.length * 100);
-    const bar = $('#shopping-progress i');
-    const label = $('#shopping-progress-label');
-    if(bar) bar.style.width = `${pct}%`;
-    if(label) label.textContent = `${checked}/${inputs.length} 完了`;
-  }
-
-  function initShoppingSearch(){
-    const input = $('#shopping-search');
-    if(!input) return;
-    input.addEventListener('input', () => {
-      const q = input.value.trim().toLowerCase();
-      $$('.check-item').forEach(item => {
-        item.style.display = !q || item.dataset.search.includes(q) ? '' : 'none';
-      });
-      $$('.check-group').forEach(group => {
-        const any = $$('.check-item', group).some(item => item.style.display !== 'none');
-        group.style.display = any ? '' : 'none';
-      });
+    $('#shopping-search')?.addEventListener('input',filterShopping);
+    $('#shopping-filter')?.addEventListener('change',filterShopping);
+    $('#shopping-reset')?.addEventListener('click',()=>{
+      if(!confirm('準備済みのチェックをすべて戻しますか？担当・数量メモは残ります。'))return;
+      $$('[data-check-id]').forEach(input=>{input.checked=false;store.set(`shopping-${input.dataset.checkId}`,'0');input.closest('.check-item').classList.remove('done');});
+      updateProgress();filterShopping();
     });
-    const reset = $('#shopping-reset');
-    if(reset){
-      reset.addEventListener('click', () => {
-        if(!confirm('買い出しチェックをすべて未完了に戻しますか？')) return;
-        $$('[data-check-id]').forEach(input => {
-          input.checked = false;
-          store.set(`shopping-${input.dataset.checkId}`, '0');
-          input.closest('.check-item').classList.remove('done');
-        });
-        updateShoppingProgress();
-      });
-    }
+    updateProgress();filterShopping();
+    if($('#print-shopping')) $('#print-shopping').innerHTML=VIEWS.printShopping(SHOPPING,key=>store.get(key));
   }
-
-  function initSavedFields(){
-    $$('[data-save-key]').forEach(el => {
-      const key = `field-${el.dataset.saveKey}`;
-      const val = store.get(key, '');
-      if(val) el.value = val;
-      el.addEventListener('input', () => store.set(key, el.value));
+  function initMemo() {
+    const memo=$('#family-memo');if(!memo)return;
+    memo.value=store.get('field-family-memo');
+    memo.addEventListener('input',()=>store.set('field-family-memo',memo.value));
+    $('#memo-delete')?.addEventListener('click',()=>{
+      if(!confirm('このブラウザの家族メモを削除しますか？'))return;
+      store.remove('field-family-memo');memo.value='';
+      // The legacy copy belongs to this field; remove it as well on explicit deletion.
+      try{localStorage.removeItem('field-family-memo');}catch{storageWarning();}
+      $('#share-status').textContent='このブラウザの家族メモを削除しました。';
     });
-  }
-
-  function initMap(){
-    const iframe = $('#map-frame');
-    const openBtn = $('#map-open-current');
-    if(!iframe) return;
-    function select(card){
-      const embedKey = card.dataset.mapEmbed;
-      const openKey = card.dataset.mapOpen;
-      if(MAPS[embedKey]) iframe.src = MAPS[embedKey];
-      if(openBtn && MAPS[openKey]) openBtn.href = MAPS[openKey];
-      $$('.map-card').forEach(c => c.classList.toggle('active', c === card));
-    }
-    $$('.map-card[data-map-embed]').forEach((card, idx) => {
-      card.addEventListener('click', () => select(card));
-      if(idx === 0) select(card);
-    });
-  }
-
-  function initCopyShare(){
-    const btn = $('#copy-update');
-    if(!btn) return;
-    btn.addEventListener('click', async () => {
-      const plan = store.get('trip-plan', 'a') === 'b' ? 'プランB（雨・渋滞・体調優先）' : 'プランA（通常）';
-      const note = ($('#family-memo')?.value || '').trim();
-      const text = `湯布院BBQ旅行 共有メモ\n日程：2026/11/7(土)〜11/8(日)\n現在の方針：${plan}\n集合：15:00 AMBER Yufuin集合・チェックイン\n買い出し：チェックイン後、必要な場合にのみ不足分を購入\n参加費：3,000円(持込別)\nメモ：${note || '特になし'}\n`;
-      try{
-        await navigator.clipboard.writeText(text);
-        btn.textContent = 'コピーしました';
-        setTimeout(()=>btn.textContent='LINE共有文をコピー', 1800);
-      } catch {
-        alert(text);
+    $('#copy-update')?.addEventListener('click',async()=>{
+      const text=VIEWS.share(TRIP,PLANS,selectedPlan,memo.value.trim(),SHOPPING,key=>store.get(key));
+      try {await navigator.clipboard.writeText(text);$('#share-status').textContent='コピーしました。家族LINEへ貼り付けて送信してください。';}
+      catch {
+        const output=$('#share-fallback');output.hidden=false;output.value=text;output.focus();output.select();
+        $('#share-status').textContent='自動コピーできませんでした。下の文章を選択してコピーしてください。';
       }
     });
   }
-
-  function initPrint(){
-    $$('[data-print]').forEach(btn => btn.addEventListener('click', () => window.print()));
+  function initMap() {
+    const iframe=$('#map-frame');if(!iframe)return;
+    let card=$('[data-map-embed]');
+    function select(next) {
+      card=next;
+      $$('[data-map-embed]').forEach(el=>{const active=el===card;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));});
+      $('#map-open-current').href=VIEWS.safeURL(MAPS[card.dataset.mapOpen]);
+      iframe.title=`Googleマップ：${$('strong',card).textContent}`;
+      if(navigator.onLine){iframe.src=MAPS[card.dataset.mapEmbed];iframe.hidden=false;}
+      else {iframe.removeAttribute('src');iframe.hidden=true;}
+      $('#map-offline').hidden=navigator.onLine;
+    }
+    $$('[data-map-embed]').forEach(el=>el.addEventListener('click',()=>select(el)));
+    window.addEventListener('online',()=>select(card));window.addEventListener('offline',()=>select(card));select(card);
   }
-
-  function initInstall(){
-    let deferredPrompt = null;
-    const tip = $('#install-tip');
-    const btn = $('#install-button');
-    window.addEventListener('beforeinstallprompt', e => {
-      e.preventDefault(); deferredPrompt = e;
-      if(tip) tip.classList.add('show');
+  function initSW() {
+    let ready=false;
+    function status() {
+      const label=$('#offline-label');
+      if(label) label.textContent=!navigator.onLine?'オフライン閲覧中':ready?'オフライン保存済み':'オンライン閲覧中';
+      $('#offline-dot')?.classList.toggle('ok',ready&&navigator.onLine);
+      const help=$('#connection-help');
+      if(help) help.textContent=!navigator.onLine?'地図・外部リンクはオンラインで利用できます。保存済みの本文と写真は閲覧できます。':ready?'本文・写真はオフラインでも閲覧できます。地図・外部リンクには通信が必要です。':'初回は通信環境で開き、オフライン保存の完了をお待ちください。';
+    }
+    function showUpdate() { if(registration?.waiting && navigator.serviceWorker.controller) $('#update-notice').hidden=false; }
+    async function checkUpdate() {if(registration&&navigator.onLine)try{await registration.update();showUpdate();}catch{/* Current offline bundle remains usable. */}}
+    window.addEventListener('online',()=>{status();checkUpdate();});window.addEventListener('offline',status);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate();});
+    status();
+    if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol)) {
+      if($('#connection-help')) $('#connection-help').textContent='本文・印刷は利用できます。オフライン保存にはHTTPSまたはlocalhostで開いてください。';
+      return;
+    }
+    let hadController=!!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      if(hadController) location.reload();
+      hadController=true;ready=true;status();
     });
-    if(btn){
-      btn.addEventListener('click', async () => {
-        if(!deferredPrompt) return;
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        if(tip) tip.classList.remove('show');
-      });
-    }
-    const close = $('#install-close');
-    if(close) close.addEventListener('click', () => tip?.classList.remove('show'));
+    navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(reg=>{
+      registration=reg;
+      navigator.serviceWorker.ready.then(()=>{ready=true;status();showUpdate();});
+      showUpdate();
+      reg.addEventListener('updatefound',()=>{const worker=reg.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed')showUpdate();});});
+      checkUpdate();
+    }).catch(()=>{if($('#connection-help'))$('#connection-help').textContent='オフライン保存ができませんでした。通信環境で再読込してください。';});
+    $('#apply-update')?.addEventListener('click',()=>{
+      if(storageFailed&&!confirm('保存できていないメモがある可能性があります。必要な内容をコピー済みなら更新してください。'))return;
+      registration?.waiting?.postMessage({type:'ACTIVATE_UPDATE'});
+    });
   }
-
-  function initSW(){
-    const dot = $('#offline-dot');
-    const label = $('#offline-label');
-    function setStatus(ok, text){
-      if(dot) dot.classList.toggle('ok', ok);
-      if(label) label.textContent = text;
-    }
-    if('serviceWorker' in navigator && location.protocol.startsWith('http')){
-      navigator.serviceWorker.register('./sw.js').then(() => setStatus(true, 'PWA準備OK')).catch(() => setStatus(false, '通常表示'));
-    } else {
-      setStatus(false, 'ローカル表示');
-    }
+  function initInstall() {
+    let prompt;
+    window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();prompt=event;$('#install-tip')?.classList.add('show');});
+    $('#install-button')?.addEventListener('click',async()=>{if(!prompt)return;await prompt.prompt();prompt=null;$('#install-tip').classList.remove('show');});
+    $('#install-close')?.addEventListener('click',()=>$('#install-tip').classList.remove('show'));
   }
-
-  function initActiveNav(){
-    const links = $$('.mobile-nav a[href^="#"]');
-    const sections = links.map(a => $(a.getAttribute('href'))).filter(Boolean);
-    if(!sections.length) return;
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`));
-        }
-      });
-    }, {rootMargin:'-30% 0px -62% 0px', threshold:0.01});
-    sections.forEach(sec => observer.observe(sec));
+  function initNav() {
+    const links=$$('.mobile-nav a[href^="#"]');
+    if(!links.length||!('IntersectionObserver' in window))return;
+    const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
+      if(entry.isIntersecting)links.forEach(a=>{const active=a.hash===`#${entry.target.id}`;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});
+    }),{rootMargin:'-20% 0px -55% 0px'});
+    links.forEach(a=>{const section=$(a.hash);if(section)observer.observe(section);});
   }
-
-  function renderLinksPage(){
-    const root = $('#links-container');
-    if(!root || !window.LINK_GROUPS) return;
-    root.innerHTML = LINK_GROUPS.map(group => `
-      <section class="card">
-        <h2>${escapeHTML(group.title)}</h2>
-        <div class="grid two">
-          ${group.items.map(item => `<div class="link-card"><a href="${item.url}" target="_blank" rel="noopener">${escapeHTML(item.label)} ↗</a><small>${escapeHTML(item.note)}</small></div>`).join('')}
-        </div>
-      </section>
-    `).join('');
-  }
-
-  function escapeHTML(s){
-    return String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    setLinks();
-    initCountdown();
-    initPlan();
-    renderShopping();
-    initShoppingSearch();
-    initSavedFields();
-    initMap();
-    initCopyShare();
-    initPrint();
-    initInstall();
-    initSW();
-    initActiveNav();
-    renderLinksPage();
+  document.addEventListener('DOMContentLoaded',()=>{
+    migrate();initPlan();initCountdown();initShopping();initMemo();initMap();initSW();initInstall();initNav();
+    $$('[data-print]').forEach(btn=>btn.addEventListener('click',()=>{
+      if($('#print-summary'))window.print();else location.href=`print.html?plan=${selectedPlan}`;
+    }));
+    window.addEventListener('beforeprint',()=>{
+      if($('#print-shopping'))$('#print-shopping').innerHTML=VIEWS.printShopping(SHOPPING,key=>store.get(key));
+    });
+    window.addEventListener('storage',event=>{
+      if(!event.key?.startsWith(prefix))return;
+      memory.delete(event.key.slice(prefix.length));
+      if(event.key===prefix+'trip-plan')applyPlan(store.get('trip-plan','a'));
+    });
   });
 })();
