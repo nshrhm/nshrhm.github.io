@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; frame-src https://www.google.com https://maps.google.com https://www.google.co.jp https://maps.google.co.jp; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#2f5d57">
   <meta name="description" content="湯布院AMBER Yufuin旅行しおりのリンク集と情報源。">
@@ -12,6 +14,9 @@
   <title>リンク集｜湯布院BBQしおり</title>
 </head>
 <body class="show-plan-a">
+  <noscript><p class="callout">基本情報とプランAの印刷は利用できます。プラン切替・チェック保存・共有文の作成にはJavaScriptを有効にしてください。</p></noscript>
+  <div id="storage-status" class="callout danger no-print" role="alert" hidden></div>
+  <div id="update-notice" class="update-notice no-print" role="status" hidden><p>新しいしおりがあります。保存済みのチェック・メモを引き継いで更新します。</p><button id="apply-update" class="btn primary" type="button">更新して再読込</button></div>
   <header class="topbar no-print">
     <div class="topbar-inner">
       <img class="logo" src="assets/icons/icon-192.png" alt="しおりアイコン">
@@ -39,58 +44,59 @@
 
     <section class="section">
       <div class="section-head"><div><h2>出発地別 Googleマップ</h2>
-        <p>当日は各車のスマホで該当ルートを開いてください。</p></div></div>
+        <p>当日は各車のスマホで該当ルートを開いてください。</p><p>選択中：<span data-trip="selected">プランA：通常・晴れ／曇り</span>（案）／<a href="index.html#plan">プランを変更</a></p></div></div>
       <div class="grid three">
         <article class="card"><h3>八代市福正町</h3>
-          <p class="muted">10:00出発目安</p><a class="btn primary block" data-url="fukumashoToAmber" target="_blank" rel="noopener">AMBER Yufuinまで</a></article>
+          <p class="muted" data-trip="yatsushiro">10:00出発目安（案）</p><a class="btn primary block" data-url="fukumashoToAmber" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=%E5%85%AB%E4%BB%A3%E5%B8%82%E7%A6%8F%E6%AD%A3%E7%94%BA&amp;destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&amp;travelmode=driving">AMBER Yufuinまで</a></article>
         <article class="card"><h3>八代市田中東町</h3>
-          <p class="muted">10:00出発目安</p><a class="btn primary block" data-url="tanakahigashiToAmber" target="_blank" rel="noopener">AMBER Yufuinまで</a></article>
+          <p class="muted" data-trip="yatsushiro">10:00出発目安（案）</p><a class="btn primary block" data-url="tanakahigashiToAmber" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=%E5%85%AB%E4%BB%A3%E5%B8%82%E7%94%B0%E4%B8%AD%E6%9D%B1%E7%94%BA&amp;destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&amp;travelmode=driving">AMBER Yufuinまで</a></article>
         <article class="card"><h3>小倉南区葉山町</h3>
-          <p class="muted">12:00出発目安</p><a class="btn primary block" data-url="hayamaToAmber" target="_blank" rel="noopener">AMBER Yufuinまで</a></article>
+          <p class="muted" data-trip="kokura">12:00出発目安（案）</p><a class="btn primary block" data-url="hayamaToAmber" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&amp;destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&amp;travelmode=driving">AMBER Yufuinまで</a></article>
       </div>
       <div class="grid four" style="margin-top:14px">
-        <a class="btn ghost" data-url="aeonSearch" target="_blank" rel="noopener">イオン候補</a>
-        <a class="btn ghost" data-url="amberToKinrin" target="_blank" rel="noopener">宿→金鱗湖</a>
-        <a class="btn ghost" data-url="amberToSagiridai" target="_blank" rel="noopener">宿→狭霧台</a>
-        <a class="btn ghost" data-url="amberSearch" target="_blank" rel="noopener">宿を検索</a>
+        <a class="btn ghost" data-url="aeonSearch" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%A4%E3%82%AA%E3%83%B3%E6%B9%AF%E5%B8%83%E9%99%A2%E5%BA%97%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E4%B8%8A2924-1">イオン候補</a>
+        <a class="btn ghost" data-url="amberToKinrin" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&amp;destination=%E9%87%91%E9%B1%97%E6%B9%96%20%E7%94%B1%E5%B8%83%E9%99%A2&amp;travelmode=driving">宿→金鱗湖</a>
+        <a class="btn ghost" data-url="amberToSagiridai" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&amp;destination=%E7%8B%AD%E9%9C%A7%E5%8F%B0&amp;travelmode=driving">宿→狭霧台</a>
+        <a class="btn ghost" data-url="amberSearch" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12">宿を検索</a>
       </div>
     </section>
 
-    <section class="section" id="links-container" aria-live="polite"></section>
+    <section class="section" id="links-container"><!-- generated:links -->
+<section class="card"><h2>宿・チェックイン</h2><div class="grid two"><div class="link-card"><a href="https://stayyufuin.com/amber-yufuin/" target="_blank" rel="noopener noreferrer">AMBER Yufuin 公式 ↗</a><small>住所・駐車場・Wi-Fi・チェックイン情報</small></div><div class="link-card"><a href="https://stayyufuin.com/faq/" target="_blank" rel="noopener noreferrer">宿のFAQ ↗</a><small>パジャマなし・火器の持ち込み不可</small></div><div class="link-card"><a href="https://stayyufuin.com/bbq/" target="_blank" rel="noopener noreferrer">STAY YUFUIN BBQ案内 ↗</a><small>BBQスペース・器材確認</small></div><div class="link-card"><a href="https://www.google.com/maps/search/?api=1&amp;query=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12" target="_blank" rel="noopener noreferrer">AMBER YufuinをGoogleマップで開く ↗</a><small>当日ナビ用</small></div><div class="link-card"><a href="tel:0977759238" target="_blank" rel="noopener noreferrer">宿へ電話 ↗</a><small>受付9:00〜18:00／遅れる場合は連絡</small></div></div></section>
+<section class="card"><h2>買い出し</h2><div class="grid two"><div class="link-card"><a href="https://tenpo.aeon-kyushu.info/detail/yufuin/" target="_blank" rel="noopener noreferrer">イオン湯布院店 公式 ↗</a><small>9:00〜22:00（2026-10-10公式確認）。必要時の不足分補充候補</small></div><div class="link-card"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%A4%E3%82%AA%E3%83%B3%E6%B9%AF%E5%B8%83%E9%99%A2%E5%BA%97%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E4%B8%8A2924-1" target="_blank" rel="noopener noreferrer">イオン湯布院店 Googleマップ ↗</a><small>チェックイン後、必要な場合のみ利用</small></div><div class="link-card"><a href="https://www.acoop-kyushu.jp/store/archives/13" target="_blank" rel="noopener noreferrer">Aコープゆふいん店 公式 ↗</a><small>10:00〜19:00（2026-10-10公式確認）。地元野菜候補</small></div><div class="link-card"><a href="https://www.google.com/maps/search/?api=1&amp;query=A%E3%82%B3%E3%83%BC%E3%83%97%E3%82%86%E3%81%B5%E3%81%84%E3%82%93%E5%BA%97" target="_blank" rel="noopener noreferrer">Aコープゆふいん店 Googleマップ ↗</a><small>サブ候補</small></div></div></section>
+<section class="card"><h2>道路・天気・交通</h2><div class="grid two"><div class="link-card"><a href="https://www.w-nexco.co.jp/realtime/" target="_blank" rel="noopener noreferrer">NEXCO西日本 リアルタイム交通情報 ↗</a><small>九州道・東九州道・大分道の通行止め/規制確認</small></div><div class="link-card"><a href="https://ihighway.jp/pcsite/map/?area=area09" target="_blank" rel="noopener noreferrer">iHighway 九州沖縄 ↗</a><small>高速道路地図で確認</small></div><div class="link-card"><a href="https://www.jma.go.jp/bosai/forecast/#area_type=offices&amp;area_code=440000" target="_blank" rel="noopener noreferrer">気象庁 大分県天気予報 ↗</a><small>旅行1週間前〜当日に確認</small></div><div class="link-card"><a href="https://www.data.jma.go.jp/stats/etrn/view/nml_amd_d.php?block_no=0799&amp;day=&amp;month=11&amp;prec_no=83&amp;view=p1&amp;year=" target="_blank" rel="noopener noreferrer">気象庁 湯布院11月平年値 ↗</a><small>防寒の目安</small></div><div class="link-card"><a href="https://www.city.yufu.oita.jp/access/" target="_blank" rel="noopener noreferrer">由布市アクセス・タクシー ↗</a><small>予備交通手段</small></div></div></section>
+<section class="card"><h2>観光・読み物</h2><div class="grid two"><div class="link-card"><a href="https://yufuin.gr.jp/" target="_blank" rel="noopener noreferrer">YUFUINFO 公式旅ガイド ↗</a><small>湯布院・庄内・挾間公式観光</small></div><div class="link-card"><a href="https://yufuin.gr.jp/spot/spot-1268/" target="_blank" rel="noopener noreferrer">金鱗湖 公式スポット ↗</a><small>朝霧・散策・由来</small></div><div class="link-card"><a href="https://yufuin.gr.jp/spot/spot-1269/" target="_blank" rel="noopener noreferrer">狭霧台 公式スポット ↗</a><small>由布院盆地一望</small></div><div class="link-card"><a href="https://yufuin.gr.jp/spot/spot-1274/" target="_blank" rel="noopener noreferrer">宇奈岐日女神社 公式スポット ↗</a><small>六所様・由布院の古い信仰</small></div><div class="link-card"><a href="https://edit.pref.oita.jp/series/jikan/73/" target="_blank" rel="noopener noreferrer">由布院の朝霧 読み物 ↗</a><small>朝霧と伝説</small></div></div></section>
+<!-- /generated:links --></section>
 
     <section class="section" id="sources">
       <div class="section-head"><div><h2>情報源・写真クレジット</h2>
-        <p>旅行前に各公式ページで最新情報を確認してください。</p></div></div>
+        <p>宿・店舗・観光情報の確認日：2026-10-10。旅行前に再確認してください。予約プランは予約者確認、時刻・滞在時間は家族向けの案です。</p></div></div>
       <article class="card">
         <h3>情報源</h3>
         <ul class="source-list">
-          <li>AMBER Yufuin 公式：宿泊人数、駐車、Wi‑Fi、チェックイン、住所、電話など。</li>
-          <li>STAY YUFUIN BBQ案内：BBQスペース・器材の確認。</li>
+          <li><a data-url="hotel" target="_blank" rel="noopener" href="https://stayyufuin.com/amber-yufuin/">AMBER Yufuin 公式</a>：宿泊人数、駐車、Wi‑Fi、チェックイン、住所、電話など。</li>
+          <li><a data-url="hotelBBQ" target="_blank" rel="noopener" href="https://stayyufuin.com/bbq/">STAY YUFUIN BBQ案内</a>：BBQスペース・器材の確認。</li>
           <li>イオン湯布院店 公式：住所、営業時間、医薬品取扱。</li>
           <li>Aコープゆふいん店 公式：住所、営業時間、駐車場。</li>
           <li>YUFUINFO公式旅ガイド：金鱗湖、狭霧台、宇奈岐日女神社の観光情報。</li>
           <li>大分県「由布院の朝霧」読み物：朝霧・由布院盆地の伝説。</li>
-          <li>気象庁：湯布院の11月平年値、大分県天気予報。</li>
+          <li><a data-url="insurance" target="_blank" rel="noopener" href="https://www.mhlw.go.jp/stf/newpage_50657.html">厚生労働省：資格確認方法</a>：マイナ保険証または資格確認書（2026-10-10確認）。</li><li>気象庁：湯布院の11月平年値、大分県天気予報。</li>
           <li>NEXCO西日本・iHighway：当日の高速道路交通情報。</li>
         </ul>
       </article>
       <article class="card" style="margin-top:14px">
-        <h3>写真クレジット</h3>
-        <ul class="source-list">
-          <li>金鱗湖：HyunJae Park, Public Domain Mark, Wikimedia Commons.</li>
-          <li>狭霧台からの湯布院遠望：STA3816, CC BY-SA 3.0, Wikimedia Commons.</li>
-          <li>由布院駅方面から望む由布岳：Tekannan, CC BY-SA 4.0, Wikimedia Commons.</li>
-          <li>湯布院の街並みと由布岳：そらみみ, CC BY-SA 4.0, Wikimedia Commons.</li>
-          <li>イラスト・アイコン・QRコード：このしおり用に作成。</li>
-        </ul>
-        <p class="muted">写真は外部URLで表示しています。オフライン時はイラストと本文を中心に閲覧できます。</p>
+        <h3>写真クレジット</h3><!-- generated:credits -->
+<ul class="source-list"><li>金鱗湖：HyunJae Park。<a href="https://commons.wikimedia.org/wiki/File:Lake_Kinrin_in_Yufuin%2C_Oita_-_Aug_24%2C_2018_%281%29.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons原典</a>／<a href="https://creativecommons.org/publicdomain/mark/1.0/" target="_blank" rel="noopener noreferrer">Public Domain Mark</a>。Wikimediaの幅960px縮小版を使用。画面ではCSSで表示枠に合わせてトリミング。内容の加筆・色調変更なし。</li><li>由布院駅方面から望む由布岳：Kitayama（アップロード履歴：Tekannan）。<a href="https://commons.wikimedia.org/wiki/File:View_of_Mount_Yufudake_from_Yufuin_Station.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons原典</a>／<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>。Wikimediaの幅960px縮小版を使用。画面ではCSSで表示枠に合わせてトリミング。内容の加筆・色調変更なし。</li><li>狭霧台からの湯布院遠望：STA3816。<a href="https://commons.wikimedia.org/wiki/File:Panorama_view_of_Yufuin.jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons原典</a>／<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>。Wikimediaの幅960px縮小版を使用。画面ではCSSで表示枠に合わせてトリミング。内容の加筆・色調変更なし。</li><li>湯布院の街並みと由布岳：そらみみ。<a href="https://commons.wikimedia.org/wiki/File:Mount_Yufudake_and_Yufuin_Showa_Museum.JPG" target="_blank" rel="noopener noreferrer">Wikimedia Commons原典</a>／<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>。Wikimediaの幅960px縮小版を使用。画面ではCSSで表示枠に合わせてトリミング。内容の加筆・色調変更なし。</li></ul>
+<!-- /generated:credits -->
+        <p class="muted">写真は原典の縮小版を同梱しています。オフライン保存完了後は写真も閲覧できます。確認日：2026-10-10。</p>
       </article>
     </section>
 
     <footer class="footer"><a href="index.html">しおりへ戻る</a> ／ <a href="print.html">印刷専用ページへ</a></footer>
-  </main>
+  <p id="connection-help" class="muted no-print" role="status"></p></main>
 
   <script src="data.js" defer></script>
+  <script src="views.js" defer></script>
   <script src="app.js" defer></script>
 </body>
 </html>

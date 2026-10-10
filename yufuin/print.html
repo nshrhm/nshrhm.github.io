@@ -1,128 +1,33 @@
 <!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#2f5d57">
-  <meta name="description" content="湯布院AMBER Yufuin旅行しおりの印刷専用ページ。">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="assets/icons/icon-192.png">
-  <title>印刷用｜湯布院BBQしおり</title>
-</head>
-<body>
-  <main class="print-sheet">
-    <div class="no-print" style="display:flex;justify-content:space-between;gap:10px;align-items:center;margin:10px 0 18px">
-      <a class="btn ghost" href="index.html">しおりへ戻る</a>
-      <button class="btn primary" type="button" data-print>このページを印刷</button>
-    </div>
-
-    <section class="print-card">
-      <h1>湯布院お泊りBBQ 旅のしおり</h1>
-      <p><strong>日程：</strong>2026年11月7日（土）〜8日（日）／ <strong>宿：</strong>AMBER Yufuin【Villa1】</p>
-      <p><strong>住所：</strong>〒879-5103 大分県由布市湯布院町川南839-12 ／ <strong>電話：</strong>0977-75-9238（9:00〜18:00）</p>
-      <p><strong>チェックイン：</strong>15:00〜18:00 ／ <strong>チェックアウト：</strong>〜10:00 ／ <strong>予約番号：</strong>家族内共有メモで確認 ／ <strong>代表：</strong>家族内共有</p>
-      <p><strong>参加費：</strong>3,000円(持込別)</p>
-      <p><strong>注意：</strong>遅れる場合は宿へ連絡。パジャマ・浴衣なし。11月は防寒必須。</p>
-    </section>
-
-    <section class="print-card">
-      <h2>出発地・集合</h2>
-      <div class="print-grid">
-        <div><strong>八代市福正町</strong><br>10:00出発目安。</div>
-        <div><strong>八代市田中東町</strong><br>10:00出発目安。</div>
-        <div><strong>小倉南区葉山町</strong><br>12:00出発目安。</div>
-        <div><strong>集合</strong><br>15:00 AMBER Yufuin集合・チェックイン。</div>
-      </div>
-    </section>
-
-    <section class="print-card">
-      <h2>プランA：通常</h2>
-      <p>10:00 八代2台出発 ／ 12:00 小倉南区出発 ／ 15:00 AMBER Yufuin集合・チェックイン ／ チェックイン後、持ち寄り量を確認し必要な場合にのみ不足分を購入 ／ 16:00 温泉・BBQ準備 ／ 18:00 BBQ開始 ／ 19:30 片付け・集合写真 ／ 20:30 温泉・家族時間。</p>
-    </section>
-
-    <section class="print-card">
-      <h2>プランB：雨・渋滞・体調優先</h2>
-      <p>1台が30分以上遅れる、強雨、寒さ、年配の方の疲れが強い場合。15:00のチェックインと宿での休憩を優先し、必要な場合にのみ不足分を購入。BBQは短縮し、ホイル焼き・汁物・温かい飲み物を増やします。翌朝観光はなしでもよいです。</p>
-    </section>
-
-    <section class="print-card">
-      <h2>QRコード</h2>
-      <div class="qr-grid">
+<html lang="ja"><head><meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; frame-src https://www.google.com https://maps.google.com https://www.google.co.jp https://maps.google.co.jp; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="湯布院旅行の当日の要点と買い出し表"><title>印刷用｜湯布院BBQしおり</title><link rel="stylesheet" href="styles.css"><link rel="icon" href="assets/icons/icon-192.png"></head>
+<body class="print-page">
+  <noscript><p class="callout">基本情報とプランAの印刷は利用できます。プラン切替・チェック保存・共有文の作成にはJavaScriptを有効にしてください。</p></noscript>
+  <div id="storage-status" class="callout danger no-print" role="alert" hidden></div>
+  <div id="update-notice" class="update-notice no-print" role="status" hidden><p>新しいしおりがあります。保存済みのチェック・メモを引き継いで更新します。</p><button id="apply-update" class="btn primary" type="button">更新して再読込</button></div><main class="print-sheet">
+<div class="no-print print-controls"><a class="btn ghost" href="index.html">しおりへ戻る</a><button class="btn primary" type="button" data-print>印刷する</button>
+<div class="plan-switch" role="group" aria-label="印刷するプラン"><button data-plan-button="a" type="button" aria-pressed="true">プランA</button><button data-plan-button="b" type="button" aria-pressed="false">プランB</button></div><p>選択中の旅程と、このブラウザのチェック状態・数量メモを印刷します。</p></div>
+<section class="print-day"><div id="print-summary"><!-- generated:print-summary -->
+<h1>湯布院お泊りBBQ 旅のしおり</h1><p class="print-meta">最終更新 2026-10-10／選択中：プランA：通常・晴れ／曇り（時刻は案）</p>
+      <div class="print-card"><p><strong>2026年11月7日（土）〜8日（日）｜AMBER Yufuin【Villa1】</strong><br>〒879-5103 大分県由布市湯布院町川南839-12｜電話 0977-75-9238（9:00〜18:00）<br>集合 15:00／チェックアウト 〜10:00<br>参加費 3,000円（持込別）｜現地で幹事に支払い<br>金額の単位・含まれる費用・差額精算は要確認<br>BBQ：機材レンタルプラン（予約者確認済み）<br>予約番号・入室コードは家族内共有メモで確認。</p></div>
+      <section class="print-card"><h2>選択中の旅程（案）</h2><p>通常の移動案。途中休憩を取り、15:00に宿へ集合します。時刻は案です。</p><dl class="print-timeline"><div><dt>10:00</dt><dd>八代2台 出発</dd></div><div><dt>12:00</dt><dd>小倉南区葉山町 出発</dd></div><div><dt>15:00</dt><dd>AMBER Yufuin 集合・チェックイン</dd></div><div><dt>15:30</dt><dd>持ち寄り量を確認</dd></div><div><dt>16:00</dt><dd>温泉・BBQ準備</dd></div><div><dt>18:00</dt><dd>BBQ開始</dd></div><div><dt>19:30</dt><dd>片付け・集合写真</dd></div><div><dt>20:30</dt><dd>家族時間・温泉は各自の体調に合わせて</dd></div></dl></section>
+      <section class="print-card"><h2>変更の連絡・翌朝</h2><p>前日までに各車が天気・道路状況を共有し、総合代表がプランを取りまとめて家族LINEで連絡。移動中に遅延した場合は到着見込みを共有し、宿での休憩と必要時だけの買い出しを優先。早め出発は出発前だけの選択肢です。</p><p>翌朝は10:00までにチェックアウト。朝霧は希望者のみ早朝に判断。チェックアウト後の観光は一か所まで、雨・疲労時は帰路へ。</p></section>
+      <section class="print-card"><h2>役割と安全</h2><p>総合代表：宿連絡・支払い・チェックイン情報管理・プラン変更の取りまとめ ／ 各車の連絡担当：休憩と到着見込みを共有。無理な隊列走行はしない ／ 買い出し：持参量と不足分を確認し、必要な場合だけ購入 ／ 記録・共有：写真・BGM・家族LINEでの連絡 ／ 焼き係：30分交代で担当 ／ 年配の方のサポート：椅子・防寒・温泉・夜間移動・体調確認。担当は家族LINEで前日までに決定。</p><ul class="subtle-list"><li>生肉用トングと食べる箸は分ける。</li><li>運転する方は、宿到着後に運転が完全に終わってからお酒を飲みます。</li><li>翌朝運転する方は、夜のお酒を早めに切り上げます。</li><li>温泉前後は水分補給をします。お酒を飲んだ後の長湯は避けます。</li></ul></section>
+<!-- /generated:print-summary --></div><section class="print-card"><h2>地図・交通情報</h2><div class="qr-grid">
         <div class="qr-card"><img src="assets/qrcode/qr-amber-map.png" alt="宿の地図QR"><strong>宿の地図</strong></div>
         <div class="qr-card"><img src="assets/qrcode/qr-aeon-map.png" alt="イオン湯布院店地図QR"><strong>買い出し候補</strong></div>
         <div class="qr-card"><img src="assets/qrcode/qr-nexco.png" alt="高速情報QR"><strong>高速情報</strong></div>
         <div class="qr-card"><img src="assets/qrcode/qr-yufuin-info.png" alt="観光公式QR"><strong>観光公式</strong></div>
         <div class="qr-card"><img src="assets/qrcode/qr-kinrin-map.png" alt="金鱗湖QR"><strong>金鱗湖</strong></div>
-      </div>
-    </section>
-
-    <section class="print-card">
-      <h2>買い出しチェック：食材</h2>
-      <div class="print-grid">
-        <div>
-          <div class="print-checkbox"><span class="box"></span><span>牛焼肉 900g〜1.1kg</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>豚バラ/肩ロース 500〜600g</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>鶏もも/せせり 500〜700g</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>ソーセージ 300g</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>エビ 8〜12尾</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>ホタテ/イカ 500g</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>鮭4切れ・明太子1パック</span></div>
-        </div>
-        <div>
-          <div class="print-checkbox"><span class="box"></span><span>玉ねぎ3個、ピーマン/パプリカ6〜8個</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>なす3本、かぼちゃ1/4個</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>しいたけ2P、きのこ各1〜2P</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>とうもろこし4本、ミニトマト2P</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>サラダ野菜、枝豆、漬物/キムチ</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>パックご飯10〜12個、味噌汁/スープ12食</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>朝食：パン、卵10個、ヨーグルト8個、果物</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="print-card">
-      <h2>買い出しチェック：飲み物・消耗品</h2>
-      <div class="print-grid">
-        <div>
-          <div class="print-checkbox"><span class="box"></span><span>ビール/発泡酒 350ml×16〜18本</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>ハイボール/チューハイ 350ml×8本</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>焼酎720ml×1、日本酒またはワイン1本</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>炭酸水500ml×6〜8、氷2kg×2</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>水2L×3、お茶2L×3、ノンアル6本</span></div>
-        </div>
-        <div>
-          <div class="print-checkbox"><span class="box"></span><span>焼肉のたれ2種、ポン酢、レモン</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>油、バター、柚子こしょう</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>アルミホイル、ラップ、保存袋</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>キッチンペーパー、ウェットティッシュ</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>使い捨て手袋、ゴミ袋、予備紙皿/紙コップ</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="print-card">
-      <h2>個人持ち物</h2>
-      <div class="print-grid">
-        <div>
-          <div class="print-checkbox"><span class="box"></span><span>パジャマ・部屋着・下着・靴下</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>上着・ひざ掛け・厚手靴下</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>常備薬・保険証/マイナカード</span></div>
-        </div>
-        <div>
-          <div class="print-checkbox"><span class="box"></span><span>眼鏡・補聴器電池・杖など</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>充電器・モバイルバッテリー</span></div>
-          <div class="print-checkbox"><span class="box"></span><span>クーラーボックス・保冷剤</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="print-card">
-      <h2>役割</h2>
-      <p>総合代表：宿連絡・支払い ／ 買い出し：チェックイン後に必要な場合のみ不足分を購入 ／ 記録・共有：写真・家族LINE共有 ／ 焼き係：30分交代 ／ 年配の方のサポート：休憩・防寒・体調確認。</p>
-      <p>安全：生肉用トングと食べる箸を分けます。運転する方は、その日の運転終了後にお酒を飲みます。翌朝運転する方は、夜のお酒を早めに切り上げます。</p>
-    </section>
-  </main>
-  <script src="data.js" defer></script>
-  <script src="app.js" defer></script>
-</body>
-</html>
+      </div></section></section>
+<section class="print-shopping"><h2>買い出し・持ち物表</h2><p>必須・候補・宿の備付けを確認し、不足分だけ購入。お酒は希望者分で調整します。</p><div id="print-shopping"><!-- generated:print-shopping -->
+<section class="print-shopping-group"><h3>肉・魚介</h3><div class="print-shopping-item" data-print-item="beef"><span class="print-mark">□</span><div><strong>牛焼肉用</strong> <span>900g〜1.1kg</span><br><small>持参必須｜持ち寄り＋不足は現地</small></div></div><div class="print-shopping-item" data-print-item="pork"><span class="print-mark">□</span><div><strong>豚バラ・豚肩ロース</strong> <span>500〜600g</span><br><small>持参必須｜持ち寄り</small></div></div><div class="print-shopping-item" data-print-item="chicken"><span class="print-mark">□</span><div><strong>鶏もも・せせり</strong> <span>500〜700g</span><br><small>持参必須｜北九州車候補</small></div></div><div class="print-shopping-item" data-print-item="sausage"><span class="print-mark">□</span><div><strong>ソーセージ</strong> <span>300g前後</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="shrimp"><span class="print-mark">□</span><div><strong>エビ</strong> <span>8〜12尾</span><br><small>候補｜北九州車候補</small></div></div><div class="print-shopping-item" data-print-item="scallop"><span class="print-mark">□</span><div><strong>ホタテまたはイカ</strong> <span>500g前後</span><br><small>候補｜北九州車候補</small></div></div><div class="print-shopping-item" data-print-item="salmon"><span class="print-mark">□</span><div><strong>鮭切り身</strong> <span>4切れ</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="mentaiko"><span class="print-mark">□</span><div><strong>明太子</strong> <span>1パック</span><br><small>候補｜北九州車候補</small></div></div></section>
+<section class="print-shopping-group"><h3>野菜・副菜</h3><div class="print-shopping-item" data-print-item="onion"><span class="print-mark">□</span><div><strong>玉ねぎ</strong> <span>3個</span><br><small>持参必須｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="pepper"><span class="print-mark">□</span><div><strong>ピーマン・パプリカ</strong> <span>6〜8個</span><br><small>持参必須｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="eggplant"><span class="print-mark">□</span><div><strong>なす</strong> <span>3本</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="pumpkin"><span class="print-mark">□</span><div><strong>かぼちゃ</strong> <span>1/4個</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="shiitake"><span class="print-mark">□</span><div><strong>しいたけ</strong> <span>2パック</span><br><small>候補｜大分らしく現地</small></div></div><div class="print-shopping-item" data-print-item="mushrooms"><span class="print-mark">□</span><div><strong>エリンギ・しめじ</strong> <span>各1〜2パック</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="corn"><span class="print-mark">□</span><div><strong>とうもろこし</strong> <span>4本</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="tomato"><span class="print-mark">□</span><div><strong>ミニトマト</strong> <span>2パック</span><br><small>候補｜持ち寄り候補</small></div></div><div class="print-shopping-item" data-print-item="salad"><span class="print-mark">□</span><div><strong>サラダ野菜</strong> <span>1〜2袋</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="edamame"><span class="print-mark">□</span><div><strong>枝豆</strong> <span>2袋</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="pickles"><span class="print-mark">□</span><div><strong>漬物・キムチ</strong> <span>希望者分</span><br><small>候補｜担当未定</small></div></div></section>
+<section class="print-shopping-group"><h3>主食・朝食</h3><div class="print-shopping-item" data-print-item="rice"><span class="print-mark">□</span><div><strong>パックご飯</strong> <span>10〜12個</span><br><small>持参必須｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="rice-seasoning"><span class="print-mark">□</span><div><strong>焼きおにぎり用味噌・醤油</strong> <span>各1</span><br><small>候補｜持ち寄り</small></div></div><div class="print-shopping-item" data-print-item="soup"><span class="print-mark">□</span><div><strong>インスタント味噌汁・スープ</strong> <span>12食分</span><br><small>持参必須｜持ち寄り</small></div></div><div class="print-shopping-item" data-print-item="bread"><span class="print-mark">□</span><div><strong>パン</strong> <span>8〜12個分</span><br><small>候補｜持ち寄り候補</small></div></div><div class="print-shopping-item" data-print-item="eggs"><span class="print-mark">□</span><div><strong>卵</strong> <span>10個</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="yogurt"><span class="print-mark">□</span><div><strong>ヨーグルト</strong> <span>8個</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="fruit"><span class="print-mark">□</span><div><strong>果物</strong> <span>8人分</span><br><small>候補｜持ち寄り候補</small></div></div></section>
+<section class="print-shopping-group"><h3>調味料・消耗品</h3><div class="print-shopping-item" data-print-item="sauce-mild"><span class="print-mark">□</span><div><strong>焼肉のたれ（味の指定は要確認）</strong> <span>1本</span><br><small>宿に備付け｜公式案内あり・数量は宿に確認</small></div></div><div class="print-shopping-item" data-print-item="sauce-spicy"><span class="print-mark">□</span><div><strong>焼肉のたれ 辛口/にんにく系</strong> <span>1本</span><br><small>持参必須｜持ち寄り</small></div></div><div class="print-shopping-item" data-print-item="ponzu"><span class="print-mark">□</span><div><strong>ポン酢</strong> <span>1本</span><br><small>持参必須｜持ち寄り</small></div></div><div class="print-shopping-item" data-print-item="lemon"><span class="print-mark">□</span><div><strong>レモン・レモン汁</strong> <span>1</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="oil-butter"><span class="print-mark">□</span><div><strong>油・バター</strong> <span>各1</span><br><small>持参必須｜持ち寄り</small></div></div><div class="print-shopping-item" data-print-item="yuzu"><span class="print-mark">□</span><div><strong>柚子こしょう</strong> <span>1本</span><br><small>候補｜持ち寄り</small></div></div><div class="print-shopping-item" data-print-item="foil"><span class="print-mark">□</span><div><strong>アルミホイル</strong> <span>1本</span><br><small>宿に備付け｜公式案内あり・数量は宿に確認</small></div></div><div class="print-shopping-item" data-print-item="wrap-bags"><span class="print-mark">□</span><div><strong>ラップ</strong> <span>各1</span><br><small>宿に備付け｜公式案内あり・数量は宿に確認</small></div></div><div class="print-shopping-item" data-print-item="kitchen-paper"><span class="print-mark">□</span><div><strong>キッチンペーパー</strong> <span>2ロール</span><br><small>持参必須｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="wipes"><span class="print-mark">□</span><div><strong>ウェットティッシュ</strong> <span>2〜3個</span><br><small>持参必須｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="gloves"><span class="print-mark">□</span><div><strong>使い捨て手袋</strong> <span>1箱</span><br><small>候補｜持ち寄り</small></div></div><div class="print-shopping-item" data-print-item="bags"><span class="print-mark">□</span><div><strong>保存袋</strong> <span>1箱</span><br><small>候補｜持ち寄り候補</small></div></div><div class="print-shopping-item" data-print-item="trash-bags"><span class="print-mark">□</span><div><strong>ゴミ袋</strong> <span>分別ルール・備付けを宿に確認</span><br><small>確認待ち｜総合代表が確認</small></div></div><div class="print-shopping-item" data-print-item="paper-plates"><span class="print-mark">□</span><div><strong>予備紙皿・紙コップ</strong> <span>必要な場合のみ</span><br><small>候補｜担当未定</small></div></div></section>
+<section class="print-shopping-group"><h3>飲み物</h3><div class="print-shopping-item" data-print-item="beer"><span class="print-mark">□</span><div><strong>ビール・発泡酒</strong> <span>候補量：350ml×16〜18本（希望者で調整）</span><br><small>確認待ち｜希望者・数量・担当を家族LINEで確認</small></div></div><div class="print-shopping-item" data-print-item="canned-drinks"><span class="print-mark">□</span><div><strong>ハイボール・チューハイ</strong> <span>候補量：350ml×8本（希望者で調整）</span><br><small>確認待ち｜希望者・数量・担当を家族LINEで確認</small></div></div><div class="print-shopping-item" data-print-item="shochu"><span class="print-mark">□</span><div><strong>焼酎</strong> <span>候補量：720ml×1本（希望者で調整）</span><br><small>確認待ち｜希望者・数量・担当を家族LINEで確認</small></div></div><div class="print-shopping-item" data-print-item="wine"><span class="print-mark">□</span><div><strong>日本酒またはワイン</strong> <span>候補量：1本（希望者で調整）</span><br><small>確認待ち｜希望者・数量・担当を家族LINEで確認</small></div></div><div class="print-shopping-item" data-print-item="soda"><span class="print-mark">□</span><div><strong>炭酸水</strong> <span>500ml×6〜8本</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="ice"><span class="print-mark">□</span><div><strong>氷</strong> <span>2kg×2袋</span><br><small>持参必須｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="water"><span class="print-mark">□</span><div><strong>水</strong> <span>2L×3本</span><br><small>持参必須｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="tea"><span class="print-mark">□</span><div><strong>お茶</strong> <span>2L×3本</span><br><small>持参必須｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="nonalcohol"><span class="print-mark">□</span><div><strong>ノンアルビール</strong> <span>350ml×6本</span><br><small>候補｜現地補充</small></div></div><div class="print-shopping-item" data-print-item="coffee"><span class="print-mark">□</span><div><strong>コーヒー・緑茶</strong> <span>8人分以上</span><br><small>候補｜持ち寄り</small></div></div></section>
+<section class="print-shopping-group"><h3>個人持ち物</h3><div class="print-shopping-item" data-print-item="pajamas"><span class="print-mark">□</span><div><strong>パジャマ・部屋着</strong> <span>各自</span><br><small>持参必須｜全員</small></div></div><div class="print-shopping-item" data-print-item="warm-clothes"><span class="print-mark">□</span><div><strong>上着・ひざ掛け・厚手靴下</strong> <span>各自</span><br><small>持参必須｜全員</small></div></div><div class="print-shopping-item" data-print-item="medicine"><span class="print-mark">□</span><div><strong>常備薬・マイナ保険証または資格確認書</strong> <span>各自</span><br><small>持参必須｜全員</small></div></div><div class="print-shopping-item" data-print-item="charger"><span class="print-mark">□</span><div><strong>充電器・モバイルバッテリー</strong> <span>各自</span><br><small>持参必須｜全員</small></div></div><div class="print-shopping-item" data-print-item="cooler"><span class="print-mark">□</span><div><strong>クーラーボックス・保冷剤</strong> <span>各車</span><br><small>持参必須｜各車</small></div></div><div class="print-shopping-item" data-print-item="underwear"><span class="print-mark">□</span><div><strong>下着・靴下</strong> <span>各自</span><br><small>持参必須｜全員</small></div></div><div class="print-shopping-item" data-print-item="assistive-items"><span class="print-mark">□</span><div><strong>眼鏡・補聴器電池・杖など</strong> <span>必要なもの</span><br><small>候補｜各自</small></div></div></section>
+<!-- /generated:print-shopping --></div></section>
+<p id="connection-help" class="muted no-print" role="status"></p></main><script src="data.js" defer></script><script src="views.js" defer></script>
+  <script src="app.js" defer></script></body></html>

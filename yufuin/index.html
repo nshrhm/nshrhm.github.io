@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; frame-src https://www.google.com https://maps.google.com https://www.google.co.jp https://maps.google.co.jp; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#2f5d57">
   <meta name="description" content="2026年11月 湯布院AMBER Yufuin Villa1でお泊りBBQを楽しむ旅のしおり。">
@@ -14,6 +16,9 @@
   <title>湯布院お泊りBBQ 旅のしおり</title>
 </head>
 <body class="show-plan-a">
+  <noscript><p class="callout">基本情報とプランAの印刷は利用できます。プラン切替・チェック保存・共有文の作成にはJavaScriptを有効にしてください。</p></noscript>
+  <div id="storage-status" class="callout danger no-print" role="alert" hidden></div>
+  <div id="update-notice" class="update-notice no-print" role="status" hidden><p>新しいしおりがあります。保存済みのチェック・メモを引き継いで更新します。</p><button id="apply-update" class="btn primary" type="button">更新して再読込</button></div>
   <a class="skip-link" href="#main">本文へ移動</a>
   <header class="topbar no-print">
     <div class="topbar-inner">
@@ -39,36 +44,43 @@
   </nav>
 
   <main id="main" class="app-shell">
+    <section class="arrival-card" aria-labelledby="arrival-title">
+      <h2 id="arrival-title">当日の集合・連絡</h2>
+      <p><strong data-trip="date">2026年11月7日（土）〜8日（日）</strong><br><strong data-trip="meeting">15:00 AMBER Yufuin【Villa1】集合</strong> <span class="chip">集合時刻は案</span></p>
+      <p>選択中：<span data-trip="selected">プランA：通常・晴れ／曇り</span>／<span data-trip="bbq">18:00 BBQ（案）</span></p>
+      <div class="section-actions"><a class="btn primary" data-url="amberSearch" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12">宿の地図</a><a class="btn gold" href="tel:0977759238">宿へ電話</a><a class="btn ghost" href="print.html">当日の要点・買い出し表を印刷</a></div>
+      <p class="muted">最終更新：<time data-trip="updated">2026-10-10</time>。プラン変更は家族LINEで連絡してください。</p><p id="connection-help" class="muted no-print" role="status"></p>
+    </section>
     <section class="hero" id="top">
       <div class="hero-card">
         <img class="hero-art" src="assets/illust/yufu-mountain.svg" alt="由布岳と湯布院の朝のイラスト">
         <div class="hero-content">
           <div>
-            <span class="kicker">2026.11.07 SAT — 11.08 SUN</span>
+            <span class="kicker" data-trip="date">2026年11月7日（土）〜8日（日）</span>
             <h1>温泉とBBQで、<br>湯布院を満喫。</h1>
-            <p class="lead">AMBER Yufuin【Villa1】が予約できました✌このサイトはあくまで「案」です。みんなでよりよいプランにしましょう。提案を歓迎します。</p>
+            <p class="lead">宿泊とBBQ機材レンタルは予約者確認済みです。集合・移動・食事の時刻は「案」。みんなでよりよいプランにしましょう。提案を歓迎します。</p>
           </div>
           <div class="hero-stats" aria-label="旅行概要">
             <div class="stat"><small>宿泊</small><strong>1泊2日</strong></div>
             <div class="stat"><small>人数</small><strong>8名</strong></div>
             <div class="stat"><small>車</small><strong>3台</strong></div>
-            <div class="stat"><small>方針</small><strong>18時BBQ</strong></div>
+            <div class="stat"><small>方針</small><strong data-trip="bbq">18:00 BBQ（案）</strong></div>
           </div>
         </div>
       </div>
 
       <aside class="side-stack">
         <div class="countdown-card" id="countdown">
-          <h2 style="font-size:1.25rem;margin:0">チェックインまで</h2>
-          <div class="countdown-grid" aria-live="polite">
+          <h2 id="countdown-title" style="font-size:1.25rem;margin:0">チェックインまで</h2>
+          <div class="countdown-grid">
             <div><strong id="cd-days">--</strong><small>日</small></div>
             <div><strong id="cd-hours">--</strong><small>時間</small></div>
             <div><strong id="cd-mins">--</strong><small>分</small></div>
             <div><strong id="cd-secs">--</strong><small>秒</small></div>
           </div>
-          <p class="muted">チェックイン：2026年11月7日（土）15:00。遅れる場合は宿へ連絡。</p>
+          <p class="muted"><span data-trip="date">2026年11月7日（土）〜8日（日）</span>／<span data-trip="meeting">15:00 AMBER Yufuin【Villa1】集合</span>。遅れる場合は宿へ連絡。</p>
           <div class="quick-actions">
-            <a class="btn primary" data-url="amberSearch" target="_blank" rel="noopener">宿を地図で開く</a>
+            <a class="btn primary" data-url="amberSearch" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12">宿を地図で開く</a>
             <a class="btn gold" href="tel:0977759238">宿へ電話</a>
             <button class="btn ghost" type="button" data-print>印刷する</button>
             <a class="btn ghost" href="print.html">印刷専用</a>
@@ -90,38 +102,22 @@
         </div>
         <div class="section-actions">
           <div class="plan-switch" role="group" aria-label="プラン切替">
-            <button type="button" data-plan-button="a" class="active">プランA</button>
-            <button type="button" data-plan-button="b">プランB</button>
+            <button type="button" data-plan-button="a" aria-pressed="true" class="active">プランA</button>
+            <button type="button" data-plan-button="b" aria-pressed="false">プランB</button>
           </div>
         </div>
       </div>
 
       <div class="grid two">
-        <article class="card plan-content" data-plan="a">
-          <h3>プランA：通常・晴れ/曇り</h3>
-          <p class="muted">高速道路に大きなトラブルがなく、体調も問題ない場合。15:00にAMBER Yufuinへ集合し、チェックイン後に持ち寄り量を確認します。</p>
-          <div class="timeline" aria-label="プランAタイムライン">
-            <div class="time-item"><div class="time-dot">10:00</div><div class="time-body"><strong>八代2台 出発</strong><small>福正町／田中東町。途中2回休憩。</small></div></div>
-            <div class="time-item"><div class="time-dot">12:00</div><div class="time-body"><strong>小倉南区葉山町 出発</strong><small>出発前に軽昼食を済ませます。</small></div></div>
-            <div class="time-item"><div class="time-dot">15:00</div><div class="time-body"><strong>AMBER Yufuin 集合・チェックイン</strong><small>荷物、部屋割り、冷蔵庫、温泉導線を確認。</small></div></div>
-            <div class="time-item"><div class="time-dot">15:30</div><div class="time-body"><strong>持ち寄り量の確認</strong><small>必要な場合にのみ、不足分を購入します。</small></div></div>
-            <div class="time-item"><div class="time-dot">18:00</div><div class="time-body"><strong>BBQ開始</strong><small>夕食として開始。焼き係は30分交代。</small></div></div>
-            <div class="time-item"><div class="time-dot">20:30</div><div class="time-body"><strong>温泉・家族時間</strong><small>写真、近況報告、飲み直しはほどほどに。</small></div></div>
-          </div>
-        </article>
+        <article class="card plan-content" data-plan="a"><!-- generated:plan-a -->
+<h3>プランA：通常・晴れ／曇り <span class="chip">案</span></h3><p>通常の移動案。途中休憩を取り、15:00に宿へ集合します。時刻は案です。</p>
+      <ol class="timeline"><li class="time-item"><div class="time-dot">10:00</div><div class="time-body"><strong>八代2台 出発</strong><small>福正町／田中東町。途中2回休憩。</small></div></li><li class="time-item"><div class="time-dot">12:00</div><div class="time-body"><strong>小倉南区葉山町 出発</strong><small>昼食は出発前に軽く。</small></div></li><li class="time-item"><div class="time-dot">15:00</div><div class="time-body"><strong>AMBER Yufuin 集合・チェックイン</strong><small>部屋割り、冷蔵庫、温泉導線を確認。</small></div></li><li class="time-item"><div class="time-dot">15:30</div><div class="time-body"><strong>持ち寄り量を確認</strong><small>必要な場合のみ不足分を購入。</small></div></li><li class="time-item"><div class="time-dot">16:00</div><div class="time-body"><strong>温泉・BBQ準備</strong><small>お酒を飲む前に温泉を済ませます。</small></div></li><li class="time-item"><div class="time-dot">18:00</div><div class="time-body"><strong>BBQ開始</strong><small>焼き係は30分交代。</small></div></li><li class="time-item"><div class="time-dot">19:30</div><div class="time-body"><strong>片付け・集合写真</strong><small>体調に合わせて休憩。</small></div></li><li class="time-item"><div class="time-dot">20:30</div><div class="time-body"><strong>家族時間・温泉は各自の体調に合わせて</strong><small>お酒を飲んだ後の長湯は避けます。</small></div></li></ol>
+<!-- /generated:plan-a --></article>
 
-        <article class="card plan-content" data-plan="b">
-          <h3>プランB：雨・渋滞・体調優先</h3>
-          <p class="muted">1台が30分以上遅れる、強い雨、寒さ、または年配の方の疲れが強い場合。15:00のチェックインと宿での休憩を最優先します。</p>
-          <div class="timeline" aria-label="プランBタイムライン">
-            <div class="time-item"><div class="time-dot">09:30</div><div class="time-body"><strong>八代2台 早め出発</strong><small>休憩を増やせるよう余白を確保。</small></div></div>
-            <div class="time-item"><div class="time-dot">11:30</div><div class="time-body"><strong>小倉南区 早め出発</strong><small>別府湾SAなどでゆっくり休憩。</small></div></div>
-            <div class="time-item"><div class="time-dot">15:00</div><div class="time-body"><strong>AMBER Yufuin 集合・チェックイン</strong><small>遅れそうなら宿へ電話。年配の方は先に座って休めるようにします。</small></div></div>
-            <div class="time-item"><div class="time-dot">15:30</div><div class="time-body"><strong>必要時のみ買い出し</strong><small>持ち寄り量を確認し、不足分がある場合だけ担当者が購入します。</small></div></div>
-            <div class="time-item"><div class="time-dot">18:30</div><div class="time-body"><strong>短縮BBQ</strong><small>ホイル焼き・汁物・温かい飲み物を増やす。</small></div></div>
-            <div class="time-item"><div class="time-dot">20:00</div><div class="time-body"><strong>室内中心</strong><small>写真・温泉・会話。屋外滞在は無理しない。</small></div></div>
-          </div>
-        </article>
+        <article class="card plan-content" data-plan="b"><!-- generated:plan-b -->
+<h3>プランB：雨・渋滞・体調優先 <span class="chip">案</span></h3><p>早め出発は前日〜出発前に決める案です。移動中に切り替える場合は、実際の到着見込みを共有し、安全と休憩を優先します。</p>
+      <ol class="timeline"><li class="time-item"><div class="time-dot">09:30</div><div class="time-body"><strong>八代2台 早め出発（出発前に判断）</strong><small>休憩の余白を確保。</small></div></li><li class="time-item"><div class="time-dot">11:30</div><div class="time-body"><strong>小倉南区葉山町 早め出発（出発前に判断）</strong><small>別府湾SAなどで休憩。</small></div></li><li class="time-item"><div class="time-dot">15:00</div><div class="time-body"><strong>AMBER Yufuin 集合目標・チェックイン</strong><small>遅れる場合は宿へ連絡。</small></div></li><li class="time-item"><div class="time-dot">15:30</div><div class="time-body"><strong>休憩・必要時のみ買い出し</strong><small>年配の方は宿で休み、担当者だけ移動。</small></div></li><li class="time-item"><div class="time-dot">16:00</div><div class="time-body"><strong>温泉・BBQ準備</strong><small>お酒を飲む前に温泉を済ませます。</small></div></li><li class="time-item"><div class="time-dot">18:30</div><div class="time-body"><strong>短縮BBQ</strong><small>強雨・強風時の利用可否は宿に確認。無理せず室内の食事に切替。</small></div></li><li class="time-item"><div class="time-dot">20:00</div><div class="time-body"><strong>室内中心の家族時間</strong><small>屋外滞在は無理しない。</small></div></li></ol>
+<!-- /generated:plan-b --></article>
       </div>
 
       <div class="grid two" style="margin-top:14px">
@@ -131,17 +127,17 @@
             <div class="data-row"><dt>宿</dt><dd>AMBER Yufuin【Villa1】</dd></div>
             <div class="data-row"><dt>住所</dt><dd>由布市湯布院町川南839-12</dd></div>
             <div class="data-row"><dt>駐車</dt><dd>3台まで。今回ちょうど3台。</dd></div>
-            <div class="data-row"><dt>参加費</dt><dd>3,000円(持込別)</dd></div>
+            <div class="data-row"><dt>参加費</dt><dd><span data-trip="fee">3,000円（持込別）</span><br><span data-trip="payment">現地で幹事に支払い</span><br><small data-trip="feeNote">金額の単位・含まれる費用・差額精算は要確認</small></dd></div>
             <div class="data-row"><dt>予約番号</dt><dd>家族内共有メモで確認</dd></div>
           </dl>
         </article>
         <article class="card">
-          <h3>分岐判断</h3>
+          <h3>分岐判断（案）</h3><p data-trip="decision">前日までに各車が天気・道路状況を共有し、総合代表がプランを取りまとめて家族LINEで連絡。移動中に遅延した場合は到着見込みを共有し、宿での休憩と必要時だけの買い出しを優先。早め出発は出発前だけの選択肢です。</p>
           <ul class="subtle-list">
             <li>高速の事故・規制がある：プランB</li>
             <li>年配の方が疲れている：買い物担当者だけ動く</li>
             <li>強雨・寒さ：BBQ短縮、室内時間を増やす</li>
-            <li>全車順調：プランAで18:00 BBQ</li>
+            <li>全車順調：プランA。時刻は上の旅程を確認</li>
           </ul>
         </article>
       </div>
@@ -154,40 +150,40 @@
           <p>三台それぞれの出発地から、AMBER Yufuinへ直接集合。出発前にNEXCOとGoogleマップで最終確認。</p>
         </div>
         <div class="section-actions">
-          <a class="btn ghost" data-url="nexco" target="_blank" rel="noopener">NEXCO確認</a>
-          <a class="btn ghost" data-url="amberSearch" target="_blank" rel="noopener">集合地図</a>
+          <a class="btn ghost" data-url="nexco" target="_blank" rel="noopener" href="https://www.w-nexco.co.jp/realtime/">NEXCO確認</a>
+          <a class="btn ghost" data-url="amberSearch" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12">集合地図</a>
         </div>
       </div>
 
       <div class="grid three">
         <article class="card route-card">
           <div class="route-title"><div class="route-badge">八1</div><div><h3>八代市福正町</h3>
-            <p class="muted">10:00出発目安</p></div></div>
+            <p class="muted" data-trip="yatsushiro">10:00出発目安（案）</p></div></div>
           <p>途中2回の休憩を想定します。乗降・トイレ・冷え対策を優先します。</p>
           <div class="route-mini">
-            <a data-url="fukumashoToAmber" target="_blank" rel="noopener">出発地→宿</a>
-            <a data-url="kusuSa" target="_blank" rel="noopener">玖珠SA</a>
-            <a data-url="yamadaSa" target="_blank" rel="noopener">山田SA</a>
+            <a data-url="fukumashoToAmber" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=%E5%85%AB%E4%BB%A3%E5%B8%82%E7%A6%8F%E6%AD%A3%E7%94%BA&amp;destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&amp;travelmode=driving">出発地→宿</a>
+            <a data-url="kusuSa" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=%E7%8E%96%E7%8F%A0SA">玖珠SA</a>
+            <a data-url="yamadaSa" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=%E5%B1%B1%E7%94%B0SA">山田SA</a>
           </div>
         </article>
         <article class="card route-card">
           <div class="route-title"><div class="route-badge">八2</div><div><h3>八代市田中東町</h3>
-            <p class="muted">10:00出発目安</p></div></div>
+            <p class="muted" data-trip="yatsushiro">10:00出発目安（案）</p></div></div>
           <p>宿へ直接向かいます。チェックイン後、必要な場合にのみ不足分を買い出します。</p>
           <div class="route-mini">
-            <a data-url="tanakahigashiToAmber" target="_blank" rel="noopener">出発地→宿</a>
-            <a data-url="kusuSa" target="_blank" rel="noopener">玖珠SA</a>
-            <a data-url="aeonSearch" target="_blank" rel="noopener">イオン候補</a>
+            <a data-url="tanakahigashiToAmber" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=%E5%85%AB%E4%BB%A3%E5%B8%82%E7%94%B0%E4%B8%AD%E6%9D%B1%E7%94%BA&amp;destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&amp;travelmode=driving">出発地→宿</a>
+            <a data-url="kusuSa" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=%E7%8E%96%E7%8F%A0SA">玖珠SA</a>
+            <a data-url="aeonSearch" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=%E3%82%A4%E3%82%AA%E3%83%B3%E6%B9%AF%E5%B8%83%E9%99%A2%E5%BA%97%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E4%B8%8A2924-1">イオン候補</a>
           </div>
         </article>
         <article class="card route-card">
           <div class="route-title"><div class="route-badge">北</div><div><h3>小倉南区葉山町</h3>
-            <p class="muted">12:00出発目安</p></div></div>
-          <p>12:00出発目安。昼食は出発前に軽く。別府湾SA・由布岳PAで休憩候補。</p>
+            <p class="muted" data-trip="kokura">12:00出発目安（案）</p></div></div>
+          <p>昼食は出発前に軽く。別府湾SA・由布岳PAで休憩候補。</p>
           <div class="route-mini">
-            <a data-url="hayamaToAmber" target="_blank" rel="noopener">出発地→宿</a>
-            <a data-url="beppuwanSa" target="_blank" rel="noopener">別府湾SA</a>
-            <a data-url="yufudakePa" target="_blank" rel="noopener">由布岳PA</a>
+            <a data-url="hayamaToAmber" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=%E5%8C%97%E4%B9%9D%E5%B7%9E%E5%B8%82%E5%B0%8F%E5%80%89%E5%8D%97%E5%8C%BA%E8%91%89%E5%B1%B1%E7%94%BA&amp;destination=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12&amp;travelmode=driving">出発地→宿</a>
+            <a data-url="beppuwanSa" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=%E5%88%A5%E5%BA%9C%E6%B9%BESA">別府湾SA</a>
+            <a data-url="yufudakePa" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=%E7%94%B1%E5%B8%83%E5%B2%B3PA">由布岳PA</a>
           </div>
         </article>
       </div>
@@ -200,11 +196,11 @@
           <button class="map-card" type="button" data-map-embed="sagiridaiEmbed" data-map-open="sagiridaiSearch"><span><strong>狭霧台</strong><small>車で景色を見る候補。</small></span><span>⛰️</span></button>
           <div class="callout success"><strong>Googleマップ活用ルール</strong><br>当日朝は各車で「出発地→AMBER Yufuin」を開き、15:00集合に間に合うか確認。遅れそうなら家族LINEに共有。</div>
         </div>
-        <div class="map-frame-wrap">
-          <iframe id="map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Googleマップ"></iframe>
+        <div class="map-frame-wrap"><p id="map-offline" class="callout" hidden>地図はオンラインで利用できます。宿の住所：大分県由布市湯布院町川南839-12。</p>
+          <iframe id="map-frame" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Googleマップ"></iframe>
         </div>
       </div>
-      <div style="margin-top:12px" class="section-actions no-print"><a id="map-open-current" class="btn primary" target="_blank" rel="noopener">選択中の場所をGoogleマップで開く</a></div>
+      <div style="margin-top:12px" class="section-actions no-print"><a id="map-open-current" data-url="amberSearch" class="btn primary" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=AMBER%20Yufuin%20%E5%A4%A7%E5%88%86%E7%9C%8C%E7%94%B1%E5%B8%83%E5%B8%82%E6%B9%AF%E5%B8%83%E9%99%A2%E7%94%BA%E5%B7%9D%E5%8D%97839-12">選択中の場所をGoogleマップで開く</a></div>
     </section>
 
     <section class="section" id="stay">
@@ -219,8 +215,8 @@
           <h3>チェックイン</h3>
           <ul class="subtle-list">
             <li>直接宿へ。室内端末でセルフチェックイン。</li>
-            <li>到着前日に届く4桁暗証番号とチェックインコードを代表者が管理。</li>
-            <li>現地払いの場合もクレジットカード決済限定の案内。代表者カードを準備。</li>
+            <li>入室用暗証番号とチェックインコードは代表者が管理。通知時期・桁数は予約案内で確認。</li>
+            <li>宿への支払方法は予約案内で確認。参加費は現地で幹事に支払い。</li>
             <li>15:00予定。遅れる場合は宿へ連絡。</li>
           </ul>
           <div class="chips"><span class="chip">予約番号は非公開</span><span class="chip">代表者名は家族内共有</span></div>
@@ -228,12 +224,12 @@
         <article class="card">
           <h3>BBQと温泉</h3>
           <ul class="subtle-list">
-            <li>BBQスペースはリビング横の屋根付きバルコニー。</li>
-            <li>器材は電気式コンロ、トング、食器・カトラリー類など。食材・調味料は各自で準備します。</li>
+            <li><strong data-trip="bbqPlan">機材レンタルプラン（予約者確認済み）</strong>。屋根付きBBQスペースを利用します。</li>
+            <li>公式案内の器材はコンロ、トング、食器・カトラリー類など。焼肉のたれ・塩・ブラックペッパーの案内もあります。食材と好みの調味料は持参。</li>
             <li>お酒を飲む前に、年配の方の短めの温泉を先に済ませます。</li>
-            <li>夜間の足元、段差、濡れた床に注意。</li>
+            <li>利用時間・強雨や強風時の可否・器材の種類や数量は、前日までに総合代表が宿へ確認します。火器類は持ち込みません。</li><li>夜間の足元、段差、濡れた床に注意。</li>
           </ul>
-          <div class="chips"><span class="chip warn">浴衣・パジャマなし</span><span class="chip warn">11月は防寒必須</span></div>
+          <p class="muted"><a data-url="hotel" target="_blank" rel="noopener" href="https://stayyufuin.com/amber-yufuin/">宿の公式案内</a>・<a data-url="hotelFAQ" target="_blank" rel="noopener" href="https://stayyufuin.com/faq/">FAQ</a>（2026-10-10確認）。パジャマなし。浴衣の有無は予約案内で確認。</p><div class="chips"><span class="chip warn">パジャマ持参</span><span class="chip warn">11月は防寒必須</span></div>
         </article>
       </div>
       <div class="grid three" style="margin-top:14px">
@@ -247,18 +243,253 @@
       <div class="section-head">
         <div>
           <h2>買い出しチェックリスト</h2>
-          <p>持ち寄りで楽しく、不足分は現地で補充。チェック状態はスマホ内に保存されます。</p>
+          <p>持ち寄りで楽しく、不足分は現地で補充。チェックと担当・数量メモはこのブラウザに保存されます。他の家族には自動共有されません。</p>
         </div>
-        <div class="section-actions"><a class="btn ghost" data-url="aeon" target="_blank" rel="noopener">イオン公式</a><a class="btn ghost" data-url="acoop" target="_blank" rel="noopener">Aコープ公式</a></div>
+        <div class="section-actions"><a class="btn ghost" data-url="aeon" target="_blank" rel="noopener" href="https://tenpo.aeon-kyushu.info/detail/yufuin/">イオン公式</a><a class="btn ghost" data-url="acoop" target="_blank" rel="noopener" href="https://www.acoop-kyushu.jp/store/archives/13">Aコープ公式</a></div>
       </div>
       <div class="card">
         <div class="shopping-toolbar">
-          <input id="shopping-search" class="search-input" type="search" placeholder="食材・担当・カテゴリで検索">
-          <div><div id="shopping-progress" class="progress" style="width:160px"><i>&nbsp;</i></div><div id="shopping-progress-label" class="progress-label">0/0 完了</div></div>
+          <div><label for="shopping-search">食材・担当・カテゴリで検索</label><input id="shopping-search" class="search-input" type="search" placeholder="例：牛肉、宿に備付け"></div><div><label for="shopping-filter">表示する項目</label><select id="shopping-filter"><option value="all">すべて</option><option value="pending">未完了</option><option>持参必須</option><option>宿に備付け</option><option>確認待ち</option><option>候補</option></select></div>
+          <div><progress id="shopping-progress" value="0" max="57" aria-labelledby="shopping-progress-label"></progress><div id="shopping-progress-label" class="progress-label">準備状況</div></div>
           <button id="shopping-reset" class="btn ghost small" type="button">リセット</button>
         </div>
-        <div class="callout"><strong>量の目安</strong> 肉2.4〜2.7kg、魚介700g〜1kg、お酒はビール16〜18本＋缶ハイボール等8本＋焼酎/日本酒など1本が基準です。年配の方向けに汁物・ホイル焼き・柔らかい肉を入れます。</div>
-        <div id="shopping-list" aria-live="polite"></div>
+        <div class="callout"><strong>量の目安</strong> 肉・魚介は下記の候補量をもとに持参分と希望量を確認します。お酒は希望者分を相談して決めます。年配の方向けに汁物・ホイル焼き・柔らかい肉を入れます。</div>
+        <p class="muted">必須は持参または購入を確保するもの、候補は希望に合わせるものです。宿の備付け品は重複購入を避け、数量を確認。食物アレルギーや食べられないものは前日までに幹事へ家族LINEで連絡してください。</p><p id="shopping-results" role="status"></p><p id="shopping-empty" hidden>該当する項目がありません。検索語や絞り込みを変更してください。</p><div id="shopping-list"><!-- generated:shopping -->
+<section class="check-group"><h3>肉・魚介 <span class="chip">8件</span></h3><div class="checklist">
+      <div class="shopping-item" data-item-id="beef" data-supply="持参必須" data-search="牛焼肉用 肉・魚介 持ち寄り＋不足は現地 必須 持参必須">
+        <label class="check-item" for="shop-beef"><input type="checkbox" id="shop-beef" data-check-id="beef"><span><strong>牛焼肉用 <span class="tag">持参必須</span></strong><small>900g〜1.1kg｜持ち寄り＋不足は現地｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-beef">牛焼肉用の持参予定・不足分・担当</label><input id="allocation-beef" data-allocation="beef" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="pork" data-supply="持参必須" data-search="豚バラ・豚肩ロース 肉・魚介 持ち寄り 必須 持参必須">
+        <label class="check-item" for="shop-pork"><input type="checkbox" id="shop-pork" data-check-id="pork"><span><strong>豚バラ・豚肩ロース <span class="tag">持参必須</span></strong><small>500〜600g｜持ち寄り｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-pork">豚バラ・豚肩ロースの持参予定・不足分・担当</label><input id="allocation-pork" data-allocation="pork" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="chicken" data-supply="持参必須" data-search="鶏もも・せせり 肉・魚介 北九州車候補 必須 持参必須">
+        <label class="check-item" for="shop-chicken"><input type="checkbox" id="shop-chicken" data-check-id="chicken"><span><strong>鶏もも・せせり <span class="tag">持参必須</span></strong><small>500〜700g｜北九州車候補｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-chicken">鶏もも・せせりの持参予定・不足分・担当</label><input id="allocation-chicken" data-allocation="chicken" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="sausage" data-supply="候補" data-search="ソーセージ 肉・魚介 現地補充 あると便利 候補">
+        <label class="check-item" for="shop-sausage"><input type="checkbox" id="shop-sausage" data-check-id="sausage"><span><strong>ソーセージ <span class="tag">候補</span></strong><small>300g前後｜現地補充｜あると便利</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-sausage">ソーセージの持参予定・不足分・担当</label><input id="allocation-sausage" data-allocation="sausage" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="shrimp" data-supply="候補" data-search="エビ 肉・魚介 北九州車候補 おすすめ 候補">
+        <label class="check-item" for="shop-shrimp"><input type="checkbox" id="shop-shrimp" data-check-id="shrimp"><span><strong>エビ <span class="tag">候補</span></strong><small>8〜12尾｜北九州車候補｜おすすめ</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-shrimp">エビの持参予定・不足分・担当</label><input id="allocation-shrimp" data-allocation="shrimp" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="scallop" data-supply="候補" data-search="ホタテまたはイカ 肉・魚介 北九州車候補 おすすめ 候補">
+        <label class="check-item" for="shop-scallop"><input type="checkbox" id="shop-scallop" data-check-id="scallop"><span><strong>ホタテまたはイカ <span class="tag">候補</span></strong><small>500g前後｜北九州車候補｜おすすめ</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-scallop">ホタテまたはイカの持参予定・不足分・担当</label><input id="allocation-scallop" data-allocation="scallop" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="salmon" data-supply="候補" data-search="鮭切り身 肉・魚介 現地補充 年配の方向け 候補">
+        <label class="check-item" for="shop-salmon"><input type="checkbox" id="shop-salmon" data-check-id="salmon"><span><strong>鮭切り身 <span class="tag">候補</span></strong><small>4切れ｜現地補充｜年配の方向け</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-salmon">鮭切り身の持参予定・不足分・担当</label><input id="allocation-salmon" data-allocation="salmon" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="mentaiko" data-supply="候補" data-search="明太子 肉・魚介 北九州車候補 お土産感 候補">
+        <label class="check-item" for="shop-mentaiko"><input type="checkbox" id="shop-mentaiko" data-check-id="mentaiko"><span><strong>明太子 <span class="tag">候補</span></strong><small>1パック｜北九州車候補｜お土産感</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-mentaiko">明太子の持参予定・不足分・担当</label><input id="allocation-mentaiko" data-allocation="mentaiko" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div></div></section>
+<section class="check-group"><h3>野菜・副菜 <span class="chip">11件</span></h3><div class="checklist">
+      <div class="shopping-item" data-item-id="onion" data-supply="持参必須" data-search="玉ねぎ 野菜・副菜 現地補充 必須 持参必須">
+        <label class="check-item" for="shop-onion"><input type="checkbox" id="shop-onion" data-check-id="onion"><span><strong>玉ねぎ <span class="tag">持参必須</span></strong><small>3個｜現地補充｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-onion">玉ねぎの持参予定・不足分・担当</label><input id="allocation-onion" data-allocation="onion" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="pepper" data-supply="持参必須" data-search="ピーマン・パプリカ 野菜・副菜 現地補充 必須 持参必須">
+        <label class="check-item" for="shop-pepper"><input type="checkbox" id="shop-pepper" data-check-id="pepper"><span><strong>ピーマン・パプリカ <span class="tag">持参必須</span></strong><small>6〜8個｜現地補充｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-pepper">ピーマン・パプリカの持参予定・不足分・担当</label><input id="allocation-pepper" data-allocation="pepper" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="eggplant" data-supply="候補" data-search="なす 野菜・副菜 現地補充 おすすめ 候補">
+        <label class="check-item" for="shop-eggplant"><input type="checkbox" id="shop-eggplant" data-check-id="eggplant"><span><strong>なす <span class="tag">候補</span></strong><small>3本｜現地補充｜おすすめ</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-eggplant">なすの持参予定・不足分・担当</label><input id="allocation-eggplant" data-allocation="eggplant" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="pumpkin" data-supply="候補" data-search="かぼちゃ 野菜・副菜 現地補充 おすすめ 候補">
+        <label class="check-item" for="shop-pumpkin"><input type="checkbox" id="shop-pumpkin" data-check-id="pumpkin"><span><strong>かぼちゃ <span class="tag">候補</span></strong><small>1/4個｜現地補充｜おすすめ</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-pumpkin">かぼちゃの持参予定・不足分・担当</label><input id="allocation-pumpkin" data-allocation="pumpkin" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="shiitake" data-supply="候補" data-search="しいたけ 野菜・副菜 大分らしく現地 おすすめ 候補">
+        <label class="check-item" for="shop-shiitake"><input type="checkbox" id="shop-shiitake" data-check-id="shiitake"><span><strong>しいたけ <span class="tag">候補</span></strong><small>2パック｜大分らしく現地｜おすすめ</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-shiitake">しいたけの持参予定・不足分・担当</label><input id="allocation-shiitake" data-allocation="shiitake" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="mushrooms" data-supply="候補" data-search="エリンギ・しめじ 野菜・副菜 現地補充 ホイル焼き 候補">
+        <label class="check-item" for="shop-mushrooms"><input type="checkbox" id="shop-mushrooms" data-check-id="mushrooms"><span><strong>エリンギ・しめじ <span class="tag">候補</span></strong><small>各1〜2パック｜現地補充｜ホイル焼き</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-mushrooms">エリンギ・しめじの持参予定・不足分・担当</label><input id="allocation-mushrooms" data-allocation="mushrooms" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="corn" data-supply="候補" data-search="とうもろこし 野菜・副菜 現地補充 盛り上がり 候補">
+        <label class="check-item" for="shop-corn"><input type="checkbox" id="shop-corn" data-check-id="corn"><span><strong>とうもろこし <span class="tag">候補</span></strong><small>4本｜現地補充｜盛り上がり</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-corn">とうもろこしの持参予定・不足分・担当</label><input id="allocation-corn" data-allocation="corn" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="tomato" data-supply="候補" data-search="ミニトマト 野菜・副菜 持ち寄り候補 口直し 候補">
+        <label class="check-item" for="shop-tomato"><input type="checkbox" id="shop-tomato" data-check-id="tomato"><span><strong>ミニトマト <span class="tag">候補</span></strong><small>2パック｜持ち寄り候補｜口直し</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-tomato">ミニトマトの持参予定・不足分・担当</label><input id="allocation-tomato" data-allocation="tomato" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="salad" data-supply="候補" data-search="サラダ野菜 野菜・副菜 現地補充 口直し 候補">
+        <label class="check-item" for="shop-salad"><input type="checkbox" id="shop-salad" data-check-id="salad"><span><strong>サラダ野菜 <span class="tag">候補</span></strong><small>1〜2袋｜現地補充｜口直し</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-salad">サラダ野菜の持参予定・不足分・担当</label><input id="allocation-salad" data-allocation="salad" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="edamame" data-supply="候補" data-search="枝豆 野菜・副菜 現地補充 お酒を飲む方向け 候補">
+        <label class="check-item" for="shop-edamame"><input type="checkbox" id="shop-edamame" data-check-id="edamame"><span><strong>枝豆 <span class="tag">候補</span></strong><small>2袋｜現地補充｜お酒を飲む方向け</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-edamame">枝豆の持参予定・不足分・担当</label><input id="allocation-edamame" data-allocation="edamame" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="pickles" data-supply="候補" data-search="漬物・キムチ 野菜・副菜 担当未定 候補 候補">
+        <label class="check-item" for="shop-pickles"><input type="checkbox" id="shop-pickles" data-check-id="pickles"><span><strong>漬物・キムチ <span class="tag">候補</span></strong><small>希望者分｜担当未定｜候補</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-pickles">漬物・キムチの持参予定・不足分・担当</label><input id="allocation-pickles" data-allocation="pickles" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div></div></section>
+<section class="check-group"><h3>主食・朝食 <span class="chip">7件</span></h3><div class="checklist">
+      <div class="shopping-item" data-item-id="rice" data-supply="持参必須" data-search="パックご飯 主食・朝食 現地補充 必須 持参必須">
+        <label class="check-item" for="shop-rice"><input type="checkbox" id="shop-rice" data-check-id="rice"><span><strong>パックご飯 <span class="tag">持参必須</span></strong><small>10〜12個｜現地補充｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-rice">パックご飯の持参予定・不足分・担当</label><input id="allocation-rice" data-allocation="rice" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="rice-seasoning" data-supply="候補" data-search="焼きおにぎり用味噌・醤油 主食・朝食 持ち寄り 締め 候補">
+        <label class="check-item" for="shop-rice-seasoning"><input type="checkbox" id="shop-rice-seasoning" data-check-id="rice-seasoning"><span><strong>焼きおにぎり用味噌・醤油 <span class="tag">候補</span></strong><small>各1｜持ち寄り｜締め</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-rice-seasoning">焼きおにぎり用味噌・醤油の持参予定・不足分・担当</label><input id="allocation-rice-seasoning" data-allocation="rice-seasoning" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="soup" data-supply="持参必須" data-search="インスタント味噌汁・スープ 主食・朝食 持ち寄り 必須 持参必須">
+        <label class="check-item" for="shop-soup"><input type="checkbox" id="shop-soup" data-check-id="soup"><span><strong>インスタント味噌汁・スープ <span class="tag">持参必須</span></strong><small>12食分｜持ち寄り｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-soup">インスタント味噌汁・スープの持参予定・不足分・担当</label><input id="allocation-soup" data-allocation="soup" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="bread" data-supply="候補" data-search="パン 主食・朝食 持ち寄り候補 朝食 候補">
+        <label class="check-item" for="shop-bread"><input type="checkbox" id="shop-bread" data-check-id="bread"><span><strong>パン <span class="tag">候補</span></strong><small>8〜12個分｜持ち寄り候補｜朝食</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-bread">パンの持参予定・不足分・担当</label><input id="allocation-bread" data-allocation="bread" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="eggs" data-supply="候補" data-search="卵 主食・朝食 現地補充 朝食 候補">
+        <label class="check-item" for="shop-eggs"><input type="checkbox" id="shop-eggs" data-check-id="eggs"><span><strong>卵 <span class="tag">候補</span></strong><small>10個｜現地補充｜朝食</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-eggs">卵の持参予定・不足分・担当</label><input id="allocation-eggs" data-allocation="eggs" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="yogurt" data-supply="候補" data-search="ヨーグルト 主食・朝食 現地補充 朝食 候補">
+        <label class="check-item" for="shop-yogurt"><input type="checkbox" id="shop-yogurt" data-check-id="yogurt"><span><strong>ヨーグルト <span class="tag">候補</span></strong><small>8個｜現地補充｜朝食</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-yogurt">ヨーグルトの持参予定・不足分・担当</label><input id="allocation-yogurt" data-allocation="yogurt" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="fruit" data-supply="候補" data-search="果物 主食・朝食 持ち寄り候補 朝食・デザート 候補">
+        <label class="check-item" for="shop-fruit"><input type="checkbox" id="shop-fruit" data-check-id="fruit"><span><strong>果物 <span class="tag">候補</span></strong><small>8人分｜持ち寄り候補｜朝食・デザート</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-fruit">果物の持参予定・不足分・担当</label><input id="allocation-fruit" data-allocation="fruit" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div></div></section>
+<section class="check-group"><h3>調味料・消耗品 <span class="chip">14件</span></h3><div class="checklist">
+      <div class="shopping-item" data-item-id="sauce-mild" data-supply="宿に備付け" data-search="焼肉のたれ（味の指定は要確認） 調味料・消耗品 公式案内あり・数量は宿に確認 必須 宿に備付け">
+        <label class="check-item" for="shop-sauce-mild"><input type="checkbox" id="shop-sauce-mild" data-check-id="sauce-mild"><span><strong>焼肉のたれ（味の指定は要確認） <span class="tag">宿に備付け</span></strong><small>1本｜公式案内あり・数量は宿に確認｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-sauce-mild">焼肉のたれ（味の指定は要確認）の持参予定・不足分・担当</label><input id="allocation-sauce-mild" data-allocation="sauce-mild" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="sauce-spicy" data-supply="持参必須" data-search="焼肉のたれ 辛口/にんにく系 調味料・消耗品 持ち寄り 必須 持参必須">
+        <label class="check-item" for="shop-sauce-spicy"><input type="checkbox" id="shop-sauce-spicy" data-check-id="sauce-spicy"><span><strong>焼肉のたれ 辛口/にんにく系 <span class="tag">持参必須</span></strong><small>1本｜持ち寄り｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-sauce-spicy">焼肉のたれ 辛口/にんにく系の持参予定・不足分・担当</label><input id="allocation-sauce-spicy" data-allocation="sauce-spicy" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="ponzu" data-supply="持参必須" data-search="ポン酢 調味料・消耗品 持ち寄り 必須 持参必須">
+        <label class="check-item" for="shop-ponzu"><input type="checkbox" id="shop-ponzu" data-check-id="ponzu"><span><strong>ポン酢 <span class="tag">持参必須</span></strong><small>1本｜持ち寄り｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-ponzu">ポン酢の持参予定・不足分・担当</label><input id="allocation-ponzu" data-allocation="ponzu" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="lemon" data-supply="候補" data-search="レモン・レモン汁 調味料・消耗品 現地補充 魚介用 候補">
+        <label class="check-item" for="shop-lemon"><input type="checkbox" id="shop-lemon" data-check-id="lemon"><span><strong>レモン・レモン汁 <span class="tag">候補</span></strong><small>1｜現地補充｜魚介用</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-lemon">レモン・レモン汁の持参予定・不足分・担当</label><input id="allocation-lemon" data-allocation="lemon" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="oil-butter" data-supply="持参必須" data-search="油・バター 調味料・消耗品 持ち寄り 必須 持参必須">
+        <label class="check-item" for="shop-oil-butter"><input type="checkbox" id="shop-oil-butter" data-check-id="oil-butter"><span><strong>油・バター <span class="tag">持参必須</span></strong><small>各1｜持ち寄り｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-oil-butter">油・バターの持参予定・不足分・担当</label><input id="allocation-oil-butter" data-allocation="oil-butter" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="yuzu" data-supply="候補" data-search="柚子こしょう 調味料・消耗品 持ち寄り 大分らしく 候補">
+        <label class="check-item" for="shop-yuzu"><input type="checkbox" id="shop-yuzu" data-check-id="yuzu"><span><strong>柚子こしょう <span class="tag">候補</span></strong><small>1本｜持ち寄り｜大分らしく</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-yuzu">柚子こしょうの持参予定・不足分・担当</label><input id="allocation-yuzu" data-allocation="yuzu" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="foil" data-supply="宿に備付け" data-search="アルミホイル 調味料・消耗品 公式案内あり・数量は宿に確認 必須 宿に備付け">
+        <label class="check-item" for="shop-foil"><input type="checkbox" id="shop-foil" data-check-id="foil"><span><strong>アルミホイル <span class="tag">宿に備付け</span></strong><small>1本｜公式案内あり・数量は宿に確認｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-foil">アルミホイルの持参予定・不足分・担当</label><input id="allocation-foil" data-allocation="foil" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="wrap-bags" data-supply="宿に備付け" data-search="ラップ 調味料・消耗品 公式案内あり・数量は宿に確認 必須 宿に備付け">
+        <label class="check-item" for="shop-wrap-bags"><input type="checkbox" id="shop-wrap-bags" data-check-id="wrap-bags"><span><strong>ラップ <span class="tag">宿に備付け</span></strong><small>各1｜公式案内あり・数量は宿に確認｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-wrap-bags">ラップの持参予定・不足分・担当</label><input id="allocation-wrap-bags" data-allocation="wrap-bags" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="kitchen-paper" data-supply="持参必須" data-search="キッチンペーパー 調味料・消耗品 現地補充 必須 持参必須">
+        <label class="check-item" for="shop-kitchen-paper"><input type="checkbox" id="shop-kitchen-paper" data-check-id="kitchen-paper"><span><strong>キッチンペーパー <span class="tag">持参必須</span></strong><small>2ロール｜現地補充｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-kitchen-paper">キッチンペーパーの持参予定・不足分・担当</label><input id="allocation-kitchen-paper" data-allocation="kitchen-paper" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="wipes" data-supply="持参必須" data-search="ウェットティッシュ 調味料・消耗品 現地補充 必須 持参必須">
+        <label class="check-item" for="shop-wipes"><input type="checkbox" id="shop-wipes" data-check-id="wipes"><span><strong>ウェットティッシュ <span class="tag">持参必須</span></strong><small>2〜3個｜現地補充｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-wipes">ウェットティッシュの持参予定・不足分・担当</label><input id="allocation-wipes" data-allocation="wipes" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="gloves" data-supply="候補" data-search="使い捨て手袋 調味料・消耗品 持ち寄り 生肉用 候補">
+        <label class="check-item" for="shop-gloves"><input type="checkbox" id="shop-gloves" data-check-id="gloves"><span><strong>使い捨て手袋 <span class="tag">候補</span></strong><small>1箱｜持ち寄り｜生肉用</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-gloves">使い捨て手袋の持参予定・不足分・担当</label><input id="allocation-gloves" data-allocation="gloves" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="bags" data-supply="候補" data-search="保存袋 調味料・消耗品 持ち寄り候補 候補 候補">
+        <label class="check-item" for="shop-bags"><input type="checkbox" id="shop-bags" data-check-id="bags"><span><strong>保存袋 <span class="tag">候補</span></strong><small>1箱｜持ち寄り候補｜候補</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-bags">保存袋の持参予定・不足分・担当</label><input id="allocation-bags" data-allocation="bags" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="trash-bags" data-supply="確認待ち" data-search="ゴミ袋 調味料・消耗品 総合代表が確認 要確認 確認待ち">
+        <label class="check-item" for="shop-trash-bags"><input type="checkbox" id="shop-trash-bags" data-check-id="trash-bags"><span><strong>ゴミ袋 <span class="tag">確認待ち</span></strong><small>分別ルール・備付けを宿に確認｜総合代表が確認｜要確認</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-trash-bags">ゴミ袋の持参予定・不足分・担当</label><input id="allocation-trash-bags" data-allocation="trash-bags" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="paper-plates" data-supply="候補" data-search="予備紙皿・紙コップ 調味料・消耗品 担当未定 候補 候補">
+        <label class="check-item" for="shop-paper-plates"><input type="checkbox" id="shop-paper-plates" data-check-id="paper-plates"><span><strong>予備紙皿・紙コップ <span class="tag">候補</span></strong><small>必要な場合のみ｜担当未定｜候補</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-paper-plates">予備紙皿・紙コップの持参予定・不足分・担当</label><input id="allocation-paper-plates" data-allocation="paper-plates" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div></div></section>
+<section class="check-group"><h3>飲み物 <span class="chip">10件</span></h3><div class="checklist">
+      <div class="shopping-item" data-item-id="beer" data-supply="確認待ち" data-search="ビール・発泡酒 飲み物 希望者・数量・担当を家族lineで確認 お酒を飲む方向け 確認待ち">
+        <label class="check-item" for="shop-beer"><input type="checkbox" id="shop-beer" data-check-id="beer"><span><strong>ビール・発泡酒 <span class="tag">確認待ち</span></strong><small>候補量：350ml×16〜18本（希望者で調整）｜希望者・数量・担当を家族LINEで確認｜お酒を飲む方向け</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-beer">ビール・発泡酒の持参予定・不足分・担当</label><input id="allocation-beer" data-allocation="beer" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="canned-drinks" data-supply="確認待ち" data-search="ハイボール・チューハイ 飲み物 希望者・数量・担当を家族lineで確認 お酒を飲む方向け 確認待ち">
+        <label class="check-item" for="shop-canned-drinks"><input type="checkbox" id="shop-canned-drinks" data-check-id="canned-drinks"><span><strong>ハイボール・チューハイ <span class="tag">確認待ち</span></strong><small>候補量：350ml×8本（希望者で調整）｜希望者・数量・担当を家族LINEで確認｜お酒を飲む方向け</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-canned-drinks">ハイボール・チューハイの持参予定・不足分・担当</label><input id="allocation-canned-drinks" data-allocation="canned-drinks" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="shochu" data-supply="確認待ち" data-search="焼酎 飲み物 希望者・数量・担当を家族lineで確認 お土産感 確認待ち">
+        <label class="check-item" for="shop-shochu"><input type="checkbox" id="shop-shochu" data-check-id="shochu"><span><strong>焼酎 <span class="tag">確認待ち</span></strong><small>候補量：720ml×1本（希望者で調整）｜希望者・数量・担当を家族LINEで確認｜お土産感</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-shochu">焼酎の持参予定・不足分・担当</label><input id="allocation-shochu" data-allocation="shochu" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="wine" data-supply="確認待ち" data-search="日本酒またはワイン 飲み物 希望者・数量・担当を家族lineで確認 食後用 確認待ち">
+        <label class="check-item" for="shop-wine"><input type="checkbox" id="shop-wine" data-check-id="wine"><span><strong>日本酒またはワイン <span class="tag">確認待ち</span></strong><small>候補量：1本（希望者で調整）｜希望者・数量・担当を家族LINEで確認｜食後用</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-wine">日本酒またはワインの持参予定・不足分・担当</label><input id="allocation-wine" data-allocation="wine" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="soda" data-supply="候補" data-search="炭酸水 飲み物 現地補充 割り材 候補">
+        <label class="check-item" for="shop-soda"><input type="checkbox" id="shop-soda" data-check-id="soda"><span><strong>炭酸水 <span class="tag">候補</span></strong><small>500ml×6〜8本｜現地補充｜割り材</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-soda">炭酸水の持参予定・不足分・担当</label><input id="allocation-soda" data-allocation="soda" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="ice" data-supply="持参必須" data-search="氷 飲み物 現地補充 必須 持参必須">
+        <label class="check-item" for="shop-ice"><input type="checkbox" id="shop-ice" data-check-id="ice"><span><strong>氷 <span class="tag">持参必須</span></strong><small>2kg×2袋｜現地補充｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-ice">氷の持参予定・不足分・担当</label><input id="allocation-ice" data-allocation="ice" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="water" data-supply="持参必須" data-search="水 飲み物 現地補充 必須 持参必須">
+        <label class="check-item" for="shop-water"><input type="checkbox" id="shop-water" data-check-id="water"><span><strong>水 <span class="tag">持参必須</span></strong><small>2L×3本｜現地補充｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-water">水の持参予定・不足分・担当</label><input id="allocation-water" data-allocation="water" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="tea" data-supply="持参必須" data-search="お茶 飲み物 現地補充 必須 持参必須">
+        <label class="check-item" for="shop-tea"><input type="checkbox" id="shop-tea" data-check-id="tea"><span><strong>お茶 <span class="tag">持参必須</span></strong><small>2L×3本｜現地補充｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-tea">お茶の持参予定・不足分・担当</label><input id="allocation-tea" data-allocation="tea" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="nonalcohol" data-supply="候補" data-search="ノンアルビール 飲み物 現地補充 乾杯用 候補">
+        <label class="check-item" for="shop-nonalcohol"><input type="checkbox" id="shop-nonalcohol" data-check-id="nonalcohol"><span><strong>ノンアルビール <span class="tag">候補</span></strong><small>350ml×6本｜現地補充｜乾杯用</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-nonalcohol">ノンアルビールの持参予定・不足分・担当</label><input id="allocation-nonalcohol" data-allocation="nonalcohol" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="coffee" data-supply="候補" data-search="コーヒー・緑茶 飲み物 持ち寄り 夜・朝 候補">
+        <label class="check-item" for="shop-coffee"><input type="checkbox" id="shop-coffee" data-check-id="coffee"><span><strong>コーヒー・緑茶 <span class="tag">候補</span></strong><small>8人分以上｜持ち寄り｜夜・朝</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-coffee">コーヒー・緑茶の持参予定・不足分・担当</label><input id="allocation-coffee" data-allocation="coffee" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div></div></section>
+<section class="check-group"><h3>個人持ち物 <span class="chip">7件</span></h3><div class="checklist">
+      <div class="shopping-item" data-item-id="pajamas" data-supply="持参必須" data-search="パジャマ・部屋着 個人持ち物 全員 宿になし 持参必須">
+        <label class="check-item" for="shop-pajamas"><input type="checkbox" id="shop-pajamas" data-check-id="pajamas"><span><strong>パジャマ・部屋着 <span class="tag">持参必須</span></strong><small>各自｜全員｜宿になし</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-pajamas">パジャマ・部屋着の持参予定・不足分・担当</label><input id="allocation-pajamas" data-allocation="pajamas" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="warm-clothes" data-supply="持参必須" data-search="上着・ひざ掛け・厚手靴下 個人持ち物 全員 11月の寒さ 持参必須">
+        <label class="check-item" for="shop-warm-clothes"><input type="checkbox" id="shop-warm-clothes" data-check-id="warm-clothes"><span><strong>上着・ひざ掛け・厚手靴下 <span class="tag">持参必須</span></strong><small>各自｜全員｜11月の寒さ</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-warm-clothes">上着・ひざ掛け・厚手靴下の持参予定・不足分・担当</label><input id="allocation-warm-clothes" data-allocation="warm-clothes" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="medicine" data-supply="持参必須" data-search="常備薬・マイナ保険証または資格確認書 個人持ち物 全員 必須 持参必須">
+        <label class="check-item" for="shop-medicine"><input type="checkbox" id="shop-medicine" data-check-id="medicine"><span><strong>常備薬・マイナ保険証または資格確認書 <span class="tag">持参必須</span></strong><small>各自｜全員｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-medicine">常備薬・マイナ保険証または資格確認書の持参予定・不足分・担当</label><input id="allocation-medicine" data-allocation="medicine" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="charger" data-supply="持参必須" data-search="充電器・モバイルバッテリー 個人持ち物 全員 必須 持参必須">
+        <label class="check-item" for="shop-charger"><input type="checkbox" id="shop-charger" data-check-id="charger"><span><strong>充電器・モバイルバッテリー <span class="tag">持参必須</span></strong><small>各自｜全員｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-charger">充電器・モバイルバッテリーの持参予定・不足分・担当</label><input id="allocation-charger" data-allocation="charger" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="cooler" data-supply="持参必須" data-search="クーラーボックス・保冷剤 個人持ち物 各車 要冷蔵用 持参必須">
+        <label class="check-item" for="shop-cooler"><input type="checkbox" id="shop-cooler" data-check-id="cooler"><span><strong>クーラーボックス・保冷剤 <span class="tag">持参必須</span></strong><small>各車｜各車｜要冷蔵用</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-cooler">クーラーボックス・保冷剤の持参予定・不足分・担当</label><input id="allocation-cooler" data-allocation="cooler" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="underwear" data-supply="持参必須" data-search="下着・靴下 個人持ち物 全員 必須 持参必須">
+        <label class="check-item" for="shop-underwear"><input type="checkbox" id="shop-underwear" data-check-id="underwear"><span><strong>下着・靴下 <span class="tag">持参必須</span></strong><small>各自｜全員｜必須</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-underwear">下着・靴下の持参予定・不足分・担当</label><input id="allocation-underwear" data-allocation="underwear" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div>
+      <div class="shopping-item" data-item-id="assistive-items" data-supply="候補" data-search="眼鏡・補聴器電池・杖など 個人持ち物 各自 候補 候補">
+        <label class="check-item" for="shop-assistive-items"><input type="checkbox" id="shop-assistive-items" data-check-id="assistive-items"><span><strong>眼鏡・補聴器電池・杖など <span class="tag">候補</span></strong><small>必要なもの｜各自｜候補</small></span></label>
+        <details class="item-notes no-print"><summary>持参量・不足量・担当をメモ</summary><label for="allocation-assistive-items">眼鏡・補聴器電池・杖などの持参予定・不足分・担当</label><input id="allocation-assistive-items" data-allocation="assistive-items" type="text" maxlength="180" placeholder="例：八代車が500g持参、不足200gは現地"></details>
+      </div></div></section>
+<!-- /generated:shopping --></div>
       </div>
     </section>
 
@@ -269,33 +500,19 @@
           <p>「誰か一人が頑張る」ではなく、30分ごとに交代する設計。</p>
         </div>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>役割</th><th>内容</th></tr></thead>
-          <tbody>
-            <tr><td>総合代表</td><td>宿連絡、支払い、必要なチェックイン情報の管理。</td></tr>
-            <tr><td>隊列管理</td><td>休憩場所と出発時刻を合わせます。無理な隊列走行はしません。</td></tr>
-            <tr><td>買い出し</td><td>15:00チェックイン後に持ち寄り量を確認し、必要な場合にのみ不足分を購入します。</td></tr>
-            <tr><td>記録・共有</td><td>写真、BGM、家族LINE共有を担当します。</td></tr>
-            <tr><td>焼き係</td><td>30分交代で担当します。焼きっぱなしにしません。</td></tr>
-            <tr><td>年配の方のサポート</td><td>椅子、防寒、温泉、夜間移動、体調確認を行います。</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="card"><!-- generated:roles -->
+<p>担当は家族LINEで前日までに決定します（担当者は未定）。焼き係は30分ごとに交代します。</p><dl class="role-list"><div><dt>総合代表</dt><dd>宿連絡・支払い・チェックイン情報管理・プラン変更の取りまとめ</dd></div><div><dt>各車の連絡担当</dt><dd>休憩と到着見込みを共有。無理な隊列走行はしない</dd></div><div><dt>買い出し</dt><dd>持参量と不足分を確認し、必要な場合だけ購入</dd></div><div><dt>記録・共有</dt><dd>写真・BGM・家族LINEでの連絡</dd></div><div><dt>焼き係</dt><dd>30分交代で担当</dd></div><div><dt>年配の方のサポート</dt><dd>椅子・防寒・温泉・夜間移動・体調確認</dd></div></dl>
+<!-- /generated:roles --></div>
       <div class="grid two" style="margin-top:14px">
         <article class="card editable-note">
           <h3>家族LINE共有メモ</h3>
-          <textarea id="family-memo" class="memo" data-save-key="family-memo" placeholder="例：持ち寄り品、買い出し予定、当日の連絡事項などをメモできます。"></textarea>
-          <div class="section-actions" style="margin-top:10px"><button id="copy-update" class="btn primary" type="button">LINE共有文をコピー</button></div>
+          <p id="memo-help">このブラウザだけに保存します。自動共有はされません。「LINE共有文をコピー」でコピーし、家族LINEに貼り付けてください。機密の予約情報は家族内共有メモで管理してください。</p><label for="family-memo">持ち寄り品・当日の連絡事項</label><textarea aria-describedby="memo-help" id="family-memo" class="memo" data-save-key="family-memo" placeholder="例：持ち寄り品、買い出し予定、当日の連絡事項などをメモできます。"></textarea>
+          <div class="section-actions" style="margin-top:10px"><button id="copy-update" class="btn primary" type="button">LINE共有文をコピー</button><button id="memo-delete" class="btn ghost" type="button">このメモを削除</button></div><p id="share-status" role="status"></p><textarea id="share-fallback" class="memo" aria-label="コピー用の共有文" readonly hidden></textarea>
         </article>
         <article class="card">
-          <h3>安全ルール</h3>
-          <ul class="subtle-list">
-            <li>生肉用トングと食べる箸は分ける。</li>
-            <li>運転する方は、宿到着後に運転が完全に終わってからお酒を飲みます。</li>
-            <li>翌朝運転する方は、夜のお酒を早めに切り上げます。</li>
-            <li>温泉前後は水分補給をします。お酒を飲んだ後の長湯は避けます。</li>
-          </ul>
+          <h3>安全ルール</h3><!-- generated:safety -->
+<ul class="subtle-list"><li>生肉用トングと食べる箸は分ける。</li><li>運転する方は、宿到着後に運転が完全に終わってからお酒を飲みます。</li><li>翌朝運転する方は、夜のお酒を早めに切り上げます。</li><li>温泉前後は水分補給をします。お酒を飲んだ後の長湯は避けます。</li></ul>
+<!-- /generated:safety -->
         </article>
       </div>
     </section>
@@ -308,46 +525,51 @@
         </div>
       </div>
 
-      <div class="photo-grid no-print" aria-label="湯布院の写真">
-        <figure class="photo-card wide"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Lake_Kinrin_in_Yufuin%2C_Oita_-_Aug_24%2C_2018_%281%29.jpg" alt="金鱗湖"><figcaption>金鱗湖 / HyunJae Park / Public Domain Mark</figcaption></figure>
-        <figure class="photo-card tall"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/b/bf/View_of_Mount_Yufudake_from_Yufuin_Station.jpg" alt="由布院駅方面から望む由布岳"><figcaption>由布岳 / Tekannan / CC BY-SA 4.0</figcaption></figure>
-        <figure class="photo-card"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Panorama_view_of_Yufuin.jpg" alt="狭霧台からの湯布院遠望"><figcaption>狭霧台からの遠望 / STA3816 / CC BY-SA 3.0</figcaption></figure>
-        <figure class="photo-card"><img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Mount_Yufudake_and_Yufuin_Showa_Museum.JPG" alt="湯布院の街並みと由布岳"><figcaption>湯布院の街並み / そらみみ / CC BY-SA 4.0</figcaption></figure>
-      </div>
+      <div class="photo-grid no-print" aria-label="湯布院の写真"><!-- generated:photos -->
+<figure class="photo-card wide"><img loading="lazy" decoding="async" src="assets/photos/kinrin.jpg" width="960" height="639" alt="金鱗湖"><figcaption>金鱗湖 / HyunJae Park / <a href="https://creativecommons.org/publicdomain/mark/1.0/" target="_blank" rel="noopener noreferrer">Public Domain Mark</a> · <a href="https://commons.wikimedia.org/wiki/File:Lake_Kinrin_in_Yufuin%2C_Oita_-_Aug_24%2C_2018_%281%29.jpg" target="_blank" rel="noopener noreferrer">原典</a></figcaption></figure>
+<figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/yufudake.jpg" width="960" height="720" alt="由布院駅方面から望む由布岳"><figcaption>由布院駅方面から望む由布岳 / Kitayama（アップロード履歴：Tekannan） / <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:View_of_Mount_Yufudake_from_Yufuin_Station.jpg" target="_blank" rel="noopener noreferrer">原典</a></figcaption></figure>
+<figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/sagiridai.jpg" width="960" height="616" alt="狭霧台からの湯布院遠望"><figcaption>狭霧台からの湯布院遠望 / STA3816 / <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Panorama_view_of_Yufuin.jpg" target="_blank" rel="noopener noreferrer">原典</a></figcaption></figure>
+<figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/town.jpg" width="960" height="720" alt="湯布院の街並みと由布岳"><figcaption>湯布院の街並みと由布岳 / そらみみ / <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Mount_Yufudake_and_Yufuin_Showa_Museum.JPG" target="_blank" rel="noopener noreferrer">原典</a></figcaption></figure>
+<!-- /generated:photos --></div>
 
       <div class="grid two" style="margin-top:14px">
         <article class="card story-card">
           <div class="story-icon">🌫️</div>
           <div><h3>金鱗湖の朝霧</h3>
-            <p>金鱗湖は由布院を代表するスポット。湖底からの温泉と清水の温度差により、秋から冬の冷え込んだ早朝には湖面から湯気・朝霧が立ちのぼることがあります。名前は、魚の鱗が夕日に金色に輝いたことに由来すると伝わります。</p><a class="btn ghost small" data-url="kinrin" target="_blank" rel="noopener">詳しく見る</a></div>
+            <p>金鱗湖は由布院を代表するスポット。温泉と湧水で比較的高い湖の水温と、冷えた空気との温度差により、秋から冬の冷え込んだ早朝には湖面から湯気・朝霧が立ちのぼることがあります。名前は、魚の鱗が夕日に金色に輝いたことに由来すると伝わります。</p><a class="btn ghost small" data-url="kinrin" target="_blank" rel="noopener" href="https://yufuin.gr.jp/spot/spot-1268/">詳しく見る</a></div>
         </article>
         <article class="card story-card">
           <div class="story-icon">⛰️</div>
           <div><h3>狭霧台と由布院盆地</h3>
-            <p>狭霧台は由布岳のふもと、由布院盆地を見渡せる展望台。秋から冬にかけて、朝霧が盆地を包む様子のビュースポットとして知られます。歩くより車で景色を楽しみたい場合の第一候補です。</p><a class="btn ghost small" data-url="sagiridai" target="_blank" rel="noopener">詳しく見る</a></div>
+            <p>狭霧台は由布岳のふもと、由布院盆地を見渡せる展望台。秋から冬にかけて、朝霧が盆地を包む様子のビュースポットとして知られます。歩くより車で景色を楽しみたい場合の第一候補です。</p><a class="btn ghost small" data-url="sagiridai" target="_blank" rel="noopener" href="https://yufuin.gr.jp/spot/spot-1269/">詳しく見る</a></div>
         </article>
         <article class="card story-card">
           <div class="story-icon">🐍</div>
           <div><h3>盆地は湖だったという伝説</h3>
-            <p>由布院の朝霧は、まるで白い湖のように盆地を覆うことがあります。大分県の読み物でも、かつて由布院盆地は本当の湖だったという伝説が紹介されています。朝霧を見る時の話題にぴったりです。</p><a class="btn ghost small" data-url="oitaMorningMist" target="_blank" rel="noopener">読み物へ</a></div>
+            <p>由布院の朝霧は、まるで白い湖のように盆地を覆うことがあります。大分県の読み物でも、かつて由布院盆地は本当の湖だったという伝説が紹介されています。朝霧を見る時の話題にぴったりです。</p><a class="btn ghost small" data-url="oitaMorningMist" target="_blank" rel="noopener" href="https://edit.pref.oita.jp/series/jikan/73/">読み物へ</a></div>
         </article>
         <article class="card story-card">
           <div class="story-icon">⛩️</div>
           <div><h3>宇奈岐日女神社「六所様」</h3>
-            <p>宇奈岐日女神社は通称「六所様」。由布院は古くは沼で、動物のうなぎを沢沼の精霊として祀ったのが古来の祭神ではないか、と公式旅ガイドで紹介されています。</p><a class="btn ghost small" data-url="unagihime" target="_blank" rel="noopener">詳しく見る</a></div>
+            <p>宇奈岐日女神社は通称「六所様」。由布院は古くは沼で、動物のうなぎを沢沼の精霊として祀ったのが古来の祭神ではないか、と公式旅ガイドで紹介されています。</p><a class="btn ghost small" data-url="unagihime" target="_blank" rel="noopener" href="https://yufuin.gr.jp/spot/spot-1274/">詳しく見る</a></div>
         </article>
       </div>
 
       <div class="card" style="margin-top:14px">
-        <h3>2日目の観光分岐</h3>
+        <h3>2日目の観光分岐（案）</h3><p>朝霧を見たい方だけ、早朝の天気と体調を確認して出発を相談。朝食・片付け・10:00チェックアウトに間に合うよう宿へ戻ります。チェックアウト後の観光は一か所まで。</p>
         <div class="grid three">
           <div class="callout success"><strong>A-1 晴れ・車で景色</strong><br>チェックアウト後、狭霧台へ。歩行負担が少なく、写真だけでも満足度が高い。</div>
-          <div class="callout"><strong>A-2 歩けそう</strong><br>金鱗湖へ。周囲の散策は短めにし、混雑時は無理に一周しない。</div>
+          <div class="callout"><strong>A-2 歩けそう</strong><br>チェックアウト後に金鱗湖へ。朝霧が残っているとは限りません。散策は短めにし、混雑時は無理に一周しない。</div>
           <div class="callout danger"><strong>B 疲労・寒さ・雨</strong><br>観光なし。10:00チェックアウト後、SAや道の駅で休憩しながら帰路へ。</div>
         </div>
       </div>
     </section>
 
+    <section class="card" aria-labelledby="tourism-practical"><h3 id="tourism-practical">観光に出る前に</h3>
+      <dl class="role-list"><div><dt>金鱗湖</dt><dd>近隣の有料駐車場を利用。湖畔までの歩行・足元を確認し、無理に一周しない。滞在は20〜40分の計画目安（移動・駐車待ちを除く）。雨・疲労時は見送ります。<a data-url="kinrin" target="_blank" rel="noopener" href="https://yufuin.gr.jp/spot/spot-1268/">公式情報</a></dd></div>
+      <div><dt>狭霧台</dt><dd>駐車場あり。駐車位置から眺望地点までの段差等は現地確認。滞在は10〜20分の計画目安（移動を除く）。雨・強風・視界不良時は見送ります。<a data-url="sagiridai" target="_blank" rel="noopener" href="https://yufuin.gr.jp/spot/spot-1269/">公式情報</a></dd></div>
+      <div><dt>宇奈岐日女神社</dt><dd>駐車場あり。境内の歩行負担を確認し、滞在は15〜30分の計画目安（移動を除く）。足元が悪い場合は見送ります。<a data-url="unagihime" target="_blank" rel="noopener" href="https://yufuin.gr.jp/spot/spot-1274/">公式情報</a></dd></div></dl>
+      <p class="muted">駐車場情報は2026-10-10公式確認。滞在時間はこのしおりの計画目安で、公式所要時間ではありません。料金・空き・トイレ・段差の詳細は未確認です。</p></section>
     <section class="section" id="links">
       <div class="section-head">
         <div>
@@ -367,7 +589,7 @@
         <article class="card"><h3>前日チェック</h3>
           <ul class="subtle-list"><li>高速道路の規制・天気確認</li><li>各車の持ち寄りを家族LINEに投稿</li><li>クーラーボックス・保冷剤・薬・防寒具</li></ul></article>
         <article class="card"><h3>当日チェック</h3>
-          <ul class="subtle-list"><li>ガソリン・ETCカード</li><li>携帯充電・モバイルバッテリー</li><li>年配の方の休憩と防寒</li><li>15:00にAMBER Yufuin集合</li></ul></article>
+          <ul class="subtle-list"><li>ガソリン・ETCカード</li><li>携帯充電・モバイルバッテリー</li><li>年配の方の休憩と防寒</li><li data-trip="meeting">15:00 AMBER Yufuin【Villa1】集合</li></ul></article>
       </div>
     </section>
 
@@ -382,6 +604,7 @@
   </div>
 
   <script src="data.js" defer></script>
+  <script src="views.js" defer></script>
   <script src="app.js" defer></script>
 </body>
 </html>

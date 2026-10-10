@@ -1,33 +1,7 @@
 // Generated as sw.js by make build. Do not edit the generated copy.
 const CACHE_PREFIX = 'yufuin-bbq-shiori-';
-const CACHE_NAME = CACHE_PREFIX + '69189ff1752ebd5a';
-const CORE_ASSETS = [
-  "./",
-  "./index.html",
-  "./links.html",
-  "./print.html",
-  "./styles.css",
-  "./data.js",
-  "./views.js",
-  "./app.js",
-  "./manifest.webmanifest",
-  "./assets/icons/icon-192.png",
-  "./assets/icons/icon-512.png",
-  "./assets/illust/bbq.svg",
-  "./assets/illust/family.svg",
-  "./assets/illust/map.svg",
-  "./assets/illust/onsen.svg",
-  "./assets/illust/yufu-mountain.svg",
-  "./assets/photos/kinrin.jpg",
-  "./assets/photos/sagiridai.jpg",
-  "./assets/photos/town.jpg",
-  "./assets/photos/yufudake.jpg",
-  "./assets/qrcode/qr-aeon-map.png",
-  "./assets/qrcode/qr-amber-map.png",
-  "./assets/qrcode/qr-kinrin-map.png",
-  "./assets/qrcode/qr-nexco.png",
-  "./assets/qrcode/qr-yufuin-info.png"
-];
+const CACHE_NAME = CACHE_PREFIX + '__VERSION__';
+const CORE_ASSETS = __CORE_ASSETS__;
 const scopeURL = new URL('./', self.location.href);
 
 self.addEventListener('install', event => {
