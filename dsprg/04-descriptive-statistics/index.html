@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="12件の学習記録をRとPythonで要約・可視化する90分の授業">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第4回 記述統計とデータの可視化</title>
+<link rel="stylesheet" href="reveal/reveal.css">
+<link rel="stylesheet" href="reveal/theme/white.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第4回：12件を、数字とグラフで読む -->
+<div class="slide-body" data-step="1">
+<h2
+id="第4回12件を数字とグラフで読む">第4回：12件を、数字とグラフで読む</h2>
+<p class="operation-place">
+0–5分｜目標
+</p>
+<p><strong>DSプログラミング入門2026｜白濵 成希</strong></p>
+<ul>
+<li>中心とばらつきを、数値で要約する。</li>
+<li>分布と二つの値の関係を、図で見る。</li>
+<li>予想→実行→照合→変更を、RとPythonで行う。</li>
+</ul>
+<p class="source-note">
+出典：学生用§1–2
+</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日は架空の十二件の学習記録を使います。最初にアール、次にパイソンで同じ処理を確認します。第3回で止まった箇所がある人は知らせてください。習得済みと決めつけず、表の一列から復習します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: workを開き、4ファイルを保存する -->
+<div class="slide-body" data-step="2">
+<h2
+id="workを開き4ファイルを保存する">workを開き、4ファイルを保存する</h2>
+<p class="operation-place">
+0–5分｜準備
+</p>
+<p>接続先は <strong>WSL: DSProg2026</strong>。</p>
+<p><code>work/exercises/lesson04/</code> に保存。</p>
+<table>
+<thead>
+<tr>
+<th>主例</th>
+<th>演習</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lesson04.R</td>
+<td>exercise04.R</td>
+</tr>
+<tr>
+<td>lesson04.py</td>
+<td>exercise04.py</td>
+</tr>
+</tbody>
+</table>
+<p class="source-note">
+出典：学生用§2
+</p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+work全体を開いたままにします。演習ファイルは最初から別に用意しています。主例を変更しないので、変更前と比較できます。インストールや環境更新はしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 保存→対象タブ→授業タスク→結果 -->
+<div class="slide-body" data-step="3">
+<h2 id="保存対象タブ授業タスク結果">保存→対象タブ→授業タスク→結果</h2>
+<p class="operation-place">
+0–5分｜実行方法
+</p>
+<ol type="1">
+<li>実行したいファイルのタブを開く。</li>
+<li>Ctrl＋Sで保存。</li>
+<li>［ターミナル］→［タスクの実行…］。</li>
+<li>［授業: Rファイルを実行］またはPython。</li>
+<li>ターミナルの結果を読む。</li>
+</ol>
+<p class="source-note">
+出典：学生用§2
+</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ノートブックのセル横の三角ボタンとは違います。ファイル全体を最初から実行する操作です。結果が変わらない場合は保存と対象タブを確かめます。ここではまだ主例を開くだけでも構いません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 復習：表から一列を取り出す -->
+<div class="slide-body" data-step="4">
+<h2 id="復習表から一列を取り出す">復習：表から一列を取り出す</h2>
+<p class="operation-place">
+0–5分｜復習
+</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>records<span class="sc">$</span>study_minutes</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>records[<span class="st">&quot;study_minutes&quot;</span>]</span></code></pre></div>
+<p>1行＝1件の記録、列＝記録する項目。</p>
+<p class="source-note">
+出典：学生用§2
+</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+同じ表の学習時間を取り出す二つの書き方です。前回の平均の計算も、この一列を使っていました。記号を全部説明するのではなく、どちらも同じ列を取り出していることを確かめます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 問い：どのくらいが中心だろう -->
+<div class="slide-body" data-step="5">
+<h2 id="問いどのくらいが中心だろう">問い：どのくらいが中心だろう</h2>
+<p class="operation-place">
+5–15分｜予想
+</p>
+<p>学習時間（分）</p>
+<p><strong>15, 30, 45, 60, 30, 45, 60, 75, 45, 60, 75, 120</strong></p>
+<ul>
+<li>12件すべて教材用の架空データ。</li>
+<li>平均を予想する。120分はどう影響する？</li>
+</ul>
+<p class="source-note">
+出典：学生用§3
+</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+まず計算をせずに予想を一つ出してください。長い時間が一件あることに注目します。実際の学生の成績や調査結果ではありません。後でこの一件だけを変更して比べます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: 平均：合計を件数で割る -->
+<div class="slide-body" data-step="6">
+<h2 id="平均合計を件数で割る">平均：合計を件数で割る</h2>
+<p class="operation-place">
+5–15分｜平均
+</p>
+<p>件数は <strong>12</strong>。学習時間の合計は
+<strong>660分</strong>。</p>
+<p><strong>660 ÷ 12 ＝ 55分</strong></p>
+<p>平均は、全体を均したときの値。</p>
+<p class="source-note">
+出典：学生用§4
+</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+件数と合計がわかれば平均を手計算できます。プログラムが止まらなかっただけでなく、この小さい計算とも比べましょう。データを変更したら合計がどう変わるかが手掛かりになります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: 中央値：並べたときの真ん中 -->
+<div class="slide-body" data-step="7">
+<h2 id="中央値並べたときの真ん中">中央値：並べたときの真ん中</h2>
+<p class="operation-place">
+5–15分｜中央値
+</p>
+<p>15, 30, 30, 45, 45, <strong>45, 60</strong>, 60, 60, 75, 75, 120</p>
+<p>12件なら、並べた後の6番目と7番目。</p>
+<p><strong>(45 ＋ 60) ÷ 2 ＝ 52.5分</strong></p>
+<p class="source-note">
+出典：学生用§4
+</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+元の表の六行目と七行目ではありません。小さい順に並べた順位の中央です。件数が偶数なので中央の二つを平均します。平均の五十五分と少し違うことも確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: 標準偏差：ばらつきの大きさ -->
+<div class="slide-body" data-step="8">
+<h2 id="標準偏差ばらつきの大きさ">標準偏差：ばらつきの大きさ</h2>
+<p class="operation-place">
+5–15分｜標準偏差
+</p>
+<ul>
+<li>平均のまわりのばらつきを数値で表す。</li>
+<li>学習時間なら単位は「分」。</li>
+<li>大きいほどばらつきが大きい。</li>
+</ul>
+<p>各記録が平均から同じ距離にある、という意味ではない。</p>
+<p class="source-note">
+出典：学生用§4
+</p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+標準偏差はばらつきの目安です。平均だけでは、時間が揃っているのか広く散らばっているのかはわかりません。次の図と組み合わせて読みます。式の導出は今日は必修にしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: 同じ分母で計算する -->
+<div class="slide-body" data-step="9">
+<h2 id="同じ分母で計算する">同じ分母で計算する</h2>
+<p class="operation-place">
+5–15分｜定義を揃える
+</p>
+<p>偏差の二乗の合計を割る分母には <strong>n</strong> と
+<strong>n−1</strong> がある。</p>
+<p>今日は <strong>n−1＝11</strong> で割り、平方根を取る。</p>
+<ul>
+<li>R：<code>sd(...)</code></li>
+<li>Python：<code>.std(ddof=1)</code></li>
+</ul>
+<p class="source-note">
+出典：学生用§4・補足
+</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回は標本標準偏差という名前を、分母が件数より一小さい方法として使います。同じデータでも分母が違えば値が違います。不偏標準偏差と単純に呼ばないようにします。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: R：表の3列を確かめる -->
+<div class="slide-body" data-step="10">
+<h2 id="r表の3列を確かめる">R：表の3列を確かめる</h2>
+<p class="operation-place">
+15–30分｜R
+</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>records <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>],</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">study_minutes =</span> <span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">30</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">30</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">75</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">75</span>,<span class="dv">120</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">quiz_score =</span> <span class="fu">c</span>(<span class="dv">40</span>,<span class="dv">60</span>,<span class="dv">80</span>,<span class="dv">70</span>,<span class="dv">55</span>,<span class="dv">65</span>,<span class="dv">75</span>,<span class="dv">85</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">80</span>,<span class="dv">90</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p class="source-note">
+出典：主例R A
+</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+lesson04.RのAを見ます。各列に十二個ずつ値があります。レターズの一から十二はエーからエルです。コードは完成して配布しているので、同じ行を二重に追加しないでください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: R：一列を要約して表示する -->
+<div class="slide-body" data-step="11">
+<h2 id="r一列を要約して表示する">R：一列を要約して表示する</h2>
+<p class="operation-place">
+15–30分｜R
+</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;件数:&quot;</span>, <span class="fu">nrow</span>(records), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;学習時間の平均:&quot;</span>, <span class="fu">mean</span>(records<span class="sc">$</span>study_minutes), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;中央値:&quot;</span>, <span class="fu">median</span>(records<span class="sc">$</span>study_minutes), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;標本標準偏差:&quot;</span>, <span class="fu">sd</span>(records<span class="sc">$</span>study_minutes), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<p class="source-note">
+出典：主例R A
+</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+件数、平均、中央値、標本標準偏差の四つを表示します。キャットの文字部分は結果を読み分けるための見出しです。計算する列と関数を一つずつ指してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: Rを実行し、数値を照合する -->
+<div class="slide-body" data-step="12">
+<h2 id="rを実行し数値を照合する">Rを実行し、数値を照合する</h2>
+<p class="operation-place">
+15–30分｜実行・確認
+</p>
+<p><strong>lesson04.Rを保存して授業タスクで実行。</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">件数</th>
+<th style="text-align: right;">平均</th>
+<th style="text-align: right;">中央値</th>
+<th style="text-align: right;">標本標準偏差</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">52.5</td>
+<td style="text-align: right;">約27.386</td>
+</tr>
+</tbody>
+</table>
+<p>合計660÷12と、並べた中央でも確かめる。</p>
+<p class="source-note">
+出典：学生用§4
+</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここで全員が実行する時間を取ります。表の行数も見てください。Rの表示は小数の桁が少なく見えますが、値が違うとは限りません。続いて保存された図を開きます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: ヒストグラム：時間帯ごとの件数 -->
+<div class="slide-body" data-step="13">
+<h2
+id="ヒストグラム時間帯ごとの件数">ヒストグラム：時間帯ごとの件数</h2>
+<p class="operation-place">
+15–30分｜区間
+</p>
+<p>区間の境界は <strong>0,30,60,90,120,150</strong>。</p>
+<ul>
+<li>左端を含む。右端は含まない。</li>
+<li>最後だけ150も含む。</li>
+<li>30分は「30以上60未満」に入る。</li>
+</ul>
+<p>横軸は学習時間、縦軸は件数。</p>
+<p class="source-note">
+出典：学生用§5
+</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+棒グラフの高さを得点と取り違えないようにします。一件ずつを決まった時間帯に数え入れた数です。空の区間も同じ軸に残すので、変更前後を比較できます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: R：区間と閉じる側を指定する -->
+<div class="slide-body" data-step="14">
+<h2 id="r区間と閉じる側を指定する">R：区間と閉じる側を指定する</h2>
+<p class="operation-place">
+15–30分｜Rの図
+</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">90</span>, <span class="dv">120</span>, <span class="dv">150</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>histogram <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(records, <span class="fu">aes</span>(<span class="at">x =</span> study_minutes)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">breaks =</span> breaks, <span class="at">closed =</span> <span class="st">&quot;left&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<p>配布コードには軸・日本語ラベル・保存も用意。</p>
+<p class="source-note">
+出典：主例R B
+</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この画面は主例Bの重要な部分だけです。プラスでグラフの要素を続けます。closedをleftにすることで境界上の値を揃えます。全文をこの断片で置き換えないよう伝えます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: Rのヒストグラムを開く -->
+<div class="slide-body" data-step="15">
+<h2 id="rのヒストグラムを開く">Rのヒストグラムを開く</h2>
+<p class="operation-place">
+15–30分｜画像確認
+</p>
+<p><img class="lesson04-figure zoomable-image" width="1200" height="750" src="./images/lesson04_r_hist.png" alt="変更前のRヒストグラム。件数は1、5、5、0、1。"></p>
+<p class="source-note">
+出典：学生環境PNG・学生用§5
+</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+出力フォルダーの画像を開いてください。五本の区間の件数は一、五、五、ゼロ、一です。合計十二件になることを確認します。クリックで拡大できます。色はPythonと同じでなくても構いません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: 散布図：1件を一つの座標へ -->
+<div class="slide-body" data-step="16">
+<h2 id="散布図1件を一つの座標へ">散布図：1件を一つの座標へ</h2>
+<p class="operation-place">
+15–30分｜関係を見る
+</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scatter <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(records,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> study_minutes, <span class="at">y =</span> quiz_score)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code></pre></div>
+<p>横軸＝学習時間、縦軸＝小テスト得点。</p>
+<p class="source-note">
+出典：主例R C・学生用§5
+</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+二つの値は同じ行の組でなければなりません。順番を別々に並べ替えると組が壊れます。ここでは表の行の対応を保ったまま点を描きます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: Lは(120,90)、DとJは重なる -->
+<div class="slide-body" data-step="17">
+<h2 id="lは12090dとjは重なる">Lは(120,90)、DとJは重なる</h2>
+<p class="operation-place">
+15–30分｜座標確認
+</p>
+<p><img class="lesson04-figure zoomable-image" width="1200" height="750" src="./images/lesson04_r_scatter.png" alt="変更前のR散布図。Lは120分90点。DとJは60分70点で重なる。"></p>
+<p class="source-note">
+出典：学生環境PNG・学生用§5
+</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+Lの点を指して横から百二十分、縦から九十点と読みます。DとJは同じ場所なので重なります。見える点が十一個でも入力は十二件です。時間を延ばせば必ず得点が上がるという因果関係は、この図だけでは言えません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: Python：同じ表を用意する -->
+<div class="slide-body" data-step="18">
+<h2 id="python同じ表を用意する">Python：同じ表を用意する</h2>
+<p class="operation-place">
+30–45分｜Python
+</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>records <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span>: <span class="bu">list</span>(<span class="st">&quot;ABCDEFGHIJKL&quot;</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;study_minutes&quot;</span>: [<span class="dv">15</span>,<span class="dv">30</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">30</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">75</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">75</span>,<span class="dv">120</span>],</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;quiz_score&quot;</span>: [<span class="dv">40</span>,<span class="dv">60</span>,<span class="dv">80</span>,<span class="dv">70</span>,<span class="dv">55</span>,<span class="dv">65</span>,<span class="dv">75</span>,<span class="dv">85</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">80</span>,<span class="dv">90</span>],</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<p class="source-note">
+出典：主例Python A
+</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここからパイソンです。データフレームの書き方が変わっても、列名、値、件数、行の対応は同じです。lesson04.pyのAを見ます。前のRファイルへ混ぜないでください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: Python：平均・中央値・標本標準偏差 -->
+<div class="slide-body" data-step="19">
+<h2
+id="python平均中央値標本標準偏差">Python：平均・中央値・標本標準偏差</h2>
+<p class="operation-place">
+30–45分｜Python
+</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;件数:&quot;</span>, <span class="bu">len</span>(records))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;学習時間の平均:&quot;</span>, records[<span class="st">&quot;study_minutes&quot;</span>].mean())</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;中央値:&quot;</span>, records[<span class="st">&quot;study_minutes&quot;</span>].median())</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;標本標準偏差:&quot;</span>, records[<span class="st">&quot;study_minutes&quot;</span>].std(ddof<span class="op">=</span><span class="dv">1</span>))</span></code></pre></div>
+<p class="source-note">
+出典：主例Python A
+</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+同じ四つを表示します。ドットで列に対する計算を続ける書き方です。標準偏差はddofを一と明示して、アールと同じ分母にしています。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: Python：figとaxを使って描く -->
+<div class="slide-body" data-step="20">
+<h2 id="pythonfigとaxを使って描く">Python：figとaxを使って描く</h2>
+<p class="operation-place">
+30–45分｜Pythonの図
+</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ax.hist(records[<span class="st">&quot;study_minutes&quot;</span>], bins<span class="op">=</span>breaks,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span><span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<p>fig＝図全体、ax＝描く場所。</p>
+<p>区間境界はRと同じ。</p>
+<p class="source-note">
+出典：主例Python B
+</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+figとaxは配布コードを読むための名前として紹介します。オブジェクト指向の詳細は必修にしません。histへ渡した列と、binsへ渡した境界に注目します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: Python：点を描き、PNGで保存する -->
+<div class="slide-body" data-step="21">
+<h2
+id="python点を描きpngで保存する">Python：点を描き、PNGで保存する</h2>
+<p class="operation-place">
+30–45分｜保存
+</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ax.scatter(records[<span class="st">&quot;study_minutes&quot;</span>],</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>           records[<span class="st">&quot;quiz_score&quot;</span>])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>fig.savefig(output <span class="op">/</span> <span class="st">&quot;lesson04_python_scatter.png&quot;</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code></pre></div>
+<p class="source-note">
+出典：主例Python C
+</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+点の横と縦の列を確認します。図の余白調整、保存、終了は配布済みです。この断片の前にはfigとaxの作成と軸設定があります。ファイル名を言語ごとに分けて上書きを防いでいます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: Pythonも実行し、図を開く -->
+<div class="slide-body" data-step="22">
+<h2 id="pythonも実行し図を開く">Pythonも実行し、図を開く</h2>
+<p class="operation-place">
+30–45分｜実行・照合
+</p>
+<p><img class="lesson04-figure zoomable-image" width="1200" height="750" src="./images/lesson04_python_hist.png" alt="Python主例のヒストグラム。Rと区間件数が一致する。"></p>
+<p class="source-note">
+出典：学生環境PNG・学生用§4–5
+</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+Pythonの主例全体を実行して、数値と画像を開いてください。Rと色や余白が違っていても、区間と件数が同じかを読みます。数値も件数十二、平均五十五、中央値五十二点五です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: 保存先はworkからたどる -->
+<div class="slide-body" data-step="23">
+<h2 id="保存先はworkからたどる">保存先はworkからたどる</h2>
+<p class="operation-place">
+30–45分｜保存先確認
+</p>
+<p><strong>exercises → lesson04 → output</strong></p>
+<ul>
+<li><code>lesson04_r_hist.png</code></li>
+<li><code>lesson04_r_scatter.png</code></li>
+<li><code>lesson04_python_hist.png</code></li>
+<li><code>lesson04_python_scatter.png</code></li>
+</ul>
+<p>画像を開き、軸・単位・棒・点を読む。</p>
+<p class="source-note">
+出典：学生用§5
+</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+タスクの作業場所はホーム、データサイ、workです。その下のexercises、lesson04、outputへ保存されます。ファイルがあるだけでなく開いて読めることを確認してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 演習：先に予想を書く -->
+<div class="slide-body" data-step="24">
+<h2 id="演習先に予想を書く">演習：先に予想を書く</h2>
+<p class="operation-place">
+45–65分｜予想
+</p>
+<p>Lの学習時間を <strong>120分→90分</strong> にしたら？</p>
+<ul>
+<li>平均・中央値・標準偏差はどうなる？</li>
+<li>ヒストグラムのどの区間が変わる？</li>
+<li>散布図のLはどこへ動く？</li>
+</ul>
+<p class="source-note">
+出典：学生用§6
+</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+まだ答え合わせを表示しません。ノートなどへ短く予想を書いてもらいます。全てを数式で求める必要はありません。変わるか、変わらないかと、その理由から始められます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: 演習A・Bを両言語で行う -->
+<div class="slide-body" data-step="25">
+<h2 id="演習abを両言語で行う">演習A・Bを両言語で行う</h2>
+<p class="operation-place">
+45–65分｜作業中はここで待つ
+</p>
+<p><strong>exercise04.R と exercise04.py</strong> を開く。</p>
+<p><strong>A</strong>　Lのstudy_minutesだけ120→90。</p>
+<p><strong>B</strong>　quiz_scoreの平均を計算・表示する1行を追加。</p>
+<p>保存→全文実行→数値と2枚の図を確認。</p>
+<p class="source-note">
+出典：学生用§6
+</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+このスライドを表示したまま作業時間を取ります。Aでは軸の上限や得点を変えません。Bは学習時間平均の行が手掛かりです。完成解答はこの時点では配りません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: 共通ヒント：似ている行を探す -->
+<div class="slide-body" data-step="26">
+<h2 id="共通ヒント似ている行を探す">共通ヒント：似ている行を探す</h2>
+<p class="operation-place">
+45–65分｜必要時のヒント
+</p>
+<ol type="1">
+<li>学習時間の平均を表示する行を探す。</li>
+<li>表の得点列の名前を確かめる。</li>
+<li>対象列を変えたら何が表示されるか考える。</li>
+</ol>
+<p>Copilotにも「説明とヒント」を求められる。</p>
+<p class="source-note">
+出典：教員用つまずき・学生用§6
+</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+必要な人にだけ段階ヒントを出します。Copilotを使わない人にも同じ支援を用意します。提案の正しさは元の表や計算結果で確認します。利用しただけで点数が上がったり下がったりしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 両言語で、変更後の全文を実行 -->
+<div class="slide-body" data-step="27">
+<h2 id="両言語で変更後の全文を実行">両言語で、変更後の全文を実行</h2>
+<p class="operation-place">
+65–80分｜仕上げ
+</p>
+<ul>
+<li>保存したファイルがexercise04か確認。</li>
+<li>ターミナルで件数と統計量を読む。</li>
+<li><code>exercise04_</code> から始まるPNGを開く。</li>
+<li>主例の数値・画像と比較する。</li>
+</ul>
+<p class="source-note">
+出典：学生用§6
+</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+一方だけ実行して終わらないよう確認します。同じ演習を再実行すると演習の図は更新されますが、主例の図は残ります。ここではまだ答えを画面に出さず、学生の観察を聞きます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: 確認は「エラーなし」の先へ -->
+<div class="slide-body" data-step="28">
+<h2 id="確認はエラーなしの先へ">確認は「エラーなし」の先へ</h2>
+<p class="operation-place">
+65–80分｜照合
+</p>
+<p><strong>予想 → 実行結果 → 確かめた方法</strong></p>
+<ul>
+<li>合計はどれだけ減った？</li>
+<li>並べた中央の2件は？</li>
+<li>Lの横と縦は、それぞれ何？</li>
+<li>得点列を変更した？</li>
+</ul>
+<p class="source-note">
+出典：学生用§6
+</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+手計算や表の確認と結び付けます。両言語で同じでも両方同じ勘違いをしている可能性があります。元の十二件へ戻る確認を少なくとも一つ説明してもらいます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 演習後：数値の答え合わせ -->
+<div class="slide-body" data-step="29">
+<h2 id="演習後数値の答え合わせ">演習後：数値の答え合わせ</h2>
+<p class="operation-place">
+65–80分｜演習終了後のみ
+</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th style="text-align: right;">変更前</th>
+<th style="text-align: right;">変更後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>件数</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr>
+<td>学習時間平均</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">52.5</td>
+</tr>
+<tr>
+<td>中央値</td>
+<td style="text-align: right;">52.5</td>
+<td style="text-align: right;">52.5</td>
+</tr>
+<tr>
+<td>標本標準偏差</td>
+<td style="text-align: right;">約27.386</td>
+<td style="text-align: right;">約21.690</td>
+</tr>
+<tr>
+<td>得点平均</td>
+<td style="text-align: right;">約69.167</td>
+<td style="text-align: right;">約69.167</td>
+</tr>
+</tbody>
+</table>
+<p class="source-note">
+出典：教員用期待値・検証
+</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここへ進むのは演習を終えてからです。合計が三十分減ったので平均は二点五分下がります。中央の二件は変わりません。得点は変更していないので平均も変わりません。主例では得点平均の表示をまだ追加していない点を補足します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: 演習後：120の区間から90の区間へ -->
+<div class="slide-body" data-step="30">
+<h2
+id="演習後120の区間から90の区間へ">演習後：120の区間から90の区間へ</h2>
+<p class="operation-place">
+65–80分｜演習終了後のみ
+</p>
+<p><img class="lesson04-figure zoomable-image" width="1200" height="750" src="./images/exercise04_r_hist.png" alt="演習後のヒストグラム。件数は1、5、5、1、0。"></p>
+<p class="source-note">
+出典：学生環境PNG・教員用期待値
+</p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+百二十分の一件が九十分以上百二十分未満の区間へ移りました。件数は一、五、五、一、ゼロです。全体は十二件のままです。境界を変えたのではなく、データを一つ変えました。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 31: 演習後：Lは(90,90)へ -->
+<div class="slide-body" data-step="31">
+<h2 id="演習後lは9090へ">演習後：Lは(90,90)へ</h2>
+<p class="operation-place">
+65–80分｜演習終了後のみ
+</p>
+<p><img class="lesson04-figure zoomable-image" width="1200" height="750" src="./images/exercise04_python_scatter.png" alt="演習後の散布図。Lは90分90点、他の11件は不変。"></p>
+<p class="source-note">
+出典：学生環境PNG・教員用期待値
+</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+横軸だけが三十分減り、縦軸は九十点のままです。グラフ全体の軸範囲を固定したので移動方向を比べられます。DとJの重なりも変わりません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 32: 予想が違っても、理由を説明する -->
+<div class="slide-body" data-step="32">
+<h2
+id="予想が違っても理由を説明する">予想が違っても、理由を説明する</h2>
+<p class="operation-place">
+65–80分｜振り返り
+</p>
+<p>例：</p>
+<p>「平均も中央値も下がると予想した。実行すると中央値は同じだった。並べた6番目と7番目が変わらないと確かめた。」</p>
+<p class="source-note">
+出典：学生用§6–7
+</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+予想の正解だけが目的ではありません。何を確認して理解が変わったかを言葉にします。提示した文をそのまま写すのでなく、自分が行った確認を書いてもらいます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 33: 提案を見ずに、3問を考える -->
+<div class="slide-body" data-step="33">
+<h2 id="提案を見ずに3問を考える">提案を見ずに、3問を考える</h2>
+<p class="operation-place">
+80–85分｜理解確認
+</p>
+<ol type="1">
+<li>中央値の前に並べ替えるのはなぜ？</li>
+<li>90分は、どの区間に入る？</li>
+<li>点が12個より少なく見える理由は？</li>
+</ol>
+<p class="source-note">
+出典：学生用§7
+</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+短い形成的確認です。数分だけAIの提案を見ず、自分の理解を確かめます。成績に別の小テスト点を追加するものではありません。答えを聞く前に考える時間を取ります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 34: 3問の確認 -->
+<div class="slide-body" data-step="34">
+<h2 id="問の確認">3問の確認</h2>
+<p class="operation-place">
+80–85分｜答え合わせ
+</p>
+<ol type="1">
+<li><strong>整列した順位</strong>の中央を求めるから。</li>
+<li><strong>90以上120未満</strong>。</li>
+<li>DとJは <strong>(60,70)で重なる</strong>から。</li>
+</ol>
+<p>数値・表・図を行き来して確かめる。</p>
+<p class="source-note">
+出典：教員用理解確認
+</p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+正答を読み上げるだけでなく、並べた列、区間表、元のDとJを指して確かめます。答えに迷った人には、どこへ戻れば確認できるかを示します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 35: Formsへ、両コードの全文を提出 -->
+<div class="slide-body" data-step="35">
+<h2 id="formsへ両コードの全文を提出">Formsへ、両コードの全文を提出</h2>
+<p class="operation-place">
+85–90分｜提出
+</p>
+<ul>
+<li>大学アカウントで回答。確認済みメールを使用。</li>
+<li>Python全文、R全文をそれぞれ貼る。</li>
+<li>予想・実行結果・確認方法、実行状況を記入。</li>
+<li>Copilot利用状況は任意・採点対象外。</li>
+</ul>
+<p class="source-note">
+出典：学生用§7・Forms仕様
+</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+クラスルームの実際のリンクを使います。学籍番号と氏名の入力欄はありません。画像や結果だけを貼るのではなく、演習ファイルの全文を貼ります。未完でも取り組んだコードを提出できます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 36: 再提出は、締切前の最新回答を採用 -->
+<div class="slide-body" data-step="36">
+<h2
+id="再提出は締切前の最新回答を採用">再提出は、締切前の最新回答を採用</h2>
+<p class="operation-place">
+85–90分｜提出確認
+</p>
+<p><strong>同じメールアドレスで、新しい回答を送る。</strong></p>
+<ul>
+<li>再提出時も両言語の全文。</li>
+<li>締切後の回答へ自動では置き換えない。</li>
+<li>締切はClassroomの案内を確認。</li>
+<li>送信後の受付画面を見る。</li>
+</ul>
+<p class="source-note">
+出典：学生用§7・Classroom案内
+</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+架空の締切やフォームURLは作りません。教員が指定した日本時間の締切を案内します。片方だけ直したときも、もう片方の全文を含めて再提出します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 37: 今日の確認と、次回へのつながり -->
+<div class="slide-body" data-step="37">
+<h2
+id="今日の確認と次回へのつながり">今日の確認と、次回へのつながり</h2>
+<p class="operation-place">
+85–90分｜まとめ
+</p>
+<ul>
+<li>同じデータと定義で、両言語の数値を照合。</li>
+<li>分布はヒストグラム、組の関係は散布図。</li>
+<li>変更前に予想し、変更後に確かめた。</li>
+</ul>
+<p>両ファイルを保存。次回は <strong>乱数と統計的推測</strong>。</p>
+<p class="source-note">
+出典：学生用§8・正式シラバス
+</p>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+必修の二つの変更と、両言語の提出を確認します。次回も同じスタートから開きます。環境の再導入は不要です。今の十二件の確定した計算から、次回は試行によるゆらぎへつなぎます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 38: 質問・確認：止まった箇所を教えてください -->
+<div class="slide-body" data-step="38">
+<h2
+id="質問確認止まった箇所を教えてください">質問・確認：止まった箇所を教えてください</h2>
+<p class="operation-place">
+85–90分｜質問・確認
+</p>
+<p><strong>保存／実行／数値／画像／提出</strong></p>
+<p>どの段階で止まったか、一つずつ確認します。</p>
+<p>補足はここから後。今日の必修へ追加しません。</p>
+<p class="source-note">
+出典：教員用進行・学生用§8
+</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+提出中の質問と個別支援のためのスライドです。九十分に別枠の質疑時間を追加しません。以下は授業後の参照用で、時間が余ったから新しい必修を増やすためのものではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 39: 補足：標準偏差の式 -->
+<div class="slide-body" data-step="39">
+<h2 id="補足標準偏差の式">補足：標準偏差の式</h2>
+<p class="operation-place">
+時間外参照｜補足
+</p>
+<p><strong>s = √{Σ(xᵢ − x̄)² / (n − 1)}</strong></p>
+<p>今回はn＝12、分母は11。</p>
+<p>分母nの標準偏差とは、同じデータでも値が違う。</p>
+<p class="source-note">
+出典：学生用補足
+</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+式の導出は必修ではありません。平均からの差を二乗して合計し、十一で割って平方根を取るという対応を見るための補足です。不偏標準偏差という呼び方はしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 40: 補足：値が変わらないとき -->
+<div class="slide-body" data-step="40">
+<h2 id="補足値が変わらないとき">補足：値が変わらないとき</h2>
+<p class="operation-place">
+時間外参照｜補足
+</p>
+<ol type="1">
+<li>Ctrl＋Sで保存したか。</li>
+<li>exercise04のタブを開いているか。</li>
+<li>言語に合う授業タスクか。</li>
+<li>ファイル全体を実行したか。</li>
+<li>outputのexercise04画像を開いたか。</li>
+</ol>
+<p class="source-note">
+出典：教員用つまずき
+</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+主例の画像を開いたままだと変更が見えません。一つずつ確認し、それでも解決しなければエラーメッセージを教員へ見せます。原因がわからないまま更新や再インストールへ進みません。
+</aside>
+
+</section></div></div>
+<script src="reveal/reveal.js"></script>
+<script src="image-zoom.js"></script>
+<script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'slide'});</script>
+</body>
+</html>
