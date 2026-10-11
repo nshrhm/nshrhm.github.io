@@ -1,0 +1,41 @@
+{
+  "variant": "short",
+  "source": "short/slide.md",
+  "source_sha256": "f7975730ad9631a88ed4bdc40e33c9faf5f26f729a9219c82efd45b6158e7068",
+  "renderer": "pandoc markdown-native_divs-smart to revealjs; bundled Reveal 4.3.1",
+  "statistics": {
+    "slides": 10,
+    "words": 624,
+    "captions": 43
+  },
+  "files": {
+    "_reveal/LICENSE": "7bb84c4caefae9642631aab7cbd380e81d8e98fbf7186687cb09b712315b5100",
+    "_reveal/dist/reset.css": "1aa8e84c9cabcbfe4d95b19879fe48b9c2c5e6d54574cbe679bc22edb9fe12b6",
+    "_reveal/dist/reveal.css": "2bd952ec94b0a308a2e276c827a1415cb436bcc57d845aafd633f162113690ac",
+    "_reveal/dist/reveal.js": "028fe6706c37e4c010e7be04cd93d00662851ff8460a2f5c651adbd02d586a4b",
+    "_reveal/dist/theme/fonts/source-sans-pro/LICENSE": "bb5f5f9b59ff3ab358efed2c5436e8aa2e12444959c4bde82167b874d5db1b1c",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-italic.eot": "ad4b0799608b5dc860cc3bd7ff4781f2d9e13144e48a2e3d9321ce57c5a12f2a",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-italic.ttf": "d13268affb2204223a1b6b8483afd989a0e2b20bff853eae05fe5d0d32de8ed9",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-italic.woff": "05d3615fdbe7d35c62d6a1308dc48e3985016b69e65926ed37b99fe7e6b297dc",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.eot": "dce8869d25c3abcecb33a3486a3c70bb76aed17c21a74069ee83949b1d209c9b",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.ttf": "c1865d89d798bc2119872b17774361c7406974b9568121a617007e02af344981",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.woff": "d4eaa48ba450f4dd2d024ab5b0e895c73c81475718e5453fd1890254c16b7a57",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.eot": "ebb8918da92bae172dfe322a3947929b3df2330dccc6f13c7d8e8ed3815e1696",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.ttf": "a53e27232eff5f0bc1ba1c0af7e0759f0aaaf5c0636370b4c54f83c4652ba924",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.woff": "b0abd2736335424f9fd3eb27974a36d03783b3db141e0801dca7d3a635218b46",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.eot": "dfe0b47abfa0fdb0504d7be14015fa3f1cf9647b97ffd8b3bfcceb25c60f4fa6",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.ttf": "e8ec22b619599ef4088c788ec410ea3e70481acc9ec43cc0a7fcd00da6441646",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.woff": "7225cacc06c2f360367c138daa4ce727c2a0d26e42875b1f9e802f181fdb81c5",
+    "_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro.css": "5292b4fb38f4e609bf20cd98b3e5c039dbd7271d1c9174302305fbaaf42035cc",
+    "_reveal/dist/theme/white.css": "bf59df9ecd8563ac1da668571397dd454048f493e0feddcc565df7eedc40fad4",
+    "_reveal/plugin/notes/notes.js": "b3e598656f6bdc1b8accd9c20480a191922f428d8a127641bbe3494fd30fffcb",
+    "_reveal/plugin/search/search.js": "a3607816a4d21d69727d62ce4e997ba32a720765a46c123f9ee4052d9a463d45",
+    "_reveal/plugin/zoom/zoom.js": "c8e0985b56e66476212c84c170a63ab4a495fcbae54777f1cf6adb0c68c6c934",
+    "captions.js": "177b82c14098573397f8ee928ce7f5f1e547bf51236179b4c65d91a08f5c39ac",
+    "fig/figure2_ja_ranking.png": "bdb4c62d86f3eeb325000d5dd573bba4fab2f2e2a42e28a0d7a61fb42c47b92d",
+    "fig/figure3_cross_language_drift.png": "8e750c268a1b8cbac4cae512e695573294af80f85921fbc73d6af8eaf705faf0",
+    "image-zoom.js": "fcd2bdec2e58e0d12210fef80e617c58785fb877cbf2f61842643f082803bdd7",
+    "index.html": "167c1dd8ed61729155667d41f3cb48c9dd0a26e96a11c3b308ef7b7202a10e66",
+    "style.css": "1961a0060df146178b6921b4624b028f686f42b3be6ff3741b6c08fedee240b0"
+  }
+}

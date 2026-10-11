@@ -40,7 +40,7 @@
 
 <section class="slide level1">
 
-<!-- Page 1: Introduce the submitted paper, authors and compact screening purpose. -->
+<!-- Page 1 (source page 1): Introduce the submitted paper, authors and compact screening purpose. -->
 <div class="slide-body title-slide" data-paper-page="1">
 <p class="eyebrow">
 ICECCME 2026 · Paper 648 · Bali, Indonesia · 15–17 October 2026
@@ -67,90 +67,19 @@ Human ratings first; translated conditions as secondary probes.
 </div>
 <aside class="notes">
 <p data-caption>
-Good morning. I am Naruki Shirahama from Shimonoseki City University.
-</p>
-<p data-caption>
-Today I will discuss how six language models score emotions in literary
-texts.
-</p>
-<p data-caption>
-Our reference is the emotion ratings of Japanese student readers.
-</p>
-<p data-caption>
-We also examine changes in translated English and Chinese conditions.
-</p>
-<p data-caption>
-This is a compact screening study.
-</p>
-<p data-caption>
-It does not identify a universally best model.
+Good morning. I am Naruki Shirahama. We compare six models with Japanese
+readers. This is a compact screening study.
 </p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 2: Explain why model differences and multilingual stability require a human reference. -->
-<div class="slide-body" data-paper-page="2">
-<p class="eyebrow">
-ICECCME 2026 · Motivation
-</p>
-<h2 id="similar-outputs-are-not-enough">Similar outputs are not
-enough</h2>
-<div class="content-grid">
-<div class="content-card">
-<h3 id="comparisons-show-differences">Comparisons show differences</h3>
-<ul>
-<li>Model versus model</li>
-<li>Japanese versus translated conditions</li>
-<li>Emotion scores can change</li>
-</ul>
-</div>
-<div class="content-card">
-<h3 id="human-ratings-give-a-reference">Human ratings give a
-reference</h3>
-<ul>
-<li>Which scores are closer to readers?</li>
-<li>How large is the disagreement?</li>
-<li>Where do the errors occur?</li>
-</ul>
-</div>
-</div>
-<p class="takeaway">
-Stability and agreement with humans answer different questions.
-</p>
-</div>
-<aside class="notes">
-<p data-caption>
-Many studies compare scores across models or languages.
-</p>
-<p data-caption>
-These comparisons show differences, but they do not show which scores
-agree with human readers.
-</p>
-<p data-caption>
-Similar scores across languages do not prove agreement with humans.
-</p>
-<p data-caption>
-A model may be stable and still disagree with the human reference.
-</p>
-<p data-caption>
-We therefore keep human agreement and translated-condition stability
-separate.
-</p>
-<p data-caption>
-We use continuous scores because our question concerns emotion
-intensity, rather than only an emotion label.
-</p>
-</aside>
-</section>
-<section class="slide level1">
-
-<!-- Page 3: Distinguish the primary human-alignment question from the secondary translated-condition probe. -->
+<!-- Page 2 (source page 3): Merge motivation and endpoint hierarchy: stability is not human agreement. -->
 <div class="slide-body" data-paper-page="3">
 <p class="eyebrow">
-ICECCME 2026 · Two evaluation questions
+ICECCME 2026 · Motivation and evaluation questions
 </p>
-<h2 id="one-benchmark-two-questions">One benchmark, two questions</h2>
+<h2 id="why-two-evaluation-questions">Why two evaluation questions?</h2>
 <div class="endpoint-grid">
 <div class="endpoint-card primary-endpoint">
 <h3 id="primary-alignment-with-japanese-human-ratings">Primary:
@@ -173,23 +102,21 @@ humans.
 </div>
 <aside class="notes">
 <p data-caption>
-Our primary question is alignment with Japanese human ratings.
+Stable scores can still disagree with readers.
 </p>
 <p data-caption>
-We compare each model's Japanese scores with the human ratings.
+Our primary question compares Japanese model scores with Japanese human
+ratings.
 </p>
 <p data-caption>
-English and Chinese conditions are secondary probes of change from the
-same model's Japanese scores.
-</p>
-<p data-caption>
-Less change does not prove closer agreement with humans.
+Our secondary question compares translated conditions with the same
+model’s Japanese scores. These are different references.
 </p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 4: State the fixed human benchmark and neutral-reader model protocol. -->
+<!-- Page 3 (source page 4): State the fixed human benchmark and neutral-reader model protocol. -->
 <div class="slide-body design-slide" data-paper-page="4">
 <p class="eyebrow">
 ICECCME 2026 · Experimental design
@@ -227,184 +154,93 @@ six models are listed in Table I.
 </div>
 <aside class="notes">
 <p data-caption>
-We use three literary works: The Pocket Watch, The Money and the Pistol,
-and The Tattered Ostrich.
+We use three works and four emotions: interest, surprise, sadness, and
+anger. Scores range from zero to one hundred.
 </p>
 <p data-caption>
-Readers rated interest, surprise, sadness, and anger on a Visual
-Analogue Scale from zero to one hundred.
+We collected ninety-one student responses, with eighty-six to ninety-one
+usable ratings per cell.
 </p>
 <p data-caption>
-We collected ninety-one responses from Japanese student readers.
-</p>
-<p data-caption>
-Each story-emotion cell had eighty-six to ninety-one usable ratings.
-</p>
-<p data-caption>
-The model panel has six models, three languages, three works, and ten
-repetitions.
-</p>
-<p data-caption>
+Six models scored three languages and three works, with ten repetitions.
 We used one neutral-reader task at temperature zero point four.
 </p>
 <p data-caption>
-This gives five hundred forty runs and two thousand one hundred sixty
-scores.
+The April seventeen to nineteen, twenty twenty-six collection produced
+five hundred forty valid runs and two thousand one hundred sixty scores.
 </p>
 <p data-caption>
-Calls were collected from April seventeen to nineteen, twenty
-twenty-six.
-</p>
-<p data-caption>
-Ninety run rows needed targeted retries.
-</p>
-<p data-caption>
-All rows then had valid scores.
-</p>
-<p data-caption>
-No scores were imputed.
+Ninety rows needed retries. No scores were imputed.
 </p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 5: Define the two absolute-difference metrics and their distinct reference profiles. -->
+<!-- Page 4 (source page 5): Merge metric definitions, conditional uncertainty and composition checks. -->
 <div class="slide-body" data-paper-page="5">
 <p class="eyebrow">
-ICECCME 2026 · Metrics
+ICECCME 2026 · Metrics, uncertainty and sensitivity
 </p>
-<h2 id="two-distances-two-reference-profiles">Two distances, two
-reference profiles</h2>
-<div class="content-grid">
-<div class="content-card metric-card">
-<h3 id="japanese-mae">Japanese MAE</h3>
-<p>Distance between:</p>
-<p><strong>Japanese model means</strong><br>and <strong>Japanese human
-VAS means</strong></p>
-<p>Average absolute difference over 12 cells.</p>
-</div>
-<div class="content-card metric-card">
-<h3 id="translated-condition-drift">Translated-condition drift</h3>
-<p>Distance between:</p>
-<p><strong>English or Chinese model means</strong><br>and <strong>the
-same model's Japanese means</strong></p>
-<p>Average absolute difference over 12 cells.</p>
-</div>
-</div>
-<p class="detail-line">
-Model means use 10 repetitions. Average drift = (EN drift + ZH drift) /
-2.
-</p>
-<p class="takeaway">
-Lower values are better on each axis. There is no combined deployment
-score.
-</p>
-</div>
-<aside class="notes">
-<p data-caption>
-Each model-language condition gives twelve story-emotion means.
-</p>
-<p data-caption>
-We average the ten model repetitions within each cell.
-</p>
-<p data-caption>
-Japanese MAE compares model means with Japanese human means.
-</p>
-<p data-caption>
-MAE means mean absolute error.
-</p>
-<p data-caption>
-We average the absolute score differences across the twelve cells.
-</p>
-<p data-caption>
-Drift compares English or Chinese means with the same model's Japanese
-means.
-</p>
-<p data-caption>
-Average drift is the mean of English drift and Chinese drift.
-</p>
-<p data-caption>
-Lower values mean closer agreement or less change, respectively.
-</p>
-<p data-caption>
-The two metrics must remain separate.
-</p>
-<p data-caption>
-Pearson and Spearman correlations are only exploratory diagnostics.
-</p>
-</aside>
-</section>
-<section class="slide level1">
-
-<!-- Page 6: Explain conditional cluster-bootstrap uncertainty and deterministic composition checks. -->
-<div class="slide-body" data-paper-page="6">
-<p class="eyebrow">
-ICECCME 2026 · Uncertainty and sensitivity
-</p>
-<h2 id="a-point-estimate-is-only-the-start">A point estimate is only the
-start</h2>
+<h2 id="two-distances-with-uncertainty-checks">Two distances, with
+uncertainty checks</h2>
 <div class="content-grid">
 <div class="content-card">
-<h3 id="sampling-uncertainty">Sampling uncertainty</h3>
+<h3 id="two-references">Two references</h3>
+<ul>
+<li><strong>JA MAE:</strong> Japanese model vs human means</li>
+<li><strong>Drift:</strong> EN/ZH vs the same model's JA means</li>
+<li>Absolute differences over 12 cells</li>
+<li>Average drift = (EN drift + ZH drift) / 2</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="two-checks">Two checks</h3>
 <ul>
 <li>10,000 cluster-bootstrap replicates</li>
-<li>Resample respondents and logical runs</li>
-<li>Keep four emotions together per run</li>
-<li>Percentile 95% intervals</li>
-</ul>
-</div>
-<div class="content-card">
-<h3 id="benchmark-composition">Benchmark composition</h3>
-<ul>
-<li>Omit each of 3 stories</li>
-<li>Omit each of 4 emotions</li>
-<li>Recompute the full ordering</li>
-<li>7 deterministic leave-one-out checks</li>
+<li>Respondents + runs; 95% intervals</li>
+<li>Omit each of 3 stories / 4 emotions</li>
+<li>7 deterministic composition checks</li>
 </ul>
 </div>
 </div>
 <p class="takeaway">
-The intervals are conditional on this fixed 12-cell benchmark.
+Intervals are conditional on the fixed 12 cells, not new literary works.
 </p>
 </div>
 <aside class="notes">
 <p data-caption>
-The benchmark is small, so a point estimate is not enough.
+We average ten repetitions per cell. Both distances average absolute
+differences over twelve cells.
 </p>
 <p data-caption>
-We used a cluster bootstrap with ten thousand replicates.
+MAE means mean absolute error. It compares Japanese model and human
+means. Drift uses the same model’s Japanese means as reference.
 </p>
 <p data-caption>
-We sampled human respondents and model runs separately.
+Average drift is the mean of English and Chinese drift. Lower values
+mean closer agreement or less change, respectively.
 </p>
 <p data-caption>
-Each model run keeps its four emotion scores together.
+We used ten thousand cluster-bootstrap replicates and ninety-five
+percent percentile intervals.
 </p>
 <p data-caption>
-The same resampled human profile is used for all models in each
-replicate.
+Respondents and runs were resampled independently. Each run keeps four
+emotions together.
 </p>
 <p data-caption>
-We report ninety-five percent percentile intervals.
+Each replicate uses the same human profile for all models. Intervals are
+conditional on twelve fixed cells, not new works.
 </p>
 <p data-caption>
-These intervals apply to this fixed set of twelve cells.
-</p>
-<p data-caption>
-They do not describe uncertainty for new literary works.
-</p>
-<p data-caption>
-We also removed each story, and then each emotion, one at a time.
-</p>
-<p data-caption>
-These leave-one-out checks show how the ordering depends on the
-benchmark composition.
+We also omit each story and emotion separately to check composition
+sensitivity.
 </p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 7: Report conditional uncertainty without claiming a unique best model. -->
+<!-- Page 5 (source page 7): Report conditional uncertainty without claiming a unique best model. -->
 <div class="slide-body" data-paper-page="7">
 <p class="eyebrow">
 ICECCME 2026 · Alignment with Japanese human ratings
@@ -421,24 +257,22 @@ apply to 12 fixed cells.
 </div>
 <aside class="notes">
 <p data-caption>
-Figure 2 shows the mean absolute error between model scores and Japanese
-human ratings.
+Look at the left panel of Figure 2. Lower MAE means closer agreement
+with Japanese readers.
 </p>
 <p data-caption>
-These intervals quantify uncertainty for this fixed set of twelve cells.
+Among the top four models, every pairwise MAE-difference interval
+includes zero.
 </p>
 <p data-caption>
-For every pair among the top four models, the confidence interval for
-the MAE difference includes zero.
-</p>
-<p data-caption>
-So we cannot identify a single best model on this fixed benchmark.
+This fixed benchmark does not resolve a unique best model. This does not
+show equivalence.
 </p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 8: Explain observed signed-error concentration and composition sensitivity without causal claims. -->
+<!-- Page 6 (source page 8): Explain observed signed-error concentration and composition sensitivity without causal claims. -->
 <div class="slide-body" data-paper-page="8">
 <p class="eyebrow">
 ICECCME 2026 · Cell errors and composition sensitivity
@@ -455,51 +289,30 @@ Blue: lower
 </div>
 <aside class="notes">
 <p data-caption>
-Now look at the right-hand panel of Figure 2.
+Now look at the right panel. Signed error is model mean minus Japanese
+human mean.
 </p>
 <p data-caption>
-Each cell is a model mean minus the Japanese human mean.
+T3 sadness is the largest shared error. All six models overestimate it.
+Its mean absolute error across models is 48.525.
 </p>
 <p data-caption>
-Red means that the model score is higher.
+All six underestimate T2 sadness and overestimate T2 surprise. Their
+mean absolute errors are 39.083 and 33.860, respectively.
 </p>
 <p data-caption>
-Blue means that it is lower.
+All six also underestimate T1 sadness. The direction depends on the
+story.
 </p>
 <p data-caption>
-The largest shared error is sadness for T3, The Tattered Ostrich.
-</p>
-<p data-caption>
-All six models overestimate sadness for T3.
-</p>
-<p data-caption>
-T2 is The Money and the Pistol.
-</p>
-<p data-caption>
-For T2, all six underestimate sadness and overestimate surprise.
-</p>
-<p data-caption>
-Across models, the mean absolute errors for these three cells are
-48.525, 39.083, and 33.860.
-</p>
-<p data-caption>
-Sadness is also underestimated for T1.
-</p>
-<p data-caption>
-Removing any one story or any one emotion changes the full model
-ordering.
-</p>
-<p data-caption>
-All seven checks changed the order.
-</p>
-<p data-caption>
-We do not claim a causal explanation.
+All seven omissions changed the full order: three stories and four
+emotions. These checks show sensitivity, not a causal explanation.
 </p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 9: Explain within-model translated-condition drift and its interpretation boundary. -->
+<!-- Page 7 (source page 9): Explain within-model translated-condition drift and its interpretation boundary. -->
 <div class="slide-body" data-paper-page="9">
 <p class="eyebrow">
 ICECCME 2026 · Translated-condition robustness
@@ -516,24 +329,18 @@ Conditional 95% intervals
 </div>
 <aside class="notes">
 <p data-caption>
-Figure 3 compares English and Chinese scores with each model's Japanese
-scores.
+Figure 3 shows change from each model’s Japanese scores. Lower drift
+means less change.
 </p>
 <p data-caption>
-Lower drift means less change from the Japanese condition.
-</p>
-<p data-caption>
-Both the literary text and the task instructions change language.
-</p>
-<p data-caption>
-This does not measure agreement with human readers of the English or
-Chinese versions.
+Both text and instructions change language. Drift does not measure
+agreement with English or Chinese readers.
 </p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 10: Read the frozen Table I as a two-axis screening summary, not a deployment score. -->
+<!-- Page 8 (source page 10): Read the frozen Table I as a two-axis screening summary, not a deployment score. -->
 <div class="slide-body table-slide" data-paper-page="10">
 <p class="eyebrow">
 ICECCME 2026 · Table I
@@ -718,69 +525,42 @@ Gemini 2.5 Pro
 </div>
 <aside class="notes">
 <p data-caption>
-Table I keeps our two questions side by side.
+Compare the MAE and average-drift columns.
 </p>
 <p data-caption>
-Claude Sonnet 4.5 and DeepSeek V3.2 have the lowest Japanese MAE point
-estimates, at 20.026 and 20.100.
+Claude Sonnet 4.5 and DeepSeek V3.2 have the lowest MAE point estimates:
+20.026 and 20.100. They lead in bootstrap rank stability.
 </p>
 <p data-caption>
-They form the leading pair in bootstrap rank stability.
+The top four span only 1.087 points. Their pairwise difference intervals
+include zero.
 </p>
 <p data-caption>
-The four lowest MAE estimates span only 1.087 points.
+Qwen3.6 Plus and GPT-5.4 have the lowest average drift: 3.346 and 3.354.
+DeepSeek’s is 6.396.
 </p>
 <p data-caption>
-Their pairwise difference intervals include zero.
+Gemini 2.5 Pro has MAE 28.952 despite moderate drift. On this fixed
+benchmark, its MAE exceeds the other five models.
 </p>
 <p data-caption>
-This does not show equivalence.
+Correlations are exploratory over twelve cells, not stable model traits.
 </p>
 <p data-caption>
-Qwen3.6 Plus and GPT-5.4 have the lowest average drift, at 3.346 and
-3.354.
-</p>
-<p data-caption>
-DeepSeek has an average drift of 6.396.
-</p>
-<p data-caption>
-Gemini 2.5 Pro has a Japanese MAE of 28.952, despite moderate drift.
-</p>
-<p data-caption>
-On this fixed benchmark, its Japanese MAE is higher than the other five
-models.
-</p>
-<p data-caption>
-The two axes therefore give different orderings.
-</p>
-<p data-caption>
-Pearson and Spearman correlations are only exploratory summaries of
-twelve fixed cells.
-</p>
-<p data-caption>
-They are not stable model traits.
-</p>
-<p data-caption>
-Low drift does not establish agreement with human readers of translated
-versions.
-</p>
-<p data-caption>
-We should read this table as a screening map.
-</p>
-<p data-caption>
-We should not combine its columns into one deployment score.
+The two axes give different orderings. This is a screening map, not a
+combined deployment score.
 </p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 11: Bound inference by the fixed corpus, reader population, prompt, translations and provider provenance. -->
+<!-- Page 9 (source page 11): Merge limitations and conclusions: bounded screening requires broader validation. -->
 <div class="slide-body" data-paper-page="11">
 <p class="eyebrow">
-ICECCME 2026 · Limitations
+ICECCME 2026 · Limitations and conclusions
 </p>
-<h2 id="a-compact-pilot-has-clear-boundaries">A compact pilot has clear
-boundaries</h2>
+<h2 id="stage-one-screening-needs-broader-validation">Stage-one
+screening needs broader validation</h2>
 <div class="content-grid">
 <div class="content-card">
 <h3 id="limited-coverage">Limited coverage</h3>
@@ -802,107 +582,45 @@ boundaries</h2>
 </div>
 </div>
 <p class="takeaway">
-Conditional intervals do not establish validity for new works, readers,
-prompts or languages.
+Report uncertainty, cell errors and composition sensitivity; then
+validate more broadly.
 </p>
 </div>
 <aside class="notes">
 <p data-caption>
-This is a pilot with three works, four fixed emotions, one
-student-reader population, and six selected models.
+Our pilot covers three works, four emotions, one student population, six
+models, and one neutral prompt.
 </p>
 <p data-caption>
-We used one neutral-reader prompt and fixed translations.
+We lack matched English and Chinese human ratings. Fixed translations
+were team-checked, not independently validated.
 </p>
 <p data-caption>
-We did not collect matched human ratings for the English or Chinese
-versions.
+The translation system, version, and date were not recorded. We cannot
+separate language, translation, and cultural effects.
 </p>
 <p data-caption>
-The translations were checked by the research team, but not
-independently validated.
+Provider routes and model aliases were unpinned. Exact API replay may
+change.
 </p>
 <p data-caption>
-The translation system, version, and date were not recorded.
-</p>
-<p data-caption>
-Text and instruction language change together.
-</p>
-<p data-caption>
-We cannot separate language, translation, and cultural effects.
-</p>
-<p data-caption>
-Provider routes and model aliases were not fixed, so exact API replay
-may change.
-</p>
-<p data-caption>
-Our intervals describe sampling uncertainty for these twelve cells.
-</p>
-<p data-caption>
-They do not support generalization to new works, reader groups, prompts,
+Conditional intervals do not generalize to new works, readers, prompts,
 or languages.
 </p>
-</aside>
-</section>
-<section class="slide level1">
-
-<!-- Page 12: Consolidate bounded screening conclusions and the requirements for broader validation. -->
-<div class="slide-body" data-paper-page="12">
-<p class="eyebrow">
-ICECCME 2026 · Conclusions
-</p>
-<h2 id="keep-the-reference-and-the-uncertainty-visible">Keep the
-reference and the uncertainty visible</h2>
-<div class="conclusion-list">
-<ol type="1">
-<li><strong>Two axes:</strong> human agreement and translated-condition
-drift.</li>
-<li><strong>Three checks:</strong> uncertainty, cell errors, composition
-sensitivity.</li>
-<li><strong>Stage-one screening:</strong> broader human validation must
-follow.</li>
-</ol>
-</div>
-<p class="takeaway">
-No unique top model is resolved within the four lowest Japanese MAE
-point estimates.
-</p>
-</div>
-<aside class="notes">
 <p data-caption>
-The main lesson is to keep the human reference explicit.
+Report uncertainty, cell errors, and composition sensitivity alongside
+rankings.
 </p>
 <p data-caption>
-Japanese human alignment and translated-condition drift answer different
-questions.
-</p>
-<p data-caption>
-A small point-error difference is not enough to identify a winning
-model.
-</p>
-<p data-caption>
-On this benchmark, the top four are not pairwise resolved.
-</p>
-<p data-caption>
-Every story or emotion omission changes the full order.
-</p>
-<p data-caption>
-Compact screening should report uncertainty, cell-level errors, and
-composition sensitivity alongside point estimates.
-</p>
-<p data-caption>
-This is a stage-one screening protocol, not a deployment certificate.
-</p>
-<p data-caption>
-The next step requires more works, broader reader populations,
-additional prompts, and matched human references in the translated
-conditions.
+This is stage-one screening, not deployment approval. Broader validation
+needs more works, readers, prompts, and matched multilingual human
+references.
 </p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 13: Preserve the submitted acknowledgments and funding, then invite questions. -->
+<!-- Page 10 (source page 13): Preserve the submitted acknowledgments and funding, then invite questions. -->
 <div class="slide-body closing-slide" data-paper-page="13">
 <p class="eyebrow">
 ICECCME 2026 · Acknowledgments / Q&amp;A
@@ -929,18 +647,14 @@ Human reference · Uncertainty · Translated-condition drift
 </div>
 <aside class="notes">
 <p data-caption>
-We thank the student readers and acknowledge the Aozora Bunko texts.
+We thank the student readers and acknowledge Aozora Bunko.
 </p>
 <p data-caption>
-This work was partially supported by JSPS KAKENHI grants 26K14983 and
+JSPS KAKENHI partially supported this work: grants 26K14983 and
 24K13350.
 </p>
 <p data-caption>
-Thank you for your attention.
-</p>
-<p data-caption>
-I welcome your questions about the human reference, the uncertainty
-analysis, or translated-condition drift.
+Thank you. Questions?
 </p>
 </aside>
 <script src="./captions.js"></script>
