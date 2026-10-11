@@ -1,0 +1,343 @@
+:root {
+  --navy: #12314f;
+  --blue: #246bce;
+  --ink: #1d2733;
+  --muted: #5c6875;
+  --line: #cfd8e3;
+  --panel: #f6f8fb;
+}
+
+.reveal {
+  color: var(--ink);
+  font-family: "Aptos", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 36px;
+}
+
+.reveal .slides > section {
+  box-sizing: border-box;
+  height: 900px;
+  padding: 28px 36px;
+  text-align: left;
+}
+
+.reveal h2,
+.reveal h3 {
+  color: var(--navy);
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.reveal h2 {
+  border-bottom: 4px solid var(--blue);
+  font-size: 52px;
+  line-height: 1.15;
+  margin: 0 0 22px;
+  padding-bottom: 16px;
+}
+
+.reveal h3 {
+  font-size: 38px;
+  line-height: 1.2;
+  margin: 0 0 26px;
+}
+
+.reveal p {
+  line-height: 1.35;
+  margin: 0 0 22px;
+}
+
+.reveal strong {
+  color: var(--navy);
+}
+
+.slide-body {
+  height: 664px;
+}
+
+.slide-body[data-paper-page="7"],
+.slide-body[data-paper-page="8"],
+.slide-body[data-paper-page="9"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.slide-body[data-paper-page="7"] h2,
+.slide-body[data-paper-page="8"] h2,
+.slide-body[data-paper-page="9"] h2 {
+  font-size: 44px;
+  margin-bottom: 16px;
+}
+
+.reveal .eyebrow {
+  color: var(--muted);
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.endpoint-grid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 1fr 1fr;
+  margin: 48px 0 36px;
+}
+
+.endpoint-card {
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-top: 8px solid var(--blue);
+  border-radius: 12px;
+  padding: 36px 30px;
+}
+
+.secondary-endpoint {
+  border-top-color: #667e94;
+}
+
+.reveal .endpoint-card p {
+  font-size: 34px;
+}
+
+.reveal .endpoint-card p:last-child {
+  font-size: 29px;
+  margin-bottom: 0;
+}
+
+.reveal .figure-intro {
+  font-size: 26px;
+  margin-bottom: 14px;
+}
+
+.figure-panel {
+  flex: 1;
+  min-height: 0;
+}
+
+.reveal img.scientific-figure {
+  background: white;
+  border: 0;
+  cursor: zoom-in;
+  display: block;
+  height: 100%;
+  margin: 0;
+  max-height: none;
+  max-width: 100%;
+  min-height: 0;
+  object-fit: contain;
+  width: 100%;
+}
+
+.reveal img.scientific-figure:focus-visible {
+  outline: 4px solid var(--blue);
+}
+
+.reveal .takeaway {
+  color: var(--navy);
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.caption-rail {
+  align-items: center;
+  background: var(--navy);
+  border-radius: 10px;
+  bottom: 54px;
+  box-sizing: border-box;
+  color: white;
+  display: grid;
+  font-size: 38px;
+  font-weight: 500;
+  height: 128px;
+  left: 36px;
+  line-height: 1.25;
+  padding: 14px 28px;
+  position: absolute;
+  right: 36px;
+  text-align: center;
+}
+
+.caption-rail > span {
+  grid-area: 1 / 1;
+}
+
+.reveal .slides section .caption-rail > [aria-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.reveal .slides section .caption-rail > [aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.reveal .slides section .caption-rail .fragment {
+  transition: none;
+}
+
+/* The old ICECCME WIP's dependency-free zoom interaction is reused. */
+body.image-zoom-open {
+  overflow: hidden;
+}
+
+.image-zoom-overlay {
+  align-items: center;
+  background: rgba(9, 19, 30, 0.94);
+  cursor: zoom-out;
+  display: none;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 10000;
+}
+
+.image-zoom-overlay.is-open {
+  display: flex;
+}
+
+.image-zoom-overlay img {
+  background: white;
+  height: calc(100vh - 48px);
+  object-fit: contain;
+  width: calc(100vw - 48px);
+}
+
+@media print {
+  .image-zoom-overlay {
+    display: none !important;
+  }
+}
+
+/* Venue content added after the accepted three-slide prototype. */
+.title-slide h2 {
+  border-bottom: 0;
+  font-size: 46px;
+  margin: 24px 0 32px;
+}
+
+.reveal .authors {
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+.reveal .affiliations {
+  color: var(--muted);
+  font-size: 26px;
+  margin-bottom: 24px;
+}
+
+.reveal .presenter-line {
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+.content-grid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 1fr 1fr;
+  margin: 36px 0 30px;
+}
+
+.content-card {
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-top: 6px solid var(--blue);
+  border-radius: 12px;
+  padding: 26px;
+}
+
+.content-card h3 {
+  font-size: 34px;
+  margin-bottom: 22px;
+}
+
+.content-card ul {
+  display: block;
+  font-size: 30px;
+  margin: 0 0 0 28px;
+}
+
+.content-card li {
+  line-height: 1.35;
+  margin-bottom: 14px;
+}
+
+.content-card li:last-child {
+  margin-bottom: 0;
+}
+
+.reveal .content-card p {
+  font-size: 30px;
+  margin-bottom: 22px;
+}
+
+.reveal .content-card p:last-child {
+  margin-bottom: 0;
+}
+
+.reveal .detail-line {
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+
+.design-slide h2,
+.table-slide h2 {
+  font-size: 44px;
+}
+
+.design-slide .content-grid {
+  margin-top: 22px;
+  margin-bottom: 22px;
+}
+
+.table-panel {
+  margin: 14px 0;
+}
+
+.reveal .table-panel table {
+  border-collapse: collapse;
+  font-size: 30px;
+  margin: 0;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table-panel th {
+  background: var(--navy);
+  color: white;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.reveal .table-panel th,
+.reveal .table-panel td {
+  border-bottom: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: right;
+}
+
+.reveal .table-panel th:first-child,
+.reveal .table-panel td:first-child {
+  text-align: left;
+  width: 25%;
+}
+
+.table-panel td {
+  white-space: nowrap;
+}
+
+.table-panel tbody tr:nth-child(even) {
+  background: var(--panel);
+}
+
+.conclusion-list ol {
+  display: block;
+  font-size: 38px;
+  margin: 40px 0 40px 50px;
+}
+
+.conclusion-list li {
+  line-height: 1.4;
+  margin-bottom: 30px;
+}
