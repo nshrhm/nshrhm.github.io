@@ -1,12 +1,12 @@
 {
   "variant": "short",
   "source": "short/slide.md",
-  "source_sha256": "f7975730ad9631a88ed4bdc40e33c9faf5f26f729a9219c82efd45b6158e7068",
+  "source_sha256": "cfa0fb9d166d81c061f1eecc612881325215fa1a52ef51850f4bc645c7723634",
   "renderer": "pandoc markdown-native_divs-smart to revealjs; bundled Reveal 4.3.1",
   "statistics": {
-    "slides": 10,
-    "words": 624,
-    "captions": 43
+    "slides": 17,
+    "words": 1054,
+    "captions": 66
   },
   "files": {
     "_reveal/LICENSE": "7bb84c4caefae9642631aab7cbd380e81d8e98fbf7186687cb09b712315b5100",
@@ -35,7 +35,7 @@
     "fig/figure2_ja_ranking.png": "bdb4c62d86f3eeb325000d5dd573bba4fab2f2e2a42e28a0d7a61fb42c47b92d",
     "fig/figure3_cross_language_drift.png": "8e750c268a1b8cbac4cae512e695573294af80f85921fbc73d6af8eaf705faf0",
     "image-zoom.js": "fcd2bdec2e58e0d12210fef80e617c58785fb877cbf2f61842643f082803bdd7",
-    "index.html": "167c1dd8ed61729155667d41f3cb48c9dd0a26e96a11c3b308ef7b7202a10e66",
+    "index.html": "eba4d32e34a7de03c4b38b91390e79834775a2162365769c5984b07bf6cdab89",
     "style.css": "1961a0060df146178b6921b4624b028f686f42b3be6ff3741b6c08fedee240b0"
   }
 }
