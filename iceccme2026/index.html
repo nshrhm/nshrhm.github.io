@@ -74,43 +74,56 @@ readers. This is a compact screening study.
 </section>
 <section class="slide level1">
 
-<!-- Page 2 (source page 3): Merge motivation and endpoint hierarchy: stability is not human agreement. -->
+<!-- Page 2: Orient a first-time listener with the two experiment paths and their different references. -->
 <div class="slide-body" data-paper-page="3">
 <p class="eyebrow">
-ICECCME 2026 · Motivation and evaluation questions
+ICECCME 2026 · Study overview
 </p>
-<h2 id="why-two-evaluation-questions">Why two evaluation questions?</h2>
-<div class="endpoint-grid">
-<div class="endpoint-card primary-endpoint">
-<h3 id="primary-alignment-with-japanese-human-ratings">Primary:
-alignment with Japanese human ratings</h3>
-<p>How close are Japanese model scores to Japanese human ratings?</p>
-<p><strong>Reference: Japanese human VAS means</strong></p>
+<h2 id="how-close-are-ai-ratings-to-readers">How close are AI ratings to
+readers?</h2>
+<p class="figure-intro">
+Read three literary works → rate interest, surprise, sadness and anger.
+</p>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="human-alignment-primary">1 · Human alignment: primary</h3>
+<p>Japanese texts → <strong>human ratings</strong></p>
+<p>Japanese texts → <strong>model scores</strong></p>
+<p>Compare models with Japanese human means.</p>
 </div>
-<div class="endpoint-card secondary-endpoint">
-<h3 id="secondary-translated-condition-drift">Secondary:
-translated-condition drift</h3>
-<p>How much do English and Chinese model scores change from
-Japanese?</p>
-<p><strong>Reference: the same model's Japanese scores</strong></p>
+<div class="content-card">
+<h3 id="translated-conditions-secondary">2 · Translated conditions:
+secondary</h3>
+<p>EN/ZH texts + instructions → <strong>model scores</strong></p>
+<p>Compare with <strong>the same model in Japanese</strong>.</p>
+<p>No EN/ZH human reference.</p>
 </div>
 </div>
 <p class="takeaway">
-Less change across languages does not prove closer agreement with
-humans.
+Human agreement and translated-condition stability answer different
+questions.
 </p>
 </div>
 <aside class="notes">
 <p data-caption>
-Stable scores can still disagree with readers.
+When people read a story, they may feel interest, surprise, sadness, or
+anger. We ask how closely AI scores match those reader ratings.
 </p>
 <p data-caption>
-Our primary question compares Japanese model scores with Japanese human
-ratings.
+The left path is our main experiment. Students read Japanese texts and
+rated their emotions. Models scored the same works in Japanese.
 </p>
 <p data-caption>
-Our secondary question compares translated conditions with the same
-model’s Japanese scores. These are different references.
+We then compared the model averages with the human averages. The human
+ratings are our reference.
+</p>
+<p data-caption>
+The right path asks a different question. We changed the text and
+instructions to English or Chinese and compared each model with itself.
+</p>
+<p data-caption>
+There are no English or Chinese human ratings here. Stable scores can
+still disagree with readers.
 </p>
 </aside>
 </section>
@@ -176,7 +189,64 @@ Ninety rows needed retries. No scores were imputed.
 </section>
 <section class="slide level1">
 
-<!-- Page 4 (source page 5): Merge metric definitions, conditional uncertainty and composition checks. -->
+<!-- Page 4: Show a verified request excerpt and distinguish the requested output from the numeric analysis. -->
+<div class="slide-body" data-paper-page="prompt">
+<p class="eyebrow">
+ICECCME 2026 · The model task
+</p>
+<h2 id="what-did-we-ask-the-models">What did we ask the models?</h2>
+<p class="figure-intro">
+English condition · Verbatim task excerpt
+</p>
+<div class="content-card">
+<p>“Read the literary text below and rate four reader-side emotions on a
+0 to 100 integer scale.”</p>
+</div>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="input">Input</h3>
+<ul>
+<li>Neutral-reader role</li>
+<li>Full work + four emotion definitions</li>
+<li>Anchors: 0 / 50 / 100</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="requested-output">Requested output</h3>
+<ul>
+<li>One JSON object</li>
+<li>Four integer scores</li>
+<li>Brief reasons grounded in the text</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+Here is the task sentence from the saved English request. The model
+received the full work, not a summary.
+</p>
+<p data-caption>
+The role was a neutral reader. We asked for emotions after reading the
+whole work, not labels for individual sentences.
+</p>
+<p data-caption>
+Zero means not felt at all. Fifty means moderately felt. One hundred
+means extremely strongly felt.
+</p>
+<p data-caption>
+The requested answer was one JSON object with four integer scores and
+brief reasons grounded in the text.
+</p>
+<p data-caption>
+The figures analyze the scores. They do not evaluate the quality of the
+explanations.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 5 (source page 5): Merge metric definitions, conditional uncertainty and composition checks. -->
 <div class="slide-body" data-paper-page="5">
 <p class="eyebrow">
 ICECCME 2026 · Metrics, uncertainty and sensitivity
@@ -240,7 +310,7 @@ sensitivity.
 </section>
 <section class="slide level1">
 
-<!-- Page 5 (source page 7): Report conditional uncertainty without claiming a unique best model. -->
+<!-- Page 6 (source page 7): Report conditional uncertainty without claiming a unique best model. -->
 <div class="slide-body" data-paper-page="7">
 <p class="eyebrow">
 ICECCME 2026 · Alignment with Japanese human ratings
@@ -272,7 +342,7 @@ show equivalence.
 </section>
 <section class="slide level1">
 
-<!-- Page 6 (source page 8): Explain observed signed-error concentration and composition sensitivity without causal claims. -->
+<!-- Page 7 (source page 8): Explain observed signed-error concentration and composition sensitivity without causal claims. -->
 <div class="slide-body" data-paper-page="8">
 <p class="eyebrow">
 ICECCME 2026 · Cell errors and composition sensitivity
@@ -312,7 +382,7 @@ emotions. These checks show sensitivity, not a causal explanation.
 </section>
 <section class="slide level1">
 
-<!-- Page 7 (source page 9): Explain within-model translated-condition drift and its interpretation boundary. -->
+<!-- Page 8 (source page 9): Explain within-model translated-condition drift and its interpretation boundary. -->
 <div class="slide-body" data-paper-page="9">
 <p class="eyebrow">
 ICECCME 2026 · Translated-condition robustness
@@ -336,11 +406,15 @@ means less change.
 Both text and instructions change language. Drift does not measure
 agreement with English or Chinese readers.
 </p>
+<p data-caption>
+These conditions do not isolate language, translation, or cultural
+effects.
+</p>
 </aside>
 </section>
 <section class="slide level1">
 
-<!-- Page 8 (source page 10): Read the frozen Table I as a two-axis screening summary, not a deployment score. -->
+<!-- Page 9 (source page 10): Read the frozen Table I as a two-axis screening summary, not a deployment score. -->
 <div class="slide-body table-slide" data-paper-page="10">
 <p class="eyebrow">
 ICECCME 2026 · Table I
@@ -554,19 +628,323 @@ combined deployment score.
 </section>
 <section class="slide level1">
 
-<!-- Page 9 (source page 11): Merge limitations and conclusions: bounded screening requires broader validation. -->
+<!-- Page 10: Close with the approved contribution and next validation step, retaining the screening boundary. -->
 <div class="slide-body" data-paper-page="11">
 <p class="eyebrow">
-ICECCME 2026 · Limitations and conclusions
+ICECCME 2026 · Conclusions
 </p>
-<h2 id="stage-one-screening-needs-broader-validation">Stage-one
-screening needs broader validation</h2>
+<h2 id="a-practical-starting-point-for-evaluation">A practical starting
+point for evaluation</h2>
+<div class="conclusion-list">
+<ol type="1">
+<li><strong>Measure both axes:</strong> human alignment and
+translated-condition stability.</li>
+<li><strong>Look beyond averages:</strong> uncertainty, cell errors and
+composition sensitivity.</li>
+<li><strong>Use stage-one screening</strong> before broader human
+validation.</li>
+</ol>
+</div>
+<p class="takeaway">
+Next: more works, broader reader populations, more prompts and matched
+multilingual human references.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This study gives us a practical starting point. Measure human alignment
+and translated-condition stability separately.
+</p>
+<p data-caption>
+Read average scores together with uncertainty, cell errors, and
+composition sensitivity. Our results do not establish a definitive model
+ranking.
+</p>
+<p data-caption>
+Use this compact benchmark for stage-one screening. It does not approve
+a model for deployment.
+</p>
+<p data-caption>
+The next step is broader validation with more works, readers, prompts,
+and matched multilingual human references.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 11 (source page 13): Preserve the submitted acknowledgments and funding, then invite questions. -->
+<div class="slide-body closing-slide" data-paper-page="13">
+<p class="eyebrow">
+ICECCME 2026 · Acknowledgments / Q&amp;A
+</p>
+<h2 id="thank-you.-questions">Thank you. Questions?</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="acknowledgments">Acknowledgments</h3>
+<ul>
+<li>Student readers in the Japanese VAS study</li>
+<li>Aozora Bunko texts as experimental stimuli</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="funding">Funding</h3>
+<p>Partially supported by <strong>JSPS KAKENHI</strong></p>
+<p>Grant numbers <strong>26K14983</strong> and
+<strong>24K13350</strong></p>
+</div>
+</div>
+<p class="takeaway">
+Q&amp;A references follow: prompt details · three English texts ·
+limitations.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+We thank the student readers and acknowledge Aozora Bunko.
+</p>
+<p data-caption>
+JSPS KAKENHI partially supported this work: grants 26K14983 and
+24K13350.
+</p>
+<p data-caption>
+Thank you. Questions?
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 12 (Q&A only): Make verified prompt wording available for questions without exposing provider responses or claiming a full prompt reproduction. -->
+<div class="slide-body" data-paper-page="qa-prompt">
+<p class="eyebrow">
+ICECCME 2026 · Q&amp;A reference · Selected verbatim EN excerpts (not
+the full prompt)
+</p>
+<h2 id="english-prompt-role-definitions-and-rules">English prompt: role,
+definitions and rules</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="neutral-reader-role">Neutral-reader role</h3>
+<p>“a neutral reader who calmly reads the whole work and reports
+post-reading emotions without exaggeration”</p>
+<h3 id="scoring-rules">Scoring rules</h3>
+<p>“rate the text as a whole after reading it”</p>
+<p>“keep each reason brief and grounded in the text”</p>
+</div>
+<div class="content-card">
+<h3 id="emotion-definitions">Emotion definitions</h3>
+<ul>
+<li><strong>interest:</strong> How funny, entertaining, or
+intellectually enjoyable the text feels</li>
+<li><strong>surprise:</strong> How unexpected, novel, or revelatory the
+text feels</li>
+<li><strong>sadness:</strong> How sad, melancholic, or poignant the text
+feels</li>
+<li><strong>anger:</strong> How much anger, indignation, or displeasure
+the text evokes</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+These are selected excerpts from the saved English request. The full
+request also contains the work, scale anchors, and output instructions.
+</p>
+<p data-caption>
+The definitions specify the four dimensions. They are the experimental
+wording, not a general theory of emotion.
+</p>
+<p data-caption>
+One neutral-reader task was used. We did not compare different reader
+personas in this study.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 13 (Q&A only): Show the complete fixed T1 English stimulus without adding a literary or causal interpretation. -->
+<div class="slide-body" data-paper-page="qa-t1">
+<p class="eyebrow">
+ICECCME 2026 · Q&amp;A reference · T1 · Kyusaku Yumeno
+</p>
+<h2 id="the-pocket-watch">The Pocket Watch</h2>
+<p class="detail-line">
+A pocket watch had fallen behind a chest of drawers, where it went on
+ticking away all by itself.
+</p>
+<p class="detail-line">
+A mouse found it and laughed.
+</p>
+<p class="detail-line">
+"What a fool! Nobody's here to look at you—so why do you keep on
+running?"
+</p>
+<p class="detail-line">
+"Because I keep running even when no one is looking," the pocket watch
+replied, "I am useful whenever someone does look."
+</p>
+<p class="detail-line">
+"Anyone who works only when no one is watching, or only when someone is
+watching—either way, that's a thief."
+</p>
+<p class="detail-line">
+The mouse flushed with shame and scurried off without another word.
+</p>
+<p class="detail-line">
+Fixed English stimulus used in the experiment · Research-team-checked
+machine translation.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This is the fixed English text used for T1. The original work is by
+Kyusaku Yumeno.
+</p>
+<p data-caption>
+The model received the complete text. This display is for discussion; I
+will not read every line aloud.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 14 (Q&A only): Preserve the fixed T2 stimulus in reading order; split only its display, not the experimental input. -->
+<div class="slide-body" data-paper-page="qa-t2-1">
+<p class="eyebrow">
+ICECCME 2026 · Q&amp;A reference · T2 · Kyusaku Yumeno
+</p>
+<h2 id="the-money-and-the-pistol-12">The Money and the Pistol · 1/2</h2>
+<p class="detail-line">
+A burglar broke into a miser's house, brandished a pistol, and demanded
+money. The Miser said:
+</p>
+<p class="detail-line">
+"I refuse to just hand over money for nothing. But if you'll sell me
+that pistol, I'll buy it for a thousand yen. Once you have my money, you
+won't be needing a pistol anyway."
+</p>
+<p class="detail-line">
+The burglar thought it over for a while, and in the end sold the pistol
+to the Miser for a thousand yen. The moment the Miser had the pistol in
+his hands, he leveled it at the burglar as though ready to fire and
+bellowed:
+</p>
+<p class="detail-line">
+"Now then—hand it all over! Not just that money, but everything else
+you've stolen! Hand it over, or I'll shoot you dead!"
+</p>
+<p class="detail-line">
+Fixed English stimulus · Display split across two slides; the model
+received the complete work.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This is the first part of the fixed English text for T2, by Kyusaku
+Yumeno.
+</p>
+<p data-caption>
+The split is only for readability on the screen. The experiment supplied
+the complete work in one request.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 15 (Q&A only): Preserve the fixed T2 stimulus in reading order; split only its display, not the experimental input. -->
+<div class="slide-body" data-paper-page="qa-t2-2">
+<p class="eyebrow">
+ICECCME 2026 · Q&amp;A reference · T2 · Kyusaku Yumeno
+</p>
+<h2 id="the-money-and-the-pistol-22">The Money and the Pistol · 2/2</h2>
+<p class="detail-line">
+The burglar doubled over laughing.
+</p>
+<p class="detail-line">
+"Ha ha ha! That's a toy pistol, you fool—pull the trigger all you like,
+it won't fire a single bullet!"
+</p>
+<p class="detail-line">
+And with that, he dashed out the front door. The Miser flung the pistol
+aside and chased after him, and the two were soon grappling in the
+street—until a policeman happened along and hauled them both off to the
+station.
+</p>
+<p class="detail-line">
+When the police looked into the matter, they discovered that the
+thousand yen the burglar had received was counterfeit, every last bill.
+And the pistol, as it turned out, was real after all.
+</p>
+<p class="detail-line">
+Both men were thrown in jail.
+</p>
+<p class="detail-line">
+Fixed English stimulus · Display split across two slides; the model
+received the complete work.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This is the rest of the fixed English text for T2, by Kyusaku Yumeno.
+</p>
+<p data-caption>
+This text provides context for questions. Our cell-error analysis does
+not establish why the models differed from readers.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 16 (Q&A only): Show the complete fixed T3 English stimulus while keeping the Japanese result distinct from translated-text interpretation. -->
+<div class="slide-body" data-paper-page="qa-t3">
+<p class="eyebrow">
+ICECCME 2026 · Q&amp;A reference · T3 · Kotaro Takamura
+</p>
+<h2 id="the-tattered-ostrich">The Tattered Ostrich</h2>
+<p class="detail-line">
+What pleasure can there be in keeping an ostrich?<br> In this muddy pen,
+barely four <em>tsubo</em> across, at a zoo—<br> aren't those legs far
+too long-strided?<br> Isn't that neck far too long?<br> In this country
+where snow falls, aren't those feathers far too tattered?<br> It eats
+hardtack, sure enough, because hunger compels it—<br> but look: aren't
+those eyes forever gazing into the distance?<br> Isn't it burning with
+an abandon beyond all caring for self or world?<br> Isn't it braced,
+even now, for the coming of a lapis-blue wind?<br> Isn't that small,
+unadorned head spinning with a dream beyond all horizons?<br> This is no
+longer an ostrich, can't you see?<br> O humankind—<br> enough. Enough of
+this.
+</p>
+<p class="detail-line">
+Fixed English stimulus used in the experiment · Research-team-checked
+machine translation.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This is the fixed English text for T3, by Kotaro Takamura. The line
+breaks follow the experimental text.
+</p>
+<p data-caption>
+All six models overestimated sadness in the Japanese condition. Showing
+this English text does not explain that error or validate the
+translation.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 17 (Q&A only): Retain all detailed limitations for questions without weakening the main result boundaries. -->
+<div class="slide-body" data-paper-page="qa-limits">
+<p class="eyebrow">
+ICECCME 2026 · Q&amp;A reference · Limitations
+</p>
+<h2 id="where-the-evidence-stops">Where the evidence stops</h2>
 <div class="content-grid">
 <div class="content-card">
 <h3 id="limited-coverage">Limited coverage</h3>
 <ul>
 <li>3 works; 4 fixed emotions</li>
-<li>One student-reader population</li>
+<li>One student population; no demographic stratification</li>
 <li>6 selected models; one neutral task</li>
 <li>No matched EN/ZH human reference</li>
 </ul>
@@ -589,7 +967,8 @@ validate more broadly.
 <aside class="notes">
 <p data-caption>
 Our pilot covers three works, four emotions, one student population, six
-models, and one neutral prompt.
+models, and one neutral prompt. Readers were not stratified by
+demographics.
 </p>
 <p data-caption>
 We lack matched English and Chinese human ratings. Fixed translations
@@ -604,8 +983,8 @@ Provider routes and model aliases were unpinned. Exact API replay may
 change.
 </p>
 <p data-caption>
-Conditional intervals do not generalize to new works, readers, prompts,
-or languages.
+Conditional intervals do not generalize to new works, emotions, readers,
+prompts, providers, languages, or models.
 </p>
 <p data-caption>
 Report uncertainty, cell errors, and composition sensitivity alongside
@@ -615,46 +994,6 @@ rankings.
 This is stage-one screening, not deployment approval. Broader validation
 needs more works, readers, prompts, and matched multilingual human
 references.
-</p>
-</aside>
-</section>
-<section class="slide level1">
-
-<!-- Page 10 (source page 13): Preserve the submitted acknowledgments and funding, then invite questions. -->
-<div class="slide-body closing-slide" data-paper-page="13">
-<p class="eyebrow">
-ICECCME 2026 · Acknowledgments / Q&amp;A
-</p>
-<h2 id="thank-you.-questions">Thank you. Questions?</h2>
-<div class="content-grid">
-<div class="content-card">
-<h3 id="acknowledgments">Acknowledgments</h3>
-<ul>
-<li>Student readers in the Japanese VAS study</li>
-<li>Aozora Bunko texts as experimental stimuli</li>
-</ul>
-</div>
-<div class="content-card">
-<h3 id="funding">Funding</h3>
-<p>Partially supported by <strong>JSPS KAKENHI</strong></p>
-<p>Grant numbers <strong>26K14983</strong> and
-<strong>24K13350</strong></p>
-</div>
-</div>
-<p class="takeaway">
-Human reference · Uncertainty · Translated-condition drift
-</p>
-</div>
-<aside class="notes">
-<p data-caption>
-We thank the student readers and acknowledge Aozora Bunko.
-</p>
-<p data-caption>
-JSPS KAKENHI partially supported this work: grants 26K14983 and
-24K13350.
-</p>
-<p data-caption>
-Thank you. Questions?
 </p>
 </aside>
 <script src="./captions.js"></script>
