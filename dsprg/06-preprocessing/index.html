@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="CSVの型・欠損・抽出・保存をPythonとRで確かめる90分の授業">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第6回 前処理</title>
+<link rel="stylesheet" href="reveal/reveal.css">
+<link rel="stylesheet" href="reveal/theme/white.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第6回：分析の前に、何を確かめる？ -->
+<div class="slide-body">
+<h2
+id="第6回分析の前に何を確かめる">第6回：分析の前に、何を確かめる？</h2>
+<p><strong>DSプログラミング入門2026｜前処理</strong></p>
+<ul>
+<li>CSVから表を読む。</li>
+<li>使う行・列を決める。</li>
+<li>保存した結果を確かめる。</li>
+</ul>
+<p class="operation-place">
+0〜5分：準備
+</p>
+</div>
+
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日はファイルを読んで分析の準備をします。表が表示されたことだけで終わらず、どの記録を使うか、なぜ使うかを説明できるようにしましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 第4・5回からつなぐ -->
+<div class="slide-body">
+<h2 id="第45回からつなぐ">第4・5回からつなぐ</h2>
+<table>
+<thead>
+<tr>
+<th>これまで</th>
+<th>今日</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>コードの中で表を作る</td>
+<td>CSVを読む</td>
+</tr>
+<tr>
+<td>平均や図を作る</td>
+<td>その前に値を確認する</td>
+</tr>
+<tr>
+<td>条件を変えて再実行</td>
+<td>抽出条件を変えて照合</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第4回の表と図、第5回の再実行の経験を使います。今日は新しい統計手法を増やさず、分析に入れる値を決める練習です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 今日の到達目標 -->
+<div class="slide-body">
+<h2 id="今日の到達目標">今日の到達目標</h2>
+<ol type="1">
+<li>行数・列名・型・欠損を確認する。</li>
+<li>欠損処理と条件抽出の理由を説明する。</li>
+<li>CSVを保存し、読み直して照合する。</li>
+</ol>
+</div>
+
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+目標は三つです。読める、理由を説明できる、保存後に確かめられる。この順に、自分の画面で成功の目印を見つけます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: work全体を開く -->
+<div class="slide-body">
+<h2 id="work全体を開く">work全体を開く</h2>
+<ol type="1">
+<li><code>work</code> をVS Codeで開く。</li>
+<li><code>exercises</code> に <code>lesson06</code>
+フォルダーを置く。</li>
+<li><code>data/study_records.csv</code> を開く。</li>
+</ol>
+<p><strong>成功の目印：列名とA〜Lの12記録。</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+まずエクスプローラーで入力を見つけます。レッスンのフォルダーだけではなくワーク全体を開いてください。レッスン06のフォルダーが二重になっていないことも確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 0分と空欄は、同じ？ -->
+<div class="slide-body">
+<h2 id="分と空欄は同じ">0分と空欄は、同じ？</h2>
+<p><img width="960" height="360" class="zoomable-image" src="./images/zero-missing.svg" alt="0分は記録された値、空欄は値が不明。二つを区別する" style="max-height:360px;"></p>
+<p><strong>空欄を見ただけで、0と決めない。</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ゼロは記録された値です。空欄は分からないという印です。空欄をゼロに置き換えると、分からない記録がゼロ分の記録へ変わってしまいます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: 予想：C・F・G・Hを読む -->
+<div class="slide-body">
+<h2 id="予想cfghを読む">予想：C・F・G・Hを読む</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>場所</th>
+<th style="text-align: right;">分</th>
+<th style="text-align: right;">得点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C</td>
+<td>自宅</td>
+<td style="text-align: right;">空欄</td>
+<td style="text-align: right;">80</td>
+</tr>
+<tr>
+<td>F</td>
+<td>図書館</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">65</td>
+</tr>
+<tr>
+<td>G</td>
+<td>自宅</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">空欄</td>
+</tr>
+<tr>
+<td>H</td>
+<td>空欄</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">85</td>
+</tr>
+</tbody>
+</table>
+<p>今回使う値は、<strong>学習時間と得点</strong>。どの行を残す？</p>
+</div>
+
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この四つの記録を先に見ます。今回必要なのは学習時間と得点です。場所が分からないことと、使う数値が分からないことを区別し、残す行を予想してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: CSV：1行目は列名 -->
+<div class="slide-body">
+<h2 id="csv1行目は列名">CSV：1行目は列名</h2>
+<pre class="text"><code>id,place,study_minutes,quiz_score
+A,自宅,15,40
+B,図書館,30,60
+C,自宅,,80</code></pre>
+<ul>
+<li>カンマで列を区切る。</li>
+<li>列名の行を記録数に含めない。</li>
+</ul>
+</div>
+
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+シーエスブイはカンマで列を区切ったファイルです。カンマが続くところには空の項目があります。最初の行は列名なので、記録の件数には数えません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: 型：文字列と数値 -->
+<div class="slide-body">
+<h2 id="型文字列と数値">型：文字列と数値</h2>
+<table>
+<thead>
+<tr>
+<th>文字列</th>
+<th>数値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>study_minutes</code></td>
+</tr>
+<tr>
+<td><code>place</code></td>
+<td><code>quiz_score</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>文字列は名前、数値は計算に使う値。</strong></p>
+<p class="operation-place">
+5〜15分：読む前に予想
+</p>
+</div>
+
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アイディーと場所は文字列です。学習時間と得点は数値として読みます。見た目が数字でも文字列として読んでいれば計算の扱いが変わるので、型も確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: Python：ファイル全体を実行 -->
+<div class="slide-body">
+<h2 id="pythonファイル全体を実行">Python：ファイル全体を実行</h2>
+<ol type="1">
+<li><code>lesson06.py</code> を開く。</li>
+<li>保存する。</li>
+<li>「授業: Pythonファイルを実行」を選ぶ。</li>
+<li>12行4列の表示を見つける。</li>
+</ol>
+<p class="operation-place">
+15〜30分：Python主例
+</p>
+</div>
+
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+完成した主例を配布しています。コードを一行ずつ端末へ貼らず、ファイル全体を実行してください。まず十二行四列が読めたかを確認し、その後で処理を追います。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: Python：CSVを読む -->
+<div class="slide-body">
+<h2 id="pythoncsvを読む">Python：CSVを読む</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>records <span class="op">=</span> pd.read_csv(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    source, dtype<span class="op">=</span>column_types,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    keep_default_na<span class="op">=</span><span class="va">False</span>, na_values<span class="op">=</span>[<span class="st">&quot;&quot;</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<ul>
+<li><code>source</code>：入力CSVの場所</li>
+<li><code>dtype</code>：列の型</li>
+<li><code>na_values</code>：欠損と読む値</li>
+</ul>
+</div>
+
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+リードシーエスブイで表を読みます。入力場所と型は配布コードで指定済みです。今回は空欄を欠損として読み、元の記録を変更せずに表を作ります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: Python：四つの確認 -->
+<div class="slide-body">
+<h2 id="python四つの確認">Python：四つの確認</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(records.shape)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(records.columns.tolist())</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(records.dtypes)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(records.isna().<span class="bu">sum</span>())</span></code></pre></div>
+<p><strong>行列数 → 列名 → 型 → 欠損件数</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+確認は四つです。表の大きさ、列の名前、値の型、欠損の件数を見ます。エラーが出なかったことと、意図したデータが読めたことを分けて考えましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: 読込の成功チェック -->
+<div class="slide-body">
+<h2 id="読込の成功チェック">読込の成功チェック</h2>
+<table>
+<thead>
+<tr>
+<th>確認する項目</th>
+<th>期待する結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>表の大きさ</td>
+<td>12行4列</td>
+</tr>
+<tr>
+<td>IDの欠損</td>
+<td>0件</td>
+</tr>
+<tr>
+<td>場所・学習時間・得点の欠損</td>
+<td>各1件</td>
+</tr>
+</tbody>
+</table>
+<p>数値の空欄は <code>NaN</code>、文字列では <code>&lt;NA&gt;</code>
+など。</p>
+</div>
+
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+自分の画面と表を比べてください。アイディーに欠損はなく、ほかの三列に一件ずつあります。表示される欠損の記号が異なっても、元のどの空欄かをたどることが大切です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: Python：必要な2列の欠損を除く -->
+<div class="slide-body">
+<h2 id="python必要な2列の欠損を除く">Python：必要な2列の欠損を除く</h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>complete <span class="op">=</span> records.dropna(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    subset<span class="op">=</span>[<span class="st">&quot;study_minutes&quot;</span>, <span class="st">&quot;quiz_score&quot;</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(complete[<span class="st">&quot;id&quot;</span>].tolist())</span></code></pre></div>
+<p><strong>C・Gを除く。F・Hは残す。</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ドロップエヌエーに必要な二列を指定します。学習時間か得点が不明なシーとジーを除きます。ゼロ分のエフと、場所だけが空欄のエイチは残します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: Python：30分以上を選ぶ -->
+<div class="slide-body">
+<h2 id="python30分以上を選ぶ">Python：30分以上を選ぶ</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>minimum_minutes <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>selected <span class="op">=</span> complete.loc[</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    complete[<span class="st">&quot;study_minutes&quot;</span>] <span class="op">&gt;=</span> minimum_minutes,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;id&quot;</span>, <span class="st">&quot;study_minutes&quot;</span>, <span class="st">&quot;quiz_score&quot;</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>].copy()</span></code></pre></div>
+<p><code>&gt;=</code> は境界の30分を含む。</p>
+</div>
+
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+しきい値は三十分です。条件の記号は以上なので、三十分ちょうども含みます。行の条件と必要な列を指定して、作業用の表をコピーします。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: Python：分を時間へ換算 -->
+<div class="slide-body">
+<h2 id="python分を時間へ換算">Python：分を時間へ換算</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>selected[<span class="st">&quot;study_hours&quot;</span>] <span class="op">=</span> (</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    selected[<span class="st">&quot;study_minutes&quot;</span>] <span class="op">/</span> <span class="dv">60</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(selected)</span></code></pre></div>
+<p><strong>30分 → 0.5時間、60分 → 1時間。</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+分を六十で割って時間へ換算します。新しい列の名前はスタディーアワーズです。式を見ただけでなく、三十分と六十分の行を使って値を確かめてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: Python：元CSVとは別に保存 -->
+<div class="slide-body">
+<h2 id="python元csvとは別に保存">Python：元CSVとは別に保存</h2>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>selected.to_csv(output_file, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>reloaded <span class="op">=</span> pd.read_csv(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    output_file, dtype<span class="op">=</span>{<span class="st">&quot;id&quot;</span>: <span class="st">&quot;string&quot;</span>}</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><code>data/</code> は入力、<code>output/</code> は加工結果。</p>
+</div>
+
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+保存先はアウトプットです。インデックスをフォルスにして、余分な行番号をファイルへ書かないようにします。保存したら同じファイルを読み直します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: Python：保存前と比べる -->
+<div class="slide-body">
+<h2 id="python保存前と比べる">Python：保存前と比べる</h2>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(selected.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>      .equals(reloaded))</span></code></pre></div>
+<ul>
+<li>表の行番号を揃えて比較する。</li>
+<li>8行4列、結果は <code>True</code>。</li>
+<li>エクスプローラーでもCSVを開く。</li>
+</ul>
+</div>
+
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+抽出後の行番号は飛び飛びなので、比較前に揃えます。アイディーや数値を変える処理ではありません。トゥルーという結果と、実際に保存されたファイルの両方を確かめます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: R：言語を替えて照合する -->
+<div class="slide-body">
+<h2 id="r言語を替えて照合する">R：言語を替えて照合する</h2>
+<ol type="1">
+<li><code>lesson06.R</code> を開いて保存する。</li>
+<li>「授業: Rファイルを実行」を選ぶ。</li>
+<li>Pythonと同じID・件数を探す。</li>
+</ol>
+<p><strong>表の飾りや表示桁数は違ってよい。</strong></p>
+<p class="operation-place">
+30〜45分：R主例
+</p>
+</div>
+
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+次はアールです。ファイル名とタスクがアール用になっていることを確認します。画面の見た目ではなく、残った記録と数値を比べましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: R：読む・確認する -->
+<div class="slide-body">
+<h2 id="r読む確認する">R：読む・確認する</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>records <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(source_file,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> column_types, <span class="at">na =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span>, <span class="at">progress =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">dim</span>(records))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">names</span>(records))</span></code></pre></div>
+<p><code>col_types</code> は型、<code>na</code> は欠損の指定。</p>
+</div>
+
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アールでも列の型と空欄の扱いを指定しています。ディムで行列数、ネームズで列名を確認します。読み取る条件を言語間で揃えています。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: R：型と欠損を数える -->
+<div class="slide-body">
+<h2 id="r型と欠損を数える">R：型と欠損を数える</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sapply</span>(records, class))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">colSums</span>(<span class="fu">is.na</span>(records)))</span></code></pre></div>
+<ul>
+<li><code>is.na</code>：欠損かどうか</li>
+<li><code>colSums</code>：列ごとに数える</li>
+<li><code>0</code> と <code>NA</code> を区別する</li>
+</ul>
+</div>
+
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アールではエヌエーが欠損です。イズエヌエーで各値が欠損かを調べ、その結果を列ごとに合計します。ゼロという数値は欠損として数えません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: R：左の結果を右へ渡す -->
+<div class="slide-body">
+<h2 id="r左の結果を右へ渡す">R：左の結果を右へ渡す</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>complete <span class="ot">&lt;-</span> records <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(study_minutes),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(quiz_score))</span></code></pre></div>
+<ul>
+<li><code>|&gt;</code>：表を次の処理へ渡す。</li>
+<li><code>!</code>：「ではない」。</li>
+<li>必要な2列が欠損ではない行を残す。</li>
+</ul>
+</div>
+
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+パイプは左の結果を右の処理へ渡す記号です。この例ではレコーズをフィルターへ渡します。エクスクラメーションは否定なので、欠損ではない行を残します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: R：行・列・換算を順に -->
+<div class="slide-body">
+<h2 id="r行列換算を順に">R：行・列・換算を順に</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>minimum_minutes <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>selected <span class="ot">&lt;-</span> complete <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(study_minutes <span class="sc">&gt;=</span> minimum_minutes) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, study_minutes, quiz_score) <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">study_hours =</span> study_minutes <span class="sc">/</span> <span class="dv">60</span>)</span></code></pre></div>
+</div>
+
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+上から順に読みます。条件に合う行を選び、必要な列を選び、時間の列を作ります。一度に長い式を覚えるより、それぞれの段階で何が変わるかを確かめてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: R：保存して読み直す -->
+<div class="slide-body">
+<h2 id="r保存して読み直す">R：保存して読み直す</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(selected, output_file)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 再読込の型指定は配布コードを使う</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">names</span>(reloaded))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">nrow</span>(reloaded))</span></code></pre></div>
+<p><strong>8行4列、保存前との比較は <code>TRUE</code>。</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ライトシーエスブイで保存します。この関数は行番号を書き足しません。配布コードで読み直した表の列と件数を確認し、保存前との比較も読みます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 処理の途中を見失わない -->
+<div class="slide-body">
+<h2 id="処理の途中を見失わない">処理の途中を見失わない</h2>
+<p><img width="960" height="360" class="zoomable-image" src="./images/pipeline.svg" alt="入力12行から必要な2列の欠損を除いて10行、主例の30分以上では8行、演習の60分以上では5行" style="max-height:360px;"></p>
+<p><strong>最後のCSVだけでなく、途中の10行も確認。</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+流れを振り返ります。入力十二行から必要な欠損を除いて十行、主例の条件で八行です。次の演習では条件を変えて五行になります。最終結果だけでは途中の間違いを見逃すことがあります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: 必須演習：変えるのは1か所 -->
+<div class="slide-body">
+<h2 id="必須演習変えるのは1か所">必須演習：変えるのは1か所</h2>
+<p><strong>30分以上 → 60分以上</strong></p>
+<ol type="1">
+<li>元CSVを見て、残るIDを予想する。</li>
+<li><code>exercise06.py</code> の30を60へ変える。</li>
+<li>保存して実行する。</li>
+<li><code>exercise06.R</code> でも同じ変更をする。</li>
+</ol>
+<p class="operation-place">
+45〜62分：予想・変更・実行
+</p>
+</div>
+
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここからは演習ファイルを使います。まず残るアイディーを紙やメモに予想してください。その後で、両方の言語のしきい値だけを六十へ変え、保存して実行します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: 演習：自分の画面で照合 -->
+<div class="slide-body">
+<h2 id="演習自分の画面で照合">演習：自分の画面で照合</h2>
+<ul>
+<li>60分ちょうどを含んだか。</li>
+<li>場所が空欄のHは残ったか。</li>
+<li>Fは欠損処理後には残っていたか。</li>
+<li>分÷60と時間の列が一致するか。</li>
+<li>保存した二つのCSVを読み直したか。</li>
+</ul>
+</div>
+
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+実行後はチェック項目に沿って読みます。エフはゼロ分なので最後の時間条件では除かれますが、欠損処理の段階では残るはずです。どの段階で消えたのかを区別してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 演習後：IDと時間の答え合わせ -->
+<div class="slide-body">
+<h2 id="演習後idと時間の答え合わせ">演習後：IDと時間の答え合わせ</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th style="text-align: right;">分</th>
+<th style="text-align: right;">時間</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td>H</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">1.25</td>
+</tr>
+<tr>
+<td>J</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td>K</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">1.25</td>
+</tr>
+<tr>
+<td>L</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+予想と実行を終えてから答えを確認します。残るのはディー、エイチ、ジェイ、ケー、エルの五件です。時間換算も、元の分を六十で割って一つずつ照合できます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: 動くけれど、目的と違う -->
+<div class="slide-body">
+<h2 id="動くけれど目的と違う">動くけれど、目的と違う</h2>
+<table>
+<thead>
+<tr>
+<th>処理</th>
+<th>起こること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全列の欠損を除く</td>
+<td>Hまで除かれる</td>
+</tr>
+<tr>
+<td>0を欠損とみなす</td>
+<td>Fが途中で消える</td>
+</tr>
+<tr>
+<td><code>&gt; 60</code> にする</td>
+<td>D・Jが除かれる</td>
+</tr>
+</tbody>
+</table>
+<p><strong>エラーがないことだけでは確かめきれない。</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この三つはコードが動いても、今回の目的とは違う結果になります。エラーの有無だけで判断せず、具体的なアイディーと元の値を使って確認しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: Copilotの説明を確かめる -->
+<div class="slide-body">
+<h2 id="copilotの説明を確かめる">Copilotの説明を確かめる</h2>
+<p>依頼例：</p>
+<blockquote>
+<p>必要な列は学習時間と得点です。場所が空欄の行を残す理由と、確認方法を一つ説明してください。</p>
+</blockquote>
+<p><strong>回答を読んだら、Hの元の値と結果を比べる。</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+コパイロットを使うなら、理由と確認方法を聞いてみましょう。ただし、回答がもっともらしいだけでは十分ではありません。自分でエイチの元の行と処理結果を比べてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: 確認問題：理由を言葉にする -->
+<div class="slide-body">
+<h2 id="確認問題理由を言葉にする">確認問題：理由を言葉にする</h2>
+<ol type="1">
+<li>0と空欄を同じにすると何が変わる？</li>
+<li>Hを残し、C・Gを除くのはなぜ？</li>
+<li>60分を含む条件と、保存後の確認は？</li>
+</ol>
+<p class="operation-place">
+62〜69分：説明・照合
+</p>
+</div>
+
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+三つの問いに短く答えます。正しい記号を選ぶだけでなく、元の値と処理の目的を使って説明しましょう。保存後は件数だけでなく、列名や中の値も比べます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 31: 同じ記録をJSONで読む -->
+<div class="slide-body">
+<h2 id="同じ記録をjsonで読む">同じ記録をJSONで読む</h2>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;C&quot;</span><span class="fu">,</span> <span class="dt">&quot;place&quot;</span><span class="fu">:</span> <span class="st">&quot;自宅&quot;</span><span class="fu">,</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;study_minutes&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span> <span class="dt">&quot;quiz_score&quot;</span><span class="fu">:</span> <span class="dv">80</span><span class="fu">}</span></span></code></pre></div>
+<ul>
+<li>列名と値の組で記録する。</li>
+<li>今回の空欄相当は <code>null</code>。</li>
+<li>配布JSONはCSVと同じ12記録。</li>
+</ul>
+</div>
+
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ジェイソンでは項目名と値の組で記録できます。この例のヌルは値が不明であることを表します。ファイルの書き方が違っても、同じ十二記録を表せることを確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 32: HTML・XML：ローカルの2件で比較 -->
+<div class="slide-body">
+<h2 id="htmlxmlローカルの2件で比較">HTML・XML：ローカルの2件で比較</h2>
+<ul>
+<li>HTML：表の見せ方を記述する。</li>
+<li>XML：タグで記録の構造を表す。</li>
+<li>教員が配布ファイルを読み比べる。</li>
+</ul>
+<p><strong>ネット収集・スクレイピングは必須にしない。</strong></p>
+<p class="operation-place">
+69〜75分：形式の短い比較
+</p>
+</div>
+
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここは教員の短い実演です。同じ二件をエイチティーエムエルとエックスエムエルで見ます。外部のウェブサイトへ接続せず、配布したローカルファイルで構造の違いを確かめます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 33: 第7回：問いを一つ選ぶ -->
+<div class="slide-body">
+<h2 id="第7回問いを一つ選ぶ">第7回：問いを一つ選ぶ</h2>
+<p><strong>A：学習時間の分布</strong></p>
+<p>平均・中央値・標本標準偏差＋ヒストグラム。</p>
+<p><strong>B：学習時間と得点の関係</strong></p>
+<p>両列の基本集計＋散布図。</p>
+<p class="operation-place">
+75〜82分：前半レポートの案内
+</p>
+</div>
+
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+次回は前半の総合演習レポートです。分布を見る問いと、時間と得点の関係を見る問いから一つ選びます。新しい回帰や検定は必須ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 34: 第7回：主言語＋他方で照合 -->
+<div class="slide-body">
+<h2 id="第7回主言語他方で照合">第7回：主言語＋他方で照合</h2>
+<ol type="1">
+<li>元CSVから、必要な2列がある10行を使う。</li>
+<li>主言語で集計・図・CSVを作る。</li>
+<li>他方でも元CSVを読み、ID・件数・平均を照合。</li>
+<li>結果と限界を1〜2ページ程度で説明する。</li>
+</ol>
+<p><strong>今回の60分以上の5行を流用しない。</strong></p>
+</div>
+
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+レポートでは主言語を選びます。もう一方の言語では同じ元ファイルから独立に読み、件数とアイディー、学習時間の平均を比べます。今日の五行の出力をそのまま全体分析へ使わないようにしてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 35: 第7回：提出物と評価 -->
+<div class="slide-body">
+<h2 id="第7回提出物と評価">第7回：提出物と評価</h2>
+<p>提出：<strong>PDF・コード2本・分析CSV・図PNG</strong></p>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th style="text-align: right;">点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目的に合う処理</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr>
+<td>検証</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr>
+<td>説明と解釈</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr>
+<td>再実行と提出</td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+<p>締切・提出先はClassroomで確認。</p>
+</div>
+
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+レポートの提出はクラスルームです。提出物を五点揃え、本文とファイルの値が対応することを確認します。見た目の装飾や使用言語ではなく、処理、検証、説明、再現性を評価します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 36: 今日の提出・質問 -->
+<div class="slide-body">
+<h2 id="今日の提出質問">今日の提出・質問</h2>
+<ul>
+<li>Formsへ <strong>両言語の演習コード全文</strong>。</li>
+<li>予想・実行結果・確認方法を記入。</li>
+<li>各50点：実行／入力／欠損／抽出／保存。</li>
+<li>AI利用欄は任意。未完でも支援事項を残す。</li>
+</ul>
+<p><strong>CSVの場所、残るID、保存結果を確認しよう。</strong></p>
+<p class="operation-place">
+82〜90分：提出・自己チェック・質問
+</p>
+</div>
+
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+最後に今日の演習を提出します。コード欄で全体をコピーし、変更した一行だけではなく全文を貼ってください。困っている点があれば実行状況に残します。入力、残る記録、保存結果を自分で説明できるか確認しましょう。
+</aside>
+
+</section></div></div>
+<script src="reveal/reveal.js"></script>
+<script src="image-zoom.js"></script>
+<script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'slide'});</script>
+</body>
+</html>
