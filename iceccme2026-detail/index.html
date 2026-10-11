@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>ICECCME2026 venue presentation</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="_reveal/dist/reset.css">
+  <link rel="stylesheet" href="_reveal/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="_reveal/dist/theme/white.css" id="theme">
+  <link rel="stylesheet" href="style.css"/>
+  <meta name="description" content="ICECCME2026 venue presentation on Japanese human ratings, conditional uncertainty, and translated-condition drift">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+
+<section class="slide level1">
+
+<!-- Page 1: Introduce the submitted paper, authors and compact screening purpose. -->
+<div class="slide-body title-slide" data-paper-page="1">
+<p class="eyebrow">
+ICECCME 2026 · Paper 648 · Bali, Indonesia · 15–17 October 2026
+</p>
+<h2
+id="a-compact-japanese-human-grounded-benchmark-for-literary-emotion-understanding-with-englishchinese-robustness-probes">A
+Compact Japanese-Human-Grounded Benchmark for Literary Emotion
+Understanding with English/Chinese Robustness Probes</h2>
+<p class="authors">
+<strong>Naruki Shirahama</strong> · Yuma Yoshimoto · Naofumi
+Nakaya<br>Junji Nishino · Satoshi Watanabe
+</p>
+<p class="affiliations">
+Shimonoseki City University · NIT (KOSEN), Kitakyushu College · Juntendo
+University<br>Tamagawa University · Shizuoka Institute of Science and
+Technology
+</p>
+<p class="presenter-line">
+Presenter: Naruki Shirahama · Shimonoseki City University, Japan
+</p>
+<p class="takeaway">
+Human ratings first; translated conditions as secondary probes.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+Good morning. I am Naruki Shirahama from Shimonoseki City University.
+</p>
+<p data-caption>
+Today I will discuss how six language models score emotions in literary
+texts.
+</p>
+<p data-caption>
+Our reference is the emotion ratings of Japanese student readers.
+</p>
+<p data-caption>
+We also examine changes in translated English and Chinese conditions.
+</p>
+<p data-caption>
+This is a compact screening study.
+</p>
+<p data-caption>
+It does not identify a universally best model.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 2: Explain why model differences and multilingual stability require a human reference. -->
+<div class="slide-body" data-paper-page="2">
+<p class="eyebrow">
+ICECCME 2026 · Motivation
+</p>
+<h2 id="similar-outputs-are-not-enough">Similar outputs are not
+enough</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="comparisons-show-differences">Comparisons show differences</h3>
+<ul>
+<li>Model versus model</li>
+<li>Japanese versus translated conditions</li>
+<li>Emotion scores can change</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="human-ratings-give-a-reference">Human ratings give a
+reference</h3>
+<ul>
+<li>Which scores are closer to readers?</li>
+<li>How large is the disagreement?</li>
+<li>Where do the errors occur?</li>
+</ul>
+</div>
+</div>
+<p class="takeaway">
+Stability and agreement with humans answer different questions.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+Many studies compare scores across models or languages.
+</p>
+<p data-caption>
+These comparisons show differences, but they do not show which scores
+agree with human readers.
+</p>
+<p data-caption>
+Similar scores across languages do not prove agreement with humans.
+</p>
+<p data-caption>
+A model may be stable and still disagree with the human reference.
+</p>
+<p data-caption>
+We therefore keep human agreement and translated-condition stability
+separate.
+</p>
+<p data-caption>
+We use continuous scores because our question concerns emotion
+intensity, rather than only an emotion label.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 3: Distinguish the primary human-alignment question from the secondary translated-condition probe. -->
+<div class="slide-body" data-paper-page="3">
+<p class="eyebrow">
+ICECCME 2026 · Two evaluation questions
+</p>
+<h2 id="one-benchmark-two-questions">One benchmark, two questions</h2>
+<div class="endpoint-grid">
+<div class="endpoint-card primary-endpoint">
+<h3 id="primary-alignment-with-japanese-human-ratings">Primary:
+alignment with Japanese human ratings</h3>
+<p>How close are Japanese model scores to Japanese human ratings?</p>
+<p><strong>Reference: Japanese human VAS means</strong></p>
+</div>
+<div class="endpoint-card secondary-endpoint">
+<h3 id="secondary-translated-condition-drift">Secondary:
+translated-condition drift</h3>
+<p>How much do English and Chinese model scores change from
+Japanese?</p>
+<p><strong>Reference: the same model's Japanese scores</strong></p>
+</div>
+</div>
+<p class="takeaway">
+Less change across languages does not prove closer agreement with
+humans.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+Our primary question is alignment with Japanese human ratings.
+</p>
+<p data-caption>
+We compare each model's Japanese scores with the human ratings.
+</p>
+<p data-caption>
+English and Chinese conditions are secondary probes of change from the
+same model's Japanese scores.
+</p>
+<p data-caption>
+Less change does not prove closer agreement with humans.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 4: State the fixed human benchmark and neutral-reader model protocol. -->
+<div class="slide-body design-slide" data-paper-page="4">
+<p class="eyebrow">
+ICECCME 2026 · Experimental design
+</p>
+<h2 id="three-works-four-emotions-twelve-fixed-cells">Three works, four
+emotions, twelve fixed cells</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="japanese-human-reference">Japanese human reference</h3>
+<ul>
+<li>91 student responses</li>
+<li>86–91 usable ratings per cell</li>
+<li>Interest, surprise, sadness, anger</li>
+<li>Visual Analogue Scale (VAS): 0–100</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="neutral-reader-model-task">Neutral-reader model task</h3>
+<ul>
+<li>6 models × 3 languages × 3 works × 10 repetitions</li>
+<li>One task; temperature 0.4</li>
+<li>540 valid runs; 2,160 scores</li>
+<li>90 rows retried; no imputation</li>
+</ul>
+</div>
+</div>
+<p class="detail-line">
+<strong>Works:</strong> T1 · The Pocket Watch; T2 · The Money and the
+Pistol; T3 · The Tattered Ostrich.
+</p>
+<p class="detail-line">
+<strong>Collection:</strong> OpenRouter · 17–19 April 2026 (JST). The
+six models are listed in Table I.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+We use three literary works: The Pocket Watch, The Money and the Pistol,
+and The Tattered Ostrich.
+</p>
+<p data-caption>
+Readers rated interest, surprise, sadness, and anger on a Visual
+Analogue Scale from zero to one hundred.
+</p>
+<p data-caption>
+We collected ninety-one responses from Japanese student readers.
+</p>
+<p data-caption>
+Each story-emotion cell had eighty-six to ninety-one usable ratings.
+</p>
+<p data-caption>
+The model panel has six models, three languages, three works, and ten
+repetitions.
+</p>
+<p data-caption>
+We used one neutral-reader task at temperature zero point four.
+</p>
+<p data-caption>
+This gives five hundred forty runs and two thousand one hundred sixty
+scores.
+</p>
+<p data-caption>
+Calls were collected from April seventeen to nineteen, twenty
+twenty-six.
+</p>
+<p data-caption>
+Ninety run rows needed targeted retries.
+</p>
+<p data-caption>
+All rows then had valid scores.
+</p>
+<p data-caption>
+No scores were imputed.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 5: Define the two absolute-difference metrics and their distinct reference profiles. -->
+<div class="slide-body" data-paper-page="5">
+<p class="eyebrow">
+ICECCME 2026 · Metrics
+</p>
+<h2 id="two-distances-two-reference-profiles">Two distances, two
+reference profiles</h2>
+<div class="content-grid">
+<div class="content-card metric-card">
+<h3 id="japanese-mae">Japanese MAE</h3>
+<p>Distance between:</p>
+<p><strong>Japanese model means</strong><br>and <strong>Japanese human
+VAS means</strong></p>
+<p>Average absolute difference over 12 cells.</p>
+</div>
+<div class="content-card metric-card">
+<h3 id="translated-condition-drift">Translated-condition drift</h3>
+<p>Distance between:</p>
+<p><strong>English or Chinese model means</strong><br>and <strong>the
+same model's Japanese means</strong></p>
+<p>Average absolute difference over 12 cells.</p>
+</div>
+</div>
+<p class="detail-line">
+Model means use 10 repetitions. Average drift = (EN drift + ZH drift) /
+2.
+</p>
+<p class="takeaway">
+Lower values are better on each axis. There is no combined deployment
+score.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+Each model-language condition gives twelve story-emotion means.
+</p>
+<p data-caption>
+We average the ten model repetitions within each cell.
+</p>
+<p data-caption>
+Japanese MAE compares model means with Japanese human means.
+</p>
+<p data-caption>
+MAE means mean absolute error.
+</p>
+<p data-caption>
+We average the absolute score differences across the twelve cells.
+</p>
+<p data-caption>
+Drift compares English or Chinese means with the same model's Japanese
+means.
+</p>
+<p data-caption>
+Average drift is the mean of English drift and Chinese drift.
+</p>
+<p data-caption>
+Lower values mean closer agreement or less change, respectively.
+</p>
+<p data-caption>
+The two metrics must remain separate.
+</p>
+<p data-caption>
+Pearson and Spearman correlations are only exploratory diagnostics.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 6: Explain conditional cluster-bootstrap uncertainty and deterministic composition checks. -->
+<div class="slide-body" data-paper-page="6">
+<p class="eyebrow">
+ICECCME 2026 · Uncertainty and sensitivity
+</p>
+<h2 id="a-point-estimate-is-only-the-start">A point estimate is only the
+start</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="sampling-uncertainty">Sampling uncertainty</h3>
+<ul>
+<li>10,000 cluster-bootstrap replicates</li>
+<li>Resample respondents and logical runs</li>
+<li>Keep four emotions together per run</li>
+<li>Percentile 95% intervals</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="benchmark-composition">Benchmark composition</h3>
+<ul>
+<li>Omit each of 3 stories</li>
+<li>Omit each of 4 emotions</li>
+<li>Recompute the full ordering</li>
+<li>7 deterministic leave-one-out checks</li>
+</ul>
+</div>
+</div>
+<p class="takeaway">
+The intervals are conditional on this fixed 12-cell benchmark.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+The benchmark is small, so a point estimate is not enough.
+</p>
+<p data-caption>
+We used a cluster bootstrap with ten thousand replicates.
+</p>
+<p data-caption>
+We sampled human respondents and model runs separately.
+</p>
+<p data-caption>
+Each model run keeps its four emotion scores together.
+</p>
+<p data-caption>
+The same resampled human profile is used for all models in each
+replicate.
+</p>
+<p data-caption>
+We report ninety-five percent percentile intervals.
+</p>
+<p data-caption>
+These intervals apply to this fixed set of twelve cells.
+</p>
+<p data-caption>
+They do not describe uncertainty for new literary works.
+</p>
+<p data-caption>
+We also removed each story, and then each emotion, one at a time.
+</p>
+<p data-caption>
+These leave-one-out checks show how the ordering depends on the
+benchmark composition.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 7: Report conditional uncertainty without claiming a unique best model. -->
+<div class="slide-body" data-paper-page="7">
+<p class="eyebrow">
+ICECCME 2026 · Alignment with Japanese human ratings
+</p>
+<h2 id="the-top-four-models-are-not-clearly-separated">The top four
+models are not clearly separated</h2>
+<p class="figure-intro">
+MAE: average distance from human ratings. Lower is closer. Intervals
+apply to 12 fixed cells.
+</p>
+<div class="figure-panel">
+<img class="scientific-figure" src="fig/figure2_ja_ranking.png" alt="Figure 2: Japanese MAE with conditional 95 percent bootstrap intervals, and signed errors for the twelve fixed story-emotion cells.">
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+Figure 2 shows the mean absolute error between model scores and Japanese
+human ratings.
+</p>
+<p data-caption>
+These intervals quantify uncertainty for this fixed set of twelve cells.
+</p>
+<p data-caption>
+For every pair among the top four models, the confidence interval for
+the MAE difference includes zero.
+</p>
+<p data-caption>
+So we cannot identify a single best model on this fixed benchmark.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 8: Explain observed signed-error concentration and composition sensitivity without causal claims. -->
+<div class="slide-body" data-paper-page="8">
+<p class="eyebrow">
+ICECCME 2026 · Cell errors and composition sensitivity
+</p>
+<h2 id="error-direction-depends-on-the-story">Error direction depends on
+the story</h2>
+<p class="figure-intro">
+Signed error = model mean − Japanese human VAS mean · Red: higher ·
+Blue: lower
+</p>
+<div class="figure-panel">
+<img class="scientific-figure" src="fig/figure2_ja_ranking.png" alt="Figure 2, with attention to the right panel: model minus human errors across twelve fixed story-emotion cells. Sadness is overestimated for T3 and underestimated for T1 and T2.">
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+Now look at the right-hand panel of Figure 2.
+</p>
+<p data-caption>
+Each cell is a model mean minus the Japanese human mean.
+</p>
+<p data-caption>
+Red means that the model score is higher.
+</p>
+<p data-caption>
+Blue means that it is lower.
+</p>
+<p data-caption>
+The largest shared error is sadness for T3, The Tattered Ostrich.
+</p>
+<p data-caption>
+All six models overestimate sadness for T3.
+</p>
+<p data-caption>
+T2 is The Money and the Pistol.
+</p>
+<p data-caption>
+For T2, all six underestimate sadness and overestimate surprise.
+</p>
+<p data-caption>
+Across models, the mean absolute errors for these three cells are
+48.525, 39.083, and 33.860.
+</p>
+<p data-caption>
+Sadness is also underestimated for T1.
+</p>
+<p data-caption>
+Removing any one story or any one emotion changes the full model
+ordering.
+</p>
+<p data-caption>
+All seven checks changed the order.
+</p>
+<p data-caption>
+We do not claim a causal explanation.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 9: Explain within-model translated-condition drift and its interpretation boundary. -->
+<div class="slide-body" data-paper-page="9">
+<p class="eyebrow">
+ICECCME 2026 · Translated-condition robustness
+</p>
+<h2 id="drift-measures-change-from-japanese-scores">Drift measures
+change from Japanese scores</h2>
+<p class="figure-intro">
+EN/ZH versus the same model's Japanese scores · Lower is less change ·
+Conditional 95% intervals
+</p>
+<div class="figure-panel">
+<img class="scientific-figure" src="fig/figure3_cross_language_drift.png" alt="Figure 3: English and Chinese drift from each model's Japanese profile, with conditional 95 percent run-bootstrap intervals.">
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+Figure 3 compares English and Chinese scores with each model's Japanese
+scores.
+</p>
+<p data-caption>
+Lower drift means less change from the Japanese condition.
+</p>
+<p data-caption>
+Both the literary text and the task instructions change language.
+</p>
+<p data-caption>
+This does not measure agreement with human readers of the English or
+Chinese versions.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 10: Read the frozen Table I as a two-axis screening summary, not a deployment score. -->
+<div class="slide-body table-slide" data-paper-page="10">
+<p class="eyebrow">
+ICECCME 2026 · Table I
+</p>
+<h2 id="human-agreement-and-stability-differ">Human agreement and
+stability differ</h2>
+<p class="figure-intro">
+Point estimates · Lower MAE and drift are better · Correlations are
+exploratory over 12 fixed cells
+</p>
+<div class="table-panel">
+<!-- BEGIN FROZEN TABLE I: Pandoc transcription; alignment attributes removed, cell text unchanged. -->
+<table>
+<thead>
+<tr>
+<th>
+Model
+</th>
+<th>
+JA MAE
+</th>
+<th>
+JA Pearson <span class="math inline"><em>r</em></span>
+</th>
+<th>
+JA Spearman <span class="math inline"><em>ρ</em></span>
+</th>
+<th>
+EN drift
+</th>
+<th>
+ZH drift
+</th>
+<th>
+Avg drift
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Claude Sonnet 4.5
+</td>
+<td>
+20.026
+</td>
+<td>
+0.442
+</td>
+<td>
+0.252
+</td>
+<td>
+4.733
+</td>
+<td>
+5.025
+</td>
+<td>
+4.879
+</td>
+</tr>
+<tr>
+<td>
+DeepSeek V3.2
+</td>
+<td>
+20.100
+</td>
+<td>
+0.459
+</td>
+<td>
+0.301
+</td>
+<td>
+7.875
+</td>
+<td>
+4.917
+</td>
+<td>
+6.396
+</td>
+</tr>
+<tr>
+<td>
+Qwen3.6 Plus
+</td>
+<td>
+20.744
+</td>
+<td>
+0.374
+</td>
+<td>
+0.214
+</td>
+<td>
+3.708
+</td>
+<td>
+2.983
+</td>
+<td>
+3.346
+</td>
+</tr>
+<tr>
+<td>
+GPT-5.4
+</td>
+<td>
+21.113
+</td>
+<td>
+0.475
+</td>
+<td>
+0.441
+</td>
+<td>
+3.575
+</td>
+<td>
+3.133
+</td>
+<td>
+3.354
+</td>
+</tr>
+<tr>
+<td>
+Grok 4.20
+</td>
+<td>
+21.410
+</td>
+<td>
+0.305
+</td>
+<td>
+0.112
+</td>
+<td>
+5.625
+</td>
+<td>
+5.333
+</td>
+<td>
+5.479
+</td>
+</tr>
+<tr>
+<td>
+Gemini 2.5 Pro
+</td>
+<td>
+28.952
+</td>
+<td>
+0.261
+</td>
+<td>
+0.112
+</td>
+<td>
+4.625
+</td>
+<td>
+4.833
+</td>
+<td>
+4.729
+</td>
+</tr>
+</tbody>
+</table>
+<!-- END FROZEN TABLE I -->
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+Table I keeps our two questions side by side.
+</p>
+<p data-caption>
+Claude Sonnet 4.5 and DeepSeek V3.2 have the lowest Japanese MAE point
+estimates, at 20.026 and 20.100.
+</p>
+<p data-caption>
+They form the leading pair in bootstrap rank stability.
+</p>
+<p data-caption>
+The four lowest MAE estimates span only 1.087 points.
+</p>
+<p data-caption>
+Their pairwise difference intervals include zero.
+</p>
+<p data-caption>
+This does not show equivalence.
+</p>
+<p data-caption>
+Qwen3.6 Plus and GPT-5.4 have the lowest average drift, at 3.346 and
+3.354.
+</p>
+<p data-caption>
+DeepSeek has an average drift of 6.396.
+</p>
+<p data-caption>
+Gemini 2.5 Pro has a Japanese MAE of 28.952, despite moderate drift.
+</p>
+<p data-caption>
+On this fixed benchmark, its Japanese MAE is higher than the other five
+models.
+</p>
+<p data-caption>
+The two axes therefore give different orderings.
+</p>
+<p data-caption>
+Pearson and Spearman correlations are only exploratory summaries of
+twelve fixed cells.
+</p>
+<p data-caption>
+They are not stable model traits.
+</p>
+<p data-caption>
+Low drift does not establish agreement with human readers of translated
+versions.
+</p>
+<p data-caption>
+We should read this table as a screening map.
+</p>
+<p data-caption>
+We should not combine its columns into one deployment score.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 11: Bound inference by the fixed corpus, reader population, prompt, translations and provider provenance. -->
+<div class="slide-body" data-paper-page="11">
+<p class="eyebrow">
+ICECCME 2026 · Limitations
+</p>
+<h2 id="a-compact-pilot-has-clear-boundaries">A compact pilot has clear
+boundaries</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="limited-coverage">Limited coverage</h3>
+<ul>
+<li>3 works; 4 fixed emotions</li>
+<li>One student-reader population</li>
+<li>6 selected models; one neutral task</li>
+<li>No matched EN/ZH human reference</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="limited-interpretation">Limited interpretation</h3>
+<ul>
+<li>Text + instructions change language</li>
+<li>Translations not independently validated</li>
+<li>Translation provenance incomplete</li>
+<li>Provider routes and aliases unpinned</li>
+</ul>
+</div>
+</div>
+<p class="takeaway">
+Conditional intervals do not establish validity for new works, readers,
+prompts or languages.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This is a pilot with three works, four fixed emotions, one
+student-reader population, and six selected models.
+</p>
+<p data-caption>
+We used one neutral-reader prompt and fixed translations.
+</p>
+<p data-caption>
+We did not collect matched human ratings for the English or Chinese
+versions.
+</p>
+<p data-caption>
+The translations were checked by the research team, but not
+independently validated.
+</p>
+<p data-caption>
+The translation system, version, and date were not recorded.
+</p>
+<p data-caption>
+Text and instruction language change together.
+</p>
+<p data-caption>
+We cannot separate language, translation, and cultural effects.
+</p>
+<p data-caption>
+Provider routes and model aliases were not fixed, so exact API replay
+may change.
+</p>
+<p data-caption>
+Our intervals describe sampling uncertainty for these twelve cells.
+</p>
+<p data-caption>
+They do not support generalization to new works, reader groups, prompts,
+or languages.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 12: Consolidate bounded screening conclusions and the requirements for broader validation. -->
+<div class="slide-body" data-paper-page="12">
+<p class="eyebrow">
+ICECCME 2026 · Conclusions
+</p>
+<h2 id="keep-the-reference-and-the-uncertainty-visible">Keep the
+reference and the uncertainty visible</h2>
+<div class="conclusion-list">
+<ol type="1">
+<li><strong>Two axes:</strong> human agreement and translated-condition
+drift.</li>
+<li><strong>Three checks:</strong> uncertainty, cell errors, composition
+sensitivity.</li>
+<li><strong>Stage-one screening:</strong> broader human validation must
+follow.</li>
+</ol>
+</div>
+<p class="takeaway">
+No unique top model is resolved within the four lowest Japanese MAE
+point estimates.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+The main lesson is to keep the human reference explicit.
+</p>
+<p data-caption>
+Japanese human alignment and translated-condition drift answer different
+questions.
+</p>
+<p data-caption>
+A small point-error difference is not enough to identify a winning
+model.
+</p>
+<p data-caption>
+On this benchmark, the top four are not pairwise resolved.
+</p>
+<p data-caption>
+Every story or emotion omission changes the full order.
+</p>
+<p data-caption>
+Compact screening should report uncertainty, cell-level errors, and
+composition sensitivity alongside point estimates.
+</p>
+<p data-caption>
+This is a stage-one screening protocol, not a deployment certificate.
+</p>
+<p data-caption>
+The next step requires more works, broader reader populations,
+additional prompts, and matched human references in the translated
+conditions.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Page 13: Preserve the submitted acknowledgments and funding, then invite questions. -->
+<div class="slide-body closing-slide" data-paper-page="13">
+<p class="eyebrow">
+ICECCME 2026 · Acknowledgments / Q&amp;A
+</p>
+<h2 id="thank-you.-questions">Thank you. Questions?</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="acknowledgments">Acknowledgments</h3>
+<ul>
+<li>Student readers in the Japanese VAS study</li>
+<li>Aozora Bunko texts as experimental stimuli</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="funding">Funding</h3>
+<p>Partially supported by <strong>JSPS KAKENHI</strong></p>
+<p>Grant numbers <strong>26K14983</strong> and
+<strong>24K13350</strong></p>
+</div>
+</div>
+<p class="takeaway">
+Human reference · Uncertainty · Translated-condition drift
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+We thank the student readers and acknowledge the Aozora Bunko texts.
+</p>
+<p data-caption>
+This work was partially supported by JSPS KAKENHI grants 26K14983 and
+24K13350.
+</p>
+<p data-caption>
+Thank you for your attention.
+</p>
+<p data-caption>
+I welcome your questions about the human reference, the uncertainty
+analysis, or translated-condition drift.
+</p>
+</aside>
+<script src="./captions.js"></script>
+<script src="./image-zoom.js"></script>
+</section>
+    </div>
+  </div>
+
+  <script src="_reveal/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="_reveal/plugin/notes/notes.js"></script>
+  <script src="_reveal/plugin/search/search.js"></script>
+  <script src="_reveal/plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: true,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 4.0e-2,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
