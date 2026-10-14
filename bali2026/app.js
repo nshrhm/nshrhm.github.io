@@ -1,7 +1,7 @@
 import{spots,resources,days,checks,mapUrl,directions,routeUrl,shareText}from './data.js?v=3';
 import{locations,weatherLabel,number,weatherUrl,validWeather,weatherRows}from './weather.js?v=3';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const KEY='bali-cultural-2026-v1',CACHE='bali-guide-v3';
+const KEY='bali-cultural-2026-v1',CACHE='bali-guide-v4';
 let state={day:'15',checks:[],memo:''},storageOk=true;
 try{state={...state,...JSON.parse(localStorage.getItem(KEY)||'{}')};if(!days[state.day])state.day='15';state.checks=Array.isArray(state.checks)?[...new Set(state.checks)].filter(i=>Number.isInteger(i)&&i>=0&&i<checks.length):[];if(typeof state.memo!=='string')state.memo=''}catch{storageOk=false}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));$('#save-status').textContent='この端末に保存しました。'}catch{$('#save-status').textContent='保存できません。必要なメモをコピーしてください。'}}
