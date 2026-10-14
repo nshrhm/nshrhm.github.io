@@ -1,4 +1,5 @@
 export const spots=[
+{id:'sindhu',name:'シンドゥ夜市（番外編）',en:'Pasar Sindhu Night Market Sanur Bali',desc:'番外編・行程外 · サヌールの夜市'},
 {id:'uluwatu',name:'ウルワツ寺院',en:'Uluwatu Temple Bali',desc:'15日夜 · 断崖の景色とケチャ'},
 {id:'sahadewa',name:'サハデワ公演会場',en:'Sahadewa Barong and Keris Dance Batubulan Bali',desc:'16日朝 · バロンとガムラン'},
 {id:'batuan',name:'バトゥアン寺院',en:'Pura Puseh Desa Batuan Bali',desc:'16日 · 石彫と寺院建築'},
