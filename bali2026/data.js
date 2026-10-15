@@ -33,19 +33,77 @@ export const spots=[
     "id": "peninsula",
     "name": "ペニンシュラ・アイランド",
     "en": "Peninsula Island Nusa Dua Bali",
-    "desc": "15日16:00〜18:00 · 散策済み"
+    "desc": "15日16:00〜18:00 · 散策済み",
+    "mode": "walking"
   },
   {
     "id": "pasar",
     "name": "パサール・センゴール",
     "en": "Pasar Senggol Grand Hyatt Bali",
-    "desc": "15日18:00〜21:30 · 訪問済み"
+    "desc": "15日18:00〜21:30 · 訪問済み",
+    "mode": "walking"
   },
   {
     "id": "sindhu",
     "name": "シンドゥ夜市（番外編）",
     "en": "Pasar Sindhu Night Market Sanur Bali",
     "desc": "番外編・行程外 · サヌールの夜市"
+  },
+  {
+    "id": "hyatt",
+    "name": "グランドハイアット・バリ（学会会場）",
+    "en": "Grand Hyatt Bali Nusa Dua",
+    "desc": "15日 · 3人の散策記録",
+    "mode": "walking"
+  },
+  {
+    "id": "nusabeach",
+    "name": "Beach Nusa Dua",
+    "en": "Beach Nusa Dua Bali",
+    "desc": "15日 · 3人の散策記録",
+    "mode": "walking"
+  },
+  {
+    "id": "garden",
+    "name": "ガーデン・オブ・ホープ",
+    "en": "Garden of Hope Peninsula Island Nusa Dua",
+    "desc": "15日 · 3人の散策記録",
+    "mode": "walking"
+  },
+  {
+    "id": "arjuna",
+    "name": "ダーマ・アルジュナ・スタチュー",
+    "en": "Dharma Arjuna Statue Nusa Dua",
+    "desc": "15日 · 3人の散策記録",
+    "mode": "walking"
+  },
+  {
+    "id": "pura",
+    "name": "Pura Bias Tugel",
+    "en": "Pura Bias Tugel Nusa Dua",
+    "desc": "15日 · 3人の散策記録",
+    "mode": "walking"
+  },
+  {
+    "id": "brothership",
+    "name": "Brothership Monument",
+    "en": "Brothership Monument Nusa Dua",
+    "desc": "15日 · 3人の散策記録",
+    "mode": "walking"
+  },
+  {
+    "id": "waterblow",
+    "name": "ウォーター・ブロウ",
+    "en": "Water Blow Nusa Dua",
+    "desc": "15日 · 3人の散策記録",
+    "mode": "walking"
+  },
+  {
+    "id": "helipad",
+    "name": "Peninsula Island Nusa Dua HELIPAD",
+    "en": "Peninsula Island Nusa Dua HELIPAD",
+    "desc": "15日 · 3人の散策記録",
+    "mode": "walking"
   }
 ];
 export const resources=[
@@ -87,23 +145,72 @@ export const resources=[
 ];
 export const days={
   "15": {
-    "title": "海辺の散策とパサール・センゴール",
-    "intro": "実際に過ごした15日の記録。",
+    "title": "3人で歩いたヌサドゥア",
+    "intro": "白濵・渡邉・中谷の旅の記録。16:00学会会場発、18:00帰着。途中の時刻は目安、順路はご報告をもとに再構成。",
     "status": "実績",
     "events": [
       [
-        "16:00–18:00",
-        "ペニンシュラ・アイランドを散策",
-        "ヌサドゥアのペニンシュラ・アイランドを散策。ご本人からの報告に基づく記録。",
-        "peninsula",
-        "訪問済み"
+        "16:00",
+        "学会会場を3人で出発",
+        "グランドハイアット・バリの学会会場から、海辺とペニンシュラ・アイランドの散策へ。",
+        "hyatt",
+        "実績"
+      ],
+      [
+        "16:10頃",
+        "Beach Nusa Dua",
+        "3人で歩いた散策経路の立ち寄り地点。時刻は16:00〜18:00の間に仮置きした目安で、実測記録ではありません。",
+        "nusabeach",
+        "時刻は目安"
+      ],
+      [
+        "16:25頃",
+        "ガーデン・オブ・ホープ／ペニンシュラ・アイランド",
+        "3人で歩いた散策経路の立ち寄り地点。時刻は16:00〜18:00の間に仮置きした目安で、実測記録ではありません。",
+        "garden",
+        "時刻は目安"
+      ],
+      [
+        "16:40頃",
+        "ダーマ・アルジュナ・スタチュー",
+        "3人で歩いた散策経路の立ち寄り地点。時刻は16:00〜18:00の間に仮置きした目安で、実測記録ではありません。",
+        "arjuna",
+        "時刻は目安"
+      ],
+      [
+        "16:50頃",
+        "Pura Bias Tugel",
+        "3人で歩いた散策経路の立ち寄り地点。時刻は16:00〜18:00の間に仮置きした目安で、実測記録ではありません。",
+        "pura",
+        "時刻は目安"
+      ],
+      [
+        "17:00頃",
+        "Brothership Monument",
+        "3人で歩いた散策経路の立ち寄り地点。時刻は16:00〜18:00の間に仮置きした目安で、実測記録ではありません。",
+        "brothership",
+        "時刻は目安"
+      ],
+      [
+        "17:15頃",
+        "ウォーター・ブロウ",
+        "3人で歩いた散策経路の立ち寄り地点。時刻は16:00〜18:00の間に仮置きした目安で、実測記録ではありません。",
+        "waterblow",
+        "時刻は目安"
+      ],
+      [
+        "17:35頃",
+        "Peninsula Island Nusa Dua HELIPAD",
+        "3人で歩いた散策経路の立ち寄り地点。時刻は16:00〜18:00の間に仮置きした目安で、実測記録ではありません。",
+        "helipad",
+        "時刻は目安"
       ],
       [
         "18:00–21:30",
-        "パサール・センゴールを楽しむ",
-        "グランドハイアット・バリのパサール・センゴールで過ごした夜。",
+        "パサール・センゴールへ戻り、夜を楽しむ",
+        "18:00にはグランドハイアット・バリのパサール・センゴールへ帰着。3人で21:30まで過ごした夜。",
         "pasar",
-        "訪問済み"
+        "実績"
       ]
     ]
   },
@@ -232,6 +339,6 @@ export const checks=[
 ];
 export const spot=id=>spots.find(s=>s.id===id);
 export const mapUrl=id=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(spot(id).en);
-export const directions=id=>'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(spot(id).en)+'&travelmode=driving';
-export function routeUrl(ids){return 'https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(spot(ids[0]).en)+'&destination='+encodeURIComponent(spot(ids.at(-1)).en)+'&waypoints='+encodeURIComponent(ids.slice(1,-1).map(id=>spot(id).en).join('|'))+'&travelmode=driving'}
-export function shareText(memo=''){return 'バリの旅（10月16日改訂）\n15日は実績、16日は11:30集合確定・観光と車は要手配。\n全時刻はバリ現地時間（成田到着のみ日本時間）。\n\n'+Object.entries(days).map(([day,d])=>`10月${day}日：${d.title}【${d.status}】\n`+d.events.map(e=>`${e[0]} ${e[1]}`).join('\n')).join('\n\n')+'\n\n16日は17:00頃ジンバラン出発、18:00〜18:40空港到着目標。中谷先生も同乗が基本案。別送迎の場合は荷物と配車を事前に相談。\n中谷先生：10/17 00:20 DPS発 → 08:50 NRT着。便名・チェックイン開始時刻は要確認。\n'+(memo?'\n相談メモ：\n'+memo:'')}
+export const directions=id=>'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(spot(id).en)+'&travelmode='+(spot(id).mode||'driving');
+export function routeUrl(ids,mode='driving'){return 'https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(spot(ids[0]).en)+'&destination='+encodeURIComponent(spot(ids.at(-1)).en)+'&waypoints='+encodeURIComponent(ids.slice(1,-1).map(id=>spot(id).en).join('|'))+'&travelmode='+encodeURIComponent(mode)}
+export function shareText(memo=''){return 'バリの旅（10月16日改訂）\n15日は実績、16日は11:30集合確定・観光と車は要手配。\n全時刻はバリ現地時間（成田到着のみ日本時間）。\n\n'+Object.entries(days).map(([day,d])=>`10月${day}日：${d.title}【${d.status}】\n${d.intro}\n`+d.events.map(e=>`${e[0]} ${e[1]}`).join('\n')).join('\n\n')+'\n\n16日は17:00頃ジンバラン出発、18:00〜18:40空港到着目標。中谷先生も同乗が基本案。別送迎の場合は荷物と配車を事前に相談。\n中谷先生：10/17 00:20 DPS発 → 08:50 NRT着。便名・チェックイン開始時刻は要確認。\n'+(memo?'\n相談メモ：\n'+memo:'')}
