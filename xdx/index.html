@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="白濵成希のケアXDXセンター研究会発表資料。LLM感情知能の評価、不確実性の測定、科研費を軸にした研究展開を紹介します。">
+    <meta name="theme-color" content="#102b33">
+    <title>CARE XDX — 白濵成希の研究会発表アーカイブ</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #16343c;
+        --night: #102b33;
+        --paper: #f4f2eb;
+        --white: #fffcf5;
+        --muted: #54676a;
+        --gold: #ddbc7b;
+        --mint: #9dd6c3;
+        --line: #d6dcd5;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+      body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif; line-height: 1.8; }
+      a { color: inherit; text-decoration: none; }
+      a:focus-visible { outline: 3px solid #267b73; outline-offset: 6px; }
+      .dark a:focus-visible { outline-color: var(--gold); }
+      button, a { -webkit-tap-highlight-color: transparent; }
+      svg { display: block; }
+      h1, h2, h3, p { margin: 0; }
+      ::selection { background: var(--gold); color: var(--night); }
+      .wrap { width: min(1160px, calc(100% - 80px)); margin-inline: auto; }
+      .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+      .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .17em; }
+      .skip { position: absolute; left: 16px; top: 12px; padding: 10px 18px; z-index: 10; color: var(--night); background: var(--white); transform: translateY(-180%); }
+      .skip:focus { transform: none; }
+      .dark { color: var(--white); background: var(--night); }
+      .masthead { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 100px; border-bottom: 1px solid #ffffff26; }
+      .brand { display: flex; align-items: center; gap: 14px; }
+      .brand-mark { width: 36px; height: 36px; color: var(--gold); }
+      .brand-name { font-size: 22px; font-weight: 750; letter-spacing: .08em; line-height: 1.2; }
+      .brand-caption { display: block; margin-top: 7px; font-size: 9px; letter-spacing: .19em; color: #b5c6c7; }
+      .nav { display: flex; gap: 30px; font-size: 12px; }
+      .nav a { padding: 10px 0; border-bottom: 1px solid transparent; }
+      .nav a:hover { color: var(--gold); border-color: var(--gold); }
+      .hero { display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; gap: 40px; padding: 80px 0 72px; }
+      .hero .eyebrow { color: var(--gold); margin-bottom: 24px; }
+      .hero h1 { font-size: clamp(36px, 4.4vw, 60px); letter-spacing: -.045em; font-weight: 600; line-height: 1.5; }
+      .hero h1 em { font-style: normal; color: var(--gold); }
+      .hero-lead { max-width: 440px; margin: 26px 0 32px; color: #c0ced0; font-size: 14px; line-height: 2.2; }
+      .hero-actions { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+      .button { display: inline-flex; justify-content: space-between; align-items: center; gap: 28px; min-height: 52px; padding: 12px 22px; background: var(--gold); color: var(--night); font-size: 13px; font-weight: 700; transition: background .2s, transform .2s; }
+      .button:hover { background: #f0d69f; transform: translateY(-2px); }
+      .text-link { display: inline-flex; align-items: center; gap: 16px; font-size: 12px; padding-block: 12px; }
+      .text-link:hover { color: var(--gold); }
+      .arrow { display: inline-block; font-size: 22px; font-weight: 400; line-height: 1; transition: transform .2s; }
+      a:hover .arrow { transform: translate(3px, -3px); }
+      .field { position: relative; margin: 0; }
+      .field svg { width: 100%; height: auto; overflow: visible; }
+      .field-label { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid #ffffff26; padding-top: 16px; color: #adc3c4; font-size: 10px; letter-spacing: .09em; }
+      .orbital { transform-origin: 240px 220px; animation: orbit 70s linear infinite; }
+      .field-dot { animation: breathe 6s ease-in-out infinite alternate; }
+      @keyframes orbit { to { transform: rotate(360deg); } }
+      @keyframes breathe { to { opacity: .4; } }
+      .hero-foot { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 21px 0; border-top: 1px solid #ffffff26; color: #adc3c4; font-size: 11px; }
+      .hero-foot strong { color: var(--white); font-weight: 500; }
+      .archive { padding-block: 86px 90px; }
+      .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 38px; }
+      .section-head .eyebrow { color: #62706b; margin-bottom: 10px; }
+      .section-head h2 { font-size: clamp(27px, 3vw, 38px); letter-spacing: -.04em; font-weight: 600; }
+      .section-index { color: #657572; font-size: 12px; padding-bottom: 5px; }
+      .talks { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+      .talk { min-width: 0; background: var(--white); border: 1px solid var(--line); }
+      .talk-link { display: flex; flex-direction: column; height: 100%; transition: box-shadow .25s, transform .25s; }
+      .talk-link:hover { transform: translateY(-5px); box-shadow: 0 18px 36px #102b3312; }
+      .cover { position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 260px; padding: 28px 32px; overflow: hidden; }
+      .cover-current { background: #193e45; color: #f6f3e8; }
+      .cover-earlier { background: #dce9e1; color: #234d47; }
+      .cover-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; position: relative; z-index: 1; font-size: 10px; letter-spacing: .12em; }
+      .badge { display: inline-block; padding: 3px 9px; border: 1px solid #ddbc7b88; color: var(--gold); font-size: 9px; letter-spacing: .1em; }
+      .cover-word { position: relative; z-index: 1; font-size: clamp(36px, 4.2vw, 56px); line-height: 1.2; letter-spacing: -.06em; font-weight: 500; }
+      .cover-word small { display: block; font-size: 12px; letter-spacing: .12em; font-weight: 400; margin-top: 15px; }
+      .cover-orbit { position: absolute; width: 310px; height: 310px; right: -55px; bottom: -95px; border: 1px solid #9dd6c34d; border-radius: 50%; }
+      .cover-orbit::before, .cover-orbit::after { content: ""; position: absolute; border-radius: 50%; }
+      .cover-orbit::before { inset: 30px; border: 1px solid #9dd6c34d; }
+      .cover-orbit::after { width: 11px; height: 11px; left: 34px; top: 41px; background: var(--gold); box-shadow: 0 0 0 7px #ddbc7b15; }
+      .cover-wave { position: absolute; width: 270px; height: 170px; bottom: -20px; right: -30px; opacity: .45; transform: rotate(-18deg); }
+      .cover-wave span { position: absolute; inset: 0; border: 1px solid #487c69; border-radius: 50%; }
+      .cover-wave span:nth-child(2) { inset: 18px -15px -18px 15px; }
+      .cover-wave span:nth-child(3) { inset: 36px -30px -36px 30px; }
+      .talk-body { display: flex; flex-direction: column; flex: 1; padding: 28px 32px 25px; }
+      .talk-meta { display: flex; justify-content: space-between; gap: 12px; font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+      .talk-meta time { font-size: 13px; letter-spacing: .07em; }
+      .talk h3 { font-size: clamp(19px, 2vw, 24px); line-height: 1.6; font-weight: 650; letter-spacing: -.025em; }
+      .talk-description { margin-top: 15px; font-size: 13px; color: var(--muted); line-height: 2; }
+      .tags { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 22px; font-size: 10px; color: #536c64; }
+      .tags span::before { content: "#"; margin-right: 3px; color: #83958b; }
+      .talk-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); padding-top: 20px; margin-top: auto; font-size: 12px; font-weight: 600; }
+      .talk-spacer { height: 26px; }
+      .talk-bottom .arrow { display: grid; place-items: center; width: 37px; height: 37px; border: 1px solid #becac1; border-radius: 50%; }
+      .archive-note { display: flex; gap: 12px; align-items: baseline; margin-top: 25px; color: var(--muted); font-size: 11px; }
+      .archive-note span { color: #517365; font-size: 12px; }
+      .about { padding-block: 44px 52px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+      .about .eyebrow { color: #62706b; margin-bottom: 20px; }
+      .author-name { font-size: 26px; font-weight: 500; letter-spacing: .06em; }
+      .author-name span { display: inline-block; font-size: 12px; font-weight: 400; letter-spacing: .02em; color: var(--muted); margin-left: 18px; }
+      .affiliation { margin-top: 8px; font-size: 12px; color: var(--muted); }
+      .about-note { align-self: center; padding-left: 30px; border-left: 1px solid #bbc7bd; color: var(--muted); font-size: 12px; line-height: 2.1; }
+      .about-note strong { color: var(--ink); font-weight: 500; }
+      .footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); padding-block: 24px; color: #5a6d67; font-size: 10px; }
+      .footer a { padding: 5px 0; }
+      .footer a:hover { color: var(--ink); }
+      @media (max-width: 900px) {
+        .hero { gap: 16px; padding-block: 60px; }
+        .hero h1 { font-size: 40px; }
+        .hero-lead { font-size: 13px; }
+        .cover, .talk-body { padding-inline: 24px; }
+        .cover { min-height: 225px; }
+        .author-name span { display: block; margin: 5px 0 0; }
+      }
+      @media (max-width: 650px) {
+        .wrap { width: calc(100% - 40px); }
+        .masthead { min-height: 84px; gap: 14px; }
+        .brand { gap: 10px; }
+        .brand-mark { width: 29px; height: 29px; }
+        .brand-name { font-size: 18px; }
+        .brand-caption { font-size: 7px; letter-spacing: .13em; }
+        .nav { gap: 17px; font-size: 11px; }
+        .hero { grid-template-columns: 1fr; gap: 26px; padding: 48px 0 30px; }
+        .hero h1 { font-size: clamp(32px, 8.5vw, 48px); }
+        .hero .eyebrow { font-size: 10px; margin-bottom: 20px; }
+        .hero-lead { margin-block: 22px 27px; max-width: 420px; }
+        .field { width: min(360px, 100%); justify-self: center; }
+        .field-label { font-size: 9px; }
+        .hero-foot { font-size: 10px; gap: 12px; align-items: start; }
+        .hero-foot .mono { white-space: nowrap; }
+        .archive { padding-block: 50px; }
+        .section-head { gap: 12px; margin-bottom: 26px; }
+        .section-head h2 { font-size: 27px; }
+        .section-index { font-size: 10px; white-space: nowrap; }
+        .talks { grid-template-columns: 1fr; gap: 26px; }
+        .cover { min-height: 218px; }
+        .cover-word { font-size: 44px; }
+        .talk-body { padding-top: 24px; }
+        .talk h3 { font-size: 22px; }
+        .archive-note { align-items: start; }
+        .about { grid-template-columns: 1fr; gap: 26px; padding-block: 34px; }
+        .about-note { padding-left: 18px; }
+        .footer { font-size: 9px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after { animation: none !important; transition: none !important; }
+      }
+    </style>
+  </head>
+  <body id="top">
+    <a class="skip" href="#archive">発表資料へ移動</a>
+    <div class="dark">
+      <header class="masthead wrap">
+        <a class="brand" href="#top" aria-label="CARE XDX 発表アーカイブ トップ">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M4 7 20 20 36 7M4 33 20 20 36 33" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="13" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="3" fill="currentColor"/>
+          </svg>
+          <span class="brand-name">CARE XDX<span class="brand-caption mono">PRESENTATION ARCHIVE</span></span>
+        </a>
+        <nav class="nav" aria-label="メインナビゲーション">
+          <a href="#archive">発表資料</a>
+          <a href="#about">発表者</a>
+        </nav>
+      </header>
+    </div>
+    <main id="main">
+      <div class="dark">
+        <section class="hero wrap" aria-labelledby="hero-title">
+          <div>
+            <p class="eyebrow">白濵 成希 — 研究会発表アーカイブ</p>
+            <h1 id="hero-title">感情の<em>不確かさ</em>を、<br>測る。</h1>
+            <p class="hero-lead">LLMの感情知能を、どう評価するか。<br>その問いから、ケアXDXとの接点、<br>科研費を軸にした研究の広がりへ。</p>
+            <div class="hero-actions">
+              <a class="button" href="20261020/">最新の発表をひらく <span class="arrow" aria-hidden="true">↗</span></a>
+              <a class="text-link" href="#archive">資料一覧 <span aria-hidden="true">↓</span></a>
+            </div>
+          </div>
+          <figure class="field">
+            <svg viewBox="0 0 480 430" role="img" aria-labelledby="field-title field-desc">
+              <title id="field-title">感情知能と不確実性の交点</title>
+              <desc id="field-desc">重なり合う軌道と点で、感情知能、測定、検証のつながりを表した抽象図。</desc>
+              <defs>
+                <radialGradient id="glow">
+                  <stop offset="0" stop-color="#94d5c0" stop-opacity=".12"/>
+                  <stop offset="1" stop-color="#94d5c0" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <circle cx="240" cy="220" r="210" fill="url(#glow)"/>
+              <g fill="none" stroke="#9dd6c3">
+                <circle cx="240" cy="220" r="180" stroke-opacity=".16"/>
+                <circle cx="240" cy="220" r="142" stroke-opacity=".2" stroke-dasharray="2 8"/>
+                <circle cx="240" cy="220" r="102" stroke-opacity=".25"/>
+                <path d="M20 220h440M240 10v410" stroke-opacity=".1"/>
+                <ellipse cx="240" cy="220" rx="207" ry="78" transform="rotate(-35 240 220)" stroke-opacity=".5"/>
+                <ellipse cx="240" cy="220" rx="194" ry="96" transform="rotate(42 240 220)" stroke-opacity=".25"/>
+              </g>
+              <g class="orbital">
+                <circle cx="240" cy="40" r="5" fill="#ddbc7b"/>
+                <circle cx="240" cy="40" r="12" fill="none" stroke="#ddbc7b" stroke-opacity=".25"/>
+                <circle cx="240" cy="400" r="4" fill="#9dd6c3"/>
+              </g>
+              <circle class="field-dot" cx="383" cy="120" r="6" fill="#9dd6c3"/>
+              <circle class="field-dot" cx="88" cy="295" r="4" fill="#ddbc7b"/>
+              <circle cx="240" cy="220" r="71" fill="#14333b"/>
+              <text x="240" y="208" text-anchor="middle" fill="#ddbc7b" font-size="11" letter-spacing="3" font-family="sans-serif">EMOTIONAL</text>
+              <text x="240" y="232" text-anchor="middle" fill="#fffcf5" font-size="16" letter-spacing="2" font-family="sans-serif">INTELLIGENCE</text>
+              <text x="28" y="62" fill="#adc3c4" font-size="10" letter-spacing="2" font-family="monospace">01 / EMOTION</text>
+              <text x="306" y="384" fill="#adc3c4" font-size="10" letter-spacing="2" font-family="monospace">02 / UNCERTAINTY</text>
+            </svg>
+            <figcaption class="field-label mono"><span>EMOTION × UNCERTAINTY</span><span>RESEARCH NOTES / 2026</span></figcaption>
+          </figure>
+        </section>
+        <div class="hero-foot wrap">
+          <p>九州工業大学 ケアXDXセンター研究会での<strong>発表資料</strong></p>
+          <span class="mono">2026 — 02 TALKS</span>
+        </div>
+      </div>
+    <section class="archive wrap" id="archive" aria-labelledby="archive-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow mono">THE ARCHIVE</p>
+          <h2 id="archive-title">問いをつなぐ、研究の記録。</h2>
+        </div>
+        <span class="section-index mono">2026 / 01—02</span>
+      </div>
+      <div class="talks">
+        <article class="talk">
+          <a class="talk-link" href="20261020/" aria-labelledby="talk-october-title">
+            <div class="cover cover-current" aria-hidden="true">
+              <div class="cover-top mono"><span>SESSION 02 / OCTOBER</span><span class="badge">LATEST</span></div>
+              <div class="cover-word">EQ-Fuzzy<small>科研費を軸に、研究は広がる。</small></div>
+              <div class="cover-orbit"></div>
+            </div>
+            <div class="talk-body">
+              <div class="talk-meta"><time class="mono" datetime="2026-10-20">2026.10.20</time><span>第2回研究会 · 23 slides</span></div>
+              <h3 id="talk-october-title">科研費を軸にした研究展開と<br>周辺プロジェクト</h3>
+              <p class="talk-description">LLM感情知能の不確実性評価を中心に、理論・測定、人間評価との比較、周辺プロジェクトへの展開を紹介します。</p>
+              <div class="tags"><span>EQ-Fuzzy</span><span>科研費</span><span>研究活動</span></div>
+              <div class="talk-spacer"></div>
+              <div class="talk-bottom"><span>発表スライドをひらく</span><span class="arrow" aria-hidden="true">↗</span></div>
+            </div>
+          </a>
+        </article>
+        <article class="talk">
+          <a class="talk-link" href="20260714/" aria-labelledby="talk-july-title">
+            <div class="cover cover-earlier" aria-hidden="true">
+              <div class="cover-top mono"><span>SESSION 01 / JULY</span><span>EMOTION × AI</span></div>
+              <div class="cover-word">Beyond accuracy.<small>感情を「当てる」から、不確かさを測るへ。</small></div>
+              <div class="cover-wave"><span></span><span></span><span></span></div>
+            </div>
+            <div class="talk-body">
+              <div class="talk-meta"><time class="mono" datetime="2026-07-14">2026.07.14</time><span>42 slides · 音声付き</span></div>
+              <h3 id="talk-july-title">LLM感情知能評価と<br>ケアXDXへの接点</h3>
+              <p class="talk-description">感情を“当てる”AIから、感情の不確かさを測るAIへ。感情を扱うAIの評価と、ケア領域との接点を考えます。</p>
+              <div class="tags"><span>LLM感情知能</span><span>不確実性</span><span>ケアXDX</span></div>
+              <div class="talk-spacer"></div>
+              <div class="talk-bottom"><span>発表スライドをひらく</span><span class="arrow" aria-hidden="true">↗</span></div>
+            </div>
+          </a>
+        </article>
+      </div>
+      <p class="archive-note"><span aria-hidden="true">↳</span>各資料はブラウザーで閲覧できます。研究内容・進捗は、それぞれの発表時点の記録です。</p>
+    </section>
+    <section class="about wrap" id="about" aria-labelledby="author-title">
+      <div>
+        <p class="eyebrow mono">PRESENTED BY</p>
+        <h2 class="author-name" id="author-title">白濵 成希 <span>Naruki Shirahama</span></h2>
+        <p class="affiliation">下関市立大学 データサイエンス学部</p>
+      </div>
+      <p class="about-note"><strong>このアーカイブについて</strong><br>ケアXDXセンター研究会での、白濵成希の発表資料をまとめています。LLM感情知能の評価を起点とした研究の問いと、その展開をご覧いただけます。</p>
+    </section>
+    </main>
+    <footer class="footer wrap">
+      <p class="mono">CARE XDX / NARUKI SHIRAHAMA</p>
+      <a href="#top">ページ上部へ ↑</a>
+    </footer>
+  </body>
+</html>
