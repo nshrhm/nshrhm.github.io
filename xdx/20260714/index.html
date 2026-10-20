@@ -1,0 +1,1614 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>感情を“当てる”AIから、感情の不確かさを測るAIへ</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="style.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%" alt="ロゴ"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- タイトル -->
+<div style="font-size:1.0em">
+<h4>感情を“当てる”AIから、感情の不確かさを測るAIへ</h4>
+<br />
+<h3>LLM感情知能評価とケアXDXへの接点</h3>
+<h4>白濵 成希</h4>
+<p>下関市立大学 データサイエンス学部</p>
+<p>九州工業大学 ケアXDXセンター研究会</p>
+<p>2026年7月14日</p>
+</div>
+<p><audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+本日は、LLMの感情知能をどのように評価するか、という私の研究についてお話しします。
+<p>ケアXDXセンター研究会は、医療と介護に対して、VR、ロボット、その他のITを使って課題解決を考える場だと理解しています。私自身は、介護ロボットやVRシステムを直接開発しているわけではありません。</p>
+<p>ただし、LLMがケア記録、対話、説明、要約、自由記述分析に入ってくるとき、「人の気持ちをどう扱うか」は避けられない問題になります。今日は、その接点として、感情を“当てる”AIではなく、感情解釈の不確かさを測るAI評価について紹介します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日の話の入口 -->
+<div style="font-size:0.82em">
+<h2>今日の話の入口</h2>
+<p><strong>ケアXDXの主役は、人間の経験</strong></p>
+<ul>
+<li>VRで安心感や没入感が変わる</li>
+<li>ロボットで負担感や信頼感が変わる</li>
+<li>記録支援で見落としや心理的負担が変わる</li>
+<li>対話AIで安心にも不安にもなりうる</li>
+</ul>
+<br />
+<p><strong>感情を扱うAIを、どう評価するか</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の入口は、ケアXDXの主役は技術そのものではなく、人間の経験である、という点です。
+<p>VRであれば、酔い、安心感、怖さ、没入感が問題になります。ロボットであれば、便利さだけでなく、信頼感、違和感、負担感が問題になります。記録支援や対話AIでは、表面上は正しい文章を出していても、利用者や支援者の不安、疲労、怒り、遠慮をどう扱っているかが重要になります。</p>
+<p>私の研究は、こうしたケア技術を直接作るというよりも、感情を扱うAIの評価・監査・人間レビュー支援に接続できると考えています。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 今日の主張 -->
+<div style="font-size:0.82em">
+<h2>今日の主張</h2>
+<p>LLMに必要なのは、</p>
+<p><strong>「人の気持ちが分かる」と言い切る能力</strong></p>
+<p>ではなく、</p>
+<p><strong>分かったつもりになっていないかを測れること</strong></p>
+<p>です。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日の中心メッセージは、この一文に集約できます。
+<p>LLMはとても自然な言葉で共感的に応答します。そのため、利用者から見ると「分かってくれている」ように感じる場面があります。しかし、感情を扱う場面、とくに医療・介護に近い場面では、その自然さがかえって危険になることがあります。</p>
+<p>AIが本当に分かっているかどうかよりも、まずは「分かったつもりになっていないか」「断定しすぎていないか」「曖昧さを潰していないか」を測る必要があります。私の研究は、そこを数理的に扱うことを目指しています。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 自己紹介の研究地図 -->
+<div style="font-size:0.70em">
+<h2>私の研究地図</h2>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.0em; align-items:start">
+<div>
+<p><strong>本線</strong></p>
+<ul>
+<li>LLM感情知能評価</li>
+<li>VASによる連続的評価</li>
+<li>ファジィ集合</li>
+<li>ファジィエントロピー</li>
+<li>ペルソナ多様性</li>
+</ul>
+</div>
+<div>
+<p><strong>応用接点</strong></p>
+<ul>
+<li>主観評価アプリ</li>
+<li>自由記述分析</li>
+<li>感情的摩擦</li>
+<li>応答監査</li>
+<li>human-in-the-loop</li>
+</ul>
+</div>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+私の研究地図を簡単に示します。
+<p>本線は、LLMの感情知能評価です。LLMに文章を読ませて、興味、驚き、悲しみ、怒りのような感情強度を0から100のVASで評価させます。その連続的な値をファジィ集合に変換し、ファジィエントロピーで曖昧さを測ります。</p>
+<p>一方で、応用接点としては、VAS Padのような主観評価アプリ、自由記述分析、明示評価と暗黙感情のズレを扱う感情的摩擦、LLM応答の監査、人間が確認すべき箇所を優先順位づけるワークフローなどがあります。ケアXDXとの接点は、主にこの応用側にあります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 科研費の中心テーマ -->
+<div style="font-size:0.82em">
+<h2>科研費の中心テーマ</h2>
+<p><strong>ファジィエントロピーとペルソナ多様性に基づく<br />LLM感情知能の不確実性評価</strong></p>
+<p>問い：</p>
+<p><strong>感情評価の「不確実性」そのものを定量化できるか</strong></p>
+<p>目標：</p>
+<p><strong>EQ-Fuzzy を、LLM感情知能評価の共通基盤にする</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+科研費の研究課題名は、「ファジィエントロピーとペルソナ多様性に基づくLLM感情知能の不確実性評価」です。
+<p>ここでのポイントは、感情評価の不確実性を副産物ではなく、主たる測定対象にしている点です。従来は、AIがどの感情カテゴリを選んだか、あるいは人間のラベルと一致したかが重視されがちでした。</p>
+<p>しかし、感情理解では、曖昧さや多義性そのものに意味があります。悲しいのか、怒っているのか、不安なのか、あるいはその複合なのか。そうした曖昧さを消すのではなく、定量化して扱うのがEQ-Fuzzyの基本発想です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 従来型とEQ-Fuzzyの違い -->
+<div style="font-size:0.72em">
+<h2>従来型と EQ-Fuzzy の違い</h2>
+<div style="font-size:1.0em">
+<table>
+<thead>
+<tr>
+<th>見方</th>
+<th>従来型</th>
+<th>EQ-Fuzzy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>感情</td>
+<td>ラベル</td>
+<td>連続強度</td>
+</tr>
+<tr>
+<td>評価</td>
+<td>正解率・一致率</td>
+<td>曖昧さ・安定性・ズレ</td>
+</tr>
+<tr>
+<td>出力</td>
+<td>喜び / 悲しみ</td>
+<td>0–100 VAS + ファジィ所属度</td>
+</tr>
+<tr>
+<td>重要点</td>
+<td>当たったか</td>
+<td>どれだけ不確かか</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+従来型とEQ-Fuzzyの違いを、かなり単純化して示します。
+<p>従来型の評価は、感情をラベルとして扱う傾向があります。たとえば、この文章は喜びなのか、悲しみなのか、怒りなのか、という分類です。もちろん、この方法は分かりやすく、機械学習の評価にも向いています。</p>
+<p>一方で、EQ-Fuzzyでは、感情を0から100の連続強度として扱います。さらに、その値をLow、Medium、Highのようなファジィ集合に写像し、どの程度境界的で曖昧な評価なのかを測ります。重要なのは、当たったかどうかだけでなく、どれだけ不確かな評価なのかを見ることです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 感情は単一ラベルにしにくい -->
+<div style="font-size:0.9em">
+<h2>感情は単一ラベルにしにくい</h2>
+<p>たとえば、同じ文章でも——</p>
+<ul>
+<li>悲しいが、少し救いがある</li>
+<li>怒っているが、背景には不安がある</li>
+<li>楽しそうだが、無理をしている</li>
+<li>「大丈夫」と言っているが、疲れている</li>
+</ul>
+<br />
+<p><strong>感情は、重なり・揺らぎ・遠慮を含みます</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+感情は、単一ラベルにしにくい対象です。
+<p>たとえば、ある人の発話や自由記述を読んだとき、悲しいけれど少し救いがある、怒っているように見えるけれど背景には不安がある、楽しそうだが無理をしている、というような複合的な状態がありえます。</p>
+<p>医療・介護の文脈では、さらに「遠慮」が入ります。本人は大丈夫と言っているが、本当は不安かもしれない。介護者は問題ないと言っているが、疲労が蓄積しているかもしれない。このような曖昧さを無理に単一ラベルへ押し込めると、大事な情報を落とす可能性があります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- EQ-Fuzzyの基本パイプライン -->
+<div style="font-size:1.0em">
+<h2>EQ-Fuzzy の基本パイプライン</h2>
+<pre><code class="language-text">
+　文章・発話・自由記述
+　      ↓
+　LLMによる感情強度評価
+　      ↓
+　0–100 VAS スコア
+　      ↓
+　ファジィ所属度
+　      ↓
+　ファジィエントロピー
+　      ↓
+　曖昧さ・安定性・ズレの評価
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+EQ-Fuzzyの基本パイプラインです。
+<p>まず、文章、発話、自由記述などを入力します。LLMには、複数の感情次元について0から100のスコアを出してもらいます。たとえば、興味70、驚き40、悲しみ65、怒り20のような出力です。</p>
+<p>次に、このVASスコアをファジィ所属度に変換します。悲しみ65はHighにかなり属しているが、Mediumにも少し属している、というように扱います。最後にファジィエントロピーを計算し、その評価がどの程度曖昧か、どの程度境界的かを測ります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- VASで聞く理由 -->
+<div style="font-size:0.82em">
+<h2>なぜ VAS なのか</h2>
+<p><strong>0–100 の連続値で聞くと、揺らぎが見える。</strong></p>
+<ul>
+<li>0 / 1 の分類では粗すぎる</li>
+<li>5段階評価では境界が硬い</li>
+<li>0–100なら微妙な差を残せる</li>
+<li>人間評価とも比較しやすい</li>
+</ul>
+<br />
+<p><strong>「どちらとも言える」を数値として残す</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+なぜVASを使うのかを説明します。
+<p>二値分類や少数カテゴリの評価では、境界が硬くなります。5段階評価も分かりやすいのですが、4と5の差、3と4の差が本当に等間隔なのかは難しい問題です。</p>
+<p>VASは、0から100の連続的な線上で評価する方法です。人間の主観評価でもよく使われます。LLMにも同じように0から100で感情強度を出させると、微妙な差や揺らぎが残ります。</p>
+<p>ケアXDXとの接点では、VRやロボット体験後の安心感、負担感、怖さ、信頼感などをVASで測り、LLM評価と比較する展開が考えられます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ファジィ集合で読む -->
+<div style="font-size:1.0em">
+<h2>ファジィ集合で読む</h2>
+<p>スコアを、硬い区切りで分類しません。</p>
+<pre><code class="language-text">　
+　悲しみ 65点
+　   ↓
+　Low    : 0.00
+　Medium : 0.25
+　High   : 0.30
+　
+</code></pre>
+<br />
+<p><strong>境界にある評価ほど、曖昧さを持つ</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ファジィ集合の考え方を、直感的に示します。
+<p>たとえば、悲しみ65点というスコアが出たとします。これを「High」とだけ分類してしまうのではなく、Mediumにも少し属し、Highにも少し属する、というように扱います。</p>
+<p>このようにすると、境界付近の評価が持つ曖昧さを残せます。感情評価では、この曖昧さが重要です。人間の感情は、ここから悲しみ、ここから怒り、というように明確に切れるとは限らないからです。</p>
+<p>EQ-Fuzzyでは、この所属度の広がりを情報として扱います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ファジィエントロピー -->
+<div style="font-size:0.82em">
+<h2>ファジィエントロピー</h2>
+<p><strong>所属度が分散しているほど、評価は曖昧です。</strong></p>
+<ul>
+<li>1つの集合に集中 → 曖昧さが小さい</li>
+<li>複数の集合にまたがる → 曖昧さが大きい</li>
+<li>モデルごとの評価傾向を比較できる</li>
+<li>条件ごとの変化も追える</li>
+</ul>
+<br />
+<p><strong>曖昧さを、消さずに測る</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ファジィエントロピーは、ファジィ所属度の広がりを測る指標です。
+<p>所属度が1つの集合に集中していれば、評価は比較的はっきりしています。逆に、MediumとHigh、LowとMediumのように複数の集合にまたがっていれば、評価は曖昧です。</p>
+<p>ここで重要なのは、曖昧さをノイズとして消すのではなく、測定対象にすることです。ケアの現場では、本人の気持ちや支援者の負担が明確に言語化されないことがあります。その曖昧さを消してしまうのではなく、どこに曖昧さがあるかを可視化することに価値があります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 数式は難しくない -->
+<div style="font-size:0.82em">
+<h2>数式は難しくない</h2>
+<div style="font-size:0.9em">
+<p>$$H_f(\mu)=-\sum_i \mu_i \log_2 \mu_i$$</p>
+</div>
+<p>読み方：</p>
+<ul>
+<li>$\mu_i$ はファジィ所属度</li>
+<li>所属度が散らばると $H_f$ が大きくなる</li>
+<li>1つに集中すると $H_f$ は小さくなる</li>
+</ul>
+<br />
+<p><strong>感情評価の「迷い具合」を測る式</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+数式としては、Shannon型のエントロピーに近い形を使います。
+<p>ここでのミューは、Low、Medium、Highなどへのファジィ所属度です。所属度が1つに集中すれば、エントロピーは小さくなります。複数の集合に広がれば、エントロピーは大きくなります。</p>
+<p>この式を今日の文脈で読むと、LLMの感情評価がどの程度迷っているか、あるいは境界的なところにあるかを測る式です。数式の厳密な性質よりも、今日は「曖昧さを測るための定量化」として理解していただければ十分です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ペルソナ多様性 -->
+<div style="font-size:0.82em">
+<h2>ペルソナ多様性</h2>
+<p>同じ文章でも、読む立場で評価が変わります。</p>
+<ul>
+<li>大学生として読む</li>
+<li>文学研究者として読む</li>
+<li>感情豊かな詩人として読む</li>
+<li>無感情なロボットとして読む</li>
+</ul>
+<br />
+<p><strong>評価の多様性も、測定対象にする</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+EQ-Fuzzyのもう一つの軸が、ペルソナ多様性です。
+<p>同じ文章でも、大学生として読む場合、文学研究者として読む場合、感情豊かな詩人として読む場合、無感情なロボットとして読む場合では、感情評価が変わる可能性があります。</p>
+<p>これは、単にLLMに変な役をやらせるという話ではありません。人間の感情評価には、経験、専門性、感受性、状況が反映されます。そこで、LLMにも異なる解釈視点を与え、その変動を測ることで、感情評価の視点依存性を扱います。</p>
+<p>ケアの場でも、本人、家族、介護者、看護師、管理者で見え方が違います。ペルソナ多様性は、この視点差のモデル化にもつながります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 既発表研究の概要 -->
+<div style="font-size:1.0em">
+<h2>既発表研究の概要</h2>
+<div style="font-size:0.82em">
+<ul>
+<li>36種類のLLM</li>
+<li>7ベンダー</li>
+<li>日本語文学テキスト3作品</li>
+<li>4ペルソナ</li>
+<li>temperature 4条件</li>
+<li>4感情次元：興味・驚き・悲しみ・怒り</li>
+<li>4,227応答、4,067有効スコア</li>
+</ul>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+既発表のMathematics論文では、36種類のLLMを対象に、かなり大規模な比較実験を行いました。
+<p>日本語文学テキスト3作品を刺激として、4つのペルソナ条件を設定し、興味、驚き、悲しみ、怒りの4感情次元を0から100で評価させました。理論上の最大条件に対して4,227件の応答が得られ、そのうち4,067件が数値スコアとして有効でした。</p>
+<p>この研究では、LLMごとに感情評価の個性、安定性、曖昧さ、temperatureへの応答性がかなり違うことを示しました。今日は詳しい順位表ではなく、その考え方をケアXDXとの接点から紹介します。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 見えてきたこと -->
+<div style="font-size:0.82em">
+<h2>見えてきたこと</h2>
+<p>LLMの感情評価には、モデルごとの<strong>個性</strong>があります。</p>
+<ul>
+<li>形式を安定して守るモデル</li>
+<li>temperatureに敏感なモデル</li>
+<li>曖昧さを大きく残すモデル</li>
+<li>断定的にスコアを出しやすいモデル</li>
+<li>テキストによって相関構造が変わるモデル</li>
+</ul>
+<br />
+<p><strong>“賢さ”だけでは選べない</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+研究から見えてきたのは、LLMの感情評価にはモデルごとの個性があるということです。
+<p>あるモデルは、指示したJSONや数値形式を非常に安定して守ります。別のモデルは、temperatureを変えると評価の分散が大きく変わります。また、曖昧さを比較的大きく残すモデルもあれば、断定的にスコアを出しやすいモデルもあります。</p>
+<p>これは、ケアXDXの応用を考えると重要です。単にベンチマークスコアが高いモデルを使えばよい、という話ではありません。感情的に敏感な場面では、安定性、曖昧さの残し方、断定のしやすさ、人間レビューへの渡しやすさを見る必要があります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Reliability と Controllability -->
+<div style="font-size:0.72em">
+<h2>Reliability と Controllability</h2>
+<div style="font-size:0.86em">
+<table>
+<thead>
+<tr>
+<th>軸</th>
+<th>意味</th>
+<th>ケア応用での読み方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reliability</td>
+<td>指示形式を守る安定性</td>
+<td>記録・監査で壊れにくい</td>
+</tr>
+<tr>
+<td>Controllability</td>
+<td>条件変更への応答性</td>
+<td>用途に合わせて調整しやすい</td>
+</tr>
+<tr>
+<td>Entropy</td>
+<td>評価の曖昧さ</td>
+<td>断定しすぎを検出できる</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+この研究で使っている指標のうち、ケアXDXと接続しやすいものを3つに絞ると、Reliability、Controllability、Entropyです。
+<p>Reliabilityは、LLMが指示した形式を守って、数値や理由を安定して出せるかです。記録支援や監査では、まず形式が壊れないことが重要です。</p>
+<p>Controllabilityは、temperatureやペルソナなどの条件変更に対して、出力がどの程度変化するかです。用途に合わせた調整可能性に関係します。</p>
+<p>Entropyは、感情評価の曖昧さです。断定しすぎていないか、境界的な評価をきちんと残しているかを見るために使えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ここで言いすぎないこと -->
+<div style="font-size:0.82em">
+<h2>ここで言いすぎないこと</h2>
+<p>この研究は、まだ次を主張しません。</p>
+<ul>
+<li>LLMが人間の感情を本当に理解した</li>
+<li>医療・介護判断にそのまま使える</li>
+<li>共感AIの安全性を証明した</li>
+<li>人間の専門職を代替できる</li>
+</ul>
+<br />
+<p><strong>測る研究であって、置き換える研究ではない</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ここで、意図的に言いすぎないことを明確にしておきます。
+<p>私の研究は、LLMが人間の感情を本当に理解した、と主張するものではありません。医療・介護判断にそのまま使える、と主張するものでもありません。また、共感AIの安全性を完全に証明するものでも、人間の専門職を代替するものでもありません。</p>
+<p>むしろ逆です。AIが人間の気持ちを分かったように見えるからこそ、その評価がどの程度不確かで、どこで断定しすぎていて、どこを人間が確認すべきかを測る必要があります。今日は、そのための評価基盤として紹介しています。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Affective Humility -->
+<div style="font-size:0.82em">
+<h2>Affective Humility</h2>
+<p><strong>感情解釈における謙虚さ</strong></p>
+<p>LLMが——</p>
+<ul>
+<li>曖昧さを保持する</li>
+<li>不確実性を認める</li>
+<li>代替解釈を示す</li>
+<li>単一感情へ過度に還元しない</li>
+</ul>
+<br />
+<p><strong>「共感らしさ」より「断定しない力」</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最近進めている関連テーマに、Affective Humilityがあります。日本語では、感情解釈における謙虚さ、と訳せると思います。
+<p>これは、LLMが複雑な感情状況に対して、曖昧さを保持し、不確実性を認め、代替解釈を示し、単一の感情に過度に還元しない傾向を評価する考え方です。</p>
+<p>ケアの文脈では、これはとても重要です。たとえばAIが「あなたは悲しいですね」と断定するより、「疲労、不安、悲しさが重なっている可能性があります」と言えるほうが、安全な場合があります。共感らしく見えることよりも、断定しない力を見る必要があります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ケア対話AIで危ないこと -->
+<div style="font-size:0.82em">
+<h2>ケア対話AIで危ないこと</h2>
+<p>自然な共感は、いつも安全とは限りません。</p>
+<ul>
+<li>感情を決めつける</li>
+<li>不安を過小評価する</li>
+<li>怒りの背景を見落とす</li>
+<li>専門職へ渡すべき場面を抱え込む</li>
+<li>もっともらしい助言で安心させすぎる</li>
+</ul>
+<br />
+<p><strong>流暢さは、安全性の証明ではない</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ケア対話AIを考えるとき、自然な共感はいつも安全とは限りません。
+<p>LLMは非常に流暢に「つらかったですね」「大変でしたね」と応答できます。しかし、そこで感情を決めつけてしまったり、不安を過小評価したり、怒りの背景にある疲労や孤立を見落としたりする可能性があります。</p>
+<p>また、本来は専門職へ渡すべき場面を、AIが抱え込んでしまうことも避けなければなりません。したがって、評価すべきは、文章の自然さだけではありません。曖昧さを保てるか、断定しすぎないか、人間に渡すべき箇所を見つけられるかが重要です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- VAS Padとの接点 -->
+<div style="font-size:0.82em">
+<h2>VAS Pad との接点</h2>
+<p><strong>人間側の主観評価を集める道具</strong></p>
+<ul>
+<li>安心感</li>
+<li>負担感</li>
+<li>怖さ</li>
+<li>信頼感</li>
+<li>使いやすさ</li>
+<li>継続したい気持ち</li>
+</ul>
+<br />
+<p><strong>VR・ロボット・支援アプリの評価に使える</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+もう一つの接点が、VAS Padです。
+<p>VAS Padは、0から100の主観評価をWebで集めるためのアプリです。文章刺激、YouTube動画、画像刺激などに対して、複数のVAS項目を設定し、匿名回答として集めることができます。</p>
+<p>ケアXDXの文脈では、VR体験後の安心感、ロボット使用後の信頼感、支援アプリの使いやすさ、利用者や支援者の負担感などを測る道具として使えます。</p>
+<p>EQ-FuzzyがLLM側の感情解釈を測る基盤だとすれば、VAS Padは人間側の主観評価を集める基盤です。両方を組み合わせると、人間評価とLLM評価のズレを扱えます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 人間評価とLLM評価を並べる -->
+<div style="font-size:0.76em">
+<h2>人間評価と LLM 評価を並べる</h2>
+<pre><code class="language-text">VR・ロボット・支援アプリを体験
+      ↓
+人間：安心感・負担感をVAS評価
+      ↓
+自由記述：よかった点・困った点
+      ↓
+LLM：感情・不安・摩擦を補助的に構造化
+      ↓
+人間評価とのズレを確認
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ケアXDXとの具体的な接点として、人間評価とLLM評価を並べる設計が考えられます。
+<p>たとえば、VRリハビリ、介護ロボット、支援アプリを体験してもらい、人間には安心感、負担感、怖さ、使いやすさをVASで評価してもらいます。同時に、自由記述で「どこが不安だったか」「何が助けになったか」を書いてもらいます。</p>
+<p>その自由記述をLLMが補助的に構造化し、感情的トーンや要確認箇所を抽出します。最後に、人間のVAS評価とLLMの解釈がどこで一致し、どこでズレるかを確認します。このズレ自体が、研究対象になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Fuzzy Emotional Friction -->
+<div style="font-size:0.82em">
+<h2>Fuzzy Emotional Friction</h2>
+<p><strong>明示評価と暗黙感情のズレを測る</strong></p>
+<p>例：</p>
+<ul>
+<li>満足度は高い</li>
+<li>しかし自由記述には疲労や遠慮がある</li>
+<li>「問題なし」と書いている</li>
+<li>しかし不安や困りごとがにじむ</li>
+</ul>
+<br />
+<p><strong>表面評価だけでは拾えない摩擦</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+Fuzzy Emotional Frictionは、明示的な評価と、文章に含まれる暗黙の感情のズレを測る発想です。
+<p>たとえば、アンケートでは満足度が高いのに、自由記述には疲労や不安、遠慮がにじんでいる場合があります。あるいは、「問題ありません」と書かれているのに、文章の中に困りごとや迷いが含まれている場合があります。</p>
+<p>ケアの現場では、こうしたズレはかなり重要です。利用者や家族、介護者が、必ずしも本音をストレートに書くとは限りません。Fuzzy Emotional Frictionは、そうした表面評価と暗黙感情の摩擦を、要確認箇所として扱うための道具になりえます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- Metamorphic Testing -->
+<div style="font-size:0.82em">
+<h2>Metamorphic Testing</h2>
+<p><strong>少し言い換えても、評価は安定するか</strong></p>
+<ul>
+<li>質問文を少し変える</li>
+<li>スケール説明を少し変える</li>
+<li>文体を少し変える</li>
+<li>ペルソナ条件を変える</li>
+<li>temperatureを変える</li>
+</ul>
+<br />
+<p><strong>意味が同じなら、大きく揺れすぎないか</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+もう一つ、専門的ですが面白い接点として、Metamorphic Testingがあります。
+<p>これは、意味を大きく変えない範囲で入力や条件を変えたときに、LLMの評価がどれくらい安定しているかを見るテストです。質問文を少し変える、スケール説明を少し変える、文体を少し変える、ペルソナやtemperatureを変える、といった操作を行います。</p>
+<p>もし意味がほぼ同じなのに、感情評価が大きく変わるなら、そのLLM評価は運用上不安定です。ケア記録や自由記述分析では、表現が少し変わっただけでリスク判定が大きく変わるのは困ります。この安定性検査は、将来的なAI監査に接続できます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- ケアXDXとの接続点 -->
+<div style="font-size:0.72em">
+<h2>ケアXDX との接続点</h2>
+<div style="font-size:0.86em">
+<table>
+<thead>
+<tr>
+<th>接続点</th>
+<th>私の研究ができること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VR・ロボット評価</td>
+<td>主観評価と自由記述の構造化</td>
+</tr>
+<tr>
+<td>記録支援</td>
+<td>要確認箇所の抽出と優先順位づけ</td>
+</tr>
+<tr>
+<td>対話AI</td>
+<td>断定しすぎ・曖昧さ保持の監査</td>
+</tr>
+<tr>
+<td>現場DX</td>
+<td>人間レビューを前提にした評価設計</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ケアXDXとの接続点を表にすると、このようになります。
+<p>VR・ロボット評価では、体験後の主観評価と自由記述を構造化できます。記録支援では、申し送り、訪問記録、自由記述の中から、人間が確認すべき箇所を優先順位づけできます。</p>
+<p>対話AIでは、AIが感情を断定しすぎていないか、曖昧さを保持しているか、必要な場面で専門職へ渡せるかを監査する設計が考えられます。</p>
+<p>現場DXの観点では、完全自動化ではなく、人間レビューを前提にした評価設計が重要です。ここが、私の研究が貢献しやすい部分だと思います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 連携案1：VR・ロボット体験の主観評価 -->
+<div style="font-size:0.75em">
+<h2>連携案1：VR・ロボット体験の主観評価</h2>
+<p><strong>体験後の“感じ方”を、VASで測る。</strong></p>
+<ul>
+<li>安心感</li>
+<li>怖さ</li>
+<li>身体的負担</li>
+<li>操作への信頼</li>
+<li>継続利用意向</li>
+<li>自由記述の感情的摩擦</li>
+</ul>
+<br />
+<p><strong>数値と自由記述を一緒に扱う</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+連携案の1つ目は、VR・ロボット体験の主観評価です。
+<p>VRやロボットの研究では、性能指標だけでなく、利用者がどう感じたかが重要になります。安心感、怖さ、身体的負担、操作への信頼、継続利用したい気持ちなどをVASで測定できます。</p>
+<p>さらに、自由記述を一緒に集めると、数値だけでは見えない不安や違和感を拾えます。たとえば、安心感は高いが自由記述に「少し怖かった」と書かれている場合があります。こうした数値と文章のズレを、ファジィエントロピーや感情的摩擦の観点から扱うことができます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 連携案2：ケア記録・申し送りの要確認キュー -->
+<div style="font-size:0.65em">
+<h2>連携案2：ケア記録・申し送りの要確認キュー</h2>
+<p><strong>LLMで置き換えるのではなく、人間確認を助ける。</strong></p>
+<ol>
+<li>記録・申し送り・自由記述</li>
+<li>LLMが感情的リスク候補を抽出</li>
+<li>不確実性・摩擦・断定度を付与</li>
+<li>要確認キューとして人間に返す</li>
+</ol>
+</div>
+<p><audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+連携案の2つ目は、ケア記録や申し送りの要確認キューです。
+<p>ここでは、LLMに判断を任せるのではありません。記録や自由記述の中から、感情的リスク候補、たとえば不安、怒り、疲労、孤立、遠慮が含まれる可能性のある箇所を抽出し、不確実性や摩擦を付けて、人間に返します。</p>
+<p>重要なのは、AIが最終判断をするのではなく、人間が確認すべき箇所を見つけやすくすることです。人文学注釈支援で考えているreview queueの発想を、ケア記録や現場の自由記述に応用するイメージです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 連携案3：ケア対話AIの応答監査 -->
+<div style="font-size:0.82em">
+<h2>連携案3：ケア対話AIの応答監査</h2>
+<p>AIの返答を、あとから評価します。</p>
+<ul>
+<li>感情を決めつけていないか</li>
+<li>不確実性を認めているか</li>
+<li>代替解釈を示しているか</li>
+<li>専門職へ渡す余地を残しているか</li>
+<li>利用者を過度に安心させていないか</li>
+</ul>
+<br />
+<p><strong>応答生成より、応答監査</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+連携案の3つ目は、ケア対話AIの応答監査です。
+<p>AIが利用者や家族、支援者と対話する場面では、その応答が自然かどうかだけではなく、感情を決めつけていないか、不確実性を認めているか、代替解釈を示しているか、専門職へ渡す余地を残しているかを見る必要があります。</p>
+<p>この研究では、AIに返答を生成させるだけでなく、その返答を別の評価器で監査する構成が考えられます。つまり、「良い返答を作るAI」だけでなく、「返答が危なくないかを見るAI評価」の研究です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 連携案4：現場アンケートの自由記述分析 -->
+<div style="font-size:0.75em">
+<h2>連携案4：現場アンケートの自由記述分析</h2>
+<p><strong>定量項目だけでは見えないものを拾う。</strong></p>
+<ul>
+<li>点数は高いが、文章に不満がある</li>
+<li>点数は低いが、文章には期待もある</li>
+<li>「普通」と書かれているが、迷いがある</li>
+<li>短い文章に強い感情が含まれる</li>
+</ul>
+<br />
+<p><strong>人が読むべき回答を先に並べる</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+連携案の4つ目は、現場アンケートの自由記述分析です。
+<p>アンケートでは、点数と自由記述が必ずしも一致しません。点数は高いが文章には不満がある、点数は低いが期待も書かれている、「普通」と書かれているが迷いがある、短い文章に強い感情が含まれている、ということがあります。</p>
+<p>これをLLMで完全自動分類するのではなく、人が読むべき回答を先に並べる支援として使うのが現実的です。ファジィエントロピーや感情的摩擦を用いて、曖昧で重要そうな回答を優先的に確認できるようにするイメージです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 連携ワークフロー案 -->
+<div style="font-size:1.0em">
+<h2>連携ワークフロー案</h2>
+<pre><code class="language-text">　
+　体験・記録・自由記述
+　　      ↓
+　VAS + テキスト収集
+　　      ↓
+　LLMによる感情評価
+　　      ↓
+　ファジィエントロピー / 摩擦 / 安定性
+　　      ↓
+　要確認キュー
+　　      ↓
+　専門家レビュー
+　　      ↓
+　評価設計の改善
+
+</code></pre>
+</div>
+<p><audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+全体の連携ワークフロー案です。
+<p>まず、VRやロボット体験、ケア記録、自由記述などのデータを集めます。次に、VASによる主観評価とテキストを合わせて扱います。LLMは補助的に感情評価や構造化を行います。</p>
+<p>その結果に対して、ファジィエントロピー、感情的摩擦、安定性検査を行い、人間が確認すべき箇所を要確認キューとして提示します。最後に、専門家がレビューし、その結果をもとに評価設計やプロンプト、システム設計を改善します。</p>
+<p>このワークフローは、完全自動化ではなく、人間の専門性を前提にしたAI利用です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 最小共同研究の形 -->
+<div style="font-size:0.82em">
+<h2>最小共同研究の形</h2>
+<p>大きく始めなくてもよいと思います。</p>
+<ul>
+<li>1つのVR/ロボット/IT体験</li>
+<li>3〜5個のVAS項目</li>
+<li>短い自由記述</li>
+<li>LLMによる補助評価</li>
+<li>人間専門家による確認</li>
+<li>ズレと曖昧さの分析</li>
+</ul>
+<br />
+<p><strong>小さなPoCから始める</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+共同研究としては、大きく始める必要はないと思います。
+<p>たとえば、1つのVR体験、1つのロボット操作、1つの支援アプリを対象にします。評価項目は3から5個程度のVASに絞ります。さらに、短い自由記述を集めます。</p>
+<p>その自由記述をLLMで補助的に評価し、人間専門家が確認します。分析するのは、LLMの正解率だけではなく、人間評価とのズレ、曖昧さ、断定しすぎ、要確認箇所の集中度です。</p>
+<p>この程度なら、研究会内の連携PoCとして始めやすく、しかも私の研究本線とも自然につながります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- データ設計で大事なこと -->
+<div style="font-size:0.82em">
+<h2>データ設計で大事なこと</h2>
+<p>ケア領域では、最初から慎重に設計します。</p>
+<ul>
+<li>個人情報を入れない</li>
+<li>医療判断をさせない</li>
+<li>自由記述は匿名化する</li>
+<li>LLM出力を最終判断にしない</li>
+<li>研究倫理審査を前提にする</li>
+<li>人間レビューの責任範囲を明確にする</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ケア領域でデータを扱う場合、最初から慎重な設計が必要です。
+<p>個人情報を入れないこと、医療判断をLLMにさせないこと、自由記述を匿名化すること、LLM出力を最終判断にしないことは基本になります。また、人間参加型の評価や現場データを扱う場合は、研究倫理審査を前提にします。</p>
+<p>ここでのLLMは、診断や判断の主体ではありません。人間が確認すべき箇所を見つける補助、評価設計を改善する補助、応答の危うさを見つける補助です。責任範囲を明確にして設計することが重要です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 研究として面白い問い -->
+<div style="font-size:0.82em">
+<h2>研究として面白い問い</h2>
+<p>ケアXDXと接続すると、問いが広がります。</p>
+<ul>
+<li>AIは不安を過小評価しないか</li>
+<li>利用者と専門職で評価はどうズレるか</li>
+<li>自由記述の摩擦は満足度とどう関係するか</li>
+<li>曖昧な記録ほど人間確認が必要か</li>
+<li>VR/ロボット体験後の感情はどう変化するか</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+ケアXDXと接続すると、研究として面白い問いがいくつも出てきます。
+<p>AIは不安を過小評価しないか。利用者、家族、介護者、看護師で同じ体験への評価はどうズレるか。自由記述に含まれる感情的摩擦は、満足度や継続利用意向とどう関係するか。</p>
+<p>また、曖昧な記録ほど人間確認が必要なのか、VRやロボット体験後に安心感や負担感がどう変化するのか、といった問いもあります。</p>
+<p>これらは、私の研究本線である不確実性評価と、ケアXDX側の体験設計が交わる部分です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 研究として守る線引き -->
+<div style="font-size:0.72em">
+<h2>研究として守る線引き</h2>
+<div style="font-size:0.88em">
+<table>
+<thead>
+<tr>
+<th>言うこと</th>
+<th>言わないこと</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>要確認箇所を見つける</td>
+<td>診断できる</td>
+</tr>
+<tr>
+<td>感情評価の曖昧さを測る</td>
+<td>感情を完全に理解する</td>
+</tr>
+<tr>
+<td>人間レビューを支援する</td>
+<td>専門職を置き換える</td>
+</tr>
+<tr>
+<td>応答を監査する</td>
+<td>安全性を完全保証する</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+研究として守る線引きも重要です。
+<p>言ってよいことは、要確認箇所を見つける、感情評価の曖昧さを測る、人間レビューを支援する、応答を監査する、ということです。</p>
+<p>一方で、診断できる、感情を完全に理解する、専門職を置き換える、安全性を完全保証する、とは言いません。</p>
+<p>これは弱い主張に見えるかもしれませんが、医療・介護に近い領域では、むしろこの線引きが研究の信頼性を高めます。AIができることと、人間が責任を持つことを分ける設計が必要です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 現場に持ち込むなら -->
+<div style="font-size:0.82em">
+<h2>現場に持ち込むなら</h2>
+<p>最初の対象は、<strong>低リスクな評価支援</strong>がよいです。</p>
+<ul>
+<li>実験後アンケート</li>
+<li>研修後アンケート</li>
+<li>デモ体験後の自由記述</li>
+<li>介護者向けシステムの使用感</li>
+<li>ロボット・VRの主観評価</li>
+</ul>
+<br />
+<p><strong>判断支援より、評価支援から</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+現場に持ち込む場合、最初の対象は低リスクな評価支援がよいと思います。
+<p>たとえば、実験後アンケート、研修後アンケート、デモ体験後の自由記述、介護者向けシステムの使用感、ロボットやVRの主観評価などです。</p>
+<p>いきなり医療判断や介護判断の支援に入るのではなく、技術体験や研修、デモ、ユーザビリティ評価から始める方が安全です。そこでも、感情的な負担や不安、信頼感は重要なデータになります。</p>
+<p>判断支援より、評価支援から始める。これが現実的な入口だと考えています。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 発表後に相談したいこと -->
+<div style="font-size:0.82em">
+<h2>発表後に相談したいこと</h2>
+<p>この研究会で伺いたいことです。</p>
+<ul>
+<li>ケアXDXで主観評価が重い場面はどこか</li>
+<li>自由記述を読み切れない場面はあるか</li>
+<li>VR・ロボット体験後に測りたい感情は何か</li>
+<li>LLM対話AIで不安な応答は何か</li>
+<li>小さなPoCに向く題材はあるか</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+発表後に、ぜひ皆さんに相談したいことがあります。
+<p>ケアXDXの研究や現場連携の中で、主観評価が重い場面はどこか。自由記述を人間だけで読み切れない場面はあるか。VRやロボット体験後に測りたい感情は何か。LLM対話AIで不安な応答は何か。</p>
+<p>私の研究側から見ると、データと評価設計があれば、かなり多くのことを試せます。ただし、どの場面が現場にとって本当に意味があるかは、ケアXDX側の先生方に伺う必要があります。小さなPoCに向く題材があれば、ぜひ議論したいです。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 研究会向けのまとめ -->
+<div style="font-size:0.82em">
+<h2>まとめ</h2>
+<p>今日の話は、次の3点です。</p>
+<ul>
+<li>LLMの感情理解は、正解率だけでは測れない</li>
+<li>ファジィエントロピーで、感情評価の曖昧さを測る</li>
+<li>ケアXDXでは、AIの開発そのものより、評価・監査・人間レビュー支援に接続できる</li>
+</ul>
+<br />
+<p><strong>AIが“分かったつもり”になっていないかを測る</strong></p>
+</div>
+<p><audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+今日のまとめです。
+<p>まず、LLMの感情理解は、正解率だけでは測れません。感情には曖昧さ、多義性、視点依存性があります。</p>
+<p>次に、ファジィエントロピーを使うことで、感情評価の曖昧さを測ることができます。これは、AIがどの感情を選んだかだけでなく、その評価がどの程度不確かかを見るための方法です。</p>
+<p>最後に、ケアXDXとの接点です。私の研究は、介護ロボットやVRを直接作る研究ではありません。しかし、感情を扱うAIの評価、監査、人間レビュー支援には接続できます。AIが分かったつもりになっていないかを測ることが、ケア領域では重要だと考えています。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 最後の一言 -->
+<div style="font-size:0.72em">
+<h2>最後の一言</h2>
+<p><strong>ケアXDXにおけるAI活用では、</strong></p>
+<br />
+<h3>AIが人の気持ちを分かるか</h3>
+<br />
+<p>だけでなく、</p>
+<br />
+<h3>AIが分かったつもりになっていないか</h3>
+<br />
+<p>を測る必要があります。</p>
+</div>
+<p><audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+最後に、今日の話を一言でまとめます。
+<p>ケアXDXにおけるAI活用では、AIが人の気持ちを分かるか、という問いはもちろん重要です。しかし、それ以上に、AIが分かったつもりになっていないかを測る必要があります。</p>
+<p>人間の感情、とくに医療・介護に近い場面の感情は、曖昧で、遠慮があり、文脈依存的です。その曖昧さをAIが自然な言葉で塗りつぶしてしまうと、かえって危険です。</p>
+<p>だからこそ、感情を当てるAIではなく、感情解釈の不確かさを測るAI評価が必要になります。本日はありがとうございました。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 補足：研究資産 -->
+<div style="font-size:0.68em">
+<h2>補足：関連する研究資産</h2>
+<div style="font-size:0.72em">
+<table>
+<thead>
+<tr>
+<th>資産</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eq-fuzzy</code></td>
+<td>科研費本線・EQ-Fuzzy基盤</td>
+</tr>
+<tr>
+<td><code>affective-humility-llm</code></td>
+<td>感情解釈における謙虚さ</td>
+</tr>
+<tr>
+<td><code>vaspad</code></td>
+<td>VAS主観評価アプリ</td>
+</tr>
+<tr>
+<td><code>fuzzy-emotional-friction</code></td>
+<td>明示評価と暗黙感情の摩擦</td>
+</tr>
+<tr>
+<td><code>eqfuzzy-metamorphic</code></td>
+<td>条件変更に対する安定性検査</td>
+</tr>
+<tr>
+<td><code>fuzzy-llm-vas-research</code></td>
+<td>LLMによるファジィVAS評価</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+補足として、今回の話に関係する研究資産を一覧で示します。
+<p>中心になるのはeq-fuzzyです。これは科研費本線の評価基盤です。affective-humility-llmは、感情解釈における謙虚さ、つまり曖昧さを保持し、断定しすぎないLLM評価を扱います。</p>
+<p>vaspadは、人間側の主観評価をVASで集めるためのアプリです。fuzzy-emotional-frictionは、明示評価と自由記述に含まれる暗黙感情のズレを扱います。eqfuzzy-metamorphicは、質問や条件を少し変えたときに評価が安定するかを見る枠組みです。</p>
+<p>今日の発表ではすべてを詳しく説明しませんが、連携PoCではこれらを組み合わせられます。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 補足：小さなPoC案A -->
+<div style="font-size:0.82em">
+<h2>補足：PoC案A</h2>
+<p><strong>VR/ロボット体験後の主観評価 + 自由記述分析</strong></p>
+<ul>
+<li>対象：1つの体験</li>
+<li>VAS：安心感・怖さ・負担感・信頼感</li>
+<li>自由記述：よかった点・不安だった点</li>
+<li>LLM：感情的摩擦と要確認箇所を抽出</li>
+<li>人間：抽出結果をレビュー</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+補足として、具体的なPoC案を少しだけ出します。
+<p>案Aは、VRまたはロボット体験後の主観評価と自由記述分析です。対象は1つの体験に絞ります。VAS項目は、安心感、怖さ、負担感、信頼感など、少数に絞ります。</p>
+<p>自由記述には、よかった点と不安だった点を書いてもらいます。LLMは、その文章から感情的摩擦や要確認箇所を抽出します。最後に、人間の専門家がその抽出結果をレビューします。</p>
+<p>この設計なら、評価支援として始めやすく、ケアXDXの体験評価にも接続しやすいと思います。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 補足：小さなPoC案B -->
+<div style="font-size:0.82em">
+<h2>補足：PoC案B</h2>
+<p><strong>ケア関連自由記述の要確認キュー</strong></p>
+<ul>
+<li>対象：匿名化された短文コメント</li>
+<li>LLM：不安・疲労・怒り・遠慮を候補抽出</li>
+<li>指標：不確実性・摩擦・断定度</li>
+<li>出力：人間が読むべき順に並べる</li>
+<li>評価：専門家の修正率・見落とし率</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+PoC案Bは、ケア関連自由記述の要確認キューです。
+<p>匿名化された短文コメントを対象にして、LLMが不安、疲労、怒り、遠慮などの候補を抽出します。ただし、抽出結果をそのまま正解とはしません。不確実性、感情的摩擦、断定度を付けて、人間が読むべき順に並べます。</p>
+<p>評価指標としては、専門家がどれだけ修正したか、重要なコメントを見落とさなかったか、要確認キューが実際にレビュー時間を短縮したか、などが考えられます。</p>
+<p>これは、私がSPReAD1000で考えている注釈支援ワークフローとも近い発想です。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 補足：小さなPoC案C -->
+<div style="font-size:0.82em">
+<h2>補足：PoC案C</h2>
+<p><strong>ケア対話AIの応答監査データセット</strong></p>
+<ul>
+<li>短い相談文を作る</li>
+<li>複数LLMに応答させる</li>
+<li>応答をAffective Humilityで評価する</li>
+<li>危ない断定・過度な安心・専門職への接続不足を確認</li>
+<li>応答改善ガイドラインを作る</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+PoC案Cは、ケア対話AIの応答監査データセットです。
+<p>実データではなく、研究用に作成した短い相談文を使います。複数のLLMに応答させ、その応答をAffective Humilityの観点から評価します。</p>
+<p>評価するのは、危ない断定がないか、過度に安心させていないか、専門職への接続が必要な場面でそれを残しているか、代替解釈を示しているか、といった点です。</p>
+<p>このPoCは、実際の患者・利用者データを使わずに始められるため、比較的低リスクです。対話AIの安全な使い方を考える入口になります。</p>
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 補足：研究倫理メモ -->
+<div style="font-size:0.82em">
+<h2>補足：研究倫理メモ</h2>
+<p><strong>低リスクに始めるための工夫</strong></p>
+<ul>
+<li>実在患者・利用者データを使わないPoCから始める</li>
+<li>架空ケース・公開可能データを使う</li>
+<li>自由記述は匿名化する</li>
+<li>医療判断・介護判断を出力させない</li>
+<li>人間専門家のレビューを必須にする</li>
+</ul>
+</div>
+<p><audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg"></audio></p>
+<aside class="notes">
+研究倫理の観点からは、低リスクに始める工夫が必要です。
+<p>最初は、実在患者や利用者のデータを使わないPoCから始めるのがよいと思います。架空ケース、公開可能な体験コメント、匿名化済みの短文などを用います。</p>
+<p>自由記述を扱う場合は、個人が特定されないようにします。また、医療判断や介護判断をLLMに出力させない設計にします。あくまで、人間専門家のレビューを前提にした要確認支援です。</p>
+<p>この線引きを最初から設計に入れておくことで、研究としても社会実装としても進めやすくなります。</p>
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 960,
+			height: 700,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
