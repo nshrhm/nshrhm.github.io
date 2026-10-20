@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>2026年の研究活動 — 科研費を軸にした展開</title>
+
+  <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+  <meta name="author" content="Hakim El Hattab">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- highlight Theme -->
+  
+  <link rel="stylesheet" href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+  
+	
+		
+	<link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+	
+	
+	
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+  
+	
+
+
+
+  <!-- Revealjs Theme -->
+  
+  <link rel="stylesheet" href="libs/reveal.js/4.3.1/theme/white.css" id="theme">
+  
+  
+
+  <link rel="stylesheet" href="libs/styles/tasklist.css">
+	<link rel="stylesheet" href="libs/styles/iota.css">
+	<link rel="stylesheet" href="libs/styles/layout.css">
+
+
+  <!-- Revealjs Theme -->
+  
+
+   <!-- css list -->
+	
+  <link rel="stylesheet" href="care_xdx_20261020_visual.css">
+  
+
+   
+
+</head>
+
+<body>
+
+   
+    <div id="logo" style="position: fixed; top: 20px; left: 20px; z-index: 1; height:3rem;">
+        <img src="logo.png" style="height:100%"/>
+    </div>
+
+
+  <div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+      
+
+
+    
+        <section >
+            
+            <!-- 01 科研費を軸にした研究展開と周辺プロジェクト -->
+<!--
+デザイン改訂版（rev3 / visual）
+内容の基準: slide_care_xdx_20261020_rev2.md
+元の21枚（本編18＋補足3）・数値・研究状態・発表者ノートを継承。
+見出しの短縮、カード化、配色、配置、関係図の整理のみ。
+2026-10-20追記: ACDSA 2027の紹介を追加（全22枚・本編19＋補足3）。
+ACDSAの題目・投稿状態はローカル原稿と投稿保存記録に基づく。
+2026-10-20追記: Symbol-Particleの紹介を追加（全23枚・本編20＋補足3）。
+Symbol-Particleの内容は symbol-particle リポジトリの docs/PROJECT_BRIEF.md、docs/STATE.md、
+docs/reports/S01_ACCEPTANCE.md、および src/spn_journal/trace.py に基づく。
+進捗は2026-09-23のローカル記録を確認。実データ性能・本実験の成果は未確認。
+2026-10-20確認後: JEVの状態表記とノートの結論を調整し、追加研究を一覧へ反映。
+科研費の課題番号・期間、会社の設立状況等を追加推定していない。
+発表日・研究状態は元資料のもの。今回、現状の再調査は行っていない。
+10分の導線例: 1,2,4,5,6,7,8,9,12,13,15,18,19,20。
+同梱CSSが必要。外部画像・外部フォント・音声への依存はなし。
+-->
+<!-- 01 科研費を軸にした研究展開と周辺プロジェクト -->
+<div class="cx-slide cx-dark cx-cover" data-cx-title="科研費を軸にした研究展開と周辺プロジェクト">
+<header class="cx-head"><div class="cx-eyebrow">研究紹介</div></header>
+<h2>科研費を軸にした研究展開と周辺プロジェクト</h2>
+<div class="cx-content">
+<div class="cx-cover-art" aria-hidden="true"><div class="cx-orbit cx-orbit-a"></div><div class="cx-orbit cx-orbit-b"></div><div class="cx-orbit cx-orbit-c"></div><div class="cx-orbit-dot cx-dot-a"></div><div class="cx-orbit-dot cx-dot-b"></div><span class="cx-cover-year">2026</span></div>
+<div class="cx-cover-copy"><div class="cx-cover-kicker">2026年の研究活動</div><h1>LLM感情知能の<br>不確実性評価から<br>周辺プロジェクトへ</h1><p class="cx-cover-sub">科研費を軸にした研究展開</p><div class="cx-cover-name">白濵 成希<span>Naruki Shirahama</span></div><p class="cx-cover-affil">下関市立大学 データサイエンス学部</p></div>
+<div class="cx-cover-core"><span>科研費の中心課題</span><strong>EQ-Fuzzy</strong><p>感情知能 × 不確実性</p><div class="cx-cover-chip">測定</div><div class="cx-cover-chip">検証</div><div class="cx-cover-chip">実装</div></div>
+<div class="cx-cover-event">九州工業大学 ケアXDXセンター 第2回研究会<span>2026年10月20日</span></div>
+</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>研究紹介<b>01</b></span></footer>
+</div>
+<aside class="notes">
+本日は自己紹介を兼ねて、今年の研究活動を、科研費を軸にしてご紹介します。前回の研究会ではLLM感情知能評価そのものを中心に話しましたが、今回はもう少し俯瞰して、どのような研究課題を持ち、今年それがどう展開したかをお見せしたいと思います。共同研究の勧誘というより、こういう研究者がいる、ということを知っていただく場だと考えています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 02 今年の中心：採択された科研費 -->
+<div class="cx-slide " data-cx-title="今年の中心：採択された科研費">
+<header class="cx-head"><div class="cx-eyebrow">01 / 科研費の中心課題</div></header>
+<h2>科研費採択を契機として 「EQ-Fuzzy」プロジェクトスタート</h2>
+<div class="cx-content">
+<div class="cx-grant-layout">
+ <div class="cx-grant-main"><span class="cx-badge cx-gold">JSPS科研費 基盤研究(C)</span>
+  <p class="cx-grant-caption">研究課題名</p><div class="cx-grant-title">ファジィエントロピーと<br>ペルソナ多様性に基づく<br><strong>LLM感情知能の不確実性評価</strong></div>
+  <div class="cx-chips"><span>LLM</span><span>感情知能</span><span>不確実性</span><span>ファジィエントロピー</span><span>ペルソナ</span></div>
+ </div>
+ <div class="cx-question-panel"><div class="cx-label">中心となる問い</div><p>感情評価の<br><em>“曖昧さ”そのもの</em>を、<br>定量的に扱えるか。</p><div class="cx-question-rule"></div><div class="cx-question-small">「当てたか」だけでなく、<br><strong>どれだけ不確かか</strong>を測る。</div></div>
+</div>
+</div>
+<div class="cx-takeaway">科研費を軸に、複数の問いをつなぎ、評価基盤を育てる。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>02</b></span></footer>
+</div>
+<aside class="notes">
+日本の研究者としては、やはり科研費が研究の中心軸になります。私の今年の主軸は、LLM感情知能を評価する科研費です。ポイントは、感情の正解ラベルを当てることだけではなく、感情評価に伴う曖昧さや揺らぎそのものを、ファジィエントロピーを使って定量化することです。この視点が、今年の複数の発表や論文に分岐していきました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 03 研究プロジェクトを構成する、4つの研究項目 -->
+<div class="cx-slide " data-cx-title="科研費を構成する、4つの研究項目">
+<header class="cx-head"><div class="cx-eyebrow">01 / 科研費の中心課題</div></header>
+<h2>研究プロジェクトを構成する、4つの研究項目</h2>
+<div class="cx-content">
+<div class="cx-grid cx-grid-2 cx-pillar-grid"><div class="cx-pillar"><span class="cx-pillar-num">01</span><div><h3>評価フレームワークの拡張</h3><p>指標・ペルソナ・実験設計を磨く</p><div class="cx-pillar-example">Mathematics / FSS / SCIS</div></div></div><div class="cx-pillar"><span class="cx-pillar-num">02</span><div><h3>大規模評価実験</h3><p>LLM感情評価データを体系的に集める</p><div class="cx-pillar-example">36 LLM・4,000件超の応答解析</div></div></div><div class="cx-pillar"><span class="cx-pillar-num">03</span><div><h3>人間評価との比較</h3><p>人間の判断との一致・差異を検証する</p><div class="cx-pillar-example">ICECCME</div></div></div><div class="cx-pillar"><span class="cx-pillar-num">04</span><div><h3>成果の統合と公開</h3><p>再現可能な基盤・比較可能な形にする</p><div class="cx-pillar-example">ICICIC / EQ-Fuzzy-MT / GitHub基盤</div></div></div></div>
+</div>
+<div class="cx-takeaway">単発の論文ではなく、評価基盤を育てる研究。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>03</b></span></footer>
+</div>
+<aside class="notes">
+この科研費では、評価指標を精緻化し、大規模実験を行い、人間評価との妥当性を確かめ、最終的に再現可能な評価基盤として整える、という四つの柱を立てています。これから紹介する科研費本線の成果は、この四つの柱に対応しています。あわせて、並行して取り組んでいる関連研究や別系統のプロジェクトもご紹介します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 04 EQ-Fuzzyを中心に、問いが枝分かれする -->
+<div class="cx-slide cx-map-slide" data-cx-title="EQ-Fuzzyを中心に、問いが枝分かれする">
+<header class="cx-head"><div class="cx-eyebrow">01 / 研究テーマの関係</div></header>
+<h2>EQ-Fuzzyを中心に、問いが枝分かれする</h2>
+<div class="cx-content">
+<div class="cx-research-map" role="group" aria-label="EQ-Fuzzyを中心とする研究テーマの関係図">
+ <div class="cx-map-root"><span>科研費の中心</span><strong>EQ-Fuzzy</strong><p>LLM感情知能の不確実性評価</p></div>
+ <div class="cx-map-stem" aria-hidden="true"></div><div class="cx-map-bar" aria-hidden="true"></div>
+ <div class="cx-map-branches"><div class="cx-map-node"><h3>理論・測定</h3><p><em>Mathematics</em><br>FSS2026 / 『知能と情報』</p></div><div class="cx-map-node"><h3>妥当性・比較</h3><p>ICECCME2026<br>ICICIC2026</p></div><div class="cx-map-node"><h3>実験設計・頑健性</h3><p>SCIS&amp;ISIS2026<br>EQ-Fuzzy-MT</p></div></div>
+</div>
+<div class="cx-related-label">周辺・別線の研究</div><div class="cx-related-grid"><div><span>推論価値</span><strong>JEV</strong></div><div><span>ベイズ</span><strong>BFI-V</strong></div><div><span>モデル比較</span><strong>Linear vs.<br>GBDT</strong></div><div><span>測定ツール</span><strong>VAS Pad</strong></div><div><span>医療データ解析</span><strong>抜針検知</strong></div><div><span>社会実装</span><strong>HarborGate<br>AI Audit</strong></div><div><span>介入判断</span><strong>ACDSA<br>2027</strong></div><div><span>説明・点検</span><strong>Symbol-<br>Particle</strong></div></div>
+</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>研究テーマの概念図<b>04</b></span></footer>
+</div>
+<aside class="notes">
+これが研究全体の関係図です。上段は科研費本線のEQ-Fuzzyで、理論や測定、人間評価との比較、実験設計や頑健性検査へと展開しています。下段は、並行して取り組んでいる関連研究や別系統のプロジェクトです。推論価値を扱うJEV、介入判断を扱うACDSAの研究、判断の過程を点検する記号粒子の研究などがあります。それぞれの問いと位置づけを、この図で見ていただければと思います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 05 2026年：発表から論文化、次の研究へ -->
+<div class="cx-slide " data-cx-title="2026年：発表から論文化、次の研究へ">
+<header class="cx-head"><div class="cx-eyebrow">02 / 今年の研究活動</div></header>
+<h2>2026年：発表から論文化、次の研究へ</h2>
+<div class="cx-content">
+<div class="cx-grid cx-grid-4 cx-status-grid">
+ <div class="cx-card cx-status-card cx-status-published"><div class="cx-label">学術雑誌</div><h3>刊行済み</h3><p><em>Mathematics</em></p><div class="cx-status-marker">PUBLISHED</div></div>
+ <div class="cx-card cx-status-card"><div class="cx-label">学術雑誌</div><h3>採録決定</h3><p>JACIII<br>IJBSCHS<br>『知能と情報』</p><div class="cx-status-marker">ACCEPTED</div></div>
+ <div class="cx-card cx-status-card"><div class="cx-label">国内・国際会議</div><h3>発表済み</h3><p>FSS2026<br>ICECCME2026</p><div class="cx-status-marker">PRESENTED</div></div>
+ <div class="cx-card cx-status-card"><div class="cx-label">国際会議</div><h3>採択済み</h3><p>ICISIP2026<br>SCIS&amp;ISIS2026<br>ICICIC2026</p><div class="cx-status-note">SCIS / ICICIC は開催待ち</div></div>
+</div>
+<div class="cx-progress-strip"><span>投稿・改稿・準備</span><strong>EQ-Fuzzy-MT / ACDSA 2027 / JEV / BFI-V / Linear vs. GBDT</strong></div>
+<div class="cx-progress-pair"><div><span>医療系の別線</span><b>抜針検知プロジェクト</b>　再始動</div><div><span>社会実装</span><b>HarborGate AI Audit</b>　紹介・準備中</div></div>
+</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026年10月時点<b>05</b></span></footer>
+</div>
+<aside class="notes">
+今年の活動を一覧にすると、このようになります。すでに刊行されたもの、採録されたもの、採択されて発表待ちのもの、投稿準備中のもの、そして再始動した別系統の医療プロジェクトまであります。今日は、このうち主なものを順にご紹介します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 06 LLMの「感情的個性」を測る -->
+<div class="cx-slide " data-cx-title="LLMの「感情的個性」を測る">
+<header class="cx-head"><div class="cx-eyebrow">02 / 科研費本線の出発点</div></header>
+<h2>LLMの「感情的個性」を測る</h2>
+<div class="cx-content">
+<div class="cx-paper-meta"><span class="cx-badge cx-teal">刊行済み</span><span><em>Mathematics</em>, 14(7), 1224 / 2026年4月</span></div>
+<div class="cx-number-grid"><div><strong>36</strong><span>種類のLLM</span></div><div><strong>4,227</strong><span>取得した応答</span></div><div><strong>4,067</strong><span>有効な数値評価</span></div></div>
+<div class="cx-math-summary"><p>日本語文学の感情評価を分析</p><div class="cx-chips"><span>ファジィエントロピー</span><span>応答安定性</span><span>ペルソナ差</span></div></div>
+<div class="cx-paper-title"><span>論文題目（略記）</span>Mathematical Framework for Characterizing Emotional Individuality in Large Language Models</div>
+</div>
+<div class="cx-takeaway">「LLM感情評価をどう測るか」の土台づくり。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>06</b></span></footer>
+</div>
+<aside class="notes">
+今年4月に刊行された論文です。36種類のLLMに日本語文学作品を読ませて感情評価を行い、その応答のばらつきやファジィエントロピーを分析しました。ここで大切なのは、モデルの優劣を単純に競わせることではなく、LLMの感情評価行動そのものをどう特徴づけるか、という土台を作ったことです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 07 FSS2026：今度は「物差し」を疑う -->
+<div class="cx-slide " data-cx-title="FSS2026：今度は「物差し」を疑う">
+<header class="cx-head"><div class="cx-eyebrow">02 / 理論・測定</div></header>
+<h2>FSS2026：今度は「物差し」を疑う</h2>
+<div class="cx-content">
+<div class="cx-fss-layout"><div class="cx-fss-quote"><span>測定仕様への問い</span><p>同じスコアでも、<br><em>設計</em>で変わる。</p><div class="cx-fss-flow">感情スコア<br><b>↓</b><br>メンバシップ関数<br><b>↓</b><br>エントロピー</div></div>
+<div class="cx-fss-records"><div class="cx-record"><div class="cx-record-label">FSS2026</div><p>一般講演＋<br>特別企画「AIと感情」に登壇</p><span class="cx-badge cx-gold">日本知能情報ファジィ学会から感謝状</span></div><div class="cx-record"><div class="cx-record-label">『知能と情報』・関連ショートノート</div><h3>LLM感情スコアに対する<br>Shannon型所属度記述子の<br>仕様感度と再現可能性</h3><span class="cx-badge cx-teal">採録決定</span></div></div></div>
+</div>
+<div class="cx-takeaway">「値が出る」ことと、「きちんと測れている」ことは違う。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>07</b></span></footer>
+</div>
+<aside class="notes">
+Mathematics論文で感情スコアを扱った次の段階として、そのスコアをファジィ化する物差し自体を問い直しました。同じ0から100の感情スコアでも、Low、Medium、Highへの写像の仕方によってエントロピーは変わります。つまり、数値が出たことと、きちんと測れていることは別です。この点をFSSとショートノートで扱いました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 08 ICECCME2026：人間評価を基準にする -->
+<div class="cx-slide " data-cx-title="ICECCME2026：人間評価を基準にする">
+<header class="cx-head"><div class="cx-eyebrow">02 / 妥当性・比較</div></header>
+<h2>ICECCME2026：人間評価を基準にする</h2>
+<div class="cx-content">
+<div class="cx-paper-meta"><span class="cx-badge cx-teal">発表済み</span><span>10月15日 / バリ島</span></div>
+<div class="cx-grid cx-grid-3 cx-study-grid">
+ <div class="cx-card "><div class="cx-label">01 / 人間参照値</div><h3>人間のVAS評価</h3><p>日本人による<br>文学感情評価を基準にする</p></div>
+ <div class="cx-card "><div class="cx-label">02 / 比較</div><h3>一致と差異</h3><p>LLMの評価を<br>人間参照値と照合する</p></div>
+ <div class="cx-card "><div class="cx-label">03 / 言語</div><h3>頑健性</h3><p>日本語から<br>英語・中国語へ</p><div class="cx-lang-row"><span>日本語</span><span>英語</span><span>中国語</span></div></div>
+</div>
+<div class="cx-paper-title"><span>論文題目</span>A Compact Japanese-Human-Grounded Benchmark for Literary Emotion Understanding with English/Chinese Robustness Probes</div>
+</div>
+<div class="cx-takeaway">AI同士の比較から、人間参照値との比較へ。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>08</b></span></footer>
+</div>
+<aside class="notes">
+科研費の第三の柱、人間評価との比較に対応するのがこの研究です。LLMがどれだけ人間の感情評価に近いか、また言語を変えたときにどれだけ安定しているかを見ています。単にAI同士の順位をつけるのではなく、人間がどのように感じるかを基準にしている点が重要です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 09 SCIS&amp;ISIS2026：実験条件を切り分ける -->
+<div class="cx-slide " data-cx-title="SCIS&amp;ISIS2026：実験条件を切り分ける">
+<header class="cx-head"><div class="cx-eyebrow">02 / 実験設計</div></header>
+<h2>SCIS&amp;ISIS2026：実験条件を切り分ける</h2>
+<div class="cx-content">
+<div class="cx-paper-meta"><span class="cx-badge cx-gold">Full Paper採択</span><span>感情スコアの変動を因子から分析</span></div>
+<div class="cx-factor-row"><div class="cx-factor"><span>モデルに与える役割</span><strong>Persona</strong><p>ペルソナ</p></div><span class="cx-factor-times">×</span><div class="cx-factor"><span>生成時の条件</span><strong>Temperature</strong><p>サンプリング条件</p></div></div>
+<div class="cx-interaction"><strong>Interaction</strong><span>両者の相互作用まで見る</span></div>
+<div class="cx-paper-title"><span>論文題目</span>A Factorial Design for Separating Persona and Temperature Effects in LLM-Based Fuzzy Emotion Scoring</div>
+</div>
+<div class="cx-takeaway">交絡のある比較から、因子を分けた実験設計へ。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>09</b></span></footer>
+</div>
+<aside class="notes">
+感情スコアが変わったとき、その変化はモデルに与えた役割によるのか、応答の出方を調整する温度設定によるのか。この二つを切り分ける実験設計を立てたのがSCISの研究です。ペルソナと温度設定を組み合わせて、それぞれの効果と相互作用を調べます。科研費本線の中で、感情評価を左右する条件を整理する研究です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 10 ICICIC2026：ベンチマークを位置づける -->
+<div class="cx-slide " data-cx-title="ICICIC2026：ベンチマークを位置づける">
+<header class="cx-head"><div class="cx-eyebrow">02 / 妥当性・比較</div></header>
+<h2>ICICIC2026：ベンチマークを位置づける</h2>
+<div class="cx-content">
+<div class="cx-paper-meta"><span class="cx-badge cx-gold">発表予定</span><span>11月 / 中国・重慶</span></div>
+<div class="cx-compare"><div class="cx-compare-card cx-compare-existing"><div class="cx-label">比較する対象</div><h3>既存の<br>感情ベンチマーク</h3><p>既存研究との<br>比較可能性</p></div><div class="cx-compare-bridge"><span>代替？</span><b>↔</b><span>補完？</span></div><div class="cx-compare-card cx-compare-new"><div class="cx-label">新しい評価軸</div><h3>EQ-Fuzzy</h3><p>何を追加的に<br>記述できるか</p></div></div>
+<div class="cx-paper-title"><span>論文題目</span>Positioning EQ-Fuzzy Alongside Selected Emotion Benchmarks</div>
+</div>
+<div class="cx-takeaway">新しい尺度には、既存研究との位置づけが必要。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>10</b></span></footer>
+</div>
+<aside class="notes">
+EQ-Fuzzyが何を測り、既存の感情ベンチマークにどのような視点を加えるのか。その関係を明らかにするのがICICICの研究です。既存の評価との共通点や違いを整理し、補完できる部分を検討します。科研費の第四の柱である、成果の統合と比較可能性につながる発表です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 11 理論から、評価ツール・応用へ -->
+<div class="cx-slide " data-cx-title="理論から、評価ツール・応用へ">
+<header class="cx-head"><div class="cx-eyebrow">02 / 今年の雑誌・会議</div></header>
+<h2>理論から、評価ツール・応用へ</h2>
+<div class="cx-content">
+<div class="cx-grid cx-grid-3 cx-publication-grid">
+ <div class="cx-publication"><div class="cx-pub-top"><span>学術雑誌</span><strong>JACIII</strong></div><div class="cx-pub-body"><h3>多言語感情<br>プロファイリング</h3><p>文学・ペルソナによる<br>感情評価</p><span class="cx-badge cx-teal">採録／校正段階</span></div></div>
+ <div class="cx-publication"><div class="cx-pub-top"><span>学術雑誌</span><strong>IJBSCHS</strong></div><div class="cx-pub-body"><h3>推薦・印象評価</h3><p>データが限られた<br>中小企業を対象に</p><span class="cx-badge cx-teal">採録</span></div></div>
+ <div class="cx-publication"><div class="cx-pub-top"><span>国際会議</span><strong>ICISIP2026</strong></div><div class="cx-pub-body"><h3>VAS Pad</h3><p>主観評価用の<br>Webアプリ</p><span class="cx-badge cx-gold">採択</span></div></div>
+</div>
+</div>
+<div class="cx-takeaway">理論だけでなく、評価ツールや別分野の応用にも展開。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>11</b></span></footer>
+</div>
+<aside class="notes">
+EQ-Fuzzy本線のほかにも、JACIIIでは多言語感情プロファイリング、IJBSCHSでは推薦システムと印象評価、ICISIPではVAS Padという主観評価Webアプリを扱っています。つまり、理論、実験、実装の三つを並行して進めています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 12 ACDSA 2027：感情認識と介入判断は別 -->
+<div class="cx-slide " data-cx-title="ACDSA 2027：感情認識と介入判断は別">
+<header class="cx-head"><div class="cx-eyebrow">03 / 意思決定への展開</div></header>
+<h2>ACDSA 2027：感情認識と介入判断は別</h2>
+<div class="cx-content">
+<div class="cx-paper-meta"><span class="cx-badge cx-gold">投稿済み・採否未確定</span><span>最小限の意思決定モデル</span></div>
+<div class="cx-grid cx-grid-3 cx-study-grid">
+ <div class="cx-card"><div class="cx-label">01 / 感情認識</div><h3>感情が<br>正確に分かる</h3><p>完全な感情認識を<br>モデルの前提に置く</p></div>
+ <div class="cx-card"><div class="cx-label">02 / 介入判断</div><h3>望む対応は<br>別の問題</h3><p>本人が望む介入には<br>不確実性が残りうる</p></div>
+ <div class="cx-card"><div class="cx-label">03 / 意思確認</div><h3>行動するか、<br>先に尋ねるか</h3><p>誤介入の損失と<br>確認のコストを比較</p></div>
+</div>
+<div class="cx-paper-title"><span>論文題目</span>Perfect Affect Recognition Does Not Guarantee Correct Intervention: A Minimal Decision-Theoretic Model</div>
+</div>
+<div class="cx-takeaway">感情認識が正確でも、介入判断が適切とは限らない。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>12</b></span></footer>
+</div>
+<aside class="notes">
+こちらはACDSA 2027に投稿した論文です。感情認識をするAIについて研究していると、「感情を正しく当てられるAIなら、適切な支援もできるはずだ」と思いがちです。しかし、感情を正確に認識することと、本人が望む対応を選ぶことは別の問題です。この研究では、完全な感情認識を前提とする最小限の意思決定モデルを使い、直接行動する場合の誤介入の損失と、先に本人へ尋ねる確認コストを比較しています。研究会の医療・介護という文脈でも、この区別は重要だと考えています。ただし、臨床で有効性を検証した研究ではありません。現在は投稿済み・採否未確定として紹介します。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 13 JEV：追加の推論に、価値はあるか -->
+<div class="cx-slide " data-cx-title="JEV：追加の推論に、価値はあるか">
+<header class="cx-head"><div class="cx-eyebrow">03 / 別線のLLM研究</div></header>
+<h2>JEV：追加の推論に、価値はあるか</h2>
+<div class="cx-content">
+<div class="cx-paper-meta"><span class="cx-badge cx-gold">改稿・再投稿準備中</span><span>200問のGSM8K / Fast と Slow の結果差を評価</span></div>
+<div class="cx-jev-layout"><div class="cx-jev-question"><div class="cx-label">研究の問い</div><h3>追加の推論コストを<br>払う価値を、<br><em>事前に予測</em>できるか。</h3><div class="cx-policy-pair"><span>Fast</span><b>→</b><span>Slow</span></div><p>「効きそうか」を、答えの生成前に。</p></div>
+<div class="cx-jev-result"><span class="cx-label">JEV gain score / AUROC</span><strong>0.738</strong><div class="cx-jev-caveat">Fast-error forecasting に対する<br><b>優位性は示さず</b></div><div class="cx-jev-delta"><span>AUROC差 <b>−0.003</b></span><small>95% interval: −0.043 to 0.039</small></div></div></div>
+<div class="cx-paper-title"><span>論文題目</span>Can JEV predict reasoning benefit before answer generation? A held-out comparison with Fast-error forecasting</div>
+</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>改稿・再投稿準備中<b>13</b></span></footer>
+</div>
+<aside class="notes">
+こちらは改稿・再投稿準備中の論文です。LLMに追加の推論、つまり長く考えさせるコストをかける価値があるかを、答えを生成する前に予測できるかという問題を扱います。JEVは一定の識別性能を示しましたが、Fast-error forecastingより優れているとは言えませんでした。推論価値の予測とエラー予測を区別して評価した研究だと位置づけています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 14 EQ-Fuzzy-MT：頑健性を検査する -->
+<div class="cx-slide " data-cx-title="EQ-Fuzzy-MT：頑健性を検査する">
+<header class="cx-head"><div class="cx-eyebrow">03 / 投稿中の研究</div></header>
+<h2>EQ-Fuzzy-MT：頑健性を検査する</h2>
+<div class="cx-content">
+<div class="cx-paper-meta"><span class="cx-badge cx-gold">Mathematics に投稿済み</span><span>査読進行中</span></div>
+<div class="cx-mt-panel"><div class="cx-mt-row"><div><span>BEFORE</span><strong>変換前の評価</strong></div><div class="cx-mt-transform"><b>→</b><p>文章表現・条件を変換</p><b>→</b></div><div><span>AFTER</span><strong>変換後の評価</strong></div></div><div class="cx-mt-rule">期待される関係が保たれるか。</div><p>正解ラベルが定まりにくい感情課題に、<strong>メタモルフィックテスト</strong>を導入。</p></div>
+<div class="cx-paper-title"><span>論文題目</span>Fuzzy Metamorphic Testing for Ambiguity-Aware Evaluation of LLM Affective Scoring Behavior</div>
+</div>
+<div class="cx-takeaway">“何が正解か分かりにくい”評価問題に対する検査法。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>14</b></span></footer>
+</div>
+<aside class="notes">
+EQ-Fuzzy-MTは、感情評価の頑健性を検査する研究です。感情課題では正解ラベルが一意に決まらないことが多いため、入力の変換前後で保たれるべき関係を使って検査します。科研費本線の四項目に対して、品質保証の側面から補強する仕事です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 15 医療系の別線：抜針検知が再始動 -->
+<div class="cx-slide " data-cx-title="医療系の別線：抜針検知が再始動">
+<header class="cx-head"><div class="cx-eyebrow">04 / 医療データ解析</div></header>
+<h2>医療系の別線：抜針検知が再始動</h2>
+<div class="cx-content">
+<div class="cx-paper-meta"><span class="cx-badge cx-gold">再始動</span><span>Hemodialysis Needle Dislodgement Detection</span></div>
+<div class="cx-medical-layout"><div class="cx-medical-focus"><div class="cx-label">血液透析中の抜針検知</div><h3>再現確認から、<br>研究を動かす。</h3><p>既存保存結果との一致を検証</p><div class="cx-medical-checks"><span>CSV</span><span>モデル</span><span>警報時刻</span></div></div><div class="cx-medical-steps"><div><span>01</span><p>既存方式の<br><strong>再監査</strong></p></div><div><span>02</span><p>追加データ・追加実験の<br><strong>整理</strong></p></div><div><span>03</span><p>論文化可能性の<br><strong>再評価</strong></p></div></div></div>
+</div>
+<div class="cx-takeaway">LLMとは別に、医療データ解析・再現性確認にも取り組む。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>15</b></span></footer>
+</div>
+<aside class="notes">
+最近再始動したのが、透析中の抜針検知に関する研究です。こちらはLLMとは全く別の医療データ解析で、まずは保存済み結果が本当に再現できるか、CSVやモデル、初回警報のタイミングまで含めて監査しています。新しいアルゴリズムを派手に出す段階というより、再現性を確保しながら、きちんと論文化できる状態へ戻しているところです。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 16 ベイズと機械学習：準備中のテーマ -->
+<div class="cx-slide " data-cx-title="ベイズと機械学習：準備中のテーマ">
+<header class="cx-head"><div class="cx-eyebrow">04 / 方法論の広がり</div></header>
+<h2>ベイズと機械学習：準備中のテーマ</h2>
+<div class="cx-content">
+<div class="cx-grid cx-grid-2 cx-other-grid"><div class="cx-other-card"><span class="cx-topic-num">01</span><div class="cx-label">ファジィ基底 × ベイズ推定</div><h3>BFI-V</h3><p>VASと二値応答を<br>統合的に扱うモデル</p><div class="cx-chips"><span>VAS</span><span>二値応答</span><span>ベイズ推定</span></div></div><div class="cx-other-card"><span class="cx-topic-num">02</span><div class="cx-label">表形式データのモデル比較</div><h3>Linear vs. GBDT</h3><p>線形モデルと<br>勾配ブースティング木を比較</p><div class="cx-chips"><span>外挿</span><span>計算効率</span><span>解釈性</span></div></div></div>
+</div>
+<div class="cx-takeaway">監査・改稿・投稿準備を進めている段階。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>16</b></span></footer>
+</div>
+<aside class="notes">
+この二つは、今日は詳説しませんが、私の研究の幅を示すものです。BFI-Vはベイズモデリング、Linear vs. GBDTは機械学習モデル比較です。いずれも、単にモデルを走らせるのではなく、評価設計や解釈の妥当性まで考えるという点で、自分の研究姿勢が出ていると思います。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 17 記号粒子：判断の道筋をたどる -->
+<div class="cx-slide " data-cx-title="記号粒子：判断の道筋をたどる">
+<header class="cx-head"><div class="cx-eyebrow">04 / 説明・点検できる機械学習</div></header>
+<h2>記号粒子：判断の道筋をたどる</h2>
+<div class="cx-content">
+<div class="cx-paper-meta"><span class="cx-badge cx-gold">限定実装・検証済み</span><span>Symbol-Particle Network / 実データ比較・本実験は未実施</span></div>
+<div class="cx-grid cx-grid-3 cx-study-grid">
+ <div class="cx-card"><div class="cx-label">01 / 入力を表す</div><h3>データを<br>記号粒子へ</h3><p>表形式データの特徴を<br>条件に対応づける</p></div>
+ <div class="cx-card"><div class="cx-label">02 / 規則をたどる</div><h3>反応ルールの<br>過程を記録</h3><p>どの条件が成立したかを<br>計算の記録に残す</p></div>
+ <div class="cx-card"><div class="cx-label">03 / 予測を点検する</div><h3>規則ごとの<br>寄与を確認</h3><p>寄与と切片から<br>予測を再構成する</p></div>
+</div>
+<div class="cx-paper-title"><span>国際誌に向けた研究再始動 / 論文仮題</span>Auditable Tabular Classification with Symbol-Particle Rule Traces</div>
+</div>
+<div class="cx-takeaway">予測結果だけでなく、規則ごとの寄与を点検できる仕組みへ。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>17</b></span></footer>
+</div>
+<aside class="notes">
+もう一つ再始動しているのが、記号粒子ネットワークの研究です。表形式データを記号粒子として表し、反応ルールの過程と、規則ごとの予測への寄与を記録します。判断の道筋をたどり、予測を再構成して点検する仕組みです。現在は小規模なテストデータで仕組みを確認した段階で、実データでの比較や本実験は未実施です。今後は同じ規則と分類器を使う比較モデルに対して、粒子構造が何を付加するかを調べます。性能の優位性や、人にとっての説明の分かりやすさも、これから検証する課題です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 18 HarborGate AI Audit -->
+<div class="cx-slide cx-dark cx-harbor" data-cx-title="HarborGate AI Audit">
+<header class="cx-head"><div class="cx-eyebrow">05 / おまけ：大学発ベンチャー</div></header>
+<h2>HarborGate AI Audit</h2>
+<div class="cx-content">
+<div class="cx-harbor-layout"><div class="cx-harbor-copy"><span class="cx-badge cx-gold">構想・紹介</span><p class="cx-harbor-statement">測る。<br>疑う。<br><em>検証する。</em></p><p class="cx-harbor-small">研究で培った姿勢を、社会実装へ。</p></div><div class="cx-harbor-cards"><div><span>01</span><h3>AIの監査</h3></div><div><span>02</span><h3>AIの評価と説明責任</h3></div><div><span>03</span><h3>研究知見の社会実装</h3></div></div></div>
+</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>紹介・準備中<b>18</b></span></footer>
+</div>
+<aside class="notes">
+最後に、社会実装に向けた構想として、HarborGate AI Auditをご紹介します。研究で培ってきたAIの評価や監査の考え方を、社会で活用するための取り組みです。どのようにAIを点検し、その判断について説明責任を果たしていくかを重視しています。現在は紹介・準備の段階で、研究知見を社会実装につなぐ入口として位置づけています。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 19 問いから論文化まで、一貫して進める -->
+<div class="cx-slide " data-cx-title="問いから論文化まで、一貫して進める">
+<header class="cx-head"><div class="cx-eyebrow">06 / 研究者としての強み</div></header>
+<h2>問いから論文化まで、一貫して進める</h2>
+<div class="cx-content">
+<div class="cx-capability-flow"><div><span>01</span><strong>問いを立てる</strong></div><div><span>02</span><strong>測定する</strong></div><div><span>03</span><strong>実装する</strong></div><div><span>04</span><strong>検証する</strong></div><div><span>05</span><strong>論文化する</strong></div></div>
+<div class="cx-grid cx-grid-4 cx-capability-grid"><div class="cx-card cx-skill-card"><div class="cx-label">数学・統計</div><h3></h3><p>ファジィ理論<br>エントロピー / ベイズ推定</p></div><div class="cx-card cx-skill-card"><div class="cx-label">実験</div><h3></h3><p>LLM比較 / 主観評価<br>人間参照値 / 交絡の分離</p></div><div class="cx-card cx-skill-card"><div class="cx-label">実装</div><h3></h3><p>Python / Webアプリ<br>研究用ツール</p></div><div class="cx-card cx-skill-card"><div class="cx-label">研究品質</div><h3></h3><p>再現性 / 感度分析<br>監査 / 段階的な論文化</p></div></div>
+<div class="cx-capability-message">「きちんと測る仕組み」を作る研究が得意です。</div>
+</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>2026.10.20<b>19</b></span></footer>
+</div>
+<aside class="notes">
+ここが自己紹介として一番伝えたい部分です。テーマは色々に見えるかもしれませんが、問いを立て、測定し、必要なら実装し、検証し、論文化するという一連の流れを自分で回せることが強みだと思っています。とくに、きちんと測る仕組みを作る仕事が得意です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 20 まとめ -->
+<div class="cx-slide cx-dark cx-close" data-cx-title="まとめ">
+<header class="cx-head"><div class="cx-eyebrow">06 / 研究紹介のまとめ</div></header>
+<h2>まとめ</h2>
+<div class="cx-content">
+<div class="cx-close-layout"><div class="cx-close-main"><span>科研費を中心に、今年の研究を展開</span><h3>LLM感情知能の<br><em>不確実性</em>を測る。</h3><div class="cx-close-tags"><span>理論</span><span>人間比較</span><span>実験設計</span><span>頑健性検査</span><span>実装</span></div><p>医療データ解析、AI監査・社会実装へも。</p></div><div class="cx-close-invite"><div class="cx-label">研究会の皆さんへ</div><h3>ご関心の近いテーマがあれば、<br>気軽にご相談ください。</h3><div class="cx-close-signature">白濵 成希<span>下関市立大学 データサイエンス学部</span></div></div></div>
+</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>ありがとうございました<b>20</b></span></footer>
+</div>
+<aside class="notes">
+以上です。今日は、科研費を基軸にして、今年どのように研究が展開したかをご紹介しました。すぐに何か共同研究を始めたい、というよりは、こういう研究者がいて、こういう観点でAIやデータを見ている、ということを知っていただければ嬉しいです。ありがとうございました。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 21 同じ基盤でも、研究の問いは異なる -->
+<div class="cx-slide " data-cx-title="同じ基盤でも、研究の問いは異なる">
+<header class="cx-head"><div class="cx-eyebrow">補足 A / 研究の位置づけ</div></header>
+<h2>同じ基盤でも、研究の問いは異なる</h2>
+<div class="cx-content">
+<div class="cx-table-wrap"><table class="cx-table"><thead><tr><th>研究</th><th>主な問い</th></tr></thead><tbody><tr><th>Mathematics</th><td>LLMの感情スコアの挙動をどう特徴づけるか</td></tr><tr><th>FSS / 『知能と情報』</th><td>エントロピー値は測定仕様にどれだけ依存するか</td></tr><tr><th>ICECCME</th><td>人間のVAS評価との一致と言語頑健性はどうか</td></tr><tr><th>SCIS&amp;ISIS</th><td>Personaとtemperatureを分けると何が見えるか</td></tr><tr><th>ICICIC</th><td>既存ベンチマークに何を付け加えるか</td></tr><tr><th>EQ-Fuzzy-MT</th><td>入力・条件の変更に対して安定しているか</td></tr></tbody></table></div>
+</div>
+<div class="cx-takeaway">実装基盤は共有していても、研究課題そのものは別。</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>補足<b>21</b></span></footer>
+</div>
+<aside class="notes">
+ここでは、科研費本線の研究ごとに、中心となる問いを整理しています。感情スコアの挙動、測定仕様への依存、人間評価との一致、実験条件の効果、既存ベンチマークとの関係、入力を変えたときの安定性を、それぞれ扱っています。実装基盤を共有しながら、異なる問いを検証する構成です。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 22 発表・論文の正式題目（一部） -->
+<div class="cx-slide cx-appendix-titles" data-cx-title="発表・論文の正式題目（一部）">
+<header class="cx-head"><div class="cx-eyebrow">補足 B / 題目一覧</div></header>
+<h2>発表・論文の正式題目（一部）</h2>
+<div class="cx-content">
+<div class="cx-title-list"><div class="cx-title-item"><div><strong>Mathematics</strong><span>刊行済</span></div><p>Mathematical Framework for Characterizing Emotional Individuality in Large Language Models: Temperature Control, Fuzzy Entropy, and Persona-Based Diversity Analysis</p></div><div class="cx-title-item"><div><strong>ICECCME2026</strong><span>発表済</span></div><p>A Compact Japanese-Human-Grounded Benchmark for Literary Emotion Understanding with English/Chinese Robustness Probes</p></div><div class="cx-title-item"><div><strong>SCIS&amp;ISIS2026</strong><span>採択</span></div><p>A Factorial Design for Separating Persona and Temperature Effects in LLM-Based Fuzzy Emotion Scoring</p></div><div class="cx-title-item"><div><strong>ICICIC2026</strong><span>採択</span></div><p>Positioning EQ-Fuzzy Alongside Selected Emotion Benchmarks</p></div><div class="cx-title-item"><div><strong>JEV</strong><span>改稿・再投稿準備中</span></div><p>Can JEV predict reasoning benefit before answer generation? A held-out comparison with Fast-error forecasting</p></div></div>
+</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>補足<b>22</b></span></footer>
+</div>
+<aside class="notes">
+こちらは、紹介した研究の正式な論文題目の一部です。感情評価の特徴づけ、人間評価との比較、実験条件の切り分け、ベンチマークの位置づけ、推論価値の予測という、それぞれの研究の焦点を確認できます。
+</aside>
+            </section>
+    
+
+
+
+    
+        <section >
+            
+            <!-- 23 刊行・採録・投稿準備 -->
+<div class="cx-slide cx-appendix-status" data-cx-title="刊行・採録・投稿準備">
+<header class="cx-head"><div class="cx-eyebrow">補足 C / 2026年10月時点</div></header>
+<h2>刊行・採録・投稿準備</h2>
+<div class="cx-content">
+<div class="cx-status-list"><div><h3>Mathematics</h3><p>刊行済み</p></div><div><h3>JACIII</h3><p>採録、校正段階</p></div><div><h3>IJBSCHS</h3><p>採録</p></div><div><h3>知能と情報</h3><p>採録、著者変更手続き中</p></div><div><h3>ICISIP / SCIS&amp;ISIS / ICICIC 2026</h3><p>採択済み</p></div><div><h3>EQ-Fuzzy-MT</h3><p>投稿済み、採否未決</p></div><div><h3>ACDSA 2027</h3><p>投稿済み・採否未確定</p></div><div><h3>JEV</h3><p>PLOS ONE 不採択後、<br>Discover Artificial Intelligence 向けに<br>改稿・再投稿準備中</p></div><div><h3>抜針検知</h3><p>再始動、再現確認と追加実験整理</p></div><div><h3>HarborGate AI Audit</h3><p>紹介・準備中</p></div><div><h3>Symbol-Particle</h3><p>限定実装・検証済み<br>実データ比較・本実験は未実施</p></div></div>
+</div>
+<footer class="cx-footer"><span>白濵 成希<span class="cx-footer-sep">／</span>ケアXDX 第2回研究会</span><span>補足<b>23</b></span></footer>
+</div>
+<aside class="notes">
+こちらは、研究ごとの刊行・採録・投稿などの状況をまとめたものです。刊行済みの成果、採録や採択が決まったもの、投稿済みで採否未確定のもの、改稿・再投稿の準備中のものを分けて示しています。再始動した研究や社会実装に向けた構想についても、現在の段階を併記しています。
+</aside>
+            </section>
+    
+
+
+    </div>
+
+
+  </div>
+
+  <div class="line top"></div>
+  <div class="line bottom"></div>
+  <div class="line left"></div>
+  <div class="line right"></div>
+
+  <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+
+<script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+<script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+<!--	<script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+
+  
+
+<script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard, 
+			RevealEmbedTweet,
+			RevealChart,
+		];
+
+		const plugins =  [...printPlugins,
+		RevealZoom, 
+		RevealSearch, 
+				RevealMarkdown, 
+				RevealMenu, 
+				RevealFullscreen,
+				RevealAnything,
+				//RevealAudioSlideshow,
+				//RevealAudioRecorder,
+				RevealCustomControls, 
+				// poll
+				// question
+				// seminar
+				Verticator 
+				 ]
+
+
+		// Also available as an ES module, see:
+		// https://revealjs.com/initialization/
+		Reveal.initialize({
+			controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'edges',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: false,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'fade',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+			height: 720,
+			margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+      
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+      
+			customcontrols: {
+					controls: [
+      						{
+						  id: 'toggle-overview',
+						  title: 'Toggle overview (O)',
+						  icon: '<i class="fa fa-th"></i>',
+						  action: 'Reveal.toggleOverview();'
+						}
+						,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+      
+				]
+			},
+			chart: {
+					defaults: { 
+						color: 'lightgray', // color of labels
+						scale: { 
+							beginAtZero: true, 
+							ticks: { stepSize: 1 },
+							grid: { color: "lightgray" } , // color of grid lines
+						},
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+			},
+			math: {
+				mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+				config: 'TeX-AMS_HTML-full',
+				// pass other options into `MathJax.Hub.Config()`
+				TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				anything: [ 
+				{
+		className: "plot",
+		defaults: {width:500, height: 500, grid:true},
+		initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+	 },
+	 {
+		className: "chart",  
+		initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+	 },
+	 {
+		className: "anything",
+		initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+	 },
+					],
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins ) 
+		});
+			
+
+
+	    // Change chalkboard theme : 
+		function changeTheme(input) {
+			var config = {};
+			config.theme = input.value;
+			Reveal.getPlugin("RevealChalkboard").configure(config);
+			input.blur();
+		}
+
+		// // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+		if (window.location.search.match(/print-pdf-now/gi)) {
+      		setTimeout(() => {
+				window.print();
+			  }, 2500);
+			
+    }
+</script>
+
+</body>
+
+</html>
