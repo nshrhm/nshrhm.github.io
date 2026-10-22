@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="近傍、決定木、アンサンブル、ランダムフォレスト、SVMを操作して学ぶオフライン図解教材">
+<title>動かしてわかる機械学習｜人工知能概論 第4回</title>
+<style>
+:root{--ink:#142f45;--muted:#516575;--paper:#f3f6f7;--line:#c9d7df;--a:#006c78;--b:#af4a0b;--accent:#215ab3;--gold:#ffc85b;--white:#fff;--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button,select,input[type=number]{border:1px solid #91a7b6;border-radius:8px;background:white;color:var(--ink);padding:.45rem .7rem}button{cursor:pointer;font-weight:650}button:hover{background:#e8eff8}button:disabled{cursor:default;opacity:.5}button.primary{background:var(--ink);color:white;border-color:var(--ink)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}input[type=range]{accent-color:var(--accent);max-width:100%;width:145px}input[type=number]{width:5.3rem}a{color:#1b559c}h1,h2,h3,p{margin:0}h1{font-size:clamp(1.8rem,4vw,2.9rem);line-height:1.4;letter-spacing:.025em}h2{font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.5}h3{font-size:1.1rem}p+p{margin-top:.6rem}small,.small{font-size:.86rem}.muted{color:var(--muted)}.eyebrow{font-size:.8rem;letter-spacing:.16em;font-weight:700}.shell{max-width:1260px;margin:auto;padding:0 28px}.masthead{background:var(--ink);color:white;padding:27px 0 30px}.topline{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:16px}.topline button{font-size:.88rem}.masthead p{color:#cbdce7;margin-top:9px}.nav{display:flex;gap:7px;flex-wrap:wrap;padding:18px 0}.nav button{flex:1;min-width:130px;text-align:left;font-size:.94rem;border-color:var(--line)}.nav button[aria-pressed=true]{background:var(--ink);color:white}.nav b{display:inline-block;margin-right:8px;color:#768fa6}.nav button[aria-pressed=true] b{color:var(--gold)}main{padding-bottom:26px}.lesson-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:7px 0 13px}.intro{max-width:850px;margin-bottom:14px}.question{border-left:5px solid var(--gold);background:#fff6df;padding:13px 19px;border-radius:0 10px 10px 0;margin-bottom:20px}.question strong{margin-right:10px}.workspace{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(285px,1fr);gap:20px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:0}.panel>h3{margin-bottom:8px}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:13px;margin:10px 0 14px}.controls label{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.controls .wide{width:100%}.query-controls{padding:9px 0;border-top:1px solid var(--line)}.legend{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem}.a{color:var(--a);font-weight:750}.b{color:var(--b);font-weight:750}.q{color:#152e46;font-weight:750}svg{width:100%;height:auto;display:block;overflow:visible}svg text{font-family:inherit;fill:var(--ink);font-size:15px}svg .tick{font-size:12px;fill:var(--muted)}svg .label{font-size:13px;font-weight:650}svg .query{cursor:grab;touch-action:none}.plot{margin-top:6px}.result{border-radius:12px;background:#eaf3f5;padding:15px;margin:14px 0 0}.result strong{font-size:1.22rem}.result p{font-size:.95rem}.step{display:inline-grid;place-items:center;background:var(--ink);color:#fff;border-radius:50%;width:28px;height:28px;font-size:.85rem;margin-right:7px}.stack{display:grid;gap:14px}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.vote{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);padding:12px 15px;border-radius:10px}.badge{display:inline-block;font-weight:800;padding:1px 12px;border-radius:20px;background:#e5edef}.badge.a{background:#daf2f0}.badge.b{background:#ffeadb}.arrow{text-align:center;font-size:1.6rem;color:var(--accent)}.votes-flow{display:grid;gap:8px}.meter{height:17px;display:flex;background:#ffeadb;border-radius:5px;overflow:hidden;margin:9px 0}.meter span{background:var(--a)}details{margin-top:18px;border:1px solid var(--line);border-radius:12px;background:white;padding:12px 18px}summary{cursor:pointer;font-weight:700}details[open]>summary{margin-bottom:15px}details p,details .table-wrap{margin-top:10px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#f1f5f8}tr.selected{background:#e8f4f3}caption{text-align:left;margin-bottom:7px;color:var(--muted)}.tree{list-style:none;margin:8px 0;padding:0}.tree .tree{margin:6px 0 6px 12px;padding-left:13px;border-left:2px solid var(--line)}.tree-node{display:inline-block;padding:6px 10px;border:1px solid var(--line);border-radius:8px;line-height:1.5;font-size:.9rem}.tree-node.active{border:2px solid var(--accent);background:#edf3ff}.branch{font-size:.8rem;color:var(--muted);margin-right:6px}.forest{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}.forest .panel{padding:15px}.sample{font-size:.88rem;word-spacing:4px;margin-top:10px}.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.chip{padding:1px 7px;border:1px solid var(--line);border-radius:5px;background:#f5f8fa;font-size:.85rem}.phases{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.phases span{padding:5px 10px;border-radius:6px;background:#edf1f5;font-size:.9rem}.phases .current{background:var(--ink);color:white}.explain-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}.flow span{border:1px solid var(--line);padding:9px 12px;border-radius:8px;background:#f5f8fa}.answer{background:#f7fafc}.footer-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:25px 0 0}.footer-nav span{font-size:.85rem;color:var(--muted)}footer{border-top:1px solid var(--line);padding:20px 0 35px;color:var(--muted);font-size:.82rem}.projection .masthead{padding:12px 0}.projection .masthead h1{font-size:1.55rem}.projection .masthead p,.projection .intro,.projection .study-only{display:none}.projection .panel{padding:16px}.projection .workspace{grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr)}.projection .result strong{font-size:1.5rem}[hidden]{display:none!important}@media(max-width:760px){.shell{padding:0 16px}.workspace,.projection .workspace,.explain-grid,.forest{grid-template-columns:1fr}.nav{gap:6px}.nav button{min-width:100px;flex-basis:30%;font-size:.85rem;padding:9px}.panel{padding:15px}.topline{align-items:flex-start}.eyebrow{font-size:.7rem}.question{padding:11px 13px}.lesson-head{align-items:flex-start}.lesson-head button{white-space:nowrap}.footer-nav span{display:none}.masthead{padding-top:20px}body{font-size:16px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}@media print{.masthead{background:white;color:#142f45}.nav,.controls,.footer-nav,.topline button,.lesson-head button{display:none}.workspace{display:block}.panel{break-inside:avoid;margin-bottom:15px}}
+/* Projection keeps the active experiment and its result close together. */
+.plot{touch-action:none}
+@media(min-width:761px){
+  .projection .masthead{padding:4px 0}.projection .masthead h1{display:none}.projection .topline{margin:0}.projection .topline button{padding:3px 10px}
+  .projection .nav{padding:5px 0}.projection .nav button{padding:5px 10px}.projection .lesson-head{margin:3px 0 6px}.projection .lesson-head button{padding:4px 10px}.projection h2{font-size:1.5rem}
+  .projection .question{padding:6px 14px;margin-bottom:10px;font-size:.95rem}.projection .workspace{grid-template-columns:1.1fr 1fr;gap:16px}
+  .projection .panel{padding:12px}.projection .plot svg{height:380px}.projection #svm-plot svg{height:300px}
+  .projection svg .tick{font-size:18px}.projection svg .label{font-size:20px}.projection svg text{font-size:18px}
+  .projection .controls{margin:7px 0;gap:10px}.projection .controls input[type=number]{padding:3px 8px}
+  .projection .panel>.small{font-size:.75rem}.projection .result{padding:10px;margin-top:8px}
+  .projection .result strong{font-size:1.25rem}.projection .result p{font-size:.88rem}
+  .projection th,.projection td{padding:5px 8px}.projection .panel details{margin-top:10px;padding:8px 12px}
+  .projection .footer-nav{margin-top:12px}.projection footer{display:none}.projection main{padding-bottom:10px}
+  .projection #forest{display:grid;grid-template-columns:280px minmax(0,1fr);gap:10px}
+  .projection #forest .lesson-head,.projection #forest .question,.projection #forest-result{grid-column:1/-1}
+  .projection #forest .lesson-head,.projection #forest .question{margin:0}
+  .projection #forest>.panel{grid-column:1;grid-row:3/5}
+  .projection #forest-trees{grid-column:2;grid-row:3;margin:0;gap:10px;align-items:start}
+  .projection #forest-result{grid-column:2;grid-row:4;align-self:start}
+  .projection #forest[data-stage="3"] #forest-trees .tree{display:none}
+  .projection #forest .tree-node{font-size:.82rem;padding:4px 7px}.projection #forest .tree{margin-top:5px;margin-bottom:5px}
+  .projection #forest .tree .tree{padding-left:8px;margin-left:7px}
+  .projection #forest .phases{margin:7px 0}.projection #forest-stage{font-size:.9rem}.projection #forest-stage p{display:none}
+  .projection #forest .controls{font-size:.85rem;gap:6px}.projection #forest-seed{width:7rem!important}
+  .projection #forest .small{font-size:.75rem}.projection #forest .chip{font-size:.75rem}
+}
+@media(max-width:760px){
+  svg .tick{font-size:20px}svg .label{font-size:21px}svg text{font-size:21px}
+  .topline button{flex-shrink:0;font-size:.8rem}.tree .tree{margin-left:6px;padding-left:9px}
+}
+</style>
+</head>
+<body>
+<header class="masthead"><div class="shell">
+  <div class="topline"><span class="eyebrow">人工知能概論 2026 ／ 第4回 機械学習2</span><button id="projection" type="button" aria-pressed="false">投影表示にする</button></div>
+  <h1>動かしてわかる、機械学習。</h1>
+  <p>近い例で決める。質問で分ける。予測を合わせる。境界を考える。</p>
+</div></header>
+<div class="shell">
+<nav class="nav" aria-label="学ぶ手法">
+  <button type="button" data-tab="knn" aria-pressed="true" aria-controls="knn"><b>01</b>k近傍法</button>
+  <button type="button" data-tab="tree" aria-pressed="false" aria-controls="tree"><b>02</b>決定木</button>
+  <button type="button" data-tab="ensemble" aria-pressed="false" aria-controls="ensemble"><b>03</b>アンサンブル</button>
+  <button type="button" data-tab="forest" aria-pressed="false" aria-controls="forest"><b>04</b>ランダムフォレスト</button>
+  <button type="button" data-tab="svm" aria-pressed="false" aria-controls="svm"><b>05</b>SVM</button>
+</nav>
+<main>
+<noscript><p class="question">操作するにはブラウザーのJavaScriptを有効にしてください。外部への通信は不要です。</p></noscript>
+<section id="knn" aria-labelledby="knn-title">
+  <div class="lesson-head"><h2 id="knn-title">01　近い例に聞いてみよう</h2>
+<button type="button" data-reset="knn">リセット</button></div>
+  <p class="intro">k近傍法は、予測したい点に近い学習例をk件集め、そのラベルから答えを決めます。この教材では1件を1票として数えます。</p>
+  <p class="question"><strong>まず予想</strong>入力が (2, 3) のとき、近い1件と近い3件では、同じ答えになるでしょうか？</p>
+  <div class="workspace"><div class="panel">
+    <div class="legend"><span class="a">● A</span><span class="b">■ B</span><span class="q">◆ 予測したい点</span></div>
+    <div id="knn-plot" class="plot"></div>
+    <p class="small muted">図をクリック／タップ、または◆をドラッグして移動。下の入力欄でも操作できます。</p>
+    <div class="controls query-controls" data-query="knn"></div>
+  </div><div class="panel">
+    <h3><span class="step">1</span>近い何件に聞く？</h3>
+    <div class="controls"><label for="knn-k">k <input id="knn-k" type="range" min="1" max="7" value="3"><output id="knn-k-value" for="knn-k">3</output></label></div>
+    <h3><span class="step">2</span>近い順に集める</h3>
+    <div id="knn-ranks"></div><div id="knn-result" class="result" aria-live="polite"></div>
+    <details><summary>尺度も変えてみる</summary><p>同じ座標でも、距離を測る尺度を変えると近い順が変わります。</p>
+      <div class="controls"><label for="knn-data">データ <select id="knn-data"><option value="main">共通の7件</option><option value="scale">尺度用の2件</option></select></label><label for="knn-scale">yの尺度 <select id="knn-scale"><option value="1">そのまま</option><option value="3">yを3で割る</option></select></label></div>
+      <p class="small">「尺度用の2件」では入力を (0, 0)、kを1にします。図のy座標も変換します。前処理の尺度は学習側で決め、予測対象にも同じ変換を適用します。</p>
+    </details>
+  </div></div>
+  <details class="study-only"><summary>詳しく見る：距離と同点の規約</summary><p>距離の二乗 = (xの差)² + (yの差 ÷ 尺度)²。平方根を取らなくても近い順は同じです。上の表はこの値です。同距離はID順、同票はAとします。これは既存Python演習と共通の教材内の規約で、一般に決まった規則ではありません。奇数kでも、多クラス分類や同距離の境目の問題は別に残ります。</p></details>
+  <details class="answer study-only"><summary>確認：kを大きくすれば、必ずよくなる？</summary><p>いいえ。広い範囲の多数派を反映するため、小さな領域の違いを見落とすこともあります。kは検証データで選び、選んだ後に独立したテストデータで確認します。この図の予測だけで汎化性能は判断できません。</p></details>
+</section>
+<section id="tree" aria-labelledby="tree-title" hidden>
+  <div class="lesson-head"><h2 id="tree-title">02　質問でデータを分けよう</h2>
+<button type="button" data-reset="tree">リセット</button></div>
+  <p class="intro">決定木は「xは4以下？」のような質問をたどります。質問を学習で決めることと、できた木で予測することを分けて観察しましょう。</p>
+  <p class="question"><strong>まず予想</strong>x ≤ 1 と x ≤ 4 では、どちらがAとBの混ざり方を減らせるでしょうか？</p>
+  <div class="workspace"><div class="panel"><div class="legend"><span class="a">● A</span><span class="b">■ B</span><span class="q">◆ 予測したい点</span></div><div id="tree-plot" class="plot"></div><div class="controls query-controls" data-query="tree"></div><p class="small muted">図の色分けは木の予測領域。線は学習した分岐です。</p></div>
+  <div class="panel"><h3><span class="step">1</span>一つの質問を試す</h3>
+<div class="controls"><label for="tree-axis">特徴 <select id="tree-axis"><option value="0">x</option><option value="1">y</option></select></label><label for="tree-threshold">しきい値 <select id="tree-threshold"><option>1</option><option selected>4</option><option>7</option></select></label></div>
+    <h3><span class="step">2</span>データから質問を選ぶ</h3>
+<div class="controls"><button id="tree-learn" type="button" class="primary">学習する</button><span class="small">候補の中で混ざり方が最小の分岐へ</span></div>
+    <div id="tree-model"></div><div id="tree-result" class="result" aria-live="polite"></div>
+  </div></div>
+  <details class="study-only"><summary>詳しく見る：候補の比較・木の深さ</summary><p>Gini不純度は、ラベルが一種類なら0、AとBが半々なら0.5。左右の件数で重み付けした値を比べます。同点はx優先、次に小さいしきい値。不純度が改善しなければ分岐を止めます。</p><div id="tree-candidates" class="table-wrap"></div><div class="controls"><label for="tree-depth">学習する木の最大深さ <select id="tree-depth"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label></div><p>深さを変えると自動で再学習します。手動で質問を選ぶと1段の木に戻ります。細かく分けられることと、未知の入力で正しいことは別です。</p></details>
+  <details class="answer study-only"><summary>確認：木の経路を説明できたら、原因もわかった？</summary><p>説明できるのはモデルが予測した経路です。「x ≤ 4だからAと予測した」は、現実でxがAの原因であることの証明ではありません。</p></details>
+</section>
+<section id="ensemble" aria-labelledby="ensemble-title" hidden>
+  <div class="lesson-head"><h2 id="ensemble-title">03　三つの予測を合わせよう</h2>
+<button type="button" data-reset="ensemble">リセット</button></div>
+  <p class="intro">アンサンブルは複数のモデルの出力を組み合わせる考え方です。同じ種類の手法を使った別々のモデルも含みます。</p>
+  <p class="question"><strong>まず予想</strong>一つのモデルだけがB、残りの二つがAと答えたら、1票ずつの多数決ではどうなるでしょうか？</p>
+  <div class="workspace"><div class="panel"><div class="legend"><span class="a">● A</span><span class="b">■ B</span><span class="q">◆ 同じ入力を3モデルへ</span></div><div id="ensemble-plot" class="plot"></div><div class="controls query-controls" data-query="ensemble"></div></div><div class="panel"><h3>同じ入力 → それぞれの予測 → 集約</h3>
+<div id="ensemble-votes" class="votes-flow"></div><div id="ensemble-result" class="result" aria-live="polite"></div><p class="small muted">ここでは学習済みの3モデルを同じ1票として扱います。</p></div></div>
+  <details class="study-only"><summary>誤りを補える場合・補えない場合を比べる</summary><div class="controls"><label for="ensemble-errors">例 <select id="ensemble-errors"><option value="different">誤りが別々</option><option value="same">誤りが重なる</option></select></label></div><div id="ensemble-error-table" class="table-wrap"></div><p>この表は誤りの重なりだけを比べる架空例です。上の3モデルの実行結果ではありません。モデル数を増やすだけで改善するとは限りません。</p></details>
+  <details class="study-only"><summary>詳しく見る：モデルの作り方にも違いがある</summary><h3>バギング：再抽出して、それぞれ学ぶ</h3>
+<div class="flow"><span>元の学習例</span>→<span>複数の復元抽出標本</span>→<span>それぞれのモデル</span>→<span>集約</span></div><h3>ブースティング：先の結果を踏まえて、順に学ぶ</h3>
+<div class="flow"><span>モデル1</span>→<span>誤りなどを踏まえモデル2</span>→<span>さらに追加</span>→<span>集約</span></div><p>誤りの利用や重み付けの具体的方法は手法によって異なります。投票は出力の集約方法に注目した言葉です。</p></details>
+  <details class="answer study-only"><summary>確認：全員が同じ間違いをすると？</summary><p>多数決でもその間違いが残ります。モデルをコピーして票数だけ増やしても、新しい情報は増えません。組合せの効果は未知のデータで確かめます。</p></details>
+</section>
+<section id="forest" aria-labelledby="forest-title" hidden>
+  <div class="lesson-head"><h2 id="forest-title">04　違いのある木で、森を作ろう</h2>
+<button type="button" data-reset="forest">リセット</button></div>
+  <p class="intro">決定木を組み合わせるアンサンブルです。学習例を取り直すことと、各分岐で調べる特徴を選ぶことの両方で、木に違いを作ります。</p>
+  <p class="question"><strong>まず予想</strong>7件から「選んでは戻す」を7回繰り返すと、7種類すべての例が入るでしょうか？</p>
+  <div class="panel"><div class="controls"><label for="forest-seed">乱数シード <input id="forest-seed" type="number" min="0" max="4294967295" step="1" value="42" style="width:9rem"></label><button id="forest-resample" type="button">次のシードで再抽出</button><button id="forest-prev" type="button" disabled>前の段階</button><button id="forest-next" type="button" class="primary">次へ：復元抽出</button></div><div id="forest-phases" class="phases"></div><div id="forest-stage" aria-live="polite"></div><div class="controls query-controls" data-query="forest"></div><p class="small muted">3本の木／最大深さ2／各分岐の特徴候補1個。学習用7件だけを抽出します。</p></div>
+  <div id="forest-trees" class="forest"></div><div id="forest-result" class="result" aria-live="polite" hidden></div>
+  <details class="study-only"><summary>詳しく見る：多数決と確率平均は同じ？</summary><p>木単体のラベルを数える方法と、各木のクラス確率を平均する方法は結果が異なる場合があります。下はスライド26の架空の確率出力例で、上の森の出力とは別です。</p><div id="probability-controls" class="controls"></div><div id="probability-result" aria-live="polite"></div><p class="small">この教材の森は、葉に入った学習例のAの割合を各木の確率出力とし、平均が0.5以上ならAとします。同率をAにするのは教材内の規約です。scikit-learnのRF分類器も確率出力を平均しますが、この小さな実装は同ライブラリの再現実装ではありません。確率出力が現実の確率として校正済みとは限りません。</p></details>
+  <details class="answer study-only"><summary>確認：分岐の質問まで、当てずっぽうで決める？</summary><p>いいえ。ランダムに選ぶのは調べる特徴の候補です。この教材では各分岐でxかyを1個選び、その特徴で可能なしきい値を比較して加重Giniが最小のものを使います。選んだ特徴が一定、または混ざり方が改善しない場合は葉にします。同じシードなら同じ森を再現できますが、よい成績の保証にはなりません。</p></details>
+</section>
+<section id="svm" aria-labelledby="svm-title" hidden>
+  <div class="lesson-head"><h2 id="svm-title">05　境界の「余白」を広げよう</h2>
+<button type="button" data-reset="svm">リセット</button></div>
+  <p class="intro">まずは一直線上でAとBを分けられる場合です。どちらのクラスにも近づきすぎない境界を探します。ここでの余白は、境界から各クラスの最も近い点までの距離です。</p>
+  <p class="question"><strong>まず予想</strong>Aが1と2、Bが6と7のとき、境界を3・4・5に置くと、狭い側の余白が最も大きいのはどれでしょうか？</p>
+  <div class="workspace"><div class="panel"><div class="legend"><span class="a">● A</span><span class="b">■ B</span><span>二重の枠＝この分離可能例の支持点</span></div><div id="svm-plot"></div><div id="svm-result" class="result" aria-live="polite"></div></div><div class="panel"><h3><span class="step">1</span>境界を動かす</h3>
+<div class="controls"><label for="svm-boundary">境界 <input id="svm-boundary" type="range" min="0" max="8" step="0.25" value="4"><output id="svm-boundary-value">4</output></label><button id="svm-optimize" type="button" class="primary">最大の余白</button></div><h3><span class="step">2</span>学習点を動かす</h3>
+<div id="svm-points" class="controls"></div><p class="small">点は0〜8、0.5刻み。支持点の位置を変えたら「最大の余白」を押して境界を比べましょう。</p></div></div>
+  <details class="study-only"><summary>詳しく見る：分け切れないときとCの役割</summary><p>ソフトマージンでは、余白の確保と、余白への侵入・誤分類に対するペナルティの両方を考えます。次は境界4、余白の線2・6を固定した概念図です。</p><div class="explain-grid"><div id="svm-soft-plot"></div><div><div class="controls"><label for="svm-soft">Aの点を <select id="svm-soft"><option value="3">3へ：正しく分類、余白に侵入</option><option value="5">5へ：誤分類</option></select></label><label for="svm-c">C <select id="svm-c"><option value="0.1">0.1</option><option value="1" selected>1</option><option value="10">10</option></select></label></div><div id="svm-soft-result" class="result" aria-live="polite"></div></div></div><p>他の条件が同じなら、Cが大きいほど違反を重く扱います。ここでは同じ境界の違反にかかる重みだけを計算し、境界の再学習は行いません。Cは検証で選びます。</p></details>
+  <details class="study-only"><summary>詳しく見る：特徴を変換すると、分け方が変わる</summary><p>Aが−1と1、Bが−3と3の例です。元のx軸では一つの境界で分けられません。z = x²へ変換すると、Aは1、Bは9となり、z = 5で分けられます。</p><div class="controls"><button id="kernel-toggle" type="button" aria-pressed="false">変換後を見る</button></div><div id="kernel-plot"></div><p class="small">元の空間では境界はx = ±√5。この変換に対応する内積はK(x, x′) = x²x′²です。カーネルは変換後の内積に対応する計算を利用します。これは特徴変換の導入例で、RBFカーネルの学習実験ではありません。</p></details>
+  <details class="answer study-only"><summary>確認：支持点は、いつでも「最も近い2点」？</summary><p>いいえ。この分離可能な一次元の例では境界に近い点が支持点ですが、多次元では2点とは限りません。ソフトマージンでは余白の内側や誤分類の点も関わります。余白を広く取ることやカーネルの利用だけで、未知のデータの正解は保証されません。</p></details>
+</section>
+<div class="footer-nav"><button id="prev" type="button" disabled>← 前の手法</button><span>予想する → 動かす → 理由を言葉にする</span><button id="next" type="button">次の手法 →</button></div>
+</main>
+<footer><p>教材用の架空データです。測定値や実用上の性能を示すものではありません。操作結果の保存・送信は行いません。</p><details class="study-only"><summary>教材の対応と出典</summary><p>スライド6〜12：k近傍法／13〜18：決定木／19〜22：アンサンブル／23〜27：ランダムフォレスト／28〜31：SVM。7件のデータと同点規約は第4回Python演習と共通です。森は教育用の小規模実装、SVMは分離可能な一次元の解析例と補足の概念図です。</p><p>説明の根拠：scikit-learn公式資料 <a href="https://scikit-learn.org/stable/modules/neighbors.html">Nearest Neighbors</a>、<a href="https://scikit-learn.org/stable/modules/tree.html">Decision Trees</a>、<a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests">Ensemble methods</a>、<a href="https://scikit-learn.org/stable/modules/svm.html#mathematical-formulation">Support Vector Machines</a>。確認日：2026年10月22日。リンク先の閲覧にはネット接続が必要です。</p></details></footer>
+</div>
+<script id="ml-model">
+/* Pure calculations, shared by the UI and the repository checks. No DOM dependencies. */
+'use strict';
+globalThis.ML = (() => {
+  const TRAIN = Object.freeze([
+    ['T1',0,0,'A'],['T2',0,2,'A'],['T3',2,0,'A'],['T4',2,2,'B'],
+    ['T5',6,6,'B'],['T6',6,8,'B'],['T7',8,6,'B']
+  ].map(Object.freeze));
+  const SCALE = Object.freeze([['S1',0,3,'A'],['S2',2,0,'B']].map(Object.freeze));
+  const majority = labels => labels.filter(x=>x==='A').length*2>=labels.length?'A':'B';
+  const pA = rows => rows.filter(r=>r[3]==='A').length/rows.length;
+  const gini = rows => rows.length ? 2*pA(rows)*(1-pA(rows)) : 0;
+  function nearest(rows,q,k,scale=1) {
+    if(!Number.isInteger(k)||k<1||k>rows.length||!(scale>0)) throw new Error('Invalid k or scale');
+    return rows.map(r=>({id:r[0],x:r[1],y:r[2],label:r[3],d2:(r[1]-q[0])**2+((r[2]-q[1])/scale)**2}))
+      .sort((a,b)=>a.d2-b.d2||(a.id<b.id?-1:a.id>b.id?1:0)).slice(0,k);
+  }
+  const knn = (rows,q,k,scale=1) => majority(nearest(rows,q,k,scale).map(r=>r.label));
+  function candidates(rows,axes=[0,1]) {
+    const result=[];
+    for(const axis of axes){
+      const values=[...new Set(rows.map(r=>r[axis+1]))].sort((a,b)=>a-b);
+      for(let i=1;i<values.length;i++){
+        const threshold=(values[i-1]+values[i])/2;
+        const left=rows.filter(r=>r[axis+1]<=threshold),right=rows.filter(r=>r[axis+1]>threshold);
+        const score=(left.length*gini(left)+right.length*gini(right))/rows.length;
+        result.push({axis,threshold,left,right,score});
+      }
+    }
+    return result.sort((a,b)=>Math.abs(a.score-b.score)>1e-12?a.score-b.score:a.axis-b.axis||a.threshold-b.threshold);
+  }
+  function fitTree(rows,depth=1,rng=null) {
+    const node={n:rows.length,p:pA(rows),label:majority(rows.map(r=>r[3])),gini:gini(rows)};
+    if(depth===0||node.gini===0)return node;
+    node.axes=rng?[Math.floor(rng()*2)]:[0,1];
+    const options=candidates(rows,node.axes),best=options[0];
+    node.candidates=options.map(c=>({axis:c.axis,threshold:c.threshold,score:c.score}));
+    if(!best||best.score>=node.gini-1e-12)return node;
+    return {...node,axis:best.axis,threshold:best.threshold,score:best.score,
+      left:fitTree(best.left,depth-1,rng),right:fitTree(best.right,depth-1,rng)};
+  }
+  function manualTree(rows,axis,threshold){
+    const left=rows.filter(r=>r[axis+1]<=threshold),right=rows.filter(r=>r[axis+1]>threshold);
+    if(!left.length||!right.length)throw new Error('Both branches need examples');
+    return {n:rows.length,p:pA(rows),gini:gini(rows),axis,threshold,
+      score:(left.length*gini(left)+right.length*gini(right))/rows.length,
+      left:fitTree(left,0),right:fitTree(right,0)};
+  }
+  function leaf(tree,q){while(tree.left)tree=q[tree.axis]<=tree.threshold?tree.left:tree.right;return tree;}
+  function random(seed){let s=seed>>>0;return()=>{s=(s+0x6D2B79F5)>>>0;let t=s;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+  function forest(seed){const rng=random(seed);return Array.from({length:3},()=>{
+    const rows=Array.from({length:TRAIN.length},()=>TRAIN[Math.floor(rng()*TRAIN.length)]);
+    return {rows,tree:fitTree(rows,2,rng)};
+  });}
+  function aggregate(probabilities){const mean=probabilities.reduce((a,b)=>a+b,0)/probabilities.length;
+    return {mean,soft:mean>=.5?'A':'B',hard:majority(probabilities.map(p=>p>=.5?'A':'B'))};}
+  function margin(a,b,boundary){
+    const aMax=Math.max(...a),aMin=Math.min(...a),bMax=Math.max(...b),bMin=Math.min(...b);
+    const orientation=aMax<bMin?1:bMax<aMin?-1:0;
+    if(!orientation)return {separable:false};
+    const supportA=orientation===1?aMax:aMin,supportB=orientation===1?bMin:bMax;
+    const left=orientation*(boundary-supportA),right=orientation*(supportB-boundary);
+    return {separable:true,orientation,supportA,supportB,optimum:(supportA+supportB)/2,
+      a:left,b:right,minimum:Math.min(left,right),correct:left>0&&right>0};
+  }
+  return {TRAIN,SCALE,majority,pA,gini,nearest,knn,candidates,fitTree,manualTree,leaf,random,forest,aggregate,margin};
+})();
+</script>
+<script id="ml-ui">
+'use strict';
+(() => {
+const $=id=>document.getElementById(id),fmt=n=>Number(n.toFixed(3)).toString();
+const names=['knn','tree','ensemble','forest','svm'];let active=0;
+const initial=()=>({knn:{q:[2,3],k:3,scale:1,data:'main'},tree:{q:[2,3],axis:0,threshold:4,depth:1,manual:false},ensemble:{q:[2,3],errors:'different'},forest:{q:[2,3],seed:42,stage:0,probabilities:[.6,.6,0]},svm:{a:[1,2],b:[6,7],boundary:4,soft:3,c:1,kernel:false}});
+let state=initial();
+const badge=x=>`<span class="badge ${x.toLowerCase()}">${x==='A'?'●':'■'} ${x}</span>`;
+function svg(content,label,view='0 0 560 430'){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${view}" role="img" aria-label="${label}">${content}</svg>`;}
+const text=(x,y,value,cls='',anchor='middle')=>`<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}">${value}</text>`;
+const line=(x1,y1,x2,y2,color='#c9d7df',extra='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" ${extra}/>`;
+function dot(x,y,label,id,support=false){const color=label==='A'?'#006c78':'#af4a0b';return (support?`<circle cx="${x}" cy="${y}" r="15" fill="none" stroke="${color}" stroke-width="2"/>`:'')+(label==='A'?`<circle cx="${x}" cy="${y}" r="8" fill="${color}"/>`:`<rect x="${x-8}" y="${y-8}" width="16" height="16" rx="2" fill="${color}"/>`)+text(x,y-19,id,'label');}
+// Both scatter axes use the same pixels per unit, so visual distance matches the metric.
+const X=x=>55+x*53,Y=y=>470-y*53;
+function regions(tree,x0=0,x1=8,y0=0,y1=8){
+  if(!tree.left)return `<rect x="${X(x0)}" y="${Y(y1)}" width="${(x1-x0)*53}" height="${(y1-y0)*53}" fill="${tree.label==='A'?'#e0f1f0':'#fce9d9'}"/>`;
+  const t=tree.threshold;
+  return tree.axis===0?regions(tree.left,x0,t,y0,y1)+regions(tree.right,t,x1,y0,y1)+line(X(t),Y(y0),X(t),Y(y1),'#596e7e','stroke-width="2"'):regions(tree.left,x0,x1,y0,t)+regions(tree.right,x0,x1,t,y1)+line(X(x0),Y(t),X(x1),Y(t),'#596e7e','stroke-width="2"');
+}
+function plot(target,rows,q,{near=[],scale=1,tree=null}={}){
+  let s=tree?regions(tree):'';
+  for(let i=0;i<=8;i++){s+=line(X(i),Y(0),X(i),Y(8))+line(X(0),Y(i),X(8),Y(i));s+=text(X(i),494,i,'tick')+text(35,Y(i)+4,i,'tick');}
+  s+=text(510,490,'x','label')+text(55,22,scale===1?'y':'y ÷ 3','label');
+  for(const r of near)s+=line(X(q[0]),Y(q[1]/scale),X(r.x),Y(r.y/scale),'#215ab3','stroke-width="2.5" stroke-dasharray="6 4"');
+  rows.forEach(r=>{s+=dot(X(r[1]),Y(r[2]/scale),r[3],r[0],near.some(n=>n.id===r[0]));});
+  const qx=X(q[0]),qy=Y(q[1]/scale);s+=`<g class="query"><path d="M${qx} ${qy-11}l11 11-11 11-11-11z" fill="#142f45" stroke="white" stroke-width="2"/>${text(qx+18,qy-13,'?','label')}</g>`;
+  $(target).innerHTML=svg(s,`学習データと予測対象。入力は${q[0]}, ${q[1]}。Aは丸、Bは四角。`,'0 0 560 540');
+  const container=$(target),section=target.split('-')[0];
+  // Capture on the stable container, because rendering replaces the SVG during dragging.
+  const move=e=>{const element=container.firstElementChild,point=element.createSVGPoint();point.x=e.clientX;point.y=e.clientY;const p=point.matrixTransform(element.getScreenCTM().inverse());state[section].q=[Math.max(0,Math.min(8,Math.round((p.x-55)/53))),Math.max(0,Math.min(8,Math.round((470-p.y)/53*scale)))];syncQuery(section);render(section);};
+  container.onpointerdown=e=>{if(e.button!==0)return;container.setPointerCapture(e.pointerId);move(e);};
+  container.onpointermove=e=>{if(container.hasPointerCapture(e.pointerId))move(e);};
+  container.onpointerup=e=>{if(container.hasPointerCapture(e.pointerId))container.releasePointerCapture(e.pointerId);};
+}
+function syncQuery(name){const q=state[name].q;['x','y'].forEach((axis,i)=>{$(`${name}-${axis}`).value=q[i];});}
+function bindNumber(id,read,update){const el=$(id);el.addEventListener('input',()=>{const n=el.valueAsNumber;if(!Number.isFinite(n)||!el.checkValidity())return;update(n);});el.addEventListener('change',()=>{if(!el.checkValidity()||!Number.isFinite(el.valueAsNumber))el.value=read();});}
+document.querySelectorAll('[data-query]').forEach(container=>{const name=container.dataset.query;container.innerHTML=`<span>予測する入力</span>`+['x','y'].map((a,i)=>`<label for="${name}-${a}">${a} <input id="${name}-${a}" type="number" min="0" max="8" step="1" value="${state[name].q[i]}"></label>`).join('');['x','y'].forEach((a,i)=>bindNumber(`${name}-${a}`,()=>state[name].q[i],n=>{state[name].q[i]=n;render(name);}));});
+function treeHTML(node,q,isActive=true,branch=''){
+  let label=node.left?`${node.axis===0?'x':'y'} ≤ ${node.threshold} ?`:`葉：${badge(node.label)}　${node.n}件`;
+  if(node.axes?.length===1)label+=`<br><span class="small">特徴候補：${node.axes[0]===0?'x':'y'}${node.left?'':'（分岐せず）'}</span>`;
+  if(node.left)label+=`<br><span class="small">加重Gini ${fmt(node.score)}</span>`;
+  const goLeft=node.left&&q[node.axis]<=node.threshold;
+  return `<ul class="tree"><li>${branch?`<span class="branch">${branch} →</span>`:''}<span class="tree-node${isActive?' active':''}">${label}</span>${node.left?treeHTML(node.left,q,isActive&&goLeft,'はい')+treeHTML(node.right,q,isActive&&!goLeft,'いいえ'):''}</li></ul>`;
+}
+function renderKnn(){const s=state.knn,rows=s.data==='main'?ML.TRAIN:ML.SCALE,rank=ML.nearest(rows,s.q,s.k,s.scale),prediction=ML.majority(rank.map(r=>r.label)),a=rank.filter(r=>r.label==='A').length;
+  $('knn-k').max=rows.length;$('knn-k').value=s.k;$('knn-k-value').textContent=s.k;
+  plot('knn-plot',rows,s.q,{near:rank,scale:s.scale});
+  $('knn-ranks').innerHTML=`<table><caption>選ばれた${s.k}件（距離の二乗が小さい順）</caption><thead><tr><th>順位／ID</th><th>距離²</th><th>ラベル</th></tr></thead><tbody>${rank.map((r,i)=>`<tr><td>${i+1} ／ ${r.id}</td><td>${fmt(r.d2)}</td><td>${badge(r.label)}</td></tr>`).join('')}</tbody></table>`;
+  $('knn-result').innerHTML=`<strong>A ${a}票・B ${s.k-a}票 → ${badge(prediction)}</strong><p>${a*2===s.k?'同票なので、この教材の規約でAを選びます。':`近い${s.k}件の多数派は${prediction}です。`} kを変えて、選ばれる点と票数を見比べましょう。</p>`;
+}
+function renderTree(){const s=state.tree,model=s.manual?ML.manualTree(ML.TRAIN,s.axis,s.threshold):ML.fitTree(ML.TRAIN,s.depth);
+  if(model.left){s.axis=model.axis;s.threshold=model.threshold;}$('tree-axis').value=s.axis;$('tree-threshold').value=s.threshold;$('tree-depth').value=s.depth;
+  plot('tree-plot',ML.TRAIN,s.q,{tree:model});$('tree-model').innerHTML=treeHTML(model,s.q);
+  $('tree-result').innerHTML=`<strong>入力 (${s.q.join(', ')}) → ${badge(ML.leaf(model,s.q).label)}</strong><p>${s.manual?'手で選んだ質問':'学習で選んだ質問'}。青い枠が予測の経路です。根の分岐後の加重Giniは${fmt(model.score??model.gini)}${model.score!==undefined&&Math.abs(model.score-3/14)<1e-9?'（3/14）':''}。</p>`;
+  $('tree-candidates').innerHTML=`<table><caption>根で比較する候補（小さい値ほど混ざりが少ない）</caption><thead><tr><th>質問</th><th>左／右の件数</th><th>加重Gini</th></tr></thead><tbody>${ML.candidates(ML.TRAIN).map(c=>`<tr class="${c.axis===model.axis&&c.threshold===model.threshold?'selected':''}"><td>${c.axis===0?'x':'y'} ≤ ${c.threshold}</td><td>${c.left.length} ／ ${c.right.length}</td><td>${fmt(c.score)}</td></tr>`).join('')}</tbody></table>`;
+}
+function renderEnsemble(){const s=state.ensemble,votes=[ML.knn(ML.TRAIN,s.q,1),ML.knn(ML.TRAIN,s.q,3),ML.leaf(ML.fitTree(ML.TRAIN),s.q).label],a=votes.filter(v=>v==='A').length;
+  plot('ensemble-plot',ML.TRAIN,s.q);$('ensemble-votes').innerHTML=votes.map((v,i)=>`<div class="vote"><span>${['k=1 の近傍法','k=3 の近傍法','学習した1段の決定木'][i]}</span>${badge(v)}</div>`).join('')+'<div class="arrow" aria-hidden="true">↓ 1票ずつ集める</div>';
+  $('ensemble-result').innerHTML=`<strong>A ${a}票・B ${3-a}票 → ${badge(ML.majority(votes))}</strong><p>3モデルが同じ入力を予測した結果です。この組合せの性能を評価した結果ではありません。</p>`;
+  const truth=['A','B','A'],predictions=s.errors==='different'?[['B','B','A'],['A','A','A'],['A','B','B']]:[['B','B','A'],['B','B','A'],['B','B','A']];
+  $('ensemble-error-table').innerHTML=`<table><caption>各モデルは3件中2件正解。間違う場所だけが違う例</caption><thead><tr><th>例／正解</th><th>モデル1</th><th>モデル2</th><th>モデル3</th><th>多数決</th></tr></thead><tbody>${truth.map((t,i)=>{const v=predictions.map(p=>p[i]);const last=ML.majority(v);return `<tr><td>${i+1} ／ ${t}</td>${v.map(x=>`<td>${x} ${x===t?'○':'×'}</td>`).join('')}<td>${last} ${last===t?'○':'×'}</td></tr>`;}).join('')}</tbody></table>`;
+}
+function renderProbabilities(){const result=ML.aggregate(state.forest.probabilities);$('probability-result').innerHTML=`<div class="row"><span>ハード投票 ${badge(result.hard)}</span><span>確率平均 ${badge(result.soft)}</span></div><p>Aの平均 = (${state.forest.probabilities.map(fmt).join(' + ')}) ÷ 3 = ${fmt(result.mean)}</p>`;}
+function renderForest(){const s=state.forest,trees=ML.forest(s.seed),phases=['元の学習例','復元抽出','特徴候補と分岐','出力の集約'];
+  $('forest').dataset.stage=s.stage;$('forest-prev').disabled=s.stage===0;
+  $('forest-phases').innerHTML=phases.map((p,i)=>`<span class="${s.stage===i?'current':''}">${i+1}. ${p}</span>`).join('');
+  $('forest-next').disabled=s.stage===3;$('forest-next').textContent=s.stage===3?'最後の段階です':`次へ：${phases[s.stage+1]}`;
+  $('forest-stage').innerHTML=[`<strong>元の学習例は7件。</strong><div class="chips">${ML.TRAIN.map(r=>`<span class="chip ${r[3].toLowerCase()}">${r[0]} (${r[1]}, ${r[2]}) ${r[3]}</span>`).join('')}</div>`,`<strong>各木に7回ずつ、戻しながら抽出。</strong><p>重複したIDと、選ばれなかったIDを見比べましょう。</p>`,`<strong>各分岐でxかyを候補に選び、その中で良い分岐を探す。</strong><p>青枠は現在の入力がたどる経路。予測対象を変えても木を学び直すわけではありません。</p>`,`<strong>同じ入力を3本の木へ。葉のクラス割合を平均する。</strong><p>一つの木の予測と、森全体の予測を見比べましょう。</p>`][s.stage];
+  $('forest-trees').innerHTML=s.stage===0?'':trees.map((entry,i)=>{const l=ML.leaf(entry.tree,s.q),missing=ML.TRAIN.filter(r=>!entry.rows.includes(r)).map(r=>r[0]);return `<div class="panel"><h3>木 ${i+1}</h3><div class="chips">${entry.rows.map(r=>`<span class="chip ${r[3].toLowerCase()}">${r[0]} ${r[3]}</span>`).join('')}</div><p class="small muted">未抽出：${missing.join('・')||'なし'}</p>${s.stage>=2?treeHTML(entry.tree,s.q):''}${s.stage===3?`<p>予測 ${badge(l.label)} ／ P(A) = ${fmt(l.p)}</p>`:''}</div>`;}).join('');
+  const probabilities=trees.map(t=>ML.leaf(t.tree,s.q).p),result=ML.aggregate(probabilities);$('forest-result').hidden=s.stage!==3;
+  $('forest-result').innerHTML=`<strong>入力 (${s.q.join(', ')}) → 森の予測 ${badge(result.soft)}</strong><div class="meter" aria-hidden="true"><span style="width:${result.mean*100}%"></span></div><p>P(A)の平均 = (${probabilities.map(fmt).join(' + ')}) ÷ 3 = ${fmt(result.mean)} ／ P(B) = ${fmt(1-result.mean)}</p><p>ラベルだけの多数決なら ${result.hard}。この森は確率平均を使います。計算には丸める前の値を使っています。</p>`;
+  renderProbabilities();
+}
+function renderSvm(){const s=state.svm,m=ML.margin(s.a,s.b,s.boundary);$('svm-boundary').value=s.boundary;$('svm-boundary-value').textContent=fmt(s.boundary);$('svm-optimize').disabled=!m.separable;
+  let content='';for(let i=0;i<=8;i++){content+=line(X(i),65,X(i),310,'#e0e7ec')+text(X(i),340,i,'tick');}
+  if(m.separable&&m.correct){const low=Math.min(m.supportA,m.supportB),high=Math.max(m.supportA,m.supportB);content+=`<rect x="${X(low)}" y="70" width="${(high-low)*53}" height="230" fill="#fff1c9"/>`;content+=text((X(m.supportA)+X(s.boundary))/2,103,`余白 ${fmt(m.a)}`,'label')+text((X(m.supportB)+X(s.boundary))/2,282,`余白 ${fmt(m.b)}`,'label');}
+  content+=line(55,170,479,170,'#516575','stroke-width="2"')+line(X(s.boundary),60,X(s.boundary),310,'#215ab3','stroke-width="3"')+text(X(s.boundary),40,`境界 ${fmt(s.boundary)}`,'label');
+  s.a.forEach((p,i)=>{content+=dot(X(p),140-i*40,'A',`A${i+1}`,m.separable&&p===m.supportA);});s.b.forEach((p,i)=>{content+=dot(X(p),220+i*40,'B',`B${i+1}`,m.separable&&p===m.supportB);});
+  $('svm-plot').innerHTML=svg(content,'一次元のAとB、境界と余白。点の上下位置はラベルを読みやすくするためで、特徴は横軸だけ。','0 0 560 365');
+  $('svm-result').innerHTML=!m.separable?'<strong>一本の境界では分けられない配置です。</strong><p>AとBの範囲が重なるか、同じ位置に異なるクラスがあります。この例の最大余白の計算は使えません。下のソフトマージンの説明へ進みましょう。</p>':`<strong>${m.correct?`狭い側の余白：${fmt(m.minimum)}`:'現在の境界では、正しく分け切れていません。'}</strong><p>A側 ${fmt(m.a)} ／ B側 ${fmt(m.b)}。${m.correct?'両側の余白が等しい位置で、狭い側の余白が最大になります。':'0は境界上、負の値は境界がクラス側へ入り込んだ状態です。'}</p><p class="small">最大余白の境界は ${fmt(m.optimum)}。図の上下位置に特徴としての意味はありません。</p>`;
+  renderSoft();renderKernel();
+}
+function renderSoft(){const s=state.svm;let c=`<rect x="${X(2)}" y="50" width="212" height="120" fill="#fff1c9"/>`;
+  [2,4,6].forEach(x=>{c+=line(X(x),35,X(x),180,x===4?'#215ab3':'#718397',`stroke-width="2" ${x===4?'':'stroke-dasharray="5 4"'}`)+text(X(x),206,x);});c+=dot(X(s.soft),110,'A','A');$('svm-soft-plot').innerHTML=svg(c,'固定した境界4と余白の線2と6。Aの点の侵入または誤分類。','0 0 560 225');
+  const loss=1+(s.soft-4)/2;$('svm-soft-result').innerHTML=`<strong>${s.soft<4?'正しく分類、余白に侵入':'境界を越えて誤分類'}</strong><p>この点の違反量：${fmt(loss)}<br>C × 違反量 = ${fmt(s.c)} × ${fmt(loss)} = ${fmt(s.c*loss)}</p><p class="small">固定した f(x)=(x−4)/2 とAの符号−1に対し、違反量は max(0, 1−(−1)f(x))。重みが増えても、この図の境界は固定です。</p>`;
+}
+function renderKernel(){const transformed=state.svm.kernel;$('kernel-toggle').setAttribute('aria-pressed',String(transformed));$('kernel-toggle').textContent=transformed?'変換前に戻す':'変換後を見る';const px=x=>transformed?55+x*43:280+x*65;let s='';
+  const ticks=transformed?[0,1,3,5,7,9]:[-3,-2,-1,0,1,2,3];s+=line(45,145,510,145,'#516575');ticks.forEach(x=>{s+=line(px(x),140,px(x),153,'#516575')+text(px(x),178,x,'tick');});
+  [-3,-1,1,3].forEach((x,i)=>{s+=dot(px(transformed?x*x:x),i%2?115:80,Math.abs(x)===1?'A':'B',`x=${x}`);});
+  if(transformed)s+=line(px(5),40,px(5),155,'#215ab3','stroke-width="3"')+text(px(5),28,'境界 z=5','label');
+  else s+=text(280,28,'Aが内側、Bが外側。一本の境界では分けられない。','label');
+  s+=text(280,215,transformed?'変換後の特徴 z = x²':'元の特徴 x','label');$('kernel-plot').innerHTML=svg(s,transformed?'変換後。Aは1、Bは9、境界は5。':'変換前。Aは-1と1、Bは-3と3。','0 0 560 235');
+}
+function render(name){({knn:renderKnn,tree:renderTree,ensemble:renderEnsemble,forest:renderForest,svm:renderSvm})[name]();}
+function show(index){active=index;names.forEach((name,i)=>{$(name).hidden=i!==index;document.querySelector(`[data-tab="${name}"]`).setAttribute('aria-pressed',String(i===index));});$('prev').disabled=index===0;$('next').disabled=index===names.length-1;render(names[index]);}
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>show(names.indexOf(b.dataset.tab))));
+$('prev').onclick=()=>{show(active-1);document.querySelector(`[data-tab="${names[active]}"]`).focus();};$('next').onclick=()=>{show(active+1);document.querySelector(`[data-tab="${names[active]}"]`).focus();};
+$('projection').onclick=()=>{const on=document.body.classList.toggle('projection');$('projection').setAttribute('aria-pressed',String(on));$('projection').textContent=on?'通常表示に戻す':'投影表示にする';};
+$('knn-k').oninput=e=>{state.knn.k=+e.target.value;renderKnn();};
+$('knn-data').onchange=e=>{const s=state.knn;s.data=e.target.value;s.q=s.data==='main'?[2,3]:[0,0];s.k=s.data==='main'?3:1;s.scale=1;$('knn-scale').value=1;syncQuery('knn');renderKnn();};
+$('knn-scale').onchange=e=>{state.knn.scale=+e.target.value;renderKnn();};
+['tree-axis','tree-threshold'].forEach(id=>{$(id).onchange=()=>{Object.assign(state.tree,{axis:+$('tree-axis').value,threshold:+$('tree-threshold').value,manual:true,depth:1});renderTree();};});
+$('tree-learn').onclick=()=>{state.tree.manual=false;renderTree();};$('tree-depth').onchange=e=>{state.tree.depth=+e.target.value;state.tree.manual=false;renderTree();};
+$('ensemble-errors').onchange=e=>{state.ensemble.errors=e.target.value;renderEnsemble();};
+bindNumber('forest-seed',()=>state.forest.seed,n=>{state.forest.seed=n;state.forest.stage=1;renderForest();});
+$('forest-resample').onclick=()=>{state.forest.seed=(state.forest.seed+1)>>>0;$('forest-seed').value=state.forest.seed;state.forest.stage=1;renderForest();};$('forest-next').onclick=()=>{state.forest.stage=Math.min(3,state.forest.stage+1);renderForest();};
+$('forest-prev').onclick=()=>{state.forest.stage=Math.max(0,state.forest.stage-1);renderForest();};
+$('probability-controls').innerHTML=[0,1,2].map(i=>`<label for="probability-${i}">木${i+1}のP(A) <input id="probability-${i}" type="range" min="0" max="1" step="0.1" value="${state.forest.probabilities[i]}"><output id="probability-value-${i}">${state.forest.probabilities[i]}</output></label>`).join('');
+[0,1,2].forEach(i=>{$(`probability-${i}`).oninput=e=>{state.forest.probabilities[i]=+e.target.value;$(`probability-value-${i}`).textContent=e.target.value;renderProbabilities();};});
+$('svm-points').innerHTML=['a','b'].map(group=>[0,1].map(i=>`<label for="svm-${group}${i}">${group.toUpperCase()}${i+1} <input id="svm-${group}${i}" type="number" min="0" max="8" step="0.5" value="${state.svm[group][i]}"></label>`).join('')).join('');
+['a','b'].forEach(group=>[0,1].forEach(i=>bindNumber(`svm-${group}${i}`,()=>state.svm[group][i],n=>{state.svm[group][i]=n;renderSvm();})));
+$('svm-boundary').oninput=e=>{state.svm.boundary=+e.target.value;renderSvm();};$('svm-optimize').onclick=()=>{const m=ML.margin(state.svm.a,state.svm.b,state.svm.boundary);if(m.separable){state.svm.boundary=m.optimum;renderSvm();}};
+$('svm-soft').onchange=e=>{state.svm.soft=+e.target.value;renderSoft();};$('svm-c').onchange=e=>{state.svm.c=+e.target.value;renderSoft();};$('kernel-toggle').onclick=()=>{state.svm.kernel=!state.svm.kernel;renderKernel();};
+document.querySelectorAll('[data-reset]').forEach(b=>{b.onclick=()=>{const name=b.dataset.reset;state[name]=initial()[name];if(name!=='svm')syncQuery(name);$(name).querySelectorAll('details').forEach(d=>d.open=false);
+  if(name==='knn'){$('knn-data').value='main';$('knn-scale').value=1;}
+  if(name==='ensemble')$('ensemble-errors').value='different';
+  if(name==='forest'){$('forest-seed').value=42;[0,1,2].forEach(i=>{$(`probability-${i}`).value=state.forest.probabilities[i];$(`probability-value-${i}`).textContent=state.forest.probabilities[i];});}
+  if(name==='svm'){['a','b'].forEach(group=>[0,1].forEach(i=>$(`svm-${group}${i}`).value=state.svm[group][i]));$('svm-soft').value=3;$('svm-c').value=1;}
+  render(name);
+};});
+names.forEach(render);
+})();
+</script>
+</body>
+</html>
