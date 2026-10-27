@@ -593,3 +593,5 @@ body.image-zoom-open {
 
 /* Lesson 04: retain Lesson 03 type sizes; split long code instead of shrinking. */
 .reveal .slides img.lesson04-figure { display: block; margin: 0 auto; max-height: 450px; max-width: 94%; object-fit: contain; }
+.reveal .handout-links { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0.5em 0; }
+.reveal .handout-links a { padding: 0.3em 0.5em; border: 2px solid currentColor; border-radius: 6px; font-size: 0.75em; }
