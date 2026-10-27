@@ -596,3 +596,25 @@ body.image-zoom-open {
 
 /* Lesson 05 figures keep projection labels readable. */
 .reveal .slides img.lesson05-figure { display:block; margin:0 auto; max-height:450px; max-width:94%; object-fit:contain; }
+
+/* Revised narration has no playable file until the teacher supplies it. */
+.reveal audio[data-audio-pending="true"] { display: none; }
+
+.reveal a.handout-download {
+  display: inline-block;
+  background: var(--academic-blue);
+  color: white;
+  border-radius: 0.25em;
+  padding: 0.3em 0.65em;
+}
+.reveal a.handout-download:focus-visible {
+  outline: 0.12em solid var(--academic-navy);
+  outline-offset: 0.12em;
+}
+.reveal .download-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45em;
+  font-size: 0.72em;
+  margin: 0.7em 0;
+}
