@@ -1,15 +1,11 @@
 <!doctype html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="description" content="12件の学習記録をRとPythonで要約・可視化する90分の授業">
+<html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="RとPythonで記述統計とデータの可視化を学ぶ第4回教材">
 <title>第4回 記述統計とデータの可視化</title>
 <link rel="stylesheet" href="reveal/reveal.css">
 <link rel="stylesheet" href="reveal/theme/white.css">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+<link rel="stylesheet" href="style.css"></head><body>
 <div class="reveal"><div class="slides">
 
 
@@ -40,33 +36,28 @@ id="第4回12件を数字とグラフで読む">第4回：12件を、数字と�
 </section>
 <section class="slide level1">
 
-<!-- 2: workを開き、4ファイルを保存する -->
+<!-- 2: ノートと4本のコードを保存する -->
 <div class="slide-body" data-step="2">
 <h2
-id="workを開き4ファイルを保存する">workを開き、4ファイルを保存する</h2>
+id="ノートと4本のコードを保存する">ノートと4本のコードを保存する</h2>
 <p class="operation-place">
 0–5分｜準備
 </p>
-<p>接続先は <strong>WSL: DSProg2026</strong>。</p>
-<p><code>work/exercises/lesson04/</code> に保存。</p>
-<table>
-<thead>
-<tr>
-<th>主例</th>
-<th>演習</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>lesson04.R</td>
-<td>exercise04.R</td>
-</tr>
-<tr>
-<td>lesson04.py</td>
-<td>exercise04.py</td>
-</tr>
-</tbody>
-</table>
+<div class="handout-links">
+<a href="./downloads/lesson04-student.zip" download="lesson04-student.zip">まとめてZIP</a>
+<a href="./downloads/lecture_note_04.md" download="lecture_note_04.md">学生ノート</a>
+<a href="./downloads/lesson04.R" download="lesson04.R">R主例</a>
+<a href="./downloads/lesson04.py" download="lesson04.py">Python主例</a>
+<a href="./downloads/exercise04.R" download="exercise04.R">R演習</a>
+<a href="./downloads/exercise04.py" download="exercise04.py">Python演習</a>
+</div>
+<ol type="1">
+<li>ZIPを展開し、<code>lesson04</code> を
+<strong>work/exercises</strong> へコピー。</li>
+<li>ノートを開き、<strong>Ctrl + Shift + V</strong> で読む。</li>
+<li><strong>WSL: DSProg2026</strong> で、work全体を開いたまま実行。</li>
+</ol>
+<p>主例は変更せず残し、演習ファイルで変更・比較します。</p>
 <p class="source-note">
 出典：学生用§2
 </p>
@@ -74,7 +65,8 @@ id="workを開き4ファイルを保存する">workを開き、4ファイルを�
 <audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-work全体を開いたままにします。演習ファイルは最初から別に用意しています。主例を変更しないので、変更前と比較できます。インストールや環境更新はしません。
+このスライドから学生ノート、アールとパイソンの主例、未変更の演習を取得できます。まとめてジップを保存して展開し、中のレッスンゼロフォーを、ビジュアルスタジオコードのワーク、エクササイズへコピーしてください。以前のファイルがある場合は上書きせず相談します。個別に取得する場合も五つのファイルを同じ場所に置きます。
+ノートを開いてコントロール、シフト、ブイを押すと説明を読めます。数値は第四節、図と保存は第五節、表示設定は補足で確認できます。ワーク全体を開いたまま、ディーエスプログ二〇二六の授業タスクを使います。主例と演習は別に用意しているので、主例を変更せず比較に使いましょう。
 </aside>
 </section>
 <section class="slide level1">
@@ -254,13 +246,14 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a hr
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">quiz_score =</span> <span class="fu">c</span>(<span class="dv">40</span>,<span class="dv">60</span>,<span class="dv">80</span>,<span class="dv">70</span>,<span class="dv">55</span>,<span class="dv">65</span>,<span class="dv">75</span>,<span class="dv">85</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">80</span>,<span class="dv">90</span>)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p class="source-note">
-出典：主例R A
+詳しい読み方：学生ノート §4／主例R A
 </p>
 </div>
 <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-lesson04.RのAを見ます。各列に十二個ずつ値があります。レターズの一から十二はエーからエルです。コードは完成して配布しているので、同じ行を二重に追加しないでください。
+アールの主例のエーを見ます。先頭のライブラリー、ジージープロットツーは、既に入っている描画の道具を使うための行です。インストールの命令ではありません。
+表の各列には十二個の値があります。レターズはアルファベットの大文字の並びで、一から十二番目を取り出すとエーからエルになります。表と代入の読み方は第3回ノート第五節、今回の記録名は第4回ノート第四節に説明があります。主例は完成しているので同じ行を重ねて追加しません。
 </aside>
 </section>
 <section class="slide level1">
@@ -276,13 +269,14 @@ lesson04.RのAを見ます。各列に十二個ずつ値があります。レタ
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;中央値:&quot;</span>, <span class="fu">median</span>(records<span class="sc">$</span>study_minutes), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;標本標準偏差:&quot;</span>, <span class="fu">sd</span>(records<span class="sc">$</span>study_minutes), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
 <p class="source-note">
-出典：主例R A
+詳しい読み方：学生ノート §4／主例R A
 </p>
 </div>
 <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-件数、平均、中央値、標本標準偏差の四つを表示します。キャットの文字部分は結果を読み分けるための見出しです。計算する列と関数を一つずつ指してください。
+表をエヌローへ渡すと、行数の十二が返ります。学習時間の列をミーン、メディアン、エスディーへ渡すと、それぞれ平均、中央値、標本標準偏差が返ります。
+外側のキャットは、見出しの文字と計算結果を受け取って表示します。計算する内側と、表示する外側の役割を区別しましょう。ノート第四節の対応表で、渡すものと返るものを確認できます。
 </aside>
 </section>
 <section class="slide level1">
@@ -361,15 +355,17 @@ id="ヒストグラム時間帯ごとの件数">ヒストグラム：時間帯�
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>histogram <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(records, <span class="fu">aes</span>(<span class="at">x =</span> study_minutes)) <span class="sc">+</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">breaks =</span> breaks, <span class="at">closed =</span> <span class="st">&quot;left&quot;</span>,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;white&quot;</span>)</span></code></pre></div>
-<p>配布コードには軸・日本語ラベル・保存も用意。</p>
+<p><code>aes</code>で列を対応付け、<code>+</code>で描画と設定を追加。</p>
 <p class="source-note">
-出典：主例R B
+詳しい読み方：学生ノート §5／主例R B
 </p>
 </div>
 <audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-この画面は主例Bの重要な部分だけです。プラスでグラフの要素を続けます。closedをleftにすることで境界上の値を揃えます。全文をこの断片で置き換えないよう伝えます。
+ジージープロットの最初の引数は表です。エースの中で、横軸エックスに学習時間の列を対応させます。ここでの列名は引用符で囲みません。
+図の土台にプラスでヒストグラムの描き方を加えます。プラスは数値の足し算ではなく、図の要素を組み合わせています。ブレイクスに境界を渡し、クローズドをレフトにして左端を含めます。返された図の情報をヒストグラムという変数に保存します。
+主例には軸やラベルの設定も続きます。ノート第五節に読み方があり、表示設定の詳細は補足で参照できます。この断片で主例全体を置き換えないでください。
 </aside>
 </section>
 <section class="slide level1">
@@ -404,13 +400,14 @@ id="ヒストグラム時間帯ごとの件数">ヒストグラム：時間帯�
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code></pre></div>
 <p>横軸＝学習時間、縦軸＝小テスト得点。</p>
 <p class="source-note">
-出典：主例R C・学生用§5
+詳しい読み方：学生ノート §5／主例R C・学生用§5
 </p>
 </div>
 <audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-二つの値は同じ行の組でなければなりません。順番を別々に並べ替えると組が壊れます。ここでは表の行の対応を保ったまま点を描きます。
+散布図では、エースのエックスとワイに同じ行の二列を対応させます。ジオムポイントは点を描く要素を返し、サイズは点の大きさを指定します。組み合わせた図の情報をスキャターに保存します。
+主例のジージーセーブは、最初の引数のファイル名へ、プロットに指定した図を保存します。ヒストグラムならヒストグラム、散布図ならスキャターを渡します。図の作成とファイル保存は別の処理です。ノート第五節の保存の説明も確認しましょう。二つの列を別々に並べ替えると点の組が壊れるので、行の対応を保ちます。
 </aside>
 </section>
 <section class="slide level1">
@@ -447,13 +444,14 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a hr
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;quiz_score&quot;</span>: [<span class="dv">40</span>,<span class="dv">60</span>,<span class="dv">80</span>,<span class="dv">70</span>,<span class="dv">55</span>,<span class="dv">65</span>,<span class="dv">75</span>,<span class="dv">85</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">80</span>,<span class="dv">90</span>],</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
 <p class="source-note">
-出典：主例Python A
+詳しい読み方：学生ノート §4／主例Python A
 </p>
 </div>
 <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-ここからパイソンです。データフレームの書き方が変わっても、列名、値、件数、行の対応は同じです。lesson04.pyのAを見ます。前のRファイルへ混ぜないでください。
+パイソンの主例も、同じ三列、同じ十二件の表です。リストに文字列エービーシーと続く十二文字を渡すと、一文字ずつのリストが返り、行の記録名になります。
+先頭ではパンダスをピーディー、マットプロットリブのパイプロットをピーエルティーという短い名前で読み込みます。これも既に入っている道具を使う指定です。辞書や表の記号は第3回ノート第五節、今回の新しい行は第4回ノート第四節で読み返せます。アールのファイルへ混ぜず、パイソンの主例を開きます。
 </aside>
 </section>
 <section class="slide level1">
@@ -471,13 +469,14 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a hr
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;中央値:&quot;</span>, records[<span class="st">&quot;study_minutes&quot;</span>].median())</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;標本標準偏差:&quot;</span>, records[<span class="st">&quot;study_minutes&quot;</span>].std(ddof<span class="op">=</span><span class="dv">1</span>))</span></code></pre></div>
 <p class="source-note">
-出典：主例Python A
+詳しい読み方：学生ノート §4／主例Python A
 </p>
 </div>
 <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-同じ四つを表示します。ドットで列に対する計算を続ける書き方です。標準偏差はddofを一と明示して、アールと同じ分母にしています。
+レングスを表に使うと行数が返ります。取り出した学習時間の列にミーン、メディアン、エスティーディーを続けると、平均、中央値、標本標準偏差が返ります。丸括弧が空でも、ドットの左の列が計算対象です。
+ディーディーオーエフに一を渡すと、分母は件数から一を引いた値になります。返された数値を外側のプリントで表示します。ノート第四節の対応表でアールと比べてください。
 </aside>
 </section>
 <section class="slide level1">
@@ -495,13 +494,14 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a hr
 <p>fig＝図全体、ax＝描く場所。</p>
 <p>区間境界はRと同じ。</p>
 <p class="source-note">
-出典：主例Python B
+詳しい読み方：学生ノート §5／主例Python B
 </p>
 </div>
 <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-figとaxは配布コードを読むための名前として紹介します。オブジェクト指向の詳細は必修にしません。histへ渡した列と、binsへ渡した境界に注目します。
+サブプロッツは図全体と描く場所を作り、二つの値を返します。左のフィグ、エーエックスという二つの変数で、その順に受け取っています。フィグサイズの八と五は幅と高さで、単位はインチです。
+エーエックスのヒストには学習時間の列を渡し、ビンズに区間の境界を指定します。棒が図へ追加され、件数や境界の情報も返りますが、主例では戻り値を変数に保存せず、図を開いて確かめます。詳しい読み方はノート第五節です。クラスなどの詳しい仕組みを覚えることは今回の目標ではありません。
 </aside>
 </section>
 <section class="slide level1">
@@ -519,14 +519,17 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a h
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>fig.savefig(output <span class="op">/</span> <span class="st">&quot;lesson04_python_scatter.png&quot;</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code></pre></div>
+<p>余白調整 → 保存 → 図を閉じる（保存したPNGは残る）。</p>
 <p class="source-note">
-出典：主例Python C
+詳しい読み方：学生ノート §5／主例Python C
 </p>
 </div>
 <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-点の横と縦の列を確認します。図の余白調整、保存、終了は配布済みです。この断片の前にはfigとaxの作成と軸設定があります。ファイル名を言語ごとに分けて上書きを防いでいます。
+スキャターの二つの引数は、横軸と縦軸に使う列です。この前に新しいフィグとエーエックスを用意し、散布図を別の図へ描いています。
+タイトレイアウトは余白の調整、セーブフィグは指定したパスへの保存、クローズは使い終えた図を閉じる処理です。クローズしても保存済みの画像は消えません。ディーピーアイの百五十は一インチあたりの画素数で、幅八、高さ五インチなら千二百かける七百五十画素になります。
+これらは戻り値を保存するためではなく、図を整えてファイルにするために呼びます。ノート第五節と末尾の補足で役割を読み返せます。
 </aside>
 </section>
 <section class="slide level1">
@@ -565,13 +568,14 @@ Pythonの主例全体を実行して、数値と画像を開いてください�
 </ul>
 <p>画像を開き、軸・単位・棒・点を読む。</p>
 <p class="source-note">
-出典：学生用§5
+詳しい読み方：学生ノート §5／学生用§5
 </p>
 </div>
 <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
 </audio>
 <aside class="notes">
-タスクの作業場所はホーム、データサイ、workです。その下のexercises、lesson04、outputへ保存されます。ファイルがあるだけでなく開いて読めることを確認してください。
+保存先はタスクの作業場所、ワークからたどる相対パスです。アールではパスを文字列にし、ディレクトリークリエイトでフォルダーを用意します。パイソンではパスという道具で保存場所を表し、メイクディレクトリーで途中のフォルダーも作ります。どちらも既存フォルダーを再利用する指定です。
+アールのファイルパス、パイソンのパスに使うスラッシュは、保存場所とファイル名をつなぎます。ここでスラッシュは数値の割り算ではありません。最後に表示される絶対パスと、エクスプローラーのアウトプットを照合してください。ノート第五節に、各引数と保存の順序をまとめています。
 </aside>
 </section>
 <section class="slide level1">
@@ -997,9 +1001,10 @@ id="質問確認止まった箇所を教えてください">質問・確認：�
 主例の画像を開いたままだと変更が見えません。一つずつ確認し、それでも解決しなければエラーメッセージを教員へ見せます。原因がわからないまま更新や再インストールへ進みません。
 </aside>
 
+
 </section></div></div>
 <script src="reveal/reveal.js"></script>
 <script src="image-zoom.js"></script>
+<script src="handout-download.js"></script>
 <script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'slide'});</script>
-</body>
-</html>
+</body></html>
