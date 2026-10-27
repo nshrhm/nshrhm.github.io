@@ -590,3 +590,5 @@ body.image-zoom-open {
 .reveal .task-menu-image,
 .reveal .task-choice-image,
 .reveal .task-output-image { width: auto; height: auto; object-fit: contain; }
+.reveal .handout-links { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0.6em 0; }
+.reveal .handout-links a { padding: 0.3em 0.5em; border: 2px solid currentColor; border-radius: 6px; font-size: 0.8em; }
