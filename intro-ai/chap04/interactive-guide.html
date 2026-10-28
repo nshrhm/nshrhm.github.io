@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第5回：図解教材の使い方・学び方">
+<title>第5回：図解教材の使い方・学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第5回：図解教材の使い方・学び方</h1>
+<nav aria-label="教材の移動">
+<a href="interactive.html" target="_blank" rel="noopener">図解教材を開く</a> ／ <a href="index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの使い方</a>
+</nav>
+<h2 id="開き方と使い方">開き方と使い方</h2>
+<p><code>interactive.html</code> をJavaScriptが有効なブラウザーで開く。ダウンロードして配布する場合もこの1ファイルだけで動く。ネット接続・Python・サーバー・インストールは不要。外部の出典リンクを開く場合だけネット接続が必要になる。</p>
+<p>上部の6つのテーマか「前のテーマ」「次のテーマ」で移動する。まず問いの答えを予想し、「次の手順」で図と結果の変化を観察する。「前の手順」で戻り、「最後まで」で結果を確認できる。自動再生は行わない。「詳しく見る」と確認問題は開閉できる。</p>
+<p>各テーマの編集状態は独立している。テーマを移動しても保持し、推論に使う入力や規則を変更すると、そのテーマの手順を最初に戻して計算し直す。以前の入力で導いた結論を持ち越さない。「リセット」はそのテーマの入力と手順、詳細表示を初期状態に戻す。ページの再読み込みでは全テーマが初期状態になる。保存・送信・成績記録は行わない。</p>
+<p>投影時は「投影表示にする」で導入文や詳細を隠し、図・操作・結果を近くに配置する。詳細の設定を変更する場合は通常表示に戻す。スマートフォンでは縦に配置し、関係図は文字の大きさを保って図内を横スクロールできる。標準の選択欄・チェックボックス・ボタンを使い、Tabで移動、矢印キーで選択、Enter／Spaceで操作できる。図内の横スクロールも左右キーで操作できる。図のドラッグは必須にしない。</p>
+<p>初期事実は●、規則で追加した事実は◆。条件の確認済みは○、不足・未証明は?、確認中は…で表し、色に加えて形・文字・線種を使う。</p>
+<p>各テーマへのリンクで対応する画面を直接開けます。テーマを切り替えるとURL末尾が変わり、ブラウザーの戻る・進むでも移動できます。編集状態は開いているタブの中で保持しますが、URLには保存しません。リンクを別タブで開いた場合や再読み込み時は初期状態です。</p>
+<h2 id="スライドとの対応と操作例">スライドとの対応と操作例</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>テーマ</th>
+<th>スライド</th>
+<th>初期状態と観察する操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01 関係をたどる</td>
+<td>5〜12・25〜26</td>
+<td>スマホ→携帯型端末→コンピュータの経路を追う。目標をノートPCにすると経路なし。親をノートPCに変えると到達可能になる。未知語・循環は選択式の例でも確認できる</td>
+</tr>
+<tr>
+<td>02 既定値と例外</td>
+<td>9〜10・13〜16</td>
+<td>既定7日より端末Aの個別3日を優先。個別を未指定にすると7日、両方未指定なら期間は不明。展示専用では期間とは別に貸出不可と表示する</td>
+</tr>
+<tr>
+<td>03 事実から進む</td>
+<td>17〜21</td>
+<td>初期事実は利用登録済み・講習修了・在庫あり。R1で利用資格あり、R2で貸出候補を追加。R3は予約確認済みが不足する。予約を追加するとR3まで進み、講習を外すと追加がなくなる</td>
+</tr>
+<tr>
+<td>04 目標から確認</td>
+<td>22〜24</td>
+<td>初期目標は貸出候補。R2の条件からR1の条件へ進み、初期事実から確認結果を返す。貸出準備可を目標にすると予約確認済みが不足する。詳細で結論から前提を逆算できない例を試す</td>
+</tr>
+<tr>
+<td>05 不明と「なし」</td>
+<td>26〜28</td>
+<td>初期台帳はAが記載済み、Bは未記載。開世界ではBの予約は不明。閉世界かつ今日の台帳が完全との仮定を置くと予約なしとして扱う。完全性を外すと不明になる</td>
+</tr>
+<tr>
+<td>06 根拠を説明</td>
+<td>29〜35</td>
+<td>基準の規則と事実で推論し、貸出候補を選ぶとR2→R1の説明経路と初期事実を強調する。R2を無効にすると貸出候補は導けず、R1の利用資格ありは残る</td>
+</tr>
+</tbody>
+</table>
+<p>06の説明で表示するR2→R1は結論から根拠へ戻る順序。新しい事実を追加した順序R1→R2は詳細の履歴で確認できる。事実の表示は文字列順で、推論の順序ではない。</p>
+<h2 id="予想操作結果説明の練習">予想・操作・結果・説明の練習</h2>
+<p>毎回リセットした状態から始め、操作前に答えを予想します。結果を見たら、変えた一つの条件と結論の関係を説明してください。</p>
+<h3 id="関係をたどる">01 関係をたどる</h3>
+<p><a href="interactive.html#network" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>予想する問い：</strong> スマホからコンピュータへは、どの経路を通るか？</li>
+<li><strong>操作：</strong> 「次の手順」で終点までたどり、目標をノートPCへ変えて再実行する。</li>
+<li><strong>結果の目印：</strong> 最初はスマホ→携帯型端末→コンピュータ。変更後は経路なし。</li>
+<li><strong>説明：</strong> 経路がないという結果を、現実の否定と区別する。</li>
+</ul>
+<h3 id="既定値と例外">02 既定値と例外</h3>
+<p><a href="interactive.html#frame" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>予想する問い：</strong> 個別3日と既定7日があるとき、何日になるか？</li>
+<li><strong>操作：</strong> 初期状態を確かめ、個別を未指定にして再実行する。既定も未指定にする。</li>
+<li><strong>結果の目印：</strong> 3日→7日→不明。値の出所も変わる。</li>
+<li><strong>説明：</strong> 個別指定・既定値・未指定の違いを説明する。</li>
+</ul>
+<h3 id="事実から進む">03 事実から進む</h3>
+<p><a href="interactive.html#forward" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>予想する問い：</strong> 予約確認を追加すると、どの規則まで使えるか？</li>
+<li><strong>操作：</strong> 基準で最後まで進む。予約確認済みにチェックして再実行する。リセット後に講習修了を外す。</li>
+<li><strong>結果の目印：</strong> 基準はR1→R2、予約追加はR1→R2→R3、講習なしは追加なし。</li>
+<li><strong>説明：</strong> 結論を変えた条件を挙げる。図とNotebookの同じ入力を比べる。</li>
+</ul>
+<h3 id="目標から確認">04 目標から確認</h3>
+<p><a href="interactive.html#backward" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>予想する問い：</strong> 貸出準備可を証明するには、何が足りないか？</li>
+<li><strong>操作：</strong> 目標を貸出準備可へ変更して「次の手順」で条件をたどる。予約確認を追加して再実行する。</li>
+<li><strong>結果の目印：</strong> 基準では予約確認が未証明。追加後は必要条件を確認できる。</li>
+<li><strong>説明：</strong> 結論から必要条件を確認する手順と、逆向きの含意を区別する。</li>
+</ul>
+<h3 id="不明となし">05 不明と「なし」</h3>
+<p><a href="interactive.html#world" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>予想する問い：</strong> Bの予約が未記載なら、予約なしと言えるか？</li>
+<li><strong>操作：</strong> Bを選び、開世界と閉世界を比較する。閉世界で完全性の仮定を外す。</li>
+<li><strong>結果の目印：</strong> 未記載は通常不明。閉世界かつ台帳が完全という仮定のときだけ予約なし。</li>
+<li><strong>説明：</strong> 記載内容と、完全性について置いた仮定を分けて説明する。</li>
+</ul>
+<h3 id="根拠を説明">06 根拠を説明</h3>
+<p><a href="interactive.html#expert" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>予想する問い：</strong> 貸出候補という結論を、どの規則と事実で説明できるか？</li>
+<li><strong>操作：</strong> 基準で最後まで進み、貸出候補を選ぶ。R2を無効にしてやり直す。</li>
+<li><strong>結果の目印：</strong> 基準はR2→R1の根拠を表示。R2を外すと貸出候補を導けず、利用資格ありは残る。</li>
+<li><strong>説明：</strong> 導出順R1→R2と説明順R2→R1を区別する。</li>
+</ul>
+<h2 id="プログラムと共通すること異なること">プログラムと共通すること・異なること</h2>
+<p>端末分類・R1〜R3・基準の事実はPython／Notebookと同じです。<a href="programs/guide.html">プログラムの使い方</a>から保存し、関係探索と前向き推論の結果を比較できます。後ろ向き推論・フレーム・世界仮説は図解教材側に追加した学習用機能です。</p>
+<p>「詳しく見る」には関係の種類や計算の制約を載せています。図には、計算結果から描くものと、個体・部分などの意味を説明する概念図があります。現実の貸出判断や汎用の推論処理系ではありません。</p>
+<h2 id="オフラインで使う元に戻す">オフラインで使う・元に戻す</h2>
+<p><a href="interactive.html" download>図解教材のHTMLを保存</a>すると、この1ファイルだけで操作できます。スライド・マニュアル・外部出典のリンク先は別のファイルなので、リンクを使う場合は公開サイトへ戻ってください。</p>
+<p>リセットは表示中のテーマだけを戻します。全テーマを最初からやり直すときはページを再読み込みします。端末やブラウザーを変えても入力は引き継がれません。</p>
+</main></body></html>
