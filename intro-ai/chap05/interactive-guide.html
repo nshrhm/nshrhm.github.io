@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第6回：図解教材の使い方・学び方">
+<title>第6回：図解教材の使い方・学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第6回：図解教材の使い方・学び方</h1>
+<nav aria-label="教材の移動">
+<a href="interactive.html" target="_blank" rel="noopener">図解教材を開く</a> ／ <a href="index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの使い方</a>
+</nav>
+<p>学習目標は「出力・重み・状態のどれが変わったか」を説明することです。計算の意味を図で確かめ、対応するNotebookの実験と比べます。</p>
+<h2 id="予想操作結果説明の練習">予想・操作・結果・説明の練習</h2>
+<p>毎回リセットして、結果を予想してから操作します。テーマへのリンクはその画面を直接開きます。テーマ切替はURLにも反映され、ブラウザーの戻る・進むに対応します。テーマ間の移動では入力を保持しますが、ページを再読み込みすると初期状態へ戻ります。</p>
+<h3 id="ニューロン">01 ニューロン</h3>
+<p><a href="interactive.html#neuron" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>問い・予想：</strong> しきい値を−2にすると出力は？</li>
+<li><strong>操作：</strong> しきい値を−2へ変更し、最後まで進める。活性化関数も比較する。</li>
+<li><strong>結果：</strong> 総入力0でステップは1、シグモイドは0.5、ReLUは0。</li>
+<li><strong>説明：</strong> しきい値を一度だけ引く計算と、活性化関数による変換を区別する。</li>
+</ul>
+<h3 id="xorと中間層">02 XORと中間層</h3>
+<p><a href="interactive.html#xor" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>問い・予想：</strong> 入力(1,0)の答えはどの中間値で変わる？</li>
+<li><strong>操作：</strong> 入力(1,0)を選び、h₁のしきい値−1と−2を比較する。</li>
+<li><strong>結果：</strong> h₁の総入力−1→0、最終出力1→0。</li>
+<li><strong>説明：</strong> 固定重みで計算できることと、学習で重みを得ることを区別する。</li>
+</ul>
+<h3 id="勾配と更新">03 勾配と更新</h3>
+<p><a href="interactive.html#gradient" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>問い・予想：</strong> 学習率を大きくすれば損失は下がる？</li>
+<li><strong>操作：</strong> 1重みの例で学習率0.125と1を選び、それぞれ最後まで進める。</li>
+<li><strong>結果：</strong> 初期損失0.5から、更新後は0.125と4.5。</li>
+<li><strong>説明：</strong> 勾配を求める処理と重みを更新する処理、更新幅の影響を説明する。</li>
+</ul>
+<h3 id="rnnの状態">04 RNNの状態</h3>
+<p><a href="interactive.html#rnn" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>問い・予想：</strong> 入力の順序だけで最後の状態は変わる？</li>
+<li><strong>操作：</strong> 系列[1,0]と[0,1]を切り替え、最後まで進める。</li>
+<li><strong>結果：</strong> 最後の状態0.5と1。各列は初期状態0から開始。</li>
+<li><strong>説明：</strong> 状態の更新と重みの学習を区別する。</li>
+</ul>
+<h3 id="確率と状態">05 確率と状態</h3>
+<p><a href="interactive.html#energy" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>問い・予想：</strong> エネルギーは毎回下がる？</li>
+<li><strong>操作：</strong> 初期状態で進めた後、詳細のエネルギーが上がる例を選び、次の手順へ進む。</li>
+<li><strong>結果：</strong> 確定的な例はE=1→0。指定乱数0.1の確率的な例はE=0→1。</li>
+<li><strong>説明：</strong> 確率的に状態を選ぶことと、結合の重みを学習することを区別する。</li>
+</ul>
+<h3 id="somの近傍">06 SOMの近傍</h3>
+<p><a href="interactive.html#som" target="_blank" rel="noopener">このテーマを開く</a></p>
+<ul>
+<li><strong>問い・予想：</strong> 勝者だけを更新すると隣接Bは動く？</li>
+<li><strong>操作：</strong> 初期状態を最後まで進め、近傍係数0.5と0を比較する。</li>
+<li><strong>結果：</strong> Aは(0.5,0)。Bは(1.75,1.5)と元の(2,2)。</li>
+<li><strong>説明：</strong> 入力空間の距離と、地図A—B—Cの隣接を区別する。</li>
+</ul>
+<h2 id="保存元に戻す困ったとき">保存・元に戻す・困ったとき</h2>
+<p><a href="interactive.html" download>図解教材を保存</a>すると、この1ファイルをブラウザーで開いて操作できます。スライド・マニュアルは別ファイルなので、公開サイトのリンクから開いてください。</p>
+<p>「リセット」は現在のテーマの設定・手順・詳細を戻します。全テーマを戻すにはページを再読み込みします。反応しない場合はJavaScriptが有効か、HTMLをテキストエディターではなくブラウザーで開いているかを確認してください。</p>
+<p>Tabで移動し、選択欄は矢印キー、ボタンはEnter／Spaceで操作できます。SOMのドラッグが難しい場合は数値欄を使います。投影表示で隠れた設定を操作するときは通常表示へ戻してください。</p>
+<p><a href="programs/guide.html">Notebookで同じ例を実行する</a>と、図で変えた入力とコードの引数を対応させられます。表示は原則小数6桁へ丸められるため、内部の値と表示桁を区別してください。</p>
+<h2 id="使い方">使い方</h2>
+<p><code>interactive.html</code> をブラウザーで直接開く。CSS・JavaScript・SVGと固定データを内包する単一ファイルで、インターネット接続・Python・インストールは不要。出典の外部リンクを開く場合のみネット接続が必要になる。</p>
+<ol type="1">
+<li>テーマを選び、「まず予想」に答える。</li>
+<li>入力や設定を変え、「次の手順」で値の流れを確かめる。「前の手順」で戻り、「最後まで」で結果を表示できる。</li>
+<li>結果の数値だけでなく、変わったものが入力・出力・重み・状態のどれかを説明する。</li>
+<li>「詳しく見る」で計算式や比較表、「確認」で問いの解説を開く。</li>
+</ol>
+<p>各テーマの状態は独立している。主な計算条件を変えると、そのテーマの途中経過を破棄して手順0へ戻る。「リセット」は設定・手順・詳細表示を初期状態に戻す。非線形変換の別例とパーセプトロンの別例は、本体の計算条件とは独立している。自動再生・保存・送信は行わない。</p>
+<p>授業では右上の「投影表示にする」を選ぶと説明を折りたたみ、図と結果を優先する。自習では通常表示を使う。スマートフォンでは縦に配置する。横長の計算図は図の領域内で左右へスクロールでき、図をキーボードでフォーカスして矢印キーでも動かせる。SOMの入力はクリック・タップ・ドラッグまたは整数の数値欄で変更できる。</p>
+<h2 id="つの体験とスライド対応">6つの体験とスライド対応</h2>
+<p>スライド番号は スライド の1始まり。プログラミング経験を前提にせず、数式は詳細表示へ分けている。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>テーマ</th>
+<th>操作と観察</th>
+<th>スライド</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01 ニューロン</td>
+<td>入力・重み・しきい値を変え、積→総入力→活性化関数の順で追う。ステップ・シグモイド・ReLUの曲線と現在点を比較する。詳細でソフトマックスと独立したシグモイドを比較</td>
+<td>4〜10</td>
+</tr>
+<tr>
+<td>02 XORと中間層</td>
+<td>4入力を選び、中間の総入力・出力・最終出力を表示。しきい値変更で総入力0の規約を確かめる。入力空間と中間表現を並べ、別例では非線形変換を外す</td>
+<td>11〜17</td>
+</tr>
+<tr>
+<td>03 勾配と更新</td>
+<td>順伝播→損失→勾配→更新→再計算を分ける。学習率を変え損失の増減を比較。1重み／2段の例と、別のパーセプトロン更新を試す</td>
+<td>16・18〜23</td>
+</tr>
+<tr>
+<td>04 RNNの状態</td>
+<td>系列の順序と各入力・共有重みrを変え、各時刻の状態を計算。2時刻と4時刻の図で、状態変化と重みの学習を区別</td>
+<td>24〜27</td>
+</tr>
+<tr>
+<td>05 確率と状態</td>
+<td>対称結合した2ユニットを一つずつ更新。確定的／確率的な更新と全4状態のエネルギーを比較。シード、乱数の条件指定、状態履歴を確認</td>
+<td>28〜30</td>
+</tr>
+<tr>
+<td>06 SOMの近傍</td>
+<td>入力空間で勝者を選ぶ→地図で隣接を選ぶ→ベクトルを1回更新。学習率と隣接係数を変え、距離の近さと地図の近さを区別</td>
+<td>31〜35</td>
+</tr>
+</tbody>
+</table>
+<h2 id="データの由来と基準値">データの由来と基準値</h2>
+<p>固定ネットワークと計算例は今年度の <a href="programs/neuralnet.py">neuralnet.py</a>・<a href="programs/neuralnet.ipynb">単体Notebook</a> に合わせた。固定例はPython演習と同じ条件を使う。昨年度の固定ネットワークを数式に合わせて修正した例と、今年度作成した更新例を使う。</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>計算</th>
+<th>初期条件・期待値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ニューロン</td>
+<td>入力(1,0)、重み(−2,3)、しきい値−1 → 総入力−1、ステップ出力0。しきい値は合計から一度引く</td>
+</tr>
+<tr>
+<td>固定XOR</td>
+<td>入力(0,0),(0,1),(1,0),(1,1)の出力は0,1,1,0。中間重み(−2,3),(−2,1)、しきい値−1,0.5。出力重み(−60,94)、しきい値−1</td>
+</tr>
+<tr>
+<td>境界</td>
+<td>ステップは総入力0でも1。中間h₁のしきい値を−2にすると、入力(1,0)でh₁の総入力0・出力1、最終出力0</td>
+</tr>
+<tr>
+<td>1重みの更新</td>
+<td>x=2、t=3、w=2、η=0.125 → 出力4、損失0.5、勾配2、更新後w=1.75、損失0.125。η=1なら損失4.5へ増加</td>
+</tr>
+<tr>
+<td>2段の更新</td>
+<td>x=1、t=4、a=2、b=3、η=0.125 → 勾配a=6・b=4、更新後a=1.25・b=2.5、損失2→0.3828125</td>
+</tr>
+<tr>
+<td>RNN</td>
+<td>hₜ=ReLU(xₜ+r hₜ₋₁)、r=0.5、初期0。[1,0]→状態[1,0.5]、[0,1]→[0,1]。r=0では[1,0]→[1,0]</td>
+</tr>
+<tr>
+<td>SOM</td>
+<td>入力(1,0)、A(0,0)・B(2,2)・C(4,0)、η=0.5、隣接係数0.5。距離²は1・5・9、勝者A。更新後A(0.5,0)・B(1.75,1.5)・C(4,0)</td>
+</tr>
+</tbody>
+</table>
+<p>SOMの同距離ではA→B→Cの順で先のノードを選ぶ。地図の並びはA—B—Cで、入力空間の座標とは別。設定変更ごとに元の3代表ベクトルから計算する。重なったベクトルのラベルはまとめて表示する。</p>
+<p>内部は丸めずに計算し、画面は原則小数6桁に丸める。そのため2段の損失0.3828125は画面では0.382813となる。ソフトマックスは最大スコアを引いてから指数を計算し、シグモイドも極端な入力でのオーバーフローを避ける。</p>
+<h2 id="htmlに追加した小例">HTMLに追加した小例</h2>
+<p>Pythonにない以下の例は、教材用の追加実装として区別する。</p>
+<ul>
+<li>非線形変換の比較：h=2x+1、o=3h−2にReLUを挟む場合と外す場合を比較。固定XORネットワーク自体を訓練・変更する操作ではない。</li>
+<li>パーセプトロン：入力(1,0)、重み(−2,3)、バイアス1、η=1に毎回戻して1回だけ更新。正解1なら重み(−1,3)・バイアス2となり出力1、正解0なら変更なし。ステップ関数を微分して更新する処理ではない。</li>
+<li>4時刻のRNN：[1,−1,2,0]から状態[1,0,2,1]を求める。各時刻の入力は編集でき、共有重みを固定した順方向の計算を観察する。</li>
+<li>2ユニットの状態更新：以下の固定例を使い、重みの学習は行わない。</li>
+</ul>
+<p>状態はs₁,s₂∈{0,1}、結合w₁₂=w₂₁=2、バイアスb₁=b₂=−1、自己結合なし。エネルギーは E=−2s₁s₂+s₁+s₂。全状態(0,0),(0,1),(1,0),(1,1)のエネルギーは0,1,1,0になる。</p>
+<p>ユニット1・2を交互に、一つずつ更新する。総入力zᵢ=2sⱼ−1を使い、ホップフィールド型では正なら1、負なら0、0なら保持。ボルツマン型では温度1としてP(sᵢ=1)=σ(zᵢ)、q&lt;Pなら1とする。初期状態(0,0)、q=0.1なら最初の更新で(1,0)となり、Eは0→1へ上がる。</p>
+<p>乱数生成器はMulberry32、初期シード42、指定可能範囲は0〜4294967295の整数。同じ設定を最初から再計算するので、手順を戻して進めても同じ履歴になる。「最後まで」は20回の更新。q=0.1／0.9に固定する操作は結果を観察するための条件指定で、正しいサンプリングとは扱わない。</p>
+<p>確率の棒グラフは4状態を列挙して exp(−E) を正規化した値で、20回の履歴から推定した頻度ではない。最低エネルギー状態に達しても、望む記憶の学習や収束を実証したことにはならない。</p>
+<h2 id="説明の根拠と範囲">説明の根拠と範囲</h2>
+<p>以下の説明を2026年10月22日に参照した。具体的な係数・入力範囲・表示手順はこの教材の設計であり、資料が同じ教材例を掲載しているという意味ではない。</p>
+<ul>
+<li><a href="https://cs231n.github.io/neural-networks-1/">Stanford CS231n: Neural Networks Part 1</a>：人工ニューロン、活性化関数、非線形性。</li>
+<li><a href="https://cs231n.github.io/optimization-2/">Stanford CS231n: Backpropagation</a>：計算グラフと連鎖律による勾配。</li>
+<li><a href="https://cs231n.github.io/linear-classify/">Stanford CS231n: Linear Classification</a>：スコアとソフトマックスの正規化。</li>
+<li><a href="https://docs.pytorch.org/docs/2.14/generated/torch.nn.RNN.html">PyTorch RNN</a>：過去の隠れ状態を使う再帰計算とReLUの選択。教材では入力重み1・状態重みr・バイアス0・状態1次元へ簡略化。</li>
+<li><a href="https://www.cs.toronto.edu/~hinton/csc321/readings/boltz321.pdf">Hinton: Boltzmann Machines</a>：0/1状態、エネルギー、逐次的な確率更新。本教材は2ユニットの状態更新のみで、重みの学習を実装しない。</li>
+<li><a href="https://users.ics.aalto.fi/mikkok/thesis/book/node12.html">Kurimo: Self-organizing map algorithm</a>：入力に近い勝者と地図上の近傍の更新。教材では3ノード・固定近傍・1回の更新へ簡略化。</li>
+</ul>
+<p>入力を変える推論、状態を更新する計算、重みを学習する処理を分けて扱う。固定XORを表現できることは学習成功や汎化性能の証拠ではない。2段の勾配例は線形・バイアスなしで、更新前の値から両方の勾配を求めて同時に更新する。多層非線形ネットワークの訓練、BPTT、LSTM／GRU、ボルツマンマシンの学習、RBM、温度最適化、SOMの反復学習・実データ性能は範囲外。</p>
+</main></body></html>

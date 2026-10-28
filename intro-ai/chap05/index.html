@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>第6回 ニューラルネットワーク</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="白濵 成希">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+<!-- 1: 今年度の授業回と日付を反映 -->
+<div class="slide-body title-block">
+<h2>第6回 ニューラルネットワーク</h2>
+<p class="eyebrow">
+人工知能概論 ／ 2026年度 秋学期
+</p>
+<p class="lead">
+小さな計算をつなぎ、学習と状態の変化を追う
+</p>
+<p class="authors">
+白濵 成希
+</p>
+<p class="conference">
+2026年11月5日（木）
+</p>
+<p class="source-note">
+出典：今年度シラバス・schedule.md
+</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今日はニューラルネットワークの計算を学びます。最初は掛け算と足し算だけの小さな例から始めます。 その計算をつないで答えを出すことと、重みを変えて学習することを分けて考えます。 後半は、過去の状態、確率的な変化、地図上の近さを利用する三つの方法へ進みます。
+</aside>
+</section>
+<section>
+<!-- 2: 既存の説明を図解・自習の観察へつなぐ -->
+<div class="slide-body ">
+<h2>今日の到達目標</h2>
+<ul>
+<li><strong>計算する：</strong> 入力・重み・しきい値から出力を求める。</li>
+<li><strong>区別する：</strong> 順伝播、損失、誤差逆伝播、重み更新を分ける。</li>
+<li><strong>比較する：</strong> RNN・ボルツマンマシン・SOMの違いを説明する。</li>
+<li><strong>確かめる：</strong> 一つの条件を変え、途中の値と結果を比べる。</li>
+</ul>
+<p class="material-links">
+<a href="interactive.html" target="_blank" rel="noopener">図解教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作の使い方</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの使い方</a>
+</p>
+<p class="source-note">
+出典：今年度授業計画／授業用の到達目標
+</p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+記号を暗記することよりも、値がどの順で変わるかを追えることが大切です。 プログラムは完成版を用意しています。Pythonの細かな文法や微分の計算だけで理解を判定することはしません。 今日の日程にある三つのネットワークも、何を変化させるモデルなのかという視点で整理します。 スライドの入口から図解教材と二つの使い方を開けます。読むだけでなく、答えを予想して操作し、Notebookで同じ例を実行してみましょう。変更は一つずつ行い、結果の理由を説明してください。
+</aside>
+</section>
+<section>
+<!-- 3: 既習の知識表現との接続 -->
+<div class="slide-body ">
+<h2>前回の規則から、今回の重みへ</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>前回のエキスパートシステム</th>
+<th>今回のニューラルネット</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>判断の形</td>
+<td>人が書いた条件と結論</td>
+<td>数値の入力と重みの計算</td>
+</tr>
+<tr>
+<td>改善する対象</td>
+<td>知識・規則</td>
+<td>重み・バイアスなど</td>
+</tr>
+<tr>
+<td>確認するもの</td>
+<td>規則を適用した道筋</td>
+<td>計算・損失・未知データでの結果</td>
+</tr>
+</tbody>
+</table>
+<p>どちらも、<strong>入力と結果を確かめる作業</strong>が必要。</p>
+<p class="source-note">
+出典：第5回本文／S1
+</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+前回は、条件がそろったら結論を追加する規則を扱いました。今日は、数値と数値を掛け合わせて出力を求めます。 人が重みを設定することもできますし、データに合わせて重みを学習することもできます。 これは二つの教材の比較です。規則とニューラルネットを組み合わせるシステムも考えられます。
+</aside>
+</section>
+<section>
+<!-- 4: 脳の完全再現という誤解を避ける -->
+<div class="slide-body ">
+<h2>人工ニューロンは、計算のためのモデル</h2>
+<div class="flow" role="img" aria-label="受け取る、計算する、渡すというモデル">
+<div class="flow-box">
+入力を受け取る
+</div>
+<div class="flow-arrow" aria-hidden="true">
+→
+</div>
+<div class="flow-box">
+重み付き和と<br>活性化関数
+</div>
+<div class="flow-arrow" aria-hidden="true">
+→
+</div>
+<div class="flow-box">
+次へ値を渡す
+</div>
+</div>
+<ul>
+<li>神経系から着想を得た、<strong>数値計算のモデル</strong>。</li>
+<li>生物の神経細胞・脳の働きを完全に再現するものではない。</li>
+<li>多くの計算単位を接続し、入出力関係を表す。</li>
+</ul>
+<p class="source-note">
+出典：S1／S2
+</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+生物の神経細胞のように情報を受け取り、次へ渡すという発想を使います。ただし、生物の複雑な現象をそのまま再現するわけではありません。 本時は、入力を数値にし、重みを掛け、足し合わせる計算として読みます。 一つの計算単位と、それらをつないだネットワーク全体を区別してください。
+</aside>
+</section>
+<section>
+<!-- 5: しきい値の回数とバイアスの符号を明示 -->
+<div class="slide-body ">
+<h2>一つのニューロン：掛ける、足す、変換する</h2>
+<p class="formula">
+u = x₁w₁ + x₂w₂ − v　　z = f(u)
+</p>
+<table>
+<thead>
+<tr>
+<th>記号</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x₁, x₂</td>
+<td>入力の数値</td>
+</tr>
+<tr>
+<td>w₁, w₂</td>
+<td>各入力に掛ける重み（結合荷重）</td>
+</tr>
+<tr>
+<td>v</td>
+<td>合計から一度だけ引くしきい値</td>
+</tr>
+<tr>
+<td>u → z</td>
+<td>総入力を、活性化関数 f で出力へ変換</td>
+</tr>
+</tbody>
+</table>
+<p><strong>バイアス b = −v</strong> とおけば、最後に b を足す書き方になる。</p>
+<p class="source-note">
+出典：S1／S2
+</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+二つの入力を例にします。入力ごとに対応する重みを掛け、結果を足します。その合計からしきい値を一回引きます。 最後に、総入力を活性化関数へ渡します。関数を掛け算するという意味ではありません。 別の教材ではしきい値を引く代わりにバイアスを足します。バイアスは、ここで使うしきい値の符号を逆にした値です。
+</aside>
+</section>
+<section>
+<!-- 6: 既存の説明を図解・自習の観察へつなぐ -->
+<div class="slide-body ">
+<h2>具体例：負の重みと、しきい値</h2>
+<p>入力 (x₁, x₂) = (1, 0)、重み (w₁, w₂) = (−2, 3)、v = <strong>−1</strong>。</p>
+<p class="formula">
+u = 1 × (−2) + 0 × 3 − (−1) = −1
+</p>
+<ul>
+<li>負の重みは、その入力が増えたとき総入力を下げる向きに働く。</li>
+<li>しきい値が負なら、<strong>負の数を引くので加算</strong>になる。</li>
+<li>しきい値を入力の個数だけ引かない。</li>
+</ul>
+<p>次に、u = −1 を活性化関数へ渡す。</p>
+<p class="material-links">
+<a href="interactive.html#neuron" target="_blank" rel="noopener">操作：ニューロン</a> — しきい値を−2にすると、総入力と出力は？
+</p>
+<p class="source-note">
+出典：S1／表5.Aからの手計算
+</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+まず入力一、ゼロの場合を手で計算しましょう。最初の積はマイナス二、次の積はゼロです。 しきい値はマイナス一なので、その値を引くと一を足すことになり、総入力はマイナス一です。 重みの符号、入力の値、しきい値の処理を別々に追うと、プログラムでも途中の間違いを見つけやすくなります。 図解教材のニューロンを別のタブで開き、しきい値をマイナス二へ変えてください。総入力がゼロになることを予想し、ステップ関数が境界で一を返すことを確かめましょう。
+</aside>
+</section>
+<section>
+<!-- 7: 境界と勾配による学習の限界を補足 -->
+<div class="slide-body ">
+<h2>ステップ関数：境界を決めて0か1へ</h2>
+<p class="formula">
+f(u) = 1（u ≥ 0）／ 0（u &lt; 0）
+</p>
+<table>
+<thead>
+<tr>
+<th>総入力 u</th>
+<th>−2</th>
+<th>−1</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>出力 f(u)</td>
+<td>0</td>
+<td>0</td>
+<td><strong>1</strong></td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>この教材では <strong>u = 0 の出力を1</strong> とする。</li>
+<li>境界以外では傾きが0、境界では微分できない。</li>
+<li>通常の勾配を使う学習で、重み調整の情報を得にくい。</li>
+</ul>
+<p class="source-note">
+出典：S1／教材の定義
+</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ステップ関数は、総入力がゼロ以上かどうかで二値を返します。直前の例ではマイナス一なので出力はゼロです。 境界を含める側は、式とコードでそろえる必要があります。 境界以外でも傾きがゼロになる点が学習では問題です。単にゼロの場所だけ微分できない、という説明では不十分です。
+</aside>
+</section>
+<section>
+<!-- 8: 出力範囲と確率の校正を区別 -->
+<div class="slide-body ">
+<h2>シグモイド：なめらかに0と1の間へ</h2>
+<p class="formula">
+σ(u) = 1 / (1 + exp(−u))
+</p>
+<table>
+<thead>
+<tr>
+<th>総入力 u</th>
+<th>−2</th>
+<th>0</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>出力（概数）</td>
+<td>0.119</td>
+<td>0.500</td>
+<td>0.881</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>有限の実数入力では、数学的な出力は <strong>0より大きく1より小さい</strong>。</li>
+<li>大きな正負の入力では出力が飽和し、傾きが小さくなる。</li>
+<li>0〜1に収まるだけで、実際の正解頻度との一致は保証されない。</li>
+</ul>
+<p class="source-note">
+出典：S1／S2／S3
+</p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+シグモイドは総入力をなめらかに変換します。ゼロを入れると二分の一です。指数関数の計算はプログラムで確かめられます。 分類のモデルとして確率の推定に使えますが、値が零から一の間だから正しい確率になる、と考えないでください。 また、両端に近づくと傾きが小さくなり、勾配による変化が伝わりにくくなることがあります。
+</aside>
+</section>
+<section>
+<!-- 9: 速度・万能性の断定を避けて定義を確認 -->
+<div class="slide-body ">
+<h2>ReLU：正の値はそのまま通す</h2>
+<p class="formula">
+ReLU(u) = max(0, u)
+</p>
+<table>
+<thead>
+<tr>
+<th>総入力 u</th>
+<th>−2</th>
+<th>0</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>出力</td>
+<td>0</td>
+<td>0</td>
+<td><strong>2</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>負の入力には0、正の入力には入力値を返す。</li>
+<li>正の領域の傾きは1。出力の上限を1に制限しない。</li>
+<li>負の領域の傾きは0で、更新が進みにくいユニットも生じる。</li>
+</ul>
+<p class="source-note">
+出典：S1／S2
+</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+レルーは、入力とゼロの大きいほうを選びます。入力が二なら出力も二です。シグモイドとの違いを確認しましょう。 正の領域では傾きが一ですが、負の領域では傾きがゼロです。ゼロの折れ曲がりでは通常の微分は定まりません。 計算が簡単という性質と、どの問題でも学習がうまく進むという主張は別です。
+</aside>
+</section>
+<section>
+<!-- 10: ベクトル全体の変換と予測の評価を区別 -->
+<div class="slide-body ">
+<h2>ソフトマックス：複数の値をまとめて変換</h2>
+<p class="formula">
+pₖ = exp(sₖ) / Σⱼ exp(sⱼ)
+</p>
+<ul>
+<li>各スコアを指数関数で変換し、<strong>その合計で割る</strong>。</li>
+<li>出力の合計は1。多クラス分類の確率モデルで利用する。</li>
+<li>同じスコア (0, 0) → 出力 (0.5, 0.5)。</li>
+<li>予測確率の良さは、別のデータで確かめる必要がある。</li>
+</ul>
+<p>シグモイドを各値へ独立に適用しても、合計1になるとは限らない。</p>
+<p class="source-note">
+出典：S1／S3
+</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ソフトマックスは複数のスコアを一緒に使います。分母にはすべてのスコアの指数関数の和があります。 二つが同じスコアなら、同じ値を合計で割るので半分ずつになります。ここでは確率分布の形を作ることを見ています。 シグモイドを一個ずつ使う場合とは計算が違います。予測確率と実際の正解頻度の関係も、評価で確認する対象です。
+</aside>
+</section>
+<section>
+<!-- 11: 非線形性の役割を計算で示す -->
+<div class="slide-body ">
+<h2>層を重ねるには、非線形な変換が効く</h2>
+<p>活性化関数を挟まない例：</p>
+<p class="formula">
+h = 2x + 1　→　o = 3h − 2 = 6x + 1
+</p>
+<ul>
+<li>掛け算と足し算だけの層は、まとめて一つの変換にできる。</li>
+<li><strong>非線形な活性化関数</strong>を挟むと、より複雑な入出力関係を表せる。</li>
+<li>層を増やすことと、学習が成功することは別。</li>
+</ul>
+<p class="source-note">
+出典：S2／新規の手計算
+</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+二段の計算を一つにまとめてみます。二倍して一を足し、三倍して二を引くと、六倍して一を足す計算です。 バイアスを含むので厳密にはアフィン変換ですが、ここでは重ねても一つにまとめられることに注目します。 非線形な関数を途中に挟むことで、この制約を越えた表現ができます。ただし、良い重みを見つけられるかは次の問題です。
+</aside>
+</section>
+<section>
+<!-- 12: 層と順伝播を明確化 -->
+<div class="slide-body ">
+<h2>入力層・中間層・出力層</h2>
+<div class="flow" role="img" aria-label="入力から中間層を経て出力へ計算する">
+<div class="flow-box">
+入力層<br>x₁, x₂
+</div>
+<div class="flow-arrow" aria-hidden="true">
+→
+</div>
+<div class="flow-box">
+中間層（隠れ層）<br>h₁, h₂
+</div>
+<div class="flow-arrow" aria-hidden="true">
+→
+</div>
+<div class="flow-box">
+出力層<br>o
+</div>
+</div>
+<ul>
+<li>入力層：外から受け取った値を渡す。</li>
+<li>中間層：入力を別の表現へ変換する。</li>
+<li>出力層：中間層の値から、最終的な出力を計算する。</li>
+</ul>
+<p><strong>順伝播</strong>は、入力側から出力側へ値を求める処理。</p>
+<p class="source-note">
+出典：S1／S2
+</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+中間層と隠れ層は同じ意味で使います。中間層の正解ラベルを外から直接与えるという意味ではありません。 ここでは入力層も数えて三層と呼びますが、学習する計算層だけを数える文献もあります。 順伝播では値を順番に計算します。この処理だけで重みが学習されるわけではありません。
+</aside>
+</section>
+<section>
+<!-- 13: 原資料の固定入力とパラメータを保持 -->
+<div class="slide-body ">
+<h2>昨年度の演習：重みを固定して計算する</h2>
+<table>
+<thead>
+<tr>
+<th>ニューロン</th>
+<th>第1入力の重み</th>
+<th>第2入力の重み</th>
+<th>しきい値 v</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中間 h₁</td>
+<td>−2</td>
+<td>3</td>
+<td>−1</td>
+</tr>
+<tr>
+<td>中間 h₂</td>
+<td>−2</td>
+<td>1</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>出力 o（h₁, h₂を入力）</td>
+<td>−60</td>
+<td>94</td>
+<td>−1</td>
+</tr>
+</tbody>
+</table>
+<p>すべてステップ関数。<strong>総入力からしきい値を一度だけ引く</strong>。</p>
+<ul>
+<li>入力は (0,0)、(0,1)、(1,0)、(1,1) の4通り。</li>
+<li>この計算は、決めた重みを使う<strong>学習なし</strong>の実験。</li>
+</ul>
+<p class="source-note">
+出典：S1／表5.A
+</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+昨年度の章末問題と同じ重みを採用します。大きな出力重みは、学習で求めた性能の良い値という意味ではありません。 中間層二つの出力を計算し、その二値を次の入力として使います。 プログラムを実行する前に、どこでしきい値を引くかを確認しましょう。二つの入力の積を足した後に一回だけ引きます。
+</aside>
+</section>
+<section>
+<!-- 14: 既存の説明を図解・自習の観察へつなぐ -->
+<div class="slide-body table-slide">
+<h2>途中の値まで追うと、XORになる</h2>
+<table>
+<thead>
+<tr>
+<th>入力</th>
+<th>総入力 (u₁, u₂)</th>
+<th>中間出力 (h₁, h₂)</th>
+<th>出力の総入力</th>
+<th>o</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(0,0)</td>
+<td>(1, −0.5)</td>
+<td>(1,0)</td>
+<td>−59</td>
+<td>0</td>
+</tr>
+<tr>
+<td>(0,1)</td>
+<td>(4, 0.5)</td>
+<td>(1,1)</td>
+<td>35</td>
+<td>1</td>
+</tr>
+<tr>
+<td>(1,0)</td>
+<td>(−1, −2.5)</td>
+<td>(0,0)</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>(1,1)</td>
+<td>(2, −1.5)</td>
+<td>(1,0)</td>
+<td>−59</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>XOR（排他的論理和）：入力が異なるときだけ1</strong>。</p>
+<p>ここで確かめたのは、固定した重みがこの4入力を表現できること。</p>
+<p class="material-links">
+<a href="interactive.html#xor" target="_blank" rel="noopener">操作：XORと中間層</a> — 入力(1,0)で、しきい値を変えると？
+</p>
+<p class="source-note">
+出典：S1／独立に手計算した期待値
+</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+一行ずつ、二つの中間出力から最終出力を求めてください。中間出力が両方ゼロでも、出力側でマイナス一を引くため総入力が一になります。 結果はゼロ、一、一、ゼロです。二つの入力が異なる場合だけ一になる排他的論理和です。 四つの答えが合うことは確認できますが、この実験から学習の成功や未知データへの性能を主張することはできません。 図解教材のXORと中間層で入力一、ゼロを選び、中間のしきい値だけを変えます。最終出力だけでなく、どの中間の値が変わったかを追って説明してください。
+</aside>
+</section>
+<section>
+<!-- 15: 単一ユニットと歴史的構成の混同を防ぐ -->
+<div class="slide-body ">
+<h2>単一のパーセプトロンと、XORの違い</h2>
+<p>ここでは <strong>重み付き和＋ステップ関数を持つ一つの学習単位</strong>を考える。</p>
+<div class="xor-grid" role="img" aria-label="XORの4点。左下と右上が0、右下と左上が1で、一本の直線では分けられない">
+<div class="xor-one">
+(0,1) → 1
+</div>
+<div>
+(1,1) → 0
+</div>
+<div>
+(0,0) → 0
+</div>
+<div class="xor-one">
+(1,0) → 1
+</div>
+</div>
+<ul>
+<li>重みが少なくとも一つ非零なら、判定境界は<strong>一本の直線</strong>。</li>
+<li>XORの対角に並ぶ0と1は、一本の直線では分けられない。</li>
+<li>中間層を持つ前の例とは、モデルの構成が違う。</li>
+</ul>
+<p class="source-note">
+出典：S1／S2／XORの幾何
+</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+単一のパーセプトロンは、重み付き和がゼロになる直線を境に判定します。四つの点を見て、対角同士を同じ側へ分ける直線を探してみましょう。 XORはこの一本の直線では分けられません。先ほど実現できたのは、中間層を含むネットワークだったからです。 昨年度資料には歴史的な三層構成の説明もあります。単一ユニットの限界と、その構成全体の限界を混同しないようにします。
+</aside>
+</section>
+<section>
+<!-- 16: 学習率とバイアス更新を補う -->
+<div class="slide-body ">
+<h2>パーセプトロンの更新：答えとの差を使う</h2>
+<p>正解 t、出力 o、学習率 η。バイアス b を使うと：</p>
+<p class="formula">
+wᵢ ← wᵢ + η(t − o)xᵢ<br>b ← b + η(t − o)
+</p>
+<ul>
+<li>正解と出力が同じなら、この更新量は0。</li>
+<li>正解1・出力0なら、重みを ηxᵢ、バイアスを η だけ変える。</li>
+<li>単一ユニットでは、XORを学習回数だけで解決できない。</li>
+</ul>
+<p>ここでは<strong>ステップ関数を微分していない</strong>。</p>
+<p class="source-note">
+出典：S1／単一ユニットへの書き換え
+</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+教師あり学習では、正解と出力を比べてパラメータを調整します。この更新式では、差と入力と学習率を掛けます。 しきい値ではなく、バイアスの書き方にした点に注意してください。バイアスにも更新が必要です。 この規則はステップ関数の微分による更新とは異なります。また、モデルが表せない関係は、回数を増やすだけでは表せません。
+</aside>
+</section>
+<section>
+<!-- 17: 表現と学習を切り分ける -->
+<div class="slide-body ">
+<h2>中間層が表現を変える</h2>
+<table>
+<thead>
+<tr>
+<th>元の入力</th>
+<th>中間層の表現</th>
+<th>出力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(0,0) と (1,1)</td>
+<td>どちらも (1,0)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>(0,1)</td>
+<td>(1,1)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>(1,0)</td>
+<td>(0,0)</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>前の固定例では、中間層が入力を別の座標へ変換する。</li>
+<li>非線形な変換の組合せで、単一ユニットにない表現力を得る。</li>
+<li>中間層の重みも<strong>データから調整する方法</strong>が次の課題。</li>
+</ul>
+<p class="source-note">
+出典：S1／固定例の計算
+</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+先ほどの計算表を、中間層が作った表現という見方で読み直します。ゼロを返す二つの入力は、同じ中間出力へ移っています。 入力空間で一本の直線では分けられなかった関係を、途中の変換で表せるようになりました。 ここまでは人が重みを与えました。中間層までデータに合わせて調整するには、各重みを変えた影響を求める必要があります。
+</aside>
+</section>
+<section>
+<!-- 18: 符号付きの差と損失を区別 -->
+<div class="slide-body ">
+<h2>損失：どれだけ答えがずれたか</h2>
+<p>計算を追うため、1例の<strong>二乗誤差損失</strong>を使う。</p>
+<p class="formula">
+L = (o − t)² / 2
+</p>
+<table>
+<thead>
+<tr>
+<th>正解 t</th>
+<th>出力 o</th>
+<th>損失 L</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>4</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3.5</td>
+<td>0.125</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>損失は小さいほどよい。分類では交差エントロピーなども使う。</p>
+<p class="source-note">
+出典：S1／S3／新規の数値例
+</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+損失は、どれくらい出力が正解からずれたかを数値にする関数です。今回は計算が追いやすい二乗誤差を使います。 正解が三のとき、出力四のずれは一、その二乗を二で割って〇・五になります。 この損失を減らすように重みを動かすことを考えます。すべての問題に同じ損失を使う、という意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 19: 逆伝播と最適化を区別 -->
+<div class="slide-body ">
+<h2>誤差逆伝播と、重み更新は別の処理</h2>
+<div class="flow" role="img" aria-label="順伝播、損失計算、逆伝播、重み更新の順">
+<div class="flow-box">
+順伝播<br>出力を求める
+</div>
+<div class="flow-arrow" aria-hidden="true">
+→
+</div>
+<div class="flow-box">
+損失<br>ずれを測る
+</div>
+<div class="flow-arrow" aria-hidden="true">
+→
+</div>
+<div class="flow-box">
+逆伝播<br>勾配を求める
+</div>
+<div class="flow-arrow" aria-hidden="true">
+→
+</div>
+<div class="flow-box">
+更新<br>重みを動かす
+</div>
+</div>
+<ul>
+<li><strong>勾配：</strong> 重みを少し変えたとき、損失がどう変わるか。</li>
+<li><strong>誤差逆伝播：</strong> 連鎖律を使い、勾配を出力側から順に計算する。</li>
+<li><strong>最適化法：</strong> 勾配などを使ってパラメータを更新する。</li>
+</ul>
+<p class="source-note">
+出典：S1／S4
+</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+順伝播では実際の値を求めます。損失を計算した後、誤差逆伝播で各重みに対する勾配を求めます。 逆伝播そのものは、重みをどれだけ動かすかを決める処理ではありません。勾配を使って更新する役割は最適化法が担います。 途中の計算のつながりに沿って変化の影響を掛け合わせる規則を、連鎖律と呼びます。
+</aside>
+</section>
+<section>
+<!-- 20: 微分の意味を1回の数値更新へ -->
+<div class="slide-body ">
+<h2>勾配降下：1回の更新を手で追う</h2>
+<p>o = wx、x = 2、t = 3、更新前 w = 2、L = (o − t)² / 2。</p>
+<p class="formula">
+勾配 g = (o − t)x = (4 − 3) × 2 = 2<br>w ← w − ηg
+</p>
+<p>η = <strong>0.125</strong> のとき：</p>
+<ul>
+<li>重み：2 − 0.125 × 2 = <strong>1.75</strong></li>
+<li>出力：1.75 × 2 = <strong>3.5</strong></li>
+<li>損失：0.5 → <strong>0.125</strong></li>
+</ul>
+<p class="source-note">
+出典：S4／新規の手計算
+</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+重みを増やすと損失が増える方向なので、正の勾配を引いて重みを小さくします。 学習率は〇・一二五です。更新後の重みは一・七五、出力は三・五になり、正解の三へ近づきました。 この例では損失が小さくなりました。勾配の符号と、更新式の引き算を対応付けてください。
+</aside>
+</section>
+<section>
+<!-- 21: 更新済み重みの混入を防ぐ -->
+<div class="slide-body table-slide">
+<h2>二段の計算：更新前の重みで勾配を求める</h2>
+<p>h = ax、o = bh、L = (o − t)² / 2。x = 1、a = 2、b = 3、t = 4。</p>
+<table>
+<thead>
+<tr>
+<th>計算</th>
+<th>更新前の値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>順伝播</td>
+<td>h = 2、o = 6、L = 2</td>
+</tr>
+<tr>
+<td>bへの勾配</td>
+<td>(o − t)h = 4</td>
+</tr>
+<tr>
+<td>aへの勾配</td>
+<td>(o − t)bx = 6</td>
+</tr>
+</tbody>
+</table>
+<p>η = 0.125で<strong>両方の勾配を求めてから更新</strong>：a = 1.25、b = 2.5。</p>
+<p>この例は連鎖律用の線形な二段計算。非線形な中間層では関数の傾きも使う。</p>
+<p class="source-note">
+出典：S4／新規の手計算
+</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+出力側の重みだけでなく、中間の重みを変えた影響も計算してみましょう。エーの勾配には、後段の重みビーも掛かります。 重要なのは、すべて更新前の値を使うことです。ビーを先に変更してからエーの勾配を計算すると、同じ時点の損失の勾配ではなくなります。 今回は連鎖律に集中するため線形な計算にしました。非線形のネットワークでは活性化関数の傾きも掛けます。
+</aside>
+</section>
+<section>
+<!-- 22: 既存の説明を図解・自習の観察へつなぐ -->
+<div class="slide-body ">
+<h2>学習率：大きく動けばよいとは限らない</h2>
+<p>スライド20と同じ x = 2、t = 3、w = 2 から1回更新。</p>
+<table>
+<thead>
+<tr>
+<th>学習率 η</th>
+<th>更新後の重み</th>
+<th>更新後の損失</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>2</td>
+<td>0.5（変化なし）</td>
+</tr>
+<tr>
+<td>0.125</td>
+<td>1.75</td>
+<td>0.125（減少）</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>4.5（増加）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>勾配は、その近くでの変化を表す。</li>
+<li>大きすぎる更新では、よい値を通り越すことがある。</li>
+</ul>
+<p class="material-links">
+<a href="interactive.html#gradient" target="_blank" rel="noopener">操作：勾配と更新</a> — 学習率を1にすると、損失は下がる？
+</p>
+<p class="source-note">
+出典：S4／新規の手計算
+</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+同じ勾配でも、学習率が違うと更新後の結果が変わります。ゼロなら動かず、一なら重みがゼロまで下がります。 出力はゼロになり、正解三からのずれが大きくなるため、損失は四・五です。 勾配は近くでの変化を教えるもので、遠くまで同じ方向に動けば必ず良くなるという保証ではありません。 図解教材の勾配と更新で、同じ初期値から学習率を一へ変えてみましょう。更新後の損失がどうなるか予想し、重みと損失の変化を区別して確認してください。
+</aside>
+</section>
+<section>
+<!-- 23: 表現力と最適化成功・汎化を分離 -->
+<div class="slide-body ">
+<h2>表現できる・学習できる・汎化する</h2>
+<table>
+<thead>
+<tr>
+<th>問い</th>
+<th>確かめること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>表現できるか</td>
+<td>そのモデルに目的の出力を出す重みがあるか</td>
+</tr>
+<tr>
+<td>学習できたか</td>
+<td>実際の更新で、よい重みを見つけられたか</td>
+</tr>
+<tr>
+<td>汎化するか</td>
+<td>学習に使っていないデータでもよい結果か</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>誤差逆伝播があっても、最適な解へ到達するとは限らない。</li>
+<li>学習時の損失が下がっても、過学習に注意する。</li>
+<li>第3回の<strong>学習・検証・テストの役割</strong>につながる。</li>
+</ul>
+<p class="source-note">
+出典：S1／S2／第3回本文
+</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+昨年度資料の、任意の複雑な関係を学習できるという表現は、この三つを混ぜてしまいやすい箇所です。 モデルに表現力があること、訓練が成功すること、未知データでよく働くことを別々に確かめます。 今日の四入力の実験は計算の確認です。実用の性能評価では、第3回で扱ったデータの分離が必要です。
+</aside>
+</section>
+<section>
+<!-- 24: 状態と共有重みを明示 -->
+<div class="slide-body ">
+<h2>RNN：前の状態を、次の計算へ渡す</h2>
+<p><strong>リカレントニューラルネットワーク（RNN）</strong>は、状態を繰り返し利用する。</p>
+<p class="formula">
+hₜ = f(Wxₜ + Uhₜ₋₁ + b)
+</p>
+<ul>
+<li>xₜ：今の入力、hₜ₋₁：一つ前の状態。</li>
+<li>同じパラメータ W、U、b を、各時刻で共有する。</li>
+<li>入力列の前後関係を扱える。初期状態も決める必要がある。</li>
+</ul>
+<p class="source-note">
+出典：S1／S5
+</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+リカレントとは、前の状態を次の計算へ戻して使うことです。今の入力だけでなく、一つ前の状態を材料にします。 式の添字は時刻を表します。各時刻で別々の重みを持つのではなく、同じ重みを繰り返し使います。 過去の情報を状態に残せますが、すべてを完全に保存するという意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 25: 時間展開と状態更新の小例を追加 -->
+<div class="slide-body ">
+<h2>RNNを時間方向に展開して見る</h2>
+<div class="flow" role="img" aria-label="初期状態から、入力を一つずつ受けて状態を更新する">
+<div class="flow-box">
+h₀ = 0
+</div>
+<div class="flow-arrow" aria-hidden="true">
+→
+</div>
+<div class="flow-box">
+x₁を読む<br>h₁を求める
+</div>
+<div class="flow-arrow" aria-hidden="true">
+→
+</div>
+<div class="flow-box">
+x₂を読む<br>h₂を求める
+</div>
+</div>
+<p>教材例：hₜ = ReLU(xₜ + 0.5hₜ₋₁)</p>
+<p>入力 [1, 0] のとき：</p>
+<ul>
+<li>1個目：h₁ = ReLU(1 + 0.5 × 0) = <strong>1</strong></li>
+<li>2個目：h₂ = ReLU(0 + 0.5 × 1) = <strong>0.5</strong></li>
+</ul>
+<p>重み0.5は固定。ここではRNNの<strong>状態計算</strong>だけを確かめる。</p>
+<p class="source-note">
+出典：S5／新規の固定例
+</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ループの図を時間の順に横へ広げると、計算の順序を追いやすくなります。今回は状態も入力も一つの数値です。 最初に一を読み、次にゼロを読みます。二個目の入力がゼロでも、前の状態の半分が残るので出力は〇・五です。 この演習では重みを学習しません。状態が変わることと重みが変わることを分けて見てください。
+</aside>
+</section>
+<section>
+<!-- 26: 既存の説明を図解・自習の観察へつなぐ -->
+<div class="slide-body ">
+<h2>順序を変えると、最後の状態が変わる</h2>
+<p>毎回 h₀ = 0、hₜ = ReLU(xₜ + 0.5hₜ₋₁) で開始。</p>
+<table>
+<thead>
+<tr>
+<th>入力列</th>
+<th>1個目の後</th>
+<th>2個目の後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[1, 0]</td>
+<td>1</td>
+<td><strong>0.5</strong></td>
+</tr>
+<tr>
+<td>[0, 1]</td>
+<td>0</td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>同じ二つの値でも、<strong>順序が違えば結果が変わり得る</strong>。</li>
+<li>比較する各入力列では、初期状態をリセットする。</li>
+<li>係数0.5を0にすると、前の状態の影響がなくなる。</li>
+</ul>
+<p class="material-links">
+<a href="interactive.html#rnn" target="_blank" rel="noopener">操作：RNNの状態</a> — 入力の順序だけを変えると、最後の状態は？
+</p>
+<p class="source-note">
+出典：S5／新規の手計算
+</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ゼロと一の順序を入れ替えて実行します。最初がゼロなら状態もゼロ、次に一が入ると状態は一です。 二つの列は同じ値を含んでいますが、最後の状態は異なります。これが今回の小さな例で観察する前後関係です。 比較のたびに初期状態をゼロへ戻すことを忘れないでください。状態を引き継ぐと条件の違う比較になります。 図解教材のRNNの状態で、一、ゼロとゼロ、一を比較します。各系列は初期状態ゼロから始めます。順序を変えても重みを学習したわけではないことを説明しましょう。
+</aside>
+</section>
+<section>
+<!-- 27: 階層型による系列処理を排除しない -->
+<div class="slide-body ">
+<h2>系列を扱うときの注意</h2>
+<ul>
+<li>RNNは状態に過去の情報を反映するが、長い関係の学習は難しい場合がある。</li>
+<li>通常の階層型でも、<strong>過去数時点をまとめて入力</strong>する方法がある。</li>
+<li>RNNの循環接続と、学習で行う逆伝播は別の概念。</li>
+<li>LSTMはRNNの一種。詳しくは第8回「深層学習2」で扱う。</li>
+</ul>
+<p class="source-note">
+出典：S1／S5／今年度日程
+</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+昨年度の、階層型では前後関係を扱えないという説明は強すぎます。たとえば過去三時点の値を並べて一つの入力にする方法もあります。 RNNは同じパラメータで状態を更新する特徴を持ちますが、長い依存関係の扱いやすさは別に考える必要があります。 循環はモデルの接続、逆伝播は勾配の計算です。矢印が戻るという見た目だけで同じものだと考えないようにします。
+</aside>
+</section>
+<section>
+<!-- 28: 収束条件と局所的な安定を限定 -->
+<div class="slide-body ">
+<h2>ホップフィールドネット：安定した状態へ</h2>
+<ul>
+<li>相互結合したユニットの状態を更新する、連想記憶のモデル。</li>
+<li>典型的な離散モデルは、<strong>対称な重み・自己結合なし</strong>を用いる。</li>
+<li>エネルギーは、ネットワーク全体の状態に付ける数値。</li>
+<li>一つずつ状態を更新すると、条件の下でエネルギーが増えない。</li>
+<li>安定する先が、目的の記憶や大域的最小とは限らない。</li>
+</ul>
+<div class="definition-card">
+重みを固定した「状態の更新」と、重みを変える「学習」を区別する。
+</div>
+<p class="source-note">
+出典：S1／S6補助
+</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ホップフィールドネットでは、互いに結合したユニットの状態を更新します。今回紹介するのは典型的な離散モデルです。 対称な重みや一つずつの更新などの条件の下で、エネルギーが増えないことを利用します。同時に全部を更新する場合まで同じ主張を広げないでください。 局所的な安定状態に落ち着くことと、望んだ答えが得られることは別です。
+</aside>
+</section>
+<section>
+<!-- 29: 日程の主題を本文へ追加し最適解保証を除く -->
+<div class="slide-body ">
+<h2>ボルツマンマシン：確率的に状態を変える</h2>
+<ul>
+<li>対称な結合を持つ、<strong>確率的なユニット</strong>のネットワーク。</li>
+<li>状態のエネルギーと、状態が現れる確率を結び付ける。</li>
+<li>エネルギーが上がる更新も起こり、局所的な安定状態から動ける。</li>
+<li>学習では、データを表す状態が現れやすくなるよう重みを調整する。</li>
+</ul>
+<p>有限回の確率的な更新で、最良の解が得られる保証はない。</p>
+<p class="source-note">
+出典：S1／S6
+</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ボルツマンマシンは今年度の日程に明記されています。昨年度スライドでは説明が薄いので、原資料のノートを踏まえて本文で扱います。 確率的な更新では、エネルギーが下がる方向だけへ動くとは限りません。その揺らぎによって局所的な安定状態から動けることがあります。 ただし、確率を入れれば必ず大域的な最適解が求まるという意味ではありません。状態の探索と、重みの学習も区別します。
+</aside>
+</section>
+<section>
+<!-- 30: 既存の説明を図解・自習の観察へつなぐ -->
+<div class="slide-body ">
+<h2>状態の更新と、パラメータの学習</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>例</th>
+<th>重みを固定して変えるもの</th>
+<th>学習で変えるもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>階層型ネット</td>
+<td>入力に対する中間出力・出力</td>
+<td>重み・バイアス</td>
+</tr>
+<tr>
+<td>RNN</td>
+<td>時刻ごとの状態</td>
+<td>共有する重み・バイアス</td>
+</tr>
+<tr>
+<td>ボルツマンマシン</td>
+<td>確率的なユニットの状態</td>
+<td>状態の分布を決める重みなど</td>
+</tr>
+</tbody>
+</table>
+<p><strong>値が繰り返し変わっただけでは、学習したとは限らない。</strong></p>
+<p class="material-links">
+<a href="interactive.html#energy" target="_blank" rel="noopener">操作：確率と状態</a> — 確率的な更新では、エネルギーが上がることもある？
+</p>
+<p class="source-note">
+出典：S1／S5／S6
+</p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここまでで、値が変わるという説明が何度も出てきました。何の値が変わったのかを確認しましょう。 重みを固定して入力から出力や状態を計算する場合もあります。一方、学習はパラメータをデータに合わせて変えることです。 ボルツマンマシンでは、パラメータの学習の中で状態を何度も更新する処理が必要になることがあります。二つの役割を区別することが出発点です。 図解教材の確率と状態で、エネルギーが上がる例を試してください。確率的な状態更新と、重みを学習する処理は別です。この教材はボルツマンマシンの学習を実装していません。
+</aside>
+</section>
+<section>
+<!-- 31: 二つの空間と近傍更新を明示 -->
+<div class="slide-body ">
+<h2>自己組織化マップ：似た入力を近くへ</h2>
+<p><strong>自己組織化マップ（SOM）</strong>は、正解ラベルを使わずに学習する。</p>
+<ul>
+<li>各ノードは、入力と同じ次元の<strong>代表ベクトル</strong>を持つ。</li>
+<li>ノード自体は、1次元の列や2次元の格子に並べる。</li>
+<li>入力に最も近い代表ベクトルを持つ<strong>勝者ノード</strong>を探す。</li>
+<li>勝者と地図上の近傍を入力へ近づけ、似た入力の配置を学ぶ。</li>
+</ul>
+<p>入力空間の距離と、<strong>地図上の近さ</strong>は別のもの。</p>
+<p class="source-note">
+出典：S1／S7
+</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+自己組織化マップは教師なし学習です。正解のクラスを渡す代わりに、入力同士の似方を利用します。 各ノードには代表ベクトルがあります。その値の近さで勝者を選び、次に地図の並び方で近傍を選びます。 代表ベクトルが十次元でも、ノードの配置は二次元ということができます。入力の次元と地図の次元を混同しないようにしましょう。
+</aside>
+</section>
+<section>
+<!-- 32: 既存の説明を図解・自習の観察へつなぐ -->
+<div class="slide-body table-slide">
+<h2>SOMの1回の更新を数値で見る</h2>
+<p>入力 (1,0)、地図は <strong>A — B — C</strong> の順。距離は入力空間のユークリッド距離。</p>
+<table>
+<thead>
+<tr>
+<th>ノード</th>
+<th>更新前の代表ベクトル</th>
+<th>距離の二乗</th>
+<th>更新後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A（勝者）</td>
+<td>(0,0)</td>
+<td><strong>1</strong></td>
+<td>(0.5,0)</td>
+</tr>
+<tr>
+<td>B（隣接）</td>
+<td>(2,2)</td>
+<td>5</td>
+<td>(1.75,1.5)</td>
+</tr>
+<tr>
+<td>C（範囲外）</td>
+<td>(4,0)</td>
+<td>9</td>
+<td>(4,0)</td>
+</tr>
+</tbody>
+</table>
+<p>更新式：新しい値 = 元の値 + 係数 × (入力 − 元の値)。</p>
+<p>今回の係数は勝者0.5、隣接0.25、範囲外0。完全な学習過程ではなく1回の観察。</p>
+<p class="material-links">
+<a href="interactive.html#som" target="_blank" rel="noopener">操作：SOMの近傍</a> — 近傍係数を0にすると、隣接Bは動く？
+</p>
+<p class="source-note">
+出典：S7／新規の手計算
+</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+距離の二乗は、一、五、九なので勝者はエーです。地図上でエーに隣接するビーも動かします。 ビーの第一成分は二に、〇・二五掛けるマイナス一を足して一・七五です。第二成分は二から一・五へ近づきます。 シーは今回の近傍の外なので動かしません。通常の学習では入力を繰り返し与え、学習率や近傍の範囲も調整します。 図解教材のSOMの近傍で、近傍係数をゼロにして一回更新します。勝者を選ぶ入力空間の距離と、隣接を選ぶ地図上の並びを分けて説明してください。
+</aside>
+</section>
+<section>
+<!-- 33: 今年度の三主題を比較 -->
+<div class="slide-body ">
+<h2>三つのモデルを、観察する対象で比べる</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>モデル</th>
+<th>中心となる仕組み</th>
+<th>今回の観察点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RNN</td>
+<td>前の状態を次の時刻へ渡す</td>
+<td>入力の順序と状態</td>
+</tr>
+<tr>
+<td>ボルツマンマシン</td>
+<td>確率的な状態変化と分布の学習</td>
+<td>状態・エネルギー・確率の関係</td>
+</tr>
+<tr>
+<td>SOM</td>
+<td>勝者と地図上の近傍を更新</td>
+<td>似た入力と代表ベクトルの配置</td>
+</tr>
+</tbody>
+</table>
+<p>目的に合うモデルを考える。<strong>すべてが同じ学習手順ではない</strong>。</p>
+<p class="source-note">
+出典：S1／S5–S7
+</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今年度の日程にある三つを横に並べます。リカレントニューラルネットは系列の状態、ボルツマンマシンは確率的な状態、自己組織化マップは地図上の配置を考えます。 名前だけを暗記するよりも、与えるものと変えるものを説明してください。 今回の演習ではRNNとSOMの最小の更新を扱います。ボルツマンマシンの学習は実装しません。
+</aside>
+</section>
+<section>
+<!-- 34: Notebookを保存して基準の結果を確認する -->
+<div class="slide-body exercise-slide">
+<h2>演習：入手して、まず実行する</h2>
+<p class="material-links">
+<a href="programs/neuralnet.ipynb" download>Notebookを保存</a> ／ <a href="programs/neuralnet.py" download>Python版</a> ／ <a href="programs/neuralnet.zip" download>一式ZIP</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">使い方</a>
+</p>
+<ol type="1">
+<li>保存したNotebookを <strong>VS Codeで開く</strong>。</li>
+<li>既存の授業用Pythonを <strong>カーネルに選ぶ</strong>。</li>
+<li><strong>再起動して全セル実行</strong>。最初はコードを変えない。</li>
+</ol>
+<p><strong>成功の目印：</strong> XORの4出力は <strong>0, 1, 1, 0</strong>。1回更新の損失は <strong>0.5 → 0.125</strong>。</p>
+<p>入力・途中の値・出力を対応させる。迷ったら「使い方」で準備と復帰方法を確認。</p>
+<p class="source-note">
+出典：新規演習／共通環境説明
+</p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+Notebookを保存して授業用フォルダーに置き、VS Codeで開きます。授業用Pythonのカーネルを選び、再起動して上からすべてのセルを実行してください。 成功の目印はXORの四つの出力、ゼロ、一、一、ゼロと、一回の重み更新で損失が〇・五から〇・一二五になることです。 まずはコードを変えず、入力から途中の値、出力へと対応を確認します。環境の準備や困ったときの対処は使い方のページで確認できます。 Python版と一式ZIPも保存できます。Notebookには処理がすべて入っており、同梱のパイソンファイルを読み込む必要はありません。
+</aside>
+</section>
+<section>
+<!-- 35: 実験セルの一変更・比較・説明を対応させる -->
+<div class="slide-body exercise-slide table-slide">
+<h2>予想して、一つ変えて、説明する</h2>
+<table>
+<thead>
+<tr>
+<th>Notebookの実験</th>
+<th>一つ変える</th>
+<th>結果を予想して確認</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1：しきい値</td>
+<td>h₁：−1 → −2</td>
+<td>入力(1,0)の出力1 → 0</td>
+</tr>
+<tr>
+<td>2：学習率</td>
+<td>0.125 → 1</td>
+<td>更新後の損失0.125 → 4.5</td>
+</tr>
+<tr>
+<td>3：系列の順序</td>
+<td>[1,0] → [0,1]</td>
+<td>最後の状態0.5 → 1</td>
+</tr>
+<tr>
+<td>4：SOMの近傍</td>
+<td><code>neighbor_factor</code>：0.5 → 0</td>
+<td>隣接Bが動かなくなる</td>
+</tr>
+</tbody>
+</table>
+<p>SOM：学習率0.5 × 近傍係数0.5 ＝ <strong>実際の更新係数0.25</strong>。</p>
+<p><strong>元データを残す → 一つ変更 → 比較 → どの計算が違いを生んだか説明。</strong></p>
+<p class="material-links">
+<a href="programs/guide.html" target="_blank" rel="noopener">実験のコード・確認する問い・元に戻す方法</a>
+</p>
+<p class="source-note">
+出典：新規演習／独立に計算した期待値
+</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+実行する前に結果を予想し、Notebookの実験一から四で一つずつ条件を変えます。元データと基準の結果を残して比較してください。 しきい値では中間の総入力、学習率では更新後の損失、RNNでは最後の状態を観察します。結果の違いを生んだ計算を言葉にしましょう。 SOMで変更する近傍係数は〇・五からゼロです。学習率〇・五を掛けた実際の更新係数が〇・二五なので、この二つを区別します。ゼロにすると隣接Bは動きません。 使い方のページに実験コード、確認する問い、元に戻す手順があります。カーネルを再起動して全セルを実行すれば、基準から確認し直せます。
+</aside>
+</section>
+<section>
+<!-- 36: 理解確認と今年度の次回へ接続 -->
+<div class="slide-body ">
+<h2>まとめ：計算・学習・状態を分けて説明する</h2>
+<ul>
+<li>人工ニューロンは、<strong>重み付き和と活性化関数</strong>で値を変換する。</li>
+<li>順伝播で出力を求め、逆伝播で勾配を求め、最適化法で更新する。</li>
+<li>RNNは前の状態、ボルツマンマシンは確率的な状態、SOMは近傍を使う。</li>
+</ul>
+<p><strong>理解確認：</strong> 固定重みでXORが出たら「学習した」と言えるか？</p>
+<p>→ 言えない。重みを更新した過程は実行していない。</p>
+<p>次回：第7回「深層学習1」では、畳み込みニューラルネットへ進む。</p>
+<p class="source-note">
+出典：本文／今年度schedule.md
+</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今日の最後は、自分の言葉で処理の違いを説明してみてください。計算したことと、学習したことを区別するのが中心です。 固定した重みで四つの答えを再現できても、重みをデータから求めた証拠にはなりません。 次回は、今日の基本的な計算を画像の特徴に合わせて組み合わせる畳み込みニューラルネットを扱います。
+</aside>
+</section>
+<section>
+<!-- 37: 損失・活性化・更新時点を明示 -->
+<div class="slide-body table-slide">
+<h2>補足：シグモイドを使う2層の勾配</h2>
+<p>hⱼ = σ(Σᵢ aⱼᵢxᵢ + cⱼ)、o = σ(Σⱼ bⱼhⱼ + d)、L = (o − t)² / 2。</p>
+<p class="formula">
+δₒ = (o − t)o(1 − o)<br>δⱼ = δₒ bⱼ hⱼ(1 − hⱼ)
+</p>
+<ul>
+<li>出力側：∂L/∂bⱼ = δₒhⱼ、∂L/∂d = δₒ。</li>
+<li>中間側：∂L/∂aⱼᵢ = δⱼxᵢ、∂L/∂cⱼ = δⱼ。</li>
+<li>すべて更新前の値で計算し、各パラメータから η × 勾配を引く。</li>
+</ul>
+<p>本式は<strong>シグモイド＋二乗誤差＋1出力</strong>の場合。クイズの出題範囲外。</p>
+<p class="source-note">
+出典：S1／S4
+</p>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+詳しい式を確認したい人向けの補足です。シグモイドの微分は出力掛ける一マイナス出力で表せます。 出力側の変化が中間層へ伝わるときは、後段の重みだけでなく、中間の活性化関数の傾きも必要です。 バイアスにも勾配があります。ここで示した式の条件を変えたときには、そのまま同じ式を使えるとは限りません。
+</aside>
+</section>
+<section>
+<!-- 38: 変更理由と原資料の保持を記録 -->
+<div class="slide-body ">
+<h2>補足：昨年度から確認・修正した点</h2>
+<ul>
+<li>旧 <code>neuralnet.py</code> は、しきい値減算が入力ループ内にあった。</li>
+<li>数式どおり<strong>合計の後に一度だけ</strong>引くと、4出力は (0,1,1,0)。</li>
+<li>歴史的な三層構成と、単一のパーセプトロンの説明を分けた。</li>
+<li>誤差逆伝播、最適化、表現力、汎化を区別した。</li>
+<li>RNN・ボルツマンマシン・SOMを今年度日程に合わせて本文に配置した。</li>
+</ul>
+<p>新旧対応と確認範囲に採用箇所・変更理由を記録。</p>
+<p class="source-note">
+出典：S1／source-map.md
+</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+昨年度の教材は原資料として残し、今年度側だけを変更しています。とくにコードは、最後の出力だけでなく途中の値で数式と照合しました。 しきい値の処理位置を変えると、入力が一、ゼロのときの結果が変わります。単に書き方を整えたという修正ではありません。 そのほか、モデルで表せることと学習の成功を区別し、今年度の授業内容を明確にしました。
+</aside>
+</section>
+<section>
+<!-- 39: 節と演習の対応を可視化 -->
+<div class="slide-body table-slide">
+<h2>補足：原資料のどこを引き継いだか</h2>
+<table>
+<thead>
+<tr>
+<th>昨年度の節・資料</th>
+<th>今年度の対応</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5.1.1〜5.1.2 ニューロン・活性化関数</td>
+<td>本文4〜11</td>
+</tr>
+<tr>
+<td>5.1.3〜5.1.4 階層型・学習</td>
+<td>本文12〜23、補足37</td>
+</tr>
+<tr>
+<td>5.1.5 リカレントニューラルネット</td>
+<td>本文24〜27</td>
+</tr>
+<tr>
+<td>5.2.1 ホップフィールド・ボルツマン</td>
+<td>本文28〜30</td>
+</tr>
+<tr>
+<td>5.2.2 自己組織化マップ</td>
+<td>本文31〜33</td>
+</tr>
+<tr>
+<td>章末問題・表5.A・neuralnet.py</td>
+<td>本文13〜14・34〜35、演習</td>
+</tr>
+</tbody>
+</table>
+<p>原資料の節・図・表番号を介した対応。全枚の対応は <code>source-map.md</code>。</p>
+<p class="source-note">
+出典：S1／source-map.md
+</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+新しい教材が昨年度のどの範囲からできているかを示しています。章全体の流れは引き継ぎつつ、数値を追える例を追加しました。 今回の対応は、ローカルにある原資料の節や図表の番号に基づきます。 プログラム、クイズ、スライドを同じ例にそろえていますが、図の数値例や追加した説明は今年度に作成したものです。
+</aside>
+</section>
+<section>
+<!-- 40: 外部根拠と適用範囲を明示 -->
+<div class="slide-body references-slide">
+<h2>補足：出典と確認範囲</h2>
+<ul>
+<li><strong>S1</strong>：昨年度 <code>chap05/</code> のslide・memo・lecture_note・quiz・neuralnet.py。</li>
+<li><strong>S2〜S4</strong>：<a href="https://cs231n.github.io/neural-networks-1/">Stanford CS231n</a> のニューロン、<a href="https://cs231n.github.io/linear-classify/">分類</a>、<a href="https://cs231n.github.io/optimization-2/">逆伝播</a>。</li>
+<li><strong>S5</strong>：<a href="https://docs.pytorch.org/docs/2.14/generated/torch.nn.RNN.html">PyTorch RNN公式文書</a>の状態更新式。PyTorchは演習では使用しない。</li>
+<li><strong>S6</strong>：<a href="https://www.cs.toronto.edu/~hinton/csc321/readings/boltz321.pdf">Hinton, Boltzmann Machines</a>の状態更新と学習、<a href="https://www.its.caltech.edu/~jkenny/nb250c/papers/Hopfield-1982.pdf">Hopfieldの原論文</a>。</li>
+<li><strong>S7</strong>：<a href="https://users.ics.aalto.fi/mikkok/thesis/book/node12.html">Kurimo, The SOM algorithm</a>の勝者・近傍更新。</li>
+</ul>
+<p>確認日：2026年10月8日。詳細と未確認事項は <code>source-map.md</code>。</p>
+<p class="source-note">
+出典：各一次資料／source-map.md
+</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+昨年度資料の説明を基礎に、公開された大学の講義資料、著者の解説、公式文書で主要な修正点を確かめました。 出典のコードをそのまま導入したわけではありません。演習は標準ライブラリだけで動く小さな独自の例です。 音声生成、エクスポート、学生端末での実行や教室投影は、資料の作成と分けて確認します。
+</aside>
+</section>
+</div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard,
+            RevealEmbedTweet,
+            RevealChart,
+        ];
+
+        const plugins =  [...printPlugins,
+        RevealZoom,
+        RevealSearch,
+                RevealMarkdown,
+                RevealMenu,
+                RevealFullscreen,
+                RevealAnything,
+                //RevealAudioSlideshow,
+                //RevealAudioRecorder,
+                RevealCustomControls,
+                // poll
+                // question
+                // seminar
+                Verticator
+                 ]
+
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+            height: 720,
+            margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+            customcontrols: {
+                    controls: [
+                            {
+                          id: 'toggle-overview',
+                          title: 'Toggle overview (O)',
+                          icon: '<i class="fa fa-th"></i>',
+                          action: 'Reveal.toggleOverview();'
+                        }
+                        ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+                ]
+            },
+            chart: {
+                    defaults: {
+                        color: 'lightgray', // color of labels
+                        scale: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: "lightgray" } , // color of grid lines
+                        },
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+            },
+            math: {
+                mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                config: 'TeX-AMS_HTML-full',
+                // pass other options into `MathJax.Hub.Config()`
+                TeX: { Macros: { RR: "{\\bf R}" } }
+                },
+                anything: [
+                {
+        className: "plot",
+        defaults: {width:500, height: 500, grid:true},
+        initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+     },
+     {
+        className: "chart",
+        initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+     },
+     {
+        className: "anything",
+        initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+     },
+                    ],
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+        });
+
+
+
+        // Change chalkboard theme :
+        function changeTheme(input) {
+            var config = {};
+            config.theme = input.value;
+            Reveal.getPlugin("RevealChalkboard").configure(config);
+            input.blur();
+        }
+
+        // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+        if (window.location.search.match(/print-pdf-now/gi)) {
+            setTimeout(() => {
+                window.print();
+              }, 2500);
+
+    }
+        </script>
+    </body>
+</html>
