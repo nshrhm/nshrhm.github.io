@@ -7,11 +7,6 @@
   "manifest_excludes_itself": true,
   "files": [
     {
-      "path": "favicon.ico",
-      "bytes": 150,
-      "sha256": "6e21162bc64073fe9e3d3d6375ca24d04fed1912a5b7716aac0cb0f2d16fae7c"
-    },
-    {
       "path": "index.html",
       "bytes": 85919,
       "sha256": "64e9001cb0462ef7c00887288428c27e84cb5d063cbb3ba791beb320015f9437",
@@ -581,6 +576,12 @@
     {
       "href": "source-map.md",
       "change": "Keep label as text; referenced source document is outside the published slide bundle"
+    }
+  ],
+  "excluded_export_files": [
+    {
+      "path": "favicon.ico",
+      "reason": "HTML Cannot GET error response, not an icon; unused by the slide HTML"
     }
   ]
 }
