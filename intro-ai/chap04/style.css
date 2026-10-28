@@ -622,3 +622,8 @@ body.image-zoom-open {
 .reveal .support-point { border: 2px dashed #246bce; }
 .reveal .boundary-point { border-left: 3px solid #246bce; border-right: 3px solid #246bce; }
 .reveal .margin-interval { background: #e9f4ff; font-size: 0.8em; padding-top: 0.7em; }
+
+/* Links to the student learning bundle; keep audio controls below the body. */
+.reveal .material-links { font-size: 0.78em; line-height: 1.5; margin: 0.55em 0; }
+.reveal .material-links a { text-decoration: underline; text-underline-offset: 0.15em; }
+.reveal .exercise-slide { font-size: 0.72em; }

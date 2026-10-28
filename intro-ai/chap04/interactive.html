@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="関係、フレーム、前向き・後ろ向き推論、世界仮説を動かして学ぶオフライン教材">
+<title>つなぐ・たどる・説明する｜人工知能概論 第5回</title>
+<style>
+:root{--ink:#142f45;--muted:#516575;--paper:#f3f6f7;--line:#c9d7df;--teal:#006c78;--blue:#215ab3;--gold:#ffc85b;--orange:#a3490c}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 system-ui,-apple-system,"Segoe UI",sans-serif}h1,h2,h3,p{margin:0}h1{font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.4}h2{font-size:clamp(1.4rem,3vw,2rem);line-height:1.5}h3{font-size:1.08rem}p+p{margin-top:8px}button,input,select{font:inherit;color:var(--ink)}button,select,input[type=number]{border:1px solid #91a7b6;border-radius:8px;background:white;padding:7px 11px;max-width:100%}button{font-weight:650;cursor:pointer}button:hover{background:#e8eff8}button:disabled{opacity:.5;cursor:default}button.primary,button[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:3px}input[type=number]{width:85px}input[type=checkbox]{width:20px;height:20px;accent-color:var(--teal)}a{color:#1b559c}.shell{max-width:1260px;padding:0 28px;margin:auto}.masthead{background:var(--ink);color:white;padding:25px 0}.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.eyebrow{font-size:.8rem;letter-spacing:.1em;font-weight:700}#projection{font-size:.85rem;flex-shrink:0;background:white;color:var(--ink);border-color:#91a7b6}.masthead p{margin-top:10px;color:#cbdce7}.nav{display:flex;gap:6px;flex-wrap:wrap;padding:17px 0}.nav button{flex:1;min-width:140px;text-align:left;font-size:.9rem;border-color:var(--line)}.nav b{color:#728ba1;margin-right:8px}.nav [aria-pressed=true] b{color:var(--gold)}.lesson-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:6px 0 12px}.lesson-head button{white-space:nowrap}.intro{max-width:940px;margin-bottom:14px}.question{background:#fff6df;border-left:5px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:18px}.question strong{margin-right:8px}.workspace{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,1fr);gap:20px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:17px;padding:20px;min-width:0}.panel h3{margin-bottom:10px}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}.controls label{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.small{font-size:.85rem}.muted{color:var(--muted)}.result{padding:15px;background:#eaf3f5;border-radius:12px;margin-top:14px}.result strong{font-size:1.2rem}.notice{background:#fff6df;border-left:4px solid #b57900;padding:10px 13px;margin-top:10px;font-size:.9rem}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.84rem;margin:8px 0}.stepper{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:13px}.stepper output{font-size:.85rem;color:var(--muted);width:100%}.steps-note{color:var(--muted);font-size:.83rem;margin:8px 0}.card{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fafcfd;min-width:0}.card+.card{margin-top:10px}.chosen{border:2px solid var(--blue)!important;background:#edf3ff!important}.ok{color:var(--teal)}.missing{color:var(--orange)}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.chip{border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:#f5f8fa;font-size:.85rem}.chip.initial{border-left:5px solid var(--teal)}.chip.derived{border-left:5px solid var(--blue)}.chip.used{outline:2px solid var(--orange);outline-offset:1px}.fact-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.fact-inputs label{display:flex;gap:6px;align-items:center;font-size:.94rem}.rule{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:9px 0;background:#fafcfd}.rule.active{border:2px solid var(--blue);background:#edf3ff}.rule.used{box-shadow:inset 5px 0 var(--orange)}.rule.off{border-style:dashed;color:var(--muted)}.rule-head{display:flex;justify-content:space-between;gap:8px;font-size:.85rem}.conditions{display:flex;gap:5px;flex-wrap:wrap;align-items:center;font-size:.88rem}.conditions span{padding:2px 5px;border-radius:4px;background:#edf2f5}.conditions .met{background:#dff3ee;color:#00575f}.conditions .unmet{background:#fff0db;color:#87410d}.rule-conclusion{margin-top:5px;font-weight:700}.frame-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.frame-value{font-size:1.9rem;font-weight:800;margin:12px 0}.arrow-down{font-size:1.4rem;text-align:center;color:var(--blue)}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--line)}th{background:#f1f5f8}caption{text-align:left;margin:7px 0;color:var(--muted)}details{margin-top:17px;padding:12px 17px;background:white;border:1px solid var(--line);border-radius:12px}summary{font-weight:700;cursor:pointer}details[open]>summary{margin-bottom:14px}details p{margin-top:8px}.answer{background:#f7fafc}.plot svg{display:block;width:100%;height:auto}svg text{font:16px system-ui,sans-serif;fill:var(--ink)}svg .node-label{font-size:17px;font-weight:650}svg .tiny{font-size:13px}.proof,.proof ul{list-style:none;padding:0;margin:0}.proof ul{margin:8px 0 0 17px;padding-left:15px;border-left:2px solid var(--line)}.proof li{margin:7px 0}.proof-node{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fafcfd;font-size:.95rem}.proof-node small{display:block;font-size:.8rem;color:var(--muted)}.proof-node.proven{border-left:5px solid var(--teal)}.proof-node.unproved{border-left:5px dashed var(--orange)}.proof-node.current{outline:2px solid var(--blue)}.system-flow{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}.system-flow .card{text-align:center;margin:0;padding:10px;font-size:.88rem}.system-flow b{display:block}.footer-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:24px 0}.footer-nav span{font-size:.85rem;color:var(--muted)}footer{border-top:1px solid var(--line);padding:20px 0 30px;color:var(--muted);font-size:.82rem}[hidden]{display:none!important}
+@media(min-width:761px){.projection .masthead{padding:4px 0}.projection .topline{margin:0}.projection #projection{padding:3px 10px}.projection h1,.projection .masthead p,.projection .intro,.projection .study-only,.projection footer{display:none}.projection .nav{padding:5px 0}.projection .nav button{padding:5px 8px;font-size:.85rem}.projection .lesson-head{margin:3px 0 6px}.projection h2{font-size:1.45rem}.projection .lesson-head button{padding:4px 10px}.projection .question{padding:6px 14px;margin-bottom:10px;font-size:.95rem}.projection .panel{padding:13px}.projection .workspace{gap:14px}.projection .result{padding:11px;margin-top:10px}.projection .result p{font-size:.87rem}.projection .controls{margin:6px 0;gap:7px}.projection .stepper{margin-top:8px}.projection .stepper button{padding:4px 9px;font-size:.9rem}.projection .plot svg{max-height:295px}.projection .footer-nav{margin:12px 0}.projection .rule{margin:5px 0;padding:6px 9px}.projection .proof-node{padding:4px 8px;font-size:.88rem}.projection .proof li{margin:4px 0}.projection .proof ul{margin-top:4px}.projection .small,.projection .notice{font-size:.78rem}.projection .fact-inputs{margin:6px 0;gap:5px}.projection .steps-note{display:none}.projection .chips{margin-top:6px;gap:5px}.projection .chip{padding:3px 7px;font-size:.78rem}}
+@media(max-width:760px){.shell{padding:0 16px}body{font-size:16px}.workspace,.frame-grid{grid-template-columns:1fr}.nav button{min-width:95px;flex-basis:30%;font-size:.85rem;padding:9px}.panel{padding:15px}.masthead{padding:20px 0}.topline{align-items:flex-start}.eyebrow{font-size:.67rem}#projection{font-size:.78rem}.lesson-head{align-items:flex-start}.question{padding:11px 12px}.footer-nav span{display:none}.proof ul{margin-left:8px;padding-left:9px}.proof-node{font-size:.88rem}.fact-inputs{grid-template-columns:1fr 1fr}.projection .intro,.projection .study-only{display:none}svg .node-label{font-size:21px}svg .tiny{font-size:17px}.system-flow{font-size:.85rem}}
+@media print{.nav,.controls,.stepper,.footer-nav,.topline button,.lesson-head button{display:none}.workspace{display:block}.panel{break-inside:avoid;margin-bottom:12px}.masthead{background:white;color:var(--ink)}}
+.mobile-note{display:none}
+@media(max-width:760px){.plot{overflow-x:auto}.plot svg{min-width:620px}.mobile-note{display:block;font-size:.82rem;color:var(--muted)}}
+</style>
+</head>
+<body>
+<header class="masthead"><div class="shell"><div class="topline"><span class="eyebrow">人工知能概論 2026 ／ 第5回 知識表現と推論</span><button type="button" id="projection" aria-pressed="false">投影表示にする</button></div><h1>つなぐ・たどる・説明する。</h1>
+<p>その結論は、どこから来た？ 知識と推論を動かして確かめる。</p></div></header>
+<div class="shell"><nav class="study-only" aria-label="教材の移動" style="padding-top:12px"><a href="index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">使い方</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの使い方・保存</a></nav><nav class="nav" aria-label="学ぶテーマ">
+<button type="button" data-tab="network" aria-controls="network" aria-pressed="true"><b>01</b>関係をたどる</button>
+<button type="button" data-tab="frame" aria-controls="frame" aria-pressed="false"><b>02</b>既定値と例外</button>
+<button type="button" data-tab="forward" aria-controls="forward" aria-pressed="false"><b>03</b>事実から進む</button>
+<button type="button" data-tab="backward" aria-controls="backward" aria-pressed="false"><b>04</b>目標から確認</button>
+<button type="button" data-tab="world" aria-controls="world" aria-pressed="false"><b>05</b>不明と「なし」</button>
+<button type="button" data-tab="expert" aria-controls="expert" aria-pressed="false"><b>06</b>根拠を説明</button>
+</nav><main>
+<noscript><p class="question">操作にはJavaScriptを有効にしてください。ネット接続は不要です。</p></noscript>
+
+<section id="network" aria-labelledby="network-title">
+<div class="lesson-head"><h2 id="network-title">01　矢印をたどると、何がわかる？</h2>
+<button type="button" data-reset="network">リセット</button></div>
+<p class="intro">種類から上位の種類へ進む矢印がis-aです。この図は教材内で定めた分類で、現実の機器分類を網羅するものではありません。</p>
+<p class="question"><strong>まず予想</strong>スマホからノートPCへ道がなければ、「スマホはノートPCではない」と言い切れるでしょうか？</p>
+<div class="workspace"><div class="panel">
+<div class="controls"><label for="net-preset">試す例 <select id="net-preset"><option value="base">端末分類</option><option value="unknown">未知の名前</option><option value="cycle">循環 A → B → A</option></select></label></div>
+<div class="controls"><label for="net-start">出発点 <select id="net-start"></select></label><label for="net-target">目標 <select id="net-target"></select></label></div>
+<div id="net-plot" class="plot" role="region" aria-label="is-a関係図。狭い画面では左右にスクロールできます" tabindex="0"></div><p class="mobile-note">図は左右にスワイプできます。キーボードでは図に移動して左右キーを使います。</p><p class="small muted">矢印：下位 → 上位。青い太線は今までにたどった経路。</p>
+<div class="stepper" data-steps="network"></div></div>
+<div class="panel"><h3>経路と、答えの理由</h3>
+<div id="net-result" class="result" role="status" aria-live="polite"></div>
+<div id="net-edit"><h3>関係を一つ変える</h3>
+<div class="controls"><label for="net-child">下位の種類 <select id="net-child"></select></label><label for="net-parent">新しい親 <select id="net-parent"></select></label><button type="button" id="net-apply">関係を更新</button></div><p class="small muted">「親なし」でリンクを削除。自分自身や下位を親にすると、循環を試せます。編集すると探索は最初に戻ります。</p></div></div></div>
+<details class="study-only"><summary>詳しく見る：種類・個体・部分と、直接の関係</summary>
+<div class="plot" id="relations-plot" role="region" aria-label="種類・個体・部分の関係図。左右にスクロールできます" tabindex="0"></div><p class="mobile-note">関係図は左右にスクロールできます。</p><p>この探索がたどるのはis-aだけです。個体や部分のリンクを、そのまま同じ種類の矢印としてつなぎません。</p><div id="net-direct"></div><p>キーと値の両方を既知語とするのが既存演習の規約です。リンク削除でどこにも現れなくなった名前は未知語になります。同じ既知語への問いは、移動0回で到達です。</p></details>
+<details class="answer study-only"><summary>確認：経路がない場合と、循環で止まる場合は同じ？</summary><p>違います。経路なしはこの知識から導けない状態。循環は再訪を検出して停止した状態です。どちらも「否定の事実を得た」とは扱いません。循環の途中で目標に着けば、その有限の経路は示せます。</p></details>
+</section>
+
+<section id="frame" aria-labelledby="frame-title" hidden>
+<div class="lesson-head"><h2 id="frame-title">02　「いつも」と「この端末」は違う</h2>
+<button type="button" data-reset="frame">リセット</button></div>
+<p class="intro">フレームは対象の項目をまとめる表です。項目をスロットと呼びます。この架空例では、個別指定を既定値より優先します。</p>
+<p class="question"><strong>まず予想</strong>標準は7日、端末Aには3日と書かれています。どちらを採用するでしょうか？</p>
+<div class="workspace"><div class="panel"><div class="frame-grid">
+<div class="card" id="frame-standard"><h3>標準の貸出端末</h3>
+<div class="controls"><label for="frame-default">既定の期間 <select id="frame-default"></select></label></div><p class="small">個別の情報がないときの候補</p></div>
+<div class="card" id="frame-individual"><h3>端末A</h3>
+<p class="small">種類：タブレット ／ 保管：棚1</p><div class="controls"><label for="frame-specific">個別の期間 <select id="frame-specific"></select></label></div><div class="controls"><label for="frame-exhibit"><input type="checkbox" id="frame-exhibit">展示専用：貸出不可</label></div></div></div>
+<div class="arrow-down" aria-hidden="true">↓</div><div id="frame-adopted" class="card"></div><div class="stepper" data-steps="frame"></div></div>
+<div class="panel"><h3>値と出所を分けて読む</h3>
+<div id="frame-result" class="result" role="status" aria-live="polite"></div><p class="steps-note">1. 既定値を見る → 2. 個別指定を確認 → 3. 採用する値を決める</p></div></div>
+<details class="study-only"><summary>詳しく見る：未記入は0ではない・継承の条件</summary><div class="controls"><label for="frame-charge">端末Aの充電状態 <select id="frame-charge"><option value="80">80%</option><option value="0">0%</option><option value="">未記入</option></select></label></div><p id="frame-charge-result"></p><p>貸出期間は「日」、充電状態は「%」。貸出不可は別のスロットです。期間が書かれているだけで貸出可能とは判断しません。</p><div class="card">教材内の定義：すべてのコンピュータは情報を処理する → この分類に属するスマホにも適用</div><p>このような定義と「通常は7日」という既定値は違います。性質は適用条件を確認して継承します。ここでは一つの標準と個体の優先だけを計算し、一般の多重継承は扱いません。</p></details>
+<details class="answer study-only"><summary>確認：個別指定も既定値もなかったら？</summary><p>期間は未指定です。勝手に0日や7日を補いません。また、既定値から得た期間と、個別に確認した期間では情報の出所が違います。</p></details>
+</section>
+
+<section id="forward" aria-labelledby="forward-title" hidden>
+<div class="lesson-head"><h2 id="forward-title">03　事実が増えると、次の規則が動く</h2>
+<button type="button" data-reset="forward">リセット</button></div>
+<p class="intro">前向き推論は、今ある事実から条件のそろう規則を探します。この貸出例は架空の規則で、実際の学校の運用ではありません。</p>
+<p class="question"><strong>まず予想</strong>登録・講習・在庫がそろえば、予約確認がなくても「貸出準備可」まで進めるでしょうか？</p>
+<div class="workspace"><div class="panel"><h3>初期事実を選ぶ</h3>
+<div id="forward-inputs" class="fact-inputs"></div><div id="forward-rules"></div><div class="stepper" data-steps="forward"></div></div>
+<div class="panel"><h3>作業用の事実</h3>
+<div class="legend"><span>● 初期事実</span><span>◆ 規則で追加した事実</span></div><div id="forward-facts" class="chips"></div><div id="forward-result" class="result" role="status" aria-live="polite"></div><p class="steps-note">一手ごとに規則を照合します。「一巡して追加なし」が停止の目印です。</p></div></div>
+<details class="study-only"><summary>詳しく見る：照合順序と、追加した結論の履歴</summary><div class="controls"><label for="forward-order">規則の順序 <select id="forward-order"><option value="normal">R1 → R2 → R3</option><option value="reverse">R3 → R2 → R1</option></select></label></div><div id="forward-trace" class="table-wrap"></div><p>一つ追加しても次の規則へ進み、一巡後に再走査します。新しい事実が一つも増えない一巡で停止します。順序を変えると照合過程は変わりますが、この肯定事実を追加する規則群では最終事実集合は同じです。</p></details>
+<details class="answer study-only"><summary>確認：「講習修了」を外すと、以前の結論はどうなる？</summary><p>この教材では入力を変えるたびに初期事実から計算し直します。以前の「利用資格あり」や「貸出候補」を持ち越しません。規則R1はすべての条件が必要なので、登録だけでは発火しません。</p></details>
+</section>
+
+<section id="backward" aria-labelledby="backward-title" hidden>
+<div class="lesson-head"><h2 id="backward-title">04　答えから、必要な条件を探す</h2>
+<button type="button" data-reset="backward">リセット</button></div>
+<p class="intro">後ろ向き推論は目標を置き、その結論を出せる規則の条件を確認します。規則の意味を逆向きにするわけではありません。</p>
+<p class="question"><strong>まず予想</strong>「貸出候補」を確かめるために、最初にどの規則を調べるでしょうか？</p>
+<div class="workspace"><div class="panel"><div class="controls"><label for="backward-goal">確かめたい目標 <select id="backward-goal"></select></label></div><div id="backward-tree"></div><div class="stepper" data-steps="backward"></div></div>
+<div class="panel"><h3>使える初期事実</h3>
+<div id="backward-inputs" class="fact-inputs"></div><div id="backward-result" class="result" role="status" aria-live="polite"></div><p class="small muted">○ 確認できた ／ ? この知識では未証明 ／ … 確認中。木の線は「必要な条件へ」のつながりです。</p></div></div>
+<details class="study-only"><summary>詳しく見る：結論を与えても、前提は逆算できない</summary><div class="controls"><label for="backward-inverse"><input type="checkbox" id="backward-inverse">初期事実を「貸出候補」だけにする</label></div><div id="backward-inverse-result"></div><p>この切り替えでは、上の目標を「利用登録済み」に変更します。結論から登録・講習の事実を作る逆向き規則はありません。通常の例へ戻すと初期目標は「貸出候補」です。</p><p>Python演習は前向き推論だけを実装しています。ここは同じ固定規則を使う追加の教育用実装です。変数の単一化や汎用Prolog処理系は含みません。</p></details>
+<details class="answer study-only"><summary>確認：条件が一つ見つからなければ「貸出不可」？</summary><p>この知識では証明できない、という結果です。「貸出不可」という別の結論を導いたことにはなりません。どの条件まで確認でき、何が不足したかを読み取ります。</p></details>
+</section>
+
+<section id="world" aria-labelledby="world-title" hidden>
+<div class="lesson-head"><h2 id="world-title">05　書かれていない。それは「なし」？</h2>
+<button type="button" data-reset="world">リセット</button></div>
+<p class="intro">同じ未記載でも、知識が完全だと仮定する範囲によって扱いが違います。ここでは「今日の端末予約」だけを考えます。</p>
+<p class="question"><strong>まず予想</strong>台帳に端末Bがないとき、「予約なし」と判断してよいのは、どんな場合でしょうか？</p>
+<div class="workspace"><div class="panel"><h3>今日の予約台帳</h3>
+<div class="controls"><label for="world-a"><input type="checkbox" id="world-a" checked>端末Aの予約を記載</label><label for="world-b"><input type="checkbox" id="world-b">端末Bの予約を記載</label></div><div id="world-ledger"></div><div class="controls"><label for="world-target">調べる端末 <select id="world-target"><option value="B">端末B</option><option value="A">端末A</option></select></label></div><div class="stepper" data-steps="world"></div></div>
+<div class="panel"><div class="controls"><label for="world-mode">未記載の扱い <select id="world-mode"><option value="open">開世界</option><option value="closed">閉世界</option></select></label></div><div class="controls"><label for="world-complete"><input type="checkbox" id="world-complete" checked>閉世界で使う仮定：今日の台帳は完全</label></div><div id="world-result" class="result" role="status" aria-live="polite"></div><div id="world-warning" class="notice"></div></div></div>
+<details class="study-only"><summary>詳しく見る：台帳が未更新なら、前提が崩れる</summary><div class="controls"><button type="button" id="world-stale">Bの予約が未反映の例にする</button></div><div id="world-stale-result"></div><p>この例では外から「Bの予約がまだ反映されていない」と知らせます。システムが未知の予約を自動で発見する機能ではありません。</p><p>開世界は、何も否定できないという意味ではありません。明示的に「予約なし」と確認した知識を使うこととは別です。この台帳の簡易計算器には明示的否定や矛盾処理を実装しません。01のis-a探索へ閉世界を自動適用することもありません。</p></details>
+<details class="answer study-only"><summary>確認：「今日の予約なし」から、明日の予約もないと言える？</summary><p>言えません。閉世界を適用したのは「完全と仮定した今日の台帳」です。範囲の外や、完全性が保証できない台帳へ同じ判断を広げません。</p></details>
+</section>
+
+<section id="expert" aria-labelledby="expert-title" hidden>
+<div class="lesson-head"><h2 id="expert-title">06　結論を選んで、根拠へ戻る</h2>
+<button type="button" data-reset="expert">リセット</button></div>
+<p class="intro">知識ベースに規則を置き、推論エンジンが作業用の事実を増やします。説明できるのは、実際に使った規則と事実です。</p>
+<p class="question"><strong>まず予想</strong>R2を無効にしたら、R1で導いた「利用資格あり」も消えるでしょうか？</p>
+<div class="workspace"><div class="panel"><div class="system-flow"><div class="card"><b>知識ベース</b>R1・R2・R3</div><span aria-hidden="true">→</span><div class="card"><b>推論エンジン</b>条件を照合</div></div><div id="expert-rules"></div><div class="stepper" data-steps="expert"></div></div>
+<div class="panel"><h3>作業用の事実</h3>
+<div id="expert-inputs" class="fact-inputs"></div><div id="expert-facts" class="chips"></div><div class="controls"><label for="expert-target">説明する結論 <select id="expert-target"></select></label></div><div id="expert-result" class="result" role="status" aria-live="polite"></div></div></div>
+<details class="study-only"><summary>詳しく見る：規則を保守する・説明の範囲</summary><div id="expert-enabled" class="controls"></div><div id="expert-trace" class="table-wrap"></div><p>有効・無効を変えると初期事実から計算し直します。不要になった結論を残しません。枠線で示す根拠は、この実行で最初に追加した際の説明です。あり得る根拠をすべて列挙する機能ではありません。</p><p>知識の内容が現実に正しいか、例外が漏れていないかは別の確認が必要です。適用履歴があるだけで、結論の実用上の正しさまで保証されるわけではありません。</p></details>
+<details class="answer study-only"><summary>確認：規則を変えることと、事実を変えることは同じ？</summary><p>事実は今回の入力、規則は条件と結論の関係です。どちらを変えても結果は変わり得ますが、変更したものを区別して記録します。R2だけを無効にしても、条件がそろっていればR1の「利用資格あり」は導けます。</p></details>
+</section>
+</main><div class="footer-nav"><button type="button" id="prev">← 前のテーマ</button><span>予想する → たどる → 根拠を言葉にする</span><button type="button" id="next">次のテーマ →</button></div>
+<footer><p>すべて教材内の定義・架空例です。操作結果の保存・送信は行いません。テーマ間の編集状態は独立しています。</p><details><summary>スライドとの対応・出典・この教材の範囲</summary><p>01：5〜12・25〜26枚 ／ 02：9〜10・13〜16枚 ／ 03：17〜21枚 ／ 04：22〜24枚 ／ 05：26〜28枚 ／ 06：29〜35枚。端末分類・R1〜R3と基準の事実は既存Python演習と同じです。</p><p>後ろ向き推論、フレーム、台帳の判断は追加の教育用実装。OWL・Prolog・RETE・多重継承・変数の単一化・完全な説明列挙は実装しません。</p><p>説明の根拠：<a href="https://www.w3.org/TR/owl2-primer/">W3C OWL 2 Primer</a>（クラス・個体・開世界）／ <a href="https://web.mit.edu/dxh/www/marvin/web.media.mit.edu/~minsky/papers/Frames/frames.html">Minsky: A Framework for Representing Knowledge</a>（フレームと既定値）。個別指定の優先はこの教材の規約です。外部リンクを開く場合はネット接続が必要です。</p></details></footer></div>
+
+<script id="knowledge-model">
+'use strict';
+var Knowledge = (() => {
+  const PARENTS=Object.freeze({'携帯型端末':'コンピュータ','ノートPC':'コンピュータ','据え置き型PC':'コンピュータ','スマホ':'携帯型端末','タブレット':'携帯型端末','デスクトップ':'据え置き型PC','サーバ':'据え置き型PC'});
+  const FACTS=Object.freeze(['利用登録済み','講習修了','在庫あり']);
+  const INPUTS=Object.freeze([...FACTS,'予約確認済み']);
+  const RULES=Object.freeze([
+    Object.freeze({id:'R1',conditions:Object.freeze(['利用登録済み','講習修了']),conclusion:'利用資格あり'}),
+    Object.freeze({id:'R2',conditions:Object.freeze(['利用資格あり','在庫あり']),conclusion:'貸出候補'}),
+    Object.freeze({id:'R3',conditions:Object.freeze(['貸出候補','予約確認済み']),conclusion:'貸出準備可'})
+  ]);
+  const copy=value=>JSON.parse(JSON.stringify(value));
+  function isa(parents,start,target){
+    const known=new Set([...Object.keys(parents),...Object.values(parents)]);
+    if(!known.has(start)||!known.has(target))return {status:'unknown',reason:'unknown_term',path:[]};
+    const path=[start],visited=new Set();let current=start;
+    while(true){
+      if(current===target)return {status:'yes',reason:'reachable',path};
+      if(visited.has(current))return {status:'cycle',reason:'repeated_node',path};
+      visited.add(current);if(!Object.hasOwn(parents,current))return {status:'unknown',reason:'no_path',path};
+      current=parents[current];path.push(current);
+    }
+  }
+  function forward(initial,rules=RULES){
+    const facts=new Set(initial),trace=[],steps=[{kind:'start',facts:[...facts].sort(),trace:[],pass:0}];let pass=0,changed;
+    do{
+      changed=false;pass++;
+      for(const rule of rules){
+        const missing=rule.conditions.filter(f=>!facts.has(f));
+        const kind=missing.length?'missing':facts.has(rule.conclusion)?'already':'add';
+        if(kind==='add'){facts.add(rule.conclusion);trace.push({rule:rule.id,conditions:[...rule.conditions],conclusion:rule.conclusion});changed=true;}
+        steps.push({kind,rule:rule.id,missing,conclusion:rule.conclusion,pass,facts:[...facts].sort(),trace:copy(trace)});
+      }
+      steps.push({kind:changed?'rescan':'stop',pass,facts:[...facts].sort(),trace:copy(trace)});
+    }while(changed);
+    return {facts:[...facts].sort(),trace,steps};
+  }
+  function backward(initial,goal,rules=RULES){
+    // This lesson uses one rule per conclusion, with ground positive facts only.
+    if(new Set(rules.map(r=>r.conclusion)).size!==rules.length)throw new Error('One rule per conclusion required');
+    const facts=new Set(initial),tree={id:0,goal,status:'pending',children:[]},events=[];let serial=0;
+    const record=(kind,node,message)=>events.push({kind,current:node.id,message,tree:copy(tree)});
+    record('start',tree,'目標を置きました。必要な条件を確認します。');
+    function prove(node,ancestors){
+      record('visit',node,`「${node.goal}」を確認します。`);
+      if(facts.has(node.goal)){node.status='proven';node.source='fact';record('fact',node,`「${node.goal}」は初期事実にあります。`);return true;}
+      if(ancestors.has(node.goal)){node.status='unproved';node.source='cycle';record('cycle',node,'同じ目標を再訪したため、この枝の探索を止めます。');return false;}
+      const rule=rules.find(r=>r.conclusion===node.goal);
+      if(!rule){node.status='unproved';node.source='missing';record('missing',node,`「${node.goal}」は初期事実になく、導く規則もありません。`);return false;}
+      node.rule=rule.id;node.children=rule.conditions.map(condition=>({id:++serial,goal:condition,status:'pending',children:[]}));
+      record('expand',node,`${rule.id}のすべての条件を確認します。`);
+      const next=new Set([...ancestors,node.goal]);const results=node.children.map(child=>prove(child,next));
+      node.status=results.every(Boolean)?'proven':'unproved';node.source='rule';
+      record('resolve',node,node.status==='proven'?`${rule.id}の条件がそろいました。`:`${rule.id}の条件に未証明のものがあります。`);return node.status==='proven';
+    }
+    const proven=prove(tree,new Set());record('done',tree,proven?'目標を確認できました。':'この知識からは目標を証明できません。');
+    return {proven,tree,events};
+  }
+  function resolveFrame(standard,specific,exhibit=false){
+    for(const value of [standard,specific])if(value!==null&&(!Number.isInteger(value)||value<1||value>30))throw new Error('Days must be null or integer 1..30');
+    return {days:specific??standard,source:specific!==null?'individual':standard!==null?'default':'unknown',exhibit};
+  }
+  function world(recorded,mode,complete){
+    if(!['open','closed'].includes(mode))throw new Error('Unknown world assumption');
+    return recorded?{status:'yes',reason:'recorded'}:mode==='closed'&&complete?{status:'no',reason:'closed_complete'}:{status:'unknown',reason:mode==='closed'?'incomplete':'open'};
+  }
+  function explanation(initial,trace,goal){
+    const inputs=new Set(initial),facts=new Set(),rules=new Set();
+    function visit(fact){if(facts.has(fact))return;facts.add(fact);if(inputs.has(fact))return;const item=trace.find(t=>t.conclusion===fact);if(item){rules.add(item.rule);item.conditions.forEach(visit);}}
+    const found=inputs.has(goal)||trace.some(t=>t.conclusion===goal);if(found)visit(goal);
+    return {found,facts:[...facts],rules:[...rules]};
+  }
+  function demo(){
+    const queries=[['スマホ','コンピュータ'],['サーバ','コンピュータ'],['スマホ','ノートPC'],['ENIAC','コンピュータ'],['スマホ','電子機器'],['コンピュータ','コンピュータ']];
+    const compact=result=>({facts:result.facts,trace:result.trace});
+    return {isa:queries.map(([start,target])=>({start,target,...isa(PARENTS,start,target)})),cycle:isa({A:'B',B:'A',C:'D'},'A','D'),initial_facts:[...FACTS],baseline:compact(forward(FACTS)),with_reservation:compact(forward([...FACTS,'予約確認済み'])),without_training:compact(forward(FACTS.filter(f=>f!=='講習修了')))};
+  }
+  return {PARENTS,FACTS,INPUTS,RULES,copy,isa,forward,backward,resolveFrame,world,explanation,demo};
+})();
+</script>
+<script id="knowledge-ui">
+'use strict';
+(() => {
+  const K=Knowledge,$=id=>document.getElementById(id),names=['network','frame','forward','backward','world','expert'];
+  const concepts=['コンピュータ','携帯型端末','ノートPC','据え置き型PC','スマホ','タブレット','デスクトップ','サーバ'];
+  const defaults=()=>({network:{parents:{...K.PARENTS},preset:'base',start:'スマホ',target:'コンピュータ',child:'スマホ',step:0},frame:{standard:7,specific:3,exhibit:false,charge:'80',step:0},forward:{facts:[...K.FACTS],order:'normal',step:0},backward:{facts:[...K.FACTS],goal:'貸出候補',inverse:false,step:0},world:{a:true,b:false,target:'B',mode:'open',complete:true,stale:false,step:0},expert:{facts:[...K.FACTS],enabled:['R1','R2','R3'],target:'貸出候補',step:0}});
+  let state=defaults(),active=0;
+  const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function options(id,values,selected){$(id).innerHTML=values.map(value=>{const [v,label]=Array.isArray(value)?value:[value,value];return `<option value="${esc(v)}">${esc(label)}</option>`;}).join('');$(id).value=selected;}
+  function svg(content,label,view='0 0 660 345'){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${view}" role="img" aria-label="${esc(label)}">${content}</svg>`;}
+  const text=(x,y,value,cls='',anchor='middle')=>`<text x="${x}" y="${y}" text-anchor="${anchor}" class="${cls}">${esc(value)}</text>`;
+  function steppers(){document.querySelectorAll('[data-steps]').forEach(box=>{const name=box.dataset.steps;box.innerHTML=`<button type="button" id="${name}-back" data-move="-1" data-for="${name}">← 前の手順</button><button type="button" id="${name}-step" class="primary" data-move="1" data-for="${name}">次の手順 →</button><button type="button" id="${name}-end" data-move="end" data-for="${name}">最後まで</button><output id="${name}-progress"></output>`;});}
+  function limit(name){const s=state[name];if(name==='network')return K.isa(s.parents,s.start,s.target).path.length+1;if(name==='frame'||name==='world')return 3;if(name==='backward')return K.backward(s.inverse?['貸出候補']:s.facts,s.goal).events.length-1;return computation(name).steps.length-1;}
+  function updateSteps(name){const max=limit(name),step=state[name].step;$(`${name}-back`).disabled=step===0;$(`${name}-step`).disabled=step===max;$(`${name}-end`).disabled=step===max;$(`${name}-progress`).textContent=`手順 ${step} / ${max}${step===max?' ・ 完了':''}`;}
+  function resetProgress(name){state[name].step=0;renderers[name]();}
+  function factsInputs(name){$(`${name}-inputs`).innerHTML=K.INPUTS.map((f,i)=>`<label for="${name}-fact-${i}"><input type="checkbox" id="${name}-fact-${i}" data-fact="${esc(f)}" data-owner="${name}">${esc(f)}</label>`).join('');}
+  function syncFacts(name){const s=state[name];K.INPUTS.forEach((f,i)=>{const input=$(`${name}-fact-${i}`);input.checked=s.facts.includes(f);input.disabled=name==='backward'&&s.inverse;});}
+  function renderNetwork(){
+    const s=state.network,r=K.isa(s.parents,s.start,s.target),cycle=s.preset==='cycle',choices=cycle?['A','B','C','D']:[...concepts,'ENIAC','電子機器'];
+    options('net-start',choices,s.start);options('net-target',choices,s.target);$('net-preset').value=s.preset;$('net-edit').hidden=cycle;
+    options('net-child',concepts,s.child);options('net-parent',[['','親なし'],...concepts],s.parents[s.child]||'');
+    const positions=cycle?{A:[150,125],B:[440,125],C:[150,265],D:[440,265]}:{'コンピュータ':[330,45],'携帯型端末':[140,145],'ノートPC':[330,145],'据え置き型PC':[520,145],'スマホ':[70,275],'タブレット':[235,275],'デスクトップ':[425,275],'サーバ':[590,275]};
+    const path=r.path.slice(0,Math.min(s.step,r.path.length)),current=path.at(-1),used=new Set(path.slice(1).map((p,i)=>path[i]+'>'+p));
+    let content='<defs><marker id="net-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="context-stroke"/></marker></defs>';
+    for(const [child,parent] of Object.entries(s.parents)){
+      if(!positions[child]||!positions[parent])continue;const [x,y]=positions[child],[tx,ty]=positions[parent],highlight=used.has(child+'>'+parent);
+      let d;if(child===parent)d=`M${x-24},${y-22} C${x-85},${y-92} ${x+85},${y-92} ${x+24},${y-22}`;
+      else {const dx=tx-x,dy=ty-y,ratio=Math.min(65/Math.max(Math.abs(dx),1),25/Math.max(Math.abs(dy),1)),sx=x+dx*ratio,sy=y+dy*ratio,ex=tx-dx*ratio,ey=ty-dy*ratio;const bend=Object.hasOwn(s.parents,parent)&&s.parents[parent]===child?32:0;d=`M${sx},${sy} Q${(sx+ex)/2+bend},${(sy+ey)/2-bend} ${ex},${ey}`;}
+      content+=`<path d="${d}" fill="none" stroke="${highlight?'#215ab3':'#91a7b6'}" stroke-width="${highlight?4:2}" marker-end="url(#net-arrow)"/>`;
+    }
+    for(const [node,[x,y]] of Object.entries(positions))content+=`<rect x="${x-65}" y="${y-23}" width="130" height="46" rx="12" fill="${path.includes(node)?'#e0f2ef':'#f7fafc'}" stroke="${node===current?'#215ab3':node===s.target?'#a3490c':'#c9d7df'}" stroke-width="${node===current?4:2}"/>`+text(x,y+6,node,'node-label');
+    $('net-plot').innerHTML=svg(content,'種類から上位へ向かうis-aネットワーク。経路は隣の文章でも表示します。','-10 -55 680 400');
+    const finished=s.step===limit('network'),reasons={reachable:['○ 目標へ到達','この経路が、教材内の分類での根拠です。'],unknown_term:['? 未知の名前','出発点か目標がこの辞書にありません。名前がないことは、現実に存在しない証明ではありません。'],no_path:['? 経路なし','名前はありますが、この知識から目標へたどれません。否定の結論は追加しません。'],repeated_node:['↻ 循環を検出して停止','同じノードを再訪しました。知識の構造を点検します。']};
+    $('net-result').innerHTML=`<strong>${finished?reasons[r.reason][0]:s.step?'→ 経路を確認中':'出発点と目標を選び、進めてみよう'}</strong><p>${esc(path.join(' → ')||'まだ経路をたどっていません。')}</p><p>${finished?reasons[r.reason][1]:`問い：${esc(s.start)}は${esc(s.target)}ですか？`}</p>`;
+    $('net-direct').innerHTML=`<p><code>is_a(${esc(s.start)}, X)</code> の直接の親：<strong>${esc(s.parents[s.start]||'この辞書には記載なし')}</strong>。上の経路探索とは別の問いです。</p>`;updateSteps('network');
+  }
+  function renderFrame(){const s=state.frame,r=K.resolveFrame(s.standard,s.specific,s.exhibit),days=n=>n===null?'未指定':`${n}日`;
+    $('frame-default').value=s.standard??'';$('frame-specific').value=s.specific??'';$('frame-exhibit').checked=s.exhibit;$('frame-charge').value=s.charge;
+    $('frame-standard').classList.toggle('chosen',s.step===1||(s.step===3&&r.source==='default'));$('frame-individual').classList.toggle('chosen',s.step===2||(s.step===3&&r.source==='individual'));
+    $('frame-adopted').innerHTML=`<strong>採用する貸出期間</strong><div class="frame-value">${s.step===3?days(r.days):'…'}</div><p class="small">${s.step===3?({individual:'出所：端末Aの個別指定',default:'出所：標準の既定値',unknown:'出所：情報なし'})[r.source]:'手順を進めて、情報の出所を確認します。'}</p>`;
+    const headlines=['標準と個別を比べよう',`1. 既定値は${days(s.standard)}`,`2. 個別指定は${days(s.specific)}`,`3. 採用する期間：${days(r.days)}`];
+    $('frame-result').innerHTML=`<strong>${headlines[s.step]}</strong><p>${s.step===3?r.source==='individual'?'個別指定があるので、既定値より優先しました。':r.source==='default'?'個別指定がないので、既定値を採用しました。':'どちらにも値がないため、期間は未指定です。':'値だけでなく、どこに書かれているかを見ます。'}</p><p>${s.exhibit?'別の個別情報：展示専用のため貸出不可。期間の値があっても貸出可能にはなりません。':'この期間だけでは貸出可否を判断しません。'}</p>`;
+    $('frame-charge-result').textContent=s.charge===''?'充電状態：未記入。0%と確認したわけではありません。':`充電状態：${s.charge}%。単位付きの個別の値です。`;updateSteps('frame');
+  }
+  function computation(name){const s=state[name],rules=name==='expert'?K.RULES.filter(r=>s.enabled.includes(r.id)):s.order==='reverse'?[...K.RULES].reverse():K.RULES;return K.forward(s.facts,rules);}
+  function drawRules(id,snapshot,used=[],enabled=null,order=K.RULES){$(id).innerHTML=order.map(rule=>`<div class="rule ${snapshot.rule===rule.id?'active':''} ${used.includes(rule.id)?'used':''} ${enabled&&!enabled.includes(rule.id)?'off':''}" data-rule="${rule.id}"><div class="rule-head"><strong>${rule.id}</strong><span>${enabled&&!enabled.includes(rule.id)?'無効':snapshot.rule===rule.id?'← 今回照合':used.includes(rule.id)?'◆ 説明の根拠':''}</span></div><div class="conditions">${rule.conditions.map((f,i)=>`${i?'<b>＆</b>':''}<span class="${snapshot.facts.includes(f)?'met':'unmet'}">${snapshot.facts.includes(f)?'○':'?'} ${esc(f)}</span>`).join('')}</div><div class="rule-conclusion">→ ${esc(rule.conclusion)}</div></div>`).join('');}
+  function drawFacts(id,snapshot,initial,used=[],interactive=false){$(id).innerHTML=snapshot.facts.length?snapshot.facts.map(f=>`<${interactive?'button type="button"':'span'} class="chip ${initial.includes(f)?'initial':'derived'} ${used.includes(f)?'used':''}" ${interactive?`data-explain="${esc(f)}"`:''}>${initial.includes(f)?'●':'◆'} ${esc(f)}</${interactive?'button':'span'}>`).join(''):'<p class="small">事実はまだありません。</p>';}
+  function traceTable(id,trace){$(id).innerHTML=trace.length?`<table><caption>新しい結論を追加したときだけ記録</caption><thead><tr><th>規則</th><th>使った条件</th><th>追加した結論</th></tr></thead><tbody>${trace.map(t=>`<tr><td>${t.rule}</td><td>${t.conditions.map(esc).join(' ＆ ')}</td><td>${esc(t.conclusion)}</td></tr>`).join('')}</tbody></table>`:'<p>まだ新しい結論は追加していません。</p>';}
+  function stepDescription(e){if(e.kind==='start')return ['初期事実を用意しました','この事実から、規則を順に照合します。'];if(e.kind==='stop')return ['一巡して追加なし → 停止','これ以上、この規則群から新しい事実は増えません。'];if(e.kind==='rescan')return ['追加があったので、もう一巡','先頭の規則から確認し直します。'];if(e.kind==='add')return [`${e.rule}：◆ ${e.conclusion}を追加`,'すべての条件がそろいました。この結論を後続の規則でも使えます。'];if(e.kind==='already')return [`${e.rule}：追加済み`,'条件はそろっていますが、同じ結論は二重に追加しません。'];return [`${e.rule}：条件が不足`,`不足：${e.missing.join('・')}。この照合では結論を追加しません。`];}
+  function renderForward(){const s=state.forward,c=computation('forward'),e=c.steps[s.step],description=stepDescription(e);syncFacts('forward');$('forward-order').value=s.order;
+    drawRules('forward-rules',e,[],null,s.order==='reverse'?[...K.RULES].reverse():K.RULES);drawFacts('forward-facts',e,s.facts);traceTable('forward-trace',e.trace);
+    $('forward-result').innerHTML=`<strong>${esc(description[0])}</strong><p>${esc(description[1])}</p><p class="small">${e.pass?`${e.pass}巡目 ／ `:''}追加した事実：${e.trace.length}件${e.kind==='stop'&&!e.facts.includes('貸出準備可')?'。貸出準備可は導けませんが、貸出不可という否定ではありません。':''}</p>`;updateSteps('forward');
+  }
+  function proofHTML(node,current){const symbol={pending:'…',proven:'○',unproved:'?'}[node.status],reason=node.rule?`${node.rule}：すべての子条件が必要`:node.source==='fact'?'初期事実':node.source==='missing'?'初期事実にも規則にも見つからない':node.source==='cycle'?'再訪した目標':'これから確認';return `<li><div class="proof-node ${node.status} ${current===node.id?'current':''}"><strong>${symbol} ${esc(node.goal)}</strong><small>${esc(reason)}</small></div>${node.children.length?`<ul>${node.children.map(child=>proofHTML(child,current)).join('')}</ul>`:''}</li>`;}
+  function renderBackward(){const s=state.backward,c=K.backward(s.inverse?['貸出候補']:s.facts,s.goal),e=c.events[s.step];syncFacts('backward');$('backward-inverse').checked=s.inverse;options('backward-goal',[...K.RULES.map(r=>r.conclusion),'利用登録済み'],s.goal);
+    $('backward-tree').innerHTML=`<ul class="proof" aria-label="目標の証明木">${proofHTML(e.tree,e.current)}</ul>`;
+    $('backward-result').innerHTML=`<strong>${esc(e.message)}</strong><p>${e.kind==='done'?c.proven?'初期事実、または規則の全条件から目標を確認できました。':'不足する条件があるので未証明です。否定の事実を追加したわけではありません。':'目標から条件へ進み、確認できた結果を親へ返します。'}</p>${s.inverse?'<p>この例の初期事実は「貸出候補」だけです。</p>':''}`;
+    const inverse=K.forward(['貸出候補']);$('backward-inverse-result').innerHTML=`<p>初期事実が「貸出候補」だけの場合、前向き推論後も <strong>${inverse.facts.map(esc).join('・')}</strong> だけです。「利用登録済み」は追加されません。</p>`;updateSteps('backward');
+  }
+  function renderWorld(){const s=state.world,recorded=s.target==='A'?s.a:s.b,r=K.world(recorded,s.mode,s.complete);$('world-a').checked=s.a;$('world-b').checked=s.b;$('world-target').value=s.target;$('world-mode').value=s.mode;$('world-complete').checked=s.complete;
+    $('world-ledger').innerHTML=`<div class="table-wrap"><table><thead><tr><th>端末</th><th>今日の台帳の記載</th></tr></thead><tbody>${['A','B'].map(t=>`<tr class="${s.target===t?'chosen':''}"><th>端末${t}</th><td>${(t==='A'?s.a:s.b)?'○ 予約を記録':'— 記載なし'}</td></tr>`).join('')}</tbody></table></div>`;
+    const verdict={yes:'○ 今日の予約あり',no:'− 今日の予約なしとして扱う',unknown:'? 今日の予約は不明'},why={recorded:'台帳に予約の記載があります。',closed_complete:'今日の台帳が完全という仮定の下で、未記載を予約なしと扱いました。',open:'未記載でも、予約が存在する可能性を残します。',incomplete:'台帳が完全とは言えないので、未記載から予約なしとは判断できません。'};
+    $('world-complete').disabled=s.mode==='open';
+    const headings=['台帳と仮定を確認しよう',`1. 端末${s.target}：${recorded?'記載あり':'記載なし'}`,s.mode==='open'?'2. 開世界：完全性の仮定を使わない':`2. 閉世界・完全性${s.complete?'を仮定':'は未確認'}`,`3. ${verdict[r.status]}`];
+    $('world-result').innerHTML=`<strong>${headings[s.step]}</strong><p>${s.step===3?why[r.reason]:'記載の確認 → 扱いの前提 → 判断、の順に進めます。'}</p>`;
+    $('world-warning').textContent=s.stale?'外からの追加情報：Bの予約は未反映です。完全性の仮定はこの例では成り立ちません。チェックを付け直しても台帳自体は更新されません。':'範囲は「今日の端末予約」だけです。完全性は運用上の仮定で、自動検証した結果ではありません。';
+    $('world-stale-result').textContent=s.stale?'未反映例を表示中。台帳にはBなし・完全性のチェックを外した状態から試します。Bの記載を追加すると、この未反映例を解除します。':'未反映例のボタンで、完全な台帳という前提が崩れる場合を試せます。';updateSteps('world');
+  }
+  function renderExpert(){const s=state.expert,c=computation('expert'),e=c.steps[s.step],why=K.explanation(s.facts,e.trace,s.target),description=stepDescription(e);syncFacts('expert');
+    options('expert-target',[...K.RULES.map(r=>r.conclusion),...K.INPUTS],s.target);K.RULES.forEach(r=>$(`expert-enable-${r.id}`).checked=s.enabled.includes(r.id));
+    drawRules('expert-rules',e,why.rules,s.enabled);drawFacts('expert-facts',e,s.facts,why.facts,true);traceTable('expert-trace',e.trace);
+    $('expert-result').innerHTML=`<strong>${why.found?`○ ${esc(s.target)}の根拠`:`? ${esc(s.target)}は${e.kind==='stop'?'導けません':'まだありません'}`}</strong><p>${why.found?why.rules.length?`使った規則：${why.rules.join(' → ')}。枠で示した事実を根拠として使っています。`:'初期事実として与えられた情報です。規則で導いた結論ではありません。':e.kind==='stop'?'有効な規則と初期事実からは導けません。入力と無効な規則を点検します。':'推論の手順を進めてみましょう。'}</p><p class="small">現在：${esc(description[0])}</p>`;updateSteps('expert');
+  }
+  const renderers={network:renderNetwork,frame:renderFrame,forward:renderForward,backward:renderBackward,world:renderWorld,expert:renderExpert};
+  function show(index,syncURL=true){active=index;names.forEach((name,i)=>{$(name).hidden=i!==index;document.querySelector(`[data-tab="${name}"]`).setAttribute('aria-pressed',String(i===index));});$('prev').disabled=index===0;$('next').disabled=index===names.length-1;renderers[names[index]]();if(syncURL&&location.hash!=='#'+names[index])history.pushState(null,'','#'+names[index]);}
+  function themeFromHash(){return Math.max(0,names.indexOf(location.hash.slice(1)));}
+  window.addEventListener('hashchange',()=>show(themeFromHash(),false));
+  window.addEventListener('popstate',()=>show(themeFromHash(),false));
+  steppers();['forward','backward','expert'].forEach(factsInputs);
+  const dayOptions=[['','未指定'],...Array.from({length:30},(_,i)=>[String(i+1),`${i+1}日`])];options('frame-default',dayOptions,'7');options('frame-specific',dayOptions,'3');
+  $('expert-enabled').innerHTML=K.RULES.map(r=>`<label for="expert-enable-${r.id}"><input type="checkbox" id="expert-enable-${r.id}" data-enable="${r.id}" checked>${r.id}を有効</label>`).join('');
+  $('relations-plot').innerHTML=svg(`<defs><marker id="relation-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#142f45"/></marker></defs>${[['スマホ','携帯型端末','is-a：種類 → 種類',''],['端末A','タブレット','instance-of：個体 → 種類','7 4'],['バッテリーA','端末A','part-of：部分 → 全体','2 5']].map(([a,b,label,dash],i)=>{const y=45+i*80;return `<rect x="10" y="${y-22}" width="175" height="44" rx="8" fill="#eaf3f5"/><rect x="475" y="${y-22}" width="175" height="44" rx="8" fill="#edf3ff"/><path d="M190 ${y}H470" stroke="#142f45" stroke-width="2" stroke-dasharray="${dash}" marker-end="url(#relation-arrow)"/>`+text(97,y+6,a,'node-label')+text(562,y+6,b,'node-label')+text(330,y-10,label,'tiny');}).join('')}`,'種類・個体・部分で異なる3種類の関係','0 0 660 245');
+  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>show(names.indexOf(b.dataset.tab)));
+  $('prev').onclick=()=>show(Math.max(0,active-1));$('next').onclick=()=>show(Math.min(names.length-1,active+1));
+  $('projection').onclick=()=>{const on=document.body.classList.toggle('projection');$('projection').setAttribute('aria-pressed',String(on));$('projection').textContent=on?'通常表示に戻す':'投影表示にする';};
+  document.querySelectorAll('[data-reset]').forEach(b=>b.onclick=()=>{const name=b.dataset.reset;state[name]=defaults()[name];$(name).querySelectorAll('details').forEach(d=>d.open=false);renderers[name]();});
+  document.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>{const name=b.dataset.for,max=limit(name);state[name].step=b.dataset.move==='end'?max:Math.max(0,Math.min(max,state[name].step+Number(b.dataset.move)));renderers[name]();});
+  document.querySelectorAll('[data-fact]').forEach(input=>input.onchange=()=>{const s=state[input.dataset.owner],f=input.dataset.fact;s.facts=input.checked?[...s.facts,f]:s.facts.filter(x=>x!==f);resetProgress(input.dataset.owner);});
+  $('net-preset').onchange=e=>{const s=state.network;s.preset=e.target.value;s.parents=s.preset==='cycle'?{A:'B',B:'A',C:'D'}:{...K.PARENTS};s.start=s.preset==='cycle'?'A':s.preset==='unknown'?'ENIAC':'スマホ';s.target=s.preset==='cycle'?'D':'コンピュータ';s.child='スマホ';resetProgress('network');};
+  for(const [id,key] of [['net-start','start'],['net-target','target']])$(id).onchange=e=>{state.network[key]=e.target.value;resetProgress('network');};
+  $('net-child').onchange=e=>{state.network.child=e.target.value;options('net-parent',[['','親なし'],...concepts],state.network.parents[e.target.value]||'');};
+  $('net-apply').onclick=()=>{const s=state.network,value=$('net-parent').value;if(value)s.parents[s.child]=value;else delete s.parents[s.child];resetProgress('network');};
+  for(const [id,key] of [['frame-default','standard'],['frame-specific','specific']])$(id).onchange=e=>{state.frame[key]=e.target.value===''?null:Number(e.target.value);resetProgress('frame');};
+  $('frame-exhibit').onchange=e=>{state.frame.exhibit=e.target.checked;resetProgress('frame');};$('frame-charge').onchange=e=>{state.frame.charge=e.target.value;resetProgress('frame');};
+  $('forward-order').onchange=e=>{state.forward.order=e.target.value;resetProgress('forward');};
+  $('backward-goal').onchange=e=>{state.backward.goal=e.target.value;resetProgress('backward');};$('backward-inverse').onchange=e=>{state.backward.inverse=e.target.checked;state.backward.goal=e.target.checked?'利用登録済み':'貸出候補';resetProgress('backward');};
+  for(const [id,key,checkbox] of [['world-a','a',true],['world-b','b',true],['world-target','target',false],['world-mode','mode',false],['world-complete','complete',true]])$(id).onchange=e=>{const s=state.world;s[key]=checkbox?e.target.checked:e.target.value;if(key==='b'&&s.b)s.stale=false;resetProgress('world');};
+  $('world-stale').onclick=()=>{Object.assign(state.world,{b:false,target:'B',complete:false,mode:'closed',stale:true});resetProgress('world');};
+  document.querySelectorAll('[data-enable]').forEach(input=>input.onchange=()=>{const s=state.expert,id=input.dataset.enable;s.enabled=input.checked?[...s.enabled,id]:s.enabled.filter(x=>x!==id);resetProgress('expert');});
+  $('expert-target').onchange=e=>{state.expert.target=e.target.value;renderExpert();};
+  $('expert-facts').onclick=e=>{const button=e.target.closest('[data-explain]');if(!button)return;const fact=button.dataset.explain;state.expert.target=fact;renderExpert();[...$('expert-facts').querySelectorAll('button')].find(b=>b.dataset.explain===fact)?.focus();};
+  names.forEach(name=>renderers[name]());show(themeFromHash(),false);
+})();
+</script>
+</body>
+</html>

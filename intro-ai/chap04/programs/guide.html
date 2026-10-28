@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第5回：プログラムの使い方・学び方">
+<title>第5回：プログラムの使い方・学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第5回：プログラムの使い方・学び方</h1>
+<nav aria-label="教材の移動">
+<a href="../index.html#/32" target="_blank" rel="noopener">演習スライド</a> ／ <a href="../interactive.html" target="_blank" rel="noopener">図解教材</a> ／ <a href="../interactive-guide.html" target="_blank" rel="noopener">図解教材の使い方</a>
+</nav>
+<h2 id="保存して学ぶ準備をする">1．保存して、学ぶ準備をする</h2>
+<p>この演習では、端末の分類と架空の機器貸出の規則を使います。<strong>答えを予想し、実行し、一つ変えた結果の理由を説明する</strong>ことが目標です。学校の実際の貸出規則ではありません。</p>
+<p class="downloads">
+<a href="knowledge_reasoning.ipynb" download>Notebookを保存</a> ／ <a href="knowledge_reasoning.py" download>Python版を保存</a> ／ <a href="knowledge_reasoning.zip" download>一式ZIPを保存</a>
+</p>
+<p>Notebookを中心に進めます。ZIPにはNotebook・Python版・このマニュアル・Notebook用requirementsを収録しています。ZIPを使う場合は先に展開してください。Notebookは単体で動き、隣のPythonファイルやJSONファイルを読み込む必要はありません。</p>
+<p>ファイルを授業用フォルダーに保存します。ブラウザーの画面で読むだけではPythonは実行されません。<strong>GitHub Pagesではファイルを配布し、実行は自分のPCのVS Codeで行います。</strong> 図解教材はブラウザーだけで操作できます。</p>
+<h2 id="vs-codeとカーネルを確認する">2．VS Codeとカーネルを確認する</h2>
+<ol type="1">
+<li>これまでの授業で使ったVS CodeとPython環境を開きます。WSLを使っている場合は、VS CodeがそのWSLへ接続していることを確認します。</li>
+<li>保存した <code>knowledge_reasoning.ipynb</code> を開きます。WSLを使う場合は、授業で使っているWSL側のフォルダーへファイルを置きます。</li>
+<li>右上の「カーネルの選択」で、授業用venvのPythonを選びます。すでに登録済みなら「AI course」など授業で使ったカーネルを選びます。</li>
+<li>「カーネルの再起動」の後、「すべて実行」を選びます。</li>
+</ol>
+<p>カーネルはセルのPythonを実行する環境です。ノートの内容だけを表示する画面とは役割が異なります。授業用venvを再利用し、この演習のために別のPythonを入れ直す必要はありません。コード本体はPython 3.10以降の標準ライブラリだけを使います。</p>
+<h3 id="カーネルが見つからないとき">カーネルが見つからないとき</h3>
+<p>VS CodeのPython・Jupyter拡張機能を、使っている環境（WSLならWSL側）で利用できるか確認します。次にターミナルで<strong>既存の授業用venvを有効化してから</strong>、必要な場合だけ次を実行します。授業で <code>venvc</code> を使っている場合は、先にそれを実行して <code>(class)</code> を確認します。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">&quot;import sys; print(sys.executable)&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install ipykernel</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> ai-course <span class="at">--display-name</span> <span class="st">&quot;AI course&quot;</span></span></code></pre></div>
+<p>Pythonのパスが授業用venvを指していない場合は、インストールへ進まず環境を確認してください。登録後にカーネル選択を開き直します。ダウンロード名の末尾が <code>.ipynb.txt</code> になっていないかも確認します。</p>
+<h2 id="基準の結果を読む">3．基準の結果を読む</h2>
+<p>最初は入力もコードも変えず、上から全セルを実行します。セル「基準と固定比較を実行」の出力で、次を確認してください。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>観察する場所</th>
+<th>成功の目印</th>
+<th>説明する問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>isa</code> のスマホ→コンピュータ</td>
+<td><code>yes</code>、経路はスマホ→携帯型端末→コンピュータ</td>
+<td>どの矢印をたどったか？</td>
+</tr>
+<tr>
+<td><code>baseline</code> の <code>trace</code></td>
+<td>R1→R2、貸出候補まで追加</td>
+<td>R3が使えない条件は何か？</td>
+</tr>
+<tr>
+<td><code>with_reservation</code></td>
+<td>R1→R2→R3、貸出準備可</td>
+<td>基準に何が加わったか？</td>
+</tr>
+<tr>
+<td><code>without_training</code></td>
+<td>適用規則なし</td>
+<td>最初のどの条件が欠けたか？</td>
+</tr>
+</tbody>
+</table>
+<p><code>facts</code> は比較しやすい文字列順で表示されます。<strong>推論の順序は <code>trace</code> を読みます。</strong> <code>unknown</code> は、未知語または経路がないことを示します。「現実にも違う」と断定する答えではありません。<code>cycle</code> は循環を検出して探索を止めた結果です。</p>
+<h2 id="experiments">4．予想して、一つ変える</h2>
+<p>元の <code>FACTS</code>・<code>PARENTS</code> と基準の <code>baseline_result</code> を書き換えず、コピーで実験します。各実験の前に結果を予想し、実行後に「変更した条件／リンク→使えた規則／経路→結論」を言葉にします。</p>
+<h3 id="実験a予約確認を追加する">実験A：予約確認を追加する</h3>
+<p><strong>予想：</strong> 基準に「予約確認済み」が加わると、R3まで使えるでしょうか。</p>
+<p>Notebookの「自分で一つ変える：予約確認を追加」の直後のセルを実行します。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trial_facts <span class="op">=</span> <span class="bu">set</span>(FACTS)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>trial_facts.add(<span class="st">&quot;予約確認済み&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>trial_result <span class="op">=</span> forward_chain(trial_facts, RULES)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(trial_result, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;元の事実:&quot;</span>, FACTS)</span></code></pre></div>
+<p><strong>確認：</strong> <code>trace</code> はR1→R2→R3、結論に「貸出準備可」が加わります。元の <code>FACTS</code> に予約確認済みが加わっていないことも確認します。R3のどの条件を新しく満たしたか説明しましょう。</p>
+<h3 id="実験b講習修了を除く">実験B：講習修了を除く</h3>
+<p><strong>予想：</strong> 予約確認を追加した状態を引き継がず、基準のコピーから講習修了だけを除くとどうなりますか。</p>
+<p>Notebookの末尾に新しいコードセルを追加し、次を貼り付けて実行します。先に全セル実行で関数と <code>json</code> を読み込んでおきます。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>without_training <span class="op">=</span> <span class="bu">set</span>(FACTS)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>without_training.discard(<span class="st">&quot;講習修了&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>comparison <span class="op">=</span> forward_chain(without_training, RULES)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(comparison, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;元の事実:&quot;</span>, FACTS)</span></code></pre></div>
+<p><strong>確認：</strong> <code>trace</code> は空で、適用規則はありません。R1の条件が足りず、R2・R3へ進めないことを説明します。「貸出不可」を導いた結果ではありません。</p>
+<h3 id="実験c未知だった上位概念へのリンクを追加する">実験C：未知だった上位概念へのリンクを追加する</h3>
+<p><strong>予想：</strong> 「コンピュータ→電子機器」を追加すると、スマホから電子機器までたどれますか。</p>
+<p>Notebookの「自分で一つ変える：知識を追加」の直後のセルを実行します。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trial_parents <span class="op">=</span> <span class="bu">dict</span>(PARENTS)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;追加前:&quot;</span>, isa_path(PARENTS, <span class="st">&quot;スマホ&quot;</span>, <span class="st">&quot;電子機器&quot;</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>trial_parents[<span class="st">&quot;コンピュータ&quot;</span>] <span class="op">=</span> <span class="st">&quot;電子機器&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;追加後:&quot;</span>, isa_path(trial_parents, <span class="st">&quot;スマホ&quot;</span>, <span class="st">&quot;電子機器&quot;</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;元の知識は保持:&quot;</span>, <span class="st">&quot;コンピュータ&quot;</span> <span class="kw">not</span> <span class="kw">in</span> PARENTS)</span></code></pre></div>
+<p><strong>確認：</strong> 追加前は <code>unknown / unknown_term</code>、追加後は <code>yes / reachable</code> です。スマホ→携帯型端末→コンピュータ→電子機器の経路ができます。この関係は今回与える教材内の定義です。</p>
+<h2 id="図とコードを結び付ける">5．図とコードを結び付ける</h2>
+<ul>
+<li><a href="../interactive.html#network" target="_blank" rel="noopener">関係をたどる</a>：経路・未知語・循環を図で観察し、Notebookの <code>isa</code> と比べます。図解側の通常編集は元の概念の範囲なので、電子機器の追加実験はNotebookで行います。</li>
+<li><a href="../interactive.html#forward" target="_blank" rel="noopener">事実から進む</a>：予約確認を追加／講習修了を外して、同じR1〜R3の結果を比較します。</li>
+<li><a href="../interactive.html#expert" target="_blank" rel="noopener">根拠を説明</a>：R1→R2の追加順序と、結論からR2→R1へ戻る説明順序を区別します。</li>
+</ul>
+<p>Python演習はis-a探索と前向き推論です。図解教材のフレーム・後ろ向き推論・世界仮説は追加の教育用実装で、Pythonにも実装されているとは扱いません。</p>
+<h2 id="元に戻す困ったとき">6．元に戻す・困ったとき</h2>
+<ul>
+<li>実験用セルは毎回、元データから新しいコピーを作ります。基準を再確認するときはカーネルを再起動し、先頭から全セルを実行します。</li>
+<li>元データや関数まで編集して戻せなくなった場合は、作業ファイルを別名で保存してから、配布Notebookをもう一度保存します。</li>
+<li><code>NameError</code> が出たら、上の定義セルを飛ばしていないか確認します。最初から全セル実行すると依存する定義がそろいます。</li>
+<li>ZIP内の <code>guide.html</code> はオフラインで読めます。図解教材・スライドへの移動は公開サイトへつながるので、その場合はネット接続が必要です。</li>
+</ul>
+<h2 id="pythonファイルを使う場合">Pythonファイルを使う場合</h2>
+<p>授業用venvを有効化し、保存したファイルのフォルダーで実行します。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> knowledge_reasoning.py <span class="at">--demo</span></span></code></pre></div>
+<p>基準と固定比較をまとめて表示します。照合用JSONを読む場合は <code>--demo --json</code> を指定します。Python版だけなら追加パッケージは不要です。自由な入力変更は、上のNotebookのコピーを使う手順で行います。</p>
+<p>uvを使っている人は <code>uv run --no-project python knowledge_reasoning.py --demo</code> でも実行できます。ZIP内の <code>requirements.txt</code> は既存のNotebook検証環境の依存一覧です。すでに動く授業用カーネルがあれば、環境を入れ替える必要はありません。</p>
+</main></body></html>
