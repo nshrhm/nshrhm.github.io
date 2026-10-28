@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>第7回 深層学習1：CNN</title>
+        <meta name="description"
+              content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="白濵 成希">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+<!-- 1: 第7回 深層学習1：CNNを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>第7回 深層学習1：CNN</h2>
+<p class="eyebrow">
+人工知能概論 ／ 2026年度 秋学期
+</p>
+<p class="lead">
+画像を数値にし、小さな窓で特徴を見つける
+</p>
+<p>
+白濵 成希 ／ 2026年11月12日（木）
+</p>
+<p>読む → 操作する → 実行する → 一つ変更する → 比較して説明する</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今日は畳み込みニューラルネットワーク、CNNを学びます。身近な画像も、計算機では数値の並びです。小さな画像の一か所を手で計算してから、画像全体、さらに小さな学習へ進みましょう。
+</aside>
+</section>
+<section>
+<!-- 2: 今日の到達目標を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>今日の到達目標</h2>
+<ul>
+<li><strong>追う：</strong> 画像から特徴マップ、分類までの計算を追う。</li>
+<li><strong>比べる：</strong> フィルター・移動幅・集約方法を一つずつ変える。</li>
+<li><strong>説明する：</strong> 学習用と確認用の画像で結果を分けて説明する。</li>
+</ul>
+<p><a href="interactive.html" target="_blank" rel="noopener">操作教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a></p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+まず答えを予想してから操作してください。途中の数値が予想と違ったら、入力、フィルター、計算範囲を順に確認します。教材と二つのマニュアルは別タブで開きます。スライドの位置を保ったまま往復できます。
+</aside>
+</section>
+<section>
+<!-- 3: 第6回から引き継ぐ三つのことを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>第6回から引き継ぐ三つのこと</h2>
+<table>
+<thead>
+<tr>
+<th>既習事項</th>
+<th>今回の使い方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>入力×重み＋バイアス</td>
+<td>画像の小領域に適用する</td>
+</tr>
+<tr>
+<td>活性化関数</td>
+<td>ReLUで負の値を0にする</td>
+</tr>
+<tr>
+<td>損失と重み更新</td>
+<td>フィルターもデータに合わせて変える</td>
+</tr>
+</tbody>
+</table>
+<p><strong>出力を計算すること</strong>と<strong>重みを学習すること</strong>を区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+前回のニューロンの計算を思い出しましょう。今回は入力が画像の小さな領域になります。同じ計算を場所を変えながら使います。重みが固定されたときの計算を理解してから、重みを変える学習を扱います。
+</aside>
+</section>
+<section>
+<!-- 4: 深層学習とCNNの位置づけを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>深層学習とCNNの位置づけ</h2>
+<ul>
+<li>深層学習：複数の層で表現を段階的に変換し、学習する。</li>
+<li>CNN：局所的な接続と重み共有を利用するネットワーク。</li>
+<li>画像では、位置の関係を残しながら特徴を計算できる。</li>
+<li>今日の小例は<strong>仕組みの観察用</strong>。実用モデルの性能実験ではない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+深層学習を、単にデータが大量にあることと同じ意味にしないでください。層を通して表現を変換し、パラメーターを学習します。CNNはその構成方法の一つです。今日の小さなモデルは、大規模モデルの正確さを示すものではありません。
+</aside>
+</section>
+<section>
+<!-- 5: 画像は数値の並びを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>画像は数値の並び</h2>
+<ul>
+<li>この教材は <strong>4×4・1チャネル</strong>。0を暗く、1を明るく表示する。</li>
+<li>1画素を変えると、配列の対応する1要素が変わる。</li>
+<li>行は上から下、列は左から右。位置番号は0から始める。</li>
+</ul>
+<p><a href="interactive.html#image" target="_blank" rel="noopener">画素を一つ変える → どの数値が変わる？</a></p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+画面の四角と配列の要素を対応させます。行と列を取り違えないようにしましょう。操作教材の画素はクリックやキーボードで切り替えられます。まず一つだけ変え、配列のどこが変わったか説明してください。
+</aside>
+</section>
+<section>
+<!-- 6: 縦線と横線を用意するを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>縦線と横線を用意する</h2>
+<pre class="text"><code>縦線（列1）       横線（行1）
+0 1 0 0          0 0 0 0
+0 1 0 0          1 1 1 1
+0 1 0 0          0 0 0 0
+0 1 0 0          0 0 0 0</code></pre>
+<p>授業用に作った人工画像。撮影画像や受講者データは使わない。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+縦線は同じ列に一が並び、横線は同じ行に一が並びます。二種類だけなので、入力と正解の対応をすべて確認できます。これは人工的に作った例であり、現実の画像の多様さを代表してはいません。
+</aside>
+</section>
+<section>
+<!-- 7: 配列にすると何が見えるかを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>配列にすると何が見えるか</h2>
+<ul>
+<li>画素16個の値だけでなく、<strong>どの画素が隣り合うか</strong>を見る。</li>
+<li>横に並ぶ1と、縦に並ぶ1では配置が違う。</li>
+<li>先に平らな列へ変換すると、縦横の隣接関係を扱う工夫が必要。</li>
+</ul>
+<p>問い：明るい画素の<strong>個数だけ</strong>で縦線と横線を区別できる？</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+二つの画像の明るい画素はどちらも四個です。個数だけでは区別できません。どの位置に並んでいるかが重要です。CNNでは二次元の小領域を使って、このような配置を調べます。
+</aside>
+</section>
+<section>
+<!-- 8: 小さな窓で局所を見るを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>小さな窓で局所を見る</h2>
+<pre class="text"><code>入力の左上2×2     フィルター2×2
+0 1               1 -1
+0 1               1 -1</code></pre>
+<ul>
+<li>一つの出力が参照する入力領域を<strong>受容野</strong>という。</li>
+<li>この1層の例では、各出力が見るのは2×2の領域。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+画像全体を一度に見る代わりに、まず左上の二行二列を取り出します。この出力に影響する入力の範囲が受容野です。層を重ねると、元の入力上で影響する範囲は広がり得ます。ここでは一層だけに注目します。
+</aside>
+</section>
+<section>
+<!-- 9: フィルターは何を調べる？を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>フィルターは何を調べる？</h2>
+<ul>
+<li>フィルター：局所領域の各値に掛ける重みの並び。</li>
+<li><code>[[1,-1],[1,-1]]</code> は、左側と右側の明るさの差を調べる例。</li>
+<li>正・負・0の応答があり、<strong>大きい値＝物体名</strong>ではない。</li>
+<li>手で決めたフィルターと、学習したフィルターを区別する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+このフィルターは左側を足し、右側を引きます。縦線の左右で応答の符号が変わります。大きな値が出ても、それだけで猫や車だと分かるわけではありません。後で複数の特徴を組み合わせて分類します。
+</aside>
+</section>
+<section>
+<!-- 10: 一か所の積と和を求めるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>一か所の積と和を求める</h2>
+<pre class="text"><code>0×1 ＋ 1×(-1) ＋ 0×1 ＋ 1×(-1) ＝ -2</code></pre>
+<ul>
+<li>対応する位置どうしを掛け、四つを足す。</li>
+<li>この手計算はバイアス0。</li>
+<li>フィルターは反転せず、そのまま重ねる。</li>
+</ul>
+<p><a href="interactive.html#convolution" target="_blank" rel="noopener">窓を動かす → 次の値を予想する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+左上の答えはマイナス二です。四つの掛け算のうち、二つがマイナス一で、残りはゼロになります。次の窓へ移る前に答えを予想してください。フィルターを反転しない計算規約で教材全体をそろえています。
+</aside>
+</section>
+<section>
+<!-- 11: 右へ一つ移動するを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>右へ一つ移動する</h2>
+<pre class="text"><code>次の入力領域       計算
+1 0               1×1 + 0×(-1)
+1 0               + 1×1 + 0×(-1) = 2</code></pre>
+<p>同じ重みでも、重ねる領域が変われば出力が変わる。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+一つ右へ移ると、今度は左側に一が二つあります。そのため答えはプラス二です。変えたのは窓の位置だけです。重みそのものが途中で学習されて変わったわけではありません。
+</aside>
+</section>
+<section>
+<!-- 12: 全位置の結果が特徴マップを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>全位置の結果が特徴マップ</h2>
+<pre class="text"><code>-2  2  0
+-2  2  0
+-2  2  0</code></pre>
+<ul>
+<li>4×4入力に2×2窓、移動幅1、余白なし → <strong>3×3出力</strong>。</li>
+<li>各値の位置が、入力のどの領域を見たかに対応する。</li>
+<li>この例では各行の模様が同じなので、応答も同じ。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+窓を右へ動かし、次に一段下へ動かしてすべての位置を調べます。各結果を並べたものが特徴マップです。元の画像より小さくなった理由も考えましょう。端からはみ出す位置には窓を置いていません。
+</aside>
+</section>
+<section>
+<!-- 13: 同じフィルターを共有するを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>同じフィルターを共有する</h2>
+<ul>
+<li>9か所の出力すべてで、同じ4個の重みを使う。</li>
+<li>バイアス1個を加える場合、このフィルターは<strong>5パラメーター</strong>。</li>
+<li>各位置に別々の4重み＋バイアスを置くなら9×5＝45個。</li>
+<li>重み共有は、同じ特徴を別の位置でも調べる工夫。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+出力が九個あるから重みも九組ある、という構成ではありません。同じ四つの重みと一つのバイアスを共有できます。比較しているのは同じ局所接続で位置ごとに重みを変える場合です。画像をずらしても分類結果が必ず同じになるという意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 14: 複数フィルターで複数の応答を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>複数フィルターで複数の応答</h2>
+<ul>
+<li>フィルターが違えば、同じ画像から違う特徴マップを作れる。</li>
+<li>例：左右の差と上下の差を、それぞれ別の重みで調べる。</li>
+<li>1チャネル入力に2枚のフィルター → 出力は2チャネル。</li>
+<li>特徴マップは計算結果。何に反応したかを値で確かめる。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+左右の差を見るフィルターと、上下の差を見るフィルターを比較しましょう。出力のチャネルは、計算した特徴の種類に対応します。フィルターに名前を付けただけで説明を終えず、入力に対して本当にその応答が出るかを確かめます。
+</aside>
+</section>
+<section>
+<!-- 15: 色画像と入力チャネルを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>色画像と入力チャネル</h2>
+<ul>
+<li>色画像の一例はRGBの3チャネル。</li>
+<li>出力1チャネルを作るとき、入力チャネルごとの積和を足す。</li>
+<li>2×2・入力3チャネルなら、重みは2×2×3＝12個。</li>
+<li>今日の演習は1チャネルに限定して、途中を追いやすくする。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+チャネルは出力側だけにあるものではありません。色画像なら赤、緑、青を分けて入力する場合があります。一つの出力フィルターは入力の各チャネルに対応する重みを持ち、その結果を足します。演習では色を増やさず、一チャネルで確認します。
+</aside>
+</section>
+<section>
+<!-- 16: 層を重ねて表現を変えるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>層を重ねて表現を変える</h2>
+<pre class="text"><code>画素 → 局所的な応答 → 応答の組合せ → 分類に使う表現</code></pre>
+<ul>
+<li>畳み込みと非線形変換などを組み合わせる。</li>
+<li>後の層は、前の層の特徴を入力として使う。</li>
+<li>各層が必ず人間の決めた意味を表すとは限らない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+層を重ねると前の特徴マップが次の入力になります。単純な模様から複雑な特徴へ進む説明は役立ちますが、各層が必ず目や鼻を表すと決め付けることはできません。実際の応答や学習条件を調べる必要があります。
+</aside>
+</section>
+<section>
+<!-- 17: ストライドは窓の移動幅を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>ストライドは窓の移動幅</h2>
+<ul>
+<li>ストライド1：一つずつ移動 → この例では3×3。</li>
+<li>ストライド2：二つずつ移動 → この例では2×2。</li>
+<li>出力の位置数が減り、途中の位置の応答は計算しない。</li>
+</ul>
+<p><a href="interactive.html#shape" target="_blank" rel="noopener">移動幅を変える → 出力はいくつ？</a></p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ストライドを二にすると、画像の値を二倍にするのではなく窓の移動幅を二にします。四行四列の入力に二行二列の窓なら、縦横とも二か所です。窓の位置と出力の値を両方見てください。
+</aside>
+</section>
+<section>
+<!-- 18: パディングは周囲に加える値を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>パディングは周囲に加える値</h2>
+<ul>
+<li>ここでは画像の上下左右に0を加える。</li>
+<li>パディング1：各辺に1画素分の余白。</li>
+<li>4×4入力・2×2窓・移動幅1なら、出力は<strong>5×5</strong>。</li>
+<li>元の画像を撮り直したり、欠けた内容を復元したりはしない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+パディングは入力の周囲に値を補う操作です。今回のゼロパディングなら、追加した値はすべてゼロです。フィルターを置ける位置が増えるため出力サイズも変わります。画像の未知の内容を推測して復元しているわけではありません。
+</aside>
+</section>
+<section>
+<!-- 19: 出力サイズを数えるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>出力サイズを数える</h2>
+<p>1方向のサイズ： <strong>⌊(入力＋2×余白−窓)÷移動幅⌋＋1</strong></p>
+<table>
+<thead>
+<tr>
+<th>入力</th>
+<th>窓</th>
+<th>余白</th>
+<th>移動幅</th>
+<th>出力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>小数部分を切り捨てる。縦と横でそれぞれ計算する。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+公式を使う前に、窓を置ける開始位置を数える方法でも確認しましょう。余白なしなら一方向の開始位置はゼロ、一、二です。移動幅二ならゼロ、二になります。この公式は窓の要素を間引かない今回の条件です。
+</aside>
+</section>
+<section>
+<!-- 20: 条件を一つずつ変えるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>条件を一つずつ変える</h2>
+<ol type="1">
+<li>入力とフィルターを固定する。</li>
+<li>ストライドだけを1から2へ変える。</li>
+<li>初期状態へ戻す。</li>
+<li>パディングだけを0から1へ変える。</li>
+</ol>
+<p><strong>出力の大きさ</strong>と<strong>各位置の値</strong>を別々に比べる。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+いくつもの条件を同時に変えると、結果が何の影響か分かりにくくなります。まず移動幅だけを変え、元に戻してから余白を変えてください。出力が大きくなったことと、認識が正確になったことは同じではありません。
+</aside>
+</section>
+<section>
+<!-- 21: ReLUで負の応答を0にするを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>ReLUで負の応答を0にする</h2>
+<pre class="text"><code>入力   -2  2  0     ReLU後   0  2  0</code></pre>
+<ul>
+<li>ReLU(x)＝max(0,x)。正の値はそのまま、負の値は0。</li>
+<li>要素ごとの非線形変換。配列の縦横サイズは変えない。</li>
+<li>何を残し、何を捨てたかを確認する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここでのマイナス二は計算間違いではありません。それをReLUがゼロへ変えます。プラス二は二のままです。画像を小さくする操作とは違い、値だけを変えて形は保ちます。
+</aside>
+</section>
+<section>
+<!-- 22: 最大プーリングでまとめるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>最大プーリングでまとめる</h2>
+<pre class="text"><code>領域     0 2     → 最大値 2
+         0 2</code></pre>
+<ul>
+<li>2×2の値から最大値を一つ取る。</li>
+<li>3×3の特徴マップに移動幅1で適用 → 2×2。</li>
+<li>今日の出力は <code>[[2,2],[2,2]]</code>。</li>
+</ul>
+<p><a href="interactive.html#pooling" target="_blank" rel="noopener">まとめ方を変える → 何が残る？</a></p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+プーリングでは、畳み込みのように学習する重みを掛けません。今回の最大プーリングは領域の最大値を選ぶだけです。移動幅一なので領域は重なります。一般的な設定が常に移動幅一という意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 23: 平均プーリングと比べるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>平均プーリングと比べる</h2>
+<p>同じ領域 <code>[[0,2],[0,2]]</code> を使う。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>計算</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最大</td>
+<td>一番大きい値を取る</td>
+<td>2</td>
+</tr>
+<tr>
+<td>平均</td>
+<td>(0＋2＋0＋2)÷4</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>最大は強い応答、平均は領域全体の値を反映する。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+入力と領域を同じにして集約方法だけを変えます。最大は二、平均は一です。どちらも元の四つの値すべてを復元できるわけではありません。方法の選択は、どんな情報を残したいかに関係します。
+</aside>
+</section>
+<section>
+<!-- 24: 位置をずらすとどうなる？を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>位置をずらすとどうなる？</h2>
+<ul>
+<li>列1の縦線を列2へ動かし、途中の特徴マップを比較する。</li>
+<li>プーリング後に同じ値になる場所も、変わる場所もある。</li>
+<li>端、移動幅、領域の区切りによって結果が変わる。</li>
+<li><strong>位置ずれへの完全な不変性や回転への不変性は保証しない。</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+位置を変えたときに同じ出力になるかは条件次第です。中央から端への移動では、窓が見る領域も変わります。プーリングを入れたからどんな移動や回転でも大丈夫だ、とは言えません。具体的な配列で確かめましょう。
+</aside>
+</section>
+<section>
+<!-- 25: 途中で失われる情報を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>途中で失われる情報</h2>
+<ul>
+<li>ReLU：負の値どうしの違いを失う。</li>
+<li>最大プーリング：最大でない値や、その詳しい配置を失う。</li>
+<li>小さくするほど必ず分類がよくなる、とは言えない。</li>
+<li>必要な情報が残るかを、目的と結果から確かめる。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+値をまとめることは計算量を減らす助けになりますが、情報も失います。たとえば最大値が二という結果だけでは、残りの値を決められません。何を省いてよいかは、解きたい問題と確認した結果から考えます。
+</aside>
+</section>
+<section>
+<!-- 26: 画像から二つの分類スコアへを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>画像から二つの分類スコアへ</h2>
+<pre class="text"><code>4×4×1 → 畳み込み → 3×3×2 → ReLU
+       → 最大プーリング → 2×2×2 → 8値 → 2スコア</code></pre>
+<p>全結合層は8値を重み付きで組み合わせる。</p>
+<p><a href="interactive.html#pipeline" target="_blank" rel="noopener">途中の配列と分類スコアを見る</a></p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+学習モデルではフィルターを二枚使うため特徴マップも二枚です。プーリング後はそれぞれ二行二列で、合計八個の値になります。最後にこの八個を並べて全結合層へ渡し、縦線と横線のスコアを計算します。
+</aside>
+</section>
+<section>
+<!-- 27: softmaxと予測の読み方を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>softmaxと予測の読み方</h2>
+<ul>
+<li>2スコアをsoftmaxで、合計1の非負の値へ変換する。</li>
+<li>大きい方を予測ラベルにする：<strong>0＝縦線、1＝横線</strong>。</li>
+<li>同値の場合、この教材では0を選ぶ。</li>
+<li>大きな値でも、実世界での正しさを保証する確率ではない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+softmaxの値は二クラスで合計一になります。今回は大きい方を選びます。ただし、モデルが自信を持つことと正解することは別です。人工画像だけの学習結果を現実の写真へそのまま当てはめないようにしましょう。
+</aside>
+</section>
+<section>
+<!-- 28: 損失は学習のための数値を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>損失は学習のための数値</h2>
+<ul>
+<li>正解ラベルに割り当てた値が小さいほど、交差エントロピー損失は大きい。</li>
+<li>学習用4画像の損失を平均して更新に使う。</li>
+<li>正解数は分類結果、損失は予測値も反映する。別々に見る。</li>
+<li>この実験はフィルターと全結合層の重み・バイアスを更新する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+損失は間違いの個数そのものではありません。正解ラベルにどれほどの値を割り当てたかを反映します。今回は四画像の平均損失を使います。畳み込みのフィルターも最後の分類部分も学習対象です。
+</aside>
+</section>
+<section>
+<!-- 29: 学習用と確認用を分けるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>学習用と確認用を分ける</h2>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>線の位置</th>
+<th>枚数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学習用</td>
+<td>中央の位置1・2</td>
+<td>縦2＋横2＝4</td>
+</tr>
+<tr>
+<td>確認用</td>
+<td>端の位置0・3</td>
+<td>縦2＋横2＝4</td>
+</tr>
+</tbody>
+</table>
+<p>確認用画像は<strong>重み更新に使わない</strong>。両方の結果を報告する。</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+学習用と確認用は線の位置で分けます。確認用を重み更新に混ぜると、別の画像でどこまで通用するかを確かめる意味が変わります。この小さな確認用集合も、実画像の代表的な試験ではありません。
+</aside>
+</section>
+<section>
+<!-- 30: 学習の条件をそろえるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>学習の条件をそろえる</h2>
+<ul>
+<li>28パラメーター、固定初期値、学習率0.1、100回更新。</li>
+<li>毎回4画像すべての平均損失から、一括で更新する。</li>
+<li>小例では中央差分による数値微分を使う。</li>
+<li>学習率0との比較も、<strong>同じ初期値のコピーから</strong>始める。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+小例なので数値微分で勾配を近似できます。各パラメーターを少し増減させ、損失の差を調べる完成済みコードです。大規模なCNNでは通常、より効率的な誤差逆伝播を使います。比較のたびに初期値をそろえてください。
+</aside>
+</section>
+<section>
+<!-- 31: 学習前後を見比べるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>学習前後を見比べる</h2>
+<ul>
+<li>基準実験の平均損失：約 <strong>0.765126 → 0.130153</strong>。</li>
+<li>学習用予測：<code>[1,1,1,0] → [0,0,1,1]</code>。</li>
+<li>正解：<code>[0,0,1,1]</code>（縦・縦・横・横）。</li>
+<li>フィルターの値と、予測の変化を両方確認する。</li>
+</ul>
+<p><a href="interactive.html#learning" target="_blank" rel="noopener">同じ初期値から100回学習する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+固定条件の実験では平均損失が下がり、学習用の四画像は正しく分類できるようになります。数値は小数六桁に丸めています。別の条件でも必ず同じ結果になるという意味ではありません。操作教材で更新前後のフィルターも見てください。
+</aside>
+</section>
+<section>
+<!-- 32: 端の画像では誤りが残るを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>端の画像では誤りが残る</h2>
+<ul>
+<li>学習後の確認用予測：<code>[1,1,1,1]</code>。</li>
+<li>正解は <code>[0,0,1,1]</code>。端の縦線2枚を誤分類する。</li>
+<li>学習用4枚の成功だけで「縦横を理解した」と結論しない。</li>
+<li>入力の違い、途中の応答、予測を根拠に説明する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+学習用で全問正解しても、確認用では縦線を横線と予測します。失敗を隠さず、どの入力でどんな誤りが残ったかを報告しましょう。中央と端の特徴マップを比べることが、理由を考える手がかりになります。
+</aside>
+</section>
+<section>
+<!-- 33: 自習は一周ずつ進めるを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>自習は一周ずつ進める</h2>
+<ol type="1">
+<li>スライドで計算を読み、結果を予想する。</li>
+<li>操作教材で一つ変えて確かめる。</li>
+<li>Notebookを全セル実行し、基準結果を確認する。</li>
+<li>一つの条件を変更し、元の結果と並べる。</li>
+<li>「変えたもの・変わった結果・理由」を説明する。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+操作して終わりにせず、予想と結果の違いを言葉にしましょう。結果が変わらなかった場合も、理由を考える材料になります。元の状態へ戻せるように、基準データを保存して実験します。
+</aside>
+</section>
+<section>
+<!-- 34: 保存して、最初の実行へを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>保存して、最初の実行へ</h2>
+<p><a href="programs/cnn_basics.ipynb" download>Notebookを保存</a> ／ <a href="programs/cnn_basics.py" download>Pythonを保存</a> ／ <a href="programs/cnn_basics.zip" download>一式ZIPを保存</a></p>
+<ol type="1">
+<li>保存したNotebookをVS Codeで開く。</li>
+<li>既存venvのPythonカーネルを選び、再起動→全セル実行。</li>
+<li>畳み込みの1行目 <code>[-2,2,0]</code> と、学習後損失約 <code>0.130153</code> を確認。</li>
+</ol>
+<p><a href="programs/guide.html" target="_blank" rel="noopener">開始方法・出力・エラー対処を読む</a></p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最初は値を変更せず、すべてのセルを上から実行してください。NotebookはPython版を同じフォルダーに置かなくても動きます。カーネル選択や必要なパッケージで困ったら解説を開きましょう。制作側と同じPython版を用意する必要はありません。
+</aside>
+</section>
+<section>
+<!-- 35: 一つ変更して比較するを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>一つ変更して比較する</h2>
+<table>
+<thead>
+<tr>
+<th>Notebookのセル</th>
+<th>一つ変える値</th>
+<th>確認すること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>実験A</td>
+<td>フィルターの符号</td>
+<td>応答の符号が反転する</td>
+</tr>
+<tr>
+<td>実験B</td>
+<td>stride：1→2</td>
+<td>3×3→2×2</td>
+</tr>
+<tr>
+<td>実験C</td>
+<td>max→mean</td>
+<td>基準領域の2→1</td>
+</tr>
+<tr>
+<td>実験D</td>
+<td>rate：0→0.1</td>
+<td>同じ初期値から損失を比較</td>
+</tr>
+</tbody>
+</table>
+<p>元データをコピーし、<strong>予想→実行→比較→説明</strong>。</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+実験ごとに変える場所を決めています。フィルターの符号、移動幅、まとめ方、学習率を一つずつ試しましょう。学習率を変えるときは直前の学習済み重みを使わず、元の初期値から始めます。分からなくなったらカーネルを再起動して全セル実行します。
+</aside>
+</section>
+<section>
+<!-- 36: 理解確認と次回への接続を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>理解確認と次回への接続</h2>
+<ul>
+<li>一つの出力が参照する入力領域はどこか？</li>
+<li>畳み込み・ReLU・プーリングは、それぞれ何を変えるか？</li>
+<li>学習用で成功しても、確認用で失敗する例を説明できるか？</li>
+</ul>
+<p>次回：深層学習2（自己符号化器・LSTM・GAN）。</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここまでの三つの問いを、自分の言葉で説明してみましょう。式だけでなく、実際の入力や途中の数値を根拠に使ってください。次回は別の深層学習の構成へ進みます。今日のCNNの範囲と区別して整理しましょう。
+</aside>
+</section>
+<section>
+<!-- 37: 補足：パラメーター数とサイズを通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>補足：パラメーター数とサイズ</h2>
+<ul>
+<li>畳み込み：2枚×（2×2重み＋1バイアス）＝10。</li>
+<li>全結合：2出力×（8重み＋1バイアス）＝18。</li>
+<li>合計28。ReLUと今回のプーリングには学習パラメーターなし。</li>
+<li>出力サイズの式は、窓を間引かない条件（dilation＝1）。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここは補足です。配列の要素数と、学習するパラメーター数を分けて数えます。畳み込みの出力は十八個ですが、重みとバイアスは十個です。同じ重みを共有しているためです。
+</aside>
+</section>
+<section>
+<!-- 38: 補足：畳み込みという呼び名を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>補足：畳み込みという呼び名</h2>
+<ul>
+<li>本教材はフィルターを反転しない相互相関を計算する。</li>
+<li>CNNではこの演算を畳み込み層として扱うことが多い。</li>
+<li>数学的な畳み込みではフィルター反転を含む定義がある。</li>
+<li>計算規約をそろえてから、資料やコードの値を比較する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+別の本で同じフィルターなのに答えの向きが違ったら、反転を含む定義か確認してください。本教材は一般的なCNN実装の規約に合わせています。どちらの用語が出ても、実際にどんな計算をしているかを見ましょう。
+</aside>
+</section>
+<section>
+<!-- 39: 補足：実験の限界を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>補足：実験の限界</h2>
+<ul>
+<li>4×4人工画像・8枚だけ。撮影条件やノイズの多様さはない。</li>
+<li>数値微分は小例向け。大規模学習には計算量が大きい。</li>
+<li>ReLUの0や最大値の同値付近では、勾配近似に注意が必要。</li>
+<li>教室での見やすさ・学生実機の使いやすさは別途確認する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+再現できる小例にも限界があります。勾配の近似に使う幅や、最大値が同じになる点の扱いも結果に影響します。この教材で計算を理解したことを、大規模な画像認識システムを評価したことと同一視しないでください。
+</aside>
+</section>
+<section>
+<!-- 40: 補足：参考資料と復習先を通して計算と観察の根拠を対応させる -->
+<div class="slide-body">
+<h2>補足：参考資料と復習先</h2>
+<ul>
+<li>今年度シラバス・日程：第7回は畳み込みニューラルネット。</li>
+<li>昨年度第6章の深層学習・CNNの説明を再構成。</li>
+<li><a href="https://docs.pytorch.org/docs/2.14/generated/torch.nn.Conv2d.html">PyTorch Conv2d：計算規約・出力サイズ</a></li>
+<li><a href="https://docs.pytorch.org/docs/2.14/generated/torch.nn.MaxPool2d.html">PyTorch MaxPool2d：最大プーリング</a></li>
+</ul>
+<p><a href="interactive-guide.html" target="_blank" rel="noopener">操作の復習</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの復習</a></p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+計算規約を確認したいときは公式資料を参照できます。ただし、演習の実行にPyTorchは必要ありません。復習は操作マニュアルとプログラム解説から始めてください。自分の予想、操作、結果、説明を一組にすると理解を確かめやすくなります。
+</aside>
+</section>
+</div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealMath.MathJax3,
+      RevealAnimate,
+      RevealChalkboard,
+            RevealEmbedTweet,
+            RevealChart,
+        ];
+
+        const plugins =  [...printPlugins,
+        RevealZoom,
+        RevealSearch,
+                RevealMarkdown,
+                RevealMenu,
+                RevealFullscreen,
+                RevealAnything,
+                //RevealAudioSlideshow,
+                //RevealAudioRecorder,
+                RevealCustomControls,
+                // poll
+                // question
+                // seminar
+                Verticator
+                 ]
+
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+            height: 720,
+            margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+            customcontrols: {
+                    controls: [
+                            {
+                          id: 'toggle-overview',
+                          title: 'Toggle overview (O)',
+                          icon: '<i class="fa fa-th"></i>',
+                          action: 'Reveal.toggleOverview();'
+                        }
+                        ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+                ]
+            },
+            chart: {
+                    defaults: {
+                        color: 'lightgray', // color of labels
+                        scale: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: "lightgray" } , // color of grid lines
+                        },
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+            },
+            math: {
+                mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+                config: 'TeX-AMS_HTML-full',
+                // pass other options into `MathJax.Hub.Config()`
+                TeX: { Macros: { RR: "{\\bf R}" } }
+                },
+                anything: [
+                {
+        className: "plot",
+        defaults: {width:500, height: 500, grid:true},
+        initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+     },
+     {
+        className: "chart",
+        initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+     },
+     {
+        className: "anything",
+        initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+     },
+                    ],
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+        });
+
+
+
+        // Change chalkboard theme :
+        function changeTheme(input) {
+            var config = {};
+            config.theme = input.value;
+            Reveal.getPlugin("RevealChalkboard").configure(config);
+            input.blur();
+        }
+
+        // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+        if (window.location.search.match(/print-pdf-now/gi)) {
+            setTimeout(() => {
+                window.print();
+              }, 2500);
+
+    }
+        </script>
+    </body>
+</html>

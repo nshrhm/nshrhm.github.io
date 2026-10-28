@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第7回 CNN：操作教材の使い方">
+<title>第7回 CNN：操作教材の使い方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第7回 CNN：操作教材の使い方</h1>
+<p>
+<a href="index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="interactive.html">操作教材を開く</a> ／ <a href="programs/guide.html">Python・Notebook解説</a>
+</p>
+<h2 id="開始方法">開始方法</h2>
+<p>ブラウザーで操作教材を開き、左から順にテーマを選びます。問いの答えを予想し、一つだけ条件を変え、結果を言葉で説明しましょう。スライドからは別タブで開くため、元の位置に戻れます。各テーマの「初期状態に戻す」はそのテーマだけを戻します。</p>
+<p>
+<a href="interactive.html" download>操作教材を単一HTMLで保存</a>
+</p>
+<p>保存したHTMLの操作部分は通信なしで使えます。他の教材へ移るときは <a href="https://nshrhm.github.io/intro-ai/chap06-part01/">公開サイト</a>を開きます。テーマの直接リンクは共有でき、ブラウザーの戻る・進むでも切り替わります。</p>
+<h2 id="画像と配列">画像と配列</h2>
+<p>
+<a href="interactive.html#image">このテーマを開く</a>
+</p>
+<ul>
+<li><strong>問い：</strong> 1画素を変えると、配列のどこが変わる？</li>
+<li><strong>予想：</strong> 実行前に、変わる値や配列の大きさを考えます。</li>
+<li><strong>操作：</strong> 行と列を決めてから押しましょう。</li>
+<li><strong>結果：</strong> 行は上下、列は左右です。明るい画素の個数だけで縦線と横線を区別できない理由を説明しましょう。</li>
+<li><strong>説明：</strong> 変えた条件と観察した数値を挙げ、理由を説明します。</li>
+</ul>
+<h2 id="積と和">積と和</h2>
+<p>
+<a href="interactive.html#convolution">このテーマを開く</a>
+</p>
+<ul>
+<li><strong>問い：</strong> 窓を右へ移すと、-2はどう変わる？</li>
+<li><strong>予想：</strong> 実行前に、変わる値や配列の大きさを考えます。</li>
+<li><strong>操作：</strong> 次の値を予想してから「次の窓」を押します。</li>
+<li><strong>結果：</strong> 同じ重みでも入力領域が違うと応答が変わります。基準の1行目は[-2,2,0]。どの掛け算が符号を決めましたか？</li>
+<li><strong>説明：</strong> 変えた条件と観察した数値を挙げ、理由を説明します。</li>
+</ul>
+<h2 id="出力サイズ">出力サイズ</h2>
+<p>
+<a href="interactive.html#shape">このテーマを開く</a>
+</p>
+<ul>
+<li><strong>問い：</strong> 移動幅を2にすると、出力は何行何列？</li>
+<li><strong>予想：</strong> 実行前に、変わる値や配列の大きさを考えます。</li>
+<li><strong>操作：</strong> 入力4、窓2のまま、一つの条件だけ変えます。</li>
+<li><strong>結果：</strong> 余白0で移動幅1なら3×3、移動幅2なら2×2。移動幅1・余白1なら5×5。窓の開始位置から説明できますか？</li>
+<li><strong>説明：</strong> 変えた条件と観察した数値を挙げ、理由を説明します。</li>
+</ul>
+<h2 id="活性化と集約">活性化と集約</h2>
+<p>
+<a href="interactive.html#pooling">このテーマを開く</a>
+</p>
+<ul>
+<li><strong>問い：</strong> 同じ領域で最大と平均はどう違う？</li>
+<li><strong>予想：</strong> 実行前に、変わる値や配列の大きさを考えます。</li>
+<li><strong>操作：</strong> 基準の列1・最大から開始。平均へ変えた後、元へ戻して線の位置だけ変えます。</li>
+<li><strong>結果：</strong> 基準領域[[0,2],[0,2]]では最大2、平均1。列2へ移すと一部の出力が変わります。位置ずれや回転への完全な不変性はありません。</li>
+<li><strong>説明：</strong> 変えた条件と観察した数値を挙げ、理由を説明します。</li>
+</ul>
+<h2 id="分類までの流れ">分類までの流れ</h2>
+<p>
+<a href="interactive.html#pipeline">このテーマを開く</a>
+</p>
+<ul>
+<li><strong>問い：</strong> 特徴マップ2枚は、最後に何個の値になる？</li>
+<li><strong>予想：</strong> 実行前に、変わる値や配列の大きさを考えます。</li>
+<li><strong>操作：</strong> 初期重みを固定して入力だけを選びます。0=縦線、1=横線。</li>
+<li><strong>結果：</strong> 3×3×2→ReLU→2×2×2→8値→2スコアです。softmaxの大きさと正解かどうかを分けて説明しましょう。</li>
+<li><strong>説明：</strong> 変えた条件と観察した数値を挙げ、理由を説明します。</li>
+</ul>
+<h2 id="小さな学習">小さな学習</h2>
+<p>
+<a href="interactive.html#learning">このテーマを開く</a>
+</p>
+<ul>
+<li><strong>問い：</strong> 学習用で成功したら、端の画像も成功する？</li>
+<li><strong>予想：</strong> 実行前に、変わる値や配列の大きさを考えます。</li>
+<li><strong>操作：</strong> 学習率0と0.1を同じ初期値から比較します。実行のたびに初期値へ戻して100回更新します。</li>
+<li><strong>結果：</strong> 基準では損失約0.765126→0.130153、学習用[0,0,1,1]、確認用[1,1,1,1]。未使用の端の縦線を誤分類します。どこまで確認できたかを説明しましょう。</li>
+<li><strong>説明：</strong> 変えた条件と観察した数値を挙げ、理由を説明します。</li>
+</ul>
+<h2 id="画面の読み方と計算条件">画面の読み方と計算条件</h2>
+<p>緑系のセルは正、赤系は負、灰色は0です。色だけでなく数値も表示します。入力は4×4・1チャネル、フィルターは反転しません。位置は0始まり。プーリングは2×2・移動幅1です。学習画面のグラフは横軸が更新回数、縦軸が平均損失です。</p>
+<p>学習用は中央の線4枚、確認用は端の線4枚。0=縦、1=横、正解の並びは[0,0,1,1]です。確認用画像を重み更新に使いません。28パラメーターを中央差分幅1e-6で100回更新します。大規模CNNや実写真への性能を示すものではありません。プーリングで位置ずれや回転への完全な不変性が得られるわけではありません。</p>
+<h2 id="キーボードタッチと復帰">キーボード・タッチと復帰</h2>
+<p>Tabで移動し、ボタンはEnterまたはSpaceで操作できます。テーマボタン上では左右矢印、Home、Endも使えます。タッチでは画素やボタンを直接押してください。画素と行・列は読み上げ可能な名前を持ちます。</p>
+<ul>
+<li>画面が長い：下へスクロールします。スマートフォンでは縦に並びます。</li>
+<li>知らないURL末尾：最初の「画像と配列」が表示されます。</li>
+<li>数値が想定と違う：テーマをリセットし、条件を一つずつ変えます。</li>
+<li>学習の比較：実行ボタンは毎回同じ初期値から開始します。学習率0では変化しません。</li>
+<li>保存したファイルで他ページが開けない：上記の公開サイトを開いてください。</li>
+</ul>
+<p>最後は操作と同じ例をNotebookで実行し、変更前後の結果を比較してください。</p>
+</main></body></html>
