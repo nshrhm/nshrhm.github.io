@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第6回：プログラムの使い方・学び方">
+<title>第6回：プログラムの使い方・学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第6回：プログラムの使い方・学び方</h1>
+<nav aria-label="教材の移動">
+<a href="../index.html#/33" target="_blank" rel="noopener">演習スライド</a> ／ <a href="../interactive.html" target="_blank" rel="noopener">図解教材</a> ／ <a href="../interactive-guide.html" target="_blank" rel="noopener">図解教材の使い方</a>
+</nav>
+<h2 id="保存して学ぶ準備をする">1．保存して、学ぶ準備をする</h2>
+<p>この演習では、固定したニューラルネットワーク、重みの1回更新、RNNの状態、SOMの近傍更新を使います。<strong>答えを予想し、実行し、一つ変えた結果の理由を説明する</strong>ことが目標です。</p>
+<p class="downloads">
+<a href="neuralnet.ipynb" download>Notebookを保存</a> ／ <a href="neuralnet.py" download>Python版を保存</a> ／ <a href="neuralnet.zip" download>一式ZIPを保存</a>
+</p>
+<p>Notebookを中心に進めます。ZIPにはNotebook・Python版・このマニュアル・Notebook用requirementsを収録しています。ZIPを使う場合は先に展開してください。Notebookは単体で動き、隣のPythonファイルやJSONファイルを読み込む必要はありません。</p>
+<p>ファイルを授業用フォルダーに保存します。ブラウザーの画面で読むだけではPythonは実行されません。<strong>GitHub Pagesではファイルを配布し、実行は自分のPCのVS Codeで行います。</strong> 図解教材はブラウザーだけで操作できます。</p>
+<h2 id="vs-codeとカーネルを確認する">2．VS Codeとカーネルを確認する</h2>
+<ol type="1">
+<li>これまでの授業で使ったVS CodeとPython環境を開きます。WSLを使っている場合は、VS CodeがそのWSLへ接続していることを確認します。</li>
+<li>保存した <code>neuralnet.ipynb</code> を開きます。WSLを使う場合は、授業で使っているWSL側のフォルダーへファイルを置きます。</li>
+<li>右上の「カーネルの選択」で、授業用venvのPythonを選びます。すでに登録済みなら「AI course」など授業で使ったカーネルを選びます。</li>
+<li>「カーネルの再起動」の後、「すべて実行」を選びます。</li>
+</ol>
+<p>カーネルはセルのPythonを実行する環境です。ノートの内容だけを表示する画面とは役割が異なります。授業用venvを再利用し、この演習のために別のPythonを入れ直す必要はありません。コード本体はPython 3.10以降の標準ライブラリだけを使います。</p>
+<h3 id="カーネルが見つからないとき">カーネルが見つからないとき</h3>
+<p>VS CodeのPython・Jupyter拡張機能を、使っている環境（WSLならWSL側）で利用できるか確認します。次にターミナルで<strong>既存の授業用venvを有効化してから</strong>、必要な場合だけ次を実行します。授業で <code>venvc</code> を使っている場合は、先にそれを実行して <code>(class)</code> を確認します。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">&quot;import sys; print(sys.executable)&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install ipykernel</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> ipykernel install <span class="at">--user</span> <span class="at">--name</span> ai-course <span class="at">--display-name</span> <span class="st">&quot;AI course&quot;</span></span></code></pre></div>
+<p>Pythonのパスが授業用venvを指していない場合は、インストールへ進まず環境を確認してください。登録後にカーネル選択を開き直します。ダウンロード名の末尾が <code>.ipynb.txt</code> になっていないかも確認します。</p>
+<h2 id="基準の結果を読む">3．基準の結果を読む</h2>
+<p>学習目標は、順方向の計算、重みの更新、RNNの状態、SOMの代表ベクトルを区別して説明することです。掛け算・足し算と表を読むところから始め、微分やPython文法の暗記は前提にしません。</p>
+<p>Notebookの「基準結果」を読み、その直後のセルの出力を確かめます。最初は入力もコードも変更しません。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>観察するもの</th>
+<th>成功の目印</th>
+<th>何を意味するか</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>固定XORの4入力</td>
+<td>出力が0, 1, 1, 0</td>
+<td>重みを固定した計算。学習の成功を示す結果ではない</td>
+</tr>
+<tr>
+<td>1回の勾配更新</td>
+<td>損失0.5 → 0.125</td>
+<td>初期重み2を1.75に変えた結果</td>
+</tr>
+<tr>
+<td>RNN</td>
+<td>[1,0]で状態[1,0.5]、[0,1]で[0,1]</td>
+<td>同じ重みでも入力順が違えば最後の状態が変わる</td>
+</tr>
+<tr>
+<td>SOM</td>
+<td>A(0.5,0)、B(1.75,1.5)、C(4,0)</td>
+<td>勝者Aと地図上で隣接するBが1回更新される</td>
+</tr>
+</tbody>
+</table>
+<p>XORでは入力 <code>(0,0), (0,1), (1,0), (1,1)</code> の順です。<code>hidden_u</code> は中間層の総入力、<code>hidden</code> はその出力、<code>output_u</code> は出力層の総入力、<code>output</code> が最終出力です。ステップ関数は総入力が0でも1を返します。</p>
+<p><code>gradient</code> の <code>loss_before</code> と <code>loss_after</code> を比較します。<code>rnn_10</code> と <code>rnn_01</code> はそれぞれ初期状態0から計算します。<code>som</code> の <code>winner</code> は0始まりなので0がA、<code>squared_distances</code> は入力空間の距離の二乗、<code>updated</code> は更新後の代表ベクトルです。</p>
+<h2 id="予想して一つ変えて比較する">4．予想して、一つ変えて比較する</h2>
+<p>Notebookの「実験1〜4」に実行セルがあります。下のコードを追加セルに貼り付けても同じ比較ができます。先に「計算の定義」と「基準結果」まで実行してください。毎回同じ初期入力を使い、元の定数やベクトルは上書きしません。</p>
+<h3 id="実験1しきい値だけを変える">実験1：しきい値だけを変える</h3>
+<p><strong>問い・予想：</strong> 入力(1,0)で、中間h₁のしきい値を−2にすると、出力はどう変わるでしょうか。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trial_thresholds <span class="op">=</span> <span class="bu">list</span>(HIDDEN_THRESHOLDS)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>trial_thresholds[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span><span class="dv">2</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>before_xor <span class="op">=</span> forward((<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>after_xor <span class="op">=</span> forward((<span class="dv">1</span>, <span class="dv">0</span>), hidden_thresholds<span class="op">=</span>trial_thresholds)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;変更前:&quot;</span>, before_xor)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;変更後:&quot;</span>, after_xor)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;元のしきい値:&quot;</span>, HIDDEN_THRESHOLDS)</span></code></pre></div>
+<p><strong>結果：</strong> h₁の総入力は−1→0、最終出力は1→0です。<strong>説明する問い：</strong> 境界0でステップ関数が1になることは、どの中間出力を変えましたか。</p>
+<h3 id="実験2学習率を変える">実験2：学習率を変える</h3>
+<p><strong>問い・予想：</strong> 学習率を大きくすれば、必ず損失は小さくなるでしょうか。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>small_rate <span class="op">=</span> gradient_step(rate<span class="op">=</span><span class="fl">0.125</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>large_rate <span class="op">=</span> gradient_step(rate<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;学習率0.125:&quot;</span>, small_rate)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;学習率1:&quot;</span>, large_rate)</span></code></pre></div>
+<p><strong>結果：</strong> 同じ初期損失0.5から、更新後は0.125と4.5になります。<strong>説明する問い：</strong> 勾配が同じでも、更新幅が大きすぎると何が起きますか。Notebookの2段計算は、更新前に両方の勾配を求めてから同時更新する別の確認例です。</p>
+<h3 id="実験3系列の順序を変える">実験3：系列の順序を変える</h3>
+<p><strong>問い・予想：</strong> 同じ二つの値を逆の順に入れても、最後の状態は同じでしょうか。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>states_10 <span class="op">=</span> recurrent_states([<span class="dv">1</span>, <span class="dv">0</span>])</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>states_01 <span class="op">=</span> recurrent_states([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;[1,0]の状態:&quot;</span>, states_10)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;[0,1]の状態:&quot;</span>, states_01)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;前の状態を使わない:&quot;</span>, recurrent_states([<span class="dv">1</span>, <span class="dv">0</span>], recurrent_weight<span class="op">=</span><span class="dv">0</span>))</span></code></pre></div>
+<p><strong>結果：</strong> 最後の状態は0.5と1です。呼び出すたび初期状態0から始まります。<strong>説明する問い：</strong> 変わったのは入力順・状態・重みのどれですか。これはRNNの重みを学習する実験ではありません。</p>
+<h3 id="実験4somの近傍を変える">実験4：SOMの近傍を変える</h3>
+<p><strong>問い・予想：</strong> 勝者だけを更新すると、隣接Bは動くでしょうか。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trial_sample <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>original_prototypes <span class="op">=</span> [[<span class="dv">0</span>, <span class="dv">0</span>], [<span class="dv">2</span>, <span class="dv">2</span>], [<span class="dv">4</span>, <span class="dv">0</span>]]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>with_neighbor <span class="op">=</span> som_step(trial_sample, [p[:] <span class="cf">for</span> p <span class="kw">in</span> original_prototypes])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>winner_only <span class="op">=</span> som_step(trial_sample, [p[:] <span class="cf">for</span> p <span class="kw">in</span> original_prototypes], neighbor_factor<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;近傍あり:&quot;</span>, with_neighbor)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;勝者だけ:&quot;</span>, winner_only)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;元の代表ベクトル:&quot;</span>, original_prototypes)</span></code></pre></div>
+<p><strong>結果：</strong> 勝者Aはどちらも(0.5,0)。Bは近傍ありで(1.75,1.5)、近傍なしで元の(2,2)です。変更する <code>neighbor_factor</code> は0.5→0。<strong>学習率0.5×近傍係数0.5＝Bの実際の更新係数0.25</strong>なので、この二つの係数を区別してください。</p>
+<p><strong>説明する問い：</strong> 勝者を選ぶ入力空間の距離と、地図A—B—Cの隣接は同じ意味でしょうか。これは反復学習全体ではなく1回の更新です。</p>
+<h2 id="図とコードを結び付ける">5．図とコードを結び付ける</h2>
+<p><a href="../interactive.html#xor" target="_blank" rel="noopener">XOR</a>、<a href="../interactive.html#gradient" target="_blank" rel="noopener">勾配と更新</a>、<a href="../interactive.html#rnn" target="_blank" rel="noopener">RNN</a>、<a href="../interactive.html#som" target="_blank" rel="noopener">SOM</a>で同じ条件を操作し、Notebookの結果と比べます。</p>
+<p>図解教材の確率的状態更新などは追加の教育用実装です。Python演習にボルツマンマシンの学習、RNNの訓練、SOMの反復学習、未知データの性能評価が実装されているとは扱いません。</p>
+<h2 id="元に戻す困ったとき">6．元に戻す・困ったとき</h2>
+<ul>
+<li>基準を再確認するときはカーネルを再起動して全セルを実行します。自分で変更した実験値は元の値へ戻すか、追加した実験セルを実行対象から外します。再起動だけでは編集したコードは元に戻りません。</li>
+<li>関数や定数まで編集して戻せない場合は、作業を別名で保存してから配布Notebookをもう一度保存します。</li>
+<li><code>NameError</code> は定義セルを飛ばしていないか確認します。上から順に実行し、使い方の例は定義の後の新しいコードセルへ貼り付けます。</li>
+<li>カーネルが止まった場合は再起動します。Python版ではファイルを保存したフォルダーと有効なvenvを確認してください。</li>
+<li><code>guide.html</code> はZIP内でオフライン閲覧できます。同梱していない図解教材・スライドへ移動する場合はネット接続が必要です。</li>
+</ul>
+<h2 id="python版を使う場合">Python版を使う場合</h2>
+<p>既存の授業用venvを有効にし、保存したファイルのフォルダーで実行します。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> neuralnet.py <span class="at">--demo</span></span></code></pre></div>
+<p>固定例をまとめて表示します。照合用JSONは <code>--demo --json</code>。Python本体は標準ライブラリだけで動きます。uvを使う人は <code>uv run --no-project python neuralnet.py --demo</code> でも実行できます。</p>
+<p>ZIPの <code>requirements.txt</code> は既存のNotebook検証環境の依存一覧です。動いている授業用カーネルの環境を一律に入れ替える必要はありません。</p>
+</main></body></html>
