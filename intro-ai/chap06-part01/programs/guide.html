@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第7回 CNN：プログラムの保存・実行・学び方">
+<title>第7回 CNN：プログラムの保存・実行・学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第7回 CNN：プログラムの保存・実行・学び方</h1>
+<p>
+<a href="../index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a>
+</p>
+<h2 id="何を学ぶか">何を学ぶか</h2>
+<p>4×4の人工画像から、畳み込み→ReLU→プーリング→分類までの値を追います。続いて、小さなCNNの学習前後を比べます。問いは「学習用の画像で成功したら、別の位置の線でも成功するか」です。GPU、外部画像、PyTorchは使いません。Python版の計算には標準ライブラリだけを使います。</p>
+<h2 id="保存して開始する">保存して開始する</h2>
+<p>
+<a href="cnn_basics.ipynb" download>Notebookを保存</a> ／ <a href="cnn_basics.py" download>Python版を保存</a> ／ <a href="requirements.txt" download>Notebook用依存一覧を保存</a> ／ <a href="cnn_basics.zip" download>一式ZIPを保存</a>
+</p>
+<ol type="1">
+<li>ZIPを展開するか、Notebookを作業フォルダーに保存します。</li>
+<li>VS CodeでNotebookを開きます。Python・Jupyter拡張機能を使用します。</li>
+<li>右上のカーネル選択から、これまで使っているvenvのPythonを選びます。制作用Python 3.14に合わせる必要はありません。教材コードの対象はPython 3.10以降です。</li>
+<li>カーネルを再起動し、「すべて実行」を選びます。初回はコードを変更しません。</li>
+<li>「基準結果」の畳み込み1行目 <code>[-2,2,0]</code> と損失約 <code>0.130153</code> を確認します。</li>
+</ol>
+<p>NotebookはPythonファイルをimportしないので、Notebook一つでも実行できます。実行前に必要な環境を整えれば、計算中の通信は不要です。</p>
+<h2 id="カーネルが見つからないとき">カーネルが見つからないとき</h2>
+<p>既存venvを有効化したターミナルで <code>python --version</code> を確認します。Notebook用パッケージがなければ、そのvenv内で次を実行します。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div>
+<p>その後、VS CodeでPython環境とNotebookカーネルを選び直します。環境がない場合は作業フォルダーで <code>python -m venv .venv</code> を実行し、Windowsなら <code>.venv\Scripts\activate</code>、macOS/Linuxなら <code>source .venv/bin/activate</code> で有効化します。システム全体へインストールする必要はありません。</p>
+<h2 id="出力と概念の対応">出力と概念の対応</h2>
+<table>
+<thead>
+<tr>
+<th>出力</th>
+<th>読み方・基準結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>convolution</td>
+<td>3×3の積和。各行[-2,2,0]</td>
+</tr>
+<tr>
+<td>relu</td>
+<td>負の値を0へ。各行[0,2,0]</td>
+</tr>
+<tr>
+<td>stride2</td>
+<td>移動幅2。2×2で各行[-2,0]</td>
+</tr>
+<tr>
+<td>max_pool / mean_pool</td>
+<td>同じ2×2領域の最大2／平均1</td>
+</tr>
+<tr>
+<td>loss_before / loss_after</td>
+<td>学習用平均損失：約0.765126→0.130153</td>
+</tr>
+<tr>
+<td>train_before / train_after</td>
+<td>学習用予測：[1,1,1,0]→[0,0,1,1]</td>
+</tr>
+<tr>
+<td>heldout_after</td>
+<td>確認用予測：[1,1,1,1]。端の縦線を誤分類</td>
+</tr>
+</tbody>
+</table>
+<p>ラベル0は縦線、1は横線。並びは縦の2位置、横の2位置です。正解は両集合とも <code>[0,0,1,1]</code>。学習用は位置1・2、確認用は位置0・3で、位置は0始まりです。確認用画像は重み更新に使いません。</p>
+<p>学習は2×2フィルター2枚とバイアス、全結合層を合わせた28パラメーターです。ReLUの後に2×2・移動幅1の最大プーリングを適用し、8値から2スコアを作ります。softmaxは最大スコアを引いて計算し、同じ値ならラベル0を選びます。</p>
+<h2 id="一つ変えて比べる">一つ変えて比べる</h2>
+<p>基準データを直接上書きせず、各実験セルに用意したコピーを使います。実行前の予想と、実行後の説明を一組にします。</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>セル</th>
+<th>変えるもの</th>
+<th>期待結果</th>
+<th>説明する問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>実験A</td>
+<td>signを1と-1で比較</td>
+<td>[-2,2,0]が[2,-2,0]に</td>
+<td>ReLUの後は何が残る？</td>
+</tr>
+<tr>
+<td>実験B</td>
+<td>trial_strideを1と2で比較</td>
+<td>3×3から2×2に</td>
+<td>どの位置を計算しなくなった？</td>
+</tr>
+<tr>
+<td>実験C</td>
+<td>trial_modeをmaxとmeanで比較</td>
+<td>2から1に</td>
+<td>強い応答と領域平均はどう違う？</td>
+</tr>
+<tr>
+<td>実験D</td>
+<td>trial_rateを0と0.1で比較</td>
+<td>0なら重み・損失は不変</td>
+<td>学習用の成功だけで十分？</td>
+</tr>
+</tbody>
+</table>
+<p>実験Dの <code>train</code> は呼ぶたびに初期値をコピーします。学習済みの重みを続けて更新する比較ではありません。「学習前後」のセルでは初期フィルターと更新後フィルター、画像ごとの正解・予測も見られます。</p>
+<h2 id="元に戻す困ったとき">元に戻す・困ったとき</h2>
+<ul>
+<li>実行順が分からない、<code>NameError</code>：カーネルを再起動して全セル実行します。</li>
+<li>値が基準と違う：変更したセル、フィルター、位置、学習率を確認します。配布Notebookを別名で再保存して比較できます。</li>
+<li><code>ModuleNotFoundError</code>：選択中のカーネルが、依存を入れたvenvと同じか確認します。</li>
+<li>計算中：実行完了を待ちます。止めた場合はカーネル再起動からやり直します。</li>
+<li>ダウンロードが文字表示になる：リンクを右クリックして保存し、<code>.ipynb</code>／<code>.py</code> の拡張子を保ちます。</li>
+<li>保存HTMLから他教材へ進めない：公開サイトの <a href="https://nshrhm.github.io/intro-ai/chap06-part01/">第7回スライド</a>を開きます。</li>
+</ul>
+<h2 id="python版で実行する">Python版で実行する</h2>
+<p>venvを有効化し、保存したフォルダーで実行します。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> cnn_basics.py <span class="at">--demo</span></span></code></pre></div>
+<p>JSONだけを表示する場合は <code>--json</code> を追加します。Notebookと同じ基準値が表示されます。uvを使う人は補足として <code>uv run --no-project python cnn_basics.py --demo</code> でも実行できます。</p>
+<h2 id="計算条件と限界">計算条件と限界</h2>
+<p>人工画像8枚だけの教材です。初期値はPythonのseed 42から固定し、学習率0.1・100回・4画像の全件一括更新を使います。中央差分の幅は1e-6。ReLUの0や最大値の同値付近では勾配近似に注意が必要です。大規模CNNで通常使う誤差逆伝播より計算量が多い方法なので、小例に限っています。</p>
+<p>表示する基準JSONは小数6桁です。学習用画像の成功は実写真の認識性能を意味しません。最後に「変えた条件・予想・結果・根拠」を説明しましょう。</p>
+</main></body></html>
