@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第10回 プログラムの保存・学び方">
+<title>第10回 プログラムの保存・学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第10回 プログラムの保存・学び方</h1>
+<p>目標は、途中の数値から処理の結果を説明すること。計算本体はPython標準ライブラリだけで動きます。解析器、学習済みモデル、音声録音、APIキーは使いません。</p>
+<p><a href="natural_language_processing.py" download>Pythonを保存</a> ／ <a href="natural_language_processing.ipynb" download>Notebookを保存</a> ／ <a href="natural_language_processing.zip" download>一式ZIPを保存</a></p>
+<p><a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a></p>
+<h2 id="開始保存実行">開始・保存・実行</h2>
+<ol type="1">
+<li>ZIPを保存して展開し、このguide.htmlとPython・Notebookが同じフォルダーにあることを確認します。単独実行の手順はこの文書だけで完結します。</li>
+<li>VS Codeで展開先を開き、既存の授業用venvを有効にします。Windows PowerShellなら <code>.venv\Scripts\Activate.ps1</code>、Linux／macOSなら <code>source .venv/bin/activate</code>。venvが別のフォルダーならその場所を指定してください。</li>
+<li>ターミナルで <code>python --version</code> を確認します。Python 3.10以降に対応します。制作側と同じバージョンを新しく要求するものではありません。</li>
+<li><code>python natural_language_processing.py --demo</code> を実行します。照合用の一行表示は <code>python natural_language_processing.py --demo --json</code>。uvを使う環境では <code>uv run python natural_language_processing.py --demo</code> も使えます。</li>
+<li>Notebookは右上のカーネル選択で同じvenvのPythonを選び、カーネルを再起動して「すべて実行」します。同梱Pythonのimportは不要です。</li>
+</ol>
+<p>Python単体なら追加インストールは不要。Notebookのカーネル等がない場合だけ、有効なvenv内で <code>python -m pip install -r requirements.txt</code> を実行します。この準備には通信が必要です。用意済み環境での計算はオフラインで行えます。システム全体へインストールしないでください。</p>
+<h2 id="出力を読む">出力を読む</h2>
+<ul>
+<li><code>morph</code>：候補の開始・終了位置、品詞、コスト、採用した分割。</li>
+<li><code>bigram</code>：語彙、回数、分母、確率。語彙の順は猫・が・眠る・犬・走る・文末です。</li>
+<li><code>tfidf</code>：各文書のTFと、文書集合全体のDF・IDF・TF-IDF。</li>
+<li><code>vectors</code>／<code>similarity</code>：観測した共起回数と類似度。学習したベクトルではありません。</li>
+<li><code>first_update</code>：猫→がの初期確率・損失・勾配。<code>training</code>：20エポック後の入力・出力ベクトルと、全16組の平均損失履歴。</li>
+<li><code>speech</code>：人工値による順位スコアと選択候補。実音声の認識精度ではありません。</li>
+</ul>
+<p>成功の目印：研究／生活の合計2、がの次の眠るは0.3、先頭文書の猫のTF-IDFは0.231049、猫・犬の共起類似度は1、λ＝1の候補は飴・λ＝0なら雨。実装のJSONは小数点以下6桁です。数値表の全文はNotebookの基準セルに残します。</p>
+<h2 id="基準を残す">基準を残す</h2>
+<p>Notebookの <code>baseline_result = demo()</code> は変更せず、以下のセルでコピーや別変数を使います。Pythonで同じ操作をする場合は、ファイルを別名でコピーしてから実験してください。関数定義は元のファイル内にあります。</p>
+<h2 id="変更実験1辞書コスト">変更実験1：辞書コスト</h2>
+<p>問い：活のコストが下がると、分割は変わるか。</p>
+<p>予想：研究生／活が選ばれると予想する。</p>
+<p>手順：基準セルの後で、次のセルを実行します。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>trial_lexicon <span class="op">=</span> copy.deepcopy(LEXICON)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>trial_lexicon[<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> (<span class="st">&#39;活&#39;</span>, <span class="st">&#39;名詞&#39;</span>, <span class="dv">0</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>trial_dictionary <span class="op">=</span> analyze(<span class="st">&#39;研究生活&#39;</span>, trial_lexicon)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_dictionary[<span class="st">&#39;tokens&#39;</span>], trial_dictionary[<span class="st">&#39;cost&#39;</span>])</span></code></pre></div>
+<p>想定結果：研究／生活＝2に対し、研究生／活＝1となる。</p>
+<p>説明する問い：長い語を優先したのか、合計コストを比較したのか。</p>
+<p>リセット：基準変数は触らず、この変更セルを元に戻して再実行します。完全に戻す場合は元のNotebookを開き直し、カーネル再起動後に全セル実行します。</p>
+<h2 id="変更実験2平滑化α">変更実験2：平滑化α</h2>
+<p>問い：αを0にすると未観測の組はどうなるか。</p>
+<p>予想：が→猫の確率が0になると予想する。</p>
+<p>手順：基準セルの後で、次のセルを実行します。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trial_alpha <span class="op">=</span> bigram(alpha<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_alpha[<span class="st">&#39;probabilities&#39;</span>])</span></code></pre></div>
+<p>想定結果：が→眠るとが→走るは各0.5。それ以外は0。確率合計は1。</p>
+<p>説明する問い：分母が10から4へ変わるのはなぜか。</p>
+<p>リセット：基準変数は触らず、この変更セルを元に戻して再実行します。完全に戻す場合は元のNotebookを開き直し、カーネル再起動後に全セル実行します。</p>
+<h2 id="変更実験3文書追加">変更実験3：文書追加</h2>
+<p>問い：先頭文書を変更しなくても、そのTF-IDFは変わるか。</p>
+<p>予想：猫を含む文書が増えると猫のIDFが下がると予想する。</p>
+<p>手順：基準セルの後で、次のセルを実行します。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>trial_corpus <span class="op">=</span> copy.deepcopy(CORPUS)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>trial_corpus.append([<span class="st">&#39;猫&#39;</span>, <span class="st">&#39;が&#39;</span>, <span class="st">&#39;眠る&#39;</span>])</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>trial_document <span class="op">=</span> tfidf(trial_corpus)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_document[<span class="st">&#39;scores&#39;</span>][<span class="dv">0</span>])</span></code></pre></div>
+<p>想定結果：先頭文書の猫のTFは1/3のまま。DF＝3、文書数＝5、TF-IDF≈0.170275。</p>
+<p>説明する問い：DFと総出現回数をどう区別したか。</p>
+<p>リセット：基準変数は触らず、この変更セルを元に戻して再実行します。完全に戻す場合は元のNotebookを開き直し、カーネル再起動後に全セル実行します。</p>
+<h2 id="変更実験4共起窓幅">変更実験4：共起窓幅</h2>
+<p>問い：左右2語まで数えると猫の行はどう変わるか。</p>
+<p>予想：眠る・走るの列が増えると予想する。</p>
+<p>手順：基準セルの後で、次のセルを実行します。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trial_window <span class="op">=</span> representations(window<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_window[<span class="st">&#39;cooccurrence&#39;</span>][<span class="dv">0</span>])</span></code></pre></div>
+<p>想定結果：猫の行は[0,2,1,0,1]。猫と犬の共起類似度はこのコーパスでは1のまま。</p>
+<p>説明する問い：行の変化と、類似度の変化は同じものか。</p>
+<p>リセット：基準変数は触らず、この変更セルを元に戻して再実行します。完全に戻す場合は元のNotebookを開き直し、カーネル再起動後に全セル実行します。</p>
+<h2 id="変更実験5学習率">変更実験5：学習率</h2>
+<p>問い：学習率0で20エポック処理すると何が変わるか。</p>
+<p>予想：重みも損失も変わらないと予想する。</p>
+<p>手順：基準セルの後で、次のセルを実行します。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trial_learning_rate <span class="op">=</span> train(rate<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_learning_rate[<span class="st">&#39;loss_history&#39;</span>])</span></code></pre></div>
+<p>想定結果：入力・出力ベクトルが初期値のままで、平均損失グラフは水平。</p>
+<p>説明する問い：回数を増やすことだけで学習が進むと言えるか。</p>
+<p>リセット：基準変数は触らず、この変更セルを元に戻して再実行します。完全に戻す場合は元のNotebookを開き直し、カーネル再起動後に全セル実行します。</p>
+<h2 id="変更実験6言語情報の重み">変更実験6：言語情報の重み</h2>
+<p>問い：λ＝0でも候補は飴になるか。</p>
+<p>予想：音響尤度が大きい雨になると予想する。</p>
+<p>手順：基準セルの後で、次のセルを実行します。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trial_language_weight <span class="op">=</span> recognize(weight<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_language_weight[<span class="st">&#39;winner&#39;</span>])</span></code></pre></div>
+<p>想定結果：候補は雨。λ＝1では飴。順位スコアは正答率ではない。</p>
+<p>説明する問い：録音の認識精度が分かったといえないのはなぜか。</p>
+<p>リセット：基準変数は触らず、この変更セルを元に戻して再実行します。完全に戻す場合は元のNotebookを開き直し、カーネル再起動後に全セル実行します。</p>
+<h2 id="学習計算の詳しい読み方">学習計算の詳しい読み方</h2>
+<p>中心語の入力ベクトルをv、候補jの出力ベクトルをu[j]とします。内積をsoftmaxに通した確率p[j]と、正解だけ1のy[j]の差をe[j]とすると、入力側の勾配はΣ e[j]u[j]、出力側はe[j]vです。全て更新前の値で計算し、各ベクトルから学習率×勾配を引きます。</p>
+<p>実装は最大内積を引いたsoftmaxとlog-sum-expによる損失を使います。一つの組の損失と、全16組の平均損失を区別します。グラフは平均損失、候補別の表は猫→がの確率です。0〜200エポックの範囲で、文・中心位置・周辺位置の順序を固定します。学習の成功や日本語全体の意味関係の再現を保証しません。</p>
+<h2 id="リセットとエラー対処">リセットとエラー対処</h2>
+<ul>
+<li><code>NameError</code>：途中から実行せず、カーネルを再起動して全セル実行します。</li>
+<li>カーネルがない・<code>ModuleNotFoundError</code>：Pythonの実行環境とカーネルが一致するか確認し、必要なら上記requirementsをvenvに入れます。演習Python自体には外部依存がありません。</li>
+<li>ファイルがない：ZIPを展開したフォルダーで実行し、拡張子が<code>.py.txt</code>などになっていないか確認します。</li>
+<li><code>ValueError</code>：辞書コスト0〜20、α0〜5、窓幅1〜3、学習率0〜1、エポック整数0〜200、λ0〜3。コーパスは1〜20文、各1〜20語。空文書・NaN・語彙外の文脈は受け付けません。</li>
+<li>コサイン類似度の<code>None</code>：ゼロベクトルのため未定義です。エラーを隠して0へ置き換えないでください。</li>
+<li>音響尤度・事前確率は正の値。事前確率の合計は1です。画面の入力では雨側を指定し、飴側は1からの差とします。</li>
+<li>数値が違う：入力・シード・処理順・パラメーターを戻して再実行します。関数内の基準定数を変更せず、別変数で実験してください。</li>
+</ul>
+<p>この教材は小規模な計算モデルです。実用解析器の辞書・品詞体系や音声モデルの出力と同じ結果を要求しません。</p>
+</main></body></html>
