@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>SCIS &amp; ISIS 2026 · Paper 171 · Venue rehearsal
+candidate</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="_reveal/dist/reset.css">
+  <link rel="stylesheet" href="_reveal/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="_reveal/dist/theme/white.css" id="theme">
+  <link rel="stylesheet" href="style.css"/>
+  <meta name="description" content="SCIS and ISIS 2026 Paper 171: persona-temperature factorial design and metric-specific separability">
+  <link rel="icon" href="data:,">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+
+<section class="slide level1">
+
+<!-- Planned slide 1: Introduce the exact paper and all four authors; title and author block are the authority. -->
+<div class="slide-body title-slide" data-paper-page="1">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Paper 171
+</p>
+<h2
+id="a-factorial-design-for-separating-persona-and-temperature-effects-in-llm-based-fuzzy-emotion-scoring">A
+Factorial Design for Separating Persona and Temperature Effects in
+LLM-Based Fuzzy Emotion Scoring</h2>
+<p class="authors">
+<strong>Naruki Shirahama</strong> · Yuma Yoshimoto · Naofumi Nakaya ·
+Satoshi Watanabe
+</p>
+<p class="affiliations">
+Shimonoseki City University · NIT (KOSEN), Kitakyushu
+College<br>Juntendo University · Shizuoka Institute of Science and
+Technology
+</p>
+<p class="presenter-line">
+Presenter: Naruki Shirahama · Shimonoseki City University, Japan
+</p>
+<p class="detail-line">
+SS-12: Narration and Interpretation in the Age of Generative
+AI<br>November 3, 2026 · 10:50–11:10 JST · Room A · Paper 171
+</p>
+<p class="takeaway">
+Which changes come from the reading stance, and which from sampling?
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+Good morning. I am Naruki Shirahama. Today, I will explain how we
+separate reading-stance and temperature effects in language-model
+emotion scoring.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 2: Define the task and prompt personas without implying observed human-reader validity. -->
+<div class="slide-body " data-paper-page="2">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Motivation
+</p>
+<h2 id="different-reading-stances-different-scores">Different reading
+stances, different scores</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="one-task-four-stances">One task, four stances</h3>
+<ul>
+<li>College freshman</li>
+<li>Literary scholar</li>
+<li>Emotive poet</li>
+<li>Emotionless robot</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="score-the-same-text">Score the same text</h3>
+<ul>
+<li>Interest · Surprise</li>
+<li>Sadness · Anger</li>
+<li>Each score: <strong>0–100</strong></li>
+<li>Keep the task and format fixed</li>
+</ul>
+</div>
+</div>
+<p class="takeaway">
+A persona is a prompt-defined reading stance.
+</p>
+<p class="source-line">
+Source: Introduction and Experiments.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+A literary text can be approached from different reading stances. We
+express these stances through persona instructions.
+</p>
+<p data-caption>
+Our four personas are a college freshman, a literary scholar, an emotive
+poet, and an emotionless robot.
+</p>
+<p data-caption>
+Each model scores interest, surprise, sadness, and anger from zero to
+one hundred.
+</p>
+<p data-caption>
+These are model outputs under different instructions, not observations
+of human readers.
+</p>
+<p data-caption>
+We ask how much the scores change with the stance and with the sampling
+control.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 3: Explain design aliasing using the approved conceptual schematic, not current persona assignments. -->
+<div class="slide-body figure-slide" data-paper-page="3">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · The design problem
+</p>
+<h2 id="two-controls-changed-together">Two controls changed
+together</h2>
+<div class="figure-layout">
+<div class="figure-panel">
+<img class="scientific-figure" src="fig/figure1a_prior_diagonal_design.png" alt="Schematic prior design samples only a diagonal pairing of persona and temperature categories.">
+</div>
+<div class="reading-guide">
+<h3 id="a-bundled-comparison">A bundled comparison</h3>
+<ul>
+<li>One temperature per persona</li>
+<li>Both controls change together</li>
+<li>Their contributions cannot be separated</li>
+</ul>
+<p class="detail-line">
+Here p1–p4 are schematic labels,<br>not the current persona assignments.
+</p>
+</div>
+</div>
+<p class="takeaway">
+Analysis cannot recover combinations that were never observed.
+</p>
+<p class="source-line">
+Source: Introduction; prior bundled-design figure.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This diagram shows the problem with a bundled design. Each persona is
+paired with only one temperature.
+</p>
+<p data-caption>
+If the output changes, the reading stance and the sampling setting have
+both changed.
+</p>
+<p data-caption>
+We cannot assign that difference cleanly to either control.
+</p>
+<p data-caption>
+The problem starts in the design. A more complex analysis cannot recover
+the missing combinations.
+</p>
+<p data-caption>
+These labels are schematic categories. They do not specify the personas
+in our new experiment.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 4: Show independent crossing without implying a numerical persona scale. Source: fig:scis-factorial-design and Method. -->
+<div class="slide-body figure-slide" data-paper-page="4">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Research design
+</p>
+<h2 id="cross-every-persona-with-every-temperature">Cross every persona
+with every temperature</h2>
+<div class="figure-layout">
+<div class="figure-panel">
+<img class="scientific-figure" src="fig/figure1b_factorial_design.png" alt="All sixteen combinations of four categorical personas and four temperature settings are sampled.">
+</div>
+<div class="reading-guide">
+<h3 id="two-separate-controls">Two separate controls</h3>
+<ul>
+<li><strong>Persona:</strong> a reading stance</li>
+<li><strong>Temperature:</strong> a sampling control</li>
+<li>Observe all <strong>4 × 4</strong> combinations</li>
+<li><strong>5 repeats</strong> in each cell</li>
+</ul>
+<p class="detail-line">
+The persona order is categorical.<br>It is not a psychological scale.
+</p>
+</div>
+</div>
+<p class="takeaway">
+Independent variation makes the two contributions distinguishable.
+</p>
+<p class="source-line">
+Source: paper, Method and Experiments; fully crossed design figure.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+We separate two controls. Persona is a reading stance, and temperature
+is a sampling control.
+</p>
+<p data-caption>
+The rows show four personas. The columns show four temperature settings.
+</p>
+<p data-caption>
+We observe every combination, rather than one temperature for each
+persona.
+</p>
+<p data-caption>
+For each model and text, we repeat each combination five times. The task
+and response format stay fixed.
+</p>
+<p data-caption>
+Only the reading stance changes in the prompt. Temperature is set
+separately through the API.
+</p>
+<p data-caption>
+The persona labels are categories, not points on a psychological scale.
+</p>
+<p data-caption>
+This design lets us describe persona, temperature, and their interaction
+separately within each model, text, and emotion.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 5: State the fixed design and response counts; no raw responses or reasons are reproduced. -->
+<div class="slide-body " data-paper-page="5">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Experiment
+</p>
+<h2 id="a-fixed-experimental-panel">A fixed experimental panel</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="conditions">Conditions</h3>
+<ul>
+<li><strong>6</strong> language models</li>
+<li><strong>3</strong> Japanese literary texts</li>
+<li><strong>4</strong> personas × <strong>4</strong> temperatures</li>
+<li><strong>5</strong> repeats per combination</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="outputs">Outputs</h3>
+<ul>
+<li><strong>1,440</strong> responses</li>
+<li><strong>5,760</strong> emotion scores</li>
+<li>Temperatures: <strong>0.1, 0.4, 0.7, 0.9</strong></li>
+<li>Four scores and required reasons</li>
+</ul>
+</div>
+</div>
+<p class="takeaway">
+The same fixed panel supports both outcome summaries.
+</p>
+<p class="source-line">
+Source: Experiments; experimental-panel and structured-output tables.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+We used six models and three Japanese literary texts, with four personas
+and four temperature settings.
+</p>
+<p data-caption>
+Five repeats per combination produced fourteen hundred and forty
+responses, containing fifty-seven hundred and sixty emotion scores.
+</p>
+<p data-caption>
+The texts are The Pocket Watch, The Money and the Pistol, and The
+Tattered Ostrich.
+</p>
+<p data-caption>
+Each response follows the same structured format.
+</p>
+<p data-caption>
+Four initially invalid responses were repaired by targeted retries. All
+other responses were retained.
+</p>
+<p data-caption>
+This is a selected panel. It is not a random sample of all models or all
+literary works.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 6: Distinguish the mean of transformed responses from transformation of the mean and retain membership-conditional interpretation. -->
+<div class="slide-body " data-paper-page="6">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Two outcomes
+</p>
+<h2 id="scores-and-entropy-answer-different-questions">Scores and
+entropy answer different questions</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="mean-score">Mean score</h3>
+<p>How high is the reported emotion intensity?</p>
+<p class="flow-line">
+Response scores → Cell mean
+</p>
+</div>
+<div class="content-card">
+<h3 id="normalized-fuzzy-entropy-h">Normalized fuzzy entropy H*</h3>
+<p>How do scores overlap the Low, Medium and High membership
+regions?</p>
+<p class="flow-line">
+Each score → H* → Cell mean
+</p>
+</div>
+</div>
+<p class="detail-line">
+Use one fixed membership family for comparisons.
+</p>
+<p class="takeaway">
+H* describes membership overlap, not human emotional uncertainty.
+</p>
+<p class="source-line">
+Source: Method; Membership Specification and Entropy.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+The mean score tells us the reported intensity of an emotion.
+</p>
+<p data-caption>
+Fuzzy entropy asks a different question. We map each score to Low,
+Medium, and High membership values.
+</p>
+<p data-caption>
+The resulting entropy describes membership overlap under this fixed
+specification.
+</p>
+<p data-caption>
+We calculate entropy for each response first, then average within the
+cell. We do not transform the cell mean.
+</p>
+<p data-caption>
+A higher entropy value does not mean that a human reader feels more
+uncertain.
+</p>
+<p data-caption>
+The two outcomes come from the same responses, but they describe
+different features. We therefore examine their interaction patterns
+separately.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 7: Introduce B without presenting it as a causal effect or a global variance fraction. -->
+<div class="slide-body " data-paper-page="7">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Reading the results
+</p>
+<h2 id="what-does-interaction-mean">What does interaction mean?</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="separate-contributions">Separate contributions</h3>
+<ul>
+<li>Persona: differences across stances</li>
+<li>Temperature: differences across settings</li>
+<li>Interaction: their joint pattern</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="interaction-share-b">Interaction share B</h3>
+<p>The share of the cell-mean decomposition assigned to interaction.</p>
+<p><strong>Smaller B → more nearly additive</strong></p>
+</div>
+</div>
+<p class="takeaway">
+With interaction, the temperature pattern depends on the persona.
+</p>
+<p class="detail-line">
+One 4 × 4 cell-mean table per model, text and emotion.
+</p>
+<p class="source-line">
+Source: Method, balanced decomposition and interaction-share definition.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+Interaction means that the temperature pattern depends on the persona.
+</p>
+<p data-caption>
+For each model, text, and emotion, we summarize a four-by-four table of
+cell means.
+</p>
+<p data-caption>
+We separate persona, temperature, and interaction components. B is the
+share assigned to interaction.
+</p>
+<p data-caption>
+A smaller B means that the two contributions are more nearly additive.
+</p>
+<p data-caption>
+This is a descriptive share within that table. It is not a global
+variance share across models and texts.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 8: Show all score components through deterministic extraction from the approved primary table. -->
+<div class="slide-body table-slide" data-paper-page="8">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Main result
+</p>
+<h2 id="persona-explains-most-score-variation">Persona explains most
+score variation</h2>
+<p class="figure-intro">
+Mean decomposition shares for emotion scores
+</p>
+<div class="table-panel">
+<!-- BEGIN GENERATED SCORE TABLE -->
+<table aria-label="Mean score decomposition shares">
+<thead>
+<tr>
+<th scope="col">
+Emotion
+</th>
+<th scope="col">
+Persona
+</th>
+<th scope="col">
+Temperature
+</th>
+<th scope="col">
+Interaction
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+Anger
+</th>
+<td>
+80.8%
+</td>
+<td>
+6.0%
+</td>
+<td>
+13.2%
+</td>
+</tr>
+<tr>
+<th scope="row">
+Interest
+</th>
+<td>
+93.7%
+</td>
+<td>
+1.8%
+</td>
+<td>
+4.6%
+</td>
+</tr>
+<tr>
+<th scope="row">
+Sadness
+</th>
+<td>
+95.3%
+</td>
+<td>
+1.3%
+</td>
+<td>
+3.4%
+</td>
+</tr>
+<tr>
+<th scope="row">
+Surprise
+</th>
+<td>
+90.0%
+</td>
+<td>
+3.0%
+</td>
+<td>
+7.0%
+</td>
+</tr>
+</tbody>
+</table>
+<!-- END GENERATED SCORE TABLE -->
+</div>
+<p class="detail-line">
+Average of 18 within-unit shares per emotion: 6 models × 3 texts.
+</p>
+<p class="takeaway">
+Persona is the largest component in this selected panel.
+</p>
+<p class="source-line">
+Source: Primary decomposition table, score rows; point estimates.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+First, consider the emotion scores. Persona accounts for most of the
+decomposed variation.
+</p>
+<p data-caption>
+Its mean share is above eighty percent for anger and at least ninety
+percent for the other emotions.
+</p>
+<p data-caption>
+Temperature shares are smaller. Interaction ranges from 3.4 percent for
+sadness to 13.2 percent for anger.
+</p>
+<p data-caption>
+The score patterns are therefore largely additive within these
+subtables.
+</p>
+<p data-caption>
+This describes the selected conditions. It does not mean that
+temperature never matters.
+</p>
+<p data-caption>
+The intervals in the reference table describe repeat-level stability,
+while keeping the models, texts, and design cells fixed.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 9: Compare panel summaries under the same decomposition, not global variance or human uncertainty. Source: tab:scis-bootstrap-ci. -->
+<div class="slide-body table-slide" data-paper-page="9">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Main result
+</p>
+<h2 id="entropy-shows-more-interaction">Entropy shows more
+interaction</h2>
+<p class="figure-intro">
+Mean interaction share B · Same crossed design, two outcomes
+</p>
+<div class="table-panel">
+<!-- BEGIN GENERATED INTERACTION TABLE -->
+<table aria-label="Mean interaction share by emotion and outcome">
+<thead>
+<tr>
+<th scope="col">
+Emotion
+</th>
+<th scope="col">
+Score
+</th>
+<th scope="col">
+Entropy H*
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+Anger
+</th>
+<td>
+13.2%
+</td>
+<td>
+28.3%
+</td>
+</tr>
+<tr>
+<th scope="row">
+Interest
+</th>
+<td>
+4.6%
+</td>
+<td>
+13.5%
+</td>
+</tr>
+<tr>
+<th scope="row">
+Sadness
+</th>
+<td>
+3.4%
+</td>
+<td>
+9.6%
+</td>
+</tr>
+<tr>
+<th scope="row">
+Surprise
+</th>
+<td>
+7.0%
+</td>
+<td>
+19.8%
+</td>
+</tr>
+</tbody>
+</table>
+<!-- END GENERATED INTERACTION TABLE -->
+</div>
+<p class="detail-line">
+Each row averages 18 within-unit shares: 6 models × 3 texts.<br>Point
+estimates; conditional on this panel and the primary membership family.
+</p>
+<p class="takeaway">
+The interaction share is larger for entropy in all four emotions.
+</p>
+<p class="source-line">
+Source: paper, primary decomposition table. Repeat-level 95% intervals
+are retained in the source table.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+Here we apply the same decomposition to two outcomes: the score and
+normalized fuzzy entropy.
+</p>
+<p data-caption>
+For entropy, we first transform each response's score, then average
+within the cell.
+</p>
+<p data-caption>
+The table shows the interaction share. A larger share means that the two
+controls are less separable.
+</p>
+<p data-caption>
+For anger, the share is 13.2 percent for scores and 28.3 percent for
+entropy.
+</p>
+<p data-caption>
+For surprise, it is 7.0 percent for scores and 19.8 percent for entropy.
+</p>
+<p data-caption>
+The same direction appears in interest and sadness. Each row averages
+eighteen model-text units.
+</p>
+<p data-caption>
+These are shares within separate decompositions, not amounts of
+variation on a common scale.
+</p>
+<p data-caption>
+Entropy describes membership overlap under our chosen specification. It
+does not directly measure human emotional uncertainty.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 10: Use the original low-interaction example without presenting it as matched to the entropy example. -->
+<div class="slide-body figure-slide" data-paper-page="10">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Selected score example
+</p>
+<h2 id="a-nearly-additive-score-pattern">A nearly additive score
+pattern</h2>
+<div class="figure-layout">
+<div class="figure-panel">
+<img class="scientific-figure" src="fig/figure2b_score_heatmap.png" alt="Repeat-mean sadness scores for DeepSeek V3.2 on Text 3, with four personas crossed with four temperatures.">
+</div>
+<div class="reading-guide">
+<h3 id="compare-the-rows">Compare the rows</h3>
+<ul>
+<li>DeepSeek V3.2</li>
+<li>Text 3 · Sadness</li>
+<li>Cells: repeat-mean <strong>score</strong></li>
+<li>Interaction share: <strong>B = 0.039</strong></li>
+</ul>
+<p class="detail-line">
+Selected low-interaction example.<br>It is not the panel average.
+</p>
+</div>
+</div>
+<p class="takeaway">
+Most of this pattern can be described by additive contributions.
+</p>
+<p class="source-line">
+Source: Selected score heatmap; B=0.039, rounded as in the manuscript.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This selected score example uses DeepSeek V3.2, Text 3, and sadness.
+</p>
+<p data-caption>
+The rows show the personas, and the columns show the temperature
+settings. Each value averages five responses.
+</p>
+<p data-caption>
+The interaction share is 0.039. Most of the decomposed pattern is
+therefore additive.
+</p>
+<p data-caption>
+This is an illustration of low interaction, not the average result.
+</p>
+<p data-caption>
+Next, we will see a high-interaction entropy example from a different
+model and emotion.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 11: Explain the selected high-interaction case without treating it as a typical case or a matched comparison with slide 10. Source: fig:scis-entropy-heatmap. -->
+<div class="slide-body figure-slide" data-paper-page="11">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Selected entropy example
+</p>
+<h2 id="a-stronger-interaction-in-entropy">A stronger interaction in
+entropy</h2>
+<div class="figure-layout">
+<div class="figure-panel">
+<img class="scientific-figure" src="fig/figure2a_entropy_heatmap.png" alt="Repeat-mean normalized fuzzy entropy for Claude Sonnet 4.5, Text 3, anger, with four personas crossed with four temperatures.">
+</div>
+<div class="reading-guide">
+<h3 id="read-across-the-rows">Read across the rows</h3>
+<ul>
+<li>Claude Sonnet 4.5</li>
+<li>Text 3 · Anger</li>
+<li>Cells: repeat-mean <strong>H</strong>*</li>
+<li>Interaction share: <strong>B = 0.655</strong></li>
+</ul>
+<p class="detail-line">
+Selected from high-interaction cases.<br>This is not the panel average.
+</p>
+</div>
+</div>
+<p class="takeaway">
+The temperature pattern depends on the persona.
+</p>
+<p class="source-line">
+Source: paper, selected entropy heatmap. A different model and emotion
+from the score example.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This is one selected high-interaction case: Claude Sonnet 4.5, Text 3,
+and anger.
+</p>
+<p data-caption>
+Each cell shows normalized fuzzy entropy averaged over five responses.
+Darker cells indicate larger values.
+</p>
+<p data-caption>
+Read from left to right. The robot row falls, while the scholar row
+first rises and then falls.
+</p>
+<p data-caption>
+The temperature pattern therefore depends on the persona. One common
+temperature shift cannot describe all rows.
+</p>
+<p data-caption>
+The interaction share is 0.655 in this example. This is not the panel
+average.
+</p>
+<p data-caption>
+The score example uses a different model and emotion. These examples are
+illustrations, not a matched comparison.
+</p>
+<p data-caption>
+For the overall score-entropy contrast, use the panel summary. This
+figure shows what a strong interaction can look like.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 12: State unperformed validation and design-conditional interpretation explicitly. -->
+<div class="slide-body " data-paper-page="12">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Interpretation and limits
+</p>
+<h2 id="what-these-results-doand-do-notshow">What these results do—and
+do not—show</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="supported-here">Supported here</h3>
+<ul>
+<li>Separate description of two controls</li>
+<li>Persona-dominated score shares</li>
+<li>Larger interaction shares for H*</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="still-unverified">Still unverified</h3>
+<ul>
+<li>Agreement with human readers</li>
+<li>Generality beyond this fixed panel</li>
+<li>Provider-independent causal effects</li>
+<li>External validity of membership choices</li>
+</ul>
+</div>
+</div>
+<p class="takeaway">
+Five repeats and a sensitivity check support a bounded diagnostic.
+</p>
+<p class="source-line">
+Source: Discussion; Limitations and Future Work.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+These results support a design diagnostic within our selected panel.
+</p>
+<p data-caption>
+They do not establish agreement with human readers. We did not perform
+human-reference validation in this study.
+</p>
+<p data-caption>
+Five repeats describe some repeat-level stability, but do not establish
+that five are sufficient.
+</p>
+<p data-caption>
+Temperature values may have different behavioral meanings across
+providers.
+</p>
+<p data-caption>
+Entropy also depends on the membership specification. Our sensitivity
+check is not external validation.
+</p>
+<p data-caption>
+Broader texts, deeper replication, and human-reference studies are
+needed before extending these conclusions.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 13: Close on the paper's two bounded methodological lessons, without new claims. -->
+<div class="slide-body " data-paper-page="13">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Take-home messages
+</p>
+<h2 id="separate-the-controls-examine-both-outcomes">Separate the
+controls, examine both outcomes</h2>
+<div class="conclusion-list">
+<ol type="1">
+<li><strong>Cross the controls independently.</strong><br>Observe every
+persona–temperature combination.</li>
+<li><strong>Read scores and entropy separately.</strong><br>The same
+responses can show different separability patterns.</li>
+</ol>
+</div>
+<p class="takeaway">
+Design the comparison before interpreting the differences.
+</p>
+<p class="source-line">
+Source: Discussion and Conclusion.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+The practical lesson is to vary reading stance and sampling control
+independently.
+</p>
+<p data-caption>
+That makes their separate contributions and interaction observable.
+</p>
+<p data-caption>
+In this study, mean scores were largely persona-driven and nearly
+additive. Fuzzy entropy retained more interaction.
+</p>
+<p data-caption>
+So a stable-looking score pattern does not guarantee the same pattern
+for a derived descriptor.
+</p>
+<p data-caption>
+We recommend specifying the design and the membership family clearly,
+then interpreting each outcome within those conditions.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 14: Stop the main talk here; preserve the manuscript acknowledgment and open five-minute Q&A. -->
+<div class="slide-body closing-slide" data-paper-page="14">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Discussion
+</p>
+<h2 id="thank-you-questions">Thank you / Questions</h2>
+<p class="closing-message">
+Separate the controls.<br>Examine both outcomes.
+</p>
+<p class="presenter-line">
+Naruki Shirahama · Shimonoseki City University
+</p>
+<p class="acknowledgment">
+This work was partially supported by JSPS KAKENHI<br>Grant Numbers
+JP26K14983 and JP24K13350.
+</p>
+<p class="detail-line">
+Q&amp;A references follow on slides 15–20.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+Thank you for listening. We acknowledge support from JSPS KAKENHI. I
+welcome your questions about the design, results, or limitations.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 15: Retain all eight rows and four component/separability columns, with conditional bootstrap interpretation. -->
+<div class="slide-body appendix-slide stats-slide" data-paper-page="15">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · 1 / 6
+</p>
+<h2 id="decomposition-shares-and-repeat-level-intervals">Decomposition
+shares and repeat-level intervals</h2>
+<div class="table-panel full-table">
+<!-- BEGIN GENERATED FULL TABLE -->
+<table aria-label="All primary decomposition estimates and 95 percent intervals; n equals 18 for each row">
+<thead>
+<tr>
+<th scope="col">
+Outcome
+</th>
+<th scope="col">
+Emotion
+</th>
+<th scope="col">
+Persona
+</th>
+<th scope="col">
+Temperature
+</th>
+<th scope="col">
+Interaction
+</th>
+<th scope="col">
+Separability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+Score
+</th>
+<td>
+Anger
+</td>
+<td>
+80.8%<span class="interval">[77.4%, 84.3%]</span>
+</td>
+<td>
+6.0%<span class="interval">[4.1%, 7.9%]</span>
+</td>
+<td>
+13.2%<span class="interval">[9.2%, 17.2%]</span>
+</td>
+<td>
+86.8%<span class="interval">[82.8%, 90.8%]</span>
+</td>
+</tr>
+<tr>
+<th scope="row">
+Score
+</th>
+<td>
+Interest
+</td>
+<td>
+93.7%<span class="interval">[91.7%, 95.6%]</span>
+</td>
+<td>
+1.8%<span class="interval">[0.8%, 2.7%]</span>
+</td>
+<td>
+4.6%<span class="interval">[3.0%, 6.1%]</span>
+</td>
+<td>
+95.4%<span class="interval">[93.9%, 97.0%]</span>
+</td>
+</tr>
+<tr>
+<th scope="row">
+Score
+</th>
+<td>
+Sadness
+</td>
+<td>
+95.3%<span class="interval">[93.7%, 97.0%]</span>
+</td>
+<td>
+1.3%<span class="interval">[0.4%, 2.1%]</span>
+</td>
+<td>
+3.4%<span class="interval">[2.1%, 4.7%]</span>
+</td>
+<td>
+96.6%<span class="interval">[95.3%, 97.9%]</span>
+</td>
+</tr>
+<tr>
+<th scope="row">
+Score
+</th>
+<td>
+Surprise
+</td>
+<td>
+90.0%<span class="interval">[87.8%, 92.2%]</span>
+</td>
+<td>
+3.0%<span class="interval">[1.5%, 4.5%]</span>
+</td>
+<td>
+7.0%<span class="interval">[5.0%, 9.0%]</span>
+</td>
+<td>
+93.0%<span class="interval">[91.0%, 95.0%]</span>
+</td>
+</tr>
+<tr>
+<th scope="row">
+Entropy H*
+</th>
+<td>
+Anger
+</td>
+<td>
+61.0%<span class="interval">[56.1%, 66.0%]</span>
+</td>
+<td>
+10.7%<span class="interval">[8.1%, 13.4%]</span>
+</td>
+<td>
+28.3%<span class="interval">[22.9%, 33.6%]</span>
+</td>
+<td>
+71.7%<span class="interval">[66.4%, 77.1%]</span>
+</td>
+</tr>
+<tr>
+<th scope="row">
+Entropy H*
+</th>
+<td>
+Interest
+</td>
+<td>
+81.7%<span class="interval">[76.4%, 87.0%]</span>
+</td>
+<td>
+4.8%<span class="interval">[3.0%, 6.7%]</span>
+</td>
+<td>
+13.5%<span class="interval">[9.3%, 17.7%]</span>
+</td>
+<td>
+86.5%<span class="interval">[82.3%, 90.7%]</span>
+</td>
+</tr>
+<tr>
+<th scope="row">
+Entropy H*
+</th>
+<td>
+Sadness
+</td>
+<td>
+87.1%<span class="interval">[83.7%, 90.4%]</span>
+</td>
+<td>
+3.4%<span class="interval">[1.8%, 4.9%]</span>
+</td>
+<td>
+9.6%<span class="interval">[6.7%, 12.4%]</span>
+</td>
+<td>
+90.4%<span class="interval">[87.6%, 93.3%]</span>
+</td>
+</tr>
+<tr>
+<th scope="row">
+Entropy H*
+</th>
+<td>
+Surprise
+</td>
+<td>
+73.3%<span class="interval">[68.9%, 77.8%]</span>
+</td>
+<td>
+6.9%<span class="interval">[4.3%, 9.5%]</span>
+</td>
+<td>
+19.8%<span class="interval">[15.8%, 23.8%]</span>
+</td>
+<td>
+80.2%<span class="interval">[76.2%, 84.2%]</span>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- END GENERATED FULL TABLE -->
+</div>
+<p class="detail-line compact">
+n = 18 model-text units per row · Point-centered normal 95%
+intervals<br>500 within-cell bootstrap resamples · Seed 20260425 · Five
+repeats per cell
+</p>
+<p class="source-line">
+Source: Primary decomposition table; camera-ready verification record.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This table retains every point estimate and interval from the primary
+decomposition table.
+</p>
+<p data-caption>
+The intervals describe repeat-level stability within the fixed panel.
+They are point-centered normal bootstrap intervals.
+</p>
+<p data-caption>
+We resample the five responses within each cell, preserving the four
+emotions from each response as a block.
+</p>
+<p data-caption>
+This does not measure uncertainty over all possible texts or models, or
+establish that five repeats are sufficient.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 16: Preserve the exact four manuscript equations through deterministic conversion without an external math runtime. -->
+<div class="slide-body appendix-slide" data-paper-page="16">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · 2 / 6
+</p>
+<h2 id="how-the-decomposition-is-defined">How the decomposition is
+defined</h2>
+<p class="detail-line">
+For one model, text and emotion: ȳ is a repeat mean in the 4 × 4 table.
+</p>
+<div class="equation-panel">
+<!-- BEGIN GENERATED DECOMPOSITION -->
+<!-- djlint:off H021,H023 -->
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>S</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">a</mi></mrow></msub><mo>=</mo><mn>4</mn><munder><mo>∑</mo><mi>p</mi></munder><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mrow><mi>p</mi><mo>⋅</mo></mrow></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mrow><mi>⋅</mi><mo>⋅</mo></mrow></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">SS_{\mathrm{persona}} =
+4\sum_p(\bar{y}_{p\cdot}-\bar{y}_{\cdot\cdot})^2,</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>S</mi><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">p</mi></mrow></msub><mo>=</mo><mn>4</mn><munder><mo>∑</mo><mi>τ</mi></munder><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mrow><mi>⋅</mi><mi>τ</mi></mrow></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mrow><mi>⋅</mi><mo>⋅</mo></mrow></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">SS_{\mathrm{temp}} =
+4\sum_\tau(\bar{y}_{\cdot\tau}-\bar{y}_{\cdot\cdot})^2,</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>S</mi><mrow><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">a</mi></mrow><mo>×</mo><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">p</mi></mrow></mrow></msub><mo>=</mo><munder><mo>∑</mo><mrow><mi>p</mi><mo>,</mo><mi>τ</mi></mrow></munder><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mrow><mi>p</mi><mi>τ</mi></mrow></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mrow><mi>p</mi><mo>⋅</mo></mrow></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mrow><mi>⋅</mi><mi>τ</mi></mrow></msub><mo>+</mo><msub><mover><mi>y</mi><mo accent="true">‾</mo></mover><mrow><mi>⋅</mi><mo>⋅</mo></mrow></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">SS_{\mathrm{persona}\times\mathrm{temp}} =
+\sum_{p,\tau}
+(\bar{y}_{p\tau}-\bar{y}_{p\cdot}-\bar{y}_{\cdot\tau}
++\bar{y}_{\cdot\cdot})^2.</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mfrac><mrow><mi>S</mi><msub><mi>S</mi><mrow><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">a</mi></mrow><mo>×</mo><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">p</mi></mrow></mrow></msub></mrow><mrow><mi>S</mi><msub><mi>S</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">a</mi></mrow></msub><mo>+</mo><mi>S</mi><msub><mi>S</mi><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">p</mi></mrow></msub><mo>+</mo><mi>S</mi><msub><mi>S</mi><mrow><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">a</mi></mrow><mo>×</mo><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">p</mi></mrow></mrow></msub></mrow></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">B =
+\frac{SS_{\mathrm{persona}\times\mathrm{temp}}}
+{SS_{\mathrm{persona}} + SS_{\mathrm{temp}} +
+SS_{\mathrm{persona}\times\mathrm{temp}}},</annotation></semantics></math></p>
+<!-- djlint:on -->
+<!-- END GENERATED DECOMPOSITION -->
+</div>
+<p class="detail-line">
+Separability share = 1 − B. Repeat variation is assessed by
+bootstrap,<br>not added as a fourth sum-of-squares component.
+</p>
+<p class="takeaway">
+B is normalized within each cell-mean table.
+</p>
+<p class="source-line">
+Source: Method, equations (1)–(4), converted to native MathML.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+These are the manuscript equations. The factors of four follow the
+balanced four-by-four design.
+</p>
+<p data-caption>
+We use the same decomposition for the mean score and the mean of
+per-response normalized entropy.
+</p>
+<p data-caption>
+The denominator includes persona, temperature, and interaction only.
+Repeat-level variation is handled through bootstrap intervals.
+</p>
+<p data-caption>
+The reported panel summaries average these within-unit shares. They are
+not a pooled global decomposition.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 17: Retain normalized logistic coordinate, quadratic S, normalization and all family-comparison values. -->
+<div class="slide-body appendix-slide membership-slide" data-paper-page="17">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · 3 / 6
+</p>
+<h2 id="membership-specification-and-sensitivity">Membership
+specification and sensitivity</h2>
+<div class="membership-grid">
+<div class="membership-definition">
+<!-- BEGIN GENERATED MEMBERSHIP -->
+<!-- djlint:off H021,H023 -->
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mrow><mi>exp</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\sigma(v)=1/(1+\exp(-v))</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>ℓ</mi><mo>+</mo><mi>h</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">c=(\ell+h)/2</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>=</mo><mn>2</mn><mrow><mi>log</mi><mo>&#8289;</mo></mrow><mn>9</mn><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>h</mi><mo>−</mo><mi>ℓ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">g=2\log 9/(h-\ell)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">p</mi></mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>ℓ</mi><mo>−</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>h</mi><mo>−</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>σ</mi><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>ℓ</mi><mo>−</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">z=\mathrm{clip}((\sigma(g(x-c))-\sigma(g(\ell-c)))/(\sigma(g(h-c))-\sigma(g(\ell-c))),0,1)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>2</mn><msup><mi>z</mi><mn>2</mn></msup><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mn>0</mn><mo>≤</mo><mi>z</mi><mo>≤</mo><mstyle displaystyle="false"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn><mo>−</mo><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>z</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mstyle displaystyle="false"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mo>&lt;</mo><mi>z</mi><mo>≤</mo><mn>1</mn><mi>.</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">S(z)=
+\begin{cases}
+2z^2, &amp; 0\le z\le \tfrac12,\\
+1-2(1-z)^2, &amp; \tfrac12&lt;z\le1.
+\end{cases}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">w</mi></mrow></msub><mo>=</mo><mi>−</mi><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>μ</mi><mi>k</mi></msub><msub><mrow><mi>log</mi><mo>&#8289;</mo></mrow><mn>2</mn></msub><msub><mi>μ</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">H_{\mathrm{raw}} = -\sum_k \mu_k \log_2 \mu_k</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>H</mi><mo>*</mo></msup><mo>=</mo><msub><mi>H</mi><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">w</mi></mrow></msub><mi>/</mi><msub><mi>H</mi><mi>max</mi></msub></mrow><annotation encoding="application/x-tex">H^* = H_{\mathrm{raw}}/H_{\max}</annotation></semantics></math></p>
+<!-- djlint:on -->
+<!-- END GENERATED MEMBERSHIP -->
+</div>
+<div class="membership-summary">
+<h3 id="fixed-specification">Fixed specification</h3>
+<p>
+Low: decreases over 0–30<br>Medium: rises 10–30; plateau 30–50; falls
+50–70<br>High: rises over 50–100
+</p>
+<p>
+Decreasing transition: 1 − S(z).<br>Endpoint constants outside the
+transitions.
+</p>
+<p>
+Hmax grid: 0, 0.001, …, 100.0<br>Convention: 0 log 0 = 0
+</p>
+<h3 id="sensitivity-to-family-choice">Sensitivity to family choice</h3>
+<!-- BEGIN GENERATED SENSITIVITY -->
+<table aria-label="Membership family sensitivity">
+<thead>
+<tr>
+<th scope="col">
+Quantity
+</th>
+<th scope="col">
+Value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+Primary / baseline
+</th>
+<td>
+sigmoid_s_v1<br>legacy_linear_v1
+</td>
+</tr>
+<tr>
+<th scope="row">
+Cell means (n)
+</th>
+<td>
+1152
+</td>
+</tr>
+<tr>
+<th scope="row">
+Hmax, primary / baseline
+</th>
+<td>
+1.019 / 1.058
+</td>
+</tr>
+<tr>
+<th scope="row">
+Correlation (r)
+</th>
+<td>
+0.933
+</td>
+</tr>
+<tr>
+<th scope="row">
+Mean / max |Δ|
+</th>
+<td>
+0.130 / 0.479
+</td>
+</tr>
+</tbody>
+</table>
+<!-- END GENERATED SENSITIVITY -->
+</div>
+</div>
+<p class="takeaway">
+A sensitivity comparison does not establish external validity.
+</p>
+<p class="source-line">
+Source: Membership Specification and Entropy; sensitivity table.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+The primary family is sigmoid_s_v1. The displayed definition retains the
+corrected piecewise-quadratic S-function.
+</p>
+<p data-caption>
+Normalization uses a family-specific maximum on the documented grid,
+with a step of 0.001.
+</p>
+<p data-caption>
+The legacy linear family gives a cell-mean correlation of 0.933, but
+absolute differences remain.
+</p>
+<p data-caption>
+We therefore compare entropy within a fixed family. This is sensitivity
+evidence, not validation against human interpretations.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 18: Preserve exact historical requested IDs without asserting current product identities or replay guarantees. -->
+<div class="slide-body appendix-slide" data-paper-page="18">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · 4 / 6
+</p>
+<h2 id="historical-model-identifiers">Historical model identifiers</h2>
+<div class="table-panel model-table">
+<!-- BEGIN GENERATED MODELS -->
+<table aria-label="Historical requested API identifiers">
+<thead>
+<tr>
+<th scope="col">
+Display name
+</th>
+<th scope="col">
+Requested API model ID
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+GPT-5.4
+</th>
+<td>
+openai/gpt-5.4
+</td>
+</tr>
+<tr>
+<th scope="row">
+Claude Sonnet 4.5
+</th>
+<td>
+anthropic/claude-sonnet-4.5
+</td>
+</tr>
+<tr>
+<th scope="row">
+Gemini 2.5 Pro
+</th>
+<td>
+google/gemini-2.5-pro
+</td>
+</tr>
+<tr>
+<th scope="row">
+Grok 4.20
+</th>
+<td>
+x-ai/grok-4.20
+</td>
+</tr>
+<tr>
+<th scope="row">
+DeepSeek V3.2
+</th>
+<td>
+deepseek/deepseek-v3.2
+</td>
+</tr>
+<tr>
+<th scope="row">
+Llama 4 Maverick
+</th>
+<td>
+meta-llama/llama-4-maverick
+</td>
+</tr>
+</tbody>
+</table>
+<!-- END GENERATED MODELS -->
+</div>
+<p class="detail-line compact">
+Access: OpenRouter · Response-created timestamps, including
+repairs:<br>April 25, 2026 · 03:12:13–05:54:04 UTC
+</p>
+<p class="takeaway">
+Requested IDs do not establish immutable model snapshots.
+</p>
+<p class="source-line">
+Source: Historical API model identifiers table and Experiments.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+These are the requested API model identifiers used in the experiment,
+not a list of current model versions.
+</p>
+<p data-caption>
+All models were accessed through OpenRouter. Some returned model
+identifiers differ from the requested identifiers.
+</p>
+<p data-caption>
+The reported times come from saved response-creation metadata. They are
+not local request timestamps.
+</p>
+<p data-caption>
+We do not infer underlying providers or immutable model snapshots from
+these labels.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 19: Use the approved model-level plot without ranking emotional accuracy. -->
+<div class="slide-body figure-slide" data-paper-page="19">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · 5 / 6
+</p>
+<h2 id="interaction-differs-by-outcome-and-model">Interaction differs by
+outcome and model</h2>
+<div class="figure-layout">
+<div class="figure-panel">
+<img class="scientific-figure" src="fig/figure3_model_metric_interaction_heatmap.png" alt="Mean interaction burden by display model for scores and normalized fuzzy entropy, averaged over texts and emotions.">
+</div>
+<div class="reading-guide">
+<h3 id="read-by-outcome">Read by outcome</h3>
+<ul>
+<li>Score versus entropy H*</li>
+<li>Average over texts and emotions</li>
+<li>Fixed model panel</li>
+<li>Descriptive, not a leaderboard</li>
+</ul>
+<p class="detail-line">
+Smaller interaction does not mean<br>greater emotional accuracy.
+</p>
+</div>
+</div>
+<p class="takeaway">
+A model's separability pattern depends on the outcome.
+</p>
+<p class="source-line">
+Source: Model-level interaction heatmap, unchanged original.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+This figure summarizes mean interaction burden for each display model,
+averaging over texts and emotions.
+</p>
+<p data-caption>
+The score and entropy columns describe different outcomes under the same
+design.
+</p>
+<p data-caption>
+The figure is descriptive. A lower interaction share is not evidence of
+greater emotional accuracy or closer agreement with people.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 20: Distinguish schema validity and repeat stability from unperformed human and membership validation. -->
+<div class="slide-body " data-paper-page="20">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · 6 / 6
+</p>
+<h2 id="reliability-and-the-next-validation-steps">Reliability and the
+next validation steps</h2>
+<div class="content-grid">
+<div class="content-card">
+<h3 id="structured-output-validity">Structured-output validity</h3>
+<ul>
+<li>Initially invalid: <strong>4 / 1,440</strong></li>
+<li>Retry only the failed rows</li>
+<li>Keep original records unchanged</li>
+<li>After repair: <strong>1,440 / 1,440</strong> valid</li>
+</ul>
+</div>
+<div class="content-card">
+<h3 id="further-validation-needed">Further validation needed</h3>
+<ul>
+<li>More than five repeats per cell</li>
+<li>Broader literary coverage</li>
+<li>Human-reference comparison</li>
+<li>External membership validation</li>
+</ul>
+</div>
+</div>
+<p class="takeaway">
+Complete structured output does not establish scientific validity.
+</p>
+<p class="source-line">
+Source: Structured-output validity; Limitations and Future Work.
+</p>
+</div>
+<aside class="notes">
+<p data-caption>
+Four responses were initially invalid. We retried only those failed rows
+and kept the original output unchanged.
+</p>
+<p data-caption>
+No valid observations were rerun or selectively filtered. The repaired
+file had complete structured-output validity.
+</p>
+<p data-caption>
+Validity here means parseable scores in range and the required fields.
+It does not mean that the emotional interpretation is correct.
+</p>
+<p data-caption>
+Deeper replication, broader texts, human-reference comparison, and
+external membership validation remain future work.
+</p>
+</aside>
+<script src="./captions.js"></script>
+<script src="./image-zoom.js"></script>
+</section>
+    </div>
+  </div>
+
+  <script src="_reveal/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="_reveal/plugin/notes/notes.js"></script>
+  <script src="_reveal/plugin/search/search.js"></script>
+  <script src="_reveal/plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: true,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 4.0e-2,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

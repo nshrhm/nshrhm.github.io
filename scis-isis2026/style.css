@@ -1,0 +1,494 @@
+/* ICECCME venue palette, dimensions, caption rail and zoom styles retained.
+   SCIS layout uses semantic classes rather than ICECCME slide-number rules. */
+:root {
+  --navy: #12314f;
+  --blue: #246bce;
+  --ink: #1d2733;
+  --muted: #5c6875;
+  --line: #cfd8e3;
+  --panel: #f6f8fb;
+}
+
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-regular.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("_reveal/dist/theme/fonts/source-sans-pro/source-sans-pro-semibold.woff") format("woff");
+  font-style: normal;
+  font-weight: 600 900;
+}
+
+.reveal {
+  color: var(--ink);
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  font-size: 36px;
+}
+
+.reveal .slides > section {
+  box-sizing: border-box;
+  height: 900px;
+  padding: 28px 36px;
+  text-align: left;
+}
+
+.reveal h2,
+.reveal h3 {
+  color: var(--navy);
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.reveal h2 {
+  border-bottom: 4px solid var(--blue);
+  font-size: 48px;
+  line-height: 1.15;
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+}
+
+.reveal h3 {
+  font-size: 36px;
+  line-height: 1.2;
+  margin: 0 0 22px;
+}
+
+.reveal p {
+  line-height: 1.3;
+  margin: 0 0 14px;
+}
+
+.reveal strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.slide-body {
+  display: flex;
+  flex-direction: column;
+  height: 664px;
+}
+
+.reveal .eyebrow {
+  color: var(--muted);
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.reveal .figure-intro {
+  font-size: 30px;
+  margin-bottom: 14px;
+}
+
+.figure-layout {
+  display: grid;
+  flex: 1;
+  gap: 36px;
+  grid-template-columns: 1.4fr 1fr;
+  min-height: 0;
+  margin-bottom: 12px;
+}
+
+.figure-panel {
+  min-height: 0;
+}
+
+.reveal img.scientific-figure {
+  background: white;
+  border: 0;
+  cursor: zoom-in;
+  display: block;
+  height: 100%;
+  margin: 0;
+  max-height: none;
+  max-width: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.reveal img.scientific-figure:focus-visible {
+  outline: 4px solid var(--blue);
+}
+
+.reading-guide {
+  align-self: center;
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-top: 6px solid var(--blue);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.reading-guide ul {
+  display: block;
+  font-size: 30px;
+  margin: 0 0 22px 26px;
+}
+
+.reading-guide li {
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+
+.reveal .detail-line {
+  font-size: 27px;
+  margin-bottom: 14px;
+}
+
+.reading-guide .detail-line:last-child {
+  margin-bottom: 0;
+}
+
+.reveal .takeaway {
+  color: var(--navy);
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.reveal .source-line {
+  color: var(--muted);
+  font-size: 22px;
+  margin-bottom: 0;
+}
+
+.table-panel {
+  margin: 10px 0 20px;
+}
+
+.reveal .table-panel table {
+  border-collapse: collapse;
+  font-size: 36px;
+  line-height: 1.15;
+  margin: 0;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.reveal .table-panel th,
+.reveal .table-panel td {
+  border-bottom: 1px solid var(--line);
+  padding: 8px 22px;
+  text-align: right;
+}
+
+.reveal .table-panel thead th {
+  background: var(--navy);
+  color: white;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.reveal .table-panel th:first-child {
+  text-align: left;
+}
+
+.reveal .table-panel tbody th {
+  font-weight: 400;
+}
+
+.table-panel tbody tr:nth-child(even) {
+  background: var(--panel);
+}
+
+.caption-rail {
+  align-items: center;
+  background: var(--navy);
+  border-radius: 10px;
+  bottom: 54px;
+  box-sizing: border-box;
+  color: white;
+  display: grid;
+  font-size: 38px;
+  font-weight: 500;
+  height: 128px;
+  left: 36px;
+  line-height: 1.25;
+  padding: 14px 28px;
+  position: absolute;
+  right: 36px;
+  text-align: center;
+}
+
+.caption-rail > span {
+  grid-area: 1 / 1;
+}
+
+.reveal .slides section .caption-rail > [aria-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.reveal .slides section .caption-rail > [aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.reveal .slides section .caption-rail .fragment {
+  transition: none;
+}
+
+body.image-zoom-open {
+  overflow: hidden;
+}
+
+.image-zoom-overlay {
+  align-items: center;
+  background: rgba(9, 19, 30, 0.94);
+  cursor: zoom-out;
+  display: none;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 10000;
+}
+
+.image-zoom-overlay.is-open {
+  display: flex;
+}
+
+.image-zoom-overlay img {
+  background: white;
+  height: calc(100vh - 48px);
+  object-fit: contain;
+  width: calc(100vw - 48px);
+}
+
+@media print {
+  .image-zoom-overlay {
+    display: none !important;
+  }
+}
+
+/* Full-deck additions. The accepted prototype CSS above is byte-preserved. */
+.title-slide h2 {
+  border-bottom: 0;
+  font-size: 46px;
+  margin: 16px 0 24px;
+}
+
+.reveal .authors {
+  font-size: 32px;
+  margin-bottom: 18px;
+}
+
+.reveal .affiliations {
+  color: var(--muted);
+  font-size: 27px;
+  margin-bottom: 22px;
+}
+
+.reveal .presenter-line {
+  font-size: 30px;
+  margin-bottom: 24px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin: 24px 0;
+}
+
+.content-card {
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-top: 6px solid var(--blue);
+  border-radius: 12px;
+  padding: 26px;
+}
+
+.content-card h3 {
+  font-size: 34px;
+  margin-bottom: 22px;
+}
+
+.content-card ul {
+  display: block;
+  font-size: 30px;
+  margin: 0 0 0 28px;
+}
+
+.content-card li {
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+
+.content-card li:last-child {
+  margin-bottom: 0;
+}
+
+.reveal .content-card p {
+  font-size: 30px;
+  margin-bottom: 22px;
+}
+
+.reveal .content-card p:last-child {
+  margin-bottom: 0;
+}
+
+.reveal .flow-line {
+  border-top: 2px solid var(--line);
+  color: var(--navy);
+  padding-top: 20px;
+}
+
+.conclusion-list ol {
+  display: block;
+  font-size: 36px;
+  margin: 36px 0 36px 50px;
+}
+
+.conclusion-list li {
+  line-height: 1.45;
+  margin-bottom: 32px;
+}
+
+.reveal .closing-message {
+  color: var(--navy);
+  font-size: 60px;
+  font-weight: 600;
+  margin: 34px 0;
+}
+
+.reveal .acknowledgment {
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+.appendix-slide h2 {
+  font-size: 44px;
+}
+
+.appendix-slide .compact {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.full-table {
+  margin: 0 0 6px;
+}
+
+.reveal .stats-slide .compact {
+  font-size: 22px;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.reveal .full-table table {
+  font-size: 23px;
+  line-height: 1.05;
+}
+
+.reveal .full-table thead th {
+  font-size: 23px;
+}
+
+.reveal .full-table th,
+.reveal .full-table td {
+  padding: 2px 8px;
+}
+
+.reveal .full-table th:nth-child(-n+2),
+.reveal .full-table td:nth-child(-n+2) {
+  text-align: left;
+  width: 12%;
+}
+
+.interval {
+  display: block;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.equation-panel {
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  margin: 4px 0 12px;
+  padding: 12px 24px;
+}
+
+.equation-panel math {
+  font-size: 30px;
+}
+
+.equation-panel p {
+  margin-bottom: 4px;
+}
+
+.equation-panel p:last-child {
+  margin-bottom: 0;
+}
+
+.membership-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1.2fr 1fr;
+  flex: 1;
+  min-height: 0;
+  margin: 4px 0 12px;
+}
+
+.membership-definition {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.membership-definition math {
+  font-size: 22px;
+}
+
+.membership-definition p {
+  margin: 6px 0;
+}
+
+.membership-summary h3 {
+  font-size: 26px;
+  margin-bottom: 6px;
+}
+
+.reveal .membership-summary p {
+  font-size: 21px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.reveal .membership-summary table {
+  font-size: 19px;
+  line-height: 1.05;
+  width: 100%;
+}
+
+.reveal .membership-summary th,
+.reveal .membership-summary td {
+  padding: 2px 8px;
+  font-weight: 400;
+}
+
+.reveal .membership-summary thead th {
+  background: var(--navy);
+  color: white;
+  font-weight: 600;
+}
+
+.reveal .model-table table {
+  font-size: 28px;
+}
+
+.reveal .model-table th,
+.reveal .model-table td {
+  padding: 8px 18px;
+  text-align: left;
+}
