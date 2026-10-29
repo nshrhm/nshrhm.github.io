@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="description" content="第9回 GA・ACO・人工魚群の6テーマをオフラインで操作する教材">
+        <title>第9回 進化的計算｜操作教材</title><style>*{box-sizing:border-box}body{margin:0;background:#f2f6fa;color:#182d43;font:17px/1.65 system-ui,sans-serif}header{background:#173951;color:white;padding:1.5rem max(1rem,calc((100vw - 1200px)/2))}header p{margin:.3rem 0}header a{color:#d8f3ff}h1{font-size:clamp(1.5rem,3vw,2.25rem);margin:0}main{max-width:1200px;margin:auto;padding:1rem}nav{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}button,input,select,textarea{font:inherit}button{padding:.6rem .9rem;border:1px solid #597488;border-radius:.5rem;background:white;color:#173951;cursor:pointer;min-height:44px}button[aria-selected=true],button.primary{background:#145b72;color:white}button:disabled{opacity:.5;cursor:default}:focus-visible{outline:3px solid #c97600;outline-offset:3px}section{background:white;border-radius:.8rem;padding:clamp(1rem,3vw,2rem);box-shadow:0 2px 8px #18364c15}section[hidden]{display:none}h2{font-size:1.5rem;margin-top:0}h3{font-size:1.15rem}.question{border-left:5px solid #0d807b;background:#eefaf7;padding:.8rem}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:1.5rem}.controls{display:grid;gap:.6rem}label{display:block}input,select,textarea{max-width:100%;width:100%;padding:.4rem;border:1px solid #687e8d;border-radius:.3rem}input[type=number]{max-width:12rem}textarea{min-height:70px}.actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}.result{min-width:0}table{border-collapse:collapse;width:100%;font-size:.93rem;overflow-wrap:anywhere}th,td{text-align:left;padding:.35rem;border-bottom:1px solid #d5e1e9}th{background:#edf4f8}svg{width:100%;height:auto;max-height:300px;background:#fafcfe;border:1px solid #c9d9e4;border-radius:.5rem}svg text{font-family:system-ui,sans-serif;fill:#18364c;font-size:13px}.number{font-variant-numeric:tabular-nums}code{overflow-wrap:anywhere}details{margin:1rem 0}summary{cursor:pointer;min-height:44px}.note{font-size:.95rem;color:#385469}.error{color:#a32020;font-weight:bold}.stat{background:#edf7f7;padding:.7rem;border-radius:.4rem}.explain{margin-top:1rem}a{color:#155b85}footer{padding:1rem;text-align:center}@media(max-width:700px){.layout{grid-template-columns:1fr}main{padding:.6rem}section{padding:1rem}table{font-size:.83rem}nav button{flex:1 1 42%;font-size:.9rem}}</style>
+    </head>
+    <body>
+        <header>
+            <h1>進化的計算を、一歩ずつ。</h1>
+            <p>第9回：GA・ACO・人工魚群｜予想 → 操作 → 結果 → 説明</p>
+            <p>単一HTML・オフラインで動作。保存前にメモを別のファイルへコピーしてください。</p>
+            <a href="index.html">スライド</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="programs/guide.html">プログラム解説</a> ／ <a href="interactive.html" download>操作教材を保存</a>
+        </header>
+        <main>
+            <nav role="tablist" aria-label="6つのテーマ">
+                <button type="button"
+                        role="tab"
+                        id="tab-ga-selection"
+                        data-tab="ga-selection"
+                        aria-controls="ga-selection"
+                        aria-selected="true"
+                        tabindex="0">1. GAの評価と選択</button>
+                <button type="button"
+                        role="tab"
+                        id="tab-ga-generation"
+                        data-tab="ga-generation"
+                        aria-controls="ga-generation"
+                        aria-selected="false"
+                        tabindex="-1">2. GAの世代交代</button>
+                <button type="button"
+                        role="tab"
+                        id="tab-aco-choice"
+                        data-tab="aco-choice"
+                        aria-controls="aco-choice"
+                        aria-selected="false"
+                        tabindex="-1">3. ACOの経路選択</button>
+                <button type="button"
+                        role="tab"
+                        id="tab-aco-update"
+                        data-tab="aco-update"
+                        aria-controls="aco-update"
+                        aria-selected="false"
+                        tabindex="-1">4. ACOのフェロモン更新</button>
+                <button type="button"
+                        role="tab"
+                        id="tab-fish-action"
+                        data-tab="fish-action"
+                        aria-controls="fish-action"
+                        aria-selected="false"
+                        tabindex="-1">5. AFSAの行動</button>
+                <button type="button"
+                        role="tab"
+                        id="tab-fish-search"
+                        data-tab="fish-search"
+                        aria-controls="fish-search"
+                        aria-selected="false"
+                        tabindex="-1">6. AFSAの反復探索</button>
+            </nav>
+            <section id="ga-selection" role="tabpanel" aria-labelledby="tab-ga-selection">
+                <h2>GAの評価と選択</h2>
+                <p class="question">問い：1が多い個体は、必ず親に選ばれる？</p>
+                <div class="layout">
+                    <div>
+                        <label>
+                            操作前の予想<textarea id="ga-selection-prediction" placeholder="何がどう変わるか、先に一文で書く"></textarea>
+                        </label>
+                        <p>先頭の個体を100000から111111へ変え、選択確率を比較します。</p>
+                        <div class="controls">
+                            <label>
+                                先頭の個体（6ビット）<input id="bits" value="100000" maxlength="6" inputmode="numeric">
+                            </label>
+                        </div>
+                        <div class="actions">
+                            <button type="button" id="ga-selection-reset">このテーマをリセット</button>
+                        </div>
+                        <p class="note">設定を変えると、そのテーマの計算を初期状態へ戻します。反復は最大200回です。</p>
+                    </div>
+                    <div class="result">
+                        <h3>結果と計算</h3>
+                        <div id="ga-selection-error" role="alert" class="error"></div>
+                        <div id="ga-selection-result" aria-live="polite"></div>
+                    </div>
+                </div>
+                <details>
+                    <summary>想定結果・読み方</summary>
+                    <p>適応度は1の個数。確率が高くても毎回選ばれるとは限りません。</p>
+                </details>
+                <p class="explain">説明する問い：適応度が2倍なら選択確率はどうなる？ 全個体が0なら？</p>
+                <label>
+                    結果を根拠にした説明<textarea id="ga-selection-explanation" placeholder="変更前と変更後の値を含めて書く"></textarea>
+                </label>
+            </section>
+            <section id="ga-generation"
+                     role="tabpanel"
+                     aria-labelledby="tab-ga-generation"
+                     hidden>
+                <h2>GAの世代交代</h2>
+                <p class="question">問い：交叉・突然変異で、平均適応度は毎回上がる？</p>
+                <div class="layout">
+                    <div>
+                        <label>
+                            操作前の予想<textarea id="ga-generation-prediction" placeholder="何がどう変わるか、先に一文で書く"></textarea>
+                        </label>
+                        <p>1世代ずつ進めて親・切断位置・子を確認します。20世代実行は初期集団から計算し直します。</p>
+                        <div class="controls">
+                            <label>
+                                各ビットの突然変異率<input id="mutation" type="number" min="0" max="1" step="0.1" value="0.1"></label><label>シード<input id="ga-seed" type="number" min="0" max="4294967295" value="65535"></label><button type="button" id="ga-next" class="primary">1世代進む</button><button type="button" id="ga-run">初期状態から20世代</button>
+                        </div>
+                        <div class="actions">
+                            <button type="button" id="ga-generation-reset">このテーマをリセット</button>
+                        </div>
+                        <p class="note">設定を変えると、そのテーマの計算を初期状態へ戻します。反復は最大200回です。</p>
+                    </div>
+                    <div class="result">
+                        <h3>結果と計算</h3>
+                        <div id="ga-generation-error" role="alert" class="error"></div>
+                        <div id="ga-generation-result" aria-live="polite"></div>
+                    </div>
+                </div>
+                <details>
+                    <summary>想定結果・読み方</summary>
+                    <p>エリート1個を残すので最良値は下がりません。平均や多様性は下がる場合もあります。</p>
+                </details>
+                <p class="explain">説明する問い：最良値と平均の変化が違う理由を、エリート保存から説明しよう。</p>
+                <label>
+                    結果を根拠にした説明<textarea id="ga-generation-explanation" placeholder="変更前と変更後の値を含めて書く"></textarea>
+                </label>
+            </section>
+            <section id="aco-choice"
+                     role="tabpanel"
+                     aria-labelledby="tab-aco-choice"
+                     hidden>
+                <h2>ACOの経路選択</h2>
+                <p class="question">問い：長い経路でも、選ばれる確率が高くなる？</p>
+                <div class="layout">
+                    <div>
+                        <label>
+                            操作前の予想<textarea id="aco-choice-prediction" placeholder="何がどう変わるか、先に一文で書く"></textarea>
+                        </label>
+                        <p>経路Bの長さ・フェロモンを一つずつ変更します。</p>
+                        <div class="controls">
+                            <label>
+                                経路Bの長さ<input id="length-b" type="number" min="0.1" max="100" step="1" value="6"></label><label>経路Bのフェロモン<input id="tau-b" type="number" min="0" max="100" step="1" value="1">
+                                </label>
+                            </div>
+                            <div class="actions">
+                                <button type="button" id="aco-choice-reset">このテーマをリセット</button>
+                            </div>
+                            <p class="note">設定を変えると、そのテーマの計算を初期状態へ戻します。反復は最大200回です。</p>
+                        </div>
+                        <div class="result">
+                            <h3>結果と計算</h3>
+                            <div id="aco-choice-error" role="alert" class="error"></div>
+                            <div id="aco-choice-result" aria-live="polite"></div>
+                        </div>
+                    </div>
+                    <details>
+                        <summary>想定結果・読み方</summary>
+                        <p>重みはフェロモン÷経路長。初期確率はA=6/13、B=4/13、C=3/13。</p>
+                    </details>
+                    <p class="explain">説明する問い：距離とフェロモンは、それぞれ確率にどう影響する？</p>
+                    <label>
+                        結果を根拠にした説明<textarea id="aco-choice-explanation" placeholder="変更前と変更後の値を含めて書く"></textarea>
+                    </label>
+                </section>
+                <section id="aco-update"
+                         role="tabpanel"
+                         aria-labelledby="tab-aco-update"
+                         hidden>
+                    <h2>ACOのフェロモン更新</h2>
+                    <p class="question">問い：蒸発だけなら、経路間の確率は変わる？</p>
+                    <div class="layout">
+                        <div>
+                            <label>
+                                操作前の予想<textarea id="aco-update-prediction" placeholder="何がどう変わるか、先に一文で書く"></textarea>
+                            </label>
+                            <p>選択→蒸発→追加の順で押し、一巡を完了します。各蟻の選択に同じ更新前の値を使います。</p>
+                            <div class="controls">
+                                <label>
+                                    蒸発率<input id="rho" type="number" min="0" max="1" step="0.25" value="0.25"></label><label>シード<input id="aco-seed" type="number" min="0" max="4294967295" value="65535"></label><button type="button" id="aco-select" class="primary">1 選択</button><button type="button" id="aco-evaporate">2 蒸発</button><button type="button" id="aco-deposit">3 追加</button><button type="button" id="aco-run">初期状態から20反復</button>
+                            </div>
+                            <div class="actions">
+                                <button type="button" id="aco-update-reset">このテーマをリセット</button>
+                            </div>
+                            <p class="note">設定を変えると、そのテーマの計算を初期状態へ戻します。反復は最大200回です。</p>
+                        </div>
+                        <div class="result">
+                            <h3>結果と計算</h3>
+                            <div id="aco-update-error" role="alert" class="error"></div>
+                            <div id="aco-update-result" aria-live="polite"></div>
+                        </div>
+                    </div>
+                    <details>
+                        <summary>想定結果・読み方</summary>
+                        <p>蒸発率0.25なら1→0.75。そこへ各蟻が6÷経路長を追加します。</p>
+                    </details>
+                    <p class="explain">説明する問い：蒸発と追加の役割を分けて説明しよう。長い経路に偏る可能性は？</p>
+                    <label>
+                        結果を根拠にした説明<textarea id="aco-update-explanation" placeholder="変更前と変更後の値を含めて書く"></textarea>
+                    </label>
+                </section>
+                <section id="fish-action"
+                         role="tabpanel"
+                         aria-labelledby="tab-fish-action"
+                         hidden>
+                    <h2>AFSAの行動</h2>
+                    <p class="question">問い：視野を広げれば、必ず近くの魚について行く？</p>
+                    <div class="layout">
+                        <div>
+                            <label>
+                                操作前の予想<textarea id="fish-action-prediction" placeholder="何がどう変わるか、先に一文で書く"></textarea>
+                            </label>
+                            <p>配置を選び、視野・混雑上限を変えて先頭の魚の一歩を確認します。</p>
+                            <div class="controls">
+                                <label>
+                                    配置<select id="fish-scene">
+                                    <option value="base">基準の6匹</option>
+                                    <option value="follow">追尾を確認：2匹</option>
+                                    <option value="swarm">群れ形成を確認：3匹</option>
+                                    <option value="alone">近傍なし：1匹</option>
+                                    <option value="same">原点に同じ位置：2匹</option>
+                                </select></label><label>視野<input id="visual" type="number" min="0" max="4" step="0.5" value="1"></label><label>混雑上限（他の魚の数）<input id="crowd" type="number" min="0" max="29" step="1" value="2">
+                                </label>
+                            </div>
+                            <div class="actions">
+                                <button type="button" id="fish-action-reset">このテーマをリセット</button>
+                            </div>
+                            <p class="note">設定を変えると、そのテーマの計算を初期状態へ戻します。反復は最大200回です。</p>
+                        </div>
+                        <div class="result">
+                            <h3>結果と計算</h3>
+                            <div id="fish-action-error" role="alert" class="error"></div>
+                            <div id="fish-action-result" aria-live="polite"></div>
+                        </div>
+                    </div>
+                    <details>
+                        <summary>想定結果・読み方</summary>
+                        <p>追尾・群れ形成は改善と混雑の条件を確認します。使えなければ採餌、次にランダム移動。</p>
+                    </details>
+                    <p class="explain">説明する問い：候補が却下された理由を、評価値と混雑数から説明しよう。</p>
+                    <label>
+                        結果を根拠にした説明<textarea id="fish-action-explanation" placeholder="変更前と変更後の値を含めて書く"></textarea>
+                    </label>
+                </section>
+                <section id="fish-search"
+                         role="tabpanel"
+                         aria-labelledby="tab-fish-search"
+                         hidden>
+                    <h2>AFSAの反復探索</h2>
+                    <p class="question">問い：今の最良値が悪化しても、過去の記録は消える？</p>
+                    <div class="layout">
+                        <div>
+                            <label>
+                                操作前の予想<textarea id="fish-search-prediction" placeholder="何がどう変わるか、先に一文で書く"></textarea>
+                            </label>
+                            <p>1反復ずつ進め、位置・現在最良・探索中最良を比較します。移動幅だけを変更して再実行します。</p>
+                            <div class="controls">
+                                <label>
+                                    最大移動幅<input id="fish-step" type="number" min="0" max="1" step="0.2" value="0.2"></label><label>シード<input id="fish-seed" type="number" min="0" max="4294967295" value="65535"></label><button type="button" id="fish-next" class="primary">1反復進む</button><button type="button" id="fish-run">初期状態から20反復</button>
+                            </div>
+                            <div class="actions">
+                                <button type="button" id="fish-search-reset">このテーマをリセット</button>
+                            </div>
+                            <p class="note">設定を変えると、そのテーマの計算を初期状態へ戻します。反復は最大200回です。</p>
+                        </div>
+                        <div class="result">
+                            <h3>結果と計算</h3>
+                            <div id="fish-search-error" role="alert" class="error"></div>
+                            <div id="fish-search-result" aria-live="polite"></div>
+                        </div>
+                    </div>
+                    <details>
+                        <summary>想定結果・読み方</summary>
+                        <p>基準20反復の探索中最良は約0.000632。これは既知最適値0への到達ではありません。</p>
+                    </details>
+                    <p class="explain">説明する問い：同じシードで移動幅を変えた結果を説明しよう。1回の成功から何が言えない？</p>
+                    <label>
+                        結果を根拠にした説明<textarea id="fish-search-explanation" placeholder="変更前と変更後の値を含めて書く"></textarea>
+                    </label>
+                </section>
+                <p class="note">GAは進化的計算、ACO・人工魚群は群知能。ACOの三経路と人工魚群の混雑上限は教材用の簡略化です。原著の完全実装や実問題での性能評価ではありません。</p>
+            </main>
+            <footer>
+                人工知能概論2026｜6テーマすべてで数値と操作を比較できます
+            </footer>
+            <script id="evo-core">const EVO=(()=>{
+const SEED=65535,POPULATION=['100000','110000','111000','101010','010101','001111'],LENGTHS=[4,6,8],POSITIONS=[[-1.5,-1],[-1,1],[.5,1.5],[1.5,.5],[1,-1.5],[-.5,-.5]];
+const clone=x=>JSON.parse(JSON.stringify(x));
+function finite(v,lo,hi,name){if(typeof v!=='number'||!Number.isFinite(v)||v<lo||v>hi)throw Error(`${name}は${lo}〜${hi}の有限数です`);return v;}
+function integer(v,lo,hi,name){finite(v,lo,hi,name);if(!Number.isInteger(v))throw Error(`${name}は整数です`);return v;}
+class RNG{constructor(seed=SEED){this.state=integer(seed,0,4294967295,'シード');}random(){this.state=(1664525*this.state+1013904223)>>>0;return this.state/4294967296;}}
+function probabilities(weights){if(!weights.length)throw Error('重みが必要です');weights.forEach(w=>finite(w,0,1e12,'重み'));const total=weights.reduce((s,v)=>s+v,0);return weights.map(w=>total?w/total:1/weights.length);}
+function choose(probs,rng){const u=rng.random();let total=0;for(let i=0;i<probs.length;i++){total+=probs[i];if(u<total)return i;}return probs.length-1;}
+function fitness(bits){if(typeof bits!=='string'||!/^\d{6}$/.test(bits)||/[^01]/.test(bits))throw Error('個体は0と1からなる6文字です');return [...bits].filter(c=>c==='1').length;}
+function gaEvaluate(pop){if(pop.length!==6)throw Error('集団は6個体です');const values=pop.map(fitness);return {fitness:values,probabilities:probabilities(values),current_best:Math.max(...values),mean:values.reduce((s,v)=>s+v,0)/6,diversity:new Set(pop).size};}
+function crossover(a,b,cut){fitness(a);fitness(b);integer(cut,1,5,'交叉位置');return [a.slice(0,cut)+b.slice(cut),b.slice(0,cut)+a.slice(cut)];}
+function mutate(bits,rate,rng){fitness(bits);finite(rate,0,1,'突然変異率');return [...bits].map(c=>rng.random()<rate?String(1-Number(c)):c).join('');}
+function gaStep(pop,rng,mutation=.1){finite(mutation,0,1,'突然変異率');const ev=gaEvaluate(pop),elite=ev.fitness.indexOf(ev.current_best),children=[pop[elite]],trace=[];while(children.length<6){const parents=[choose(ev.probabilities,rng),choose(ev.probabilities,rng)],cut=1+Math.floor(5*rng.random()),crossed=crossover(pop[parents[0]],pop[parents[1]],cut),mutated=crossed.map(x=>mutate(x,mutation,rng));trace.push({parents,cut,crossed,mutated});children.push(...mutated.slice(0,6-children.length));}return {population:children,elite_index:elite,trace,...gaEvaluate(children)};}
+function runGA(steps=20,mutation=.1,seed=SEED,population=POPULATION){integer(steps,0,200,'世代数');finite(mutation,0,1,'突然変異率');let pop=[...population];const rng=new RNG(seed),history=[{step:0,...gaEvaluate(pop)}];for(let step=1;step<=steps;step++){pop=gaStep(pop,rng,mutation).population;history.push({step,...gaEvaluate(pop)});}return {population:pop,history,best_seen:Math.max(...history.map(h=>h.current_best))};}
+function acoProbabilities(tau,lengths=LENGTHS){if(tau.length!==3||lengths.length!==3)throw Error('経路は3本です');lengths.forEach(d=>finite(d,.1,100,'経路長'));tau.forEach(t=>finite(t,0,1e6,'フェロモン'));return probabilities(tau.map((t,i)=>t/lengths[i]));}
+function acoUpdate(tau,counts,evaporation=.25,lengths=LENGTHS){acoProbabilities(tau,lengths);finite(evaporation,0,1,'蒸発率');if(counts.length!==3)throw Error('通過数は3本分です');counts.forEach(n=>integer(n,0,6,'通過数'));if(counts.reduce((s,v)=>s+v,0)>6)throw Error('蟻は最大6匹です');const evaporated=tau.map(t=>(1-evaporation)*t),deposits=counts.map((n,i)=>6*n/lengths[i]);return {evaporated,deposits,tau:evaporated.map((t,i)=>t+deposits[i])};}
+function acoStep(tau,rng,evaporation=.25,lengths=LENGTHS){finite(evaporation,0,1,'蒸発率');const probs=acoProbabilities(tau,lengths),choices=Array.from({length:6},()=>choose(probs,rng)),counts=[0,1,2].map(i=>choices.filter(c=>c===i).length);return {probabilities:probs,choices,counts,current_best:Math.min(...choices.map(i=>lengths[i])),...acoUpdate(tau,counts,evaporation,lengths)};}
+function runACO(steps=20,evaporation=.25,seed=SEED,tau=[1,1,1],lengths=LENGTHS){integer(steps,0,200,'反復数');finite(evaporation,0,1,'蒸発率');let current=[...tau],best=null;acoProbabilities(current,lengths);const rng=new RNG(seed),history=[];for(let step=1;step<=steps;step++){const r=acoStep(current,rng,evaporation,lengths);best=best===null?r.current_best:Math.min(best,r.current_best);current=r.tau;history.push({step,...r,best_seen:best});}return {tau:current,history,best_seen:best};}
+function objective(p){if(p.length!==2)throw Error('位置は2値です');p.forEach(v=>finite(v,-2,2,'座標'));return p[0]**2+p[1]**2;}
+const distance=(a,b)=>Math.sqrt(a.reduce((s,v,i)=>s+(v-b[i])**2,0));
+const bound=v=>Math.max(-2,Math.min(2,v));
+function moveToward(p,target,step=.2){objective(p);objective(target);finite(step,0,1,'移動幅');const d=distance(p,target);if(d===0)return [...p];return p.map((v,i)=>bound(v+Math.min(step,d)/d*(target[i]-v)));}
+function randomTarget(p,visual,rng){const radius=visual*rng.random(),angle=2*Math.PI*rng.random();return [bound(p[0]+radius*Math.cos(angle)),bound(p[1]+radius*Math.sin(angle))];}
+function fishAction(points,index,rng,visual=1,step=.2,crowd=2){integer(points.length,1,30,'魚数');points.forEach(objective);integer(index,0,points.length-1,'魚番号');finite(visual,0,4,'視野');finite(step,0,1,'移動幅');integer(crowd,0,29,'混雑上限');const p=points[index],neighbors=points.map((q,j)=>j!==index&&distance(p,q)<=visual?j:-1).filter(j=>j>=0),candidates=[];
+if(neighbors.length){const best=neighbors.reduce((a,b)=>objective(points[b])<objective(points[a])?b:a),center=[0,1].map(k=>neighbors.reduce((s,j)=>s+points[j][k],0)/neighbors.length);for(const [action,target] of [['follow',points[best]],['swarm',center]]){const density=points.filter((q,j)=>j!==index&&distance(target,q)<=visual).length,position=moveToward(p,target,step),accepted=density<=crowd&&objective(target)<objective(p)&&objective(position)<objective(p);candidates.push({action,target:[...target],density,accepted,position});}}
+const accepted=candidates.filter(c=>c.accepted);if(accepted.length){const chosen=accepted.reduce((a,b)=>objective(b.position)<objective(a.position)?b:a);return {...chosen,neighbors,candidates,trials:[]};}const trials=[];for(let i=0;i<3;i++){const target=randomTarget(p,visual,rng);trials.push(target);if(objective(target)<objective(p))return {action:'prey',position:moveToward(p,target,step),neighbors,candidates,trials};}return {action:'random',position:moveToward(p,randomTarget(p,visual,rng),step),neighbors,candidates,trials};}
+function fishStep(points,rng,visual=1,step=.2,crowd=2){const actions=points.map((p,i)=>fishAction(points,i,rng,visual,step,crowd));return {positions:actions.map(a=>a.position),actions};}
+function runFish(steps=20,visual=1,step=.2,crowd=2,seed=SEED,positions=POSITIONS){integer(steps,0,200,'反復数');finite(visual,0,4,'視野');finite(step,0,1,'移動幅');integer(crowd,0,29,'混雑上限');integer(positions.length,1,30,'魚数');let points=clone(positions),values=points.map(objective),best=Math.min(...values),best_position=[...points[values.indexOf(best)]];const rng=new RNG(seed),history=[{step:0,current_best:best,best_seen:best}];for(let iteration=1;iteration<=steps;iteration++){points=fishStep(points,rng,visual,step,crowd).positions;values=points.map(objective);const current=Math.min(...values);if(current<best){best=current;best_position=[...points[values.indexOf(current)]];}history.push({step:iteration,current_best:current,best_seen:best});}return {positions:points,history,best_seen:best,best_position};}
+function rounded(v){if(typeof v==='number')return Number(v.toFixed(6));if(Array.isArray(v))return v.map(rounded);if(v&&typeof v==='object')return Object.fromEntries(Object.entries(v).map(([k,x])=>[k,rounded(x)]));return v;}
+function demo(){return rounded({ga_initial:gaEvaluate(POPULATION),ga_step:gaStep(POPULATION,new RNG()),ga:runGA(),aco_step:acoStep([1,1,1],new RNG()),aco:runACO(),fish_step:fishStep(POSITIONS,new RNG()),fish:runFish()});}
+return {SEED,POPULATION,LENGTHS,POSITIONS,RNG,probabilities,choose,fitness,gaEvaluate,crossover,mutate,gaStep,runGA,acoProbabilities,acoUpdate,acoStep,runACO,objective,distance,moveToward,randomTarget,fishAction,fishStep,runFish,rounded,demo,clone};
+})();
+            </script>
+            <script>
+'use strict';
+const ids=['ga-selection','ga-generation','aco-choice','aco-update','fish-action','fish-search'],el=id=>document.getElementById(id),num=id=>el(id).value.trim()===''?NaN:Number(el(id).value),fmt=n=>Number(n).toFixed(6),names={follow:'追尾',swarm:'群れ形成',prey:'採餌',random:'ランダム移動'};
+let gaN=0,acoN=0,fishN=0,phase=0,acoPending=null,acoTau=[1,1,1],acoRng=new EVO.RNG(),acoBest=null;
+const defaults={'bits':'100000','mutation':'.1','ga-seed':'65535','length-b':'6','tau-b':'1','rho':'.25','aco-seed':'65535','fish-scene':'base','visual':'1','crowd':'2','fish-step':'.2','fish-seed':'65535'};
+function table(headers,rows){return '<table><thead><tr>'+headers.map(h=>'<th scope="col">'+h+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(v=>'<td class="number">'+v+'</td>').join('')+'</tr>').join('')+'</tbody></table>';}
+function chart(history,keys,label){const w=500,h=160,values=history.flatMap(r=>keys.map(k=>r[k])),max=Math.max(...values,1e-9),x=i=>35+i*440/Math.max(1,history.length-1),y=v=>130-v/max*100,colors=['#116a83','#bc520d'];return '<svg viewBox="0 0 500 160" role="img" aria-label="'+label+'"><text x="10" y="18">'+label+'（縦軸 0〜'+fmt(max)+'）</text><path d="M35 30V130H480" fill="none" stroke="#70899b"/>'+keys.map((key,k)=>'<polyline points="'+history.map((r,i)=>x(i)+','+y(r[key])).join(' ')+'" fill="none" stroke="'+colors[k]+'" stroke-width="3"'+(k?' stroke-dasharray="6 4"':'')+'/><circle cx="'+x(history.length-1)+'" cy="'+y(history.at(-1)[key])+'" r="4" fill="'+colors[k]+'"/>').join('')+'<text x="35" y="151">0</text><text x="400" y="151">反復 '+(history.length-1)+'</text></svg>';}
+function fishPlot(points,after,best,visual){const x=v=>210+v*70,y=v=>165-v*70;return '<svg viewBox="0 0 420 330" role="img" aria-label="魚の位置。青は更新前、橙は更新後、赤い十字は過去最良"><path d="M70 25V305H350V25Z M70 165H350 M210 25V305" fill="none" stroke="#abbfcf"/><text x="215" y="160">原点</text><text x="330" y="322">x: −2〜2</text><text x="8" y="22">y: −2〜2</text>'+(visual!==undefined?'<circle cx="'+x(points[0][0])+'" cy="'+y(points[0][1])+'" r="'+visual*70+'" fill="none" stroke="#498ca0" stroke-dasharray="4 4"/>':'')+points.map((p,i)=>'<circle cx="'+x(p[0])+'" cy="'+y(p[1])+'" r="6" fill="#116a83"/><text x="'+(x(p[0])+8)+'" y="'+y(p[1])+'">'+(i+1)+'</text>').join('')+(after||[]).map((p,i)=>'<path d="M'+x(points[i][0])+' '+y(points[i][1])+'L'+x(p[0])+' '+y(p[1])+'" stroke="#bc520d"/><circle cx="'+x(p[0])+'" cy="'+y(p[1])+'" r="4" fill="#bc520d"/>').join('')+(best?'<path d="M'+(x(best[0])-7)+' '+y(best[1])+'h14 M'+x(best[0])+' '+(y(best[1])-7)+'v14" stroke="#bc2342" stroke-width="3"/>':'')+'</svg>';}
+function scene(){return {base:EVO.POSITIONS,follow:[[1,0],[.5,0]],swarm:[[1,0],[.2,.6],[.2,-.6]],alone:[[1,1]],same:[[0,0],[0,0]]}[el('fish-scene').value];}
+function render(id){el(id+'-error').textContent='';try{let html='';
+if(id==='ga-selection'){const pop=[...EVO.POPULATION];pop[0]=el('bits').value;const r=EVO.gaEvaluate(pop);html=table(['個体','6ビット','適応度','選択確率'],pop.map((p,i)=>[i+1,p,r.fitness[i],fmt(r.probabilities[i])]))+'<p>確率の合計 = '+fmt(r.probabilities.reduce((a,b)=>a+b,0))+'。親の選択は重複を許します。</p>';}
+if(id==='ga-generation'){const r=EVO.runGA(gaN,num('mutation'),num('ga-seed'));html='<p class="stat">世代 '+gaN+' ／ 最良 '+r.best_seen+' ／ 平均 '+fmt(r.history.at(-1).mean)+' ／ 異なる個体 '+r.history.at(-1).diversity+'種類</p>'+chart(r.history,['current_best','mean'],'青：最良、橙破線：平均')+table(['個体','ビット列','適応度'],r.population.map((p,i)=>[i+1,p,EVO.fitness(p)]));if(gaN){let pop=[...EVO.POPULATION],rng=new EVO.RNG(num('ga-seed')),last;for(let i=0;i<gaN;i++){last=EVO.gaStep(pop,rng,num('mutation'));pop=last.population;}html+='<details open><summary>最後の世代の交叉・突然変異</summary>'+table(['親番号','切断位置','交叉後','突然変異後'],last.trace.map(t=>[t.parents.map(v=>v+1).join('・'),t.cut,t.crossed.join(' / '),t.mutated.join(' / ')]))+'<p>先頭はエリート。最後の組の2番目の子は集団数を6に保つため使いません。</p></details>';}el('ga-next').disabled=gaN>=200;}
+if(id==='aco-choice'){const tau=[1,num('tau-b'),1],lengths=[4,num('length-b'),8],probs=EVO.acoProbabilities(tau,lengths);html='<svg viewBox="0 0 500 175" role="img" aria-label="三つの経路の概念図。線の長さは実際の距離と比例しません">'+probs.map((p,i)=>'<path d="M30 85 Q250 '+(-50+135*i)+' 470 85" fill="none" stroke="#116a83" stroke-width="'+(2+8*p)+'"/><text x="195" y="'+(25+60*i)+'">'+['A','B','C'][i]+': 長さ '+lengths[i]+'</text>').join('')+'</svg><p class="note">線の太さ＝選択確率。図の線長は距離に比例しません。</p>'+table(['経路','長さ','フェロモン','重み','確率'],probs.map((p,i)=>[['A','B','C'][i],lengths[i],tau[i],fmt(tau[i]/lengths[i]),fmt(p)]));}
+if(id==='aco-update'){html='<p class="stat">完了 '+acoN+'反復 ／ '+['選択待ち','6匹の選択済み','蒸発済み（追加前）'][phase]+' ／ 探索中最短 '+(acoBest===null?'未探索':acoBest)+'</p>';let show=phase===2?acoPending.evaporated:acoTau;html+=table(['経路','表示フェロモン',phase?'今回の通過数':'直近の通過数',phase?'追加予定量':'直近の追加量'],show.map((t,i)=>[['A','B','C'][i],fmt(t),acoPending?acoPending.counts[i]:'—',acoPending?fmt(acoPending.deposits[i]):'—']));if(acoPending)html+='<p>選択した順：'+acoPending.choices.map(i=>['A','B','C'][i]).join(' → ')+'</p><p>選択時の確率：'+acoPending.probabilities.map(fmt).join(', ')+'</p>';el('aco-select').disabled=phase!==0||acoN>=200;el('aco-evaporate').disabled=phase!==1;el('aco-deposit').disabled=phase!==2;}
+if(id==='fish-action'){const points=scene(),a=EVO.fishAction(points,0,new EVO.RNG(),num('visual'),.2,num('crowd')),after=EVO.clone(points);after[0]=a.position;html='<p class="stat">先頭の魚：'+names[a.action]+' ／ 評価 '+fmt(EVO.objective(points[0]))+' → '+fmt(EVO.objective(a.position))+'</p>'+fishPlot(points,after,undefined,num('visual'))+'<p>青：旧位置、橙：新位置。視野円の図外部分は表示されません。計算には入力した視野を使用。</p>'+table(['候補行動','目標評価','移動後評価','混雑数','利用可能'],a.candidates.map(c=>[names[c.action],fmt(EVO.objective(c.target)),fmt(EVO.objective(c.position)),c.density,c.accepted?'はい':'いいえ']))+'<p>近傍の魚番号：'+(a.neighbors.map(i=>i+1).join(', ')||'なし')+' ／ 採餌候補の試行 '+a.trials.length+'回</p>';
+}
+if(id==='fish-search'){const r=EVO.runFish(fishN,1,num('fish-step'),2,num('fish-seed')),h=r.history.at(-1);html='<p class="stat">反復 '+fishN+' ／ 現在最良 '+fmt(h.current_best)+' ／ 探索中最良 '+fmt(h.best_seen)+'</p>'+fishPlot(r.positions,null,r.best_position)+chart(r.history,['current_best','best_seen'],'青：現在最良、橙破線：探索中最良')+table(['魚','x','y','評価'],r.positions.map((p,i)=>[i+1,...p.map(fmt),fmt(EVO.objective(p))]))+'<p>赤十字：探索中の最良位置。更新を引っ張る目標ではありません。</p>';el('fish-next').disabled=fishN>=200;}
+el(id+'-result').innerHTML=html;
+}catch(e){el(id+'-error').textContent=e.message;el(id+'-result').textContent='入力を確認するか、このテーマをリセットしてください。';}}
+function resetState(id){if(id==='ga-generation')gaN=0;if(id==='fish-search')fishN=0;if(id==='aco-update'){acoN=phase=0;acoPending=null;acoTau=[1,1,1];acoBest=null;acoRng=new EVO.RNG(num('aco-seed'));}}
+function safe(id,action){try{action();render(id);}catch(e){el(id+'-error').textContent=e.message;}}
+for(const id of ids){el(id+'-reset').onclick=()=>{for(const input of el(id).querySelectorAll('input,select'))input.value=defaults[input.id];for(const t of el(id).querySelectorAll('textarea'))t.value='';resetState(id);render(id);};for(const input of el(id).querySelectorAll('input,select'))input.addEventListener('input',()=>safe(id,()=>resetState(id)));render(id);}
+el('ga-next').onclick=()=>safe('ga-generation',()=>{EVO.runGA(gaN+1,num('mutation'),num('ga-seed'));gaN++;});el('ga-run').onclick=()=>safe('ga-generation',()=>{EVO.runGA(20,num('mutation'),num('ga-seed'));gaN=20;});
+el('aco-select').onclick=()=>safe('aco-update',()=>{acoPending=EVO.acoStep(acoTau,acoRng,num('rho'));phase=1;});el('aco-evaporate').onclick=()=>{phase=2;render('aco-update');};el('aco-deposit').onclick=()=>{acoTau=acoPending.tau;acoBest=acoBest===null?acoPending.current_best:Math.min(acoBest,acoPending.current_best);acoN++;phase=0;render('aco-update');};el('aco-run').onclick=()=>safe('aco-update',()=>{const r=EVO.runACO(20,num('rho'),num('aco-seed'));acoRng=new EVO.RNG(num('aco-seed'));for(let i=0;i<120;i++)acoRng.random();acoTau=r.tau;acoBest=r.best_seen;acoPending=r.history.at(-1);acoN=20;phase=0;});
+el('fish-next').onclick=()=>safe('fish-search',()=>{EVO.runFish(fishN+1,1,num('fish-step'),2,num('fish-seed'));fishN++;});el('fish-run').onclick=()=>safe('fish-search',()=>{EVO.runFish(20,1,num('fish-step'),2,num('fish-seed'));fishN=20;});
+function activate(id,focus=false){if(!ids.includes(id))id=ids[0];for(const key of ids){el(key).hidden=key!==id;const tab=el('tab-'+key);tab.setAttribute('aria-selected',String(key===id));tab.tabIndex=key===id?0:-1;}if(focus)el('tab-'+id).focus();}
+for(const id of ids){const tab=el('tab-'+id);tab.onclick=()=>{location.hash=id;activate(id);};tab.onkeydown=e=>{let i=ids.indexOf(id);if(e.key==='ArrowRight')i=(i+1)%6;else if(e.key==='ArrowLeft')i=(i+5)%6;else if(e.key==='Home')i=0;else if(e.key==='End')i=5;else return;e.preventDefault();location.hash=ids[i];activate(ids[i],true);};}
+window.addEventListener('hashchange',()=>activate(location.hash.slice(1)));activate(location.hash.slice(1));
+            </script>
+        </body>
+    </html>

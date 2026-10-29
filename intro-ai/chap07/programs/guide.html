@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第9回 進化的計算：Python・Notebook解説">
+<title>第9回 進化的計算：Python・Notebook解説</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第9回 進化的計算：Python・Notebook解説</h1>
+<h2 id="学習目標と入口">学習目標と入口</h2>
+<p>GAの個体、ACOの経路、人工魚群の位置を評価し、更新前後を説明します。第8回までの「固定した入力で実行→結果を比較」を使います。難しいライブラリの操作は必要ありません。</p>
+<p><a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a></p>
+<p><a href="evolutionary_computation.py" download>Python</a> ／ <a href="evolutionary_computation.ipynb" download>Notebook</a> ／ <a href="requirements.txt" download>Notebook環境の依存一覧</a></p>
+<h2 id="保存環境全セル実行">保存・環境・全セル実行</h2>
+<ol type="1">
+<li>ZIPを保存して新しいフォルダーへ展開します。Python、Notebook、requirements.txt、このguide.htmlが入っています。元のZIPを残してください。</li>
+<li>既存の学習用venvを有効化します。ターミナルで <code>python --version</code> と <code>python -c "import sys; print(sys.executable)"</code> を確認します。Python 3.10以降を使えます。制作者のPython 3.14に合わせる必要はありません。</li>
+<li>VS CodeでNotebookを開き、右上のカーネル選択で同じvenvを選びます。カーネル再起動→全セル実行を行います。Notebookは同梱Pythonをimportせず、単体で動きます。</li>
+<li>基準の3値と6変更例の出力が出れば実行完了です。予想・観察・説明を記入します。</li>
+</ol>
+<p>Python単体の計算は標準ライブラリのみです。Notebook環境が未導入の場合だけ、有効化したvenvで以下を実行します。初回の環境準備にはネット接続が必要です。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--require-hashes</span> <span class="at">-r</span> requirements.txt</span></code></pre></div>
+<p>既存venvがなければ <code>python -m venv .venv</code> で作成します。WSL/Linuxでは <code>source .venv/bin/activate</code>、Windows PowerShellでは <code>.venv\Scripts\Activate.ps1</code> で有効化します。VS CodeのPythonインタープリターとNotebookのカーネル選択は別なので両方を確認します。</p>
+<h2 id="python版を実行する">Python版を実行する</h2>
+<p>展開先のフォルダーで実行します。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> evolutionary_computation.py <span class="at">--demo</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> evolutionary_computation.py <span class="at">--demo</span> <span class="at">--json</span></span></code></pre></div>
+<p>通常実行は三つの基準値と読み方、<code>--json</code> は照合用の詳細を表示します。uvを利用する場合は <code>uv run --no-project python evolutionary_computation.py --demo</code> でも実行できます。uvは受講者の必須条件ではありません。</p>
+<h2 id="基準入力結果">基準入力・結果</h2>
+<p>入力は全て本教材用に作成した人工データです。外部データの取得や送信は行いません。乱数シードは65535、各手法で初期化し、20世代／反復を計算します。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>手法</th>
+<th>入力と条件</th>
+<th>基準結果と読み方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GA</td>
+<td>6ビット6個体、1の数を最大化、変異率0.1、エリート1</td>
+<td>初期最良4→一世代5→20世代6。平均と種類数も比較</td>
+</tr>
+<tr>
+<td>ACO</td>
+<td>長さ[4,6,8]、初期フェロモン[1,1,1]、蟻6匹、蒸発率0.25</td>
+<td>最初の通過数[2,3,1]、更新後[3.75,3.75,1.5]、探索中最短4</td>
+</tr>
+<tr>
+<td>AFSA</td>
+<td>6匹、範囲[-2,2]²、x²+y²を最小化、視野1、移動幅0.2、混雑上限2</td>
+<td>初期最良0.5→探索中最良約0.000632。既知最適値0とは異なる</td>
+</tr>
+</tbody>
+</table>
+<p>GAの初期集団は100000・110000・111000・101010・010101・001111。人工魚群の初期位置は(-1.5,-1),(-1,1),(0.5,1.5),(1.5,0.5),(1,-1.5),(-0.5,-0.5)です。</p>
+<p>ACOは完成した経路から選ぶ簡略モデルです。人工魚群の匹数による混雑上限、候補の選択、一歩の決め方は教材用であり、原著の完全再現ではありません。追尾と群れ形成を比較し、使えなければ採餌を3回まで試し、それでも見つからなければランダム移動します。全魚は更新前の同じ位置を参照します。保存した過去最良位置は表示用です。</p>
+<p>内部の数値は絶対・相対許容誤差1e-9、表示・基準JSONは6桁で比較します。整数・ビット列・選択番号は完全一致です。20回停止は最適性の証明ではありません。</p>
+<h2 id="コピーで一つ変更する6実験">コピーで一つ変更する6実験</h2>
+<p>元のNotebookを残して別名で保存します。<code>baseline_result</code> と元の入力定数を変更せず、<code>trial_</code> で始まる変数に結果を保存します。Pythonだけで試す場合は、別名コピーで末尾の実行部より前に該当コードを追記して実行できます。</p>
+<h3 id="ビット列を変える">1 ビット列を変える</h3>
+<p><strong>問い・予想</strong>：先頭を111111にすると、その選択確率はどうなる？ 実行前に一文で予想します。</p>
+<p><strong>手順</strong>：Notebookの該当セルを実行します。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>trial_population <span class="op">=</span> <span class="bu">list</span>(POPULATION)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>trial_population[<span class="dv">0</span>] <span class="op">=</span> <span class="st">&#39;111111&#39;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>trial_selection <span class="op">=</span> ga_evaluate(trial_population)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;先頭の選択確率:&#39;</span>, baseline_result[<span class="st">&#39;ga_initial&#39;</span>][<span class="st">&#39;probabilities&#39;</span>][<span class="dv">0</span>], <span class="st">&#39;→&#39;</span>, trial_selection[<span class="st">&#39;probabilities&#39;</span>][<span class="dv">0</span>])</span></code></pre></div>
+<p><strong>想定結果・説明する問い</strong>：1/16から6/21へ増えます。他の個体の確率も分母の変化により変わります。</p>
+<p><strong>リセット</strong>：この実験のセルを元の内容に戻し、カーネル再起動→全セル実行します。</p>
+<h3 id="突然変異率だけを変える">2 突然変異率だけを変える</h3>
+<p><strong>問い・予想</strong>：0にすると最良と平均はどうなる？ 実行前に一文で予想します。</p>
+<p><strong>手順</strong>：Notebookの該当セルを実行します。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trial_ga <span class="op">=</span> run_ga(mutation<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;基準の最終集団:&#39;</span>, baseline_result[<span class="st">&#39;ga&#39;</span>][<span class="st">&#39;population&#39;</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;変更後の最終集団:&#39;</span>, trial_ga[<span class="st">&#39;population&#39;</span>])</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;基準と変更後の平均:&#39;</span>, baseline_result[<span class="st">&#39;ga&#39;</span>][<span class="st">&#39;history&#39;</span>][<span class="op">-</span><span class="dv">1</span>][<span class="st">&#39;mean&#39;</span>], trial_ga[<span class="st">&#39;history&#39;</span>][<span class="op">-</span><span class="dv">1</span>][<span class="st">&#39;mean&#39;</span>])</span></code></pre></div>
+<p><strong>想定結果・説明する問い</strong>：最良値だけでなく集団と平均を比較します。反転をなくしても交叉は残ります。</p>
+<p><strong>リセット</strong>：この実験のセルを元の内容に戻し、カーネル再起動→全セル実行します。</p>
+<h3 id="初期フェロモンだけを変える">3 初期フェロモンだけを変える</h3>
+<p><strong>問い・予想</strong>：Bを1から2にすると選択確率は？ 実行前に一文で予想します。</p>
+<p><strong>手順</strong>：Notebookの該当セルを実行します。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trial_tau <span class="op">=</span> [<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">1.0</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>trial_aco_prob <span class="op">=</span> aco_probabilities(trial_tau)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;基準:&#39;</span>, baseline_result[<span class="st">&#39;aco_step&#39;</span>][<span class="st">&#39;probabilities&#39;</span>])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;変更:&#39;</span>, trial_aco_prob)</span></code></pre></div>
+<p><strong>想定結果・説明する問い</strong>：Bは4/13から8/17へ変わります。長さは変更していません。</p>
+<p><strong>リセット</strong>：この実験のセルを元の内容に戻し、カーネル再起動→全セル実行します。</p>
+<h3 id="蒸発率だけを変える">4 蒸発率だけを変える</h3>
+<p><strong>問い・予想</strong>：最初の選択まで変わる？ 実行前に一文で予想します。</p>
+<p><strong>手順</strong>：Notebookの該当セルを実行します。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trial_aco <span class="op">=</span> aco_step([<span class="fl">1.0</span>] <span class="op">*</span> <span class="dv">3</span>, RNG(), evaporation<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;通過数:&#39;</span>, trial_aco[<span class="st">&#39;counts&#39;</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;更新後:&#39;</span>, trial_aco[<span class="st">&#39;tau&#39;</span>])</span></code></pre></div>
+<p><strong>想定結果・説明する問い</strong>：通過数は[2,3,1]のまま、更新後は[3.5,3.5,1.25]です。選択にはまだ蒸発率を使いません。</p>
+<p><strong>リセット</strong>：この実験のセルを元の内容に戻し、カーネル再起動→全セル実行します。</p>
+<h3 id="視野だけを変える">5 視野だけを変える</h3>
+<p><strong>問い・予想</strong>：視野2なら、先頭の魚は何を選ぶ？ 実行前に一文で予想します。</p>
+<p><strong>手順</strong>：Notebookの該当セルを実行します。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>trial_visual <span class="op">=</span> fish_step(copy.deepcopy(POSITIONS), RNG(), visual<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;基準の行動:&#39;</span>, [a[<span class="st">&#39;action&#39;</span>] <span class="cf">for</span> a <span class="kw">in</span> baseline_result[<span class="st">&#39;fish_step&#39;</span>][<span class="st">&#39;actions&#39;</span>]])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;変更の行動:&#39;</span>, [a[<span class="st">&#39;action&#39;</span>] <span class="cf">for</span> a <span class="kw">in</span> trial_visual[<span class="st">&#39;actions&#39;</span>]])</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;先頭の候補:&#39;</span>, trial_visual[<span class="st">&#39;actions&#39;</span>][<span class="dv">0</span>][<span class="st">&#39;candidates&#39;</span>])</span></code></pre></div>
+<p><strong>想定結果・説明する問い</strong>：近傍と混雑数の両方が変わります。acceptedとdensityを読んで、候補の採否を説明してください。</p>
+<p><strong>リセット</strong>：この実験のセルを元の内容に戻し、カーネル再起動→全セル実行します。</p>
+<h3 id="移動幅だけを変える">6 移動幅だけを変える</h3>
+<p><strong>問い・予想</strong>：0.4なら必ずよくなる？ 実行前に一文で予想します。</p>
+<p><strong>手順</strong>：Notebookの該当セルを実行します。</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>trial_step <span class="op">=</span> run_fish(step<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;基準の探索中最良:&#39;</span>, baseline_result[<span class="st">&#39;fish&#39;</span>][<span class="st">&#39;best_seen&#39;</span>])</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;変更の探索中最良:&#39;</span>, trial_step[<span class="st">&#39;best_seen&#39;</span>])</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;基準は保持:&#39;</span>, baseline_result <span class="op">==</span> demo())</span></code></pre></div>
+<p><strong>想定結果・説明する問い</strong>：同じシードの2条件を比べた結果です。今回よくなっても、一般的に大きいほどよいとは言えません。</p>
+<p><strong>リセット</strong>：この実験のセルを元の内容に戻し、カーネル再起動→全セル実行します。</p>
+<h2 id="元に戻す困ったとき">元に戻す・困ったとき</h2>
+<ul>
+<li><code>NameError</code>：先に定義するセルを飛ばしています。カーネル再起動後、上から全セル実行します。</li>
+<li><code>ValueError</code>：反復0〜200、変異率・蒸発率0〜1、視野0〜4、移動幅0〜1を確認します。GA個体は6ビット、座標は各−2〜2です。</li>
+<li>カーネルが見つからない：選択したvenvにJupyter環境があるか確認します。環境の導入先とカーネルをそろえます。</li>
+<li>ファイルがない：ZIPを先に展開し、ターミナルの作業フォルダーを確認します。Notebook単体の計算は同梱Pythonなしで動きます。</li>
+<li>基準値が異なる：入力・シード・反復数を確認します。再起動は編集したソースを元に戻す操作ではありません。元のZIPを別のフォルダーへ展開して再開します。</li>
+<li>インストールに失敗する：既存の授業用venvに戻り、Pythonの版とネット接続を確認します。システムPythonへ直接追加しないでください。</li>
+</ul>
+<p>予想と結果の差を、更新規則から説明してください。追加の提出期限・採点条件はこの教材では設定しません。</p>
+</main></body></html>

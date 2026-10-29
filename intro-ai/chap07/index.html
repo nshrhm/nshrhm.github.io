@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>第9回 進化的計算</title>
+        <meta name="description"
+              content="自己符号化器・LSTM・GANを小さな数値例で理解する">
+        <meta name="author" content="白濵 成希">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+<!-- 1: 第9回 進化的計算を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>第9回 進化的計算</h2>
+<p class="eyebrow">
+人工知能概論 ／ 2026年度 秋学期
+</p>
+<p class="lead">
+候補を作る・選ぶ・探索を続ける
+</p>
+<p>遺伝的アルゴリズム ／ 蟻コロニー最適化 ／ 人工魚群</p>
+<p>白濵 成希 ／ 2026年11月26日（木）</p>
+<p><strong>到達目標：三手法の更新を追い、数値を根拠に結果を説明する。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今回はニューラルネットワークの重み学習から視点を広げ、候補の集団を使う探索を扱います。 到達目標は用語の暗記ではなく、どの情報から次の候補が作られたかを説明できることです。
+</aside>
+</section>
+<section>
+<!-- 2: 自習の進め方を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>自習の進め方</h2>
+<ol type="1">
+<li>本文を読み、変化を予想する。</li>
+<li>操作教材で一段階ずつ確かめる。</li>
+<li>Python／Notebookを保存して基準結果を再現する。</li>
+<li>条件を一つ変え、結果の違いを説明する。</li>
+</ol>
+<p><a href="interactive.html" target="_blank" rel="noopener">操作教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a></p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最初に予想を書くと、操作後の数値を説明しやすくなります。 行き詰まったら各テーマのリセットで初期状態に戻してください。 プレビューのリンクは生成したHTML一式の中で利用します。
+</aside>
+</section>
+<section>
+<!-- 3: 最適化問題を決めるを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>最適化問題を決める</h2>
+<table>
+<thead>
+<tr>
+<th>決めること</th>
+<th>今回の例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>候補の表し方</td>
+<td>ビット列・経路・座標</td>
+</tr>
+<tr>
+<td>候補を評価する規則</td>
+<td>1の個数・経路長・原点からの距離の二乗</td>
+</tr>
+<tr>
+<td>よい方向</td>
+<td>大きくする／小さくする</td>
+</tr>
+<tr>
+<td>探索を終える条件</td>
+<td>20世代・20反復</td>
+</tr>
+</tbody>
+</table>
+<p><strong>何をよいとするかを先に決める。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+同じ候補でも、評価関数を変えれば順位が変わります。 今回の三つは仕組みを確かめるための別々の小問題なので、結果の数値をそのまま性能比較には使えません。
+</aside>
+</section>
+<section>
+<!-- 4: 評価関数と探索の方向を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>評価関数と探索の方向</h2>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>教材の評価関数</th>
+<th>目標</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GA</td>
+<td>6ビットの1の個数</td>
+<td>最大化：6</td>
+</tr>
+<tr>
+<td>ACO</td>
+<td>選択した経路の長さ</td>
+<td>最小化：4</td>
+</tr>
+<tr>
+<td>AFSA</td>
+<td>f(x,y) = x² + y²</td>
+<td>最小化：0</td>
+</tr>
+</tbody>
+</table>
+<p>第7・8回で扱った「損失を小さくする」と、目的を決める点は共通。</p>
+<p>今回は勾配を計算せず、候補を比較して探索する。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+評価値の大きい方が常によいわけではありません。 GAでは大きい方、ACOと人工魚群では小さい方を選びます。 既知の最適値は教材の小問題だから分かる値です。
+</aside>
+</section>
+<section>
+<!-- 5: 探索中最良と最適解は違うを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>探索中最良と最適解は違う</h2>
+<ul>
+<li><strong>現在最良</strong>：今の集団にある候補の中で最もよい値。</li>
+<li><strong>探索中最良</strong>：これまでに調べた候補の最良値。</li>
+<li><strong>既知の最適値</strong>：探索範囲全体で達成できる最良値。</li>
+</ul>
+<p>20回で停止したことは、最適解を証明したことではない。</p>
+<p>乱数シード・評価関数・反復数を記録して再現する。</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+探索中最良を記録しておけば、その記録は悪化しません。 しかし現在の集団が悪化することはあります。 停止条件と最適性の証明を区別しましょう。
+</aside>
+</section>
+<section>
+<!-- 6: GA：解をビット列で表すを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>GA：解をビット列で表す</h2>
+<p><strong>遺伝的アルゴリズム（Genetic Algorithm）</strong></p>
+<p>候補の集団を、選択・交叉・突然変異で更新する。</p>
+<p><code>101010</code> → 1が3個 → 適応度3</p>
+<ul>
+<li>今回は6ビットの列を「個体」と呼ぶ。</li>
+<li>符号化の方法は問題によって変わる。</li>
+<li>生物進化に着想を得た計算上の規則として扱う。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+個体は解の候補を表します。 6ビットという長さは今回の例の条件であり、GA全般の定義ではありません。 生物の仕組みをそのまま再現するシミュレーションとも区別してください。
+</aside>
+</section>
+<section>
+<!-- 7: 個体と集団を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>個体と集団</h2>
+<table>
+<thead>
+<tr>
+<th>番号</th>
+<th>個体</th>
+<th>適応度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1・2</td>
+<td>100000 ／ 110000</td>
+<td>1 ／ 2</td>
+</tr>
+<tr>
+<td>3・4</td>
+<td>111000 ／ 101010</td>
+<td>3 ／ 3</td>
+</tr>
+<tr>
+<td>5・6</td>
+<td>010101 ／ 001111</td>
+<td>3 ／ 4</td>
+</tr>
+</tbody>
+</table>
+<p>集団は6個体。異なる候補を同時に持つ。</p>
+<p>初期最良は4、平均は16÷6 ≈ 2.666667。</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この集団はプログラムと操作教材で共通です。 適応度が同じでもビット列が異なる個体があります。 評価値だけでは、集団の多様性は判断できません。
+</aside>
+</section>
+<section>
+<!-- 8: 適応度で候補を評価するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>適応度で候補を評価する</h2>
+<ul>
+<li>今回の適応度は、0以上の整数。</li>
+<li><code>001111</code> の適応度は4、<code>100000</code> は1。</li>
+<li>高い適応度の個体が親に選ばれやすいようにする。</li>
+</ul>
+<p><strong>適応度4だから、必ず4個の子を残すわけではない。</strong></p>
+<p><a href="interactive.html#ga-selection" target="_blank" rel="noopener">操作：GAの評価と選択</a></p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+適応度と実際に選ばれる回数は別の量です。 操作画面で先頭のビット列を変え、分母も変わるため他の個体の確率も変わることを確認してください。
+</aside>
+</section>
+<section>
+<!-- 9: ルーレット選択の確率を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>ルーレット選択の確率</h2>
+<p>選択確率 = 個体の適応度 ÷ 集団の適応度の合計</p>
+<p>初期集団の合計は16。</p>
+<table>
+<thead>
+<tr>
+<th>個体</th>
+<th>適応度</th>
+<th>選択確率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100000</td>
+<td>1</td>
+<td>1/16 = 0.0625</td>
+</tr>
+<tr>
+<td>001111</td>
+<td>4</td>
+<td>4/16 = 0.25</td>
+</tr>
+</tbody>
+</table>
+<p>同じ個体を複数回選んでよい。全個体が0なら一様に1/6。</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ルーレット選択では、重みを全体の合計で割って確率に直します。 全て0のときは割れないので、この教材では均等に選びます。 一般の評価値に負数がある場合、そのまま同じ式を適用できるわけではありません。
+</aside>
+</section>
+<section>
+<!-- 10: 一点交叉で組み合わせるを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>一点交叉で組み合わせる</h2>
+<p>切断位置を2とする手計算例：</p>
+<pre class="text"><code>親A  11 | 0000      子A  11 | 1111
+親B  00 | 1111  →   子B  00 | 0000</code></pre>
+<ul>
+<li>親の一部を交換し、二つの子を作る。</li>
+<li>子の適応度は6と0。両方が改善するとは限らない。</li>
+<li>プログラムは切断位置1〜5を乱数で選ぶ。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+交叉は既存の部分を組み合わせます。 良い部分同士が組み合わさる場合もあれば、よい組合せが壊れる場合もあります。 切断位置は左から何ビット残すかという意味です。
+</aside>
+</section>
+<section>
+<!-- 11: 突然変異でビットを反転するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>突然変異でビットを反転する</h2>
+<p><code>101010</code> の3番目を反転 → <code>100010</code></p>
+<ul>
+<li>各ビットを、指定した確率で0↔︎1へ反転。</li>
+<li>基準の突然変異率は <strong>0.1</strong>。</li>
+<li>6ビットにつき必ず1個を変える、という意味ではない。</li>
+</ul>
+<p>率0：反転なし ／ 率1：全ビット反転</p>
+<p>新しい候補を作れるが、適応度が上がるとは限らない。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+各ビットで独立に乱数を使います。 一つも変わらない場合や複数が変わる場合があります。 変異率を上げるほど結果がよくなるという単調な関係は仮定しません。
+</aside>
+</section>
+<section>
+<!-- 12: 一世代の更新順序を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>一世代の更新順序</h2>
+<p><strong>評価 → 親を選択 → 交叉 → 突然変異 → 次世代</strong></p>
+<ol type="1">
+<li>旧集団を評価し、最良1個をそのまま保存。</li>
+<li>旧集団から親2個を選び、子2個を作る。</li>
+<li>子を追加し、次世代が6個体になるまで続ける。</li>
+</ol>
+<p>最後の組の余った子は使わない。旧集団を途中で書き換えない。</p>
+<p><a href="interactive.html#ga-generation" target="_blank" rel="noopener">操作：GAの世代交代</a></p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+子ができるたびに親の選択元を入れ替えると、別の更新規則になります。 この教材は一世代を通して同じ旧集団から選びます。 最後の組も二個体分の突然変異を計算し、乱数消費を統一します。
+</aside>
+</section>
+<section>
+<!-- 13: 基準の一世代を追うを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>基準の一世代を追う</h2>
+<p>固定シード65535、突然変異率0.1。</p>
+<table>
+<thead>
+<tr>
+<th>観察項目</th>
+<th>初期 → 一世代後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最良適応度</td>
+<td>4 → 5</td>
+</tr>
+<tr>
+<td>平均適応度</td>
+<td>2.666667 → 3.166667</td>
+</tr>
+<tr>
+<td>最初に選ばれた親</td>
+<td>番号5と4、切断位置1</td>
+</tr>
+</tbody>
+</table>
+<p>次世代：<code>001111, 001010, 110101, 110111, 010000, 001101</code></p>
+<p>この実行例での改善と、毎回の改善保証を区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+先頭の001111はエリートとして保存されました。 選ばれた親番号は画面では1始まりで表示します。 プログラムの内部インデックスは0始まりなので、traceを見る際は1を足して対応させます。
+</aside>
+</section>
+<section>
+<!-- 14: エリート保存が守るものを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>エリート保存が守るもの</h2>
+<p>最良個体を1個、そのまま次世代に残す。</p>
+<ul>
+<li>同じ評価関数なら、集団の<strong>最良値</strong>は悪化しない。</li>
+<li><strong>平均値</strong>や<strong>多様性</strong>まで守るわけではない。</li>
+<li>最適解への到達を保証する仕組みではない。</li>
+</ul>
+<p>問い：最良6、平均5.2 → 最良6、平均4.8は起こり得る？</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最良個体を変異の対象から外してコピーすることが条件です。 集団の他の個体は変化するので、平均が下がることがあります。 基準実行でもその違いを確認できます。
+</aside>
+</section>
+<section>
+<!-- 15: 多様性と探索の偏りを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>多様性と探索の偏り</h2>
+<ul>
+<li>よい候補に選択が集中すると、似た個体が増える。</li>
+<li>多様性が減ると、別の候補を試す機会も減り得る。</li>
+<li>突然変異は新しい候補を導入する一つの方法。</li>
+</ul>
+<p>今回の多様性指標：<strong>異なるビット列の種類数</strong>。</p>
+<p>同じ最良値でも、集団の中身を比較する。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+多様性には複数の測り方があります。 教材では分かりやすい種類数を使います。 同じ評価値の候補が複数あっても、ビット列が異なれば別の種類です。
+</aside>
+</section>
+<section>
+<!-- 16: GAの変更実験を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>GAの変更実験</h2>
+<ol type="1">
+<li>シード65535、突然変異率0.1で20世代実行。</li>
+<li>最良・平均・種類数を記録する。</li>
+<li>突然変異率だけを0へ変更して再実行。</li>
+<li>曲線と集団の違いを説明する。</li>
+</ol>
+<p>基準実行の探索中最良は6。変更後も同じになるか予想する。</p>
+<p>一つのシードでの結果から、手法の優劣を一般化しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+基準結果を残したまま別の変数に変更実験の結果を保存します。 最終最良値が同じ場合でも、そこへ至る履歴や集団の中身は異なるかもしれません。
+</aside>
+</section>
+<section>
+<!-- 17: ACO：情報を経路に残すを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>ACO：情報を経路に残す</h2>
+<p><strong>蟻コロニー最適化（Ant Colony Optimization）</strong></p>
+<ul>
+<li>候補の構成要素に、フェロモンという数値を持たせる。</li>
+<li>選択の偏りを、評価結果に応じて更新する。</li>
+<li>個体同士の直接指示ではなく、共有情報を介して探索する。</li>
+</ul>
+<p>今回は三つの完成した経路を選ぶ簡略モデル。</p>
+<p>一般のACOは、巡回路などを段階的に構成する問題にも使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+自然界の蟻の比喩は導入であり、プログラム内のフェロモンは数値です。 今回のモデルでは途中の頂点を選ぶ処理を省きます。 ACO全般を三経路の選択と定義しないでください。
+</aside>
+</section>
+<section>
+<!-- 18: 三つの経路を評価するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>三つの経路を評価する</h2>
+<table>
+<thead>
+<tr>
+<th>候補経路</th>
+<th>長さ</th>
+<th>初期フェロモン</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr>
+<td>B</td>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>C</td>
+<td>8</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>目的：短い経路を選びやすくする。</p>
+<p>既知の最短はAの4。図の見た目の線長と数値の距離は区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+三経路の長さは教材用に設定した値です。 この小問題では最短経路が最初から分かりますが、更新の計算を追うことが目的です。 実問題を解いた実績とは扱いません。
+</aside>
+</section>
+<section>
+<!-- 19: 経路を確率的に選ぶを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>経路を確率的に選ぶ</h2>
+<p><strong>重み = フェロモン ÷ 経路長</strong></p>
+<p><strong>選択確率 = その経路の重み ÷ 全経路の重みの合計</strong></p>
+<ul>
+<li>フェロモンが同じなら、短い経路ほど選ばれやすい。</li>
+<li>長い経路でも、フェロモンが多ければ選ばれやすくなる。</li>
+<li>最大の経路だけを必ず選ぶ規則ではない。</li>
+</ul>
+<p><a href="interactive.html#aco-choice" target="_blank" rel="noopener">操作：ACOの経路選択</a></p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この式はフェロモンと距離の重みをそれぞれ1乗にした教材の設定です。 ACOには他の重み付けもあります。 三つの重みが全て0の場合、この教材は一様確率に戻します。
+</aside>
+</section>
+<section>
+<!-- 20: 初期確率を手計算するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>初期確率を手計算する</h2>
+<p>重みの合計 = 1/4 + 1/6 + 1/8 = 13/24</p>
+<table>
+<thead>
+<tr>
+<th>経路</th>
+<th>選択確率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>(1/4) ÷ (13/24) = 6/13 ≈ 0.461538</td>
+</tr>
+<tr>
+<td>B</td>
+<td>4/13 ≈ 0.307692</td>
+</tr>
+<tr>
+<td>C</td>
+<td>3/13 ≈ 0.230769</td>
+</tr>
+</tbody>
+</table>
+<p>Bのフェロモンだけを2にすると、Bの確率は8/17になる。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+フェロモン2の経路Bの重みは2割る6です。 他の重みは変わりませんが、合計が変わるためAとCの確率も変わります。 画面の表示は小数点以下6桁に丸めています。
+</aside>
+</section>
+<section>
+<!-- 21: 蒸発：過去の情報を弱めるを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>蒸発：過去の情報を弱める</h2>
+<p>蒸発後 = (1 − 蒸発率) × 更新前のフェロモン</p>
+<p>基準の蒸発率0.25：<strong>1 → 0.75</strong></p>
+<ul>
+<li>率0：蒸発しない。</li>
+<li>率1：追加前に全て0になる。</li>
+<li>同じ割合で蒸発するだけなら、正の重み同士の比は変わらない。</li>
+</ul>
+<p>蒸発と、次に行う追加を分けて観察する。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+蒸発は古い情報を弱めますが、それだけで短い経路を選ぶわけではありません。 全て0になる場合は例外として教材の一様選択規則が働きます。
+</aside>
+</section>
+<section>
+<!-- 22: 追加：評価結果を反映するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>追加：評価結果を反映する</h2>
+<p>蟻1匹の追加量 = <strong>6 ÷ 通った経路の長さ</strong></p>
+<table>
+<thead>
+<tr>
+<th>経路</th>
+<th>1匹分の追加量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A・B・C</td>
+<td>1.5 ／ 1 ／ 0.75</td>
+</tr>
+</tbody>
+</table>
+<p>新しい値 = 蒸発後 + その経路を通った全蟻の追加量</p>
+<p>各経路を1匹ずつ通った例：1 → 0.75 → 2.25・1.75・1.5。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+分子の6は教材で固定した強さです。 短い経路では一匹あたりの追加量が大きくなります。 実際の基準実行では六匹が選ぶため、この各一匹の手計算例とは通過数が異なります。
+</aside>
+</section>
+<section>
+<!-- 23: 六匹の選択から一括更新を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>六匹の選択から一括更新</h2>
+<p>同じ反復内では、<strong>全ての蟻が更新前の値で選択</strong>する。</p>
+<p>基準の最初の選択：B → B → A → B → A → C</p>
+<table>
+<thead>
+<tr>
+<th>経路</th>
+<th>通過数</th>
+<th>蒸発後</th>
+<th>追加後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A・B・C</td>
+<td>2・3・1</td>
+<td>各0.75</td>
+<td>3.75・3.75・1.5</td>
+</tr>
+</tbody>
+</table>
+<p><a href="interactive.html#aco-update" target="_blank" rel="noopener">操作：選択 → 蒸発 → 追加</a></p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+一匹が通るたびにフェロモンを変えると、後の蟻が参照する確率が変わります。 この教材ではその方式を採用しません。 操作画面では三つのボタンで状態の違いを確認できます。
+</aside>
+</section>
+<section>
+<!-- 24: 反復すると何が起こるかを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>反復すると何が起こるか</h2>
+<ul>
+<li>多く選ばれた経路は追加量が増え、さらに選ばれやすくなり得る。</li>
+<li>蒸発によって古い情報も弱まる。</li>
+<li>初期値や乱数によって、偏り方が変わる。</li>
+</ul>
+<p>基準20反復の探索中最短は4。</p>
+<p><strong>最短経路に必ず集中するという保証ではない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+正のフィードバックは探索を集中させる一方、好ましくない偏りを強める可能性があります。 初期フェロモンや蒸発率を変え、通過数と確率を分けて観察してください。
+</aside>
+</section>
+<section>
+<!-- 25: ACOの変更実験を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>ACOの変更実験</h2>
+<ol type="1">
+<li>蒸発率0.25で最初の一巡を記録する。</li>
+<li>蒸発率だけを0.5にして同じシードでやり直す。</li>
+<li>最初の選択と、更新後のフェロモンを比較する。</li>
+</ol>
+<p>最初の通過数は同じ。追加後は <strong>3.5・3.5・1.25</strong>。</p>
+<p>説明：なぜ最初の選択は変わらず、その後の確率が変わる？</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最初の選択に使う初期フェロモンはどちらも同じです。 蒸発率が使われるのは選択の後なので、最初の通過数は変わりません。 その因果関係を説明しましょう。
+</aside>
+</section>
+<section>
+<!-- 26: AFSA：魚の行動に着想を得るを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>AFSA：魚の行動に着想を得る</h2>
+<p><strong>人工魚群アルゴリズム（Artificial Fish Swarm Algorithm）</strong></p>
+<ul>
+<li>候補を位置として持ち、近傍の情報を使って移動する。</li>
+<li>採餌・群れ形成・追尾とランダム移動を考える。</li>
+<li>混雑しすぎる場所への集中を避ける条件を持たせる。</li>
+</ul>
+<p>今回は行動を追うための2次元の教材用モデル。</p>
+<p>原著の完全再現・PSOの発展形という説明はしない。</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+人工魚群にはさまざまな実装があります。 この教材の混雑上限や行動の選び方は説明しやすいように定めたものです。 原著の書誌と概要の確認だけから、細かな式まで原著由来と主張しません。
+</aside>
+</section>
+<section>
+<!-- 27: 位置と評価値を分けるを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>位置と評価値を分ける</h2>
+<p>探索範囲：−2 ≤ x,y ≤ 2</p>
+<p><strong>f(x,y) = x² + y² を最小化する。</strong></p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>評価値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(1, 0)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>(0.8, 0)</td>
+<td>0.64</td>
+</tr>
+<tr>
+<td>(0, 0)</td>
+<td>0：既知最適値</td>
+</tr>
+</tbody>
+</table>
+<p>魚の位置が解の候補、評価値はその位置のよさを測る数値。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+原点からの距離の二乗なので、原点で最小値0になります。 目的関数に合わせて良い方向が決まります。 魚が画面上で右へ移動したから改善、とは判断できません。
+</aside>
+</section>
+<section>
+<!-- 28: 視野と移動幅を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>視野と移動幅</h2>
+<ul>
+<li><strong>視野</strong>：どこまでを近傍として調べるか。基準は距離1。</li>
+<li><strong>最大移動幅</strong>：一歩でどこまで進めるか。基準は0.2。</li>
+<li>目標が近ければ、その位置で止まり飛び越さない。</li>
+<li>範囲外の座標は−2〜2の境界へ収める。</li>
+</ul>
+<p>視野を広げることと、一歩を大きくすることは違う。</p>
+<p><a href="interactive.html#fish-action" target="_blank" rel="noopener">操作：AFSAの行動</a></p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+視野は候補を調べる範囲、移動幅は実際に位置を変える量の上限です。 方向移動の式を暗記するより、目標まで0.1なら0.2進まないことを確認してください。
+</aside>
+</section>
+<section>
+<!-- 29: 採餌：周囲の候補を試すを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>採餌：周囲の候補を試す</h2>
+<ol type="1">
+<li>視野内の候補位置を乱数で作る。</li>
+<li>現在よりよい評価なら、そこへ一歩進む。</li>
+<li>よい候補がなければ、最大3回まで試す。</li>
+<li>3回とも見つからなければ、別の候補へランダム移動。</li>
+</ol>
+<p><strong>採餌は、ほかの魚について行くこととは異なる。</strong></p>
+<p>ランダム移動では、評価値が悪化することもある。</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+採餌候補には他の魚がいなくても構いません。 近傍に魚がいない配置で実験できます。 ランダム移動は改善を条件にしないので、各魚の値が単調によくなるとは限りません。
+</aside>
+</section>
+<section>
+<!-- 30: 群れ形成：近傍の中心を見るを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>群れ形成：近傍の中心を見る</h2>
+<p>近傍の魚の座標の平均を、候補の中心位置とする。</p>
+<p>例：近傍が (0.2, 0.6) と (0.2, −0.6)</p>
+<p>中心は <strong>(0.2, 0)</strong>。</p>
+<ul>
+<li>中心の評価が現在よりよいかを調べる。</li>
+<li>混雑条件も満たすとき、中心方向への一歩を候補にする。</li>
+</ul>
+<p>中心がいつもよい位置になるとは限らない。</p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+座標の平均と評価値の平均は違います。 この例では中心の評価値は0.04です。 魚が集まること自体を目的とせず、評価と混雑を確認します。
+</aside>
+</section>
+<section>
+<!-- 31: 追尾：近傍の最良魚を見るを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>追尾：近傍の最良魚を見る</h2>
+<p>近傍の中で、最もよい評価値を持つ魚を探す。</p>
+<p>現在 (1,0)、近傍の魚 (0.5,0)、移動幅0.2：</p>
+<p><strong>(1,0) → (0.8,0)、評価1 → 0.64</strong></p>
+<ul>
+<li>群れ形成と追尾で、移動後の評価を比較する。</li>
+<li>利用可能な候補のうち、よい方を選ぶ。</li>
+<li>同値なら、この教材では追尾を優先する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+近傍の最良魚は、探索空間全体の最適解ではありません。 ここでは他の魚の現在位置を参照します。 過去の全体最良へ速度を調整するPSOの説明と混同しないようにします。
+</aside>
+</section>
+<section>
+<!-- 32: 混雑を判定するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>混雑を判定する</h2>
+<p>教材独自の条件：<strong>候補位置の視野内にいる他の魚が2匹以下</strong>。</p>
+<ul>
+<li>自分自身は数えない。候補位置にいる魚は数える。</li>
+<li>群れ形成・追尾には、改善と混雑の両方の条件を使う。</li>
+<li>利用できる候補がなければ採餌へ進む。</li>
+</ul>
+<p>混雑上限を0にすると、追尾候補は利用できる？</p>
+<p>この「匹数上限」を、原著の式として扱わない。</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+混雑の判定は移動前の集団を使います。 追尾先の魚自身も他の魚として数えるため、上限0なら通常は追尾を採用できません。 この単純な上限は教材の仕様です。
+</aside>
+</section>
+<section>
+<!-- 33: 全魚を更新して記録するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>全魚を更新して記録する</h2>
+<ol type="1">
+<li>旧位置から全魚の次の一歩を計算する。</li>
+<li>全魚の位置をまとめて更新する。</li>
+<li>現在最良と探索中最良を記録する。</li>
+</ol>
+<p>基準：6匹・視野1・移動幅0.2・20反復。</p>
+<p>探索中最良：<strong>0.5 → 約0.000632</strong>（既知最適は0）。</p>
+<p><a href="interactive.html#fish-search" target="_blank" rel="noopener">操作：AFSAの反復探索</a></p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最初の魚を動かしてから次の魚の近傍を調べる方式とは異なります。 探索中最良位置は記録・表示するだけで、更新式を引っ張る目標には使いません。
+</aside>
+</section>
+<section>
+<!-- 34: AFSAの変更実験と限界を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>AFSAの変更実験と限界</h2>
+<ul>
+<li>視野1→2：調べる近傍と混雑判定が変わる。</li>
+<li>移動幅0.2→0.4：一歩の上限が変わる。</li>
+<li>一度に一つだけ変更し、同じシードで比較する。</li>
+</ul>
+<p>現在最良が悪化しても、探索中最良の記録は保持する。</p>
+<p>単一シード、単純な関数、教材用の混雑条件での結果。</p>
+<p><strong>実問題での性能や、他手法より優れることは未確認。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+近傍が増えると候補が増えますが、混雑により却下されることもあります。 そのため視野を広げれば必ず改善するとはいえません。 条件をそろえた複数の実験が必要です。
+</aside>
+</section>
+<section>
+<!-- 35: PSOとの違いを整理するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>PSOとの違いを整理する</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>PSOの代表的な考え方</th>
+<th>今回の人工魚群モデル</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>移動の情報</td>
+<td>自分の過去最良・共有最良</td>
+<td>近傍の現在位置・採餌候補</td>
+</tr>
+<tr>
+<td>更新</td>
+<td>速度を調整して移動</td>
+<td>行動候補を比べ、一歩進む</td>
+</tr>
+<tr>
+<td>過去最良の記録</td>
+<td>移動に利用する</td>
+<td>表示・比較のために保持</td>
+</tr>
+</tbody>
+</table>
+<p>どちらも群知能。人工魚群をPSOの単なる別名とはしない。</p>
+<p>今回はPSOの実装・パラメーター演習は扱わない。</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+PSOにも複数の情報共有の方式があります。 表は代表的な基本形との比較であり、すべての変種を分類し尽くすものではありません。 昨年度のPSO演習を人工魚群と呼び換えて転用しないことが大切です。
+</aside>
+</section>
+<section>
+<!-- 36: 保存して基準結果を再現するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>保存して基準結果を再現する</h2>
+<p><a href="programs/evolutionary_computation.ipynb" download>Notebookを保存</a> ／ <a href="programs/evolutionary_computation.py" download>Pythonを保存</a> ／ <a href="programs/evolutionary_computation.zip" download>解説付きZIPを保存</a></p>
+<ol type="1">
+<li>ZIPを展開し、同梱guide.htmlを読む。</li>
+<li>既存venvを有効化し、Notebookは対応カーネルを選ぶ。</li>
+<li>カーネル再起動後に全セル実行する。</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> evolutionary_computation.py <span class="at">--demo</span></span></code></pre></div>
+<p>成功の目印：GA=6、ACO=4、AFSA≈0.000632。</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+Python単体の計算には追加ライブラリが不要です。 Notebookの実行には既存のJupyter環境を使えます。 基準値が異なったら入力・シード・セルの実行順序を確認し、ファイルのコピーで再開してください。
+</aside>
+</section>
+<section>
+<!-- 37: 一つだけ変えて説明するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>一つだけ変えて説明する</h2>
+<table>
+<thead>
+<tr>
+<th>変更するもの</th>
+<th>比較するもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ビット列・突然変異率</td>
+<td>確率・集団・最良と平均</td>
+</tr>
+<tr>
+<td>初期フェロモン・蒸発率</td>
+<td>選択確率・通過数・更新後の値</td>
+</tr>
+<tr>
+<td>視野・移動幅</td>
+<td>行動・位置・現在最良と探索中最良</td>
+</tr>
+</tbody>
+</table>
+<p>「何を変えたか → 何が変わったか → 規則から説明」の順に書く。</p>
+<p>基準入力は残し、変更用のコピーと別の結果変数を使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+基準を上書きすると、比較の根拠が失われます。 マニュアルとNotebookには六つの変更例を用意しています。 結果が同じだった場合も、条件と比較した値を明記してください。
+</aside>
+</section>
+<section>
+<!-- 38: 三手法を比較するを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>三手法を比較する</h2>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>候補の表現</th>
+<th>次の候補を作る情報</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GA</td>
+<td>ビット列など</td>
+<td>親・交叉・突然変異</td>
+</tr>
+<tr>
+<td>ACO</td>
+<td>経路など</td>
+<td>フェロモン・距離など</td>
+</tr>
+<tr>
+<td>AFSA</td>
+<td>位置</td>
+<td>近傍・候補位置・混雑</td>
+</tr>
+</tbody>
+</table>
+<p>共通：評価関数、乱数、停止条件を決める。</p>
+<p>異なる問題の最終値だけで、手法の優劣を決めない。</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+三つの問題の数値は尺度もよい方向も異なります。 比較するなら同じ問題、評価回数などの条件をそろえる必要があります。 この授業では更新の仕組みの比較を優先します。
+</aside>
+</section>
+<section>
+<!-- 39: 理解確認と次回を具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>理解確認と次回</h2>
+<ul>
+<li>GAの最良値を保存しても、平均が下がり得るのはなぜ？</li>
+<li>ACOの最初の選択に、蒸発率の変更が影響しないのはなぜ？</li>
+<li>AFSAの視野と移動幅は、何を変える？</li>
+<li>20反復で停止しただけで、最適解と言える？</li>
+</ul>
+<p>クイズは本文を根拠に復習する。配信・提出条件は別の案内に従う。</p>
+<p>次回（12月3日）：自然言語処理。</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+各問いを数値か更新規則と結び付けて答えましょう。 クイズの公開URLや新しい提出期限をこの教材では設定しません。 次回は文章や言葉を扱う処理へ進みます。
+</aside>
+</section>
+<section>
+<!-- 40: 参考資料と教材モデルを具体例と操作で説明できるようにする -->
+<div class="slide-body">
+<h2>参考資料と教材モデル</h2>
+<ul>
+<li><a href="https://mitpress.mit.edu/9780262581110/adaptation-in-natural-and-artificial-systems/">Holland：Adaptation in Natural and Artificial Systems</a>（書誌・紹介）</li>
+<li><a href="https://iridia.ulb.ac.be/~mdorigo/ACO/publications.html">Dorigo：ACOの著者公開資料一覧</a></li>
+<li><a href="https://sysengi.cjoe.ac.cn/EN/10.12011/1000-6788%282002%2911-32">Li・Shao・Qian：Fish-swarm Algorithm（2002）</a>（書誌・概要）</li>
+</ul>
+<p>数値例と簡略化した規則は本教材の設定。</p>
+<p>原著本文未確認の式を原著の完全再現とは扱わない。</p>
+<p>採用箇所・訂正理由の出典対応表（制作資料）</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+参考資料のリンクを開く場合はネット接続が必要です。 操作教材の計算はオフラインで動きます。 制作資料では、原著のどこまで確認できたかと教材で独自に定めた条件を区別して記録しています。
+</aside>
+</section>
+</div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealAnimate,
+      RevealChalkboard,
+            RevealChart,
+        ];
+
+        const plugins =  [...printPlugins,
+        RevealZoom,
+        RevealSearch,
+                RevealMarkdown,
+                RevealMenu,
+                RevealFullscreen,
+                RevealAnything,
+                //RevealAudioSlideshow,
+                //RevealAudioRecorder,
+                RevealCustomControls,
+                // poll
+                // question
+                // seminar
+                Verticator
+                 ]
+
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+            height: 720,
+            margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+            customcontrols: {
+                    controls: [
+                            {
+                          id: 'toggle-overview',
+                          title: 'Toggle overview (O)',
+                          icon: '<i class="fa fa-th"></i>',
+                          action: 'Reveal.toggleOverview();'
+                        }
+                        ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+                ]
+            },
+            chart: {
+                    defaults: {
+                        color: 'lightgray', // color of labels
+                        scale: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: "lightgray" } , // color of grid lines
+                        },
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+            },
+                anything: [
+                {
+        className: "plot",
+        defaults: {width:500, height: 500, grid:true},
+        initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+     },
+     {
+        className: "chart",
+        initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+     },
+     {
+        className: "anything",
+        initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+     },
+                    ],
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+        });
+
+
+
+        // Change chalkboard theme :
+        function changeTheme(input) {
+            var config = {};
+            config.theme = input.value;
+            Reveal.getPlugin("RevealChalkboard").configure(config);
+            input.blur();
+        }
+
+        // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+        if (window.location.search.match(/print-pdf-now/gi)) {
+            setTimeout(() => {
+                window.print();
+              }, 2500);
+
+    }
+        </script>
+    </body>
+</html>

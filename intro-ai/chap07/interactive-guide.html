@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第9回 進化的計算：操作マニュアル">
+<title>第9回 進化的計算：操作マニュアル</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第9回 進化的計算：操作マニュアル</h1>
+<p>スライドで考えたことを数値で確かめ、理由を説明するための教材です。三手法とも小さな人工例であり、実問題での性能を示すものではありません。</p>
+<p><a href="index.html">スライドへ</a> ／ <a href="interactive.html">操作教材を開く</a> ／ <a href="programs/guide.html">プログラム解説</a> ／ <a href="interactive.html" download>操作教材を保存</a></p>
+<h2 id="始める成功を確認する">始める・成功を確認する</h2>
+<p>操作教材をブラウザーで開きます。計算にネット接続は不要です。「操作教材を保存」で単一HTMLを保存すれば、オフラインでも同じ6テーマを使えます。単独保存したHTMLからスライドやマニュアルへのリンクを使うには、配布フォルダー一式も必要です。</p>
+<p>テーマを選び、予想欄に一文を書いてから設定を一つ変えます。数値が変わり、説明欄に「変更前→変更後→理由」を書ければ、このテーマの操作は完了です。メモはページを閉じると消えるため別ファイルにコピーしてください。ブラウザーの戻る・進むではテーマ内の状態を保持します。</p>
+<p>タブはクリック・タッチ、キーボードの左右矢印・Home・Endで移動できます。入力欄へはTabキーで進めます。設定変更時はそのテーマの反復を0へ戻します。「初期状態から20反復／世代」は毎回基準の初期集団から再計算します。</p>
+<h2 id="gaの評価と選択">1. GAの評価と選択</h2>
+<p><a href="interactive.html#ga-selection">このテーマを開く</a></p>
+<ul>
+<li><strong>問い</strong>：1が多い個体は、必ず親に選ばれる？</li>
+<li><strong>予想</strong>：変更すると何が増減するかを予想欄へ記入します。</li>
+<li><strong>手順</strong>：先頭の個体を100000から111111へ変え、選択確率を比較します。</li>
+<li><strong>想定結果</strong>：適応度は1の個数。確率が高くても毎回選ばれるとは限りません。</li>
+<li><strong>説明する問い</strong>：適応度が2倍なら選択確率はどうなる？ 全個体が0なら？</li>
+<li><strong>リセット</strong>：「このテーマをリセット」で設定・反復・メモを初期状態に戻します。</li>
+</ul>
+<h2 id="gaの世代交代">2. GAの世代交代</h2>
+<p><a href="interactive.html#ga-generation">このテーマを開く</a></p>
+<ul>
+<li><strong>問い</strong>：交叉・突然変異で、平均適応度は毎回上がる？</li>
+<li><strong>予想</strong>：変更すると何が増減するかを予想欄へ記入します。</li>
+<li><strong>手順</strong>：1世代ずつ進めて親・切断位置・子を確認します。20世代実行は初期集団から計算し直します。</li>
+<li><strong>想定結果</strong>：エリート1個を残すので最良値は下がりません。平均や多様性は下がる場合もあります。</li>
+<li><strong>説明する問い</strong>：最良値と平均の変化が違う理由を、エリート保存から説明しよう。</li>
+<li><strong>リセット</strong>：「このテーマをリセット」で設定・反復・メモを初期状態に戻します。</li>
+</ul>
+<h2 id="acoの経路選択">3. ACOの経路選択</h2>
+<p><a href="interactive.html#aco-choice">このテーマを開く</a></p>
+<ul>
+<li><strong>問い</strong>：長い経路でも、選ばれる確率が高くなる？</li>
+<li><strong>予想</strong>：変更すると何が増減するかを予想欄へ記入します。</li>
+<li><strong>手順</strong>：経路Bの長さ・フェロモンを一つずつ変更します。</li>
+<li><strong>想定結果</strong>：重みはフェロモン÷経路長。初期確率はA=6/13、B=4/13、C=3/13。</li>
+<li><strong>説明する問い</strong>：距離とフェロモンは、それぞれ確率にどう影響する？</li>
+<li><strong>リセット</strong>：「このテーマをリセット」で設定・反復・メモを初期状態に戻します。</li>
+</ul>
+<h2 id="acoのフェロモン更新">4. ACOのフェロモン更新</h2>
+<p><a href="interactive.html#aco-update">このテーマを開く</a></p>
+<ul>
+<li><strong>問い</strong>：蒸発だけなら、経路間の確率は変わる？</li>
+<li><strong>予想</strong>：変更すると何が増減するかを予想欄へ記入します。</li>
+<li><strong>手順</strong>：選択→蒸発→追加の順で押し、一巡を完了します。各蟻の選択に同じ更新前の値を使います。</li>
+<li><strong>想定結果</strong>：蒸発率0.25なら1→0.75。そこへ各蟻が6÷経路長を追加します。</li>
+<li><strong>説明する問い</strong>：蒸発と追加の役割を分けて説明しよう。長い経路に偏る可能性は？</li>
+<li><strong>リセット</strong>：「このテーマをリセット」で設定・反復・メモを初期状態に戻します。</li>
+</ul>
+<h2 id="afsaの行動">5. AFSAの行動</h2>
+<p><a href="interactive.html#fish-action">このテーマを開く</a></p>
+<ul>
+<li><strong>問い</strong>：視野を広げれば、必ず近くの魚について行く？</li>
+<li><strong>予想</strong>：変更すると何が増減するかを予想欄へ記入します。</li>
+<li><strong>手順</strong>：配置を選び、視野・混雑上限を変えて先頭の魚の一歩を確認します。</li>
+<li><strong>想定結果</strong>：追尾・群れ形成は改善と混雑の条件を確認します。使えなければ採餌、次にランダム移動。</li>
+<li><strong>説明する問い</strong>：候補が却下された理由を、評価値と混雑数から説明しよう。</li>
+<li><strong>リセット</strong>：「このテーマをリセット」で設定・反復・メモを初期状態に戻します。</li>
+</ul>
+<h2 id="afsaの反復探索">6. AFSAの反復探索</h2>
+<p><a href="interactive.html#fish-search">このテーマを開く</a></p>
+<ul>
+<li><strong>問い</strong>：今の最良値が悪化しても、過去の記録は消える？</li>
+<li><strong>予想</strong>：変更すると何が増減するかを予想欄へ記入します。</li>
+<li><strong>手順</strong>：1反復ずつ進め、位置・現在最良・探索中最良を比較します。移動幅だけを変更して再実行します。</li>
+<li><strong>想定結果</strong>：基準20反復の探索中最良は約0.000632。これは既知最適値0への到達ではありません。</li>
+<li><strong>説明する問い</strong>：同じシードで移動幅を変えた結果を説明しよう。1回の成功から何が言えない？</li>
+<li><strong>リセット</strong>：「このテーマをリセット」で設定・反復・メモを初期状態に戻します。</li>
+</ul>
+<h2 id="モデルの範囲">モデルの範囲</h2>
+<p>GAは6個体・6ビット、突然変異率0.1、エリート1個。ACOは完成した三経路の選択で、一般の経路構成を省略しています。人工魚群は原点を探す2次元の教材モデルです。混雑を他の魚の数で制限する条件、行動候補の比較、一定の移動幅、境界に収める処理は教材の設定です。原著の完全実装ではありません。</p>
+<p>全魚の位置・全蟻の選択は同じ更新前の状態を参照します。人工魚群の探索中最良位置は表示用で、そこへ全魚を引っ張るPSOの更新には使いません。固定シード65535で再現できますが、最適解への到達や毎回の改善を保証しません。</p>
+<h2 id="困ったとき">困ったとき</h2>
+<ul>
+<li>赤いエラー：6ビット、数値の上限・下限を確認し、そのテーマをリセットします。入力途中の空欄では結果を使わず、有効な値を入力し直してください。</li>
+<li>ボタンが押せない：ACOは選択→蒸発→追加の順です。反復200回で一段階ボタンが停止した場合はリセットしてください。</li>
+<li>基準値と違う：シード・変異率・蒸発率・配置をリセットします。小数は6桁表示です。</li>
+<li>操作が反応しない：HTMLをテキストエディターではなくブラウザーで開き、JavaScriptの許可を確認します。</li>
+<li>画面が小さい：ブラウザーの拡大を使います。操作画面とマニュアルはスマートフォンでは縦に並びます。</li>
+<li>図の読み方：ACOの曲線の長さは概念図です。数値の経路長を読みます。人工魚群の図は座標計算の結果で、青が旧位置、橙が新位置、赤十字が過去最良です。</li>
+</ul>
+<p>音声再生・公開サイト・教室投影・学生実機での動作確認は今回のローカル検証とは別です。</p>
+</main></body></html>
