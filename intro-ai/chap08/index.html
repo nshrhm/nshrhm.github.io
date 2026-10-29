@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>第10回 自然言語処理</title>
+        <meta name="description"
+              content="形態素・統計・単語表現・音声認識を小さな数値例で理解する">
+        <meta name="author" content="白濵 成希">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+<!-- 1: 第10回 自然言語処理の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>第10回 自然言語処理</h2>
+<p>人工知能概論 ／ 2026年12月3日（木） ／ 白濵 成希</p>
+<p><strong>ことばを分ける・数える・表現を学ぶ・音声候補を選ぶ</strong></p>
+<p>到達目標：途中の数値を使い、処理の結果と限界を説明する。</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今日は言葉の入力を計算で扱う方法を学びます。 人工的な小さな例で計算を追います。実用システムの認識精度を測る授業ではありません。
+</aside>
+</section>
+<section>
+<!-- 2: 自習の進め方の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>自習の進め方</h2>
+<ol type="1">
+<li>結果を予想して書く。</li>
+<li>操作教材で一つの値を変える。</li>
+<li>Python／Notebookで基準結果を再現する。</li>
+<li>一つ変更し、数値と理由を説明する。</li>
+</ol>
+<p><a href="interactive.html" target="_blank" rel="noopener">操作教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a></p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ノートに予想を残してから操作しましょう。 操作教材のリセットで、そのテーマの入力、結果、メモを初期状態に戻せます。
+</aside>
+</section>
+<section>
+<!-- 3: 言葉と計算の間の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>言葉と計算の間</h2>
+<p>文字列 → 区切り・記号 → 回数・ベクトル → 予測や選択</p>
+<p>「猫が眠る」をどこで区切るかによって、数える対象が変わる。</p>
+<p><strong>入力の表現と、処理の目的を先に決める。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+第6回の重み更新、第8回の系列を扱う考え方とつなげてください。 数字へ変換しただけで、言葉の意味の全てが保存されるわけではありません。
+</aside>
+</section>
+<section>
+<!-- 4: 四つの対象を見渡すの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>四つの対象を見渡す</h2>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>今回観察すること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>形態素解析</td>
+<td>区切り・品詞・候補経路</td>
+</tr>
+<tr>
+<td>統計的処理</td>
+<td>回数・確率・特徴語</td>
+</tr>
+<tr>
+<td>Word2Vec</td>
+<td>周辺語予測から単語表現を学ぶ</td>
+</tr>
+<tr>
+<td>音声認識</td>
+<td>音響情報と言語情報から候補を選ぶ</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+各処理は目的に応じて組み合わせられます。 この表は実用システムが必ず四段階を順に通るという意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 5: 形態素と単語の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>形態素と単語</h2>
+<p>形態素は、意味や文法的機能を担う最小の単位。</p>
+<p>「単語」といつも同じ区切りとは限らない。</p>
+<p>解析器・辞書・目的によって、採用する単位や品詞体系は異なる。</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+形態素を単純に単語の別名だと覚えないでください。 今回は限られた辞書の単位を使います。活用の分解を網羅するものではありません。
+</aside>
+</section>
+<section>
+<!-- 6: 分割と品詞を対応させるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>分割と品詞を対応させる</h2>
+<p>「猫が眠る」 → 猫 ／ が ／ 眠る</p>
+<table>
+<thead>
+<tr>
+<th>表層形</th>
+<th>教材辞書の品詞</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>猫</td>
+<td>名詞</td>
+</tr>
+<tr>
+<td>が</td>
+<td>助詞</td>
+</tr>
+<tr>
+<td>眠る</td>
+<td>動詞</td>
+</tr>
+</tbody>
+</table>
+<p>区切りだけを得る処理と、品詞などを付ける処理を区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+表層形は入力に現れた文字の並びです。 この例の品詞は教材辞書に書いてあります。モデルが新しく学習した結果ではありません。
+</aside>
+</section>
+<section>
+<!-- 7: 字種分割では足りないの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>字種分割では足りない</h2>
+<p>字種の変わり目：猫 ／ が ／ 眠 ／ る</p>
+<p>教材辞書：猫 ／ が ／ 眠る</p>
+<p><strong>ひらがな・漢字の境界と、語の境界は一致しない。</strong></p>
+<p><a href="interactive.html#morph" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+昨年度の正規表現による字種分割を、比較の対象にします。 長音をカタカナに含めても、全ての語の境界や品詞が分かるわけではありません。
+</aside>
+</section>
+<section>
+<!-- 8: 辞書から候補を作るの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>辞書から候補を作る</h2>
+<p>各位置で一致する表層形を探し、終了位置へつなぐ。</p>
+<p>研究生活 → 「研究」「研究生」などの候補</p>
+<p>候補には品詞とコストを持たせる。今回のコストは人が設定した教材用の値。</p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+辞書にある候補が一つとは限りません。 実用解析器では学習したコストや接続の情報を使いますが、今回のモデルは単語コストだけです。
+</aside>
+</section>
+<section>
+<!-- 9: 候補経路を比べるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>候補経路を比べる</h2>
+<table>
+<thead>
+<tr>
+<th>経路</th>
+<th>単語コスト</th>
+<th>合計</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>研究 → 生活</td>
+<td>1＋1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>研究生 → 活</td>
+<td>1＋5</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p>長い語を先に選ぶことと、経路全体のコストを小さくすることは異なる。</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+研究生活は、処理規則を説明するための入力です。 最長一致の局所的な判断で選ぶ経路が、合計コストの最小経路になるとは限りません。
+</aside>
+</section>
+<section>
+<!-- 10: 最小コストの経路の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>最小コストの経路</h2>
+<p>各文字位置までの最良コストを記録する。</p>
+<p>候補：到着までのコスト＋次の単語コスト</p>
+<p>終端までの最小値と、その経路を取り出す。</p>
+<p>活のコストを5→0にすると、研究生／活の合計は1。</p>
+<p><a href="interactive.html#morph" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+動的計画法では途中の計算を記録して利用します。 この教材では同点を辞書の掲載順で比べます。得られた最小値は、この辞書とコストのもとでの最小値です。
+</aside>
+</section>
+<section>
+<!-- 11: 未知語に出会ったらの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>未知語に出会ったら</h2>
+<p>辞書にない文字も、1文字ずつ「未知」の候補にする。</p>
+<p>未知のコストは1文字10。入力を勝手に捨てない。</p>
+<p>「猫が笑う」の「笑」「う」は、この小型辞書では未知。</p>
+<p><strong>未知という表示は、その言葉が存在しないという意味ではない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+辞書には猫、犬、が、眠る、走ると分割比較用の語しかありません。 未知文字も常に候補に含めるという教材用規則です。文字列を連結すると元の入力へ戻ることを確かめます。
+</aside>
+</section>
+<section>
+<!-- 12: 形態素解析の次にの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>形態素解析の次に</h2>
+<p>構文解析：語の係り受けや構造を調べる。</p>
+<p>意味解析：構造などから意味の表現を考える。</p>
+<p>分割・品詞だけで、文脈や意味が全て確定するわけではない。</p>
+<p>MeCabの実用的な処理と、今回の小型辞書モデルを区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+前処理からどのような情報を得て、何がまだ分からないのかを説明しましょう。 本日は構文木の探索や意味表現の実装には進みません。
+</aside>
+</section>
+<section>
+<!-- 13: コーパスを決めるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>コーパスを決める</h2>
+<p>自作の4文を、それぞれ1文書として使う。</p>
+<ul>
+<li>猫 が 眠る</li>
+<li>犬 が 眠る</li>
+<li>猫 が 走る</li>
+<li>犬 が 走る</li>
+</ul>
+<p>以下の統計は、この明示した空白区切りに対する値。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+コーパスは文章を集めたデータです。 ここでは辞書解析の結果が変わる影響と、統計計算の影響を分けるため、区切り済みの4文を固定します。
+</aside>
+</section>
+<section>
+<!-- 14: 回数を数えるBoWの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>回数を数えるBoW</h2>
+<p>語彙の順序：猫・が・眠る・犬・走る</p>
+<p>「猫 が 眠る」 → <strong>[1, 1, 1, 0, 0]</strong></p>
+<p>Bag-of-Wordsは、文書内の語の出現回数を並べる。</p>
+<p>語順を入れ替えても同じ回数なら、同じ表現になる。</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ベクトルの各位置と語彙の対応を確認してください。 単語表現と文書表現は対象が異なります。BoWでは今回は一文書を一行で表しています。
+</aside>
+</section>
+<section>
+<!-- 15: bigramは隣り合う二つの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>bigramは隣り合う二つ</h2>
+<p>文頭 → 猫 → が → 眠る → 文末</p>
+<p>隣り合う組を数える。異なる文の末尾と先頭をつながない。</p>
+<p>「が」の次：眠る2回、走る2回。</p>
+<p>語彙は5語＋文末。文頭は予測される語に含めない。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+予測の対象を決めないと、分母が変わります。 文頭と文末は処理用の記号です。実際に入力する語と混同しないでください。
+</aside>
+</section>
+<section>
+<!-- 16: 次の語の確率の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>次の語の確率</h2>
+<p>平滑化なし：P(眠る｜が)＝2／4＝0.5</p>
+<p>P(猫｜が)＝0／4＝0</p>
+<p>これはコーパスの数え上げによる条件付き確率。</p>
+<p>「観測されなかった」と「日本語として不可能」は違う。</p>
+<p><a href="interactive.html#bigram" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+縦棒の右側が、分かっている文脈です。 コーパスが小さいため観測されない組合せは多くあります。ゼロという結果だけで言語全体の可能性を否定できません。
+</aside>
+</section>
+<section>
+<!-- 17: 加算平滑化で比べるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>加算平滑化で比べる</h2>
+<p>P(次の語｜文脈)＝(回数＋α)／(文脈の回数＋α×語彙数)</p>
+<p>α＝1、語彙数6：「が」の分母は4＋6＝10</p>
+<p>眠る：3／10＝0.3、猫：1／10＝0.1</p>
+<p>全6候補の確率を足すと1になる。</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+観測のない候補にも確率を配るため、観測された候補の確率も変わります。 加算平滑化は説明しやすい方法ですが、この方法があらゆる用途で最適という意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 18: 頻度だけで特徴を選べるかの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>頻度だけで特徴を選べるか</h2>
+<p>「が」は全ての文書に現れる。</p>
+<p>「猫」は4文書のうち2文書に現れる。</p>
+<p>よく現れることと、文書を区別する手掛かりになることは異なる。</p>
+<p>TFとIDFを組み合わせて比べる。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+助詞が多く現れるという観察自体は誤りではありません。 文書の特徴を比べたいという目的に対して、文書全体での現れ方も使います。
+</aside>
+</section>
+<section>
+<!-- 19: TFとDFを分けるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>TFとDFを分ける</h2>
+<p>TF＝文書内の語の回数／その文書の語数</p>
+<p>DF＝その語を含む文書の数</p>
+<p>先頭文書の猫：TF＝1／3、DF＝2</p>
+<p>同じ文書で猫を2回にしても、その文書によるDFの増加分は1。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+TFは文書ごとに計算し、DFは文書集合全体で数えます。 DFを総出現回数と取り違えないことが、今日の重要な確認点です。
+</aside>
+</section>
+<section>
+<!-- 20: TF-IDFを計算するの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>TF-IDFを計算する</h2>
+<p>IDF＝ln(文書数／DF)、TF-IDF＝TF×IDF</p>
+<p>先頭文書の猫：(1／3)×ln(4／2) ≈ <strong>0.231049</strong></p>
+<p>が：(1／3)×ln(4／4)＝0</p>
+<p>今回は自然対数。平滑化・ベクトル正規化は行わない。</p>
+<p><a href="interactive.html#tfidf" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+TF-IDFには実装によって異なる定義があります。 比較する時は対数の底や正規化の有無をそろえてください。がの値がゼロでも日本語に不要という意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 21: 文書を追加するとの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>文書を追加すると</h2>
+<p>「猫 が 眠る」を1文書追加する。</p>
+<p>先頭文書のTFは1／3のまま。</p>
+<p>猫のDFは3、文書数は5。IDF＝ln(5／3)。</p>
+<p>先頭文書のTF-IDFは約0.170275へ変わる。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+変更したのは文書集合であり、先頭文書の語数や回数は変えていません。 既存文書の数値も、比較対象の文書集合によって変わることを観察してください。
+</aside>
+</section>
+<section>
+<!-- 22: 統計から言えることの範囲の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>統計から言えることの範囲</h2>
+<p>bigram：近い語のつながり。長い文脈の全ては扱わない。</p>
+<p>TF-IDF：文書集合内での特徴。意味の正しさを保証しない。</p>
+<p>コーパスの量・偏り・区切り方が結果へ影響する。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+小さな教材データの値を、日本語全体の統計だと受け取らないでください。 学習に使うデータと評価に使うデータを分ける考え方は、自然言語処理でも重要です。
+</aside>
+</section>
+<section>
+<!-- 23: one-hotで単語を表すの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>one-hotで単語を表す</h2>
+<p>語彙：猫・が・眠る・犬・走る</p>
+<p>猫＝[1,0,0,0,0]、犬＝[0,0,0,1,0]</p>
+<p>別の語は別の位置を1にする。</p>
+<p>識別はできるが、似た使われ方はこの表現に直接入っていない。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+one-hotは一つの語を表すための表現です。 先ほどの文書のBoWと見た目が似ていても、表す対象と値の意味が異なります。
+</aside>
+</section>
+<section>
+<!-- 24: 周辺の語を数えるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>周辺の語を数える</h2>
+<p>左右1語を文脈とし、文の境界を越えない。</p>
+<p>猫の共起：が2回 → [0,2,0,0,0]</p>
+<p>犬の共起：が2回 → [0,2,0,0,0]</p>
+<p>この4文では、猫と犬の共起表現が一致する。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+同じような周辺語が現れる単語を、数値で比べる考え方です。 今回の一致は小さなコーパスが原因です。猫と犬が同じ意味だという結論にはなりません。
+</aside>
+</section>
+<section>
+<!-- 25: コサイン類似度の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>コサイン類似度</h2>
+<p>コサイン類似度＝内積／(一方の長さ×他方の長さ)</p>
+<p>one-hotの猫・犬：内積0 → 類似度0</p>
+<p>共起の猫・犬：内積4、長さ2・2 → 類似度1</p>
+<p>ゼロベクトルを含む場合は未定義。</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+分母の長さは要素の二乗和の平方根です。 未定義をゼロと表示すると、情報がない場合と直交する場合を混同します。
+</aside>
+</section>
+<section>
+<!-- 26: 表現と窓幅を変えるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>表現と窓幅を変える</h2>
+<p>one-hotと共起回数を切り替える。</p>
+<p>左右1語→2語に変え、どの列が増えるか確認する。</p>
+<p><strong>共起表は数えた結果。まだWord2Vecの重みではない。</strong></p>
+<p><a href="interactive.html#vectors" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+各行のラベルを見て、どの単語を表しているか確認します。 文脈の範囲を広げると、得られる情報も変わります。窓幅が大きいほど常に良いとは限りません。
+</aside>
+</section>
+<section>
+<!-- 27: Word2Vecの二つの向きの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>Word2Vecの二つの向き</h2>
+<p>CBOW：周辺語から中心語を予測する。</p>
+<p>Skip-gram：中心語から周辺語を予測する。</p>
+<p>今回はSkip-gramを小さく実装する。</p>
+<p>予測に役立つように、単語に対応するベクトルを学習する。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+Word2Vecは単に単語の出現回数を並べる手法ではありません。 学習の向きを混同しないように、入力と予測対象を矢印で示してください。
+</aside>
+</section>
+<section>
+<!-- 28: 中心語と周辺語の組の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>中心語と周辺語の組</h2>
+<p>「猫 が 眠る」、左右1語：</p>
+<p>猫→が、が→猫、が→眠る、眠る→が</p>
+<p>4文で16組。文の順、中心位置、周辺位置の順に処理。</p>
+<p>語彙5語、入力ベクトル・出力ベクトルは各2次元。</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+同じがという中心語に対して、複数の予測対象があります。 一つの組を強く当てることと、全ての組の平均で良くなることを区別して観察します。
+</aside>
+</section>
+<section>
+<!-- 29: 予測確率から損失への要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>予測確率から損失へ</h2>
+<p>中心語の入力ベクトルと、各候補の出力ベクトルの内積を計算。</p>
+<p>softmax：指数をとり、全5候補の合計で割る。</p>
+<p>損失＝−ln(正解の周辺語に与えた確率)</p>
+<p>まず「猫→が」の1組だけを更新する。</p>
+<p><a href="interactive.html#skipgram" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+全ての候補について確率を計算します。 計算を安定させるため内積の最大値を引いてから指数をとります。この操作でも確率は変わりません。
+</aside>
+</section>
+<section>
+<!-- 30: 更新する二種類のベクトルの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>更新する二種類のベクトル</h2>
+<p>損失の勾配から、中心語の入力ベクトルと候補語の出力ベクトルを更新する。</p>
+<p><strong>全勾配は更新前の値から計算する。</strong></p>
+<p>学習率0なら変化なし。基準は学習率0.1、20エポック。</p>
+<p>単語の表示には学習した入力ベクトルを使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+出力側の計算に更新済みの入力を使うと、意図した勾配更新ではなくなります。 詳しい式はプログラム解説にあります。まず画面で、どの行が変わるのかを見てください。
+</aside>
+</section>
+<section>
+<!-- 31: 学習結果の読み方と限界の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>学習結果の読み方と限界</h2>
+<p>1組の損失と、全16組の平均損失を区別する。</p>
+<p>似た文脈を予測するための表現であり、人間と同じ意味理解の証明ではない。</p>
+<p>静的な単語表現は、同じ語の文脈ごとの意味を直接区別しない。</p>
+<p>単語の足し引きが、どの語・データでも成功するとは限らない。</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+小さなデータと二次元のモデルで、実用的な意味関係の獲得を保証してはいけません。 入力とシードを固定した比較は再現性の確認であり、性能評価とは異なります。
+</aside>
+</section>
+<section>
+<!-- 32: 音声認識と音声合成の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>音声認識と音声合成</h2>
+<p>音声認識：音声 → 文字列</p>
+<p>音声合成：文字列 → 音声</p>
+<p>音声応答システムでは、認識の後に応答の処理を行い、合成して読み上げる。</p>
+<p>今日は認識での候補選択を扱う。</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+スライドの読み上げ音声を作る工程は音声合成です。 今回の演習では録音や音声の生成を行いません。処理の方向を確実に区別してください。
+</aside>
+</section>
+<section>
+<!-- 33: 波形から候補への要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>波形から候補へ</h2>
+<p>概念図：音声波形 → 短い時間ごとの特徴 → 音響情報 → 文字列候補</p>
+<p>音響情報と、語の並びや出現に関する言語情報を利用できる。</p>
+<p>雑音・発音・録音条件・文脈によって判断が変わり得る。</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+これは処理を説明するための概念図で、今回のコードが波形を処理するという意味ではありません。 実用システムには統合して学習する構成もあります。全方式が独立した部品を同じようにつなぐわけではありません。
+</aside>
+</section>
+<section>
+<!-- 34: 二つの情報で候補を比べるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>二つの情報で候補を比べる</h2>
+<p>人工例：「あめ」の候補を雨・飴とする。</p>
+<table>
+<thead>
+<tr>
+<th>候補</th>
+<th>音響尤度</th>
+<th>事前確率</th>
+<th>積（λ＝1）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>雨</td>
+<td>0.6</td>
+<td>0.2</td>
+<td>0.12</td>
+</tr>
+<tr>
+<td>飴</td>
+<td>0.4</td>
+<td>0.8</td>
+<td>0.32</td>
+</tr>
+</tbody>
+</table>
+<p>音響だけなら雨、両方を使うと飴。</p>
+<p><a href="interactive.html#speech" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここに示す数値は人が設定した教材用の値です。 実際の録音から推定した値ではなく、雨と飴の認識率を示すものでもありません。
+</aside>
+</section>
+<section>
+<!-- 35: 言語情報の重みを変えるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>言語情報の重みを変える</h2>
+<p>順位スコア＝ln(音響尤度)＋λ ln(事前確率)</p>
+<p>λ＝0：音響情報だけ。λ＝1：積の大小と同じ順位。</p>
+<p>スコアを認識の正答率と解釈しない。</p>
+<p>もっとも高い候補でも、正しい文字列とは限らない。</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+対数を使うと積を和として扱えます。 確率を対数へ入れるため、ゼロ以下の値を受け付けません。誤入力のときに古い結果を正しい結果として見せないようにしています。
+</aside>
+</section>
+<section>
+<!-- 36: 認識の誤りを考えるの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>認識の誤りを考える</h2>
+<p>正解と比較して、置換・削除・挿入を区別する。</p>
+<p>例：正解「猫 が 眠る」／出力「犬 が 眠る」→ 置換1件</p>
+<p>正解データと区切り方をそろえて評価する。</p>
+<p>今回の候補選択は、実音声での精度評価ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+正解の文章を見ずに、もっともらしさだけで精度を評価できません。 表記や分割条件によって数え方が変わるため、比較条件を先に決めることが大切です。
+</aside>
+</section>
+<section>
+<!-- 37: 保存して基準結果を実行するの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>保存して基準結果を実行する</h2>
+<p><a href="programs/natural_language_processing.py" download>Pythonを保存</a> ／ <a href="programs/natural_language_processing.ipynb" download>Notebookを保存</a> ／ <a href="programs/natural_language_processing.zip" download>一式ZIPを保存</a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> natural_language_processing.py <span class="at">--demo</span></span></code></pre></div>
+<p>Notebookは既存venvのカーネルを選び、再起動して全セル実行。</p>
+<p><a href="programs/guide.html" target="_blank" rel="noopener">保存・環境・結果の読み方</a></p>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ZIPを展開してから、同梱のguide.htmlを開いてください。 Notebookは同梱Pythonを読み込まずに動きます。制作側のuvを既習とはしません。
+</aside>
+</section>
+<section>
+<!-- 38: 一つ変えて比較するの要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>一つ変えて比較する</h2>
+<table>
+<thead>
+<tr>
+<th>変更</th>
+<th>観察する量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>辞書コスト／α</td>
+<td>分割経路／次語確率</td>
+</tr>
+<tr>
+<td>文書追加／共起窓幅</td>
+<td>TF-IDF／共起回数</td>
+</tr>
+<tr>
+<td>学習率／λ</td>
+<td>重み・損失／候補順位</td>
+</tr>
+</tbody>
+</table>
+<p>基準のコピーを変更し、元の入力・結果を残す。</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+複数の条件を同時に変えると、原因の説明が難しくなります。 各マニュアルに六つの変更例とリセット方法があります。結果だけでなく分母や更新対象を確認してください。
+</aside>
+</section>
+<section>
+<!-- 39: 理解確認と次回の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>理解確認と次回</h2>
+<ul>
+<li>字種分割だけでは何が分からないか。</li>
+<li>未観測の組と、不可能な組は同じか。</li>
+<li>共起表と学習した単語ベクトルは何が違うか。</li>
+<li>音響の順位と言語情報を含む順位は一致するか。</li>
+</ul>
+<p>次回：画像認識（特徴抽出・テンプレートマッチング）。</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+四つの問いに、自分が操作した数値を一つ添えて答えましょう。 確認クイズの配信方法は担当者からの案内に従ってください。ここでは提出期限や成績条件を追加しません。
+</aside>
+</section>
+<section>
+<!-- 40: 参考資料の要点を数値または具体例で説明する -->
+<div class="slide-body">
+<h2>参考資料</h2>
+<ul>
+<li><a href="https://taku910.github.io/mecab/index.html">MeCab公式資料</a>：形態素解析・辞書・解析手法</li>
+<li><a href="https://web.stanford.edu/~jurafsky/slp3/">Jurafsky・Martin, Speech and Language Processing</a>：n-gram・表現・音声認識</li>
+<li><a href="https://arxiv.org/html/1310.4546v1#S2">Mikolovほか（2013）, Skip-gram原論文</a>：目的関数・softmax</li>
+</ul>
+<p>教材の辞書・4文・数値条件は自作。出典と昨年度の対応</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+参考資料への移動にはネット接続が必要です。 操作教材の計算はオフラインで行えます。原著の説明と、教材の簡略化の範囲を分けて確認してください。
+</aside>
+</section>
+</div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealAnimate,
+      RevealChalkboard,
+            RevealChart,
+        ];
+
+        const plugins =  [...printPlugins,
+        RevealZoom,
+        RevealSearch,
+                RevealMarkdown,
+                RevealMenu,
+                RevealFullscreen,
+                RevealAnything,
+                //RevealAudioSlideshow,
+                //RevealAudioRecorder,
+                RevealCustomControls,
+                // poll
+                // question
+                // seminar
+                Verticator
+                 ]
+
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+            height: 720,
+            margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+            customcontrols: {
+                    controls: [
+                            {
+                          id: 'toggle-overview',
+                          title: 'Toggle overview (O)',
+                          icon: '<i class="fa fa-th"></i>',
+                          action: 'Reveal.toggleOverview();'
+                        }
+                        ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+                ]
+            },
+            chart: {
+                    defaults: {
+                        color: 'lightgray', // color of labels
+                        scale: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: "lightgray" } , // color of grid lines
+                        },
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+            },
+                anything: [
+                {
+        className: "plot",
+        defaults: {width:500, height: 500, grid:true},
+        initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+     },
+     {
+        className: "chart",
+        initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+     },
+     {
+        className: "anything",
+        initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+     },
+                    ],
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+        });
+
+
+
+        // Change chalkboard theme :
+        function changeTheme(input) {
+            var config = {};
+            config.theme = input.value;
+            Reveal.getPlugin("RevealChalkboard").configure(config);
+            input.blur();
+        }
+
+        // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+        if (window.location.search.match(/print-pdf-now/gi)) {
+            setTimeout(() => {
+                window.print();
+              }, 2500);
+
+    }
+        </script>
+    </body>
+</html>

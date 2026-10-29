@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="自然言語処理を6テーマの計算で学ぶ操作教材">
+        <title>第10回 自然言語処理の実験室</title><style>
+:root{font-family:system-ui,sans-serif;color:#17324d;background:#eef4fa}*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1120px;margin:auto;padding:1.3rem}h1{font-size:clamp(1.5rem,3vw,2.4rem)}a{color:#0756ad}nav{display:flex;gap:.45rem;flex-wrap:wrap}button,input,select,textarea{font:inherit}button{padding:.65rem;border:1px solid #356ca3;border-radius:.5rem;background:white;color:#17324d;cursor:pointer}button[aria-selected=true]{color:white;background:#175d97}:focus-visible{outline:3px solid #d47200;outline-offset:3px}section{background:white;padding:1.3rem;border-radius:1rem;box-shadow:0 3px 14px #17324d15}section[hidden]{display:none}.controls{display:flex;flex-wrap:wrap;gap:1rem;margin:1rem 0}label{display:block}input:not([type=checkbox]),select{display:block;max-width:100%;padding:.5rem;border:1px solid #788c9f;border-radius:.25rem}input[type=number]{width:8rem}input[type=text]{width:22rem}textarea{width:100%;min-height:4rem;margin:.3rem 0 1rem;padding:.5rem}table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{border:1px solid #bccbd9;padding:.45rem;text-align:left;overflow-wrap:anywhere}th{background:#e9f1f9}td{white-space:nowrap}.scroll{max-width:100%}.scroll{overflow:auto}.result{padding:1rem;background:#f2f7fb;border-left:4px solid #2385b6;overflow-wrap:anywhere}.error{color:#a32121;min-height:1.4rem}.hint{font-size:.95rem;color:#3d5266}svg{display:block;width:100%;max-height:250px}code{overflow-wrap:anywhere}.flow{display:flex;gap:.5rem;flex-wrap:wrap}.flow span{border:1px solid #82a8c6;border-radius:.3rem;padding:.5rem;background:#e8f3ff}@media(max-width:600px){header,main,footer{padding:.65rem}section{padding:.8rem}td,th{padding:.25rem;font-size:.9rem}}
+        </style>
+    </head>
+    <body>
+        <header>
+            <p>人工知能概論 ／ 第10回</p>
+            <h1>ことばを分ける・数える・学ぶ</h1>
+            <p>予想を書き、値を一つ変え、数値を根拠に説明しましょう。計算は通信なしで動きます。</p>
+            <p><a href="index.html">スライド</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="programs/guide.html">プログラム解説</a> ／ <a href="interactive.html" download>操作HTMLを保存</a></p>
+            <nav role="tablist" aria-label="6つのテーマ">
+                <button type="button"
+                        role="tab"
+                        id="tab-morph"
+                        data-tab="morph"
+                        aria-controls="morph"
+                        aria-selected="false"
+                        tabindex="-1">字種分割と辞書解析</button><button type="button"
+        role="tab"
+        id="tab-bigram"
+        data-tab="bigram"
+        aria-controls="bigram"
+        aria-selected="false"
+        tabindex="-1">次の語の確率</button><button type="button"
+        role="tab"
+        id="tab-tfidf"
+        data-tab="tfidf"
+        aria-controls="tfidf"
+        aria-selected="false"
+        tabindex="-1">文書の特徴語</button><button type="button"
+        role="tab"
+        id="tab-vectors"
+        data-tab="vectors"
+        aria-controls="vectors"
+        aria-selected="false"
+        tabindex="-1">単語の表現と類似度</button><button type="button"
+        role="tab"
+        id="tab-skipgram"
+        data-tab="skipgram"
+        aria-controls="skipgram"
+        aria-selected="false"
+        tabindex="-1">Skip-gramの学習</button><button type="button"
+        role="tab"
+        id="tab-speech"
+        data-tab="speech"
+        aria-controls="speech"
+        aria-selected="false"
+        tabindex="-1">音声認識の候補選択</button>
+            </nav>
+        </header>
+        <main>
+            <section id="morph" role="tabpanel" aria-labelledby="tab-morph" hidden>
+                <h2>字種分割と辞書解析</h2>
+                <p><strong>問い：</strong>研究生活を、どこで区切るでしょうか。</p>
+                <label>予想<textarea id="morph-prediction"
+          placeholder="変化する量と理由を書いてください"></textarea></label>
+                <div class="controls">
+                    <label>
+                        入力（80文字以内）<input id="text" value="研究生活" maxlength="160"></label><label>活の辞書コスト<input id="cost" type="number" min="0" max="20" step="1" value="5"></label><button type="button" id="morph-reset">リセット</button>
+                </div>
+                <p class="hint">字種分割は比較用。辞書・品詞・コストは教材用。未知文字は1文字10。同点は辞書の掲載順で比較。</p>
+                <p id="morph-error" class="error" role="alert"></p>
+                <div id="morph-result" class="result" aria-live="polite"></div>
+                <label>説明：予想との違いを、結果の数値を使って説明する<textarea id="morph-explanation"></textarea></label>
+            </section>
+            <section id="bigram" role="tabpanel" aria-labelledby="tab-bigram" hidden>
+                <h2>次の語の確率</h2>
+                <p><strong>問い：</strong>がの次に猫が現れなくても、確率は必ず0でしょうか。</p>
+                <label>予想<textarea id="bigram-prediction"
+          placeholder="変化する量と理由を書いてください"></textarea></label>
+                <div class="controls">
+                    <label>
+                        直前の語<select id="context">
+                        <option>が</option>
+                        <option>猫</option>
+                        <option>犬</option>
+                        <option>眠る</option>
+                        <option>走る</option>
+                        <option value="&lt;s&gt;">文頭</option>
+                    </select></label><label>平滑化α<input id="alpha" type="number" min="0" max="5" step="1" value="1"></label><label><input id="bg-extra" type="checkbox">「猫 が 眠る」を1文追加</label><button type="button" id="bigram-reset">リセット</button>
+                </div>
+                <p class="hint">文境界を越えずに数えます。語彙は猫・が・眠る・犬・走る・文末の6件。文頭は予測対象外。</p>
+                <p id="bigram-error" class="error" role="alert"></p>
+                <div id="bigram-result" class="result" aria-live="polite"></div>
+                <label>説明：予想との違いを、結果の数値を使って説明する<textarea id="bigram-explanation"></textarea></label>
+            </section>
+            <section id="tfidf" role="tabpanel" aria-labelledby="tab-tfidf" hidden>
+                <h2>文書の特徴語</h2>
+                <p><strong>問い：</strong>猫の文書を追加すると、猫のIDFはどうなるでしょうか。</p>
+                <label>予想<textarea id="tfidf-prediction"
+          placeholder="変化する量と理由を書いてください"></textarea></label>
+                <div class="controls">
+                    <label>
+                        <input id="doc-extra"
+                               type="checkbox">「猫 が 眠る」を1文書追加</label><button type="button"
+        id="tfidf-reset">リセット</button>
+                </div>
+                <p class="hint">TFは文書長で割った頻度。IDFはln(N/DF)。平滑化・ベクトル正規化なし。</p>
+                <p id="tfidf-error" class="error" role="alert"></p>
+                <div id="tfidf-result" class="result" aria-live="polite"></div>
+                <label>説明：予想との違いを、結果の数値を使って説明する<textarea id="tfidf-explanation"></textarea></label>
+            </section>
+            <section id="vectors" role="tabpanel" aria-labelledby="tab-vectors" hidden>
+                <h2>単語の表現と類似度</h2>
+                <p><strong>問い：</strong>猫と犬のone-hotと共起表は、同じ似方でしょうか。</p>
+                <label>予想<textarea id="vectors-prediction"
+          placeholder="変化する量と理由を書いてください"></textarea></label>
+                <div class="controls">
+                    <label>
+                        表現<select id="representation">
+                        <option value="onehot">one-hot</option>
+                        <option value="cooccurrence">共起回数</option>
+                    </select></label><label>左右の窓幅<input id="window"
+       type="number"
+       min="1"
+       max="3"
+       value="1"></label><button type="button" id="vectors-reset">リセット</button>
+                </div>
+                <p class="hint">猫と犬を比較。共起回数は観察した回数であり、Word2Vecの学習結果ではありません。</p>
+                <p id="vectors-error" class="error" role="alert"></p>
+                <div id="vectors-result" class="result" aria-live="polite"></div>
+                <label>説明：予想との違いを、結果の数値を使って説明する<textarea id="vectors-explanation"></textarea></label>
+            </section>
+            <section id="skipgram" role="tabpanel" aria-labelledby="tab-skipgram" hidden>
+                <h2>Skip-gramの学習</h2>
+                <p><strong>問い：</strong>周辺語の予測を学ぶと、どの数値が変わるでしょうか。</p>
+                <label>予想<textarea id="skipgram-prediction"
+          placeholder="変化する量と理由を書いてください"></textarea></label>
+                <div class="controls">
+                    <label>
+                        学習率<input id="rate" type="number" min="0" max="1" step="0.1" value="0.1"></label><label>エポック<input id="epochs" type="number" min="0" max="200" value="20"></label><button type="button" id="sg-first">最初の1組を更新</button><button type="button" id="sg-run">指定エポックを実行</button><button type="button" id="skipgram-reset">リセット</button>
+                </div>
+                <p class="hint">5語×2次元の入力・出力ベクトル。全語彙softmax。固定順序・固定シード65535。意味理解や精度の保証ではありません。</p>
+                <p id="skipgram-error" class="error" role="alert"></p>
+                <div id="skipgram-result" class="result" aria-live="polite"></div>
+                <label>説明：予想との違いを、結果の数値を使って説明する<textarea id="skipgram-explanation"></textarea></label>
+            </section>
+            <section id="speech" role="tabpanel" aria-labelledby="tab-speech" hidden>
+                <h2>音声認識の候補選択</h2>
+                <p><strong>問い：</strong>音響情報だけの順位と、言語情報を加えた順位は同じでしょうか。</p>
+                <label>予想<textarea id="speech-prediction"
+          placeholder="変化する量と理由を書いてください"></textarea></label>
+                <div class="controls">
+                    <label>
+                        雨の音響尤度<input id="acoustic"
+       type="number"
+       min="0.01"
+       max="0.99"
+       step="0.1"
+       value="0.6"></label><label>雨の事前確率<input id="prior" type="number" min="0.01" max="0.99" step="0.1" value="0.2"></label><label>言語情報の重みλ<input id="weight" type="number" min="0" max="3" step="0.5" value="1"></label><button type="button" id="speech-reset">リセット</button>
+                </div>
+                <p class="hint">値は人工的な例。録音から計算した値ではありません。飴の値は各入力の1からの差とします。順位スコアは認識正答率ではありません。</p>
+                <p id="speech-error" class="error" role="alert"></p>
+                <div id="speech-result" class="result" aria-live="polite"></div>
+                <label>説明：予想との違いを、結果の数値を使って説明する<textarea id="speech-explanation"></textarea></label>
+            </section>
+        </main>
+        <footer>
+            メモはこの画面を開いている間だけ保持します。リセットはそのテーマの入力・結果・メモを戻します。
+        </footer>
+        <script id="nlp-core">
+const NLP=(()=>{
+const CORPUS=[['猫','が','眠る'],['犬','が','眠る'],['猫','が','走る'],['犬','が','走る']],LEXICON=[['猫','名詞',1],['犬','名詞',1],['が','助詞',1],['眠る','動詞',1],['走る','動詞',1],['研究','名詞',1],['研究生','名詞',1],['生活','名詞',1],['活','名詞',5]],BOS='<s>',EOS='</s>',clone=x=>JSON.parse(JSON.stringify(x));
+function finite(v,lo,hi,label){if(typeof v!=='number'||!Number.isFinite(v)||v<lo||v>hi)throw Error(`${label}: ${lo}〜${hi}の有限数を指定`);return v;}
+function integer(v,lo,hi,label){finite(v,lo,hi,label);if(!Number.isInteger(v))throw Error(`${label}: 整数を指定`);return v;}
+function validateCorpus(c){if(!Array.isArray(c)||c.length<1||c.length>20)throw Error('文書数は1〜20');for(const s of c){if(!Array.isArray(s)||s.length<1||s.length>20)throw Error('各文書の語数は1〜20（空文書不可）');if(s.some(w=>typeof w!=='string'||!w||Array.from(w).length>20||/\s/u.test(w)||[BOS,EOS].includes(w)))throw Error('語は空白・予約記号を含まない1〜20文字');}return [...new Set(c.flat())];}
+function charSplit(t){if(typeof t!=='string'||Array.from(t).length>80)throw Error('入力は80文字以内');const kind=c=>/[ぁ-ゖ]/u.test(c)?0:/[ァ-ヺー]/u.test(c)?1:/[一-鿿]/u.test(c)?2:3,out=[];for(const ch of t){if(out.length&&kind(Array.from(out.at(-1)).at(-1))===kind(ch))out[out.length-1]+=ch;else out.push(ch);}return out;}
+function analyze(t,lex=LEXICON){charSplit(t);if(!Array.isArray(lex)||lex.length<1||lex.length>40)throw Error('辞書は1〜40項目');for(const [w,p,c] of lex){if(typeof w!=='string'||!w||typeof p!=='string'||!p)throw Error('辞書の表層形・品詞は非空文字列');finite(c,0,20,'辞書コスト');}const chars=Array.from(t),best=Array(chars.length+1).fill(null),edges=[];best[0]={cost:0,order:[],tokens:[]};const less=(a,b)=>{for(let i=0;i<Math.min(a.length,b.length);i++){if(a[i]!==b[i])return a[i]<b[i];}return a.length<b.length;};for(let start=0;start<chars.length;start++){[...lex,[chars[start],'未知',10]].forEach(([word,pos,cost],order)=>{const end=start+Array.from(word).length;if(chars.slice(start,end).join('')!==word)return;edges.push({start,end,word,pos,cost});const prev=best[start],c={cost:prev.cost+cost,order:[...prev.order,order],tokens:[...prev.tokens,[word,pos,cost]]};if(!best[end]||c.cost<best[end].cost||(c.cost===best[end].cost&&less(c.order,best[end].order)))best[end]=c;});}return {tokens:best.at(-1).tokens,cost:best.at(-1).cost,edges};}
+function bigram(c=CORPUS,context='が',alpha=1){const vocab=[...validateCorpus(c),EOS];finite(alpha,0,5,'α');if(![BOS,...vocab].includes(context)||context===EOS)throw Error('文脈は文頭またはコーパス内の語（文末以外）');const counts=vocab.map(()=>0);for(const s of c){const seq=[BOS,...s,EOS];for(let i=0;i<seq.length-1;i++)if(seq[i]===context)counts[vocab.indexOf(seq[i+1])]++;}const total=counts.reduce((a,b)=>a+b,0),denominator=total+alpha*vocab.length;return {vocab,context,counts,total,denominator,probabilities:counts.map(n=>(n+alpha)/denominator)};}
+function tfidf(c=CORPUS){const vocab=validateCorpus(c),counts=c.map(s=>vocab.map(w=>s.filter(x=>x===w).length)),df=vocab.map(w=>c.filter(s=>s.includes(w)).length),idf=df.map(n=>Math.log(c.length/n)),tf=counts.map((r,i)=>r.map(n=>n/c[i].length));return {vocab,counts,df,idf,tf,scores:tf.map(r=>r.map((x,j)=>x*idf[j]))};}
+function representations(c=CORPUS,window=1){const vocab=validateCorpus(c);integer(window,1,3,'窓幅');const cooccurrence=vocab.map(()=>vocab.map(()=>0));for(const s of c)for(let i=0;i<s.length;i++)for(let j=Math.max(0,i-window);j<Math.min(s.length,i+window+1);j++)if(i!==j)cooccurrence[vocab.indexOf(s[i])][vocab.indexOf(s[j])]++;return {vocab,onehot:vocab.map((_,i)=>vocab.map((_,j)=>+(i===j))),cooccurrence};}
+function cosine(a,b){if(!a.length||a.length!==b.length)throw Error('同じ非ゼロ次元を指定');[...a,...b].forEach(x=>finite(x,-1e6,1e6,'ベクトル要素'));const dot=a.reduce((s,x,i)=>s+x*b[i],0),norm_a=Math.sqrt(a.reduce((s,x)=>s+x*x,0)),norm_b=Math.sqrt(b.reduce((s,x)=>s+x*x,0));return {dot,norm_a,norm_b,cosine:norm_a&&norm_b?dot/(norm_a*norm_b):null};}
+class RNG{constructor(seed=65535){this.state=integer(seed,0,4294967295,'seed');}random(){this.state=(Math.imul(1664525,this.state)+1013904223)>>>0;return this.state/4294967296;}}
+function initialVectors(size,seed=65535){integer(size,1,400,'語彙数');const r=new RNG(seed);return Array.from({length:2},()=>Array.from({length:size},()=>[r.random()*.2-.1,r.random()*.2-.1]));}
+function pairs(c=CORPUS,window=1){const vocab=validateCorpus(c);integer(window,1,3,'窓幅');const out=[];for(const s of c)for(let i=0;i<s.length;i++)for(let j=Math.max(0,i-window);j<Math.min(s.length,i+window+1);j++)if(i!==j)out.push([vocab.indexOf(s[i]),vocab.indexOf(s[j])]);return out;}
+function objective(inputs,outputs,center,target){const scores=outputs.map(row=>row.reduce((s,x,k)=>s+x*inputs[center][k],0)),maximum=Math.max(...scores),exps=scores.map(x=>Math.exp(x-maximum)),total=exps.reduce((a,b)=>a+b,0),probabilities=exps.map(x=>x/total),errors=probabilities.map((p,i)=>p-+(i===target)),grad_in=[0,1].map(k=>outputs.reduce((s,row,j)=>s+errors[j]*row[k],0)),grad_out=errors.map(e=>inputs[center].map(v=>e*v));return {probabilities,loss:maximum+Math.log(total)-scores[target],grad_in,grad_out};}
+function update(inputs,outputs,center,target,rate=.1){finite(rate,0,1,'学習率');const r=objective(inputs,outputs,center,target),ni=clone(inputs),no=outputs.map((row,j)=>row.map((x,k)=>x-rate*r.grad_out[j][k]));ni[center]=inputs[center].map((x,k)=>x-rate*r.grad_in[k]);return [ni,no,r];}
+function train(c=CORPUS,epochs=20,rate=.1,seed=65535,window=1){const vocab=validateCorpus(c);integer(epochs,0,200,'エポック');finite(rate,0,1,'学習率');const ps=pairs(c,window);if(!ps.length)throw Error('周辺語のある文が必要');let [inputs,outputs]=initialVectors(vocab.length,seed);const loss=()=>ps.reduce((s,[a,b])=>s+objective(inputs,outputs,a,b).loss,0)/ps.length,history=[loss()];for(let e=0;e<epochs;e++){for(const [a,b]of ps)[inputs,outputs]=update(inputs,outputs,a,b,rate);history.push(loss());}return {vocab,pairs:ps,inputs,outputs,loss_history:history};}
+function recognize(acoustic=[.6,.4],prior=[.2,.8],weight=1){if(acoustic.length!==2||prior.length!==2)throw Error('候補は雨・飴の2件');[...acoustic,...prior].forEach(x=>finite(x,1e-12,1,'尤度・事前確率'));if(Math.abs(prior[0]+prior[1]-1)>1e-9)throw Error('事前確率の合計は1');finite(weight,0,3,'λ');const scores=acoustic.map((a,i)=>Math.log(a)+weight*Math.log(prior[i]));return {candidates:['雨','飴'],scores,winner:['雨','飴'][scores.indexOf(Math.max(...scores))]};}
+function rounded(x){if(typeof x==='number')return Math.round(x*1e6)/1e6;if(Array.isArray(x))return x.map(rounded);if(x&&typeof x==='object')return Object.fromEntries(Object.entries(x).map(([k,v])=>[k,rounded(v)]));return x;}
+function demo(){const vectors=representations(),[a,b]=initialVectors(5);return rounded({morph:analyze('研究生活'),chars:charSplit('猫が眠る'),bigram:bigram(),tfidf:tfidf(),vectors,similarity:cosine(vectors.cooccurrence[0],vectors.cooccurrence[3]),first_update:update(a,b,0,1)[2],training:train(),speech:recognize(),speech_no_prior:recognize([.6,.4],[.2,.8],0)});}
+return {CORPUS,LEXICON,clone,charSplit,analyze,bigram,tfidf,representations,cosine,RNG,initialVectors,pairs,objective,update,train,recognize,demo,rounded};})();
+        </script>
+        <script>
+const $=id=>document.getElementById(id),ids=['morph','bigram','tfidf','vectors','skipgram','speech'],esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),fmt=x=>x===null?'未定義':typeof x==='number'?Number.isInteger(x)?String(x):x.toFixed(6):esc(x),num=id=>{if($(id).value.trim()==='')throw Error('数値を入力してください');return Number($(id).value);},table=(heads,rows)=>'<div class="scroll"><table><thead><tr>'+heads.map(x=>'<th scope="col">'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(x=>'<td>'+fmt(x)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+const defaults={};for(const id of ids)defaults[id]=Array.from($(id).querySelectorAll('input,select')).map(e=>({id:e.id,value:e.value,checked:e.checked}));
+function corpus(extra){const c=NLP.clone(NLP.CORPUS);if(extra)c.push(['猫','が','眠る']);return c;}
+function chart(values){const lo=Math.min(...values),hi=Math.max(...values),span=hi-lo||1;const points=values.map((v,i)=>`${40+500*i/Math.max(1,values.length-1)},${180-140*(v-lo)/span}`).join(' ');return `<svg viewBox="0 0 600 220" role="img" aria-label="実計算した平均損失の推移"><path d="M40 30V180H550" fill="none" stroke="#7990a0"/><polyline points="${points}" fill="none" stroke="#1777b5" stroke-width="3"/><text x="40" y="210">0 → ${values.length-1}エポック</text><text x="45" y="25">平均損失 ${hi.toFixed(6)} 〜 ${lo.toFixed(6)}</text></svg>`;}
+function render(id,action='baseline'){try{let result='';
+if(id==='morph'){const lex=NLP.clone(NLP.LEXICON);lex[8][2]=num('cost');const r=NLP.analyze($('text').value,lex);result='<p>字種分割：'+NLP.charSplit($('text').value).map(esc).join(' ／ ')+'</p><p>最小コスト分割：'+r.tokens.map(x=>esc(x[0])).join(' ／ ')+`　合計 ${fmt(r.cost)}</p>`+table(['表層形','品詞','コスト'],r.tokens)+table(['開始→終了','候補','品詞','単語コスト'],r.edges.map(e=>[`${e.start}→${e.end}`,e.word,e.pos,e.cost]));}
+if(id==='bigram'){const r=NLP.bigram(corpus($('bg-extra').checked),$('context').value,num('alpha'));result=`<p>文脈の回数 ${r.total} ／ 分母 ${fmt(r.denominator)} ／ 確率合計 ${fmt(r.probabilities.reduce((a,b)=>a+b,0))}</p>`+table(['次の語','回数','確率'],r.vocab.map((w,i)=>[w,r.counts[i],r.probabilities[i]]));}
+if(id==='tfidf'){const r=NLP.tfidf(corpus($('doc-extra').checked));result='<p>先頭文書「猫 が 眠る」を表示。文書数 '+r.tf.length+'</p>'+table(['語','回数','TF','DF','IDF','TF-IDF'],r.vocab.map((w,i)=>[w,r.counts[0][i],r.tf[0][i],r.df[i],r.idf[i],r.scores[0][i]]));}
+if(id==='vectors'){const r=NLP.representations(NLP.CORPUS,num('window')),matrix=r[$('representation').value],c=NLP.cosine(matrix[0],matrix[3]);result='<p>猫と犬：内積 '+fmt(c.dot)+' ／ 長さ '+fmt(c.norm_a)+'・'+fmt(c.norm_b)+' ／ コサイン類似度 '+fmt(c.cosine)+'</p>'+table(['語',...r.vocab],r.vocab.map((w,i)=>[w,...matrix[i]]));}
+if(id==='skipgram'){const rate=num('rate'),epochs=num('epochs');NLP.train(NLP.CORPUS,0,rate);if(!Number.isInteger(epochs)||epochs<0||epochs>200)throw Error('エポック: 0〜200の整数を指定');let [a,b]=NLP.initialVectors(5),before=NLP.objective(a,b,0,1),after=before,history=[],mode='初期状態';if(action==='first'){[a,b]=NLP.update(a,b,0,1,rate);after=NLP.objective(a,b,0,1);mode='最初の1組（猫→が）だけ更新';}if(action==='run'){const t=NLP.train(NLP.CORPUS,epochs,rate);a=t.inputs;b=t.outputs;after=NLP.objective(a,b,0,1);history=t.loss_history;mode=epochs+'エポック実行（1エポック16組）';}result='<p>'+mode+'。猫→がの損失：'+fmt(before.loss)+' → '+fmt(after.loss)+'</p>'+table(['周辺語','初期の確率','現在の確率'],['猫','が','眠る','犬','走る'].map((w,i)=>[w,before.probabilities[i],after.probabilities[i]]))+table(['語','入力1','入力2','出力1','出力2'],['猫','が','眠る','犬','走る'].map((w,i)=>[w,...a[i],...b[i]]))+(history.length?chart(history):'<p>全組の平均損失グラフはエポック実行後に表示します。</p>');}
+if(id==='speech'){const a=num('acoustic'),p=num('prior'),w=num('weight'),r=NLP.recognize([a,1-a],[p,1-p],w);result='<p>概念図（録音を処理した結果ではありません）</p><div class="flow"><span>音声 → 特徴 → 音響情報</span><span>＋ 言語情報</span><span>→ 候補を比較</span></div><p>人工値による計算：選択候補 '+r.winner+'</p>'+table(['候補','音響尤度','事前確率','log音響＋λ log事前'],r.candidates.map((s,i)=>[s,[a,1-a][i],[p,1-p][i],r.scores[i]]));}
+$(id+'-result').innerHTML=result;$(id+'-error').textContent='';}catch(e){$(id+'-error').textContent=e.message;$(id+'-result').textContent='入力を直すかリセットしてください。古い結果は表示していません。';}}
+function show(){const id=ids.includes(location.hash.slice(1))?location.hash.slice(1):ids[0];for(const x of ids){$(x).hidden=x!==id;$('tab-'+x).setAttribute('aria-selected',String(x===id));$('tab-'+x).tabIndex=x===id?0:-1;}}
+for(const id of ids){$('tab-'+id).addEventListener('click',()=>{location.hash=id;show();});$(id).querySelectorAll('input,select').forEach(e=>e.addEventListener('input',()=>render(id)));$(id+'-reset').addEventListener('click',()=>{defaults[id].forEach(d=>{$(d.id).value=d.value;$(d.id).checked=d.checked;});$(id+'-prediction').value='';$(id+'-explanation').value='';render(id);});$('tab-'+id).addEventListener('keydown',e=>{const k=ids.indexOf(id),target=e.key==='Home'?0:e.key==='End'?5:e.key==='ArrowRight'?(k+1)%6:e.key==='ArrowLeft'?(k+5)%6:null;if(target!==null){e.preventDefault();location.hash=ids[target];show();$('tab-'+ids[target]).focus();}});render(id);}
+$('sg-first').addEventListener('click',()=>render('skipgram','first'));$('sg-run').addEventListener('click',()=>render('skipgram','run'));window.addEventListener('hashchange',show);show();
+        </script>
+    </body>
+</html>

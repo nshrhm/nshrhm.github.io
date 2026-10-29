@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第10回 操作教材の使い方">
+<title>第10回 操作教材の使い方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第10回 操作教材の使い方</h1>
+<p>目標は、結果を予想し、変化した数値を根拠に説明すること。前提は回数・割合・ベクトル・重み更新の基本です。</p>
+<p><a href="index.html">スライド</a> ／ <a href="interactive.html">操作教材</a> ／ <a href="programs/guide.html">プログラム解説</a></p>
+<p><a href="interactive.html" download>操作HTMLを保存</a></p>
+<h2 id="開始方法">開始方法</h2>
+<p>保存したinteractive.htmlをブラウザーで開きます。計算に外部通信やインストールは不要です。最初は「字種分割と辞書解析」が開きます。上部の6ボタンで切り替えます。各見出しへの直接リンクも使えます。</p>
+<p>Tabで入力・ボタンへ移動し、Enterで操作します。テーマのタブでは左右矢印、Home、Endも使えます。スマートフォンではタップします。予想と説明のメモは画面を開いている間だけ保持し、ブラウザーを閉じると消えます。必要な内容は自分のノートへ保存してください。</p>
+<h2 id="基準の入力">基準の入力</h2>
+<p>4文は「猫 が 眠る」「犬 が 眠る」「猫 が 走る」「犬 が 走る」。品詞・辞書コスト・音声候補の数値も教材用に設定したものです。波形から音声を認識する機能はありません。図の「概念図」と、入力から計算した表を区別してください。</p>
+<h2 id="辞書コスト">辞書コスト</h2>
+<p><a href="interactive.html#morph">このテーマを開く</a></p>
+<p>問い：活のコストが下がると、分割は変わるか。</p>
+<p>予想：研究生／活が選ばれると予想する。 操作前に、自分の理由も記入します。</p>
+<p>手順：入力を研究生活のまま、活のコストを5から0へ変更する。</p>
+<p>想定結果：研究／生活＝2に対し、研究生／活＝1となる。</p>
+<p>説明する問い：長い語を優先したのか、合計コストを比較したのか。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・二つのメモを初期化します。他テーマの状態は保持します。</p>
+<h2 id="平滑化α">平滑化α</h2>
+<p><a href="interactive.html#bigram">このテーマを開く</a></p>
+<p>問い：αを0にすると未観測の組はどうなるか。</p>
+<p>予想：が→猫の確率が0になると予想する。 操作前に、自分の理由も記入します。</p>
+<p>手順：文脈が、文書追加なしのまま、αを1から0へ変更する。</p>
+<p>想定結果：が→眠るとが→走るは各0.5。それ以外は0。確率合計は1。</p>
+<p>説明する問い：分母が10から4へ変わるのはなぜか。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・二つのメモを初期化します。他テーマの状態は保持します。</p>
+<h2 id="文書追加">文書追加</h2>
+<p><a href="interactive.html#tfidf">このテーマを開く</a></p>
+<p>問い：先頭文書を変更しなくても、そのTF-IDFは変わるか。</p>
+<p>予想：猫を含む文書が増えると猫のIDFが下がると予想する。 操作前に、自分の理由も記入します。</p>
+<p>手順：猫 が 眠るを1文書追加するチェックを付ける。</p>
+<p>想定結果：先頭文書の猫のTFは1/3のまま。DF＝3、文書数＝5、TF-IDF≈0.170275。</p>
+<p>説明する問い：DFと総出現回数をどう区別したか。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・二つのメモを初期化します。他テーマの状態は保持します。</p>
+<h2 id="共起窓幅">共起窓幅</h2>
+<p><a href="interactive.html#vectors">このテーマを開く</a></p>
+<p>問い：左右2語まで数えると猫の行はどう変わるか。</p>
+<p>予想：眠る・走るの列が増えると予想する。 操作前に、自分の理由も記入します。</p>
+<p>手順：表現を共起回数にして、窓幅1から2へ変更する。</p>
+<p>想定結果：猫の行は[0,2,1,0,1]。猫と犬の共起類似度はこのコーパスでは1のまま。</p>
+<p>説明する問い：行の変化と、類似度の変化は同じものか。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・二つのメモを初期化します。他テーマの状態は保持します。</p>
+<h2 id="学習率">学習率</h2>
+<p><a href="interactive.html#skipgram">このテーマを開く</a></p>
+<p>問い：学習率0で20エポック処理すると何が変わるか。</p>
+<p>予想：重みも損失も変わらないと予想する。 操作前に、自分の理由も記入します。</p>
+<p>手順：学習率を0にし、20エポックを実行する。</p>
+<p>想定結果：入力・出力ベクトルが初期値のままで、平均損失グラフは水平。</p>
+<p>説明する問い：回数を増やすことだけで学習が進むと言えるか。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・二つのメモを初期化します。他テーマの状態は保持します。</p>
+<h2 id="言語情報の重み">言語情報の重み</h2>
+<p><a href="interactive.html#speech">このテーマを開く</a></p>
+<p>問い：λ＝0でも候補は飴になるか。</p>
+<p>予想：音響尤度が大きい雨になると予想する。 操作前に、自分の理由も記入します。</p>
+<p>手順：音響尤度0.6、事前確率0.2を保ち、λを1から0へ変更する。</p>
+<p>想定結果：候補は雨。λ＝1では飴。順位スコアは正答率ではない。</p>
+<p>説明する問い：録音の認識精度が分かったといえないのはなぜか。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・二つのメモを初期化します。他テーマの状態は保持します。</p>
+<h2 id="一段階ずつ見る">一段階ずつ見る</h2>
+<p>辞書の表は採用経路に加え、各開始・終了位置の候補を表示します。未知文字も候補に含まれます。bigramでは分母と確率合計を見ます。TF-IDFは先頭文書の値を表示します。</p>
+<p>Skip-gramは「最初の1組を更新」で初期値から猫→がだけを更新し、「指定エポックを実行」で初期値から全16組を反復します。ボタンを押すたびに前回の続きへ加算する方式ではありません。パラメーターを編集すると初期表示へ戻ります。表の猫→がの損失と、グラフの全組の平均損失を区別します。</p>
+<h2 id="困ったとき">困ったとき</h2>
+<ul>
+<li>結果が出ない：画面の赤いエラーを読み、空欄・範囲外・小数のエポックを直すかリセットします。無効入力では古い結果を消します。</li>
+<li>知らない語が「未知」：この小型辞書の制限です。実在しない語という意味ではありません。</li>
+<li>保存HTMLでリンク先が開かない：計算は単独で動きますが、スライドやマニュアルを開くには配布一式の相対配置が必要です。計算のエラーとは別です。</li>
+<li>別テーマに切り替えて戻る：入力とメモは保持されます。ブラウザーの戻る・進むも使えます。</li>
+<li>表が横長：狭い画面では表の領域を横に動かします。画面全体がはみ出す必要はありません。</li>
+</ul>
+<p>結果が予想と違ったら、入力、辞書／コーパス、分母、表現、更新対象の順に確認しましょう。</p>
+</main></body></html>
