@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="第11回 画像認識のオフライン操作教材">
+        <title>画像の数値から特徴と位置を考える</title><style>
+:root{font-family:system-ui,sans-serif;color:#17324d;background:#eef4fa}*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1120px;margin:auto;padding:1.3rem}h1{font-size:clamp(1.5rem,3vw,2.4rem)}a{color:#0756ad}nav{display:flex;gap:.45rem;flex-wrap:wrap}button,input,select,textarea{font:inherit}button{padding:.65rem;border:1px solid #356ca3;border-radius:.5rem;background:white;color:#17324d;cursor:pointer}button[aria-selected=true]{color:white;background:#175d97}:focus-visible{outline:3px solid #d47200;outline-offset:3px}section{background:white;padding:1.3rem;border-radius:1rem;box-shadow:0 3px 14px #17324d15}section[hidden]{display:none}.controls{display:flex;flex-wrap:wrap;gap:1rem;margin:1rem 0}label{display:block}input:not([type=checkbox]),select{display:block;max-width:100%;padding:.5rem;border:1px solid #788c9f;border-radius:.25rem}input[type=number]{width:8rem}input[type=text]{width:22rem}textarea{width:100%;min-height:4rem;margin:.3rem 0 1rem;padding:.5rem}table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{border:1px solid #bccbd9;padding:.45rem;text-align:left;overflow-wrap:anywhere}th{background:#e9f1f9}td{white-space:nowrap}.scroll{max-width:100%}.scroll{overflow:auto}.result{padding:1rem;background:#f2f7fb;border-left:4px solid #2385b6;overflow-wrap:anywhere}.error{color:#a32121;min-height:1.4rem}.hint{font-size:.95rem;color:#3d5266}svg{display:block;width:100%;max-height:250px}code{overflow-wrap:anywhere}.flow{display:flex;gap:.5rem;flex-wrap:wrap}.flow span{border:1px solid #82a8c6;border-radius:.3rem;padding:.5rem;background:#e8f3ff}@media(max-width:600px){header,main,footer{padding:.65rem}section{padding:.8rem}td,th{padding:.25rem;font-size:.9rem}}
+
+.grids{display:flex;flex-wrap:wrap;gap:1rem}.grids figure{flex:1 1 260px;max-width:440px;margin:0}svg{width:100%;max-height:380px}figcaption{font-weight:bold;margin-bottom:.4rem}text{fill:#142637}input[type=number]{max-width:110px}
+        </style>
+    </head>
+    <body>
+        <header>
+            <p>人工知能概論 ／ 第11回</p>
+            <h1>画像の数値から特徴と位置を考える</h1>
+            <p>予想→操作→結果→説明。人工画像の計算は通信なしで動きます。写真の認識性能を示す実験ではありません。</p>
+            <p><a href="index.html">スライド</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="programs/guide.html">プログラム解説</a> ／ <a href="interactive.html" download>操作HTMLを保存</a></p>
+            <nav role="tablist" aria-label="6つのテーマ">
+                <button type="button"
+                        role="tab"
+                        id="tab-pixels"
+                        data-tab="pixels"
+                        aria-controls="pixels"
+                        aria-selected="false"
+                        tabindex="-1">画素と二値化</button><button type="button"
+        role="tab"
+        id="tab-smooth"
+        data-tab="smooth"
+        aria-controls="smooth"
+        aria-selected="false"
+        tabindex="-1">平均とメディアン</button><button type="button"
+        role="tab"
+        id="tab-edges"
+        data-tab="edges"
+        aria-controls="edges"
+        aria-selected="false"
+        tabindex="-1">符号付きエッジ</button><button type="button"
+        role="tab"
+        id="tab-features"
+        data-tab="features"
+        aria-controls="features"
+        aria-selected="false"
+        tabindex="-1">領域と特徴量</button><button type="button"
+        role="tab"
+        id="tab-ssd"
+        data-tab="ssd"
+        aria-controls="ssd"
+        aria-selected="false"
+        tabindex="-1">テンプレートとSSD</button><button type="button"
+        role="tab"
+        id="tab-zncc"
+        data-tab="zncc"
+        aria-controls="zncc"
+        aria-selected="false"
+        tabindex="-1">明るさと正規化相関</button>
+            </nav>
+        </header>
+        <main>
+            <p>図は計算値から描画。各図の最大絶対値に合わせて表示色を調整します。青は正、橙は負、—は未定義。色の濃さだけで別の図の値を比較せず、数値を見てください。</p>
+            <section id="pixels" role="tabpanel" aria-labelledby="tab-pixels" hidden>
+                <h2>画素と二値化</h2>
+                <p><strong>問い：</strong>しきい値と等しい画素は前景でしょうか。</p>
+                <label>
+                    予想<textarea id="pixels-prediction" placeholder="結果と理由を予想"></textarea>
+                </label>
+                <div class="controls">
+                    <label>
+                        行<input id="pixel-row" type="number" value="2" min="0" max="4" step="1"></label><label>列<input id="pixel-col" type="number" value="2" min="0" max="4" step="1"></label><label>画素値<input id="pixel-value" type="number" value="9" min="0" max="255" step="1"></label><label>しきい値<input id="threshold" type="number" value="1" min="0" max="255" step="1"></label><button type="button" id="pixels-reset">リセット</button>
+                </div>
+                <p id="pixels-error" class="error" role="alert"></p>
+                <div id="pixels-result" aria-live="polite"></div>
+                <label>
+                    説明：予想と結果を数値で比べる<textarea id="pixels-explanation"></textarea>
+                </label>
+            </section>
+            <section id="smooth" role="tabpanel" aria-labelledby="tab-smooth" hidden>
+                <h2>平均とメディアン</h2>
+                <p><strong>問い：</strong>孤立した大きな値を平均と中央値はどう扱うでしょうか。</p>
+                <label>
+                    予想<textarea id="smooth-prediction" placeholder="結果と理由を予想"></textarea>
+                </label>
+                <div class="controls">
+                    <label>
+                        中心の値<input id="spike"
+       type="number"
+       value="9"
+       min="0"
+       max="255"
+       step="1"></label><label>フィルタ<select id="smooth-method">
+                        <option value="mean">平均</option>
+                        <option value="median">メディアン</option>
+                        <option value="range">MAX-MIN</option>
+                        </select></label><button type="button" id="smooth-reset">リセット</button>
+                    </div>
+                    <p id="smooth-error" class="error" role="alert"></p>
+                    <div id="smooth-result" aria-live="polite"></div>
+                    <label>
+                        説明：予想と結果を数値で比べる<textarea id="smooth-explanation"></textarea>
+                    </label>
+                </section>
+                <section id="edges" role="tabpanel" aria-labelledby="tab-edges" hidden>
+                    <h2>符号付きエッジ</h2>
+                    <p><strong>問い：</strong>明暗を反転するとフィルタの応答はどう変わるでしょうか。</p>
+                    <label>
+                        予想<textarea id="edges-prediction" placeholder="結果と理由を予想"></textarea>
+                    </label>
+                    <div class="controls">
+                        <label>
+                            フィルタ<select id="edge-method">
+                            <option value="laplacian">ラプラシアン</option>
+                            <option value="sobel_x">Sobel x</option>
+                        </select></label><label><input id="reverse" type="checkbox">明暗反転（9−画素値）</label><label><input id="absolute" type="checkbox">応答の絶対値を表示</label><button type="button" id="edges-reset">リセット</button>
+                    </div>
+                    <p id="edges-error" class="error" role="alert"></p>
+                    <div id="edges-result" aria-live="polite"></div>
+                    <label>
+                        説明：予想と結果を数値で比べる<textarea id="edges-explanation"></textarea>
+                    </label>
+                </section>
+                <section id="features" role="tabpanel" aria-labelledby="tab-features" hidden>
+                    <h2>領域と特徴量</h2>
+                    <p><strong>問い：</strong>しきい値を上げると面積・重心はどう変わるでしょうか。</p>
+                    <label>
+                        予想<textarea id="features-prediction" placeholder="結果と理由を予想"></textarea>
+                    </label>
+                    <div class="controls">
+                        <label>
+                            しきい値<input id="feature-threshold"
+       type="number"
+       value="1"
+       min="0"
+       max="255"
+       step="1"></label><button type="button" id="features-reset">リセット</button>
+                    </div>
+                    <p id="features-error" class="error" role="alert"></p>
+                    <div id="features-result" aria-live="polite"></div>
+                    <label>
+                        説明：予想と結果を数値で比べる<textarea id="features-explanation"></textarea>
+                    </label>
+                </section>
+                <section id="ssd" role="tabpanel" aria-labelledby="tab-ssd" hidden>
+                    <h2>テンプレートとSSD</h2>
+                    <p><strong>問い：</strong>どの位置の二乗差が最小でしょうか。</p>
+                    <label>
+                        予想<textarea id="ssd-prediction" placeholder="結果と理由を予想"></textarea>
+                    </label>
+                    <div class="controls">
+                        <label>
+                            左上の行<input id="match-row" type="number" value="1" min="0" max="2" step="1"></label><label>左上の列<input id="match-col" type="number" value="2" min="0" max="3" step="1"></label><label>テンプレート<select id="template-mode">
+                            <option value="base">基準</option>
+                            <option value="rotated">90度回転</option>
+                            </select></label><button type="button" id="ssd-reset">リセット</button>
+                        </div>
+                        <p id="ssd-error" class="error" role="alert"></p>
+                        <div id="ssd-result" aria-live="polite"></div>
+                        <label>
+                            説明：予想と結果を数値で比べる<textarea id="ssd-explanation"></textarea>
+                        </label>
+                    </section>
+                    <section id="zncc" role="tabpanel" aria-labelledby="tab-zncc" hidden>
+                        <h2>明るさと正規化相関</h2>
+                        <p><strong>問い：</strong>明るさが10増えても同じ場所を選べるでしょうか。</p>
+                        <label>
+                            予想<textarea id="zncc-prediction" placeholder="結果と理由を予想"></textarea>
+                        </label>
+                        <div class="controls">
+                            <label>
+                                明るさ加算<input id="brightness" type="number" value="0" min="0" max="20" step="1"></label><label><input id="constant" type="checkbox">一定値2のテンプレート</label><button type="button" id="zncc-reset">リセット</button>
+                        </div>
+                        <p id="zncc-error" class="error" role="alert"></p>
+                        <div id="zncc-result" aria-live="polite"></div>
+                        <label>
+                            説明：予想と結果を数値で比べる<textarea id="zncc-explanation"></textarea>
+                        </label>
+                    </section>
+                </main>
+                <script id="image-core">
+'use strict';
+const IR=(()=>{
+const IMAGE=[[0,0,0,0,0],[0,2,2,2,0],[0,2,9,2,0],[0,2,2,2,0],[0,0,0,0,0]],SCENE=[[0,0,0,0,0],[0,0,1,2,0],[0,0,3,4,0],[0,0,0,0,0]],TEMPLATE=[[1,2],[3,4]],POOL_IMAGE=[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]],KERNELS={laplacian:[[0,1,0],[1,-4,1],[0,1,0]],sobel_x:[[-1,0,1],[-2,0,2],[-1,0,1]]};
+const clone=x=>JSON.parse(JSON.stringify(x)),sum=a=>a.reduce((s,x)=>s+x,0);
+function finite(x,low=-1e6,high=1e6){if(typeof x!=='number'||!Number.isFinite(x)||x<low||x>high)throw Error(`有限数 ${low}〜${high} を指定してください`);return x;}
+function matrix(a){if(!Array.isArray(a)||a.length<1||a.length>16||!Array.isArray(a[0])||a[0].length<1||a[0].length>16)throw Error('行列は1〜16行・列の二重リストです');const w=a[0].length;for(const row of a){if(!Array.isArray(row)||row.length!==w)throw Error('各行の列数をそろえてください');row.forEach(x=>finite(x));}return [a.length,w];}
+function tone(a,b=0){matrix(a);finite(b,-255,255);return a.map(row=>row.map(x=>Math.min(255,Math.max(0,finite(x,0,255)+b))));}
+function binary(a,t=1){matrix(a);finite(t,0,255);return a.map(row=>row.map(x=>Number(x>t)));}
+const windowAt=(a,r,c,h,w)=>a.slice(r,r+h).map(row=>row.slice(c,c+w));
+function filtering(a,method='mean'){const [h,w]=matrix(a);if(h<3||w<3)throw Error('3×3以上の画像を指定してください');if(!['mean','median','range',...Object.keys(KERNELS)].includes(method))throw Error('未知のフィルタです');return Array.from({length:h-2},(_,r)=>Array.from({length:w-2},(_,c)=>{const v=windowAt(a,r,c,3,3).flat();if(method==='mean')return sum(v)/9;if(method==='median')return v.sort((a,b)=>a-b)[4];if(method==='range')return Math.max(...v)-Math.min(...v);let s=0;for(let i=0;i<3;i++)for(let j=0;j<3;j++)s+=a[r+i][c+j]*KERNELS[method][i][j];return s;}));}
+function features(a){const [h,w]=matrix(a);if(a.flat().some(x=>x!==0&&x!==1))throw Error('二値マスクの値は0か1です');const area=sum(a.flat());let sy=0,sx=0;for(let r=0;r<h;r++)for(let c=0;c<w;c++){sy+=r*a[r][c];sx+=c*a[r][c];}return {area,centroid:area?[sy/area,sx/area]:null,rows:a.map(sum),columns:Array.from({length:w},(_,c)=>sum(a.map(row=>row[c])))};}
+function pool(a){const [h,w]=matrix(a);if(h%2||w%2)throw Error('2×2プーリングでは行・列を偶数にしてください');return Array.from({length:h/2},(_,r)=>Array.from({length:w/2},(_,c)=>Math.max(...windowAt(a,2*r,2*c,2,2).flat())));}
+function score(p,t,method='ssd'){if(JSON.stringify(matrix(p))!==JSON.stringify(matrix(t)))throw Error('同じ形のパッチとテンプレートを指定してください');let a=p.flat(),b=t.flat();if(method==='ssd')return sum(a.map((x,i)=>(x-b[i])**2));if(method!=='zncc')throw Error('評価方法はssdかznccです');const ma=sum(a)/a.length,mb=sum(b)/b.length;a=a.map(x=>x-ma);b=b.map(x=>x-mb);const den=Math.sqrt(sum(a.map(x=>x*x))*sum(b.map(x=>x*x)));return den===0?null:sum(a.map((x,i)=>x*b[i]))/den;}
+function match(a,t,method='ssd'){const [h,w]=matrix(a),[th,tw]=matrix(t);if(th>h||tw>w)throw Error('テンプレートは画像以下の大きさにしてください');if(!['ssd','zncc'].includes(method))throw Error('評価方法はssdかznccです');const scores=Array.from({length:h-th+1},(_,r)=>Array.from({length:w-tw+1},(_,c)=>score(windowAt(a,r,c,th,tw),t,method))),cand=[];scores.forEach((row,r)=>row.forEach((s,c)=>{if(s!==null)cand.push([s,r,c]);}));if(!cand.length)return {scores,best:null,ties:[]};const value=(method==='ssd'?Math.min:Math.max)(...cand.map(x=>x[0])),ties=cand.filter(x=>Math.abs(x[0]-value)<=1e-12).map(x=>x.slice(1));return {scores,best:{row:ties[0][0],col:ties[0][1],score:value},ties};}
+function rotate(a){const [h,w]=matrix(a);return Array.from({length:w},(_,c)=>Array.from({length:h},(_,r)=>a[h-1-r][c]));}
+const rounded=x=>typeof x==='number'?Math.round(x*1e6)/1e6:Array.isArray(x)?x.map(rounded):x&&typeof x==='object'?Object.fromEntries(Object.entries(x).map(([k,v])=>[k,rounded(v)])):x;
+function demo(){return rounded({binary:binary(IMAGE),mean:filtering(IMAGE),median:filtering(IMAGE,'median'),laplacian:filtering(IMAGE,'laplacian'),sobel_x:filtering(IMAGE,'sobel_x'),features:features(binary(IMAGE)),pool:pool(POOL_IMAGE),ssd:match(SCENE,TEMPLATE),zncc:match(SCENE,TEMPLATE,'zncc'),brightness_pair:{ssd:score(tone(TEMPLATE,10),TEMPLATE),zncc:score(tone(TEMPLATE,10),TEMPLATE,'zncc')},constant_zncc:score([[2,2],[2,2]],TEMPLATE,'zncc')});}
+return {IMAGE,SCENE,TEMPLATE,POOL_IMAGE,KERNELS,clone,finite,matrix,tone,binary,windowAt,filtering,features,pool,score,match,rotate,rounded,demo};})();
+globalThis.IR=IR;
+
+                </script>
+                <script>
+const ids=['pixels','smooth','edges','features','ssd','zncc'],$=id=>document.getElementById(id),fmt=x=>x===null?'未定義':Number.isInteger(x)?String(x):x.toFixed(6),esc=x=>String(x).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+function num(id,lo,hi,integer=false){const raw=$(id).value;if(raw.trim()==='')throw Error('数値を入力してください');const x=Number(raw);IR.finite(x,lo,hi);if(integer&&!Number.isInteger(x))throw Error('整数を指定してください');return x;}
+function grid(a,title,mark=null){const h=a.length,w=a[0].length,m=Math.max(1,...a.flat().filter(x=>x!==null).map(Math.abs));let body='';for(let r=0;r<h;r++)for(let c=0;c<w;c++){const v=a[r][c],ratio=v===null?0:Math.abs(v)/m,col=v===null?'#eee':v<0?`hsl(25 85% ${96-45*ratio}%)`:`hsl(205 70% ${97-35*ratio}%)`;body+=`<rect x="${c*68+28}" y="${r*48+28}" width="68" height="48" fill="${col}" stroke="${mark&&mark[0]===r&&mark[1]===c?'#d11':'#52687b'}" stroke-width="${mark&&mark[0]===r&&mark[1]===c?4:1}"/><text x="${c*68+62}" y="${r*48+57}" text-anchor="middle" font-size="15">${v===null?'—':Number.isInteger(v)?v:v.toFixed(3)}</text>`;}for(let r=0;r<h;r++)body+=`<text x="7" y="${r*48+57}" font-size="13">${r}</text>`;for(let c=0;c<w;c++)body+=`<text x="${c*68+62}" y="17" text-anchor="middle" font-size="13">${c}</text>`;return `<figure><figcaption>${title}（行・列は0始まり）</figcaption><svg role="img" aria-label="${title}の計算値 ${esc(JSON.stringify(a))}" viewBox="0 0 ${w*68+34} ${h*48+34}">${body}</svg></figure>`;}
+function best(r){return r.best?`最良の左上（行,列）=(${r.best.row},${r.best.col})、値=${fmt(r.best.score)}。同点候補 ${JSON.stringify(r.ties)}`:'有効な候補なし（全位置で未定義）';}
+const defaults=Object.fromEntries(ids.map(id=>[id,[...$(id).querySelectorAll('input,select')].map(e=>({id:e.id,value:e.value,checked:e.checked}))]));
+function render(id){try{let result='';if(id==='pixels'){const a=IR.clone(IR.IMAGE);a[num('pixel-row',0,4,true)][num('pixel-col',0,4,true)]=num('pixel-value',0,255);const t=num('threshold',0,255),b=IR.binary(a,t);result=`<p>条件：画素値 &gt; ${t}。前景画素数 ${IR.features(b).area}</p><div class="grids">${grid(a,'入力画像')}${grid(b,'二値化結果')}</div>`;}
+if(id==='smooth'){const a=IR.clone(IR.IMAGE);a[2][2]=num('spike',0,255);const m=$('smooth-method').value,b=IR.filtering(a,m);result=`<p>入力の中心 (2,2) に対応する出力 (1,1) = ${fmt(b[1][1])}。valid・歩幅1、5×5 → 3×3。</p><div class="grids">${grid(a,'入力画像')}${grid(b,'フィルタ出力')}</div>`;}
+if(id==='edges'){const a=IR.clone(IR.IMAGE);if($('reverse').checked)for(const row of a)for(let c=0;c<row.length;c++)row[c]=9-row[c];const m=$('edge-method').value,b=IR.filtering(a,m),display=$('absolute').checked?b.map(row=>row.map(Math.abs)):b;result=`<p>符号付き中心応答 = ${fmt(b[1][1])}。表示は${$('absolute').checked?'絶対値':'符号付き'}。計算値の符号は保持。</p><div class="grids">${grid(IR.KERNELS[m],'固定カーネル')}${grid(display,'応答')}</div>`;}
+if(id==='features'){const b=IR.binary(IR.IMAGE,num('feature-threshold',0,255)),f=IR.features(b);result=`<p>面積=${f.area}、重心（行,列）=${f.centroid?f.centroid.map(fmt).join(','):'未定義'}。</p><p>行投影=${f.rows.join(',')} ／ 列投影=${f.columns.join(',')}</p><div class="grids">${grid(b,'前景マスク')}${grid(IR.pool(IR.POOL_IMAGE),'参考：4×4画像の最大値プーリング')}</div><p>参考入力は1〜16を行順に並べた別画像。重心・面積・投影が一致しても同じ画像とは限りません。</p>`;}
+if(id==='ssd'){const t=$('template-mode').value==='rotated'?IR.rotate(IR.TEMPLATE):IR.clone(IR.TEMPLATE),r=num('match-row',0,2,true),c=num('match-col',0,3,true),p=IR.windowAt(IR.SCENE,r,c,2,2),out=IR.match(IR.SCENE,t);result=`<p>選択位置 (${r},${c}) のSSD=${fmt(IR.score(p,t))}。4画素の差の二乗を合計。小さい方を選択。</p><p>${best(out)}。比較位置は3×4=12件。</p><div class="grids">${grid(IR.SCENE,'探索画像')}${grid(t,'テンプレート')}${grid(p,'選択パッチ')}${grid(out.scores,'SSDマップ',[r,c])}</div>`;}
+if(id==='zncc'){const offset=num('brightness',0,20),scene=IR.tone(IR.SCENE,offset),t=$('constant').checked?[[2,2],[2,2]]:IR.clone(IR.TEMPLATE),a=IR.match(scene,t),b=IR.match(scene,t,'zncc'),p=IR.windowAt(scene,1,2,2,2);result=`<p>元の位置 (1,2)：SSD=${fmt(IR.score(p,t))}、ZNCC=${fmt(IR.score(p,t,'zncc'))}。</p><p>SSD：${best(a)}</p><p>ZNCC：${best(b)}</p><div class="grids">${grid(scene,'明るさ加算後')}${grid(b.scores,'ZNCCマップ')}</div><p>正規化で明るさの加算に対応。ただし回転・拡大・遮蔽への不変性ではありません。値は正解確率ではありません。</p>`;}
+$(id+'-result').innerHTML=result;$(id+'-error').textContent='';}catch(e){$(id+'-error').textContent=e.message;$(id+'-result').textContent='入力を直すかリセットしてください。古い結果は表示していません。';}}
+function show(){const id=ids.includes(location.hash.slice(1))?location.hash.slice(1):ids[0];for(const x of ids){$(x).hidden=x!==id;$('tab-'+x).setAttribute('aria-selected',String(x===id));$('tab-'+x).tabIndex=x===id?0:-1;}}
+for(const id of ids){$('tab-'+id).addEventListener('click',()=>{location.hash=id;show();});$(id).querySelectorAll('input,select').forEach(e=>e.addEventListener('input',()=>render(id)));$(id+'-reset').addEventListener('click',()=>{defaults[id].forEach(d=>{$(d.id).value=d.value;$(d.id).checked=d.checked;});$(id+'-prediction').value='';$(id+'-explanation').value='';render(id);});$('tab-'+id).addEventListener('keydown',e=>{const k=ids.indexOf(id),target=e.key==='Home'?0:e.key==='End'?5:e.key==='ArrowRight'?(k+1)%6:e.key==='ArrowLeft'?(k+5)%6:null;if(target!==null){e.preventDefault();location.hash=ids[target];show();$('tab-'+ids[target]).focus();}});render(id);}
+window.addEventListener('hashchange',show);show();
+
+                </script>
+            </body>
+        </html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第11回 画像認識：操作マニュアル">
+<title>第11回 画像認識：操作マニュアル</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第11回 画像認識：操作マニュアル</h1>
+<h2 id="目的開始操作">目的・開始・操作</h2>
+<p>画素を数値で読み、特徴量と照合値の変化を説明します。<a href="interactive.html">操作教材</a>を開いてください。<a href="index.html">スライド</a> ／ <a href="programs/guide.html">プログラム解説</a> ／ <a href="interactive.html" download>操作HTMLを保存</a>。</p>
+<p>操作HTMLは単独保存でオフライン動作します。スライド・マニュアルへのリンクは一式配置で使用します。予想を書き、一つの入力を変え、計算結果を読み、理由を書きます。表示は自動更新。成功の目印は図と数値が切り替わりエラー欄が空であることです。</p>
+<p>Tabで移動、Enterでボタン操作。テーマタブでは左右矢印・Home・End、スマートフォンではタップできます。テーマへの直接リンクとブラウザーの戻る・進むを使えます。別テーマへ移っても入力は保持します。予想・説明はブラウザーを閉じると消えるので、自分で保存してください。</p>
+<p>図は計算値から作成し、各図の最大絶対値で色を調整します。青は正、橙は負、—は未定義。色の濃さだけで別の図を比べず数値を使います。図は3桁、文章は6桁表示でも計算途中の丸めはありません。</p>
+<h2 id="画素と二値化">画素と二値化</h2>
+<p><a href="interactive.html#pixels">このテーマを開く</a></p>
+<p>問い：t=2で前景は何画素か。</p>
+<p>予想：1のままか、減るかを予想する。</p>
+<p>操作：しきい値1→2。他は初期状態。</p>
+<p>想定結果：9画素→1画素。値2はしきい値と等しいので0。</p>
+<p>説明する問い：画素値2が前景に入らない理由を説明する。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・予想・説明が初期状態へ戻ります。</p>
+<h2 id="平均とメディアン">平均とメディアン</h2>
+<p><a href="interactive.html#smooth">このテーマを開く</a></p>
+<p>問い：中心9を2へ戻すと平均と中央値はどうなるか。</p>
+<p>予想：どちらが大きく変わるかを予想する。</p>
+<p>操作：平均・メディアンを順に選び、中心画素9→2。</p>
+<p>想定結果：中心出力は平均25/9→2、中央値2→2。</p>
+<p>説明する問い：出力の中心以外も変わる理由を説明する。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・予想・説明が初期状態へ戻ります。</p>
+<h2 id="符号付きエッジ">符号付きエッジ</h2>
+<p><a href="interactive.html#edges">このテーマを開く</a></p>
+<p>問い：9−画素値の画像ではラプラシアンの中心はどうなるか。</p>
+<p>予想：符号と大きさを予想する。</p>
+<p>操作：ラプラシアンのまま明暗反転をオン、次に絶対値表示をオン。</p>
+<p>想定結果：符号付き中心−28→+28。絶対値表示は28。</p>
+<p>説明する問い：絶対値だけを見ると何が区別できなくなるか。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・予想・説明が初期状態へ戻ります。</p>
+<h2 id="領域と特徴量">領域と特徴量</h2>
+<p><a href="interactive.html#features">このテーマを開く</a></p>
+<p>問い：しきい値9で重心はどう表示されるか。</p>
+<p>予想：(0,0)と未定義のどちらかを理由付きで予想する。</p>
+<p>操作：しきい値1→9。</p>
+<p>想定結果：面積9→0、重心(2,2)→未定義。</p>
+<p>説明する問い：空の領域を左上の物体と区別する理由は何か。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・予想・説明が初期状態へ戻ります。</p>
+<h2 id="テンプレートとssd">テンプレートとSSD</h2>
+<p><a href="interactive.html#ssd">このテーマを開く</a></p>
+<p>問い：90度回転後、元の位置のSSDは0か。</p>
+<p>予想：回転前後の画素対応を書いて予想する。</p>
+<p>操作：左上の行1・列2のままテンプレートを90度回転。別位置も選ぶ。</p>
+<p>想定結果：基準位置のSSD0→10。赤枠は選択位置、最良位置は文章で確認。</p>
+<p>説明する問い：同じ形でも画素の対応が変わることを説明する。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・予想・説明が初期状態へ戻ります。</p>
+<h2 id="明るさと正規化相関">明るさと正規化相関</h2>
+<p><a href="interactive.html#zncc">このテーマを開く</a></p>
+<p>問い：探索画像へ10を加えると最良位置はどうなるか。</p>
+<p>予想：SSDとZNCCで同じ結果になるかを予想する。</p>
+<p>操作：明るさ加算0→10。次に一定値テンプレートをオン。</p>
+<p>想定結果：元の位置のSSD0→400、ZNCC1→1。一定テンプレートで全位置が未定義。</p>
+<p>説明する問い：平均を引く操作の効果と、回転には対応しない理由を説明する。</p>
+<p>リセット：このテーマの「リセット」で入力・結果・予想・説明が初期状態へ戻ります。</p>
+<h2 id="困ったとき次の実行">困ったとき・次の実行</h2>
+<p>空欄・範囲外・整数欄への小数はエラー欄に示され、古い結果は消えます。入力を戻すかリセットします。行と列を取り違えないでください。選択できる範囲は画像内に収まる位置だけです。</p>
+<p>表示されない場合は保存HTMLの拡張子とJavaScriptが使えるブラウザーを確認します。図が小さい場合はブラウザー拡大や横向き表示を使います。リセットで他テーマは変わりません。全体を最初へ戻すには再読み込みします。</p>
+<p>続いてプログラム解説からPythonまたはNotebookを保存し、同じ六つの変更を再現します。今回は外部写真、顔画像、画像認識API、学習モデルのダウンロードは使いません。</p>
+</main></body></html>

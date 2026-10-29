@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>第11回 画像認識</title>
+        <meta name="description"
+              content="形態素・統計・単語表現・音声認識を小さな数値例で理解する">
+        <meta name="author" content="白濵 成希">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+<!-- 1: 第11回 画像認識の規則と結果を説明する -->
+<div class="slide-body">
+<h2>第11回 画像認識</h2>
+<p>人工知能概論 ／ 2026年12月10日（木） ／ 白濵 成希</p>
+<p><strong>画素 → 特徴 → 比較 → 判断</strong></p>
+<p>到達目標：特徴量と照合値を計算し、選ばれた位置と方法の限界を説明する。</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+人工画像を使い、計算の途中を見える形で学びます。 写真や顔の実用的な認識性能を測る実験ではありません。
+</aside>
+</section>
+<section>
+<!-- 2: 自習の進め方の規則と結果を説明する -->
+<div class="slide-body">
+<h2>自習の進め方</h2>
+<ol type="1">
+<li>結果を予想する。</li>
+<li>操作教材で一つの条件を変える。</li>
+<li>Python／Notebookで基準結果を再現する。</li>
+<li>コピー上で一つ変更し、結果を説明する。</li>
+</ol>
+<p><a href="interactive.html" target="_blank" rel="noopener">操作教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a></p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+先に予想を残すと、結果との差を説明しやすくなります。 リセットと元ファイルのコピーを使い、基準を失わないようにします。
+</aside>
+</section>
+<section>
+<!-- 3: 第7回・第10回とのつながりの規則と結果を説明する -->
+<div class="slide-body">
+<h2>第7回・第10回とのつながり</h2>
+<p>第7回：小領域の積和とプーリング、学習による重み更新。</p>
+<p>第10回：入力を数値表現へ変換し、類似度や候補を比較。</p>
+<p>今回は<strong>固定した処理規則</strong>で、画像の特徴抽出と位置の照合を調べる。</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今回のカーネルは人が指定します。 CNNの学習済みカーネルと同じ由来であると説明しないようにしてください。
+</aside>
+</section>
+<section>
+<!-- 4: 処理と判断を区別するの規則と結果を説明する -->
+<div class="slide-body">
+<h2>処理と判断を区別する</h2>
+<table>
+<thead>
+<tr>
+<th>段階</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>入力</td>
+<td>画素の二次元配列</td>
+</tr>
+<tr>
+<td>前処理・特徴抽出</td>
+<td>平滑化、エッジ、面積</td>
+</tr>
+<tr>
+<td>比較</td>
+<td>テンプレートとのSSD</td>
+</tr>
+<tr>
+<td>判断</td>
+<td>候補位置を選び、必要なら保留</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+線が出たという観察と、何が写っているかという判断は別です。 特徴抽出だけで対象の名前や本人性が確定するわけではありません。
+</aside>
+</section>
+<section>
+<!-- 5: 画素と座標の規則と結果を説明する -->
+<div class="slide-body">
+<h2>画素と座標</h2>
+<p>グレースケール画像：各画素を明るさに対応する数値で表す。</p>
+<p>今回は<strong>行rが下方向、列cが右方向、0始まり</strong>。</p>
+<p>8ビットの値の範囲は0〜255。RGBは赤・緑・青の3成分を使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+教材の小さな値は実写真から取得したものではありません。 RGBからグレースケールへの変換は、色の情報を減らす処理でもあります。
+</aside>
+</section>
+<section>
+<!-- 6: 今回の人工画像の規則と結果を説明する -->
+<div class="slide-body">
+<h2>今回の人工画像</h2>
+<pre class="text"><code>0 0 0 0 0
+0 2 2 2 0
+0 2 9 2 0
+0 2 2 2 0
+0 0 0 0 0</code></pre>
+<p>中心は (2,2)。周囲の2に比べ、中心の9が大きい。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+全ての処理で行と列の意味をそろえます。 図の色は表示用に調整されるため、異なる図は数値も見て比較します。
+</aside>
+</section>
+<section>
+<!-- 7: 二値化の規則の規則と結果を説明する -->
+<div class="slide-body">
+<h2>二値化の規則</h2>
+<p>しきい値tに対し、</p>
+<p><strong>画素値 &gt; t なら1、それ以外は0</strong>。</p>
+<p>値がしきい値と等しいときは0。前景を1、背景を0と呼ぶ。</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここでは二値化のルールを一つに固定しています。 前景は選んだ規則に適合した画素であり、物体として正しい領域とは限りません。
+</aside>
+</section>
+<section>
+<!-- 8: しきい値を一つ変えるの規則と結果を説明する -->
+<div class="slide-body">
+<h2>しきい値を一つ変える</h2>
+<p>人工画像で、t=1 → 前景9画素。</p>
+<p>t=2 → 中心だけの1画素。t=9 → 0画素。</p>
+<p>予想：しきい値を大きくしたとき、前景は増えるか。</p>
+<p><a href="interactive.html#pixels" target="_blank" rel="noopener">操作して確認する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+等号が含まれないことを確認しましょう。 中心の値やしきい値のどちらか一つだけを変え、理由を説明してください。
+</aside>
+</section>
+<section>
+<!-- 9: 明るさの変更と飽和の規則と結果を説明する -->
+<div class="slide-body">
+<h2>明るさの変更と飽和</h2>
+<p>画素値にbを足し、0〜255の範囲へ収める。</p>
+<p>例：250 + 10 → 表示用の画素値は255。</p>
+<p>飽和すると異なる入力が同じ値になる。変換は元に戻せるとは限らない。</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+トーン調整には多くの方法がありますが、演習は単純な加算だけです。 正規化相関の説明で扱う加算は、飽和が起きない条件に限定します。
+</aside>
+</section>
+<section>
+<!-- 10: 小領域を順に調べるの規則と結果を説明する -->
+<div class="slide-body">
+<h2>小領域を順に調べる</h2>
+<p>3×3を、5×5画像に歩幅1で動かす。</p>
+<p>画像内に収まる場所だけ計算する <strong>valid</strong>：出力は3×3。</p>
+<p>出力(0,0)は入力の左上3×3に対応し、その中心は入力(1,1)。</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+出力の座標と入力画像の中心座標を区別します。 境界をゼロで埋める方式とは結果と形が変わります。今回、外側を補いません。
+</aside>
+</section>
+<section>
+<!-- 11: 線形フィルタの積和の規則と結果を説明する -->
+<div class="slide-body">
+<h2>線形フィルタの積和</h2>
+<p>対応する画素とカーネルを掛け、合計する。</p>
+<p><strong>出力(r,c) = Σ K(i,j) × I(r+i,c+j)</strong></p>
+<p>今回はカーネルを反転しない相関演算。数学的な畳み込みでは反転が入る。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+CNNや画像処理では、この相関演算も畳み込みと呼ばれることがあります。 計算する規則を明示すれば、非対称なカーネルの向きの混同を防げます。
+</aside>
+</section>
+<section>
+<!-- 12: 平均化フィルタの規則と結果を説明する -->
+<div class="slide-body">
+<h2>平均化フィルタ</h2>
+<p>3×3の9画素を足して9で割る。</p>
+<p>中心領域：2が8個と9が1個。</p>
+<p><strong>(2×8 + 9) / 9 = 25/9 ≈ 2.777778</strong></p>
+<p>大きな孤立値の影響は周辺の出力にも広がる。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+平均は外れた値の影響を受けます。 滑らかになったことと、必要な輪郭が保存されたことは別に確認します。
+</aside>
+</section>
+<section>
+<!-- 13: メディアンとMAX-MINの規則と結果を説明する -->
+<div class="slide-body">
+<h2>メディアンとMAX-MIN</h2>
+<p>メディアン：9画素を並べ、5番目を採用 → <strong>2</strong>。</p>
+<p>MAX-MIN：最大値−最小値 → <strong>9−2=7</strong>。</p>
+<p>これらは、固定カーネルの積和とは異なる処理。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+中央値はこの例では元の周囲の値2になります。 どんなノイズでも完全に除去できるという意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 14: 平滑化の結果を比較するの規則と結果を説明する -->
+<div class="slide-body">
+<h2>平滑化の結果を比較する</h2>
+<p>中心の9を2へ変更すると、中心領域の平均も中央値も2。</p>
+<p>基準画像では平均25/9、中央値2。</p>
+<p>問い：変化に反応した量と、変わらない量を説明できるか。</p>
+<p><a href="interactive.html#smooth" target="_blank" rel="noopener">操作して確認する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+まず平均と中央値の両方を基準画像で観察してください。 次に中心だけを変え、出力のどこまで変化したかも確かめます。
+</aside>
+</section>
+<section>
+<!-- 15: ラプラシアンの応答の規則と結果を説明する -->
+<div class="slide-body">
+<h2>ラプラシアンの応答</h2>
+<pre class="text"><code> 0  1  0
+ 1 -4  1
+ 0  1  0</code></pre>
+<p>中心：2+2+2+2−4×9 = <strong>−28</strong>。</p>
+<p>一定値の領域では、このカーネルの応答は0。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここで負の値は計算ミスではありません。 原画像の明るさと、フィルタの応答という二つの数値を分けて扱います。
+</aside>
+</section>
+<section>
+<!-- 16: 符号を残す意味の規則と結果を説明する -->
+<div class="slide-body">
+<h2>符号を残す意味</h2>
+<p>Sobel xは左右方向の明るさ変化に反応する。</p>
+<pre class="text"><code>-1  0  1
+-2  0  2
+-1  0  1</code></pre>
+<p>暗→明と明→暗で符号が変わる。負を0にすると片側の情報を失う。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+符号付き実数として計算してから、表示だけを調整します。 ReLUが必要なCNNの段階と、エッジ観察の目的を混同しないことが大切です。
+</aside>
+</section>
+<section>
+<!-- 17: 明暗反転を試すの規則と結果を説明する -->
+<div class="slide-body">
+<h2>明暗反転を試す</h2>
+<p>人工画像を「9−画素値」にすると、</p>
+<p>中心のラプラシアン応答は <strong>−28 → +28</strong>。</p>
+<p>絶対値表示では両方28。符号の違いは見えなくなる。</p>
+<p><a href="interactive.html#edges" target="_blank" rel="noopener">操作して確認する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+絶対値を取ることも情報を減らす操作です。 応答の大きさを見たい目的と、明暗変化の向きを見たい目的を区別します。
+</aside>
+</section>
+<section>
+<!-- 18: 領域から特徴量を作るの規則と結果を説明する -->
+<div class="slide-body">
+<h2>領域から特徴量を作る</h2>
+<p>二値化した前景を、少数の数値で要約する。</p>
+<ul>
+<li>面積：1の画素数</li>
+<li>重心：前景画素の行・列の平均</li>
+<li>投影：行ごと・列ごとの前景画素数</li>
+</ul>
+<p>同じ規則で表した特徴を比較する。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここでの面積の単位は画素数です。 実際の平方メートルへ換算するには、撮影条件など別の情報が必要です。
+</aside>
+</section>
+<section>
+<!-- 19: 面積と重心を計算するの規則と結果を説明する -->
+<div class="slide-body">
+<h2>面積と重心を計算する</h2>
+<p>t=1の前景は中央3×3。面積A=9。</p>
+<p>重心 = (Σr×M(r,c)/A, Σc×M(r,c)/A) = <strong>(2,2)</strong>。</p>
+<p>A=0では割れない → 重心は<strong>未定義</strong>。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+背景も含めた全画素の座標平均ではありません。 空の領域の重心をゼロとすると、左上に物体がある場合と混同します。
+</aside>
+</section>
+<section>
+<!-- 20: 投影で残る情報・消える情報の規則と結果を説明する -->
+<div class="slide-body">
+<h2>投影で残る情報・消える情報</h2>
+<p>行投影も列投影も <strong>[0,3,3,3,0]</strong>。</p>
+<pre class="text"><code>1 0    0 1
+0 1    1 0</code></pre>
+<p>この二つは面積・重心・行投影・列投影が同じ。画像は異なる。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+特徴量が同じなら元画像も同じ、とは言えません。 どの違いを残したいかに応じて、特徴を選ぶ必要があります。
+</aside>
+</section>
+<section>
+<!-- 21: しきい値と特徴量の関係の規則と結果を説明する -->
+<div class="slide-body">
+<h2>しきい値と特徴量の関係</h2>
+<p>t=1：面積9、重心(2,2)。</p>
+<p>t=2：面積1、重心(2,2)。</p>
+<p>t=9：面積0、重心は未定義。</p>
+<p><a href="interactive.html#features" target="_blank" rel="noopener">操作して確認する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+一つの特徴が変わらなくても、別の特徴は変わる場合があります。 中心が同じ位置にあることだけで同じ大きさの物体とは判断できません。
+</aside>
+</section>
+<section>
+<!-- 22: プーリングとCNNの特徴の規則と結果を説明する -->
+<div class="slide-body">
+<h2>プーリングとCNNの特徴</h2>
+<p>2×2・歩幅2の最大値プーリング：4×4 → 2×2。</p>
+<p>行数・列数は各1/2、画素数は<strong>1/4</strong>になる。</p>
+<p>CNNの画像ごとの特徴は、画像を入力したときの<strong>中間層の出力</strong>。重みはモデルのパラメーター。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+昨年度資料の重みを画像の特徴ベクトルとする説明を区別して修正しています。 今回の演習にCNNの再学習は追加せず、第7回の学習済みの考え方につなげます。
+</aside>
+</section>
+<section>
+<!-- 23: テンプレートで位置を探すの規則と結果を説明する -->
+<div class="slide-body">
+<h2>テンプレートで位置を探す</h2>
+<p>小さな基準画像Tを、探索画像Iの各位置と比較する。</p>
+<p>各位置に評価値を付ける → 評価マップ → 候補の左上位置。</p>
+<p>移動を調べる方法で、回転や拡大を自動で調べるわけではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+似た場所を見つけることと、その対象が何であるかを理解することは同じではありません。 テンプレートと処理対象の条件を先にそろえます。
+</aside>
+</section>
+<section>
+<!-- 24: SSDは差の二乗和の規則と結果を説明する -->
+<div class="slide-body">
+<h2>SSDは差の二乗和</h2>
+<p><strong>SSD(r,c) = Σ (I(r+i,c+j) − T(i,j))²</strong></p>
+<p>小さい値ほど画素値が近い。全画素が同じなら0。</p>
+<p>MSEはSSDを画素数で割った値。同じ大きさなら順位は同じ。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+負の差も二乗で正になります。 この授業のSSDには画素数による割り算を含めません。
+</aside>
+</section>
+<section>
+<!-- 25: 全位置の評価マップの規則と結果を説明する -->
+<div class="slide-body">
+<h2>全位置の評価マップ</h2>
+<p>探索画像4×5、テンプレート2×2 → 評価マップ3×4。</p>
+<p>基準テンプレート [[1,2],[3,4]] は、<strong>左上(1,2)でSSD=0</strong>。</p>
+<p>選択した位置の4画素と、評価マップの1要素を対応させる。</p>
+<p><a href="interactive.html#ssd" target="_blank" rel="noopener">操作して確認する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+操作教材の赤枠は選択した比較位置を示します。 画像に収まる12箇所を全て比較し、途中の一つだけで最良と決めないようにします。
+</aside>
+</section>
+<section>
+<!-- 26: 最良値と同点候補の規則と結果を説明する -->
+<div class="slide-body">
+<h2>最良値と同点候補</h2>
+<p>最小SSDの位置が複数ある場合もある。</p>
+<p>教材は同点候補を全て示し、行→列の順の先頭を表示する。</p>
+<p>最良候補があることは、探した物体が存在する証明ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+何も一致しない画像にも、SSDの最小位置はあります。 必要に応じて閾値で保留する基準を設けますが、その閾値は別データで検証します。
+</aside>
+</section>
+<section>
+<!-- 27: 明るさが変わるとSSDはどうなるかの規則と結果を説明する -->
+<div class="slide-body">
+<h2>明るさが変わるとSSDはどうなるか</h2>
+<p>T=[[1,2],[3,4]]に、10を加えたパッチを比較。</p>
+<p>差は各画素10 → <strong>SSD=4×10²=400</strong>。</p>
+<p>形の並びが同じでも、画素値の差を評価するSSDは変わる。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここでは0から255の範囲内なので飽和は起きません。 探索画像全体を明るくすると、SSDの最良位置自体も変わる場合があります。
+</aside>
+</section>
+<section>
+<!-- 28: 平均を引いて比較するの規則と結果を説明する -->
+<div class="slide-body">
+<h2>平均を引いて比較する</h2>
+<p>各パッチとテンプレートから、それぞれの平均を引く。</p>
+<p>Tの平均2.5 → <strong>[−1.5,−0.5,0.5,1.5]</strong>。</p>
+<p>T+10の平均12.5 → 同じ並びになる。</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+共通の平均を引くのではなく、比較する各領域の平均を引きます。 この操作で一定の加算成分が消えることを小さな例で確認してください。
+</aside>
+</section>
+<section>
+<!-- 29: ZNCCの規則の規則と結果を説明する -->
+<div class="slide-body">
+<h2>ZNCCの規則</h2>
+<p>平均を引いた値をI′、T′とすると、</p>
+<p><strong>ZNCC = Σ I′T′ / √(Σ I′² × Σ T′²)</strong></p>
+<p>大きい値ほど正の対応が強い。SSDとは選ぶ向きが逆。</p>
+<p>非一定領域・飽和なしなら、正の倍率と一定の加算に対応する。</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+平均中心化した正規化相関をZNCCと呼びます。 分母が定義できる条件では、値はマイナス1から1の範囲です。
+</aside>
+</section>
+<section>
+<!-- 30: 相関が定義できない場合の規則と結果を説明する -->
+<div class="slide-body">
+<h2>相関が定義できない場合</h2>
+<p>パッチまたはテンプレートが一定値 → 平均を引くと全て0。</p>
+<p>分母0 → <strong>未定義</strong>。教材はNone／nullで表し、候補から除く。</p>
+<p>全候補が未定義なら「有効な候補なし」。</p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+一定画像に1という値を与えて、完全一致と説明しません。 ライブラリごとの例外処理と区別し、この教材の規則として記録します。
+</aside>
+</section>
+<section>
+<!-- 31: 明るさと一定テンプレートを試すの規則と結果を説明する -->
+<div class="slide-body">
+<h2>明るさと一定テンプレートを試す</h2>
+<p>TとT+10：SSD=400、ZNCC=1。</p>
+<p>探索画像への加算0→10で、二つの最良位置を比較する。</p>
+<p>一定値テンプレートでも試し、未定義を説明する。</p>
+<p><a href="interactive.html#zncc" target="_blank" rel="noopener">操作して確認する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+正の倍率と一定の加算に対応できるのは、飽和や丸めによる形の変化がない条件です。 相関1を認識正解率100パーセントと解釈しないでください。
+</aside>
+</section>
+<section>
+<!-- 32: 回転・大きさ・遮蔽の限界の規則と結果を説明する -->
+<div class="slide-body">
+<h2>回転・大きさ・遮蔽の限界</h2>
+<p>90度回転したT=[[3,1],[4,2]]とのSSDは、元の位置で10。</p>
+<p>画素の対応が変わるので、明るさの正規化だけでは補えない。</p>
+<p>複数の向きや大きさを比較すると、候補数と計算量も増える。</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+向きを試すことと、どの向きにも自動的に不変な特徴を作ることは異なります。 欠けた対象や変形した対象についても別の検証が必要です。
+</aside>
+</section>
+<section>
+<!-- 33: 文字認識・画像検索との関係の規則と結果を説明する -->
+<div class="slide-body">
+<h2>文字認識・画像検索との関係</h2>
+<p>文字認識：画像のパターンから文字候補を選ぶ。</p>
+<p>画像検索：同じ特徴抽出法で作った表現を比較する。</p>
+<p>文字の候補に言語情報を加える考え方は第10回につながる。</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+実用の文字認識を四つの画素だけで再現したという意味ではありません。 画像情報に言語情報を加えても、誤りがなくなる保証はありません。
+</aside>
+</section>
+<section>
+<!-- 34: 位置・種類・本人性は異なる問いの規則と結果を説明する -->
+<div class="slide-body">
+<h2>位置・種類・本人性は異なる問い</h2>
+<ul>
+<li>検出：どこにあるか</li>
+<li>分類：どの種類か</li>
+<li>本人照合：申告された人と同じか</li>
+</ul>
+<p>顔の位置を見つけても本人照合の成功を意味しない。今回は人工図形のみ。</p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+顔画像や個人情報を収集する課題ではありません。 同じ画像処理という言葉でも、目的と正解の定義が違うことを確認します。
+</aside>
+</section>
+<section>
+<!-- 35: 評価値と正解率を分けるの規則と結果を説明する -->
+<div class="slide-body">
+<h2>評価値と正解率を分ける</h2>
+<p>SSDやZNCCは、定めた式による比較値。</p>
+<p>正解位置の注釈を持つ別の画像で、見逃し・誤検出を調べる。</p>
+<p>しきい値を調整した画像だけで、汎化性能を主張しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この授業の人工例は計算が正しいかを確かめるためのものです。 実際の性能評価には、照明や向きなど条件が異なるデータも必要です。
+</aside>
+</section>
+<section>
+<!-- 36: 保存して実行するの規則と結果を説明する -->
+<div class="slide-body">
+<h2>保存して実行する</h2>
+<p>既存のPython環境で、保存・展開したファイルを実行する。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> image_recognition.py <span class="at">--demo</span></span></code></pre></div>
+<p><a href="programs/image_recognition.py" download>Pythonを保存</a> ／ <a href="programs/image_recognition.ipynb" download>Notebookを保存</a> ／ <a href="programs/image_recognition.zip" download>一式ZIPを保存</a></p>
+<p><a href="programs/guide.html" target="_blank" rel="noopener">保存・カーネル選択・出力の読み方</a></p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ZIPを展開し、同梱のguide.htmlから開始できます。 Notebookは同梱Pythonのimportなしで全セル実行できるようにしています。
+</aside>
+</section>
+<section>
+<!-- 37: コピー上で一つ変更するの規則と結果を説明する -->
+<div class="slide-body">
+<h2>コピー上で一つ変更する</h2>
+<ol type="1">
+<li>しきい値1→2</li>
+<li>中心画素9→2</li>
+<li>明暗反転</li>
+<li>特徴用しきい値1→9</li>
+<li>テンプレートを90度回転</li>
+<li>探索画像へ10を加算</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+Notebookと両マニュアルに同じ六つの変更例があります。 変更前の入力と基準結果を残し、変えた値を一つずつ記録します。
+</aside>
+</section>
+<section>
+<!-- 38: 方法を目的で比較するの規則と結果を説明する -->
+<div class="slide-body">
+<h2>方法を目的で比較する</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>見るもの</th>
+<th>失う・苦手な情報</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>平滑化</td>
+<td>周辺の代表値</td>
+<td>細かな変化</td>
+</tr>
+<tr>
+<td>領域特徴</td>
+<td>面積・重心・投影</td>
+<td>画素の詳しい配置</td>
+</tr>
+<tr>
+<td>SSD</td>
+<td>画素の差</td>
+<td>明るさ変化に敏感</td>
+</tr>
+<tr>
+<td>ZNCC</td>
+<td>平均を除いた対応</td>
+<td>一定領域・回転等</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+万能な一つの評価値を探すのではなく、目的と条件に合うものを考えます。 比較値の大きさだけで異なる手法の優劣を決めないようにします。
+</aside>
+</section>
+<section>
+<!-- 39: 理解確認・次回の規則と結果を説明する -->
+<div class="slide-body">
+<h2>理解確認・次回</h2>
+<ul>
+<li>フィルタの負値を残す理由は何か。</li>
+<li>同じ特徴量なら同じ画像といえるか。</li>
+<li>SSD最小とZNCC最大は何を示すか。</li>
+<li>未定義の候補をどう扱うか。</li>
+</ul>
+<p>次回：エージェントと強化学習。クイズ配信は担当者の案内に従う。</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+四つの問いのそれぞれに、実験で確認した数値を一つ添えてください。 ここで新しい提出期限や配点条件は設定しません。
+</aside>
+</section>
+<section>
+<!-- 40: 参考資料の規則と結果を説明する -->
+<div class="slide-body">
+<h2>参考資料</h2>
+<ul>
+<li><a href="https://docs.opencv.org/4.13.0/d4/d13/tutorial_py_filtering.html">OpenCV：平滑化</a>・<a href="https://docs.opencv.org/4.13.0/d5/d0f/tutorial_py_gradients.html">画像勾配</a></li>
+<li><a href="https://docs.opencv.org/4.13.0/d7/d4d/tutorial_py_thresholding.html">OpenCV：二値化</a></li>
+<li><a href="https://docs.opencv.org/4.13.0/df/dfb/group__imgproc__object.html">OpenCV：テンプレート照合の式</a></li>
+<li><a href="https://docs.pytorch.org/vision/stable/feature_extraction.html">Torchvision：中間層からの特徴抽出</a></li>
+</ul>
+<p>人工画像・境界・同点・未定義の扱いは教材の仕様。出典対応は制作用資料に記録。</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+一次資料の数式と、この授業の独自の小さな入力条件を分けて確認しました。 参考リンクの閲覧にはネット接続が必要ですが、操作教材の計算には不要です。
+</aside>
+</section>
+</div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealAnimate,
+      RevealChalkboard,
+            RevealChart,
+        ];
+
+        const plugins =  [...printPlugins,
+        RevealZoom,
+        RevealSearch,
+                RevealMarkdown,
+                RevealMenu,
+                RevealFullscreen,
+                RevealAnything,
+                //RevealAudioSlideshow,
+                //RevealAudioRecorder,
+                RevealCustomControls,
+                // poll
+                // question
+                // seminar
+                Verticator
+                 ]
+
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+            height: 720,
+            margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+            customcontrols: {
+                    controls: [
+                            {
+                          id: 'toggle-overview',
+                          title: 'Toggle overview (O)',
+                          icon: '<i class="fa fa-th"></i>',
+                          action: 'Reveal.toggleOverview();'
+                        }
+                        ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+                ]
+            },
+            chart: {
+                    defaults: {
+                        color: 'lightgray', // color of labels
+                        scale: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: "lightgray" } , // color of grid lines
+                        },
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+            },
+                anything: [
+                {
+        className: "plot",
+        defaults: {width:500, height: 500, grid:true},
+        initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+     },
+     {
+        className: "chart",
+        initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+     },
+     {
+        className: "anything",
+        initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+     },
+                    ],
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+        });
+
+
+
+        // Change chalkboard theme :
+        function changeTheme(input) {
+            var config = {};
+            config.theme = input.value;
+            Reveal.getPlugin("RevealChalkboard").configure(config);
+            input.blur();
+        }
+
+        // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+        if (window.location.search.match(/print-pdf-now/gi)) {
+            setTimeout(() => {
+                window.print();
+              }, 2500);
+
+    }
+        </script>
+    </body>
+</html>
