@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第11回 画像認識：プログラムの保存と学び方">
+<title>第11回 画像認識：プログラムの保存と学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第11回 画像認識：プログラムの保存と学び方</h1>
+<h2 id="到達目標と開始方法">到達目標と開始方法</h2>
+<p>画素から特徴量を計算し、テンプレートの照合位置と限界を数値で説明します。前提は二重リスト・繰り返し・平均・第7回の積和です。演習の計算部分はPython標準ライブラリのみ。画像ライブラリや学習フレームワークは追加しません。全て自作の人工入力で、乱数を使いません。</p>
+<p><a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a></p>
+<p><a href="image_recognition.py" download>Pythonを保存</a> ／ <a href="image_recognition.ipynb" download>Notebookを保存</a> ／ <a href="image_recognition.zip" download>一式ZIPを保存</a></p>
+<h2 id="保存と実行">保存と実行</h2>
+<ol type="1">
+<li>ZIPを保存して展開し、同梱のguide.htmlをブラウザーで開きます。ZIP内だけで以下を開始できます。</li>
+<li>VS Codeで展開先を開きます。既存のvenvを有効にし、そのPythonインタープリターを選びます。Python 3.10以上を使用し、制作側の版を新しく導入する必要はありません。</li>
+<li>ターミナルでファイルを置いた場所へ移動し、次を実行します。</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> image_recognition.py <span class="at">--demo</span></span></code></pre></div>
+<p>uvを既に使っている場合は<code>uv run python image_recognition.py --demo</code>でも実行できます。Notebookの実行には既存のJupyter環境を使用します。必要な環境を再作成する場合のみ、venv内で<code>python -m pip install -r requirements.txt</code>を実行します。システム全体へのインストールは不要です。</p>
+<h2 id="notebookで全セル実行">Notebookで全セル実行</h2>
+<p>Notebookを保存し、右上のカーネル選択から既存venvを指定します。「カーネルを再起動」→「すべて実行」を選び、最後の「基準入力・結果を保持しました」を確認します。同梱.pyをimportせず、Notebook内の定義だけで動きます。途中セルだけを実行すると未定義の関数や古い値が残る場合があります。</p>
+<h2 id="基準結果と出力の読み方">基準結果と出力の読み方</h2>
+<ul>
+<li><code>binary</code>：しきい値1、前景9画素。<code>features</code>：面積9・重心[2,2]。</li>
+<li><code>mean[1][1]</code>：2.777778（計算は25/9）。<code>median[1][1]</code>：2。</li>
+<li><code>laplacian[1][1]</code>：−28。負の応答は消さず、表示と計算を分けます。</li>
+<li><code>pool</code>：[[6,8],[14,16]]。これは別入力1〜16の4×4から計算。</li>
+<li><code>ssd.best</code>：行1・列2・値0。<code>zncc.best</code>：同じ位置・値1。</li>
+<li><code>brightness_pair</code>：同じ形に10加算した比較はSSD400・ZNCC1。</li>
+<li><code>constant_zncc</code>：None／JSONではnull。一定値の領域は分母0なので未定義です。</li>
+</ul>
+<p>座標は0始まりの行・列。SSDは小さい方、ZNCCは大きい方を選びます。validで画像内だけを比較し、同点は全候補を示した上で行・列順の先頭を表示します。最良候補があることは物体存在の証明ではありません。</p>
+<h2 id="変更実験">変更実験</h2>
+<p>元の.pyとNotebookをコピーし、基準結果<code>baseline_result</code>を保持します。以下はNotebookの定義・基準セルより後で実行します。Python版ではコピーしたファイルで<code>main()</code>より前へ同じコードを置くこともできます。6件とも入力のコピーを用い、元の定数は書き換えません。</p>
+<h3 id="二値化のしきい値">二値化のしきい値</h3>
+<p>問い：t=2で前景は何画素か。</p>
+<p>予想：1のままか、減るかを予想する。</p>
+<p>手順：次を実行し、基準と比較します。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trial_threshold <span class="op">=</span> binary(deepcopy(IMAGE), <span class="dv">2</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(features(trial_threshold))</span></code></pre></div>
+<p>想定結果：前景1画素、重心(2,2)。</p>
+<p>説明する問い：画素値2が前景に入らない理由を説明する。</p>
+<h3 id="孤立画素の変更">孤立画素の変更</h3>
+<p>問い：中心9を2へ戻すと平均と中央値はどうなるか。</p>
+<p>予想：どちらが大きく変わるかを予想する。</p>
+<p>手順：次を実行し、基準と比較します。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>trial_image <span class="op">=</span> deepcopy(IMAGE)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>trial_image[<span class="dv">2</span>][<span class="dv">2</span>] <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>trial_smooth <span class="op">=</span> filtering(trial_image)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_smooth[<span class="dv">1</span>][<span class="dv">1</span>], filtering(trial_image, <span class="st">&quot;median&quot;</span>)[<span class="dv">1</span>][<span class="dv">1</span>])</span></code></pre></div>
+<p>想定結果：平均2、中央値2。基準の平均は25/9。</p>
+<p>説明する問い：出力の中心以外も変わる理由を説明する。</p>
+<h3 id="明暗反転と符号">明暗反転と符号</h3>
+<p>問い：9−画素値の画像ではラプラシアンの中心はどうなるか。</p>
+<p>予想：符号と大きさを予想する。</p>
+<p>手順：次を実行し、基準と比較します。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trial_inverse <span class="op">=</span> [[<span class="dv">9</span><span class="op">-</span>x <span class="cf">for</span> x <span class="kw">in</span> row] <span class="cf">for</span> row <span class="kw">in</span> IMAGE]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>trial_edges <span class="op">=</span> filtering(trial_inverse, <span class="st">&quot;laplacian&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_edges[<span class="dv">1</span>][<span class="dv">1</span>])</span></code></pre></div>
+<p>想定結果：−28から+28。</p>
+<p>説明する問い：絶対値だけを見ると何が区別できなくなるか。</p>
+<h3 id="空の領域">空の領域</h3>
+<p>問い：しきい値9で重心はどう表示されるか。</p>
+<p>予想：(0,0)と未定義のどちらかを理由付きで予想する。</p>
+<p>手順：次を実行し、基準と比較します。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trial_features <span class="op">=</span> features(binary(deepcopy(IMAGE), <span class="dv">9</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_features)</span></code></pre></div>
+<p>想定結果：面積0、重心None（未定義）。</p>
+<p>説明する問い：空の領域を左上の物体と区別する理由は何か。</p>
+<h3 id="テンプレートの回転">テンプレートの回転</h3>
+<p>問い：90度回転後、元の位置のSSDは0か。</p>
+<p>予想：回転前後の画素対応を書いて予想する。</p>
+<p>手順：次を実行し、基準と比較します。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trial_template <span class="op">=</span> rotate(deepcopy(TEMPLATE))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>trial_rotation <span class="op">=</span> score(window(SCENE, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>), trial_template)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_template, trial_rotation)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(match(SCENE, trial_template))</span></code></pre></div>
+<p>想定結果：回転後[[3,1],[4,2]]、元の位置のSSD=10。最良位置も全探索で確認する。</p>
+<p>説明する問い：同じ形でも画素の対応が変わることを説明する。</p>
+<h3 id="明るさの変更">明るさの変更</h3>
+<p>問い：探索画像へ10を加えると最良位置はどうなるか。</p>
+<p>予想：SSDとZNCCで同じ結果になるかを予想する。</p>
+<p>手順：次を実行し、基準と比較します。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>trial_bright <span class="op">=</span> tone(deepcopy(SCENE), <span class="dv">10</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>trial_ssd <span class="op">=</span> match(trial_bright, TEMPLATE)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>trial_zncc <span class="op">=</span> match(trial_bright, TEMPLATE, <span class="st">&quot;zncc&quot;</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(trial_ssd[<span class="st">&quot;best&quot;</span>], trial_zncc[<span class="st">&quot;best&quot;</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(score(window(trial_bright, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>), TEMPLATE))</span></code></pre></div>
+<p>想定結果：元の位置のSSD=400。ZNCCは1で最良(1,2)。SSDは別の位置を選ぶ。</p>
+<p>説明する問い：平均を引く操作の効果と、回転には対応しない理由を説明する。</p>
+<h2 id="リセットとエラー対処">リセットとエラー対処</h2>
+<p>元ファイルを再度コピーし、Notebookのカーネルを再起動して全セル実行します。FileNotFoundErrorやファイルが見つからない表示は展開先・カレントディレクトリーを確認。NameErrorは上から実行。カーネルが選べない場合は既存venvにipykernelがあるか確認します。</p>
+<p>ValueErrorは不正入力を表します。空・不揃いの行列、NaN・無限大、16×16超、画像より大きいテンプレート、奇数サイズの2×2プーリングを受け付けません。<code>None</code>は有効な計算上の未定義で、エラーとは異なります。基準値が違うときは行・列、入力、フィルタの種類、セル順を確認してください。</p>
+<h2 id="比較の精度と限界">比較の精度と限界</h2>
+<p>実数は計算途中で丸めず、JSON基準値は小数点以下6桁です。表示桁の差は元の値で確認します。制作側の数値検査は絶対・相対許容誤差1e-9。実写真の認識率や本人照合、提出・採点の検査ではありません。未確認の公開URLを開始条件にはしません。</p>
+</main></body></html>
