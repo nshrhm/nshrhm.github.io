@@ -1,0 +1,661 @@
+{
+  "schema_version": 2,
+  "slides": 40,
+  "audio_files": 40,
+  "scope": "intro-ai/chap07/",
+  "source": "textbook-ai-2026/chap07",
+  "manifest_excludes_itself": true,
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 51502,
+      "sha256": "f2f4ab84086f74a51ef99e3128ae64ff1cf869ae965cd61fdf7ca8207fb41ef3"
+    },
+    {
+      "path": "interactive-guide.html",
+      "bytes": 10757,
+      "sha256": "2b1f38a84abe1f5f79b26812a01bfaef657df32e242f1660ad05804f59423b77"
+    },
+    {
+      "path": "interactive.html",
+      "bytes": 39883,
+      "sha256": "8666df47781da6645e6f0e4f7b1cbc36454b90298ad098efa9da3028fa803b93"
+    },
+    {
+      "path": "libs/highlight.js/11.3.1/styles/monokai.min.css",
+      "bytes": 790,
+      "sha256": "cff1e9f20834a9c8a4470018c2d43f76336a1dc5cb79daa308a6f4b335935c45"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/animate/plugin.js",
+      "bytes": 14191,
+      "sha256": "195ea0a60e2daac0e036523c05c4ec0d6a00745719ade45151f18f1acc9fd596"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/animate/svg.min.js",
+      "bytes": 132018,
+      "sha256": "302bc1ae10ae5fc18db74826bf4ea46788c6222d51d9035a4a469d8d1ce29c5b"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/anything/Chart.min.js",
+      "bytes": 172812,
+      "sha256": "478a6a70e615f25b7bb27c4c40efc749b5421513cc76b84014c1febebf608982"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js",
+      "bytes": 151665,
+      "sha256": "cec4ba2b1055fb03d2adca54277bed5fb76a5c8d60055f38d7192423328bc529"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js",
+      "bytes": 1196,
+      "sha256": "fa51bc0cfa3058e254b9a670605e3e7b21e490bd5ad5903800f18f920849abc8"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js",
+      "bytes": 6222,
+      "sha256": "836d202fcc5a70a93ee551abe9f4f38ddfead0dafa81b8d53040d1cf133470f3"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/anything/d3.patch.js",
+      "bytes": 496,
+      "sha256": "bef9e7f6964985a3c96a906aa1af13eb02ea40a0b6b983bd55bb6c1e7454e29f"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/anything/function-plot.js",
+      "bytes": 145473,
+      "sha256": "119bee6eaaa39dd949ab65832122ad672460db04bfc37e4e2a22eb186824708f"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/anything/plugin.js",
+      "bytes": 2879,
+      "sha256": "ff088d64f64483db1a697ce9cf9433f54e7b524e6d733eef9ddaf9e2c29d973a"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/chalkboard/img/blackboard.png",
+      "bytes": 32733,
+      "sha256": "a29572c59cb29034525dfd7962d134984bd05bf1f68375eeea1bc5858b641d05"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/chalkboard/img/boardmarker-black.png",
+      "bytes": 1999,
+      "sha256": "a86ce4916d6683a4633dba1749fa046150cd42d0e09351e0b59cde45f997a329"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/chalkboard/img/chalk-white.png",
+      "bytes": 2639,
+      "sha256": "fe14e5c7c07c66efea14a356e76e787198e844f1418c0c7e86561dc0863b7ee0"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/chalkboard/img/sponge.png",
+      "bytes": 3612,
+      "sha256": "5433ff456b5de3de20659d4ffb8d6132ad22198050247240cace95ffae68992b"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js",
+      "bytes": 58953,
+      "sha256": "6b83a49d4d0fbc2734b31e5119c14beaedd67c2dcb56a499347ce465f511e91b"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/chalkboard/style.css",
+      "bytes": 724,
+      "sha256": "4c5416f00684826fb5320495391bc7378848ffc020a0394b5cbd2a6eedb9ff3d"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/chart/chart.min.js",
+      "bytes": 182016,
+      "sha256": "a2f9c59803a782d1e69616733f21aba1f7b1cf829d8a4e241286dcf01f6bd589"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/chart/plugin.js",
+      "bytes": 5916,
+      "sha256": "fc8b5231786b0f70c0f456f283fbf06a9b1ea1389ff26777134f95edbde8b58c"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js",
+      "bytes": 2217,
+      "sha256": "7e8777d0da0612527b3c705537e75319b4f42be83be534c9a7b5142ccbd958b9"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/customcontrols/style.css",
+      "bytes": 1063,
+      "sha256": "c611a605d874cc31c3addebe352b9c72a45bb6c031974b83806b2d96df25659b"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js",
+      "bytes": 1633,
+      "sha256": "90d3d581c56116947c4e0804e793474c727cd0758d2483ca52ed7470b0652e48"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js",
+      "bytes": 1417,
+      "sha256": "b6b9f811a936af5c6af160a97c6339f2b0bd649b0affceb894eef9696bb8dfbc"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/highlight/highlight.js",
+      "bytes": 940037,
+      "sha256": "47bcfa195929fc2c30309eb02ef2022f1e6acaec4e7d6aa2d5a32227d0a6567c"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/markdown/markdown.js",
+      "bytes": 91331,
+      "sha256": "5b023d6665ef91cb2a1e80c91af092014495ce8f1d11892566eadbc8c20a6d86"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/math/math.js",
+      "bytes": 31388,
+      "sha256": "5293d6074f9377baa58348ab07d8471f7287b78868a36b284203fcf16cb07530"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css",
+      "bytes": 45687,
+      "sha256": "ce91e2144ea27f82292ef2c87c5d9e1d0b9994df63836130293865aca18fc550"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.eot",
+      "bytes": 115052,
+      "sha256": "eebd12ec00a2dbdebba4cb55e15cb6f5a5fc57036718388c0167815cd4a6db27"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.svg",
+      "bytes": 613297,
+      "sha256": "07d841265db8bdbe1cab605ab715df9ef9fb4c3b91d158ee5138c94019699b21"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.ttf",
+      "bytes": 114816,
+      "sha256": "54e3158f5e55ba02b21658e7d2fc661fec3c286d27834d99e56396ed66870580"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.woff",
+      "bytes": 73920,
+      "sha256": "c82c3aa4c57f8ee8ce750e18822cba0f265a66fda67a1620e42c749dadef6b74"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-brands-400.woff2",
+      "bytes": 63376,
+      "sha256": "62b5e7ae9e2ed60dcd7cb2e0823dd0884575f2176aff629f2df1e912dfae20e1"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.eot",
+      "bytes": 40744,
+      "sha256": "3836ea5ffb2099e508f2ea451bf04841543cf7461a9b48c2254f505c828d852e"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.svg",
+      "bytes": 137710,
+      "sha256": "270b2bac9c35a87c99ad7e407cacac8cf14a1e12d1dd1294c4999056c6bdf3b4"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.ttf",
+      "bytes": 40516,
+      "sha256": "400d73d1aa3a677117ea9749b84c3877d4473cb034800a9daa7b23d5b6ddbe15"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.woff",
+      "bytes": 18212,
+      "sha256": "7e9f081c56acc9b1f1b4c7eae32acc5124146f8002ba89ab64046d78069be1f2"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-regular-400.woff2",
+      "bytes": 14952,
+      "sha256": "1669bec36f12c35a00a2d23cf71b6061c85b8435f5c26445aab338f88dfe6629"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.eot",
+      "bytes": 160768,
+      "sha256": "b415dcb0cc4f8eac654a4f3cfbe2d36fcd401dd2cedcad06a2fe2abf0b73af23"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.svg",
+      "bytes": 574886,
+      "sha256": "fe249e55d6168623dbf21ec9a04788bd0a21ce98db7c2e8428c951391a4092c0"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.ttf",
+      "bytes": 160548,
+      "sha256": "6cb9a9f7dbb6e66f08b1615612d5db166e08621dd84b945d6bd554a60f814c17"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.woff",
+      "bytes": 76632,
+      "sha256": "414aa75a28572ae9ae2a84f4d5f055593ecb425c48924a183f9bdf0aed4f9bfc"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/font-awesome/webfonts/fa-solid-900.woff2",
+      "bytes": 59572,
+      "sha256": "a83079124373d924ad1402fbc08d2e24d0043234d4c26565f1c368745f55f5d9"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/menu.css",
+      "bytes": 8192,
+      "sha256": "d1f53c1ca2da4e38337da57d0a04aa6ec37c8a5037ce8eb32b533aae58142ddf"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/menu/menu.js",
+      "bytes": 37473,
+      "sha256": "975e1d92515c5b99966abeb0ffd29a5b47d655eadfde662bed6b74fab5f31400"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/notes/notes.js",
+      "bytes": 104684,
+      "sha256": "b3e598656f6bdc1b8accd9c20480a191922f428d8a127641bbe3494fd30fffcb"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/search/search.js",
+      "bytes": 17245,
+      "sha256": "a3607816a4d21d69727d62ce4e997ba32a720765a46c123f9ee4052d9a463d45"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/verticator/verticator.css",
+      "bytes": 4267,
+      "sha256": "533dad9f2d343b0c4dc59665556353938df2d5b9f2fe051154c4ad1642dc7b7d"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/verticator/verticator.js",
+      "bytes": 11347,
+      "sha256": "ca6c0247b019118d784417663601e75d33211413987c2c4cde29a52fc7fc7411"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/plugin/zoom/zoom.js",
+      "bytes": 2951,
+      "sha256": "c8e0985b56e66476212c84c170a63ab4a495fcbae54777f1cf6adb0c68c6c934"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/reset.css",
+      "bytes": 871,
+      "sha256": "1aa8e84c9cabcbfe4d95b19879fe48b9c2c5e6d54574cbe679bc22edb9fe12b6"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/reveal.css",
+      "bytes": 47135,
+      "sha256": "2bd952ec94b0a308a2e276c827a1415cb436bcc57d845aafd633f162113690ac"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/reveal.js",
+      "bytes": 145831,
+      "sha256": "028fe6706c37e4c010e7be04cd93d00662851ff8460a2f5c651adbd02d586a4b"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/black.css",
+      "bytes": 7037,
+      "sha256": "bcf17d7fe0a676512aa2cb9eae9d237a37c09bc979c548b3f3a76e8b691c425c"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-italic.eot",
+      "bytes": 75720,
+      "sha256": "ad4b0799608b5dc860cc3bd7ff4781f2d9e13144e48a2e3d9321ce57c5a12f2a"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-italic.ttf",
+      "bytes": 238084,
+      "sha256": "d13268affb2204223a1b6b8483afd989a0e2b20bff853eae05fe5d0d32de8ed9"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-italic.woff",
+      "bytes": 98556,
+      "sha256": "05d3615fdbe7d35c62d6a1308dc48e3985016b69e65926ed37b99fe7e6b297dc"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-regular.eot",
+      "bytes": 88070,
+      "sha256": "dce8869d25c3abcecb33a3486a3c70bb76aed17c21a74069ee83949b1d209c9b"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-regular.ttf",
+      "bytes": 288008,
+      "sha256": "c1865d89d798bc2119872b17774361c7406974b9568121a617007e02af344981"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-regular.woff",
+      "bytes": 114324,
+      "sha256": "d4eaa48ba450f4dd2d024ab5b0e895c73c81475718e5453fd1890254c16b7a57"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibold.eot",
+      "bytes": 89897,
+      "sha256": "ebb8918da92bae172dfe322a3947929b3df2330dccc6f13c7d8e8ed3815e1696"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibold.ttf",
+      "bytes": 284640,
+      "sha256": "a53e27232eff5f0bc1ba1c0af7e0759f0aaaf5c0636370b4c54f83c4652ba924"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibold.woff",
+      "bytes": 115648,
+      "sha256": "b0abd2736335424f9fd3eb27974a36d03783b3db141e0801dca7d3a635218b46"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.eot",
+      "bytes": 75706,
+      "sha256": "dfe0b47abfa0fdb0504d7be14015fa3f1cf9647b97ffd8b3bfcceb25c60f4fa6"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.ttf",
+      "bytes": 240944,
+      "sha256": "e8ec22b619599ef4088c788ec410ea3e70481acc9ec43cc0a7fcd00da6441646"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro-semibolditalic.woff",
+      "bytes": 98816,
+      "sha256": "7225cacc06c2f360367c138daa4ce727c2a0d26e42875b1f9e802f181fdb81c5"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/fonts/source-sans-pro/source-sans-pro.css",
+      "bytes": 1457,
+      "sha256": "5292b4fb38f4e609bf20cd98b3e5c039dbd7271d1c9174302305fbaaf42035cc"
+    },
+    {
+      "path": "libs/reveal.js/4.3.1/theme/white.css",
+      "bytes": 7024,
+      "sha256": "bf59df9ecd8563ac1da668571397dd454048f493e0feddcc565df7eedc40fad4"
+    },
+    {
+      "path": "libs/styles/iota.css",
+      "bytes": 3756,
+      "sha256": "7b648e1b5261851c396aa1475280642db4ccc1ade8ddcd5ce5cf47705b4fe2a8"
+    },
+    {
+      "path": "libs/styles/layout.css",
+      "bytes": 1938,
+      "sha256": "9ad8bff4e777a4d9f3732f7d6eb88669a778595da74e5c99cad554aaa30b61ca"
+    },
+    {
+      "path": "libs/styles/tasklist.css",
+      "bytes": 1773,
+      "sha256": "fa0d51dff231a57b447371f6facc78908914b9fc5f96db73678e706783265fef"
+    },
+    {
+      "path": "programs/evolutionary_computation.ipynb",
+      "bytes": 24236,
+      "sha256": "79e89945feb087cd5117bb494a8516b5bda9367dc52e0ab19d5c2058a5d29b57"
+    },
+    {
+      "path": "programs/evolutionary_computation.py",
+      "bytes": 11806,
+      "sha256": "2471b2ea047c90f7bf2871a21ac178b4a4a8fa8fe74505347e6effa603401a7f"
+    },
+    {
+      "path": "programs/evolutionary_computation.zip",
+      "bytes": 39976,
+      "sha256": "25191a0c916e3744632d5251eab4bbf589f997be56f308fb3092058be08860d8"
+    },
+    {
+      "path": "programs/guide.html",
+      "bytes": 18793,
+      "sha256": "597a1bf9e4c0e0eb08740d7c546c41e60dd9209c5e3573ba2e00317cac961d0f"
+    },
+    {
+      "path": "programs/requirements.txt",
+      "bytes": 50327,
+      "sha256": "8b764f3c26e891fe75878c4e016dce9e4b8d1d79a11e1dac4162a372258e4b99"
+    },
+    {
+      "path": "style.css",
+      "bytes": 13340,
+      "sha256": "79a650510bbc75144c0efe29972da12d1dafd15e3ca14011b03b42a456a4451b"
+    },
+    {
+      "path": "voiceovers/slide_01.mp3",
+      "bytes": 98352,
+      "sha256": "824138f4b1ddb03d9d09f1c470693f639ae2f1209d0f96b2656dbe361b0eaa43"
+    },
+    {
+      "path": "voiceovers/slide_02.mp3",
+      "bytes": 99936,
+      "sha256": "44a6059eefa3dbc86c5153bd316d5481cd8c082c669cf1829554829174c185ff"
+    },
+    {
+      "path": "voiceovers/slide_03.mp3",
+      "bytes": 85824,
+      "sha256": "91cb3118921d34d2348052e6be56df900dc5a116f8eb7d66caf8b134d7d99153"
+    },
+    {
+      "path": "voiceovers/slide_04.mp3",
+      "bytes": 93456,
+      "sha256": "51c40e3b58c82663051d17a5cd8096000a0ad3e54552e68553fd56af0427bb4c"
+    },
+    {
+      "path": "voiceovers/slide_05.mp3",
+      "bytes": 84528,
+      "sha256": "60f96884af71f4fc8f9eba063c27f96cd446f1963a7b69ba5ab09d1d3fc9d079"
+    },
+    {
+      "path": "voiceovers/slide_06.mp3",
+      "bytes": 98496,
+      "sha256": "1c1f85a8f7895a48b6fb4fd83fcb1f7d71a969b874e5265327077438eece6e91"
+    },
+    {
+      "path": "voiceovers/slide_07.mp3",
+      "bytes": 85536,
+      "sha256": "104ff8335fc16efe1cf2129cb7133665baf150a32e7c82cfd875567f0a8fb519"
+    },
+    {
+      "path": "voiceovers/slide_08.mp3",
+      "bytes": 79200,
+      "sha256": "a082a4f17fc5ecab88a9069814ba85ee49b318aad6031c3ca1635489e4987018"
+    },
+    {
+      "path": "voiceovers/slide_09.mp3",
+      "bytes": 113328,
+      "sha256": "acf603ed2cc31cd4f6b7a98d31ab642853b30cacb58c1cbdd2c195836449022c"
+    },
+    {
+      "path": "voiceovers/slide_10.mp3",
+      "bytes": 89280,
+      "sha256": "ce3835d3885e254f957d7c9fa91c15246cd07301ef989bae09081a1daa3edbdf"
+    },
+    {
+      "path": "voiceovers/slide_11.mp3",
+      "bytes": 85536,
+      "sha256": "534c2d4bc8ad8659397cd2f9d02362246e20f377de4099a7fcbfbcfcdaf3166c"
+    },
+    {
+      "path": "voiceovers/slide_12.mp3",
+      "bytes": 112896,
+      "sha256": "e2261f119e4f7b3b96ca211169f624568d56476f628b6f52060e6759873dc8b0"
+    },
+    {
+      "path": "voiceovers/slide_13.mp3",
+      "bytes": 110016,
+      "sha256": "4a8f6a42ee60dd7e2373a619e18c669d272bd6b8eeaeb19afd9630f93995d9e3"
+    },
+    {
+      "path": "voiceovers/slide_14.mp3",
+      "bytes": 94896,
+      "sha256": "3abdc0d892636f4376c7a8f46f27f057781f903e29cb42ff23dc0cad4e02288d"
+    },
+    {
+      "path": "voiceovers/slide_15.mp3",
+      "bytes": 86112,
+      "sha256": "b249e4d169f2f81f7b2f4feb25a1d4c66b603df28b6ac1043bbdb2d5b6f64895"
+    },
+    {
+      "path": "voiceovers/slide_16.mp3",
+      "bytes": 83088,
+      "sha256": "326bf9dd870345752d446da1e004f3cce26382164373c229bb1cbe242686636d"
+    },
+    {
+      "path": "voiceovers/slide_17.mp3",
+      "bytes": 95184,
+      "sha256": "512edccb261a8b2b6961625154c113f57a7f39ed7df10aa95a9a3357df9f042e"
+    },
+    {
+      "path": "voiceovers/slide_18.mp3",
+      "bytes": 96768,
+      "sha256": "fc8c3a13e4967337f5a7f3d6ad4dbfb6e397ab45e1679de145431206d1dd9224"
+    },
+    {
+      "path": "voiceovers/slide_19.mp3",
+      "bytes": 96480,
+      "sha256": "3043412cd738abc97a24767b5a89e5d7e69476c85ef2e6819ea62472126a6a1b"
+    },
+    {
+      "path": "voiceovers/slide_20.mp3",
+      "bytes": 91728,
+      "sha256": "e9610f245345e812a010662eaef06378cc72c847b104fbe5773590bf7b7ca4ee"
+    },
+    {
+      "path": "voiceovers/slide_21.mp3",
+      "bytes": 80352,
+      "sha256": "1649383eabfa5aef16d556eecc57c68624b4c9031b96fa47573cc956c223aa84"
+    },
+    {
+      "path": "voiceovers/slide_22.mp3",
+      "bytes": 105984,
+      "sha256": "38a18c05559548a7bd71fad855eeae837a9768e7f75dcaeb3d3114c1fed97be7"
+    },
+    {
+      "path": "voiceovers/slide_23.mp3",
+      "bytes": 96768,
+      "sha256": "9587c2211403f432d49673d073d94887cf5f0399d3ece7d771d88897ffd63025"
+    },
+    {
+      "path": "voiceovers/slide_24.mp3",
+      "bytes": 87984,
+      "sha256": "d4bd7c323fcdc54896c123d6defd8210b50d88606c529b3840ae877667fa13d8"
+    },
+    {
+      "path": "voiceovers/slide_25.mp3",
+      "bytes": 88560,
+      "sha256": "2ca36d01bb6b3f16bb93c649201fbcef29fa6a251cc34362c13d6868d575202a"
+    },
+    {
+      "path": "voiceovers/slide_26.mp3",
+      "bytes": 109584,
+      "sha256": "d7c9ec90e7bd4fbd7c18a997bba92dea5ba8ed06bc4825ce31aba8c8f0626c5d"
+    },
+    {
+      "path": "voiceovers/slide_27.mp3",
+      "bytes": 92592,
+      "sha256": "1a7544d0f2167743a7a0800cfc67e5a8d963421d12ba8687143147107fe6b243"
+    },
+    {
+      "path": "voiceovers/slide_28.mp3",
+      "bytes": 88416,
+      "sha256": "7b7f0f12f11b4792b7dbb8973a55b38ae02984bdb0c8d4208b1e055ec3249e06"
+    },
+    {
+      "path": "voiceovers/slide_29.mp3",
+      "bytes": 95328,
+      "sha256": "a5b70f43e83ae7911410886cd8f2989665258bdc533e8b0b150f6254f1e039a3"
+    },
+    {
+      "path": "voiceovers/slide_30.mp3",
+      "bytes": 89856,
+      "sha256": "08c023763cb51c2519a25200c11ccbf9decacdb70a30fc22083520772cd26c08"
+    },
+    {
+      "path": "voiceovers/slide_31.mp3",
+      "bytes": 105696,
+      "sha256": "a1fe2e6b3968377c453ad43b021eb0fa2b1b8e14ae2b4a953f54442e10ea7bb0"
+    },
+    {
+      "path": "voiceovers/slide_32.mp3",
+      "bytes": 100944,
+      "sha256": "6c673dac991e10b69ed940f90d7286757b443f89903b9bcad3055ce0afcbcc15"
+    },
+    {
+      "path": "voiceovers/slide_33.mp3",
+      "bytes": 85104,
+      "sha256": "0431d91ec085b0ef065f149b1c97b4de1f400eed623103f9acbfced65cedba6f"
+    },
+    {
+      "path": "voiceovers/slide_34.mp3",
+      "bytes": 90720,
+      "sha256": "4e1c4633c056a21a371169fc123ee212cdf292618a5bd4cce16c5418dd8782b3"
+    },
+    {
+      "path": "voiceovers/slide_35.mp3",
+      "bytes": 115344,
+      "sha256": "26a0f71d84f53ca156c2cb18e69a585628d047aa7056fe39bbd2b25d9711cbcd"
+    },
+    {
+      "path": "voiceovers/slide_36.mp3",
+      "bytes": 111888,
+      "sha256": "b027566f3c507e4939d9529ef3c9c2dba106ab314af0e71df2d55bb5c0ee6731"
+    },
+    {
+      "path": "voiceovers/slide_37.mp3",
+      "bytes": 94752,
+      "sha256": "c60ce7a94d8d460e437c905ff08bed599bcf396b37cbb3fe4a22b57d6aa34fc7"
+    },
+    {
+      "path": "voiceovers/slide_38.mp3",
+      "bytes": 97056,
+      "sha256": "daafc61383af29d315adca4ee5b8e927b53b3cdbcd4f381975b4818579503dea"
+    },
+    {
+      "path": "voiceovers/slide_39.mp3",
+      "bytes": 96768,
+      "sha256": "c482a6f4851ccd453cbe853c82e844b8e44db3f9e21d9c4504b0a269a0a86924"
+    },
+    {
+      "path": "voiceovers/slide_40.mp3",
+      "bytes": 105984,
+      "sha256": "96da03f5b96e820456b1d8a6b414fcfe27258cc787b7df27203b8e4c640a03e5"
+    }
+  ],
+  "source_hashes": {
+    "slide.md": "4371c0f1a386d32589334e5367c6be1b66871e467c4d11dd8459a20e104f97ea",
+    "style.css": "79a650510bbc75144c0efe29972da12d1dafd15e3ca14011b03b42a456a4451b",
+    "interactive.html": "8666df47781da6645e6f0e4f7b1cbc36454b90298ad098efa9da3028fa803b93",
+    "interactive-guide.md": "451f6258c3ffad5be48c84061e693a82fcf3a4b2af8fd287d9d30936dc39e1b8",
+    "programs/guide.md": "002d770e376255ce1b2da343bf06912b0137ffb77478dcf70e7ecf95de03163f",
+    "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
+    "reveal-template.html": "2ee07ccd1fc0d62a011dfe7846a34be986e76d8c78750ad882f9e0ae0205a95b",
+    "learning-bundle.json": "9b341aa37d3567e9d9a645bc9ff77131b8e89f2b172d9aecd73a8804e3c95524",
+    "programs/evolutionary_computation.py": "2471b2ea047c90f7bf2871a21ac178b4a4a8fa8fe74505347e6effa603401a7f",
+    "programs/evolutionary_computation.ipynb": "79e89945feb087cd5117bb494a8516b5bda9367dc52e0ab19d5c2058a5d29b57",
+    "programs/requirements.txt": "8b764f3c26e891fe75878c4e016dce9e4b8d1d79a11e1dac4162a372258e4b99",
+    "voiceovers/slide_01.mp3": "824138f4b1ddb03d9d09f1c470693f639ae2f1209d0f96b2656dbe361b0eaa43",
+    "voiceovers/slide_02.mp3": "44a6059eefa3dbc86c5153bd316d5481cd8c082c669cf1829554829174c185ff",
+    "voiceovers/slide_03.mp3": "91cb3118921d34d2348052e6be56df900dc5a116f8eb7d66caf8b134d7d99153",
+    "voiceovers/slide_04.mp3": "51c40e3b58c82663051d17a5cd8096000a0ad3e54552e68553fd56af0427bb4c",
+    "voiceovers/slide_05.mp3": "60f96884af71f4fc8f9eba063c27f96cd446f1963a7b69ba5ab09d1d3fc9d079",
+    "voiceovers/slide_06.mp3": "1c1f85a8f7895a48b6fb4fd83fcb1f7d71a969b874e5265327077438eece6e91",
+    "voiceovers/slide_07.mp3": "104ff8335fc16efe1cf2129cb7133665baf150a32e7c82cfd875567f0a8fb519",
+    "voiceovers/slide_08.mp3": "a082a4f17fc5ecab88a9069814ba85ee49b318aad6031c3ca1635489e4987018",
+    "voiceovers/slide_09.mp3": "acf603ed2cc31cd4f6b7a98d31ab642853b30cacb58c1cbdd2c195836449022c",
+    "voiceovers/slide_10.mp3": "ce3835d3885e254f957d7c9fa91c15246cd07301ef989bae09081a1daa3edbdf",
+    "voiceovers/slide_11.mp3": "534c2d4bc8ad8659397cd2f9d02362246e20f377de4099a7fcbfbcfcdaf3166c",
+    "voiceovers/slide_12.mp3": "e2261f119e4f7b3b96ca211169f624568d56476f628b6f52060e6759873dc8b0",
+    "voiceovers/slide_13.mp3": "4a8f6a42ee60dd7e2373a619e18c669d272bd6b8eeaeb19afd9630f93995d9e3",
+    "voiceovers/slide_14.mp3": "3abdc0d892636f4376c7a8f46f27f057781f903e29cb42ff23dc0cad4e02288d",
+    "voiceovers/slide_15.mp3": "b249e4d169f2f81f7b2f4feb25a1d4c66b603df28b6ac1043bbdb2d5b6f64895",
+    "voiceovers/slide_16.mp3": "326bf9dd870345752d446da1e004f3cce26382164373c229bb1cbe242686636d",
+    "voiceovers/slide_17.mp3": "512edccb261a8b2b6961625154c113f57a7f39ed7df10aa95a9a3357df9f042e",
+    "voiceovers/slide_18.mp3": "fc8c3a13e4967337f5a7f3d6ad4dbfb6e397ab45e1679de145431206d1dd9224",
+    "voiceovers/slide_19.mp3": "3043412cd738abc97a24767b5a89e5d7e69476c85ef2e6819ea62472126a6a1b",
+    "voiceovers/slide_20.mp3": "e9610f245345e812a010662eaef06378cc72c847b104fbe5773590bf7b7ca4ee",
+    "voiceovers/slide_21.mp3": "1649383eabfa5aef16d556eecc57c68624b4c9031b96fa47573cc956c223aa84",
+    "voiceovers/slide_22.mp3": "38a18c05559548a7bd71fad855eeae837a9768e7f75dcaeb3d3114c1fed97be7",
+    "voiceovers/slide_23.mp3": "9587c2211403f432d49673d073d94887cf5f0399d3ece7d771d88897ffd63025",
+    "voiceovers/slide_24.mp3": "d4bd7c323fcdc54896c123d6defd8210b50d88606c529b3840ae877667fa13d8",
+    "voiceovers/slide_25.mp3": "2ca36d01bb6b3f16bb93c649201fbcef29fa6a251cc34362c13d6868d575202a",
+    "voiceovers/slide_26.mp3": "d7c9ec90e7bd4fbd7c18a997bba92dea5ba8ed06bc4825ce31aba8c8f0626c5d",
+    "voiceovers/slide_27.mp3": "1a7544d0f2167743a7a0800cfc67e5a8d963421d12ba8687143147107fe6b243",
+    "voiceovers/slide_28.mp3": "7b7f0f12f11b4792b7dbb8973a55b38ae02984bdb0c8d4208b1e055ec3249e06",
+    "voiceovers/slide_29.mp3": "a5b70f43e83ae7911410886cd8f2989665258bdc533e8b0b150f6254f1e039a3",
+    "voiceovers/slide_30.mp3": "08c023763cb51c2519a25200c11ccbf9decacdb70a30fc22083520772cd26c08",
+    "voiceovers/slide_31.mp3": "a1fe2e6b3968377c453ad43b021eb0fa2b1b8e14ae2b4a953f54442e10ea7bb0",
+    "voiceovers/slide_32.mp3": "6c673dac991e10b69ed940f90d7286757b443f89903b9bcad3055ce0afcbcc15",
+    "voiceovers/slide_33.mp3": "0431d91ec085b0ef065f149b1c97b4de1f400eed623103f9acbfced65cedba6f",
+    "voiceovers/slide_34.mp3": "4e1c4633c056a21a371169fc123ee212cdf292618a5bd4cce16c5418dd8782b3",
+    "voiceovers/slide_35.mp3": "26a0f71d84f53ca156c2cb18e69a585628d047aa7056fe39bbd2b25d9711cbcd",
+    "voiceovers/slide_36.mp3": "b027566f3c507e4939d9529ef3c9c2dba106ab314af0e71df2d55bb5c0ee6731",
+    "voiceovers/slide_37.mp3": "c60ce7a94d8d460e437c905ff08bed599bcf396b37cbb3fe4a22b57d6aa34fc7",
+    "voiceovers/slide_38.mp3": "daafc61383af29d315adca4ee5b8e927b53b3cdbcd4f381975b4818579503dea",
+    "voiceovers/slide_39.mp3": "c482a6f4851ccd453cbe853c82e844b8e44db3f9e21d9c4504b0a269a0a86924",
+    "voiceovers/slide_40.mp3": "96da03f5b96e820456b1d8a6b414fcfe27258cc787b7df27203b8e4c640a03e5"
+  },
+  "html": {
+    "after_sha256": "f2f4ab84086f74a51ef99e3128ae64ff1cf869ae965cd61fdf7ca8207fb41ef3"
+  },
+  "asset_repairs": [],
+  "publication_adjustments": [
+    "Teacher-only source-map link kept as plain text",
+    "Only allowlisted runtime, media and student materials are included"
+  ]
+}
