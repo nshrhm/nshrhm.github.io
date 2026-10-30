@@ -492,3 +492,25 @@ body.image-zoom-open {
   padding: 8px 18px;
   text-align: left;
 }
+
+/* Section signposting: use the existing eyebrow row; no new slide actions. */
+.reveal .section-roadmap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+}
+.reveal .section-steps {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.reveal .section-steps strong[aria-current="step"] {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+.reveal .section-context {
+  font-size: 18px;
+  text-align: right;
+}
