@@ -51,8 +51,8 @@ window.SCIS_BILINGUAL_DATA = {
   ],
   "4": [
     {
-      "en": "We separate two controls. Persona is a reading stance, and temperature is a sampling control.",
-      "ja": "2つの制御を分けます。ペルソナは読みの立場であり、温度はサンプリングの制御です。"
+      "en": "To address this problem, we vary persona and temperature independently. Persona is a reading stance, and temperature is a sampling control.",
+      "ja": "この問題に対処するため、ペルソナと温度を独立に変化させます。ペルソナは読みの立場、温度はサンプリングの制御です。"
     },
     {
       "en": "The rows show four personas. The columns show four temperature settings.",
@@ -155,8 +155,8 @@ window.SCIS_BILINGUAL_DATA = {
   ],
   "8": [
     {
-      "en": "First, consider the emotion scores. Persona accounts for most of the decomposed variation.",
-      "ja": "まず、感情スコアを見ます。分解した変動の大部分を、ペルソナが占めています。"
+      "en": "Now, let’s look at the results, starting with the emotion scores. Persona accounts for most of the decomposed variation.",
+      "ja": "ここから結果です。まず感情スコアを見ます。分解した変動の大部分をペルソナが占めています。"
     },
     {
       "en": "Its mean share is above eighty percent for anger and at least ninety percent for the other emotions.",
@@ -293,8 +293,8 @@ window.SCIS_BILINGUAL_DATA = {
   ],
   "13": [
     {
-      "en": "The practical lesson is to vary reading stance and sampling control independently.",
-      "ja": "実践上の要点は、読みの立場とサンプリングの制御を独立に変えることです。"
+      "en": "Let me conclude with the main lesson: vary the two controls independently, and examine both outcomes.",
+      "ja": "最後に要点をまとめます。二つの制御を独立に変化させ、両方の指標を調べることです。"
     },
     {
       "en": "That makes their separate contributions and interaction observable.",
