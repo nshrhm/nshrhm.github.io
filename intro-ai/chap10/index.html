@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>第12回 エージェントと強化学習</title>
+        <meta name="description"
+              content="形態素・統計・単語表現・音声認識を小さな数値例で理解する">
+        <meta name="author" content="白濵 成希">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+<!-- 1: 第12回 エージェントと強化学習を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>第12回 エージェントと強化学習</h2>
+<p>人工知能概論 ／ 2026年12月17日（木） ／ 白濵 成希</p>
+<p><strong>観測 → 行動 → 報酬 → Q値の更新</strong></p>
+<p>到達目標：Q学習の一回の更新を計算し、探索と評価の違いを説明する。</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+小さな分岐環境で、行動の選択と価値の更新を追います。 実機の性能や一般的な学習成功を測る授業ではありません。
+</aside>
+</section>
+<section>
+<!-- 2: 自習の進め方を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>自習の進め方</h2>
+<ol type="1">
+<li>問いを読み、結果を予想する。</li>
+<li>操作教材で計算過程を確かめる。</li>
+<li>Python／Notebookで同じ結果を再現する。</li>
+<li>コピー上で一項目変え、理由を説明する。</li>
+</ol>
+<p><a href="interactive.html" target="_blank" rel="noopener">操作教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a></p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+先に予想を書き、結果を見てから説明を書きます。 各画面のリセットで初期条件へ戻せます。
+</aside>
+</section>
+<section>
+<!-- 3: 第3回・第11回との接続を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>第3回・第11回との接続</h2>
+<p>第3回：教師あり・教師なし・強化学習と評価を区別する。</p>
+<p>第11回：画像の特徴から観測を整理する。</p>
+<p>今回は<strong>経験した報酬を使って行動の価値を更新</strong>する。</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+第3回に学んだ、行動と報酬の経験から学ぶという考え方を具体化します。 画像処理の出力を観測に使う応用はありますが、今回は画像入力を使いません。
+</aside>
+</section>
+<section>
+<!-- 4: エージェントとはを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>エージェントとは</h2>
+<p>環境から情報を受け取り、環境へ働きかける主体。</p>
+<p>観測 → エージェント → 行動 → 環境 → 次の観測</p>
+<p>この循環を、ソフトウェアでもロボットでも考えられる。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+観測はエージェントが受け取れる情報です。 現実では環境の全状態が分かるとは限りません。
+</aside>
+</section>
+<section>
+<!-- 5: エージェントと学習は別の概念を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>エージェントと学習は別の概念</h2>
+<p>決められた規則で動くエージェントもある。</p>
+<p>学習する場合：経験を使い、内部の値や規則を変える。</p>
+<p>今回：Q表を更新し、その値を行動選択に使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+エージェントの定義に学習機能を必須としません。 学習の有無と、環境と相互作用することを分けて説明してください。
+</aside>
+</section>
+<section>
+<!-- 6: 観測・行動・環境を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>観測・行動・環境</h2>
+<p>観測：今どこにいるか。</p>
+<p>行動：左へ進む／右へ進む。</p>
+<p>環境：次の状態と報酬を返す規則。</p>
+<p>今回は状態番号を完全に観測できると仮定する。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+部分的な観測では記憶や推定が必要になる場合があります。 この教材ではその難しさを除き、更新計算へ集中します。
+</aside>
+</section>
+<section>
+<!-- 7: ソフトウェアとロボットを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>ソフトウェアとロボット</h2>
+<p>ソフトウェア：画面やデータを観測し、選択や提案を行う。</p>
+<p>ロボット：センサーで観測し、モーター等で働きかける。</p>
+<p>同じ循環でも、観測・行動・制約は異なる。</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ロボットには物理的な制約があります。 分岐図で動くことを、そのまま実機制御の検証と考えないでください。
+</aside>
+</section>
+<section>
+<!-- 8: 関連するモデルの位置づけを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>関連するモデルの位置づけ</h2>
+<p>セル・オートマトン：局所規則でセルの状態を更新。</p>
+<p>交通流：車両と道路の相互作用をモデル化。</p>
+<p>ロボティクス：身体を持つシステムの観測と制御。</p>
+<p>これらに強化学習が必須とは限らない。</p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+モデルや応用分野の例として紹介します。 今回は専用の交通流やロボット演習を追加せず、分岐環境を扱います。
+</aside>
+</section>
+<section>
+<!-- 9: 今回の分岐環境を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>今回の分岐環境</h2>
+<p>状態0から開始。行動は左・右。</p>
+<table>
+<thead>
+<tr>
+<th>状態</th>
+<th>左：次状態／報酬</th>
+<th>右：次状態／報酬</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1・終端／4</td>
+<td>2／0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3・終端／0</td>
+<td>4・終端／10</td>
+</tr>
+</tbody>
+</table>
+<p>1・3・4は終端。1エピソードは最大2行動。</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+環境は決定的で、同じ状態と行動には同じ結果を返します。 この表と数値は授業用に設計したものです。
+</aside>
+</section>
+<section>
+<!-- 10: 操作：エージェントと環境を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>操作：エージェントと環境</h2>
+<div style="display:flex; gap:1.5em; align-items:center;">
+<div style="flex:1;">
+<p>予想：右を一回選ぶと、すぐ10を得られるか。</p>
+<p>操作：右 → 右の順に進む。</p>
+<p>説明：報酬を受け取る時点を区別する。</p>
+</div>
+<div style="flex:1;">
+<svg viewBox="0 0 500 310" role="img" aria-label="分岐環境の概念図。0左で終端1、報酬4。0右で2、報酬0。2左で終端3、報酬0。2右で終端4、報酬10。" style="width:100%; height:auto;">
+<g stroke="#7191af" stroke-width="3"><line x1="50" y1="150" x2="230" y2="50"/><line x1="50" y1="150" x2="230" y2="220"/><line x1="230" y1="220" x2="430" y2="145"/><line x1="230" y1="220" x2="430" y2="265"/></g> <g fill="#eef4fa" stroke="#174d77" stroke-width="2"><circle cx="50" cy="150" r="27"/><circle cx="230" cy="50" r="27"/><circle cx="230" cy="220" r="27"/><circle cx="430" cy="145" r="27"/><circle cx="430" cy="265" r="27"/></g> <g font-size="24" text-anchor="middle" fill="#16324f"><text x="50" y="158">0</text><text x="230" y="58">1</text><text x="230" y="228">2</text><text x="430" y="153">3</text><text x="430" y="273">4</text><text x="140" y="87">左 / 4</text><text x="140" y="175">右 / 0</text><text x="330" y="169">左 / 0</text><text x="330" y="231">右 / 10</text></g>
+</svg>
+<p>概念図：枝は行動／報酬。1・3・4は終端。</p>
+</div>
+</div>
+<p><a href="interactive.html#agent" target="_blank" rel="noopener">このテーマを操作する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最初の右行動は報酬ゼロです。 次の行動を選ぶ機会が残っていることが重要です。
+</aside>
+</section>
+<section>
+<!-- 11: 状態・行動・報酬を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>状態・行動・報酬</h2>
+<p>状態 s：意思決定の状況。</p>
+<p>行動 a：その状態で選べる操作。</p>
+<p>報酬 r：一回の遷移に対して環境が返す数値。</p>
+<p>報酬は正解の行動ラベルとは異なる。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今回の報酬は移動後に分かります。 教師あり学習のように、各状態に正解の行動を直接与える設定ではありません。
+</aside>
+</section>
+<section>
+<!-- 12: 方策は行動の選び方を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>方策は行動の選び方</h2>
+<p>方策：状態から行動、または行動の確率を決める規則。</p>
+<p>例：常に左／Q値が大きい方／時々ランダム。</p>
+<p>Q表は価値の見積もり、方策は選択の規則。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+Q表と方策は同じものではありません。 同じQ表でも探索率を変えると選択の確率が変わります。
+</aside>
+</section>
+<section>
+<!-- 13: 即時報酬と報酬合計を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>即時報酬と報酬合計</h2>
+<p>左：報酬列 [4] → 合計4。</p>
+<p>右→右：報酬列 [0, 10] → 合計10。</p>
+<p>最初の報酬だけで選ぶと、後の10を考慮できない。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+行動直後の報酬と、エピソード全体の報酬を分けます。 後から得る報酬をどう評価するかが次の論点です。
+</aside>
+</section>
+<section>
+<!-- 14: 割引収益を計算するを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>割引収益を計算する</h2>
+<p>2行動の割引収益：<strong>G = r₁ + γ r₂</strong></p>
+<p>γ=0.9：右→右は 0 + 0.9×10 = 9。</p>
+<p>γ=0.2：右→右は 2、左は4。</p>
+<p>報酬合計10が同じでも、割引収益は変わる。</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最初の報酬には割引を掛けません。 割引率は将来の報酬を現在の選択でどれだけ重視するかを変えます。
+</aside>
+</section>
+<section>
+<!-- 15: Q値は状態と行動の価値を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>Q値は状態と行動の価値</h2>
+<p>Q(s,a)：その行動から先の割引収益の見積もり。</p>
+<table>
+<thead>
+<tr>
+<th>Q表</th>
+<th style="text-align: right;">左</th>
+<th style="text-align: right;">右</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>状態0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>状態2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p>初期値は全て0。終端には行動を選ぶ行を置かない。</p>
+<p><a href="interactive.html#returns" target="_blank" rel="noopener">このテーマを操作する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この表のゼロは未学習の初期値です。 環境から計算できる最適Q値を、学習時の初期値として与えてはいません。
+</aside>
+</section>
+<section>
+<!-- 16: 探索と活用を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>探索と活用</h2>
+<p>活用：今のQ表で最大の行動を選ぶ。</p>
+<p>探索：現在の評価だけに従わず、行動を試す。</p>
+<p>未経験の行動の価値は、初期値のまま残る場合がある。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+探索には良い行動を知る機会と、短期的な報酬を失う可能性があります。 常に活用すれば十分とは限りません。
+</aside>
+</section>
+<section>
+<!-- 17: ε-greedyの規則を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>ε-greedyの規則</h2>
+<p>確率ε：左右から一様に選ぶ。</p>
+<p>確率1−ε：Q値が最大の行動を選ぶ。</p>
+<p>探索でも最大Q値の行動が選ばれることがある。</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+探索は必ず悪い方を選ぶ規則ではありません。 左右二つから一様に選ぶので、最大側を選ぶ場合もあります。
+</aside>
+</section>
+<section>
+<!-- 18: 操作：選択確率を比べるを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>操作：選択確率を比べる</h2>
+<p>Q左=0、Q右=1、ε=0.3の場合：</p>
+<p>P(右)=0.7+0.3÷2=0.85</p>
+<p>P(左)=0.3÷2=0.15</p>
+<p>有限の選択列では、この比率と完全一致するとは限らない。</p>
+<p><a href="interactive.html#choice" target="_blank" rel="noopener">このテーマを操作する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+理論上の確率と実際に数えた割合を分けます。 画面の選択列は固定シードの乱数で再現できるようにしています。
+</aside>
+</section>
+<section>
+<!-- 19: 同点と乱数の扱いを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>同点と乱数の扱い</h2>
+<p>Q値が同点なら、貪欲選択は左。</p>
+<p>各学習行動で乱数を必ず2個使用する。</p>
+<p>1個目：探索するか。2個目：探索時の左右。</p>
+<p>エピソードをまたいで乱数状態を継続する。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+活用する場合も二個目を消費し、実装間で順序をそろえます。 この同点処理と乱数手順は教材独自の再現性の約束です。
+</aside>
+</section>
+<section>
+<!-- 20: 学習率αを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>学習率α</h2>
+<p>α=0：経験してもQ値を変えない。</p>
+<p>α=1：今回の目標値で置き換える。</p>
+<p>α=0.5：旧Q値と目標値の中間に動く。</p>
+<p>大きいほど常に良いとは限らない。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+学習率は一回の更新幅を決めます。 今回の固定学習率を一般の収束条件と同一視しないでください。
+</aside>
+</section>
+<section>
+<!-- 21: 割引率γと探索率εを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>割引率γと探索率ε</h2>
+<p>γ：将来の価値を目標値へ反映する強さ。</p>
+<p>ε：ランダムな探索を行う確率。</p>
+<p>α：目標値へ近づく更新の強さ。</p>
+<p>三つを一度に変えず、一項目ずつ比較する。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+割引率と探索率は別の役割です。 将来を重視しても、その行動を経験するとは限りません。
+</aside>
+</section>
+<section>
+<!-- 22: Q学習の更新式を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>Q学習の更新式</h2>
+<p><strong>Q ← Q + α ×（目標値 − Q）</strong></p>
+<p>非終端：目標値 = r + γ max Q(s′,a′)</p>
+<p>終端：目標値 = r</p>
+<p>経験した状態・行動の要素だけを更新する。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+次状態の最大Q値を使いますが、その次の行動を実際に選んでから計算する規則ではありません。 更新されるのは今回選んだ要素です。
+</aside>
+</section>
+<section>
+<!-- 23: 誤差と更新後の値を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>誤差と更新後の値</h2>
+<p>旧Q=2、報酬=1、次の最大Q=6。</p>
+<p>α=0.5、γ=0.9、非終端なら：</p>
+<p>目標値=1+0.9×6=6.4</p>
+<p>誤差=6.4−2=4.4 → 新Q=2+0.5×4.4=4.2</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+計算の順序を目標値、誤差、新しい値に分けます。 この一回更新の数値例は、分岐環境とは別の練習入力です。
+</aside>
+</section>
+<section>
+<!-- 24: 終端には将来の行動がないを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>終端には将来の行動がない</h2>
+<p>旧Q=0、報酬=10、α=0.5。</p>
+<p>終端なので目標値=10。</p>
+<p>新Q=0+0.5×(10−0)=5。</p>
+<p>次の最大Qを入力しても、終端では使わない。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+終端からさらに価値を足すと、存在しない将来の行動を数えてしまいます。 終端かどうかを明示して計算します。
+</aside>
+</section>
+<section>
+<!-- 25: 操作：一回の更新を追うを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>操作：一回の更新を追う</h2>
+<p>予想：旧Q=6、報酬0、終端なら変化するか。</p>
+<p>α=0.5 → 目標値0 → 新Q=3。</p>
+<p>報酬0でも更新する。小数を整数へ切り捨てない。</p>
+<p><a href="interactive.html#update" target="_blank" rel="noopener">このテーマを操作する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+報酬ゼロは更新を省く条件ではありません。 目標値と旧Q値が異なれば、ゼロ報酬でも値が変わります。
+</aside>
+</section>
+<section>
+<!-- 26: 一回目の右→右を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>一回目の右→右</h2>
+<p>初期Qは全て0、α=0.5、γ=0.9。</p>
+<p>0→2：次の最大Qは0 → Q(0,右)=0。</p>
+<p>2→4：終端報酬10 → Q(2,右)=5。</p>
+<p>先の状態が更新されても、過去の要素は自動では変わらない。</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+二つの更新は実際の行動順に行います。 最後に得た報酬が一度で全ての過去状態に戻るわけではありません。
+</aside>
+</section>
+<section>
+<!-- 27: 二回目の右→右を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>二回目の右→右</h2>
+<p>0→2：目標値=0+0.9×5=4.5。</p>
+<p>Q(0,右)=0+0.5×4.5=2.25。</p>
+<p>2→4：Q(2,右)=5+0.5×(10−5)=7.5。</p>
+<p>遅れた報酬が、再び経験することで前の状態へ伝わる。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最初の更新では、その時点の次状態の値である五を使います。 後で得られる七点五を先取りしてはいけません。
+</aside>
+</section>
+<section>
+<!-- 28: 負の報酬も更新できるを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>負の報酬も更新できる</h2>
+<p>旧Q=2、終端報酬−4、α=0.5。</p>
+<p>目標値−4 → 新Q=2+0.5×(−4−2)=−1。</p>
+<p>報酬の符号で更新を省かない。</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+負の報酬は避けたい結果を表す設計にも使えます。 今回の変更可能範囲はマイナス百から百です。
+</aside>
+</section>
+<section>
+<!-- 29: 既知環境から計算した参照値を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>既知環境から計算した参照値</h2>
+<p>γ=0.9の最適Q値：</p>
+<table>
+<thead>
+<tr>
+<th>状態</th>
+<th style="text-align: right;">左</th>
+<th style="text-align: right;">右</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+<p>これは環境表から求めた参照値。学習処理には入力しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+参照値と有限回の学習結果を分けます。 表示で九に丸められていても、計算値が厳密に九へ到達したとは限りません。
+</aside>
+</section>
+<section>
+<!-- 30: 操作：エピソードを重ねるを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>操作：エピソードを重ねる</h2>
+<p>基準：α=0.5、γ=0.9、ε=0.3。</p>
+<p>100エピソード、シード65535。</p>
+<p>1行動 → 1エピソード → 残り全部の順に観察。</p>
+<p>Q表・更新履歴・終了回数を対応させる。</p>
+<p><a href="interactive.html#training" target="_blank" rel="noopener">このテーマを操作する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+一エピソードボタンは途中なら現在のエピソードを最後まで進めます。 条件を書き換えると初期Q表とシードからやり直します。
+</aside>
+</section>
+<section>
+<!-- 31: 学習後の評価を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>学習後の評価</h2>
+<p>学習済みQ表を固定する。</p>
+<p>探索なし、更新なし、乱数消費なし。</p>
+<p>状態0から貪欲方策で進み、経路・報酬合計・割引収益を記録。</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+学習中に偶然選んだ経路と、評価方策の経路は異なる場合があります。 評価を繰り返しても学習状態は変わりません。
+</aside>
+</section>
+<section>
+<!-- 32: 基準結果の読み方を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>基準結果の読み方</h2>
+<p>Q表（小数点以下6桁で丸め）：</p>
+<p>状態0：[3.999998, 9.000000]</p>
+<p>状態2：[0.000000, 10.000000]</p>
+<p>評価：0→2→4、報酬合計10、割引収益9。</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+これは指定した条件と乱数列で確認する基準です。 別のシードや有限の試行で、同じ結果になるという保証ではありません。
+</aside>
+</section>
+<section>
+<!-- 33: 条件を変えたら学び直すを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>条件を変えたら学び直す</h2>
+<p>初期Q表は0、乱数は指定シードに戻す。</p>
+<p>基準の設定をコピーして一項目だけ変更。</p>
+<p>途中のQ表へ別条件の経験を継ぎ足さない。</p>
+<p>例：γ=0.2なら、参照Q(0,右)=2。</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+割引率を変えると、評価したい価値そのものが変わります。 条件比較では初期条件をそろえます。
+</aside>
+</section>
+<section>
+<!-- 34: 操作：基準と変更を比較を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>操作：基準と変更を比較</h2>
+<p>ε=0：初期同点で左を選び、その報酬4を学ぶ。</p>
+<p>右の価値を知らないまま終える場合がある。</p>
+<p>γ=0.2：将来の10より即時の4を重視する設定。</p>
+<p>同じ経路でも、選ばれた理由は同じとは限らない。</p>
+<p><a href="interactive.html#compare" target="_blank" rel="noopener">このテーマを操作する</a></p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+探索を止めた場合と、価値の定義を変えた場合を比べます。 経路だけでなくQ表と設定も読む必要があります。
+</aside>
+</section>
+<section>
+<!-- 35: ばらつきと限界を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>ばらつきと限界</h2>
+<p>有限回で最適方策が得られるとは限らない。</p>
+<p>毎回の報酬やQ値が必ず増えるわけではない。</p>
+<p>固定学習率・有限試行の結果を一般の収束保証にしない。</p>
+<p>完全観測・決定的・小規模という仮定がある。</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この教材で動作したことと、現実の複雑な環境への有効性を区別します。 シードを変えることはばらつきの確認の入口です。
+</aside>
+</section>
+<section>
+<!-- 36: 保存して実行するを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>保存して実行する</h2>
+<ol type="1">
+<li>ZIPを保存し、展開する。</li>
+<li>既存venvとNotebookカーネルを選ぶ。</li>
+<li><code>python agent_qlearning.py --demo</code> を実行。</li>
+<li>Notebookは再起動後に全セル実行。</li>
+</ol>
+<p><a href="programs/agent_qlearning.py" download>Python</a> ／ <a href="programs/agent_qlearning.ipynb" download>Notebook</a> ／ <a href="programs/agent_qlearning.zip" download>ZIP</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">実行解説</a></p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+実行部分は標準ライブラリだけで動きます。 Notebookは同梱のPythonファイルを読み込まず、単独で実行できます。
+</aside>
+</section>
+<section>
+<!-- 37: コピー上で行う六つの変更を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>コピー上で行う六つの変更</h2>
+<p>α=0.1 ／ γ=0.2 ／ ε=0</p>
+<p>100→10エピソード ／ 遅延報酬10→2 ／ シード1</p>
+<p>毎回、基準設定から一項目だけ変える。</p>
+<p>予想 → 実行 → 経路・収益・Q表を比較 → 説明。</p>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+基準結果を上書きせず、別の変数に変更結果を保存します。 元に戻すときはカーネル再起動後に全セル実行します。
+</aside>
+</section>
+<section>
+<!-- 38: 学習方法を比較するを説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>学習方法を比較する</h2>
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>教師あり学習</th>
+<th>今回のQ学習</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>手掛かり</td>
+<td>入力と教師信号</td>
+<td>行動後の報酬と次状態</td>
+</tr>
+<tr>
+<td>変えるもの</td>
+<td>モデルのパラメーター</td>
+<td>状態・行動のQ表</td>
+</tr>
+<tr>
+<td>確認</td>
+<td>予測と正解の比較</td>
+<td>固定方策の経路と収益</td>
+</tr>
+</tbody>
+</table>
+<p>エージェントであることと、学習方法は別に考える。</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+分類の正解率を、そのまま今回の評価指標へ持ち込まないでください。 目的に合う評価を選ぶことが共通の考え方です。
+</aside>
+</section>
+<section>
+<!-- 39: 理解確認と次回を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>理解確認と次回</h2>
+<ol type="1">
+<li>ε=0.3で最大側を選ぶ確率はなぜ0.85か。</li>
+<li>終端報酬0でもQ値が変わる例を説明する。</li>
+<li>学習と評価で異なる処理を三つ挙げる。</li>
+</ol>
+<p>次回：第13回「人工知能とゲーム」へ。</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+式を暗記するだけでなく、どの値がどの時点で使われるかを説明しましょう。 次回の話題は今年度日程に沿って確認します。
+</aside>
+</section>
+<section>
+<!-- 40: 参考資料を説明し数値と規則を対応させる -->
+<div class="slide-body">
+<h2>参考資料</h2>
+<p>Poole・Mackworth, Artificial Intelligence: Foundations of Computational Agents, 3rd ed.</p>
+<p><a href="https://artint.info/3e/html/ArtInt3e.Ch2.S1.html">Agents and Environments, §2.1</a></p>
+<p><a href="https://artint.info/3e/html/ArtInt3e.Ch13.S4.html">Q-learning, §13.4</a> ／ <a href="https://artint.info/3e/html/ArtInt3e.Ch13.S5.html">Exploration and Exploitation, §13.5</a></p>
+<p>分岐環境・数値条件・乱数手順は本教材独自の仕様。</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+エージェントの考え方、Q学習の更新と探索は著者公開の本文を根拠にしています。 本教材の図、数値例、同点規則は原著の例を転載したものではありません。
+</aside>
+</section>
+</div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealAnimate,
+      RevealChalkboard,
+            RevealChart,
+        ];
+
+        const plugins =  [...printPlugins,
+        RevealZoom,
+        RevealSearch,
+                RevealMarkdown,
+                RevealMenu,
+                RevealFullscreen,
+                RevealAnything,
+                //RevealAudioSlideshow,
+                //RevealAudioRecorder,
+                RevealCustomControls,
+                // poll
+                // question
+                // seminar
+                Verticator
+                 ]
+
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+            height: 720,
+            margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+            customcontrols: {
+                    controls: [
+                            {
+                          id: 'toggle-overview',
+                          title: 'Toggle overview (O)',
+                          icon: '<i class="fa fa-th"></i>',
+                          action: 'Reveal.toggleOverview();'
+                        }
+                        ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+                ]
+            },
+            chart: {
+                    defaults: {
+                        color: 'lightgray', // color of labels
+                        scale: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: "lightgray" } , // color of grid lines
+                        },
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+            },
+                anything: [
+                {
+        className: "plot",
+        defaults: {width:500, height: 500, grid:true},
+        initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+     },
+     {
+        className: "chart",
+        initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+     },
+     {
+        className: "anything",
+        initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+     },
+                    ],
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+        });
+
+
+
+        // Change chalkboard theme :
+        function changeTheme(input) {
+            var config = {};
+            config.theme = input.value;
+            Reveal.getPlugin("RevealChalkboard").configure(config);
+            input.blur();
+        }
+
+        // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+        if (window.location.search.match(/print-pdf-now/gi)) {
+            setTimeout(() => {
+                window.print();
+              }, 2500);
+
+    }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第12回 エージェントと強化学習：プログラムの保存と学び方">
+<title>第12回 エージェントと強化学習：プログラムの保存と学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第12回 エージェントと強化学習：プログラムの保存と学び方</h1>
+<h2 id="目標と開始方法">目標と開始方法</h2>
+<p>Q表の一回更新を計算し、探索中の行動と固定方策の評価を区別します。前提はリスト、辞書、繰り返しと四則演算です。小さな分岐環境を使い、実行部分はPython標準ライブラリのみです。</p>
+<p><a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a></p>
+<p><a href="agent_qlearning.py" download>Pythonを保存</a> ／ <a href="agent_qlearning.ipynb" download>Notebookを保存</a> ／ <a href="agent_qlearning.zip" download>一式ZIPを保存</a></p>
+<h2 id="保存して実行する">保存して実行する</h2>
+<ol type="1">
+<li>ZIPを保存・展開し、同梱guide.htmlを開きます。以下は同梱ファイルだけで開始できます。</li>
+<li>VS Codeで展開先を開き、既存venvを有効化し、そのPythonインタープリターを選びます。Python 3.10以上が対象で、制作環境のPython版の導入は不要です。</li>
+<li>展開先のターミナルで実行します。</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> agent_qlearning.py <span class="at">--demo</span></span></code></pre></div>
+<p>uvを既に使っていれば <code>uv run python agent_qlearning.py --demo</code> も使えます。Notebookは既存Jupyter環境で開きます。環境再作成が必要なときだけ、venv内で <code>python -m pip install -r requirements.txt</code> を実行します。システム全体へのインストールは不要です。</p>
+<p>Notebookのカーネルを既存venvへ切り替え、「カーネルを再起動」→「すべて実行」を選びます。最後の「基準入力・結果を保持しました」が成功の目印です。同梱Pythonをimportせず、Notebook内の定義で動作します。</p>
+<h2 id="環境と出力の読み方">環境と出力の読み方</h2>
+<p>開始0、非終端0・2、終端1・3・4。0左→1で4、0右→2で0、2左→3で0、2右→4で10。各エピソードは最大2行動です。Q表の行は状態0・2、列は左・右です。</p>
+<p>基準はα=0.5、γ=0.9、ε=0.3、100回、シード65535、遅延報酬10。各学習行動で32ビットLCGを2回進め、探索判定と左右選択に使います。探索しなくても2個消費します。貪欲選択の同点は左です。</p>
+<ul>
+<li><code>baseline</code>：基準設定・Q表・学習回数・乱数状態・評価。</li>
+<li><code>first_updates</code>：最初の6行動。state/action、old、target、error、newを読む。</li>
+<li><code>optimal_reference</code>：環境から計算した最適Q値。学習に入力しない。</li>
+<li><code>changes</code>：コピーから開始した6変更結果。</li>
+<li><code>evaluation.path</code>：評価経路、<code>sum</code>：報酬合計、<code>discounted</code>：割引収益。</li>
+</ul>
+<p>基準Q表は6桁丸めで[[3.999998,9],[0,10]]。評価経路は[0,2,4]、合計10、割引収益9。これは指定条件の結果であり、有限回の成功保証ではありません。内部計算は丸めず、整数への切り捨ても行いません。評価は探索・更新・乱数消費を行いません。</p>
+<h2 id="関数を読み解く">関数を読み解く</h2>
+<p><code>transition</code>は環境表、<code>select_action</code>はε-greedy、<code>learn</code>は一要素の更新です。<code>Trainer.step()</code>は1行動、<code>episode()</code>は現在の回の終了まで、<code>finish()</code>は残り全部を実行します。<code>train(config)</code>は毎回新しいQ表と乱数から開始します。<code>history</code>には全更新が残ります。</p>
+<p>一回更新は旧Q＋α×(目標値−旧Q)。非終端の目標値は報酬＋γ×次の最大Q、終端では報酬だけです。報酬0でも更新します。右→右を2回経験すると、状態2右は5→7.5、状態0右は0→2.25になります。</p>
+<h2 id="コピー上の六つの変更">コピー上の六つの変更</h2>
+<p>元ファイルをコピーし、Notebookの基準セルを実行した後で下記を実行します。Python版ではコピーしたファイルのmain()より前に同じコードを置けます。その場合は最初に <code>baseline_config = dict(BASE)</code> と <code>baseline_run = train(baseline_config)</code> を置いてください。各変更は独立に基準設定のコピーから開始します。</p>
+<h3 id="alpha-0.1">alpha = 0.1</h3>
+<p>問い：学習率を小さくすると値の動きはどう変わるか。</p>
+<p>予想：基準との違いを、実行前に言葉または数値で残します。</p>
+<p>手順：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trial_alpha_config <span class="op">=</span> <span class="bu">dict</span>(baseline_config)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>trial_alpha_config[<span class="st">&quot;alpha&quot;</span>] <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>trial_alpha <span class="op">=</span> train(trial_alpha_config)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(round6(summary(trial_alpha)))</span></code></pre></div>
+<p>想定結果（この固定条件）：Q表 [[3.99797, 7.063614], [0.0, 9.476652]]、評価経路 [0, 2, 4]、合計 10.0、割引収益 9.0。</p>
+<p>説明する問い：一回の更新幅が小さくなるが、経路の違いも確認する。</p>
+<p>復帰：変更用変数を捨て、基準セルから再実行します。元のBASEを書き換えません。</p>
+<h3 id="gamma-0.2">gamma = 0.2</h3>
+<p>問い：将来の10を0.2倍すると即時4とどちらが大きいか。</p>
+<p>予想：基準との違いを、実行前に言葉または数値で残します。</p>
+<p>手順：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>trial_gamma_config <span class="op">=</span> <span class="bu">dict</span>(baseline_config)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>trial_gamma_config[<span class="st">&quot;gamma&quot;</span>] <span class="op">=</span> <span class="fl">0.2</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>trial_gamma <span class="op">=</span> train(trial_gamma_config)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(round6(summary(trial_gamma)))</span></code></pre></div>
+<p>想定結果（この固定条件）：Q表 [[4.0, 1.999725], [0.0, 9.999924]]、評価経路 [0, 1]、合計 4.0、割引収益 4.0。</p>
+<p>説明する問い：既知参照値の状態0右は2。価値の定義が変わったことを説明する。</p>
+<p>復帰：変更用変数を捨て、基準セルから再実行します。元のBASEを書き換えません。</p>
+<h3 id="epsilon-0.0">epsilon = 0.0</h3>
+<p>問い：初期同点で探索を止めると右を試すか。</p>
+<p>予想：基準との違いを、実行前に言葉または数値で残します。</p>
+<p>手順：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trial_epsilon_config <span class="op">=</span> <span class="bu">dict</span>(baseline_config)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>trial_epsilon_config[<span class="st">&quot;epsilon&quot;</span>] <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>trial_epsilon <span class="op">=</span> train(trial_epsilon_config)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(round6(summary(trial_epsilon)))</span></code></pre></div>
+<p>想定結果（この固定条件）：Q表 [[4.0, 0.0], [0.0, 0.0]]、評価経路 [0, 1]、合計 4.0、割引収益 4.0。</p>
+<p>説明する問い：左を繰り返し、未経験の右は0に残る。</p>
+<p>復帰：変更用変数を捨て、基準セルから再実行します。元のBASEを書き換えません。</p>
+<h3 id="episodes-10">episodes = 10</h3>
+<p>問い：10回だけの経験で値はどこまで変わるか。</p>
+<p>予想：基準との違いを、実行前に言葉または数値で残します。</p>
+<p>手順：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trial_episodes_config <span class="op">=</span> <span class="bu">dict</span>(baseline_config)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>trial_episodes_config[<span class="st">&quot;episodes&quot;</span>] <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>trial_episodes <span class="op">=</span> train(trial_episodes_config)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(round6(summary(trial_episodes)))</span></code></pre></div>
+<p>想定結果（この固定条件）：Q表 [[3.96875, 4.5], [0.0, 8.75]]、評価経路 [0, 2, 4]、合計 10.0、割引収益 9.0。</p>
+<p>説明する問い：更新履歴が短くなる。未学習と低価値を同一視しない。</p>
+<p>復帰：変更用変数を捨て、基準セルから再実行します。元のBASEを書き換えません。</p>
+<h3 id="delayed_reward-2.0">delayed_reward = 2.0</h3>
+<p>問い：遅延報酬を2へ変えるとどの経路が有利か。</p>
+<p>予想：基準との違いを、実行前に言葉または数値で残します。</p>
+<p>手順：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trial_delayed_reward_config <span class="op">=</span> <span class="bu">dict</span>(baseline_config)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>trial_delayed_reward_config[<span class="st">&quot;delayed_reward&quot;</span>] <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>trial_delayed_reward <span class="op">=</span> train(trial_delayed_reward_config)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(round6(summary(trial_delayed_reward)))</span></code></pre></div>
+<p>想定結果（この固定条件）：Q表 [[4.0, 1.799753], [0.0, 1.999985]]、評価経路 [0, 1]、合計 4.0、割引収益 4.0。</p>
+<p>説明する問い：参照値の状態0右は1.8、左4。環境条件の変更を説明する。</p>
+<p>復帰：変更用変数を捨て、基準セルから再実行します。元のBASEを書き換えません。</p>
+<h3 id="seed-1">seed = 1</h3>
+<p>問い：探索の順序が変わると学習過程は同じか。</p>
+<p>予想：基準との違いを、実行前に言葉または数値で残します。</p>
+<p>手順：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>trial_seed_config <span class="op">=</span> <span class="bu">dict</span>(baseline_config)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>trial_seed_config[<span class="st">&quot;seed&quot;</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>trial_seed <span class="op">=</span> train(trial_seed_config)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(round6(summary(trial_seed)))</span></code></pre></div>
+<p>想定結果（この固定条件）：Q表 [[4.0, 0.0], [0.0, 5.0]]、評価経路 [0, 1]、合計 4.0、割引収益 4.0。</p>
+<p>説明する問い：経路が同じでも行動履歴やQ表は異なり得る。</p>
+<p>復帰：変更用変数を捨て、基準セルから再実行します。元のBASEを書き換えません。</p>
+<h2 id="確認とエラー対処">確認とエラー対処</h2>
+<p><code>baseline_result == demo()</code> と <code>baseline_run == train(baseline_config)</code> がTrueなら基準は保持されています。結果が違ったら保存した元ファイルへ戻し、カーネル再起動後に全セル実行してください。NameErrorは途中セルだけ実行していないかを確認します。ValueErrorは空欄・NaN・範囲外・非整数を見直します。</p>
+<p>α・γ・εは0〜1、回数は整数0〜200、遅延報酬は−100〜100、シードは整数0〜4294967295です。状態や行動は環境表の値を使い、終端から行動しません。ModuleNotFoundErrorでJupyter関連が不足するときは、選択したvenvとカーネルを確認します。Python単体演習には追加パッケージは不要です。</p>
+<p>出力を保存する場合は新しいoutputsフォルダーを作り、元ファイルと分けます。探索を変えても毎回の報酬が必ず改善するとは限りません。評価で得た経路は、この決定的な小環境と指定Q表に対する結果です。</p>
+</main></body></html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第12回 エージェントと強化学習：操作マニュアル">
+<title>第12回 エージェントと強化学習：操作マニュアル</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第12回 エージェントと強化学習：操作マニュアル</h1>
+<h2 id="はじめに">はじめに</h2>
+<p>目標はQ学習の更新と探索・評価の違いを説明することです。前提は四則演算、確率の基本、状態と行動を区別すること。スライド9〜22を読み、下の6テーマを順に試してください。</p>
+<p><a href="index.html">スライド</a> ／ <a href="interactive.html">操作教材を開く</a> ／ <a href="interactive.html" download>操作HTMLを保存</a> ／ <a href="programs/guide.html">プログラム解説</a></p>
+<p>操作HTMLは単独保存し、ダブルクリックで開始できます。通信なしで使えます。予想欄→操作→結果→説明欄の順に進みます。入力欄の変更は即時反映されます。テーマのタブを選び、縦にスクロールして図と結果を確認します。タブにフォーカスを置き、左右矢印・Home・Endで移動できます。ボタンはEnterまたはタッチでも使えます。</p>
+<p>図は分岐環境の概念図です。色付き経路・Q表・更新値・選択列は実際の計算結果です。各テーマは独立しており、テーマ5の途中Q表をテーマ6へ引き継ぎません。記入欄はページを開いている間だけ保持します。</p>
+<h2 id="エージェントと環境">エージェントと環境</h2>
+<p><a href="interactive.html#agent">このテーマへ</a></p>
+<p>問い：右を一回選ぶだけで10を得られるか。</p>
+<p>予想：操作前に値または経路と、その理由を予想欄へ書く。</p>
+<p>手順：右、右を順に押し、状態・報酬・終端表示を読む。終了後は次のエピソードへ進む。</p>
+<p>想定結果：0→2で0、2→4で10。左なら0→1で4。</p>
+<p>説明する問い：行動と報酬を受け取る時点を対応させよう。</p>
+<p>復帰：このテーマの「リセット」を押すと入力・計算・記入欄を初期状態へ戻す。</p>
+<h2 id="即時報酬と将来の報酬">即時報酬と将来の報酬</h2>
+<p><a href="interactive.html#returns">このテーマへ</a></p>
+<p>問い：合計10の経路は、割引収益でも常に有利か。</p>
+<p>予想：操作前に値または経路と、その理由を予想欄へ書く。</p>
+<p>手順：右→右を選び、γを0.9から0.2へ変える。次に左経路と比較する。</p>
+<p>想定結果：合計は10のまま、割引収益は9から2へ。左はどちらも4。</p>
+<p>説明する問い：最初の報酬に割引を掛けない理由と、γの役割を説明しよう。</p>
+<p>復帰：このテーマの「リセット」を押すと入力・計算・記入欄を初期状態へ戻す。</p>
+<h2 id="探索と活用">探索と活用</h2>
+<p><a href="interactive.html#choice">このテーマへ</a></p>
+<p>問い：ε=0.3なら右を選ぶ確率は0.7か。</p>
+<p>予想：操作前に値または経路と、その理由を予想欄へ書く。</p>
+<p>手順：左Q=0、右Q=1でεを0、0.3、1へ変える。選択列と理論確率を比較する。</p>
+<p>想定結果：右の理論確率は1、0.85、0.5。有限列の割合は理論と完全一致しなくてよい。</p>
+<p>説明する問い：探索でも右を選ぶ場合があることを式で説明しよう。</p>
+<p>復帰：このテーマの「リセット」を押すと入力・計算・記入欄を初期状態へ戻す。</p>
+<h2 id="q値の一回更新">Q値の一回更新</h2>
+<p><a href="interactive.html#update">このテーマへ</a></p>
+<p>問い：終端報酬0なら更新を省いてよいか。</p>
+<p>予想：操作前に値または経路と、その理由を予想欄へ書く。</p>
+<p>手順：旧Q=6、報酬0、α=0.5、終端をオンにする。次の最大Qを変えても結果が変わらないことを確認する。</p>
+<p>想定結果：目標値0、新Q=3。初期表示は旧Q=0、報酬10、終端で新Q=5。</p>
+<p>説明する問い：終端の将来価値を使わない理由を説明しよう。</p>
+<p>復帰：このテーマの「リセット」を押すと入力・計算・記入欄を初期状態へ戻す。</p>
+<h2 id="エピソードを重ねる">エピソードを重ねる</h2>
+<p><a href="interactive.html#training">このテーマへ</a></p>
+<p>問い：一行動と一エピソードはいつ同じ長さになるか。</p>
+<p>予想：操作前に値または経路と、その理由を予想欄へ書く。</p>
+<p>手順：基準条件で1行動、1エピソード、残り全部を順に実行。履歴を開き、状態・行動・目標値を照合する。</p>
+<p>想定結果：左で終わると1行動、右なら2行動。基準100回の評価は0→2→4、合計10、割引収益9。</p>
+<p>説明する問い：状態2の更新が状態0へ伝わるタイミングを説明しよう。</p>
+<p>復帰：このテーマの「リセット」を押すと入力・計算・記入欄を初期状態へ戻す。</p>
+<h2 id="学習後の評価と比較">学習後の評価と比較</h2>
+<p><a href="interactive.html#compare">このテーマへ</a></p>
+<p>問い：探索しない場合と割引率を下げた場合は同じ理由で左を選ぶか。</p>
+<p>予想：操作前に値または経路と、その理由を予想欄へ書く。</p>
+<p>手順：変更欄でε=0、γ=0.2を選び、基準とのQ表・評価経路・参照値を比べる。他の4変更も試す。</p>
+<p>想定結果：この固定条件では両変更とも左へ。ε=0は右を経験しない。γ=0.2では参照値でも左4が右2を上回る。</p>
+<p>説明する問い：学習不足と価値の定義の変更を区別して説明しよう。</p>
+<p>復帰：このテーマの「リセット」を押すと入力・計算・記入欄を初期状態へ戻す。</p>
+<h2 id="条件再現性困ったとき">条件・再現性・困ったとき</h2>
+<p>学習率・割引率・探索率は0〜1。学習回数は整数0〜200、シードは整数0〜4294967295、遅延報酬は−100〜100です。手動更新のQ値・報酬も有限数−100〜100。空欄、範囲外、非数はエラーを表示します。値を修正するかリセットしてください。</p>
+<p>学習テーマで条件を変えると、Q表0と指定シードから再開します。「1エピソード」は途中なら現在の回を完了します。回数上限に達したらボタンを止めます。回数0は学習しません。評価は固定したQ表を読み、更新も乱数消費もしません。</p>
+<p>画面が変わらないときは、エラー表示と終端・回数上限を確認してください。履歴は最新8行を表示し、詳細を開くと全更新を読めます。別テーマに移って戻ると状態を保ちます。ブラウザーの戻る・進むはテーマ移動に使えます。再読込すると全テーマが初期状態になります。数値が丸めで同じでも厳密な一致とは限りません。</p>
+<p>直接リンクは末尾の#agent等で指定します。保存した操作HTMLからのマニュアルリンクには配布一式が必要ですが、6テーマの計算は単独で動きます。音声なし確認版のスライドには音声操作がありません。</p>
+</main></body></html>

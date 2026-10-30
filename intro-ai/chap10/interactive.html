@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="第12回 エージェントとQ学習を操作して学ぶ">
+        <title>分岐環境でQ学習を確かめる</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#17324d;background:#eef4fa}*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1120px;margin:auto;padding:1.3rem}h1{font-size:clamp(1.5rem,3vw,2.4rem)}a{color:#0756ad}nav{display:flex;gap:.45rem;flex-wrap:wrap}button,input,select,textarea{font:inherit}button{padding:.65rem;border:1px solid #356ca3;border-radius:.5rem;background:white;color:#17324d;cursor:pointer}button[aria-selected=true]{color:white;background:#175d97}:focus-visible{outline:3px solid #d47200;outline-offset:3px}section{background:white;padding:1.3rem;border-radius:1rem;box-shadow:0 3px 14px #17324d15}section[hidden]{display:none}.controls{display:flex;flex-wrap:wrap;gap:1rem;margin:1rem 0}label{display:block}input:not([type=checkbox]),select{display:block;max-width:100%;padding:.5rem;border:1px solid #788c9f;border-radius:.25rem}input[type=number]{width:8rem}input[type=text]{width:22rem}textarea{width:100%;min-height:4rem;margin:.3rem 0 1rem;padding:.5rem}table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{border:1px solid #bccbd9;padding:.45rem;text-align:left;overflow-wrap:anywhere}th{background:#e9f1f9}td{white-space:nowrap}.scroll{max-width:100%}.scroll{overflow:auto}.result{padding:1rem;background:#f2f7fb;border-left:4px solid #2385b6;overflow-wrap:anywhere}.error{color:#a32121;min-height:1.4rem}.hint{font-size:.95rem;color:#3d5266}svg{display:block;width:100%;max-height:250px}code{overflow-wrap:anywhere}.flow{display:flex;gap:.5rem;flex-wrap:wrap}.flow span{border:1px solid #82a8c6;border-radius:.3rem;padding:.5rem;background:#e8f3ff}@media(max-width:600px){header,main,footer{padding:.65rem}section{padding:.8rem}td,th{padding:.25rem;font-size:.9rem}}
+
+.grids{display:flex;flex-wrap:wrap;gap:1rem}.grids figure{flex:1 1 260px;max-width:440px;margin:0}svg{width:100%;max-height:380px}figcaption{font-weight:bold;margin-bottom:.4rem}text{fill:#142637}input[type=number]{max-width:110px}
+
+svg{max-width:650px;max-height:none}svg text{font-size:18px}.controls{align-items:end}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f6fa;padding:1rem;max-height:28rem;overflow:auto}.formula{font-size:1.3rem;font-weight:bold}td{white-space:normal}button:disabled{opacity:.5;cursor:default}
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>分岐環境でQ学習を確かめる</h1>
+            <p>予想 → 操作 → 計算結果 → 一つ変更 → 説明。第12回・標準ライブラリ演習と同じ数値規則。</p>
+            <p><a href="index.html">スライド</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="programs/guide.html">プログラム解説</a></p>
+            <nav role="tablist" aria-label="学習テーマ">
+                <button type="button" id="tab-agent"
+                        role="tab"
+                        data-tab="agent"
+                        aria-controls="agent"
+                        aria-selected="false">エージェントと環境</button>
+<button type="button" id="tab-returns"
+        role="tab"
+        data-tab="returns"
+        aria-controls="returns"
+        aria-selected="false">即時報酬と将来の報酬</button>
+<button type="button" id="tab-choice"
+        role="tab"
+        data-tab="choice"
+        aria-controls="choice"
+        aria-selected="false">探索と活用</button>
+<button type="button" id="tab-update"
+        role="tab"
+        data-tab="update"
+        aria-controls="update"
+        aria-selected="false">Q値の一回更新</button>
+<button type="button" id="tab-training"
+        role="tab"
+        data-tab="training"
+        aria-controls="training"
+        aria-selected="false">エピソードを重ねる</button>
+<button type="button" id="tab-compare"
+        role="tab"
+        data-tab="compare"
+        aria-controls="compare"
+        aria-selected="false">学習後の評価と比較</button>
+            </nav>
+        </header>
+        <main>
+            <section id="agent" role="tabpanel" aria-labelledby="tab-agent" hidden>
+                <h2>エージェントと環境</h2>
+                <p><strong>問い：</strong>右→右と進むと、いつ報酬10を受け取るか。</p>
+                <label>
+                    予想<textarea id="agent-prediction"></textarea>
+                </label>
+                <div class="controls">
+                    <button type="button" id="agent-left">左へ行動</button>
+<button type="button" id="agent-right">右へ行動</button>
+<button type="button" id="agent-next">次のエピソード</button>
+                </div>
+                <p id="agent-error" class="error" role="alert"></p>
+                <div id="agent-result" class="result" role="status" aria-live="polite"></div>
+                <div id="agent-graph"></div>
+                <label>
+                    結果を説明する<textarea id="agent-explanation"></textarea></label>
+<button type="button" id="agent-reset">このテーマをリセット</button>
+            </section>
+            <section id="returns" role="tabpanel" aria-labelledby="tab-returns" hidden>
+                <h2>即時報酬と将来の報酬</h2>
+                <p><strong>問い：</strong>γ=0.2でも遅れて得る10の方が有利か。</p>
+                <label>
+                    予想<textarea id="returns-prediction"></textarea>
+                </label>
+                <div class="controls">
+                    <label>
+                        経路<select id="returns-route">
+                        <option value="l">0→1：即時4</option>
+                        <option value="rl">0→2→3：0</option>
+                        <option value="rr">0→2→4：遅れて10</option>
+                    </select></label>
+<label>割引率 γ<input id="returns-gamma"
+       type="number"
+       value="0.9"
+       min="0"
+       max="1"
+       step="any">
+                    </label>
+                </div>
+                <p id="returns-error" class="error" role="alert"></p>
+                <div id="returns-result" class="result" role="status" aria-live="polite"></div>
+                <div id="returns-graph"></div>
+                <label>
+                    結果を説明する<textarea id="returns-explanation"></textarea></label>
+<button type="button" id="returns-reset">このテーマをリセット</button>
+            </section>
+            <section id="choice" role="tabpanel" aria-labelledby="tab-choice" hidden>
+                <h2>探索と活用</h2>
+                <p><strong>問い：</strong>ε=0.3なら最大Q値の行動は70%で選ばれるのか。</p>
+                <label>
+                    予想<textarea id="choice-prediction"></textarea>
+                </label>
+                <div class="controls">
+                    <label>
+                        左のQ値<input id="choice-left"
+       type="number"
+       value="0"
+       min="-100"
+       max="100"
+       step="any"></label>
+<label>右のQ値<input id="choice-right"
+       type="number"
+       value="1"
+       min="-100"
+       max="100"
+       step="any"></label>
+<label>探索率 ε<input id="choice-epsilon"
+       type="number"
+       value="0.3"
+       min="0"
+       max="1"
+       step="any"></label>
+<label>選択回数<input id="choice-count" type="number" value="20" min="1" max="100" step="1">
+                        </label>
+                    </div>
+                    <p id="choice-error" class="error" role="alert"></p>
+                    <div id="choice-result" class="result" role="status" aria-live="polite"></div>
+                    <div id="choice-graph"></div>
+                    <details>
+                        <summary>実際の選択列（シード65535）</summary>
+                        <p id="choice-sequence"></p>
+                    </details>
+                    <label>
+                        結果を説明する<textarea id="choice-explanation"></textarea></label>
+<button type="button" id="choice-reset">このテーマをリセット</button>
+                </section>
+                <section id="update" role="tabpanel" aria-labelledby="tab-update" hidden>
+                    <h2>Q値の一回更新</h2>
+                    <p><strong>問い：</strong>終端の報酬0でも、旧Q値2は変わるか。</p>
+                    <label>
+                        予想<textarea id="update-prediction"></textarea>
+                    </label>
+                    <div class="controls">
+                        <label>
+                            旧Q値<input id="update-old"
+       type="number"
+       value="0"
+       min="-100"
+       max="100"
+       step="any"></label>
+<label>報酬 r<input id="update-reward"
+       type="number"
+       value="10"
+       min="-100"
+       max="100"
+       step="any"></label>
+<label>次の最大Q値<input id="update-next"
+       type="number"
+       value="0"
+       min="-100"
+       max="100"
+       step="any"></label>
+<label>学習率 α<input id="update-alpha"
+       type="number"
+       value="0.5"
+       min="0"
+       max="1"
+       step="any"></label>
+<label>割引率 γ<input id="update-gamma"
+       type="number"
+       value="0.9"
+       min="0"
+       max="1"
+       step="any"></label>
+<label><input id="update-terminal" type="checkbox" checked>
+                            終端へ遷移
+                            </label>
+                        </div>
+                        <p id="update-error" class="error" role="alert"></p>
+                        <div id="update-result" class="result" role="status" aria-live="polite"></div>
+                        <p class="formula" id="update-equation"></p>
+                        <label>
+                            結果を説明する<textarea id="update-explanation"></textarea></label>
+<button type="button" id="update-reset">このテーマをリセット</button>
+                    </section>
+                    <section id="training" role="tabpanel" aria-labelledby="tab-training" hidden>
+                        <h2>エピソードを重ねる</h2>
+                        <p><strong>問い：</strong>右→右を経験すると、開始状態のQ値はいつ変わるか。</p>
+                        <label>
+                            予想<textarea id="training-prediction"></textarea>
+                        </label>
+                        <div class="controls">
+                            <label>
+                                学習率 α<input id="train-alpha" type="number" value="0.5" min="0" max="1" step="any"></label>
+<label>割引率 γ<input id="train-gamma" type="number" value="0.9" min="0" max="1" step="any"></label>
+<label>探索率 ε<input id="train-epsilon"
+       type="number"
+       value="0.3"
+       min="0"
+       max="1"
+       step="any"></label>
+<label>エピソード上限<input id="train-episodes"
+       type="number"
+       value="100"
+       min="0"
+       max="200"
+       step="1"></label>
+<label>シード<input id="train-seed"
+       type="number"
+       value="65535"
+       min="0"
+       max="4294967295"
+       step="1"></label>
+<label>遅延報酬<input id="train-delayed_reward"
+       type="number"
+       value="10"
+       min="-100"
+       max="100"
+       step="any"></label>
+<button type="button" id="training-step">1行動</button>
+<button type="button" id="training-episode">1エピソード</button>
+<button type="button" id="training-finish">設定回数まで実行</button>
+                        </div>
+                        <p id="training-error" class="error" role="alert"></p>
+                        <div id="training-result" class="result" role="status" aria-live="polite"></div>
+                        <p>条件を変えるとQ表・乱数・履歴を初期化します。1エピソードは現在の回の残りを実行します。上限到達後はリセットしてください。</p>
+                        <div id="training-graph"></div>
+                        <div id="training-table"></div>
+                        <h3>直近8行動の更新</h3>
+                        <pre id="training-history"></pre>
+                        <details>
+                            <summary>全更新履歴（計算結果・表示6桁）</summary>
+                            <pre id="training-all"></pre>
+                        </details>
+                        <label>
+                            結果を説明する<textarea id="training-explanation"></textarea></label>
+<button type="button" id="training-reset">このテーマをリセット</button>
+                    </section>
+                    <section id="compare" role="tabpanel" aria-labelledby="tab-compare" hidden>
+                        <h2>学習後の評価と比較</h2>
+                        <p><strong>問い：</strong>学習中の報酬合計が大きいことと評価方策がよいことは同じか。</p>
+                        <label>
+                            予想<textarea id="compare-prediction"></textarea>
+                        </label>
+                        <div class="controls">
+                            <label>
+                                基準から一つ変更<select id="compare-change">
+                                <option value="alpha">αを0.1</option>
+                                <option value="gamma">γを0.2</option>
+                                <option value="epsilon">εを0</option>
+                                <option value="episodes">10エピソード</option>
+                                <option value="delayed_reward">遅延報酬を2</option>
+                                <option value="seed">シードを1</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="compare-error" class="error" role="alert"></p>
+                        <div id="compare-result" class="result" role="status" aria-live="polite"></div>
+                        <div id="compare-graph"></div>
+                        <div id="compare-tables"></div>
+                        <label>
+                            結果を説明する<textarea id="compare-explanation"></textarea></label>
+<button type="button" id="compare-reset">このテーマをリセット</button>
+                    </section>
+                </main>
+                <footer>
+                    <p>自作の決定的な5状態環境。分岐図の接続はモデル、着色・Q表・履歴は計算結果です。数値表示は小数点以下6桁、計算途中は丸めません。参照値は既知環境から独立に求め、学習には入力しません。有限回の学習で最適方策を得る保証はありません。</p>
+                    <p>単一HTMLを保存すればオフラインで操作できます。予想・説明は端末内の画面にのみ保持し、外部へ送信しません。ブラウザーを閉じる前に必要な記録を自分で保存してください。</p>
+                </footer>
+                <script id="agent-core">
+'use strict';
+var AQ = (() => {
+  const BASE={alpha:.5,gamma:.9,epsilon:.3,episodes:100,seed:65535,delayed_reward:10};
+  const CHANGES={alpha:.1,gamma:.2,epsilon:0,episodes:10,delayed_reward:2,seed:1};
+  const STATES=[0,2], ACTIONS=['left','right'], clone=x=>JSON.parse(JSON.stringify(x));
+  function number(x,lo,hi,name='値'){if(typeof x!=='number'||!Number.isFinite(x)||x<lo||x>hi)throw Error(`${name}は${lo}〜${hi}の有限数です`);return x;}
+  function integer(x,lo,hi,name='値'){number(x,lo,hi,name);if(!Number.isInteger(x))throw Error(`${name}は整数です`);return x;}
+  function settings(config={}){if(!config||Array.isArray(config)||typeof config!=='object'||Object.keys(config).some(k=>!Object.hasOwn(BASE,k)))throw Error('設定名を確認してください');const c={...BASE,...config};for(const k of ['alpha','gamma','epsilon'])number(c[k],0,1,k);integer(c.episodes,0,200,'エピソード数');integer(c.seed,0,4294967295,'シード');number(c.delayed_reward,-100,100,'遅延報酬');return c;}
+  class RNG{constructor(seed){this.state=integer(seed,0,4294967295,'シード');}random(){this.state=(Math.imul(1664525,this.state)+1013904223)>>>0;return this.state/4294967296;}}
+  function qtable(q){if(!Array.isArray(q)||q.length!==2)throw Error('Q表は状態0・2の2行です');q.forEach(row=>{if(!Array.isArray(row)||row.length!==2)throw Error('各行は左・右の2列です');row.forEach(x=>number(x,-100,100,'Q値'));});return q;}
+  function stateIndex(s){integer(s,0,4,'状態');if(!STATES.includes(s))throw Error('終端では行動できません');return STATES.indexOf(s);}
+  function transition(s,a,reward=10){stateIndex(s);if(!ACTIONS.includes(a))throw Error('行動はleftまたはrightです');number(reward,-100,100,'遅延報酬');return s===0?(a==='left'?[1,4,true]:[2,0,false]):(a==='left'?[3,0,true]:[4,reward,true]);}
+  function greedy(row){if(!Array.isArray(row)||row.length!==2)throw Error('左右のQ値を指定してください');row.forEach(x=>number(x,-100,100,'Q値'));return row[0]>=row[1]?0:1;}
+  function probabilities(row,eps){number(eps,0,1,'探索率');const best=greedy(row);return [0,1].map(a=>eps/2+(a===best?1-eps:0));}
+  function selectAction(row,eps,rng){probabilities(row,eps);const draws=[rng.random(),rng.random()],explore=draws[0]<eps,a=explore?Math.floor(draws[1]*2):greedy(row);return {action:ACTIONS[a],explore,draws};}
+  function updateValue(old,reward,next_max,terminal,alpha,gamma){[old,reward,next_max].forEach(x=>number(x,-100,100));number(alpha,0,1,'学習率');number(gamma,0,1,'割引率');if(typeof terminal!=='boolean')throw Error('終端条件はboolです');const target=terminal?reward:reward+gamma*next_max;return {old,reward,next_max,terminal,target,error:target-old,new:old+alpha*(target-old)};}
+  function learn(q,s,action,alpha=.5,gamma=.9,reward=10){qtable(q);const i=stateIndex(s),[next_state,r,terminal]=transition(s,action,reward),a=ACTIONS.indexOf(action),future=terminal?0:Math.max(...q[stateIndex(next_state)]),u=updateValue(q[i][a],r,future,terminal,alpha,gamma),changed=clone(q);changed[i][a]=u.new;return [changed,{state:s,action,next_state,...u}];}
+  function pathReturn(rewards,gamma){number(gamma,0,1,'割引率');if(!Array.isArray(rewards)||rewards.length<1||rewards.length>2)throw Error('報酬列は1〜2個です');rewards.forEach(x=>number(x,-100,100,'報酬'));return {sum:rewards.reduce((a,b)=>a+b,0),discounted:rewards.reduce((a,b,i)=>a+gamma**i*b,0)};}
+  function evaluate(q,gamma=.9,reward=10){qtable(q);number(gamma,0,1,'割引率');number(reward,-100,100,'遅延報酬');let s=0;const path=[0],actions=[],rewards=[];while(STATES.includes(s)){const action=ACTIONS[greedy(q[stateIndex(s)])],[n,r]=transition(s,action,reward);s=n;path.push(s);actions.push(action);rewards.push(r);}return {path,actions,rewards,...pathReturn(rewards,gamma)};}
+  function optimalQ(gamma=.9,reward=10){number(gamma,0,1,'割引率');number(reward,-100,100,'遅延報酬');return [[4,gamma*Math.max(0,reward)],[0,reward]];}
+  class Trainer{
+    constructor(config={}){this.config=settings(config);this.q=[[0,0],[0,0]];this.rng=new RNG(this.config.seed);this.state=0;this.completed=0;this.history=[];}
+    step(){if(this.completed>=this.config.episodes)return null;if(!STATES.includes(this.state))this.state=0;const choice=selectAction(this.q[stateIndex(this.state)],this.config.epsilon,this.rng);const [q,record]=learn(this.q,this.state,choice.action,this.config.alpha,this.config.gamma,this.config.delayed_reward);this.q=q;Object.assign(record,{episode:this.completed+1,explore:choice.explore,draws:choice.draws});this.history.push(record);this.state=record.next_state;if(record.terminal)this.completed++;return clone(record);}
+    episode(){const before=this.completed;while(this.completed===before&&this.step()!==null){}return this.result();}
+    finish(){while(this.step()!==null){}return this.result();}
+    result(){return {config:{...this.config},q:clone(this.q),completed:this.completed,state:this.state,rng_state:this.rng.state,history:clone(this.history),evaluation:evaluate(this.q,this.config.gamma,this.config.delayed_reward)};}
+  }
+  const train=(c={})=>new Trainer(c).finish();
+  function summary(r){return Object.fromEntries(['config','q','completed','rng_state','evaluation'].map(k=>[k,clone(r[k])]));}
+  function round6(x){if(typeof x==='number')return Math.round(x*1e6)/1e6;if(Array.isArray(x))return x.map(round6);if(x&&typeof x==='object')return Object.fromEntries(Object.entries(x).map(([k,v])=>[k,round6(v)]));return x;}
+  function demo(){const base=train();return round6({baseline:summary(base),first_updates:base.history.slice(0,6),optimal_reference:optimalQ(),changes:Object.fromEntries(Object.entries(CHANGES).map(([k,v])=>[k,summary(train({...BASE,[k]:v}))]))});}
+  return {BASE,CHANGES,STATES,ACTIONS,clone,number,integer,settings,RNG,qtable,stateIndex,transition,greedy,probabilities,selectAction,updateValue,learn,pathReturn,evaluate,optimalQ,Trainer,train,summary,round6,demo};
+})();
+
+                </script>
+                <script>
+'use strict';
+const ids=['agent','returns','choice','update','training','compare'];
+const $=id=>document.getElementById(id), fmt=x=>Number(x.toFixed(6)).toString();
+function value(id){const el=$(id);if(el.value.trim()==='')throw Error('空欄を埋めてください');return Number(el.value);}
+function show(id,fn){try{fn();$(id+'-error').textContent='';}catch(e){$(id+'-error').textContent=e.message;$(id+'-result').textContent='入力を確認してください。';}}
+function graph(target,path=[0],reward=10){const pts=[[50,150],[230,50],[230,220],[430,145],[430,265]],edges=[[0,1,'左 / 4'],[0,2,'右 / 0'],[2,3,'左 / 0'],[2,4,'右 / '+fmt(reward)]];let s='<svg viewBox="0 0 500 310" role="img" aria-label="5状態の分岐環境。1・3・4は終端。現在の経路は'+path.join('から')+'">';for(const [a,b,label] of edges){const [x,y]=pts[a],[u,v]=pts[b];s+=`<line x1="${x}" y1="${y}" x2="${u}" y2="${v}" stroke="#7191af" stroke-width="3"/><text x="${(x+u)/2}" y="${(y+v)/2-12}" text-anchor="middle">${label}</text>`;}pts.forEach(([x,y],i)=>{s+=`<circle cx="${x}" cy="${y}" r="27" fill="${path.includes(i)?'#ffe2a5':'#eef4fa'}" stroke="#174d77" stroke-width="${i===path.at(-1)?4:1}"/><text x="${x}" y="${y+6}" text-anchor="middle">${i}</text>`;});s+='<text x="10" y="20">状態番号：1・3・4は終端</text></svg>';$(target).innerHTML=s;}
+function table(q){return '<table><caption>Q表：行は状態、列は行動（計算結果）</caption><thead><tr><th>状態</th><th>左</th><th>右</th></tr></thead><tbody>'+q.map((r,i)=>`<tr><th>${[0,2][i]}</th><td>${fmt(r[0])}</td><td>${fmt(r[1])}</td></tr>`).join('')+'</tbody></table>';}
+let agentPath=[0],agentRewards=[];
+function renderAgent(){const state=agentPath.at(-1),terminal=!AQ.STATES.includes(state);graph('agent-graph',agentPath);$('agent-result').textContent=`現在状態 ${state}。経路 ${agentPath.join('→')}。報酬列 [${agentRewards.join(', ')}]。${terminal?'終了：次のエピソードで開始状態へ戻ります。':'左右の行動を選んでください。'} このテーマでは学習しません。`;$('agent-left').disabled=terminal;$('agent-right').disabled=terminal;}
+for(const a of ['left','right'])$('agent-'+a).onclick=()=>show('agent',()=>{const [s,r]=AQ.transition(agentPath.at(-1),a);agentPath.push(s);agentRewards.push(r);renderAgent();});
+$('agent-next').onclick=()=>{agentPath=[0];agentRewards=[];renderAgent();};
+function renderReturns(){const route=$('returns-route').value,paths={l:[0,1],rl:[0,2,3],rr:[0,2,4]},rewards={l:[4],rl:[0,0],rr:[0,10]},g=value('returns-gamma'),r=AQ.pathReturn(rewards[route],g);graph('returns-graph',paths[route]);$('returns-result').textContent=`報酬列 [${rewards[route]}]、報酬合計 ${fmt(r.sum)}、割引収益 ${fmt(r.discounted)}。経路が2行動なら r1 + γ×r2。γは将来の報酬の重みです。`;}
+function renderChoice(){const row=[value('choice-left'),value('choice-right')],eps=value('choice-epsilon'),count=AQ.integer(value('choice-count'),1,100,'試行数'),p=AQ.probabilities(row,eps),rng=new AQ.RNG(65535),sequence=[];for(let i=0;i<count;i++)sequence.push(AQ.selectAction(row,eps,rng));const n=sequence.filter(x=>x.action==='left').length;const bars=p.map((x,i)=>`<text x="5" y="${35+55*i}">${['左','右'][i]}</text><rect x="45" y="${15+55*i}" width="${x*300}" height="30" fill="#2081ad"/><text x="${50+x*300}" y="${36+55*i}">${fmt(x)}</text>`).join('');$('choice-graph').innerHTML=`<svg viewBox="0 0 440 130" role="img" aria-label="理論上の選択確率 左${p[0]} 右${p[1]}">${bars}</svg>`;$('choice-result').textContent=`理論確率：左 ${fmt(p[0])}、右 ${fmt(p[1])}。${count}回の実選択：左 ${n}、右 ${count-n}。探索枝でも最大Q値の行動を選べます。同点の活用は左優先。`;$('choice-sequence').textContent=sequence.map(x=>`${x.action==='left'?'左':'右'}(${x.explore?'探索':'活用'})`).join(' → ');}
+function renderUpdate(){const u=AQ.updateValue(value('update-old'),value('update-reward'),value('update-next'),$('update-terminal').checked,value('update-alpha'),value('update-gamma'));$('update-result').textContent=`目標値 ${fmt(u.target)}、差 ${fmt(u.error)}、更新後Q値 ${fmt(u.new)}。${u.terminal?'終端なので次の最大Q値は使いません。':'報酬と割引した次の最大Q値を両方使います。'}`;$('update-equation').textContent=`${fmt(u.old)} + ${fmt(value('update-alpha'))} × (${fmt(u.target)} − ${fmt(u.old)}) = ${fmt(u.new)}`;}
+let trainer;
+function config(){return AQ.settings(Object.fromEntries(Object.keys(AQ.BASE).map(k=>[k,value('train-'+k)])));}
+function renderTraining(){const r=trainer.result();graph('training-graph',[r.state],r.config.delayed_reward);$('training-table').innerHTML=table(r.q);$('training-result').textContent=`完了 ${r.completed}/${r.config.episodes} エピソード、実行 ${r.history.length} 行動。現在状態 ${r.state}。固定方策の評価経路 ${r.evaluation.path.join('→')}、報酬合計 ${fmt(r.evaluation.sum)}、割引収益 ${fmt(r.evaluation.discounted)}。評価でQ表は更新しません。`;$('training-history').textContent=r.history.slice(-8).map(x=>`回${x.episode}: ${x.state}→${x.next_state} ${x.action==='left'?'左':'右'} / ${x.explore?'探索':'活用'} / r=${fmt(x.reward)} / 目標=${fmt(x.target)} / Q ${fmt(x.old)}→${fmt(x.new)}`).join('\n')||'まだ更新はありません。';$('training-all').textContent=JSON.stringify(AQ.round6(r.history),null,2);for(const k of ['step','episode','finish'])$('training-'+k).disabled=r.completed>=r.config.episodes;}
+function newTraining(){for(const k of ['step','episode','finish'])$('training-'+k).disabled=true;show('training',()=>{trainer=new AQ.Trainer(config());renderTraining();});}
+for(const k of ['step','episode','finish'])$('training-'+k).onclick=()=>show('training',()=>{trainer[k]();renderTraining();});
+function renderCompare(){const k=$('compare-change').value,base=AQ.train(),c={...AQ.BASE,[k]:AQ.CHANGES[k]},trial=AQ.train(c);$('compare-tables').innerHTML='<h3>基準の学習結果</h3>'+table(base.q)+'<h3>一つ変更した学習結果</h3>'+table(trial.q)+'<h3>変更条件の既知環境の参照値（学習には渡さない）</h3>'+table(AQ.optimalQ(c.gamma,c.delayed_reward));const a=base.evaluation,b=trial.evaluation;$('compare-result').textContent=`変更 ${k}: ${AQ.BASE[k]}→${c[k]}。基準：${a.path.join('→')}、報酬合計 ${fmt(a.sum)}、割引収益 ${fmt(a.discounted)}。変更：${b.path.join('→')}、報酬合計 ${fmt(b.sum)}、割引収益 ${fmt(b.discounted)}。学習中の探索と、評価時の貪欲選択を分けて比較します。`;graph('compare-graph',b.path,c.delayed_reward);}
+const renderers={agent:renderAgent,returns:renderReturns,choice:renderChoice,update:renderUpdate,training:newTraining,compare:renderCompare};
+for(const id of ids){const section=$(id);for(const el of section.querySelectorAll('input,select')){el.addEventListener('input',()=>{if(id==='training')newTraining();else show(id,renderers[id]);});}$(id+'-reset').onclick=()=>{for(const el of section.querySelectorAll('input,select,textarea')){if(el.tagName==='SELECT')el.selectedIndex=0;else if(el.type==='checkbox')el.checked=el.defaultChecked;else el.value=el.defaultValue;}if(id==='agent'){agentPath=[0];agentRewards=[];}show(id,renderers[id]);};}
+function navigate(){const id=ids.includes(location.hash.slice(1))?location.hash.slice(1):ids[0];for(const x of ids){$(x).hidden=x!==id;$('tab-'+x).setAttribute('aria-selected',String(x===id));$('tab-'+x).tabIndex=x===id?0:-1;}}
+for(const id of ids){$('tab-'+id).onclick=()=>{if(location.hash==='#'+id)navigate();else location.hash=id;};$('tab-'+id).onkeydown=e=>{let i=ids.indexOf(id);if(e.key==='ArrowRight')i=(i+1)%ids.length;else if(e.key==='ArrowLeft')i=(i+ids.length-1)%ids.length;else if(e.key==='Home')i=0;else if(e.key==='End')i=ids.length-1;else return;e.preventDefault();$('tab-'+ids[i]).click();$('tab-'+ids[i]).focus();};}
+window.addEventListener('hashchange',navigate);for(const id of ids)show(id,renderers[id]);navigate();
+
+                </script>
+            </body>
+        </html>
