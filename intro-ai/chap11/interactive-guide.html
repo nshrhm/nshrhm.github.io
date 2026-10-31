@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第13回 人工知能とゲーム：操作マニュアル">
+<title>第13回 人工知能とゲーム：操作マニュアル</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第13回 人工知能とゲーム：操作マニュアル</h1>
+<h2 id="目標と開始">目標と開始</h2>
+<p>相手の選択を考えて値を戻し、打切りの推定と枝刈りの上限・下限を区別します。前提は最大・最小、木の親子、簡単なリストです。まずスライド6〜17を読み、予想を書いてから操作してください。</p>
+<p><a href="index.html">スライド</a> ／ <a href="interactive.html">操作教材</a> ／ <a href="programs/guide.html">プログラム解説</a></p>
+<p><a href="interactive.html" download>操作教材を保存</a></p>
+<p>保存したinteractive.htmlは単独・オフラインで動作します。ファイルをブラウザーで開きます。6個のタブは直接リンク、戻る／進むに対応します。Tabで移動しEnterで操作、タブにフォーカスがあると左右矢印・Home・Endも使えます。スマートフォンはボタンをタップします。予想・説明は送信も永続保存もしません。残すときは手元のノートへコピーします。</p>
+<p>図の位置は説明用です。数値・色・履歴は探索結果を示します。緑は訪問済み、破線は枝刈り。未評価は「未探索」のままにします。</p>
+<h2 id="局面と合法手">局面と合法手</h2>
+<p><a href="interactive.html#rules">このテーマを開く</a></p>
+<ul>
+<li>問い：左から1個取るとどうなるか。</li>
+<li>予想：(2,2)で手番がMINになると予想する。</li>
+<li>手順：左から1個のボタンを押し、別の合法手も選ぶ。</li>
+<li>想定結果：石数(2,2)、手番MIN。最後を取ると終了し、合法手ボタンがなくなる。</li>
+<li>説明する問い：石数だけで勝敗を決められないのはなぜか。</li>
+<li>復帰：このテーマをリセット。入力・履歴・予想・説明を基準へ戻します。</li>
+</ul>
+<h2 id="ミニマックス">ミニマックス</h2>
+<p><a href="interactive.html#minimax">このテーマを開く</a></p>
+<ul>
+<li>問い：9を含むBが最善だろうか。</li>
+<li>予想：各MINの最小値を先に書く。</li>
+<li>手順：初期表示で3・Aを確認し、B1の利得だけ2から6に変える。</li>
+<li>想定結果：A=3,B=2,C=0から根3。変更後はB=6で根6・B。</li>
+<li>説明する問い：Bで選ぶのは誰か。</li>
+<li>復帰：このテーマをリセット。入力・履歴・予想・説明を基準へ戻します。</li>
+</ul>
+<h2 id="探索深さと評価">探索深さと評価</h2>
+<p><a href="interactive.html#cutoff">このテーマを開く</a></p>
+<ul>
+<li>問い：深さ1と2で手が変わるだろうか。</li>
+<li>予想：A・B・Cの推定値1,4,2から予想する。</li>
+<li>手順：深さを1へ変更。次にリセットし、深さ1のケースでAの推定値だけ5にする。</li>
+<li>想定結果：深さ1は推定4・B。A推定5のケースは推定5・A。全探索は3・A。深さ0は手なし。</li>
+<li>説明する問い：推定値と終端からの値を区別して説明する。</li>
+<li>復帰：このテーマをリセット。入力・履歴・予想・説明を基準へ戻します。</li>
+</ul>
+<h2 id="αβ枝刈り">αβ枝刈り</h2>
+<p><a href="interactive.html#pruning">このテーマを開く</a></p>
+<ul>
+<li>問い：B1=2だけでB2を省略できるか。</li>
+<li>予想：根のαが3なら、Bの上限2を選ぶ必要はないと予想する。</li>
+<li>手順：一段階進むを繰り返し、α・β、上限表示、未探索を読む。最後まででも同じ履歴を完了できる。</li>
+<li>想定結果：B2とC2は未探索。根値3・A、8節点、終端4回。</li>
+<li>説明する問い：Bの2は確定値か上限か。</li>
+<li>復帰：このテーマをリセット。入力・履歴・予想・説明を基準へ戻します。</li>
+</ul>
+<h2 id="探索順と計算量">探索順と計算量</h2>
+<p><a href="interactive.html#ordering">このテーマを開く</a></p>
+<ul>
+<li>問い：逆順にすると評価回数は減るか。</li>
+<li>予想：順序を変えても根値は3と予想する。</li>
+<li>手順：正順で両方式を比較し、逆順を選ぶ。</li>
+<li>想定結果：正順のαβは4回、逆順は6回。値3・Aは変わらない。</li>
+<li>説明する問い：同点の木でも選ぶ手は変わらないと言えるか。</li>
+<li>復帰：このテーマをリセット。入力・履歴・予想・説明を基準へ戻します。</li>
+</ul>
+<h2 id="ニムで対戦比較">ニムで対戦・比較</h2>
+<p><a href="interactive.html#play">このテーマを開く</a></p>
+<ul>
+<li>問い：(3,2)で勝ちを保つ手は何か。</li>
+<li>予想：左から1個として、相手の応手を予想する。</li>
+<li>手順：人間が合法手を押し、AIの応手を押す。終了まで続ける。設定を(2,2)へ変えて比較する。</li>
+<li>想定結果：(3,2)の値は+1、左から1個で(2,2)を相手へ渡す。(2,2)でMAXが先手なら値−1。</li>
+<li>説明する問い：負け局面でも相手が誤れば勝てることと、ミニマックス値の違いは何か。</li>
+<li>復帰：このテーマをリセット。入力・履歴・予想・説明を基準へ戻します。</li>
+</ul>
+<h2 id="入力とエラーへの対処">入力とエラーへの対処</h2>
+<p>利得・推定値は−100〜100の整数、深さは0〜2、各山0〜4・合計6以下です。空欄・小数・無限大・不正な手は受け付けません。エラー時は入力を直すかリセットします。数値欄は入力に応じて再計算します。条件を変えると、そのテーマの探索・対局は最初からになります。タブ移動だけでは状態を保持します。</p>
+<p>途中の上限・下限は確定値ではありません。評価回数には終端と打切りを含め、その内訳も表示します。石がなくなったら着手を続けず、リセットしてください。反応がない場合はJavaScriptが有効かを確認し、保存ファイルを開き直します。単独HTMLだけを保存した場合、スライド・解説へのリンクは同梱されませんが、6テーマの計算は動作します。</p>
+</main></body></html>

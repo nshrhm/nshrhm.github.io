@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>第13回 人工知能とゲーム</title>
+        <meta name="description"
+              content="小さなゲーム木とニムでミニマックス・αβ枝刈りを学ぶ">
+        <meta name="author" content="白濵 成希">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+<!-- 1: 第13回 人工知能とゲームの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>第13回 人工知能とゲーム</h2>
+<p>人工知能概論 ／ 2026年12月24日（木） ／ 白濵 成希</p>
+<p><strong>相手の選択を考え、調べなくてよい枝を見つける。</strong></p>
+<p>到達目標：ミニマックスを手計算し、αβ枝刈りで値が保たれる理由を説明する。</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今回は学習済みモデルを用意せず、小さなゲーム木を自分で追います。 最善手の値と、その計算に必要な評価回数を分けて観察します。
+</aside>
+</section>
+<section>
+<!-- 2: 自習の進め方の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>自習の進め方</h2>
+<ol type="1">
+<li>問いを読み、値と手を予想する。</li>
+<li>操作教材で計算を追う。</li>
+<li>Python／Notebookを実行する。</li>
+<li>コピー上で一つ変え、理由を説明する。</li>
+</ol>
+<p><a href="interactive.html" target="_blank" rel="noopener">操作教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a></p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+入力前に予想を残すと、どの規則を理解していたか振り返れます。 リセットで基準条件へ戻し、別の変更と混ぜずに比較してください。
+</aside>
+</section>
+<section>
+<!-- 3: 第12回からの接続の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>第12回からの接続</h2>
+<p>第12回：行動と報酬の経験から、Q値を更新した。</p>
+<p>第13回：既知のルールで先の局面を列挙し、相手の手も考える。</p>
+<p>共通点は「行動を選ぶ」。今回は<strong>経験によるパラメーター更新を行わない</strong>。</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+強化学習で学んだ価値と、探索で計算する値は、どちらも行動選択に役立ちます。 ただし、今回のニムはルールと終端の勝敗から値を計算し、学習はしません。
+</aside>
+</section>
+<section>
+<!-- 4: 探索と学習の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>探索と学習</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>今回の意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>探索</td>
+<td>候補とその先を調べ、選ぶ手を計算する</td>
+</tr>
+<tr>
+<td>学習</td>
+<td>データや経験から評価・方策などを変える</td>
+</tr>
+</tbody>
+</table>
+<p>探索と学習は組み合わせられるが、同じ処理ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+木を調べた回数が増えても、それだけでモデルが訓練されたことにはなりません。 後半では学習した評価を探索と組み合わせる例を紹介します。
+</aside>
+</section>
+<section>
+<!-- 5: ゲームの性質を分けるの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>ゲームの性質を分ける</h2>
+<ul>
+<li>完全情報：手を選ぶ時点で、それまでの手や局面を知れる。</li>
+<li>決定的：同じ局面と手から、次局面が一つに決まる。</li>
+<li>二人零和：一方の利得は他方にとっての損失。</li>
+</ul>
+<p><strong>完全情報と、確率的要素がないことは別の性質。</strong> 今回のニムは、この三つを満たす教材モデル。</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+情報が見えるかと、偶然によって結果が分かれるかは別の軸です。 以下は交互に手を選ぶ二人零和の決定的な例に絞ります。
+</aside>
+</section>
+<section>
+<!-- 6: ニムのルールの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>ニムのルール</h2>
+<p>二つの山から、交互に石を取る。</p>
+<ul>
+<li>一回に一つの山から、1個以上取る。</li>
+<li>最後の石を取った側が勝つ。</li>
+<li>初期局面は左3個、右2個。</li>
+</ul>
+<p>別のニムのルールと混ぜず、この勝利条件で考える。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+一度の手で二つの山から取ることはできません。 最後を取ると負けという変種もありますが、この教材は最後を取ると勝ちです。
+</aside>
+</section>
+<section>
+<!-- 7: 局面には手番も含めるの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>局面には手番も含める</h2>
+<p>局面 = <strong>（左の石数、右の石数、手番）</strong></p>
+<p>MAXを先手、MINを後手として開始する。</p>
+<p>同じ石数でも、手番が変わればMAXから見た勝敗は変わる。</p>
+<p>例：(0,0,MIN) はMINが指せない → MAXが勝った終端。</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+表示の山の数だけを状態とすると、誰の勝ちか判定できません。 プログラムでは手番を1とマイナス1で明示して反転します。
+</aside>
+</section>
+<section>
+<!-- 8: 合法手を列挙するの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>合法手を列挙する</h2>
+<p>(3,2) の合法手は五つ。</p>
+<p>左から1個・2個・3個、右から1個・2個。</p>
+<p>基準の順序：<strong>山番号昇順 → 取る個数昇順</strong>。</p>
+<p>左から1個取ると (2,2)、手番は交代。</p>
+<p><a href="interactive.html#rules" target="_blank" rel="noopener">操作：局面と合法手</a></p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+合法手はルールが許す候補です。この時点では、候補の良し悪しはまだ決めていません。 操作教材で一手指し、石数だけでなく手番も変わることを確認します。
+</aside>
+</section>
+<section>
+<!-- 9: ゲーム木を作るの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>ゲーム木を作る</h2>
+<p>根：現在の局面。枝：合法手。子：その手の後の局面。</p>
+<p><strong>木の生成だけでは最善手を選べない。</strong></p>
+<p>終端の利得を定め、相手の選択を考えて根へ値を戻す必要がある。</p>
+<p>同じ局面でも、別の手順で到達した節点は別に数える。</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+昨年度のニムコードは、主に木の列挙を行っていました。 今回は評価と手の選択を追加します。キャッシュを使わず、木の節点数を数えます。
+</aside>
+</section>
+<section>
+<!-- 10: 終端の利得の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>終端の利得</h2>
+<p>ニムの終端：両方の山が0。</p>
+<table>
+<thead>
+<tr>
+<th>結果</th>
+<th style="text-align: right;">MAXから見た利得</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAXが勝った</td>
+<td style="text-align: right;">+1</td>
+</tr>
+<tr>
+<td>MINが勝った</td>
+<td style="text-align: right;">−1</td>
+</tr>
+</tbody>
+</table>
+<p>終端では着手しない。固定木の数値例は、別の利得尺度を使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+途中の局面で石が少ないことと、勝ちが確定したことは異なります。 ニムでは勝敗をプラス1とマイナス1で表し、固定木では計算練習の整数利得を与えます。
+</aside>
+</section>
+<section>
+<!-- 11: MAXとMINの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>MAXとMIN</h2>
+<p>すべての値を<strong>MAXの視点</strong>にそろえる。</p>
+<ul>
+<li>MAXの番：子の値の最大を選ぶ。</li>
+<li>MINの番：子の値の最小を選ぶ。</li>
+</ul>
+<p>相手も自分に有利な手を選ぶ、と仮定して計算する。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+MINは数値を小さくすることで自分に有利な結果を選びます。 手番のたびに利得の意味を変えると計算を間違えるので、常にMAXから見ます。
+</aside>
+</section>
+<section>
+<!-- 12: 手計算用の固定木の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>手計算用の固定木</h2>
+<p>根はMAX、A・B・CはMIN。</p>
+<table>
+<thead>
+<tr>
+<th>MINの節点</th>
+<th style="text-align: right;">終端1</th>
+<th style="text-align: right;">終端2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr>
+<td>C</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+<p>基準探索順：A→B→C、各行は左から右。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この木はニムの一部を切り抜いたものではなく、教材用に独立して定めた木です。 まず相手が選ぶ各行の最小値を予想してください。
+</aside>
+</section>
+<section>
+<!-- 13: MINの値を先に求めるの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>MINの値を先に求める</h2>
+<p>A = min(3,5) = <strong>3</strong></p>
+<p>B = min(2,9) = <strong>2</strong></p>
+<p>C = min(0,4) = <strong>0</strong></p>
+<p>MAXはBの9を自由に選べない。Bで選ぶのはMIN。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+大きい数字だけを見ると9のあるBを選びたくなります。 しかしBへ進んだ後に手を選ぶのは相手なので、2を返すのがミニマックスの考え方です。
+</aside>
+</section>
+<section>
+<!-- 14: 根へ値を戻すの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>根へ値を戻す</h2>
+<p>根 = max(3,2,0) = <strong>3</strong>、選ぶ手は <strong>A</strong>。</p>
+<p>この計算は「相手も適切に選ぶ」という条件での値。</p>
+<p><a href="interactive.html#minimax" target="_blank" rel="noopener">操作：Bの終端2を6に変える</a></p>
+<p>予想：Bの値と根の選択はどう変わる？</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+Bの葉を2から6に変えると、Bの最小値は6になります。 他を変えなければ根はBを選び、値は6です。一つだけ変えて比較します。
+</aside>
+</section>
+<section>
+<!-- 15: ミニマックスの手順の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>ミニマックスの手順</h2>
+<ol type="1">
+<li>終端なら、その利得を返す。</li>
+<li>打切りなら、推定値を返す。</li>
+<li>子を順番に探索する。</li>
+<li>MAXなら最大、MINなら最小を親へ返す。</li>
+</ol>
+<p>基準固定木の全探索：<strong>10節点を訪問、終端6個を評価</strong>。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+根と内部の三節点も訪問数に含めるので、評価回数とは一致しません。 再帰処理は同じ手順を子にも適用します。まず終端かを判定する点が大切です。
+</aside>
+</section>
+<section>
+<!-- 16: 値と選ぶ手を分けるの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>値と選ぶ手を分ける</h2>
+<p>値：その局面をどう評価するか。</p>
+<p>手：その値を与える子へ、どう進むか。</p>
+<p>固定木：値3、手A。 ニム (3,2)：値+1、左から1個 → (2,2)。</p>
+<p>ニムの全探索：<strong>86節点・終端37個</strong>。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+結果の数値だけでは、実際に何をすればよいか分かりません。 プログラムは値と手を別々の項目として返します。ニムの手は山番号と個数の組です。
+</aside>
+</section>
+<section>
+<!-- 17: 同点なら最初の手の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>同点なら最初の手</h2>
+<p>同点のときは、<strong>探索順で最初の手を保持</strong>する。</p>
+<p>更新条件はMAXで「より大きい」、MINで「より小さい」。</p>
+<p>A・B・Cがすべて3なら、正順はA、逆順はC。</p>
+<p>値が同じでも、選ぶ手は変わり得る。</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+同点で上書きする実装にすると最後の手を選び、今回の仕様と異なります。 ミニマックスと枝刈りを比べるときは、探索順と同点規則もそろえます。
+</aside>
+</section>
+<section>
+<!-- 18: 探索深さを制限するの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>探索深さを制限する</h2>
+<p>根の深さを0、A・B・Cを1、終端を2とする。</p>
+<p>全探索が大きすぎる場合、途中で探索を打ち切る。</p>
+<p>ただし、<strong>終端判定を打切り判定より先に行う</strong>。</p>
+<p>深さ2の終端は、推定値でなく確定した利得を返す。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+深さは根から何本の枝を進んだかです。 終端に到達しているなら、勝敗が分かるので、推定に置き換える必要はありません。
+</aside>
+</section>
+<section>
+<!-- 19: 打切りで使う評価関数の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>打切りで使う評価関数</h2>
+<p>今回は説明用の推定値を直接与える。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">根</th>
+<th style="text-align: right;">A</th>
+<th style="text-align: right;">B</th>
+<th style="text-align: right;">C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<p>推定値はMAXから見た値。<strong>終端利得の保証ではない。</strong> 実際のゲームでは、局面の特徴や学習したモデルから推定することもある。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この四つの値は、深い探索の答えを正しく近似するよう調整した値ではありません。 浅い探索が間違った選択をする例として、意図的に用意した教材条件です。
+</aside>
+</section>
+<section>
+<!-- 20: 浅い探索と全探索を比較の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>浅い探索と全探索を比較</h2>
+<p>深さ1：max(1,4,2) = <strong>4、手B（推定）</strong>。</p>
+<p>深さ2：max(3,2,0) = <strong>3、手A（終端から計算）</strong>。</p>
+<p>深さ0：根の推定値0を返し、手は選ばない。</p>
+<p><a href="interactive.html#cutoff" target="_blank" rel="noopener">操作：深さと推定値を変える</a></p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+深さ1では終端を一つも評価していません。 表示された4を勝敗や確定利得と読み替えず、打切りによる推定だと説明してください。
+</aside>
+</section>
+<section>
+<!-- 21: 評価を一つ変えるの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>評価を一つ変える</h2>
+<p>深さ1の比較ケースをコピーする。</p>
+<p>Aの推定値だけ <strong>1→5</strong> に変更。</p>
+<p>max(5,4,2) = <strong>5、手A（推定）</strong>。</p>
+<p>手が全探索と一致しても、推定値5は確定利得3と異なる。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この変更例の基準は深さ1です。深さと推定値を同時に変える実験ではありません。 偶然同じ手になったことと、評価関数が正確になったことを分けて考えます。
+</aside>
+</section>
+<section>
+<!-- 22: 水平線効果の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>水平線効果</h2>
+<p>打切りのすぐ先にある重要な変化を見落とすことがある。</p>
+<p>浅い探索で良く見えても、その先で相手の強い応手があるかもしれない。</p>
+<p>深さ・評価関数・局面によって結果は変わる。 「深さを少し増やせば常に十分」とは限らない。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+打切りより先が見えないことを、地平線の向こう側にたとえます。 この授業では評価の誤差を小さな固定木で観察し、将棋での具体的な対策実装は扱いません。
+</aside>
+</section>
+<section>
+<!-- 23: αβ枝刈りの目的の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>αβ枝刈りの目的</h2>
+<p>同じ条件のミニマックス値を保ち、不要な探索を省く。</p>
+<p>相手が選ばないと分かった枝は、その先を全部調べなくてよい。</p>
+<p>評価関数・深さ・探索順・同点規則をそろえて比較する。</p>
+<p><strong>省略した枝の値を計算したことにはしない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+枝刈りは推定で勝手に候補を捨てる処理ではありません。 既に得た値の範囲から、その枝が上位の選択を改善しないと分かる場合に省きます。
+</aside>
+</section>
+<section>
+<!-- 24: αとβの意味の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>αとβの意味</h2>
+<p>α：MAX側が既に確保できる値の下限。</p>
+<p>β：MIN側が既に確保できる値の上限。</p>
+<p>初期値：<strong>α = −∞、β = ＋∞</strong>。</p>
+<p>MAXの子を調べてαを上げ、MINの子を調べてβを下げる。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+値の範囲は、現在の探索経路でどの候補を選ぶ可能性があるかを表します。 負の利得もあるため、初期値を0にしてはいけません。
+</aside>
+</section>
+<section>
+<!-- 25: 枝刈りの条件の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>枝刈りの条件</h2>
+<p><strong>α ≥ β</strong> なら、残りの子を探索しない。</p>
+<p>MAXには少なくともαの選択肢があり、 このMINでは高くてもβに抑えられる。</p>
+<p>等しい場合も、先に見つけた同点の手を保持できる。</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今回の実装は等号を含めて枝刈りします。 同点時に最初の手を保持する規則と組み合わせることで、手の選択も一致させます。
+</aside>
+</section>
+<section>
+<!-- 26: 固定木で一段階ずつの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>固定木で一段階ずつ</h2>
+<p>Aを調べる：min(3,5)=3 → 根のα=3。</p>
+<p>B1=2：Bのβ=2。<strong>3≥2なのでB2は未探索</strong>。</p>
+<p>C1=0：Cのβ=0。<strong>3≥0なのでC2は未探索</strong>。</p>
+<p><a href="interactive.html#pruning" target="_blank" rel="noopener">操作：一段階進む／最後まで</a></p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+Aでは二つの葉を調べます。Bでは一つ目の2を見た時点で、Aの3を超える選択肢にならないと判断できます。 B2の9とC2の4は入力として存在しますが、この探索では評価しません。
+</aside>
+</section>
+<section>
+<!-- 27: 途中の値は上限・下限の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>途中の値は上限・下限</h2>
+<p>Bで2を見て枝刈りしたとき、分かったのは <strong>B ≤ 2</strong>。</p>
+<p>未探索のB2が−5なら、Bの確定値は−5になる。</p>
+<p>それでもAの3を超えないので、根の選択は変わらない。</p>
+<p>画面では「上限」「下限」「未探索」を区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+枝刈りした内部節点の戻り値を、真のミニマックス値と断定すると誤りになります。 根では全体の必要な比較が済むため、今回の完全探索条件で値3が確定します。
+</aside>
+</section>
+<section>
+<!-- 28: 探索順で評価回数が変わるの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>探索順で評価回数が変わる</h2>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>根の値・手</th>
+<th style="text-align: right;">終端評価</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ミニマックス・正順</td>
+<td>3・A</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td>αβ・正順</td>
+<td>3・A</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td>αβ・逆順（子も逆順）</td>
+<td>3・A</td>
+<td style="text-align: right;">6</td>
+</tr>
+</tbody>
+</table>
+<p><a href="interactive.html#ordering" target="_blank" rel="noopener">操作：正順と逆順を比較</a></p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この木では良い候補のAを先に調べることで、後の候補を早く省略できます。 逆順の削減がないことは実装失敗ではなく、順序による違いです。
+</aside>
+</section>
+<section>
+<!-- 29: 計算量とニムでの比較の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>計算量とニムでの比較</h2>
+<p>枝数がb、深さがdなら、全探索は概ね <strong>bのd乗</strong>で増える。</p>
+<p>αβの削減率は探索順や木の形による。常に同じ割合にはならない。</p>
+<p>ニムはキャッシュなし。訪問節点数と終端評価数を別に比べる。</p>
+<p><a href="interactive.html#play" target="_blank" rel="noopener">操作：人間の手 → AIの応手</a></p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+小さなニムでは終端まで探索できますが、将棋では同じ規模に収まりません。 ここでは実時間の速さを競うのでなく、同じ条件で値と計数がどう変わるかを確認します。
+</aside>
+</section>
+<section>
+<!-- 30: 将棋と探索の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>将棋と探索</h2>
+<p>将棋も、合法手から次の局面を考えられる。</p>
+<p>候補が多く、長い手順の先まで全列挙するのは難しい。</p>
+<p>探索の工夫と、途中局面の評価が重要になる。</p>
+<p>今回の二山ニムの節点数を、将棋の規模に一般化しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+将棋の駒の持ち方や打つ手など、具体的なルールは今回実装しません。 大きなゲームでは、どこを重点的に調べるかと、途中局面をどう評価するかが課題です。
+</aside>
+</section>
+<section>
+<!-- 31: 学習した評価を使うの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>学習した評価を使う</h2>
+<p>局面の特徴 → モデル → 価値の推定。</p>
+<p>経験から評価を改善し、その評価を探索に利用する構成がある。</p>
+<p><strong>探索だけ／学習だけ／両者の組合せ</strong>を区別する。</p>
+<p>推定があることだけで、勝利が保証されるわけではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+学習した評価は、探索を不要にするとは限りません。 学習済みの値にも誤差があり、探索の計算資源にも制限があることを意識します。
+</aside>
+</section>
+<section>
+<!-- 32: 方策と価値の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>方策と価値</h2>
+<table>
+<thead>
+<tr>
+<th>出力</th>
+<th>主な役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>方策</td>
+<td>各候補の手に、選択の優先度・確率を与える</td>
+</tr>
+<tr>
+<td>価値</td>
+<td>その局面の結果を推定する</td>
+</tr>
+</tbody>
+</table>
+<p>AlphaZeroでは、一つのネットワークが両方を出力し、探索に使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+方策はどの手を考えるか、価値は局面をどう見るかに関係します。 この説明はAlphaZeroの論文の構成であり、すべてのゲームAIが同じ方式という意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 33: MCTSの概要の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>MCTSの概要</h2>
+<p>候補を選ぶ → 木を広げる → 評価する → 結果を戻す。</p>
+<p>訪問回数や評価に基づき、調べる候補へ計算を配分する。</p>
+<p>評価方法は一通りではない。 <strong>常にランダム対局だけで評価する方法ではない。</strong></p>
+<p>今回は考え方の紹介のみ。実装はミニマックスとαβ。</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+モンテカルロ木探索は、限られた計算をどの候補へ使うかを考える探索です。 AlphaGo ZeroやAlphaZeroでは、方策と価値のネットワークを利用します。
+</aside>
+</section>
+<section>
+<!-- 34: AlphaGo・Zero・AlphaZeroの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>AlphaGo・Zero・AlphaZero</h2>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>この授業で区別する点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AlphaGo</td>
+<td>囲碁。初期の版は人間の棋譜も学習に利用</td>
+</tr>
+<tr>
+<td>AlphaGo Zero</td>
+<td>囲碁。人間の棋譜を使わず自己対戦で学習</td>
+</tr>
+<tr>
+<td>AlphaZero</td>
+<td>囲碁・チェス・将棋へ同じ学習方式を適用</td>
+</tr>
+</tbody>
+</table>
+<p>AlphaZeroもゲームごとに学習する。三つを同じモデル名として扱わない。</p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ゼロという名前が共通でも、AlphaGo ZeroとAlphaZeroは対象や論文を分けて確認します。 AlphaZeroの同じ方式という表現は、学習済みの一つの重みがそのまま三競技を指すという意味ではありません。
+</aside>
+</section>
+<section>
+<!-- 35: 自己対戦と結果の範囲の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>自己対戦と結果の範囲</h2>
+<p>自分自身との対戦から局面・探索の結果・勝敗を集め、学習に使う。</p>
+<p>ルールと勝敗条件が与えられたゲームでの手法。</p>
+<p>報告された対戦成績は、当時の条件に基づく実験結果。</p>
+<p>現在の最強性や、あらゆる課題に通じる能力までは示さない。</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+人間の棋譜を使わないことは、ルールも目的も与えないこととは違います。 論文の実験結果を紹介する場合は、対象ゲームと比較条件の範囲で解釈します。
+</aside>
+</section>
+<section>
+<!-- 36: 保存して実行するの規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>保存して実行する</h2>
+<ol type="1">
+<li>ファイルを保存し、ZIPなら展開する。</li>
+<li>既存venvを有効にし、<code>python game_search.py --demo</code>。</li>
+<li>NotebookはPythonカーネルを選び、再起動して全セル実行。</li>
+<li>固定木3・A、ニム+1・左から1個を確認する。</li>
+</ol>
+<p><a href="programs/game_search.py" download>Pythonを保存</a> ／ <a href="programs/game_search.ipynb" download>Notebookを保存</a> ／ <a href="programs/game_search.zip" download>ZIPを保存</a></p>
+<p><a href="programs/guide.html" target="_blank" rel="noopener">実行方法とエラー対処</a></p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+実行部分は標準ライブラリだけを使います。Notebookを開く環境とカーネルは別に必要です。 結果が違ったら、まず設定を元へ戻して全セルを上から実行します。
+</aside>
+</section>
+<section>
+<!-- 37: 六つの変更例の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>六つの変更例</h2>
+<table>
+<thead>
+<tr>
+<th>変更</th>
+<th>比較するもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B1：2→6</td>
+<td>手A→B、値3→6</td>
+</tr>
+<tr>
+<td>αβの探索順を逆に</td>
+<td>評価4→6、値は3</td>
+</tr>
+<tr>
+<td>深さ2→1</td>
+<td>確定3・A→推定4・B</td>
+</tr>
+<tr>
+<td>深さ1でA推定1→5</td>
+<td>推定4・B→5・A</td>
+</tr>
+<tr>
+<td>ニム(3,2)→(2,2)</td>
+<td>先手勝ち→先手負け</td>
+</tr>
+<tr>
+<td>ミニマックス→αβ</td>
+<td>値3を保ち、評価6→4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+順序の実験はαβを使う基準ケース、推定値の実験は深さ1の基準ケースをコピーします。 どの比較でも一項目だけを変え、元の基準結果は保持します。
+</aside>
+</section>
+<section>
+<!-- 38: 三つの見方を比較の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>三つの見方を比較</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>値の意味</th>
+<th>省略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>終端までのミニマックス</td>
+<td>相手も最善を選ぶ場合の利得</td>
+<td>なし</td>
+</tr>
+<tr>
+<td>深さ打切り</td>
+<td>評価関数に依存する推定</td>
+<td>深さの先</td>
+</tr>
+<tr>
+<td>同条件のαβ</td>
+<td>ミニマックスと同じ根値</td>
+<td>選択を改善しない枝</td>
+</tr>
+</tbody>
+</table>
+<p>「根の値」「選ぶ手」「評価回数」を別々に報告する。</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+深さ打切りとαβの枝刈りは、どちらも途中を省くように見えますが、根拠が異なります。 深さ打切りは推定を導入し、αβは同じ評価条件の答えを保ちます。
+</aside>
+</section>
+<section>
+<!-- 39: 理解確認と次回の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>理解確認と次回</h2>
+<ul>
+<li>B1=2だけでB2を省略できる理由は？</li>
+<li>深さ1の値4を確定利得と呼べないのはなぜ？</li>
+<li>探索順が変わると、何が変わり得る？</li>
+<li>今回のニムは、何を学習した？</li>
+</ul>
+<p>次回は「人工知能の今後の動向」。技術の進歩と課題を考える。</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+問いには数字だけでなく、誰が手を選ぶか、値が何を意味するかを含めて答えてください。 今回のニムは学習をしていません。クイズでも探索と学習の区別を振り返ります。
+</aside>
+</section>
+<section>
+<!-- 40: 参考資料の規則と観察点を対応づける -->
+<div class="slide-body">
+<h2>参考資料</h2>
+<ul>
+<li><a href="https://www.cs.ubc.ca/~poole/aibook/3e/html/ArtInt3e.Ch14.S3.html">Poole・Mackworth, §14.3 ゲームの探索</a></li>
+<li><a href="https://storage.googleapis.com/deepmind-media/DeepMind.com/Blog/alphazero-shedding-new-light-on-chess-shogi-and-go/alphazero_preprint.pdf">Silverほか, AlphaZero 著者公開論文（2018）</a></li>
+<li><a href="https://deepmind.google/blog/alphago-zero-starting-from-scratch/">DeepMind, AlphaGo Zero解説（2017）</a></li>
+</ul>
+<p>固定木・数値条件・ニムの範囲・図は教材独自の仕様。 歴史的な実験結果を、現在の性能順位へ一般化しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+探索の規則は著者公開教科書、学習との組合せは著者公開論文と解説に照合しました。 教材の具体的な利得や節点数は、原著の実験値ではなく、手計算と独立した検査で確認する値です。
+</aside>
+</section>
+</div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealAnimate,
+      RevealChalkboard,
+            RevealChart,
+        ];
+
+        const plugins =  [...printPlugins,
+        RevealZoom,
+        RevealSearch,
+                RevealMarkdown,
+                RevealMenu,
+                RevealFullscreen,
+                RevealAnything,
+                //RevealAudioSlideshow,
+                //RevealAudioRecorder,
+                RevealCustomControls,
+                // poll
+                // question
+                // seminar
+                Verticator
+                 ]
+
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+            height: 720,
+            margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+            customcontrols: {
+                    controls: [
+                            {
+                          id: 'toggle-overview',
+                          title: 'Toggle overview (O)',
+                          icon: '<i class="fa fa-th"></i>',
+                          action: 'Reveal.toggleOverview();'
+                        }
+                        ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+                ]
+            },
+            chart: {
+                    defaults: {
+                        color: 'lightgray', // color of labels
+                        scale: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: "lightgray" } , // color of grid lines
+                        },
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+            },
+                anything: [
+                {
+        className: "plot",
+        defaults: {width:500, height: 500, grid:true},
+        initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+     },
+     {
+        className: "chart",
+        initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+     },
+     {
+        className: "anything",
+        initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+     },
+                    ],
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+        });
+
+
+
+        // Change chalkboard theme :
+        function changeTheme(input) {
+            var config = {};
+            config.theme = input.value;
+            Reveal.getPlugin("RevealChalkboard").configure(config);
+            input.blur();
+        }
+
+        // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+        if (window.location.search.match(/print-pdf-now/gi)) {
+            setTimeout(() => {
+                window.print();
+              }, 2500);
+
+    }
+        </script>
+    </body>
+</html>

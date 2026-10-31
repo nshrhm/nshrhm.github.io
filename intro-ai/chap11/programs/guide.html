@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第13回 人工知能とゲーム：プログラムの保存と学び方">
+<title>第13回 人工知能とゲーム：プログラムの保存と学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第13回 人工知能とゲーム：プログラムの保存と学び方</h1>
+<h2 id="目標と保存">目標と保存</h2>
+<p>ミニマックスとαβの値・手・計数を照合し、一項目変更の結果を説明します。前提はリスト、辞書、関数、最大・最小です。実行部分はPython標準ライブラリのみを使います。</p>
+<p><a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a></p>
+<p><a href="game_search.py" download>Pythonを保存</a> ／ <a href="game_search.ipynb" download>Notebookを保存</a> ／ <a href="game_search.zip" download>一式ZIPを保存</a></p>
+<ol type="1">
+<li>ZIPを保存・展開し、同梱guide.htmlを開きます。以下は同梱ファイルだけで実行手順をたどれます。</li>
+<li>VS Codeで展開先を開き、既存venvを有効化し、そのPythonインタープリターを選びます。Python 3.10以上を使い、制作環境の版をそのまま導入する必要はありません。</li>
+<li>ターミナルで次を実行します。</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> game_search.py <span class="at">--demo</span></span></code></pre></div>
+<p>uvを既に使っている場合は <code>uv run python game_search.py --demo</code> でも実行できます。Notebookは既存のJupyter環境で開き、既存venvのカーネルを選びます。「カーネルを再起動」→「すべて実行」を選んでください。カーネルがない場合だけvenv内で <code>python -m pip install -r requirements.txt</code> を実行し、同じvenvを再選択します。システム全体へのインストールは不要です。</p>
+<p>成功の目印は固定木の値3・手A、ニムの値+1・手[0,1]（左から1個）、Notebook末尾の「基準入力・結果を保持しました」です。Notebookは同梱Pythonをimportしません。</p>
+<h2 id="入力と結果の読み方">入力と結果の読み方</h2>
+<p>固定木は根MAX、A・B・CがMIN、葉[3,5,2,9,0,4]。根の深さ0、終端は2。打切り推定値は[根0,A1,B4,C2]。全利得はMAXの視点です。ニムは二山(3,2)、最後を取ると勝ち。手番1=MAX、−1=MINです。手は[山番号0または1,取る個数]。同点は探索順で最初の手を選びます。</p>
+<ul>
+<li><code>value</code>：根の値。深さ打切りを使えば推定です。</li>
+<li><code>best_action</code>：選ぶ手。終端・深さ0ではNone（JSONはnull）。</li>
+<li><code>visited_nodes</code>：根・内部・評価節点をすべて含む訪問数。</li>
+<li><code>evaluations</code>：終端評価＋打切り評価。<code>terminal_evaluations</code>と<code>cutoff_evaluations</code>が内訳です。</li>
+<li><code>pruned</code>：未探索の枝の根のID。子孫全部を列挙する項目ではありません。</li>
+<li><code>trace</code>：enter→evaluate／update／prune→returnの履歴。<code>bound</code>はexact（その探索条件の値）、upper（上限）、lower（下限）。深さ打切りを含むexactも、実際の勝敗を保証する値ではありません。</li>
+</ul>
+<p><code>search_tree</code>と<code>search_nim</code>は完全な履歴を返します。<code>--demo --json</code>と<code>baseline_result</code>は読みやすい要約でtraceを省きます。CLIで履歴も保存するときは <code>python game_search.py --demo --json --trace &gt; result.json</code>。Notebookの<code>baseline_tree</code>、<code>baseline_nim</code>には履歴を保持します。<code>summary</code>は元の結果を壊さず要約します。</p>
+<h2 id="関数と三つの観察">関数と三つの観察</h2>
+<p><code>legal_moves</code>でルールに沿う手を列挙し、<code>apply_move</code>で入力のコピーから次局面を作ります。<code>search_tree</code>は固定木、<code>search_nim</code>はニムを探索します。内部のvisitは終端判定を先に行い、MAXなら最大・MINなら最小を返します。αβでは上下限を更新し、α≧βで残りの子を省略します。</p>
+<p>予想：全探索とαβで根値は違うでしょうか。まず両方を実行し、固定木の3・Aが一致する一方、終端評価6→4、訪問10→8となることを確認します。次に深さ1を実行すると推定4・Bになります。最後にニムを実行し、86節点・終端37個を確認します。説明する問いは「深さで省略する場合とαβで省略する場合の根拠はどう違うか」です。</p>
+<h2 id="コピー上で行う六つの変更">コピー上で行う六つの変更</h2>
+<p>Notebookでは各セルの直前に問い・予想・想定結果があります。<code>experiment_configs()</code>の各ケースには<code>base</code>とその深いコピー<code>changed</code>があります。順序の基準はαβ、推定値の基準は深さ1です。ほかは基準条件そのもの。毎回一項目だけ変え、先の変更へ上書きして積み重ねないでください。</p>
+<h3 id="b1の利得26">B1の利得2→6</h3>
+<ul>
+<li>問い・予想：Bが選ばれるだろうか。実行前に予想を書きます。</li>
+<li>手順：Notebookの<code>trial_leaf_config</code>セルを実行し、<code>trial_leaf</code>を元のケースと比較します。</li>
+<li>想定結果：値3・A → 値6・B。MINの値も6になる。</li>
+<li>説明する問い：相手が9でなく6を選ぶのはなぜか。</li>
+<li>復帰：該当セルを編集前に戻し、カーネルを再起動して全セル実行します。</li>
+</ul>
+<h3 id="αβの探索順を逆順">αβの探索順を逆順</h3>
+<ul>
+<li>問い・予想：根値と評価数のどちらが変わるだろうか。実行前に予想を書きます。</li>
+<li>手順：Notebookの<code>trial_order_config</code>セルを実行し、<code>trial_order</code>を元のケースと比較します。</li>
+<li>想定結果：値3・Aは同じ。終端評価4→6。各子の順序も逆になる。</li>
+<li>説明する問い：Aを後に調べると省略が減る理由は何か。</li>
+<li>復帰：該当セルを編集前に戻し、カーネルを再起動して全セル実行します。</li>
+</ul>
+<h3 id="探索深さ21">探索深さ2→1</h3>
+<ul>
+<li>問い・予想：深さ1でもAを選ぶだろうか。実行前に予想を書きます。</li>
+<li>手順：Notebookの<code>trial_depth_config</code>セルを実行し、<code>trial_depth</code>を元のケースと比較します。</li>
+<li>想定結果：確定した根値3・A → 推定値4・B。終端評価0、打切り評価3。</li>
+<li>説明する問い：深さ1の4を確定した利得と呼べるか。</li>
+<li>復帰：該当セルを編集前に戻し、カーネルを再起動して全セル実行します。</li>
+</ul>
+<h3 id="深さ1でaの推定値15">深さ1でAの推定値1→5</h3>
+<ul>
+<li>問い・予想：推定値だけで手が変わるだろうか。実行前に予想を書きます。</li>
+<li>手順：Notebookの<code>trial_heuristic_config</code>セルを実行し、<code>trial_heuristic</code>を元のケースと比較します。</li>
+<li>想定結果：推定値4・B → 推定値5・A。確定利得3とは違う。</li>
+<li>説明する問い：手が全探索と一致すれば、推定値も正しいか。</li>
+<li>復帰：該当セルを編集前に戻し、カーネルを再起動して全セル実行します。</li>
+</ul>
+<h3 id="ニム3222">ニム(3,2)→(2,2)</h3>
+<ul>
+<li>問い・予想：同じ数の山は先手に有利だろうか。実行前に予想を書きます。</li>
+<li>手順：Notebookの<code>trial_piles_config</code>セルを実行し、<code>trial_piles</code>を元のケースと比較します。</li>
+<li>想定結果：MAX先手の値+1 → −1。訪問86→33、終端37→14。負け局面では同点の最初の手を選ぶ。</li>
+<li>説明する問い：なぜ値−1でも合法手が返るのか。</li>
+<li>復帰：該当セルを編集前に戻し、カーネルを再起動して全セル実行します。</li>
+</ul>
+<h3 id="ミニマックスαβ">ミニマックス→αβ</h3>
+<ul>
+<li>問い・予想：省略によって根値が変わるだろうか。実行前に予想を書きます。</li>
+<li>手順：Notebookの<code>trial_algorithm_config</code>セルを実行し、<code>trial_algorithm</code>を元のケースと比較します。</li>
+<li>想定結果：値3・Aは同じ。訪問10→8、終端評価6→4。</li>
+<li>説明する問い：未探索のB2・C2の確定値を表示できない理由は何か。</li>
+<li>復帰：該当セルを編集前に戻し、カーネルを再起動して全セル実行します。</li>
+</ul>
+<h2 id="基準を保持して自分で変更する">基準を保持して自分で変更する</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> copy <span class="im">import</span> deepcopy</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>case <span class="op">=</span> experiment_configs()[<span class="st">&quot;leaf&quot;</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>trial_config <span class="op">=</span> deepcopy(case[<span class="st">&quot;base&quot;</span>])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>trial_config[<span class="st">&quot;leaves&quot;</span>][<span class="dv">2</span>] <span class="op">=</span> <span class="dv">6</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>trial <span class="op">=</span> search_tree(trial_config)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary(trial))</span></code></pre></div>
+<p>上はNotebookの定義セルを実行した後に新しいセルで試します。<code>.py</code>で試す場合は自分用にコピーを作り、同じ関数定義の後にこのコードを追加します。配布された基準ファイルは残します。基準入力・基準結果は上書きしません。</p>
+<h2 id="困ったとき">困ったとき</h2>
+<p>ファイルが見つからない場合は展開先とターミナルの場所を確認します。NameErrorならカーネルを再起動して全セル実行します。出力が違う場合は深さ・探索順・方式・手番と変更箇所を確認し、未変更のファイルへ戻します。ValueErrorなら、空欄、小数、山の合計6超過、不正な手を直します。終端では手がNoneになり、<code>apply_move</code>へ渡してはいけません。</p>
+<p>固定木の利得・推定値は−100〜100の整数、深さ0〜2、山0〜4・合計6以下。乱数・学習・キャッシュは使いません。同じ局面への別経路は別の節点です。勝敗値が−1でも、相手の間違いまで禁止しているわけではありません。ミニマックスは双方が最善を選ぶ仮定で解釈します。</p>
+</main></body></html>
