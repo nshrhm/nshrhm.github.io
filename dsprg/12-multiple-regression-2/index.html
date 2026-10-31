@@ -1,0 +1,588 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="第12回 重回帰分析2：3候補の検証RMSE比較と選択後の最終確認"><title>第12回 重回帰分析2</title><link rel="stylesheet" href="reveal/reveal.css"><link rel="stylesheet" href="reveal/theme/white.css"><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第12回：候補を選び、選択を固定する -->
+<div class="slide-body">
+<h2
+id="第12回候補を選び選択を固定する">第12回：候補を選び、選択を固定する</h2>
+<p><strong>重回帰分析2</strong></p>
+<ul>
+<li>事前に決めた3候補を比較。</li>
+<li>検証RMSEを読んで選択。</li>
+<li>選択後に教員が最終確認。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+前回は説明変数を二つに増やしました。今日は稼働時間だけ、処理量だけ、両方の三候補を比べます。最終確認の結果を見てから選ぶのではなく、選択を先に固定する流れを学びます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 教材を保存し、work全体を開く -->
+<div class="slide-body">
+<h2 id="教材を保存しwork全体を開く">教材を保存し、work全体を開く</h2>
+<p><a download="lesson12-student.zip" href="downloads/lesson12-student.zip">教材ZIP</a>
+／
+<a download="lecture_note_12.md" href="downloads/lecture_note_12.md">学生本文</a></p>
+<p><a download="lesson12.py" href="downloads/lesson12.py">Python主例</a>
+／ <a download="lesson12.R" href="downloads/lesson12.R">R主例</a> ／
+<a download="equipment.csv" href="downloads/equipment.csv">CSV</a></p>
+<ol type="1">
+<li>ZIPのlesson12をwork/exercises/へ。</li>
+<li>work全体を開く。</li>
+<li>両言語の授業タスクで実行。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ジップを展開したレッスン12フォルダーを、ワークのエクササイズへ置きます。学生本文には関数の説明と復習資料があります。最終確認用データを追加する操作は学生には不要です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 今日の到達目標 -->
+<div class="slide-body">
+<h2 id="今日の到達目標">今日の到達目標</h2>
+<ol type="1">
+<li>訓練・検証・最終確認を区別する。</li>
+<li>比較表から選択指定を変える。</li>
+<li>独立計算と手計算で説明する。</li>
+</ol>
+<p><strong>予想 → 選択変更 → 照合 → 説明</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+コードを実行するだけでなく、何を基準に選んだかを言葉にしてください。二つの言語で同じ値が出たことと、課題の条件を満たしたことも分けて確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 90分の進め方 -->
+<div class="slide-body">
+<h2 id="分の進め方">90分の進め方</h2>
+<ul>
+<li>復習・準備10分、候補比較15分。</li>
+<li>両言語主例25分、選択演習20分。</li>
+<li>照合・教員実演10分、提出10分。</li>
+</ul>
+<p>候補計算と描画は完成済みです。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日は候補や描画コードを一から作りません。比較表を読んで選択指定を変える活動に時間を使います。最後は教員が選択後の最終確認を実演し、提出まで進めます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 同じ80行・同じ分割 -->
+<div class="slide-body">
+<h2 id="同じ80行同じ分割">同じ80行・同じ分割</h2>
+<ul>
+<li>訓練60行で各候補を学習。</li>
+<li>検証20行で各候補を評価。</li>
+<li>第8〜11回と同じID・CSV。</li>
+<li>合成設備データ。再分割しない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+入力は以前から使っている合成データです。訓練行と検証行はラベルで固定されています。今回だけ再分割すると、前回の数値との比較条件が変わってしまいます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: 変える条件・保つ条件 -->
+<div class="slide-body">
+<h2 id="変える条件保つ条件">変える条件・保つ条件</h2>
+<p><strong>変える：選択する候補のキー</strong></p>
+<ul>
+<li>学習行・目的変数を保つ。</li>
+<li>比較する検証20行を保つ。</li>
+<li>係数・MAE・RMSEの定義を保つ。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+演習で変えるのは選択指定だけです。三候補の学習と比較はすでに完成しています。選択後に全80行で学習し直したり、評価指標を取り替えたりしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: まず予想する -->
+<div class="slide-body">
+<h2 id="まず予想する">まず予想する</h2>
+<p>どの候補の検証RMSEが小さそうですか。</p>
+<ul>
+<li>稼働時間だけ。</li>
+<li>処理量だけ。</li>
+<li>両方。</li>
+</ul>
+<p>予想と理由を一文残しましょう。</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+実行する前に予想を残してください。説明変数が多ければ常に良いという保証はありません。予想と実際の計算結果が違った場合も、その違いを振り返りに使えます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: 三つのデータの役割 -->
+<div class="slide-body">
+<h2 id="三つのデータの役割">三つのデータの役割</h2>
+<p><img class="zoomable-image" src="images/roles.svg" alt="訓練で学習、検証で選択、固定後に最終確認"></p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+訓練は係数を決めるため、検証は候補を比較するために使います。最終確認は選択を固定した後の段階です。最終データを先に見て候補を決めると、この区別が崩れます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: 事前に決めた三つの候補 -->
+<div class="slide-body">
+<h2 id="事前に決めた三つの候補">事前に決めた三つの候補</h2>
+<p><img class="zoomable-image" src="images/candidates.svg" alt="時間・処理量・両方から電力量を予測"></p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+説明変数は稼働時間、処理量、両方の三通りです。目的変数はすべて消費電力量で、切片ありの最小二乗を使います。二乗項や交互作用、新しい候補を追加することは今回の必修に含めません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: 選択基準を先に固定する -->
+<div class="slide-body">
+<h2 id="選択基準を先に固定する">選択基準を先に固定する</h2>
+<p><strong>検証RMSEが最小の候補を選ぶ。</strong></p>
+<ul>
+<li>MAEも併記して誤差を確認。</li>
+<li>同じ行・同じ単位kWhで比較。</li>
+<li>表示の丸めを計算へ戻さない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+どの指標を使って選ぶかを結果を見る前に決めます。今回は検証のルート平均二乗誤差です。平均絶対誤差も併記しますが、都合の良い方へ選択基準を変えません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: 誤差指標を復習する -->
+<div class="slide-body">
+<h2 id="誤差指標を復習する">誤差指標を復習する</h2>
+<ul>
+<li>残差 = 実測値 − 予測値。</li>
+<li>MAE = 絶対残差の平均。</li>
+<li>RMSE = 残差二乗の平均の平方根。</li>
+</ul>
+<p>分母は対象件数。両指標の単位はkWh。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第10回の定義をそのまま使います。ルート平均二乗誤差では大きな残差の影響が強くなります。アールの回帰出力にある残差標準誤差は分母が異なるため、今回の指標と置き換えません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: Python：候補と列を対応付ける -->
+<div class="slide-body">
+<h2 id="python候補と列を対応付ける">Python：候補と列を対応付ける</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;hours&quot;</span>: [<span class="st">&quot;operating_hours&quot;</span>],</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;throughput&quot;</span>: [<span class="st">&quot;throughput_units&quot;</span>],</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;both&quot;</span>: [<span class="st">&quot;operating_hours&quot;</span>, <span class="st">&quot;throughput_units&quot;</span>],</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>キーを使って列リストを取り出します。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+辞書は名前と値を対応付ける仕組みです。アワーズというキーなら時間の一列、両方を意味するキーなら二列を取り出します。目的と引数、戻り値の一覧は学生本文を確認してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: Python：学習済みモデルを保存 -->
+<div class="slide-body">
+<h2 id="python学習済みモデルを保存">Python：学習済みモデルを保存</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model.fit(train[columns], train[<span class="st">&quot;energy_kwh&quot;</span>])</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>models[key] <span class="op">=</span> model</span></code></pre></div>
+<p>完成済みループが3候補を同条件で学習。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+辞書の各候補について、訓練60行で学習します。学習したモデルは別の辞書に保存します。モデルの生成順ではなく、候補名と列が対応していることを確認してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: Python：選択は取り出す操作 -->
+<div class="slide-body">
+<h2 id="python選択は取り出す操作">Python：選択は取り出す操作</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>selected_key <span class="op">=</span> <span class="st">&quot;both&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>selected_model <span class="op">=</span> models[selected_key]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>selected_columns <span class="op">=</span> features[selected_key]</span></code></pre></div>
+<p>ここでfitを呼び直しません。</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+同じキーからモデルと入力列を取り出します。選択キーを変えても学習済み係数は変わりません。選択する処理と学習する処理を区別することが今日の重要な点です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: R：式を名前付きリストへ -->
+<div class="slide-body">
+<h2 id="r式を名前付きリストへ">R：式を名前付きリストへ</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>formulas <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">hours =</span> energy_kwh <span class="sc">~</span> operating_hours,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">throughput =</span> energy_kwh <span class="sc">~</span> throughput_units,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">both =</span> energy_kwh <span class="sc">~</span> operating_hours <span class="sc">+</span> throughput_units</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アールでは候補名と式をリストで対応付けます。式のプラスは説明変数の追加です。目的変数は三つとも同じです。コードの全文とリスト操作の説明は本文と主例にあります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: R：学習と取り出しを区別する -->
+<div class="slide-body">
+<h2 id="r学習と取り出しを区別する">R：学習と取り出しを区別する</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(formulas[[key]], <span class="at">data =</span> train)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>models[[key]] <span class="ot">&lt;-</span> model</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>selected_key <span class="ot">&lt;-</span> <span class="st">&quot;both&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>selected_model <span class="ot">&lt;-</span> models[[selected_key]]</span></code></pre></div>
+<p>二重角括弧は要素そのものを取り出します。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+二重角括弧で式やモデルそのものを取り出します。一重角括弧で小さなリストを取り出す場合と区別してください。選択後にはエルエムで学習し直しません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: 出力の読み順 -->
+<div class="slide-body">
+<h2 id="出力の読み順">出力の読み順</h2>
+<ol type="1">
+<li>学習・検証のIDと件数。</li>
+<li>3候補の列名と切片・係数。</li>
+<li>3候補×2分割の指標表。</li>
+<li>選択候補の検証20行。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+表示を順番に見てください。最終的な誤差だけが合っていても、学習行や説明変数が違えば条件を満たしていません。係数は列名に対応付けて読みます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: 同じ尺度でRMSEを比べる -->
+<div class="slide-body">
+<h2 id="同じ尺度でrmseを比べる">同じ尺度でRMSEを比べる</h2>
+<p><img class="zoomable-image" src="images/comparison.svg" alt="三候補の訓練と検証RMSEをkWhで比較"></p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+棒の高さはルート平均二乗誤差です。青が訓練、黄色が検証で、どちらも同じゼロ始まりの縦軸です。今回は訓練でも検証でも両方の列を使う候補が最小になっています。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: 検証表から選ぶ -->
+<div class="slide-body">
+<h2 id="検証表から選ぶ">検証表から選ぶ</h2>
+<table>
+<thead>
+<tr>
+<th>候補</th>
+<th style="text-align: right;">MAE</th>
+<th style="text-align: right;">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hours</td>
+<td style="text-align: right;">3.659940</td>
+<td style="text-align: right;">4.356684</td>
+</tr>
+<tr>
+<td>throughput</td>
+<td style="text-align: right;">4.482441</td>
+<td style="text-align: right;">5.329957</td>
+</tr>
+<tr>
+<td>both</td>
+<td style="text-align: right;">1.555286</td>
+<td style="text-align: right;">1.759485</td>
+</tr>
+</tbody>
+</table>
+<p>単位kWh、概数。今回はbothを選択。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+検証表では両方を使う候補のルート平均二乗誤差が最小です。平均絶対誤差も小さくなっています。ただし、変数を追加すればいつも同じ結果になるとは限りません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: 必須変更：hoursからbothへ -->
+<div class="slide-body">
+<h2 id="必須変更hoursからbothへ">必須変更：hoursからbothへ</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>selected_key <span class="op">=</span> <span class="st">&quot;both&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>selected_key <span class="ot">&lt;-</span> <span class="st">&quot;both&quot;</span></span></code></pre></div>
+<p>主言語と照合言語の両方を変更します。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+未変更のひな形も動きますが、選択は時間だけになっています。比較表を読んだうえで両方へ変えます。自動的に最小値を探すコードを書くことは今回の必須作業ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: 主言語で保存する三つのファイル -->
+<div class="slide-body">
+<h2
+id="主言語で保存する三つのファイル">主言語で保存する三つのファイル</h2>
+<ul>
+<li>comparison.csv：比較表6行。</li>
+<li>evaluation.csv：選択候補の検証20行。</li>
+<li>comparison.png：訓練／検証RMSE。</li>
+</ul>
+<p>保存先はlesson12/output/です。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+主言語では二つのシーエスブイと一つの画像を保存します。照合言語には保存を要求しません。再実行すると同じ保存先を更新するので、比較用に残したい出力はコピーしておきましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: もう一方の言語で独立照合 -->
+<div class="slide-body">
+<h2 id="もう一方の言語で独立照合">もう一方の言語で独立照合</h2>
+<ul>
+<li>元CSVから学習し直して照合。</li>
+<li>相手のCSV・モデルは読まない。</li>
+<li>列・係数・ID・6行の指標表を確認。</li>
+<li>選択候補と指定3行を確認。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+独立照合とは、相手の計算結果を読み込んで同じ値を表示することではありません。同じ元データと同じ条件から、それぞれの言語で計算します。表示桁数の違いと計算の違いを区別してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: E005を手計算で確かめる -->
+<div class="slide-body">
+<h2 id="e005を手計算で確かめる">E005を手計算で確かめる</h2>
+<p><strong>予測 = 切片 + 時間係数×4.8 + 処理量係数×116</strong></p>
+<ul>
+<li>予測は約36.620440 kWh。</li>
+<li>実測は37.42 kWh。</li>
+<li>残差 = 実測 − 予測。</li>
+</ul>
+<p>係数を途中で丸めません。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+出力された全桁の係数を使って手計算します。実測値から予測値を引いた符号と絶対値も確認してください。ほかにイー004とイー011について、両言語の行別結果を照合します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 係数の意味も引き継ぐ -->
+<div class="slide-body">
+<h2 id="係数の意味も引き継ぐ">係数の意味も引き継ぐ</h2>
+<ul>
+<li>時間係数：kWh/時間。</li>
+<li>処理量係数：kWh/個。</li>
+<li>もう一方を一定とした予測の変化。</li>
+<li>因果効果・単純な重要度順位ではない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第11回の条件付き解釈を引き継ぎます。単位の異なる係数の数値だけを比べて重要度を順位付けしません。また、今回の合成データの回帰結果から実設備への因果効果を断定しません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: 訓練で最良なら十分か -->
+<div class="slide-body">
+<h2 id="訓練で最良なら十分か">訓練で最良なら十分か</h2>
+<p>今回は訓練・検証ともbothが最良。</p>
+<ul>
+<li>過学習が起きた実例とは扱わない。</li>
+<li>訓練誤差だけで選ぶ危険を考える。</li>
+<li>検証への繰り返し調整にも限界。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回は最良候補が一致しているので、結果だけを見て過学習の発生を主張できません。訓練データへの当てはまりだけでは未使用データの誤差は分からないという考え方を確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: 選択を固定してから最終確認へ -->
+<div class="slide-body">
+<h2 id="選択を固定してから最終確認へ">選択を固定してから最終確認へ</h2>
+<p><img class="zoomable-image" src="images/freeze.svg" alt="選択記録を固定した後に最終確認データを読む手順"></p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+教員は80行だけの結果で選択記録を保存します。その記録を固定してから最終20行を読みます。固定係数で予測し、結果と入力ハッシュを保存します。全候補の最終誤差を並べて選び直すことはしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 教員実演で確かめること -->
+<div class="slide-body">
+<h2 id="教員実演で確かめること">教員実演で確かめること</h2>
+<ul>
+<li>選択候補と固定係数は同じか。</li>
+<li>最終20行のMAE・RMSEはどうか。</li>
+<li>期待と違っても選び直さない。</li>
+<li>結果から言える範囲を考える。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここから教員専用の最終確認を実演します。公開教材には最終データの数値や結果を載せていません。数値が予想と違う場合も、評価結果を報告することと、そのデータで選び直すことを区別します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: 評価の限界を言葉にする -->
+<div class="slide-body">
+<h2 id="評価の限界を言葉にする">評価の限界を言葉にする</h2>
+<ul>
+<li>同じ検証行を前回まで何度も見た。</li>
+<li>最終確認も将来性能の保証ではない。</li>
+<li>再実行は再現性確認のため。</li>
+<li>最終結果から選択条件を変えない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+一度使うとは選択後の単一評価段階という意味です。固定した仕様を再実行しても、その結果から候補を調整しません。また、将来の運用条件が変わった場合まで性能を保証する結果ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 振り返りに書く五つの点 -->
+<div class="slide-body">
+<h2 id="振り返りに書く五つの点">振り返りに書く五つの点</h2>
+<ol type="1">
+<li>予想と計算結果。</li>
+<li>選んだ候補と検証RMSE。</li>
+<li>MAEとの比較。</li>
+<li>E005の手計算。</li>
+<li>最終確認を選択に使わない理由。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回の結果だけでは、訓練誤差で選んだのか検証誤差で選んだのかは区別できません。自分が何を根拠に選んだかを書いてください。理由や解釈は教員が確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: Formsへ両コード全文を提出 -->
+<div class="slide-body">
+<h2 id="formsへ両コード全文を提出">Formsへ両コード全文を提出</h2>
+<ul>
+<li>主言語、Python全文、R全文。</li>
+<li>実行状況、短い振り返り。</li>
+<li>添付提出は不要。</li>
+<li>締切・実URLは教員の案内を確認。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+両コード全文を改行と字下げを保持して貼り付けます。実行結果やマークダウンの囲みは混ぜません。保存したファイルの添付は不要ですが、コードから再生成できることを確認してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 31: 自己チェック -->
+<div class="slide-body">
+<h2 id="自己チェック">自己チェック</h2>
+<ul>
+<li>固定ID・件数を確認した。</li>
+<li>両言語の選択指定を変更した。</li>
+<li>主言語で3ファイルを保存した。</li>
+<li>独立照合と手計算を行った。</li>
+<li>選択理由と限界を説明した。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+チェックできていない項目があれば質問してください。未変更のひな形が実行できたことと、指定された選択を完成したことは別です。本文の確認問題も振り返りに利用してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 32: 次へつながる問い -->
+<div class="slide-body">
+<h2 id="次へつながる問い">次へつながる問い</h2>
+<p><strong>条件を変えたら、比較は公平でしょうか。</strong></p>
+<ul>
+<li>データ・定義・手順を揃える。</li>
+<li>計算結果と解釈を分ける。</li>
+<li>詳細な説明と公式資料は学生本文へ。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここまで、平均予測から単回帰、重回帰、候補選択へ進みました。分析方法が変わっても、同じ条件で比較し、結果が言える範囲を説明する姿勢を引き継ぎます。残った疑問を整理しましょう。
+</aside>
+
+
+</section></div></div><script src="reveal/reveal.js"></script><script src="image-zoom.js"></script><script src="handout-download.js"></script><script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'none'});</script></body></html>
