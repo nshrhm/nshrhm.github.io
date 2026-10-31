@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="description" content="第14回 架空のAI二方式を比較する操作教材">
+        <title>第14回 人工知能の今後の動向 — 操作教材</title><style>
+:root{font-family:system-ui,sans-serif;color:#17334b;background:#eef3f8}*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1150px;margin:auto;padding:1rem}h1{font-size:clamp(1.5rem,3vw,2.3rem)}h2{margin-top:0}a{color:#174b8b}nav{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0}button,input,select,textarea{font:inherit}button,nav a{min-height:44px;padding:.6rem .85rem;border:1px solid #7892ab;border-radius:6px;background:white;color:#17334b;cursor:pointer}button:disabled{opacity:.5;cursor:default}nav a[aria-selected=true]{background:#173f6f;color:white}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #bd5800;outline-offset:3px}section{background:white;padding:1.1rem;border-radius:12px}section[hidden]{display:none}.controls{display:flex;flex-wrap:wrap;align-items:end;gap:.75rem;margin:1rem 0}label{display:flex;flex-direction:column;gap:.3rem}input[type=number]{width:6rem;min-height:44px;padding:.4rem}select{max-width:100%;min-height:44px}textarea{width:100%;min-height:65px;padding:.5rem}.reflection{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}.result{border-left:5px solid #247e78;background:#f1faf9;padding:.8rem;margin-top:1rem;overflow-wrap:anywhere}.error{color:#a21f18;font-weight:bold}.diagram{width:100%;max-height:320px;height:auto;background:#f7f9fc}svg text{font:16px system-ui,sans-serif;fill:#17334b}svg .edge{stroke:#8b9cac;stroke-width:2}.node{fill:white;stroke:#607b96;stroke-width:2}.visited{fill:#d2eee7}.skipped{fill:#ececec;stroke-dasharray:5 3}table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{padding:.45rem;border:1px solid #bac9d5;text-align:left}pre{white-space:pre-wrap;word-break:break-word;font-size:.85rem}.hint{color:#465e73}.moves{display:flex;flex-wrap:wrap;gap:.5rem}.trace{max-height:260px;overflow:auto}.badge{font-weight:bold;color:#17634e}.step{font-size:1.1rem}.layout{display:grid;grid-template-columns:1fr 1fr;gap:1rem}@media(max-width:650px){.reflection,.layout{grid-template-columns:1fr}header,main,footer{padding:.6rem}section{padding:.8rem}td,th{font-size:.9rem}nav a{flex:1 1 43%;font-size:.9rem}svg text{font-size:18px}}
+        
+.table-wrap{overflow-x:auto} .diagram{max-height:300px} @media(max-width:650px){td,th{padding:.3rem;font-size:.78rem}}
+        </style>
+    </head>
+    <body>
+        <header>
+            <p>人工知能概論2026 ／ 第14回</p>
+            <h1>人工知能の今後の動向</h1>
+            <p>予想 → 操作 → 実行 → 一つ変更 → 結果を説明</p>
+            <p><a href="index.html">スライド</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="programs/guide.html">プログラム解説</a> ／ <a href="interactive.html" download>操作教材を保存</a></p>
+            <p>架空の固定結果です。AIの学習・生成・実サービスの測定は行いません。N1〜N6は通常条件、C1〜C6は条件変化です。</p>
+            <nav role="tablist" aria-label="テーマ">
+                <a role="tab"
+                   id="tab-cases"
+                   data-tab="cases"
+                   href="#cases"
+                   aria-controls="cases"
+                   aria-selected="false">1. 結果を一件ずつ見る</a><a role="tab"
+   id="tab-groups"
+   data-tab="groups"
+   href="#groups"
+   aria-controls="groups"
+   aria-selected="false">2. 全体と内訳</a><a role="tab"
+   id="tab-mixture"
+   data-tab="mixture"
+   href="#mixture"
+   aria-controls="mixture"
+   aria-selected="false">3. 利用条件が変わる</a><a role="tab"
+   id="tab-abstain"
+   data-tab="abstain"
+   href="#abstain"
+   aria-controls="abstain"
+   aria-selected="false">4. 回答する・保留する</a><a role="tab"
+   id="tab-costs"
+   data-tab="costs"
+   href="#costs"
+   aria-controls="costs"
+   aria-selected="false">5. 確認にも費用がかかる</a><a role="tab"
+   id="tab-choose"
+   data-tab="choose"
+   href="#choose"
+   aria-controls="choose"
+   aria-selected="false">6. 条件を満たす候補を選ぶ</a>
+            </nav>
+        </header>
+        <main>
+            <section id="cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+                <h2>結果を一件ずつ見る</h2>
+                <p><strong>問い：</strong>高いスコアなら必ず正解でしょうか。AのN6を予想してから選びます。</p>
+                <div class="reflection">
+                    <label>
+                        予想<textarea id="cases-prediction" placeholder="操作前の予想を書こう"></textarea></label><label>結果の説明<textarea id="cases-explanation" placeholder="数値と条件を根拠に説明しよう"></textarea>
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label for="cases-method">
+                            方式<select id="cases-method" data-default="A">
+                            <option value="A" selected>A</option>
+                            <option value="B">B</option>
+                        </select></label><label for="cases-id">ケース<select id="cases-id" data-default="N1">
+                            <option value="N1" selected>N1</option>
+                            <option value="N2">N2</option>
+                            <option value="N3">N3</option>
+                            <option value="N4">N4</option>
+                            <option value="N5">N5</option>
+                            <option value="N6">N6</option>
+                            <option value="C1">C1</option>
+                            <option value="C2">C2</option>
+                            <option value="C3">C3</option>
+                            <option value="C4">C4</option>
+                            <option value="C5">C5</option>
+                            <option value="C6">C6</option>
+                            </select>
+                        </label>
+                    </div>
+                    <p class="error" id="cases-error" role="alert"></p>
+                    <div id="cases-chart"></div>
+                    <div class="result table-wrap" id="cases-result" aria-live="polite"></div>
+                    <p>スコアと正誤が異なる例を一つ挙げよう。</p>
+                    <button type="button" id="cases-reset">このテーマをリセット</button>
+                </section>
+                <section id="groups" role="tabpanel" aria-labelledby="tab-groups" hidden>
+                    <h2>全体と内訳</h2>
+                    <p><strong>問い：</strong>全体で優位な方式は、通常条件でも優位でしょうか。</p>
+                    <div class="reflection">
+                        <label>
+                            予想<textarea id="groups-prediction" placeholder="操作前の予想を書こう"></textarea></label><label>結果の説明<textarea id="groups-explanation" placeholder="数値と条件を根拠に説明しよう"></textarea>
+                            </label>
+                        </div>
+                        <div class="controls">
+                            <label for="groups-kind">
+                                集計する条件<select id="groups-kind" data-default="all">
+                                <option value="all" selected>全12件</option>
+                                <option value="normal">通常条件6件</option>
+                                <option value="changed">条件変化6件</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p class="error" id="groups-error" role="alert"></p>
+                        <div id="groups-chart"></div>
+                        <div class="result table-wrap" id="groups-result" aria-live="polite"></div>
+                        <p>分母と条件名を添えて、順位が違う理由を説明しよう。</p>
+                        <button type="button" id="groups-reset">このテーマをリセット</button>
+                    </section>
+                    <section id="mixture" role="tabpanel" aria-labelledby="tab-mixture" hidden>
+                        <h2>利用条件が変わる</h2>
+                        <p><strong>問い：</strong>通常条件が75%なら順位はどうなるでしょうか。</p>
+                        <div class="reflection">
+                            <label>
+                                予想<textarea id="mixture-prediction" placeholder="操作前の予想を書こう"></textarea></label><label>結果の説明<textarea id="mixture-explanation" placeholder="数値と条件を根拠に説明しよう"></textarea>
+                                </label>
+                            </div>
+                            <div class="controls">
+                                <label for="mixture-weight">
+                                    通常条件の割合 (%)<input id="mixture-weight"
+       type="number"
+       min="0"
+       max="100"
+       step="1"
+       value="50">
+                                </label>
+                            </div>
+                            <p class="error" id="mixture-error" role="alert"></p>
+                            <div id="mixture-chart"></div>
+                            <div class="result table-wrap" id="mixture-result" aria-live="polite"></div>
+                            <p>固定12件の集計と利用比率を仮定した推定を区別しよう。</p>
+                            <button type="button" id="mixture-reset">このテーマをリセット</button>
+                        </section>
+                        <section id="abstain" role="tabpanel" aria-labelledby="tab-abstain" hidden>
+                            <h2>回答する・保留する</h2>
+                            <p><strong>問い：</strong>回答を減らすと何が良くなり、何が失われるでしょうか。</p>
+                            <div class="reflection">
+                                <label>
+                                    予想<textarea id="abstain-prediction" placeholder="操作前の予想を書こう"></textarea></label><label>結果の説明<textarea id="abstain-explanation" placeholder="数値と条件を根拠に説明しよう"></textarea>
+                                    </label>
+                                </div>
+                                <div class="controls">
+                                    <label for="abstain-threshold">
+                                        回答しきい値<input id="abstain-threshold"
+       type="number"
+       min="0"
+       max="100"
+       step="1"
+       value="0">
+                                    </label>
+                                </div>
+                                <p class="error" id="abstain-error" role="alert"></p>
+                                <div id="abstain-chart"></div>
+                                <div class="result table-wrap" id="abstain-result" aria-live="polite"></div>
+                                <p>回答中の正答率だけでなく、回答率も使って説明しよう。</p>
+                                <button type="button" id="abstain-reset">このテーマをリセット</button>
+                            </section>
+                            <section id="costs" role="tabpanel" aria-labelledby="tab-costs" hidden>
+                                <h2>確認にも費用がかかる</h2>
+                                <p><strong>問い：</strong>保留を増やしたとき、総費用はどう変わるでしょうか。</p>
+                                <div class="reflection">
+                                    <label>
+                                        予想<textarea id="costs-prediction" placeholder="操作前の予想を書こう"></textarea></label><label>結果の説明<textarea id="costs-explanation" placeholder="数値と条件を根拠に説明しよう"></textarea>
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label for="costs-threshold">
+                                            回答しきい値<input id="costs-threshold"
+       type="number"
+       min="0"
+       max="100"
+       step="1"
+       value="80"></label><label for="costs-a">Aの処理費用<input id="costs-a" type="number" min="0" max="100" step="1" value="1"></label><label for="costs-b">Bの処理費用<input id="costs-b" type="number" min="0" max="100" step="1" value="3"></label><label for="costs-review">保留後の確認費用<input id="costs-review" type="number" min="0" max="100" step="1" value="4">
+                                            </label>
+                                        </div>
+                                        <p class="error" id="costs-error" role="alert"></p>
+                                        <div id="costs-chart"></div>
+                                        <div class="result table-wrap" id="costs-result" aria-live="polite"></div>
+                                        <p>費用の増減を式のどの項で説明できるか考えよう。</p>
+                                        <button type="button" id="costs-reset">このテーマをリセット</button>
+                                    </section>
+                                    <section id="choose" role="tabpanel" aria-labelledby="tab-choose" hidden>
+                                        <h2>条件を満たす候補を選ぶ</h2>
+                                        <p><strong>問い：</strong>必要正答率を90%にすると、選べる候補はあるでしょうか。</p>
+                                        <div class="reflection">
+                                            <label>
+                                                予想<textarea id="choose-prediction" placeholder="操作前の予想を書こう"></textarea></label><label>結果の説明<textarea id="choose-explanation" placeholder="数値と条件を根拠に説明しよう"></textarea>
+                                                </label>
+                                            </div>
+                                            <div class="controls">
+                                                <label for="choose-accuracy">
+                                                    必要正答率 (%)<input id="choose-accuracy"
+       type="number"
+       min="0"
+       max="100"
+       step="1"
+       value="80"></label><label for="choose-coverage">必要回答率 (%)<input id="choose-coverage"
+       type="number"
+       min="0"
+       max="100"
+       step="1"
+       value="50"></label><label for="choose-a">Aの処理費用<input id="choose-a" type="number" min="0" max="100" step="1" value="1"></label><label for="choose-b">Bの処理費用<input id="choose-b" type="number" min="0" max="100" step="1" value="3"></label><label for="choose-review">保留後の確認費用<input id="choose-review" type="number" min="0" max="100" step="1" value="4">
+                                                    </label>
+                                                </div>
+                                                <p class="error" id="choose-error" role="alert"></p>
+                                                <div id="choose-chart"></div>
+                                                <div class="result table-wrap" id="choose-result" aria-live="polite"></div>
+                                                <p>不適合になった要件を挙げ、追加で確かめたいことを書こう。</p>
+                                                <button type="button" id="choose-reset">このテーマをリセット</button>
+                                            </section>
+                                        </main>
+                                        <footer>
+                                            <p>条件はテーマごとに独立しています。予想・説明は画面内だけに保持し、再読込・リセットで消えます。計算・操作はオフラインで動作し、外部へ送信しません。</p>
+                                            <p>単一HTMLだけを保存した場合、スライドとマニュアルは同梱されません。元の確認版フォルダーに戻って開いてください。</p>
+                                        </footer>
+                                        <script id="evaluation-core">'use strict';
+const EvalModel=(()=>{
+const DATA={A:{normal:{correct:[1,1,1,1,1,0],scores:[95,90,85,80,75,90]},changed:{correct:[1,1,0,0,0,0],scores:[95,80,75,65,55,45]}},B:{normal:{correct:[1,1,1,1,0,0],scores:[90,85,80,75,70,60]},changed:{correct:[1,1,1,1,0,0],scores:[85,80,75,70,65,55]}}};
+const BASE={threshold:0,normal_percent:50,review_cost:4,cost_a:1,cost_b:3,min_accuracy:80,min_coverage:50},copy=x=>JSON.parse(JSON.stringify(x));
+function integer(v,name){if(typeof v!=='number'||!Number.isInteger(v)||v<0||v>100)throw Error(name+'：0〜100の整数を入力してください');return v;}
+function configuration(config={}){if(!config||typeof config!=='object'||Array.isArray(config)||Object.keys(config).some(k=>!Object.hasOwn(BASE,k)))throw Error('未知の設定です');const c={...BASE,...config};for(const [k,v]of Object.entries(c))integer(v,k);return c;}
+function records(method,group='all'){if(!['A','B'].includes(method)||!['all','normal','changed'].includes(group))throw Error('未知の方式または条件です');let rows=[];for(const kind of ['normal','changed'])if(group==='all'||group===kind)DATA[method][kind].correct.forEach((correct,i)=>rows.push({id:(kind==='normal'?'N':'C')+(i+1),group:kind,correct,score:DATA[method][kind].scores[i]}));return rows;}
+function inspect_case(method,id){const row=records(method).find(r=>r.id===id);if(!row)throw Error('未知のケースです');return row;}
+function aggregate(method,threshold=0,group='all'){integer(threshold,'threshold');const rows=records(method,group),selected=rows.filter(r=>r.score>=threshold),total=rows.length,answered=selected.length,correct=selected.reduce((s,r)=>s+r.correct,0);return {total,correct:rows.reduce((s,r)=>s+r.correct,0),answered,correct_answered:correct,withheld:total-answered,accuracy:answered?correct/answered:null,coverage:answered/total,correct_per_total:correct/total,selected_ids:selected.map(r=>r.id)};}
+function choose(candidates,min_accuracy,min_coverage){integer(min_accuracy,'min_accuracy');integer(min_coverage,'min_coverage');const eligible=candidates.filter(c=>c.answered>0&&c.correct_answered*100>=min_accuracy*c.answered&&c.answered*100>=min_coverage*c.total).map(copy);eligible.sort((a,b)=>a.cost-b.cost||b.coverage-a.coverage||b.accuracy-a.accuracy||(a.method<b.method?-1:a.method>b.method?1:0)||a.threshold-b.threshold);return eligible[0]||null;}
+function evaluate(config={}){const c=configuration(config),groups={},mixture={},answers={},candidates=[];for(const method of ['A','B']){groups[method]=Object.fromEntries(['all','normal','changed'].map(kind=>[kind,aggregate(method,0,kind)]));mixture[method]=(groups[method].normal.correct*c.normal_percent+groups[method].changed.correct*(100-c.normal_percent))/600;const cost=c[method==='A'?'cost_a':'cost_b'];answers[method]=aggregate(method,c.threshold);answers[method].cost=12*cost+answers[method].withheld*c.review_cost;for(const threshold of [0,80,100]){const row={method,threshold,...aggregate(method,threshold)};row.cost=12*cost+row.withheld*c.review_cost;row.eligible=row.answered>0&&row.correct_answered*100>=c.min_accuracy*row.answered&&row.answered*100>=c.min_coverage*12;candidates.push(row);}}return {config:c,groups,mixture,answers,candidates,best:choose(candidates,c.min_accuracy,c.min_coverage)};}
+function experiment_configs(){const cases={};for(const[name,key,v,t]of [['threshold','threshold',80,0],['mixture','normal_percent',75,0],['review','review_cost',10,80],['cost_b','cost_b',1,80],['coverage','min_coverage',40,0],['accuracy','min_accuracy',90,0]]){const base={...BASE,threshold:t};cases[name]={base,changed:{...base,[key]:v}};}return cases;}
+function rounded(x){if(Array.isArray(x))return x.map(rounded);if(x&&typeof x==='object')return Object.fromEntries(Object.entries(x).map(([k,v])=>[k,rounded(v)]));return typeof x==='number'?Math.round(x*1e6)/1e6:x;}
+function demo(){return rounded({baseline:evaluate(),changes:Object.fromEntries(Object.entries(experiment_configs()).map(([name,c])=>[name,{before:evaluate(c.base),after:evaluate(c.changed)}]))});}
+return {BASE:copy(BASE),records,inspect_case,aggregate,choose,evaluate,experiment_configs,rounded,demo};
+})();
+globalThis.EvalModel=EvalModel;
+                                        </script>
+                                        <script>'use strict';
+const ids=['cases','groups','mixture','abstain','costs','choose'];
+const $=id=>document.getElementById(id),pct=x=>x===null?'—':(x*100).toFixed(2)+'%',named={normal:'通常条件',changed:'条件変化',all:'全12件'};
+function number(id){const s=$(id).value;if(s.trim()==='')throw Error('空欄です。0〜100の整数を入力してください');const n=Number(s);if(!Number.isInteger(n)||n<0||n>100)throw Error('0〜100の整数を入力してください');return n;}
+function table(head,rows){return '<table><thead><tr>'+head.map(x=>'<th scope="col">'+x+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+'</tbody></table>';}
+function bars(id,labels,values,max=1){const h=55*labels.length+30;$(id+'-chart').innerHTML=`<svg class="diagram" viewBox="0 0 640 ${h}" role="img" aria-label="計算結果の比較図">`+labels.map((label,i)=>`<text x="12" y="${35+i*55}">${label}</text><rect x="165" y="${15+i*55}" width="${Math.max(0,values[i]===null?0:values[i]/max*310)}" height="28" fill="${i%2?'#267b72':'#285a92'}"/><text x="490" y="${35+i*55}">${values[i]===null?'—':max===1?pct(values[i]):values[i]}</text>`).join('')+'</svg><p class="hint">固定データと現在の条件から計算した図。実サービスの測定値ではありません。</p>';}
+function render(id){try{let html='';if(id==='cases'){const m=$('cases-method').value,r=EvalModel.inspect_case(m,$('cases-id').value);html=`方式${m}／${r.id}（${named[r.group]}）: ${r.correct?'正解':'不正解'}。判定用スコア ${r.score}。<p>正誤は教材の固定ラベルです。スコア90を正答確率90%とは読めません。</p>`;bars(id,['判定用スコア'],[r.score],100);}
+if(id==='groups'){const g=$('groups-kind').value,rows=['A','B'].map(m=>{const r=EvalModel.aggregate(m,0,g);return [m,r.correct,r.total,pct(r.accuracy)];});html=`${named[g]}・しきい値0。固定結果の集計。`+table(['方式','正解数','件数','正答率'],rows);bars(id,['方式A','方式B'],['A','B'].map(m=>EvalModel.aggregate(m,0,g).accuracy));}
+if(id==='mixture'){const w=number('mixture-weight'),r=EvalModel.evaluate({normal_percent:w});html=`通常条件 ${w}%・条件変化 ${100-w}%。<p>A = 5/6 × ${w}/100 + 2/6 × ${100-w}/100 = ${pct(r.mixture.A)}<br>B = 4/6 × ${w}/100 + 4/6 × ${100-w}/100 = ${pct(r.mixture.B)}</p><p>順位：${r.mixture.A>r.mixture.B?'A > B':r.mixture.A<r.mixture.B?'B > A':'同率'}。利用比率を仮定した推定です。元の12件の正解数はA 7・B 8のままです。</p>`;bars(id,['方式A 推定','方式B 推定'],[r.mixture.A,r.mixture.B]);}
+if(id==='abstain'){const t=number('abstain-threshold'),r=EvalModel.evaluate({threshold:t});html=`しきい値 ${t} 以上で回答。`+table(['方式','回答/12','正解/回答','正答率','回答率'],['A','B'].map(m=>{const a=r.answers[m];return[m,a.answered+'/12',a.correct_answered+'/'+a.answered,pct(a.accuracy),pct(a.coverage)];}))+`<p>保留数 A ${r.answers.A.withheld}・B ${r.answers.B.withheld}。全件保留の正答率は—（未定義）。保留を正解にも誤答にも数えません。</p>`;bars(id,['A 回答率','B 回答率','A 正答率','B 正答率'],[r.answers.A.coverage,r.answers.B.coverage,r.answers.A.accuracy,r.answers.B.accuracy]);}
+if(id==='costs'){const c={threshold:number('costs-threshold'),cost_a:number('costs-a'),cost_b:number('costs-b'),review_cost:number('costs-review')},r=EvalModel.evaluate(c);html=`全12件の処理費用＋保留件数の確認費用（架空単位）。`+table(['方式','計算式','総費用'],['A','B'].map(m=>[m,`12 × ${c[m==='A'?'cost_a':'cost_b']} + ${r.answers[m].withheld} × ${c.review_cost}`,r.answers[m].cost]))+'<p>保留前にも処理費用がかかります。確認後の正答率・時間・消費電力は計算していません。</p>';bars(id,['A 総費用','B 総費用'],[r.answers.A.cost,r.answers.B.cost],Math.max(1,r.answers.A.cost,r.answers.B.cost));}
+if(id==='choose'){const c={min_accuracy:number('choose-accuracy'),min_coverage:number('choose-coverage'),cost_a:number('choose-a'),cost_b:number('choose-b'),review_cost:number('choose-review')},r=EvalModel.evaluate(c);html=`固定12件・6候補のみ。必要正答率 ${c.min_accuracy}%・必要回答率 ${c.min_coverage}%。`+table(['方式/閾値','正答率','回答率','費用','適合'],r.candidates.map(a=>[a.method+'/'+a.threshold,pct(a.accuracy),pct(a.coverage),a.cost,a.eligible?'適合':'不適合']))+`<p class="badge">選択：${r.best?`方式${r.best.method}・しきい値${r.best.threshold}・費用${r.best.cost}`:'該当なし'}</p><p>費用が最小の適合候補を選びます。同額なら回答率→正答率→方式A→低いしきい値の順。全件保留は適合しません。これは安全性や公平性の保証ではありません。</p>`;bars(id,['必要正答率','必要回答率'],[c.min_accuracy/100,c.min_coverage/100]);}
+$(id+'-result').innerHTML=html;$(id+'-error').textContent='';}catch(e){$(id+'-error').textContent=e.message;$(id+'-result').textContent='入力を直すか、このテーマをリセットしてください。前の計算値は表示しません。';$(id+'-chart').replaceChildren();}}
+function select(id){if(!ids.includes(id))id='cases';for(const x of ids){$(x).hidden=x!==id;$('tab-'+x).setAttribute('aria-selected',String(x===id));$('tab-'+x).tabIndex=x===id?0:-1;}render(id);}
+for(const id of ids){const s=$(id);s.querySelectorAll('input,select').forEach(x=>x.addEventListener('input',()=>render(id)));$(id+'-reset').addEventListener('click',()=>{s.querySelectorAll('input').forEach(x=>x.value=x.defaultValue);s.querySelectorAll('select').forEach(x=>x.value=x.dataset.default);s.querySelectorAll('textarea').forEach(x=>x.value='');render(id);});$('tab-'+id).addEventListener('keydown',e=>{let i=ids.indexOf(id);if(e.key==='ArrowRight')i=(i+1)%6;else if(e.key==='ArrowLeft')i=(i+5)%6;else if(e.key==='Home')i=0;else if(e.key==='End')i=5;else return;e.preventDefault();location.hash=ids[i];$('tab-'+ids[i]).focus();});}
+addEventListener('hashchange',()=>select(location.hash.slice(1)));select(location.hash.slice(1));
+                                        </script>
+                                    </body>
+                                </html>

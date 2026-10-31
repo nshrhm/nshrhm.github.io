@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第14回 人工知能の今後の動向：プログラムの保存と学び方">
+<title>第14回 人工知能の今後の動向：プログラムの保存と学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第14回 人工知能の今後の動向：プログラムの保存と学び方</h1>
+<h2 id="目標と保存実行">目標と保存・実行</h2>
+<p>固定結果の集計、利用比率による推定、回答保留と費用を比較します。前提はリスト・辞書・関数と割合。学習・生成・モデル取得・乱数・APIは使いません。</p>
+<p><a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a></p>
+<p><a href="ai_evaluation.py" download>Pythonを保存</a> ／ <a href="ai_evaluation.ipynb" download>Notebookを保存</a> ／ <a href="ai_evaluation.zip" download>一式ZIPを保存</a></p>
+<ol type="1">
+<li>ZIPを保存・展開し、同梱guide.htmlを開きます。以下は同梱ファイルだけで実行手順をたどれます。</li>
+<li>VS Codeで展開先を開き、既存venvを有効化してPythonインタープリターを選びます。Python 3.10以上を使います。制作環境の版そのものを要求しません。</li>
+<li>ターミナルで <code>python ai_evaluation.py --demo</code> を実行します。JSONだけ保存する場合は <code>python ai_evaluation.py --demo --json &gt; result.json</code>。uv既習なら <code>uv run python ai_evaluation.py --demo</code> でも実行できます。</li>
+<li>Notebookは既存のJupyter環境で開き、同じvenvのカーネルを選択。「カーネルを再起動」→「すべて実行」を選びます。カーネルがない場合だけvenv内で <code>python -m pip install -r requirements.txt</code> を実行し、再選択します。依存の初回取得にはネット接続が必要です。システム全体へは入れません。</li>
+</ol>
+<p>成功の目印はA7/12・B8/12、選択A・しきい値80・費用32、末尾の「基準入力・結果を保持しました」。Notebookは同梱Pythonをimportしません。Python版の実行部分は標準ライブラリだけです。</p>
+<h2 id="入力と出力の読み方">入力と出力の読み方</h2>
+<p>正誤とスコアはDATAに固定してあります。N1〜N6が通常条件、C1〜C6が条件変化。スコアは確率ではなく、実AIから取得した結果でもありません。BASEはしきい値0、通常条件50%、確認費用4、A単価1、B単価3、必要正答率80%、必要回答率50%です。</p>
+<p><code>evaluate(config)</code>で一つの条件を評価します。<code>groups</code>は各条件と全体の固定集計、<code>mixture</code>は利用比率による推定、<code>answers</code>は指定しきい値での回答・保留・費用、<code>candidates</code>は固定6候補、<code>best</code>は要件を満たす最小費用の候補です。推定比率は固定候補の選択へ混ぜません。</p>
+<p><code>correct</code>は元の正解数、<code>correct_answered</code>は回答した正解数、<code>answered</code>は回答数、<code>withheld</code>は保留数。<code>accuracy</code>は回答中の正答率、<code>coverage</code>は回答率、<code>correct_per_total</code>は回答した正解数/全件数です。分母の違いを確認してください。全件保留時の<code>accuracy</code>はNone/JSONのnullで、0や1ではありません。</p>
+<p><code>records</code>・<code>inspect_case</code>はケースを読み、<code>aggregate</code>はしきい値以上のケースを集計します。<code>choose</code>は6候補から費用、回答率、正答率、方式A、低いしきい値の順で選びます。該当なしはNone。<code>demo()</code>と<code>baseline_result</code>は基準と6変更例の比較用JSONで、実数は6桁表示。計算そのものは丸め前の値を使います。</p>
+<h2 id="六つの操作に対応する観察">六つの操作に対応する観察</h2>
+<h3 id="テーマ1結果を一件ずつ見る">テーマ1：結果を一件ずつ見る</h3>
+<p>問い：高スコアなら必ず正解か。予想を手元へ書いてから、基準結果の対応する項目を見ます。方式A、ケースN6を選び、続いてBのN6を見る。 操作画面と同じ変更を次のNotebookのコピー上で試せます。想定結果：AのN6はスコア90でも不正解。BのN6も不正解だがスコア60。 説明する問い：正誤とスコアの役割は何が違うか。 復帰は基準セルからの再実行です。</p>
+<p>Notebookの「操作テーマ1」セルで次を実行できます。Pythonからは <code>from ai_evaluation import inspect_case, aggregate, evaluate</code> の後で同じ式を使えます。Notebookではimport不要です。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>observation_case <span class="op">=</span> inspect_case(<span class="st">&#39;A&#39;</span>, <span class="st">&#39;N6&#39;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(observation_case)</span></code></pre></div>
+<h3 id="テーマ2全体と内訳">テーマ2：全体と内訳</h3>
+<p>問い：全体で高い方式は各条件でも高いか。予想を手元へ書いてから、基準結果の対応する項目を見ます。全12件→通常条件→条件変化と選ぶ。 操作画面と同じ変更を次のNotebookのコピー上で試せます。想定結果：全体A7/12・B8/12、通常A5/6・B4/6、条件変化A2/6・B4/6。 説明する問い：順位を述べるとき、分母と条件はなぜ必要か。 復帰は基準セルからの再実行です。</p>
+<p>Notebookの「操作テーマ2」セルで次を実行できます。Pythonからは <code>from ai_evaluation import inspect_case, aggregate, evaluate</code> の後で同じ式を使えます。Notebookではimport不要です。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>observation_groups <span class="op">=</span> {m: aggregate(m, <span class="dv">0</span>, <span class="st">&#39;normal&#39;</span>) <span class="cf">for</span> m <span class="kw">in</span> (<span class="st">&#39;A&#39;</span>, <span class="st">&#39;B&#39;</span>)}</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(observation_groups)</span></code></pre></div>
+<h3 id="テーマ3利用条件が変わる">テーマ3：利用条件が変わる</h3>
+<p>問い：通常条件が多ければ順位は変わるか。予想を手元へ書いてから、基準結果の対応する項目を見ます。通常条件の割合を50から75へ変える。 操作画面と同じ変更を次のNotebookのコピー上で試せます。想定結果：推定A17/24（約70.83%）・B2/3（約66.67%）。固定12件の正解数は不変。 説明する問い：モデルが改善したのか、利用比率の仮定が変わったのか。 復帰は基準セルからの再実行です。</p>
+<p>Notebookの「操作テーマ3」セルで次を実行できます。Pythonからは <code>from ai_evaluation import inspect_case, aggregate, evaluate</code> の後で同じ式を使えます。Notebookではimport不要です。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>observation_mixture <span class="op">=</span> evaluate({<span class="st">&#39;normal_percent&#39;</span>: <span class="dv">75</span>})</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(observation_mixture[<span class="st">&#39;mixture&#39;</span>])</span></code></pre></div>
+<h3 id="テーマ4回答する保留する">テーマ4：回答する・保留する</h3>
+<p>問い：正答率100%なら全件を任せられるか。予想を手元へ書いてから、基準結果の対応する項目を見ます。回答しきい値を0→80→100と変える。 操作画面と同じ変更を次のNotebookのコピー上で試せます。想定結果：80でAは6/7正解・回答率7/12、Bは5/5正解・回答率5/12。100で回答率0、正答率—。 説明する問い：二つの割合の分母は何か。全件保留を100%正解と呼べない理由は何か。 復帰は基準セルからの再実行です。</p>
+<p>Notebookの「操作テーマ4」セルで次を実行できます。Pythonからは <code>from ai_evaluation import inspect_case, aggregate, evaluate</code> の後で同じ式を使えます。Notebookではimport不要です。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>observation_abstain <span class="op">=</span> evaluate({<span class="st">&#39;threshold&#39;</span>: <span class="dv">80</span>})</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(observation_abstain[<span class="st">&#39;answers&#39;</span>])</span></code></pre></div>
+<h3 id="テーマ5確認にも費用がかかる">テーマ5：確認にも費用がかかる</h3>
+<p>問い：保留の多い方式は費用が低いか。予想を手元へ書いてから、基準結果の対応する項目を見ます。しきい値80を保ち、確認費用4→10を試す。リセット後、Bの費用3→1だけを試す。 操作画面と同じ変更を次のNotebookのコピー上で試せます。想定結果：基準32・64、確認費用10なら62・106。B単価1ならB40。確認後の正答率は未計算。 説明する問い：総費用のどの項が変わったか。人の確認で必ず正解になるといえるか。 復帰は基準セルからの再実行です。</p>
+<p>Notebookの「操作テーマ5」セルで次を実行できます。Pythonからは <code>from ai_evaluation import inspect_case, aggregate, evaluate</code> の後で同じ式を使えます。Notebookではimport不要です。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>observation_costs <span class="op">=</span> evaluate({<span class="st">&#39;threshold&#39;</span>: <span class="dv">80</span>, <span class="st">&#39;review_cost&#39;</span>: <span class="dv">10</span>})</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>({m: observation_costs[<span class="st">&#39;answers&#39;</span>][m][<span class="st">&#39;cost&#39;</span>] <span class="cf">for</span> m <span class="kw">in</span> (<span class="st">&#39;A&#39;</span>, <span class="st">&#39;B&#39;</span>)})</span></code></pre></div>
+<h3 id="テーマ6条件を満たす候補を選ぶ">テーマ6：条件を満たす候補を選ぶ</h3>
+<p>問い：必要正答率90%と回答率50%を同時に満たせるか。予想を手元へ書いてから、基準結果の対応する項目を見ます。必要回答率50→40を試す。リセット後、必要正答率80→90だけを試す。 操作画面と同じ変更を次のNotebookのコピー上で試せます。想定結果：基準はA・80・32。回答率40%ではA80とB80の2候補が適合しA80を選ぶ。正答率90%・回答率50%では該当なし。 説明する問い：不適合の理由を要件ごとに述べる。この選択だけで実利用の安全性を決められるか。 復帰は基準セルからの再実行です。</p>
+<p>Notebookの「操作テーマ6」セルで次を実行できます。Pythonからは <code>from ai_evaluation import inspect_case, aggregate, evaluate</code> の後で同じ式を使えます。Notebookではimport不要です。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>observation_choice <span class="op">=</span> evaluate({<span class="st">&#39;min_accuracy&#39;</span>: <span class="dv">90</span>})</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(observation_choice[<span class="st">&#39;best&#39;</span>])</span></code></pre></div>
+<h2 id="コピー上で行う6変更例">コピー上で行う6変更例</h2>
+<p>Notebookでは<code>trial_名前_base</code>、<code>trial_名前_config</code>、<code>trial_名前_before</code>、<code>trial_名前</code>に基準・変更設定・前後結果を分けます。各設定のコピーを作り、差分の一項目だけを更新しています。基準の<code>baseline_config</code>、<code>baseline_data</code>、<code>baseline_result</code>は編集しません。</p>
+<h3 id="変更1しきい値080">変更1：しきい値0→80</h3>
+<p>問い・予想：変更前に、どの値が変わるかを書きます。手順：Notebookの「変更1」セル、または<code>experiment_configs()['threshold']</code>のbaseをコピーし、changedとの差がある一項目だけを変更して<code>evaluate</code>を実行します。想定結果：Aは6/7・回答率7/12、Bは5/5・回答率5/12。 説明：変化の原因を計算式と分母から説明してください。復帰：このセルを再実行するか、全セルを再実行します。</p>
+<h3 id="変更2通常条件5075">変更2：通常条件50→75%</h3>
+<p>問い・予想：変更前に、どの値が変わるかを書きます。手順：Notebookの「変更2」セル、または<code>experiment_configs()['mixture']</code>のbaseをコピーし、changedとの差がある一項目だけを変更して<code>evaluate</code>を実行します。想定結果：推定A17/24・B2/3。元の固定結果は変わらない。 説明：変化の原因を計算式と分母から説明してください。復帰：このセルを再実行するか、全セルを再実行します。</p>
+<h3 id="変更3確認費用410基準しきい値80">変更3：確認費用4→10（基準しきい値80）</h3>
+<p>問い・予想：変更前に、どの値が変わるかを書きます。手順：Notebookの「変更3」セル、または<code>experiment_configs()['review']</code>のbaseをコピーし、changedとの差がある一項目だけを変更して<code>evaluate</code>を実行します。想定結果：総費用A62・B106。 説明：変化の原因を計算式と分母から説明してください。復帰：このセルを再実行するか、全セルを再実行します。</p>
+<h3 id="変更4b単価31基準しきい値80">変更4：B単価3→1（基準しきい値80）</h3>
+<p>問い・予想：変更前に、どの値が変わるかを書きます。手順：Notebookの「変更4」セル、または<code>experiment_configs()['cost_b']</code>のbaseをコピーし、changedとの差がある一項目だけを変更して<code>evaluate</code>を実行します。想定結果：B総費用40。A32は変わらない。 説明：変化の原因を計算式と分母から説明してください。復帰：このセルを再実行するか、全セルを再実行します。</p>
+<h3 id="変更5必要回答率5040">変更5：必要回答率50→40%</h3>
+<p>問い・予想：変更前に、どの値が変わるかを書きます。手順：Notebookの「変更5」セル、または<code>experiment_configs()['coverage']</code>のbaseをコピーし、changedとの差がある一項目だけを変更して<code>evaluate</code>を実行します。想定結果：適合候補はA80・B80。選択はA80のまま。 説明：変化の原因を計算式と分母から説明してください。復帰：このセルを再実行するか、全セルを再実行します。</p>
+<h3 id="変更6必要正答率8090">変更6：必要正答率80→90%</h3>
+<p>問い・予想：変更前に、どの値が変わるかを書きます。手順：Notebookの「変更6」セル、または<code>experiment_configs()['accuracy']</code>のbaseをコピーし、changedとの差がある一項目だけを変更して<code>evaluate</code>を実行します。想定結果：必要回答率50%も満たす候補はない。 説明：変化の原因を計算式と分母から説明してください。復帰：このセルを再実行するか、全セルを再実行します。</p>
+<h2 id="復帰とエラー対処">復帰とエラー対処</h2>
+<p>結果が違う場合は、前の実験の設定を持ち越していないか確認します。確認費用とB単価の例だけは、保留を観察するため基準しきい値80です。その基準から変える項目は一つだけです。</p>
+<p>値・割合・費用には0〜100の整数を使います。文字列、空欄、小数、NaN、無限大は拒否されます。未知キーや方式でもValueErrorになります。NameErrorなら定義セルから全セル実行。ModuleNotFoundErrorでipykernel等がなければ、上のvenv・カーネル手順を確認します。ファイルが見つからない場合は展開先で実行しているか確認します。</p>
+<p>「—／None／null」と「該当なし」は、全件保留や要件不適合の正常な結果です。保留後の人による確認の正答率は計算していません。架空費用を実料金・時間・消費電力へ換算しません。</p>
+</main></body></html>
