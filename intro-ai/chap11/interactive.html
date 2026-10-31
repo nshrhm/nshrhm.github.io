@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="description" content="第13回 ゲーム木とニムの操作教材">
+        <title>第13回 人工知能とゲーム — 操作教材</title><style>
+:root{font-family:system-ui,sans-serif;color:#17334b;background:#eef3f8}*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1150px;margin:auto;padding:1rem}h1{font-size:clamp(1.5rem,3vw,2.3rem)}h2{margin-top:0}a{color:#174b8b}nav{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0}button,input,select,textarea{font:inherit}button,nav a{min-height:44px;padding:.6rem .85rem;border:1px solid #7892ab;border-radius:6px;background:white;color:#17334b;cursor:pointer}button:disabled{opacity:.5;cursor:default}nav a[aria-selected=true]{background:#173f6f;color:white}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #bd5800;outline-offset:3px}section{background:white;padding:1.1rem;border-radius:12px}section[hidden]{display:none}.controls{display:flex;flex-wrap:wrap;align-items:end;gap:.75rem;margin:1rem 0}label{display:flex;flex-direction:column;gap:.3rem}input[type=number]{width:6rem;min-height:44px;padding:.4rem}select{max-width:100%;min-height:44px}textarea{width:100%;min-height:65px;padding:.5rem}.reflection{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}.result{border-left:5px solid #247e78;background:#f1faf9;padding:.8rem;margin-top:1rem;overflow-wrap:anywhere}.error{color:#a21f18;font-weight:bold}.diagram{width:100%;max-height:320px;height:auto;background:#f7f9fc}svg text{font:16px system-ui,sans-serif;fill:#17334b}svg .edge{stroke:#8b9cac;stroke-width:2}.node{fill:white;stroke:#607b96;stroke-width:2}.visited{fill:#d2eee7}.skipped{fill:#ececec;stroke-dasharray:5 3}table{border-collapse:collapse;width:100%;margin:1rem 0}td,th{padding:.45rem;border:1px solid #bac9d5;text-align:left}pre{white-space:pre-wrap;word-break:break-word;font-size:.85rem}.hint{color:#465e73}.moves{display:flex;flex-wrap:wrap;gap:.5rem}.trace{max-height:260px;overflow:auto}.badge{font-weight:bold;color:#17634e}.step{font-size:1.1rem}.layout{display:grid;grid-template-columns:1fr 1fr;gap:1rem}@media(max-width:650px){.reflection,.layout{grid-template-columns:1fr}header,main,footer{padding:.6rem}section{padding:.8rem}td,th{font-size:.9rem}nav a{flex:1 1 43%;font-size:.9rem}svg text{font-size:18px}}
+        </style>
+    </head>
+    <body>
+        <header>
+            <p>人工知能概論2026 ／ 第13回</p>
+            <h1>人工知能とゲーム</h1>
+            <p>予想 → 操作 → 実行 → 一つ変更 → 結果を説明</p>
+            <p><a href="index.html">スライド</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="programs/guide.html">プログラム解説</a> ／ <a href="interactive.html" download>操作教材を保存</a></p>
+            <nav role="tablist" aria-label="テーマ">
+                <a role="tab"
+                   id="tab-rules" data-tab="rules"
+                   href="#rules"
+                   aria-controls="rules"
+                   aria-selected="false"
+                   tabindex="-1">1. 局面と合法手</a><a role="tab"
+   id="tab-minimax" data-tab="minimax"
+   href="#minimax"
+   aria-controls="minimax"
+   aria-selected="false"
+   tabindex="-1">2. ミニマックス</a><a role="tab"
+   id="tab-cutoff" data-tab="cutoff"
+   href="#cutoff"
+   aria-controls="cutoff"
+   aria-selected="false"
+   tabindex="-1">3. 探索深さと評価</a><a role="tab"
+   id="tab-pruning" data-tab="pruning"
+   href="#pruning"
+   aria-controls="pruning"
+   aria-selected="false"
+   tabindex="-1">4. αβ枝刈り</a><a role="tab"
+   id="tab-ordering" data-tab="ordering"
+   href="#ordering"
+   aria-controls="ordering"
+   aria-selected="false"
+   tabindex="-1">5. 探索順と計算量</a><a role="tab"
+   id="tab-play" data-tab="play"
+   href="#play"
+   aria-controls="play"
+   aria-selected="false"
+   tabindex="-1">6. ニムで対戦・比較</a>
+            </nav>
+        </header>
+        <main>
+            <section id="rules" role="tabpanel" aria-labelledby="tab-rules" hidden>
+                <h2>局面と合法手</h2>
+                <p><strong>問い：</strong>左から1個取ると、次の手番と山はどうなる？</p>
+                <p>局面には石の数と手番を含めます。最後を取った側が勝つルールです。</p>
+                <div class="reflection">
+                    <label>
+                        予想<textarea id="rules-prediction" placeholder="操作前に予想を書こう"></textarea></label><label>結果の説明<textarea id="rules-explanation" placeholder="数値と規則を根拠に説明しよう"></textarea>
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <label>
+                            左の山<input id="rules-left" type="number" min="0" max="4" value="3"></label><label>右の山<input id="rules-right"
+       type="number"
+       min="0"
+       max="4"
+       value="2">
+                            </label>
+                        </div>
+                        <p class="hint">各山0〜4、合計6以下。設定変更で対局を最初からやり直します。</p>
+                        <div id="rules-board"></div>
+                        <div id="rules-moves" class="moves"></div>
+                        <div id="rules-result" class="result" aria-live="polite"></div>
+                        <p id="rules-error" class="error" role="alert"></p>
+                        <button type="button" id="rules-reset">このテーマをリセット</button>
+                    </section>
+                    <section id="minimax" role="tabpanel" aria-labelledby="tab-minimax" hidden>
+                        <h2>ミニマックス</h2>
+                        <p><strong>問い：</strong>MINが選ぶなら、A・B・CのどれがMAXに有利？</p>
+                        <p>利得はすべてMAXの視点。MINで最小、MAXで最大を選びます。</p>
+                        <div class="reflection">
+                            <label>
+                                予想<textarea id="minimax-prediction" placeholder="操作前に予想を書こう"></textarea></label><label>結果の説明<textarea id="minimax-explanation" placeholder="数値と規則を根拠に説明しよう"></textarea>
+                                </label>
+                            </div>
+                            <div class="controls">
+                                <label>
+                                    A1の利得<input id="leaf-0" type="number" min="-100" max="100" value="3"></label><label>A2の利得<input id="leaf-1" type="number" min="-100" max="100" value="5"></label><label>B1の利得<input id="leaf-2" type="number" min="-100" max="100" value="2"></label><label>B2の利得<input id="leaf-3" type="number" min="-100" max="100" value="9"></label><label>C1の利得<input id="leaf-4" type="number" min="-100" max="100" value="0"></label><label>C2の利得<input id="leaf-5" type="number" min="-100" max="100" value="4">
+                                    </label>
+                                </div>
+                                <div id="minimax-tree"></div>
+                                <div id="minimax-result" class="result" aria-live="polite"></div>
+                                <p id="minimax-error" class="error" role="alert"></p>
+                                <button type="button" id="minimax-reset">このテーマをリセット</button>
+                            </section>
+                            <section id="cutoff" role="tabpanel" aria-labelledby="tab-cutoff" hidden>
+                                <h2>探索深さと評価</h2>
+                                <p><strong>問い：</strong>深さ1と2で選択が変わるのはなぜ？</p>
+                                <p>深さ0は根。終端の利得と、打切りの推定値を区別します。</p>
+                                <div class="reflection">
+                                    <label>
+                                        予想<textarea id="cutoff-prediction" placeholder="操作前に予想を書こう"></textarea></label><label>結果の説明<textarea id="cutoff-explanation" placeholder="数値と規則を根拠に説明しよう"></textarea>
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label>
+                                            探索深さ<select id="cutoff-depth">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2" selected>2</option>
+                                        </select></label><label>根の推定値<input id="heuristic-0" type="number" min="-100" max="100" value="0"></label><label>Aの推定値<input id="heuristic-1" type="number" min="-100" max="100" value="1"></label><label>Bの推定値<input id="heuristic-2" type="number" min="-100" max="100" value="4"></label><label>Cの推定値<input id="heuristic-3" type="number" min="-100" max="100" value="2">
+                                        </label>
+                                    </div>
+                                    <div id="cutoff-tree"></div>
+                                    <div id="cutoff-result" class="result" aria-live="polite"></div>
+                                    <p id="cutoff-error" class="error" role="alert"></p>
+                                    <button type="button" id="cutoff-reset">このテーマをリセット</button>
+                                </section>
+                                <section id="pruning" role="tabpanel" aria-labelledby="tab-pruning" hidden>
+                                    <h2>αβ枝刈り</h2>
+                                    <p><strong>問い：</strong>Aの値3が分かった後、B2を調べる必要は？</p>
+                                    <p>αはMAX側の下限、βはMIN側の上限。α≧βで残りを省略できます。</p>
+                                    <div class="reflection">
+                                        <label>
+                                            予想<textarea id="pruning-prediction" placeholder="操作前に予想を書こう"></textarea></label><label>結果の説明<textarea id="pruning-explanation" placeholder="数値と規則を根拠に説明しよう"></textarea>
+                                            </label>
+                                        </div>
+                                        <div class="controls">
+                                            <label>
+                                                探索順<select id="pruning-order">
+                                                <option value="forward">正順 A→B→C</option>
+                                                <option value="reverse">逆順 C→B→A</option>
+                                            </select></label><button type="button" id="pruning-next">一段階進む</button><button type="button" id="pruning-all">最後まで</button>
+                                        </div>
+                                        <div id="pruning-tree"></div>
+                                        <div id="pruning-result" class="result" aria-live="polite"></div>
+                                        <p id="pruning-error" class="error" role="alert"></p>
+                                        <button type="button" id="pruning-reset">このテーマをリセット</button>
+                                    </section>
+                                    <section id="ordering" role="tabpanel" aria-labelledby="tab-ordering" hidden>
+                                        <h2>探索順と計算量</h2>
+                                        <p><strong>問い：</strong>逆順では値と評価回数のどちらが変わる？</p>
+                                        <p>同じ深さ・利得で比較します。同点の手は、その順序で最初を選びます。</p>
+                                        <div class="reflection">
+                                            <label>
+                                                予想<textarea id="ordering-prediction" placeholder="操作前に予想を書こう"></textarea></label><label>結果の説明<textarea id="ordering-explanation" placeholder="数値と規則を根拠に説明しよう"></textarea>
+                                                </label>
+                                            </div>
+                                            <div class="controls">
+                                                <label>
+                                                    探索順<select id="ordering-order">
+                                                    <option value="forward">正順 A→B→C</option>
+                                                    <option value="reverse">逆順 C→B→A</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div id="ordering-tree"></div>
+                                            <div id="ordering-result" class="result" aria-live="polite"></div>
+                                            <p id="ordering-error" class="error" role="alert"></p>
+                                            <button type="button" id="ordering-reset">このテーマをリセット</button>
+                                        </section>
+                                        <section id="play" role="tabpanel" aria-labelledby="tab-play" hidden>
+                                            <h2>ニムで対戦・比較</h2>
+                                            <p><strong>問い：</strong>(3,2)の先手は、どの手で勝ちを保てる？</p>
+                                            <p>人間はMAX、AIはMIN。人間の着手後にAIの応手ボタンを押します。</p>
+                                            <div class="reflection">
+                                                <label>
+                                                    予想<textarea id="play-prediction" placeholder="操作前に予想を書こう"></textarea></label><label>結果の説明<textarea id="play-explanation" placeholder="数値と規則を根拠に説明しよう"></textarea>
+                                                    </label>
+                                                </div>
+                                                <div class="controls">
+                                                    <label>
+                                                        左の山<input id="play-left" type="number" min="0" max="4" value="3"></label><label>右の山<input id="play-right" type="number" min="0" max="4" value="2"></label><label>AIの方式<select id="play-method">
+                                                        <option value="minimax">ミニマックス</option>
+                                                        <option value="alphabeta">αβ枝刈り</option>
+                                                        </select></label><button type="button" id="play-ai">AIの応手</button>
+                                                    </div>
+                                                    <p class="hint">各山0〜4、合計6以下。設定変更で対局を最初からやり直します。</p>
+                                                    <div id="play-board"></div>
+                                                    <div id="play-moves" class="moves"></div>
+                                                    <div id="play-result" class="result" aria-live="polite"></div>
+                                                    <p id="play-error" class="error" role="alert"></p>
+                                                    <button type="button" id="play-reset">このテーマをリセット</button>
+                                                </section>
+                                            </main>
+                                            <footer>
+                                                <p>入力した予想・説明はこの画面内だけに保存されます。再読み込み・リセットで消えます。計算は端末内で動作し、外部通信を使いません。</p>
+                                                <p>図の位置は説明用です。表示する値と履歴は、この教材モデルで実際に計算した結果です。</p>
+                                            </footer>
+                                            <script id="game-core">/* MODEL_START */
+'use strict';
+const TREE_BASE={leaves:[3,5,2,9,0,4],heuristics:[0,1,4,2],depth:2,reverse:false,algorithm:'minimax',player:1};
+const NIM_BASE={piles:[3,2],player:1,reverse:false,algorithm:'minimax'};
+const clone=x=>structuredClone(x);
+function integer(x,lo,hi,name){if(!Number.isInteger(x)||typeof x!=='number'||x<lo||x>hi)throw Error(`${name}: ${lo}〜${hi}の整数を指定してください`);return x;}
+function validatePiles(p){if(!Array.isArray(p)||p.length!==2)throw Error('山は2個です');p.forEach(x=>integer(x,0,4,'石の数'));if(p[0]+p[1]>6)throw Error('石は合計6個以下です');}
+function legalMoves(p){validatePiles(p);const a=[];p.forEach((n,i)=>{for(let t=1;t<=n;t++)a.push([i,t]);});return a;}
+function applyMove(p,a){validatePiles(p);if(!Array.isArray(a)||a.length!==2)throw Error('手は[山番号,取る個数]です');const [i,t]=a;integer(i,0,1,'山番号');integer(t,1,4,'取る個数');if(t>p[i])throw Error('その山には指定した数の石がありません');const r=[...p];r[i]-=t;return r;}
+function config(input,kind){const base=kind==='tree'?TREE_BASE:NIM_BASE;if(!input||Array.isArray(input)||typeof input!=='object'||Object.keys(input).some(k=>!Object.hasOwn(base,k)))throw Error('未知の設定項目です');const c=clone({...base,...input});if(![-1,1].includes(c.player)||typeof c.reverse!=='boolean'||!['minimax','alphabeta'].includes(c.algorithm))throw Error('手番・探索順・方式が不正です');if(kind==='tree'){integer(c.depth,0,2,'探索深さ');for(const [k,n] of [['leaves',6],['heuristics',4]]){if(!Array.isArray(c[k])||c[k].length!==n)throw Error(`${k}は${n}個です`);c[k].forEach(x=>integer(x,-100,100,k));}}else validatePiles(c.piles);return c;}
+function search(c,kind){const trace=[],pruned=[],stats={visited_nodes:0,evaluations:0,terminal_evaluations:0,cutoff_evaluations:0},ab=c.algorithm==='alphabeta';const number=x=>x===-Infinity?'-inf':x===Infinity?'+inf':x;
+ function visit(state,player,depth,id,alpha,beta){stats.visited_nodes++;trace.push({event:'enter',id,player,depth,alpha:number(alpha),beta:number(beta)});const terminal=kind==='tree'?state.length===2:state[0]+state[1]===0,cutoff=kind==='tree'&&!terminal&&depth>=c.depth;
+ if(terminal||cutoff){let value;if(kind==='nim')value=-player;else if(terminal)value=c.leaves['ABC'.indexOf(state[0])*2+Number(state[1])-1];else value=c.heuristics[state==='R'?0:'ABC'.indexOf(state)+1];const category=terminal?'terminal':'cutoff';stats.evaluations++;stats[category+'_evaluations']++;trace.push({event:'evaluate',id,kind:category,value});return [value,null];}
+ let children=kind==='tree'?(state==='R'?['A','B','C']:[state+'1',state+'2']).map(x=>[x,x,x]):legalMoves(state).map(a=>[a,applyMove(state,a),`${a[0]}:${a[1]}`]);if(c.reverse)children.reverse();const initialAlpha=alpha,initialBeta=beta;let value=player===1?-Infinity:Infinity,best=null;
+ for(let i=0;i<children.length;i++){const [action,child,token]=children[i],score=visit(child,-player,depth+1,id+'/'+token,alpha,beta)[0];if(best===null||(player===1?score>value:score<value)){value=score;best=action;}if(ab){if(player===1)alpha=Math.max(alpha,value);else beta=Math.min(beta,value);}trace.push({event:'update',id,action,value,alpha:number(alpha),beta:number(beta)});if(ab&&alpha>=beta){const skipped=children.slice(i+1).map(x=>id+'/'+x[2]);if(skipped.length){pruned.push(...skipped);trace.push({event:'prune',id,skipped,value,bound:player===1?'lower':'upper'});}break;}}
+ const bound=ab&&value<=initialAlpha?'upper':ab&&value>=initialBeta?'lower':'exact';trace.push({event:'return',id,value,bound});return [value,best];}
+ const [value,best_action]=visit(kind==='tree'?'R':c.piles,c.player,0,'R',-Infinity,Infinity);return {value,best_action,...stats,pruned,trace};}
+function searchTree(c={}){return search(config(c,'tree'),'tree');}
+function searchNim(c={}){return search(config(c,'nim'),'nim');}
+function summary(r){const {trace,...rest}=clone(r);return rest;}
+function experimentConfigs(){const cases={};for(const name of ['leaf','order','depth','heuristic','piles','algorithm']){const kind=name==='piles'?'nim':'tree',base=clone(kind==='nim'?NIM_BASE:TREE_BASE);if(name==='order')base.algorithm='alphabeta';if(name==='heuristic')base.depth=1;const changed=clone(base);if(name==='leaf')changed.leaves[2]=6;if(name==='order')changed.reverse=true;if(name==='depth')changed.depth=1;if(name==='heuristic')changed.heuristics[1]=5;if(name==='piles')changed.piles=[2,2];if(name==='algorithm')changed.algorithm='alphabeta';cases[name]={kind,base,changed};}return cases;}
+function demo(){const changes={};for(const [k,c] of Object.entries(experimentConfigs())){const run=c.kind==='nim'?searchNim:searchTree;changes[k]={before:summary(run(c.base)),after:summary(run(c.changed))};}return {tree:summary(searchTree()),alphabeta:summary(searchTree({algorithm:'alphabeta'})),cutoff:summary(searchTree({depth:1})),nim:summary(searchNim()),changes};}
+globalThis.GameSearch={TREE_BASE,NIM_BASE,clone,integer,legalMoves,applyMove,searchTree,searchNim,summary,experimentConfigs,demo};
+/* MODEL_END */
+                                            </script>
+                                            <script>
+const G=GameSearch,$=id=>document.getElementById(id),ids=['rules','minimax','cutoff','pruning','ordering','play'];let pruningRun,step=0;const games={};
+function read(id,lo=-100,hi=100){const raw=$(id).value;if(!raw.trim())throw Error('空欄です。整数を入力してください。');return G.integer(Number(raw),lo,hi,id);}
+function actionText(a){return a===null?'なし':Array.isArray(a)?`${a[0]===0?'左':'右'}から${a[1]}個`:a;}
+function metrics(r,name='探索結果'){return `<h3>${name}</h3><p>根の値 <strong>${r.value}</strong> ／ 選ぶ手 <strong>${actionText(r.best_action)}</strong></p><p>訪問 ${r.visited_nodes} 節点 ／ 評価 ${r.evaluations} 回（終端 ${r.terminal_evaluations}・打切り ${r.cutoff_evaluations}）</p><p>未探索：${r.pruned.join('、')||'なし'}</p>`;}
+function tree(target,config,trace){const points=[['R',300,30],['R/A',100,120],['R/B',300,120],['R/C',500,120],['R/A/A1',50,225],['R/A/A2',150,225],['R/B/B1',250,225],['R/B/B2',350,225],['R/C/C1',450,225],['R/C/C2',550,225]],seen=new Set(trace.filter(e=>e.event==='enter').map(e=>e.id)),skipped=new Set(trace.filter(e=>e.event==='prune').flatMap(e=>e.skipped));let svg='<svg class="diagram" viewBox="0 0 600 290" role="img" aria-label="MAXの根、MINのA B C、各2個の終端からなる木">';for(const [id,x,y]of points.slice(1)){const parent=points.find(p=>p[0]===id.slice(0,id.lastIndexOf('/')));svg+=`<line class="edge" x1="${parent[1]}" y1="${parent[2]+18}" x2="${x}" y2="${y-18}"/>`;}
+for(const [i,[id,x,y]]of points.entries()){const label=id==='R'?'根 MAX':id.split('/').at(-1)+(i<4?' MIN':'');let status='未探索';const end=trace.filter(e=>e.id===id&&(e.event==='evaluate'||e.event==='return')).at(-1);if(end){const prefix=end.event==='evaluate'?(end.kind==='cutoff'?'推定 ':'利得 '):end.bound==='upper'?'上限 ≤':end.bound==='lower'?'下限 ≥':config.depth<2?'推定 ':'値 ';status=prefix+end.value;}else if(seen.has(id))status='探索中';svg+=`<rect class="node ${skipped.has(id)?'skipped':seen.has(id)?'visited':''}" x="${x-44}" y="${y-18}" width="88" height="36" rx="6"/><text x="${x}" y="${y+5}" text-anchor="middle">${label}</text><text x="${x}" y="${y+43}" text-anchor="middle">${status}</text>`;}
+$(target).innerHTML=svg+'</svg><p class="hint">緑＝訪問済み／破線＝枝刈り。値が未表示の節点は未評価です。</p>';}
+function guarded(k,fn){try{$(k+'-error').textContent='';fn();}catch(e){$(k+'-error').textContent=e.message;$(k+'-result').textContent='入力を直すと再計算します。';if($(k+'-tree'))$(k+'-tree').replaceChildren();if($(k+'-moves'))$(k+'-moves').replaceChildren();if(k==='play')$('play-ai').disabled=true;}}
+function renderFixed(k){guarded(k,()=>{let c=G.clone(G.TREE_BASE);if(k==='minimax')c.leaves=c.leaves.map((_,i)=>read('leaf-'+i));if(k==='cutoff'){c.depth=read('cutoff-depth',0,2);c.heuristics=c.heuristics.map((_,i)=>read('heuristic-'+i));}if(k==='ordering')c.reverse=$(k+'-order').value==='reverse';const r=G.searchTree(c);tree(k+'-tree',c,r.trace);if(k==='ordering'){$(k+'-result').innerHTML=metrics(r,'ミニマックス')+metrics(G.searchTree({...c,algorithm:'alphabeta'}),'αβ枝刈り')+'<p>逆順は各MINの子も逆にします。根値が同じでも、省略できる枝は変わります。</p>';}else{$(k+'-result').innerHTML=metrics(r,c.depth<2?'打切りを含む推定結果':'終端までの結果')+(k==='cutoff'?metrics(G.searchTree({...c,depth:2}),'同じ利得で終端まで探索'):'')+'<details><summary>探索履歴（実際の計算）</summary><pre class="trace"></pre></details>';$(k+'-result').querySelector('pre').textContent=JSON.stringify(r.trace,null,2);}});}
+function resetPruning(){step=0;pruningRun=G.searchTree({algorithm:'alphabeta',reverse:$('pruning-order').value==='reverse'});renderPruning();}
+function renderPruning(){const trace=pruningRun.trace.slice(0,step),event=trace.at(-1);tree('pruning-tree',G.TREE_BASE,trace);const labels={enter:'節点へ入る',evaluate:'評価する',update:'子の値で更新',prune:'残りを枝刈り',return:'親へ返す'};let content=`<p class="step">${step} / ${pruningRun.trace.length} 段階</p>`;if(event){content+=`<p>${event.id}：${labels[event.event]}</p>`;const windowEvent=trace.filter(e=>e.id===event.id&&'alpha'in e).at(-1);if(windowEvent)content+=`<p>α = ${windowEvent.alpha} ／ β = ${windowEvent.beta}</p>`;if('value'in event)content+=`<p>${event.bound==='upper'?'上限':event.bound==='lower'?'下限':event.event==='update'?'探索済みの子からの暫定値':'値'}：${event.value}</p>`;if(event.skipped)content+=`<p>未探索のまま省略：${event.skipped.join('、')}</p>`;}else content+='<p>一段階進むを押してください。α = −∞、β = ＋∞から開始します。</p>';if(step===pruningRun.trace.length)content+=metrics(pruningRun,'探索終了');content+=`<p>現在の訪問 ${trace.filter(e=>e.event==='enter').length} 節点、評価 ${trace.filter(e=>e.event==='evaluate').length} 回</p>`;$('pruning-result').innerHTML=content;$('pruning-next').disabled=step>=pruningRun.trace.length;$('pruning-all').disabled=step>=pruningRun.trace.length;}
+function resetGame(k){guarded(k,()=>{const piles=[read(k+'-left',0,4),read(k+'-right',0,4)];G.legalMoves(piles);games[k]={piles,player:1,history:[]};renderGame(k);});}
+function renderGame(k){const g=games[k],terminal=g.piles.every(n=>n===0);let svg='<svg class="diagram" viewBox="0 0 600 180" role="img" aria-label="ニムの左右の山">';g.piles.forEach((n,i)=>{svg+=`<text x="20" y="${45+i*80}">${i?'右':'左'}：${n}個</text>`;for(let j=0;j<n;j++)svg+=`<circle cx="${165+j*100}" cy="${40+i*80}" r="25" fill="#24887e"/>`;});$(k+'-board').innerHTML=svg+'</svg>';$(k+'-moves').replaceChildren();for(const a of G.legalMoves(g.piles)){const b=document.createElement('button');b.type='button';b.textContent=actionText(a);b.dataset.action=a.join(',');b.disabled=k==='play'&&g.player===-1;b.addEventListener('click',()=>move(k,a));$(k+'-moves').append(b);}let text=`<p>局面 (${g.piles.join(',')}) ／ 手番 ${g.player===1?'MAX':'MIN'}</p>`;text+=terminal?`<p class="badge">終了：${g.player===1?'MIN':'MAX'}の勝ち（手番側には合法手がありません）</p>`:'<p>合法手を一つ選んでください。</p>';if(k==='play'){$('play-ai').disabled=terminal||g.player===1;for(const algorithm of ['minimax','alphabeta'])text+=metrics(G.searchNim({piles:g.piles,player:g.player,algorithm}),algorithm==='minimax'?'現在局面のミニマックス':'現在局面のαβ');}text+='<h3>対局履歴</h3><ol>'+g.history.map(h=>`<li>${h}</li>`).join('')+'</ol>';$(k+'-result').innerHTML=text;}
+function move(k,a){guarded(k,()=>{const g=games[k],next=G.applyMove(g.piles,a);g.history.push(`${g.player===1?'MAX':'MIN'}：${actionText(a)} → (${next.join(',')})`);g.piles=next;g.player*=-1;renderGame(k);});}
+$('play-ai').addEventListener('click',()=>guarded('play',()=>{const g=games.play;if(g.player!==-1||!G.legalMoves(g.piles).length)return;move('play',G.searchNim({piles:g.piles,player:g.player,algorithm:$('play-method').value}).best_action);}));
+for(const k of ['rules','play'])for(const suffix of ['left','right','method'])if($(k+'-'+suffix))$(k+'-'+suffix).addEventListener(suffix==='method'?'change':'input',()=>resetGame(k));
+for(const k of ['minimax','cutoff','ordering'])$(k).querySelectorAll('input,select').forEach(el=>el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>renderFixed(k)));
+$('pruning-order').addEventListener('change',resetPruning);$('pruning-next').addEventListener('click',()=>{step=Math.min(step+1,pruningRun.trace.length);renderPruning();});$('pruning-all').addEventListener('click',()=>{step=pruningRun.trace.length;renderPruning();});
+function reset(k){$(k).querySelectorAll('input').forEach(e=>e.value=e.defaultValue);$(k).querySelectorAll('select').forEach(e=>{e.selectedIndex=Array.from(e.options).findIndex(o=>o.defaultSelected);if(e.selectedIndex<0)e.selectedIndex=0;});$(k).querySelectorAll('textarea').forEach(e=>e.value='');$(k+'-error').textContent='';if(['rules','play'].includes(k))resetGame(k);else if(k==='pruning')resetPruning();else renderFixed(k);}
+function activate(){const k=location.hash.slice(1),active=ids.includes(k)?k:'rules';for(const id of ids){$(id).hidden=id!==active;$('tab-'+id).setAttribute('aria-selected',String(id===active));$('tab-'+id).tabIndex=id===active?0:-1;}}
+for(const k of ids){$(k+'-reset').addEventListener('click',()=>reset(k));$('tab-'+k).addEventListener('keydown',e=>{let i=ids.indexOf(k);if(e.key==='ArrowRight')i=(i+1)%6;else if(e.key==='ArrowLeft')i=(i+5)%6;else if(e.key==='Home')i=0;else if(e.key==='End')i=5;else return;e.preventDefault();location.hash=ids[i];$('tab-'+ids[i]).focus();});reset(k);}window.addEventListener('hashchange',activate);activate();
+
+                                            </script>
+                                        </body>
+                                    </html>
