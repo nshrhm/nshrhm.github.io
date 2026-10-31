@@ -1,0 +1,647 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="第10回 単回帰分析2：平均による基準予測と誤差の評価"><title>第10回 単回帰分析2</title><link rel="stylesheet" href="reveal/reveal.css"><link rel="stylesheet" href="reveal/theme/white.css"><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第10回：誤差を比べる -->
+<div class="slide-body">
+<h2 id="第10回誤差を比べる">第10回：誤差を比べる</h2>
+<p><strong>単回帰分析2</strong></p>
+<ul>
+<li>学習した予測方法を固定する。</li>
+<li>同じ行で二つのモデルを比較する。</li>
+<li>誤差と予測の限界を説明する。</li>
+</ul>
+<p>0〜10分：準備・復習</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第8回は平均による予測、第9回は一本の回帰直線を作りました。今日は実測値のある行へ予測し、ずれを比べます。計算できることと、予測が信頼できることを区別しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 教材を保存し、work全体を開く -->
+<div class="slide-body">
+<h2 id="教材を保存しwork全体を開く">教材を保存し、work全体を開く</h2>
+<p><a download="lesson10-student.zip" href="downloads/lesson10-student.zip">教材ZIP</a>
+／
+<a download="lecture_note_10.md" href="downloads/lecture_note_10.md">学生本文</a></p>
+<p><a download="lesson10.py" href="downloads/lesson10.py">Python主例</a>
+／ <a download="lesson10.R" href="downloads/lesson10.R">R主例</a> ／
+<a download="equipment.csv" href="downloads/equipment.csv">CSV</a></p>
+<ol type="1">
+<li>ZIPのlesson10をwork/exercises/へ。</li>
+<li>本文はCtrl+Shift+Vでプレビュー。</li>
+<li>両言語の主例を授業タスクで実行。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ジップのレッスン10フォルダーを、ワークのエクササイズへ置きます。ワーク全体を開いてください。本文と復習資料も同梱しています。個別のコードだけではなく、データの保存位置も確認しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 今日の到達目標 -->
+<div class="slide-body">
+<h2 id="今日の到達目標">今日の到達目標</h2>
+<ol type="1">
+<li>残差の符号と大きさを説明する。</li>
+<li>訓練・検証のMAEとRMSEを比較する。</li>
+<li>両言語・手計算・図で確認する。</li>
+</ol>
+<p><strong>予想 → 評価対象の変更 → 独立照合 → 説明</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+目標は三つです。実測と予測を区別し、残差の符号を説明します。さらに二つの指標で同じ対象を比較し、他方の言語と手計算と図で確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 第8・9回から引き継ぐもの -->
+<div class="slide-body">
+<h2 id="第89回から引き継ぐもの">第8・9回から引き継ぐもの</h2>
+<ul>
+<li>同じ80行、同じID・分割。</li>
+<li>平均予測：訓練平均を全行へ返す。</li>
+<li>単回帰：稼働時間一列から予測する。</li>
+</ul>
+<p>復習：本文§2から第8・9回へ。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第8回と第9回と同じ合成データを使います。実設備の測定値ではありません。今回は処理量をモデルへ追加せず、二つの予測方法を同じ条件で比べます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 訓練・検証・最終確認 -->
+<div class="slide-body">
+<h2 id="訓練検証最終確認">訓練・検証・最終確認</h2>
+<table>
+<thead>
+<tr>
+<th>役割</th>
+<th style="text-align: right;">行数</th>
+<th>今回の扱い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>訓練</td>
+<td style="text-align: right;">60</td>
+<td>平均と直線を決める</td>
+</tr>
+<tr>
+<td>検証</td>
+<td style="text-align: right;">20</td>
+<td>学習後の誤差を調べる</td>
+</tr>
+<tr>
+<td>最終確認</td>
+<td style="text-align: right;">20</td>
+<td>教員が保持</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+平均も直線も訓練60行だけで決めます。検証20行では学習し直しません。今後も検証行を使うため、完全に未使用の最終確認データとは区別してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: 評価する前に予想する -->
+<div class="slide-body">
+<h2 id="評価する前に予想する">評価する前に予想する</h2>
+<p>検証行へ変えると、誤差はどう変わる？</p>
+<ul>
+<li>平均予測と単回帰のどちらが小さい？</li>
+<li>訓練と検証は同じ結果になる？</li>
+<li>予想の理由を一文で。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+計算結果を見る前に予想します。予想が当たるかどうかだけを評価するのではありません。計算した後に、どの対象で何が変わったか説明する準備です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: 残差は実測から予測を引く -->
+<div class="slide-body">
+<h2 id="残差は実測から予測を引く">残差は実測から予測を引く</h2>
+<p><strong>残差 = 実測値 − 予測値</strong></p>
+<ul>
+<li>正：予測が小さかった。</li>
+<li>負：予測が大きかった。</li>
+<li>絶対値：ずれの大きさ。</li>
+</ul>
+<p>10〜25分：本文§3〜4</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この教材では訓練も検証も、実測値から予測値を引いた量を残差と呼びます。検証行では予測誤差とも呼びます。符号は過大予測か過小予測かを表します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: 縦方向のずれを読む -->
+<div class="slide-body">
+<h2 id="縦方向のずれを読む">縦方向のずれを読む</h2>
+<p><img class="zoomable-image" src="images/residual.svg" alt="実測30と予測26の残差は正の4kWhという概念図"></p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+これは数値と直線を説明用に置いた概念図です。同じ稼働時間の実測が30、予測が26キロワット時なら、残差はプラス4です。横方向の距離ではなく、電力量の縦方向の差を読みます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: 絶対値と二乗で相殺を防ぐ -->
+<div class="slide-body">
+<h2 id="絶対値と二乗で相殺を防ぐ">絶対値と二乗で相殺を防ぐ</h2>
+<p><img class="zoomable-image" src="images/metrics.svg" alt="残差3と負の4からMAE3.5、RMSE約3.536を求める計算順序"></p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+残差がプラス3とマイナス4の小例です。絶対値を平均するとエムエーイーは3.5です。アールエムエスイーは二乗してから平均し、最後に平方根を取ります。先に平方根を取る計算ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: 指標の単位と分母 -->
+<div class="slide-body">
+<h2 id="指標の単位と分母">指標の単位と分母</h2>
+<ul>
+<li>MAEもRMSEもkWh。</li>
+<li>分母は評価対象の件数n。</li>
+<li>RMSEは大きいずれの影響が強い。</li>
+<li>Rの残差標準誤差とは別の量。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+二乗した段階の単位はキロワット時の二乗ですが、平方根で元の単位に戻ります。今回の分母は件数です。アールのサマリーに出る残差標準誤差は自由度を使うため、今回の指標とは区別します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: 学習は訓練60行で固定 -->
+<div class="slide-body">
+<h2 id="学習は訓練60行で固定">学習は訓練60行で固定</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>baseline <span class="op">=</span> train[<span class="st">&quot;energy_kwh&quot;</span>].mean()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>model.fit(train[[<span class="st">&quot;operating_hours&quot;</span>]],</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>          train[<span class="st">&quot;energy_kwh&quot;</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> <span class="fu">mean</span>(train<span class="sc">$</span>energy_kwh)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(energy_kwh <span class="sc">~</span> operating_hours,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> train)</span></code></pre></div>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+訓練平均と回帰直線を作る部分は、これまでの授業の復習です。評価対象を変えても、この学習行と使用列を変更しません。予測対象の答えで学習し直すと、独立した評価になりません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: 二つの結果を分けて表示する -->
+<div class="slide-body">
+<h2 id="二つの結果を分けて表示する">二つの結果を分けて表示する</h2>
+<ul>
+<li>training_result：固定の訓練60行。</li>
+<li>evaluation：今回選んだ評価対象。</li>
+<li>主例では両方ともtrain。</li>
+</ul>
+<p>25〜50分：両言語の主例、本文§5〜6</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+主例には固定の訓練結果と、今回選んだ評価結果があります。最初はどちらも訓練60行なので同じ指標になります。演習で評価対象だけを変え、訓練結果を比較の基準として残します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: Python：行ごとの残差 -->
+<div class="slide-body">
+<h2 id="python行ごとの残差">Python：行ごとの残差</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>evaluation <span class="op">=</span> train.copy()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>evaluation[<span class="st">&quot;regression_prediction_kwh&quot;</span>] <span class="op">=</span> model.predict(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    evaluation[[<span class="st">&quot;operating_hours&quot;</span>]])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>evaluation[<span class="st">&quot;regression_residual_kwh&quot;</span>] <span class="op">=</span> (</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    evaluation[<span class="st">&quot;energy_kwh&quot;</span>] <span class="op">-</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    evaluation[<span class="st">&quot;regression_prediction_kwh&quot;</span>])</span></code></pre></div>
+<p>同じIDの実測と予測を引く。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+パイソンでは表のコピーに予測列と残差列を追加します。二重の角括弧で二次元の入力を渡します。引き算する行の対応がずれると、数値が出ても正しい残差ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: Python：二乗・平均・平方根 -->
+<div class="slide-body">
+<h2 id="python二乗平均平方根">Python：二乗・平均・平方根</h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> evaluation[<span class="st">&quot;regression_residual_kwh&quot;</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mae <span class="op">=</span> r.<span class="bu">abs</span>().mean()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>rmse <span class="op">=</span> sqrt((r <span class="op">**</span> <span class="dv">2</span>).mean())</span></code></pre></div>
+<p><code>from math import sqrt</code></p>
+<p>本文§5：各演算の戻り値を確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここでは読みやすさのため残差列をアールという変数で表しています。配布コードは同じ計算を指標表にまとめます。二乗は二つのアスタリスクです。内側から二乗、平均、平方根と読んでください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: R：同じ評価表をnewdataへ -->
+<div class="slide-body">
+<h2 id="r同じ評価表をnewdataへ">R：同じ評価表をnewdataへ</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>evaluation <span class="ot">&lt;-</span> train</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>evaluation<span class="sc">$</span>regression_prediction_kwh <span class="ot">&lt;-</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(model, <span class="at">newdata =</span> evaluation)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>evaluation<span class="sc">$</span>regression_residual_kwh <span class="ot">&lt;-</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    evaluation<span class="sc">$</span>energy_kwh <span class="sc">-</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    evaluation<span class="sc">$</span>regression_prediction_kwh</span></code></pre></div>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アールではニュー・データへ評価表を明示します。省略すると訓練行の当てはめ値になるため、評価対象を変更したつもりでも結果が変わらないことがあります。実測と予測の件数も確認しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: R：同じ定義で集計する -->
+<div class="slide-body">
+<h2 id="r同じ定義で集計する">R：同じ定義で集計する</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> evaluation<span class="sc">$</span>regression_residual_kwh</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mae <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(r))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(r <span class="sc">^</span> <span class="dv">2</span>))</span></code></pre></div>
+<p>二乗は<code>^</code>。分母は対象件数。</p>
+<p>本文§6：Pythonとの記法の違い。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アールの二乗はハット記号を使います。絶対値、平均、平方根という定義はパイソンと同じです。途中で丸めず、同じ行と定義で計算した結果を比較しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: CSVと図を開いて確認する -->
+<div class="slide-body">
+<h2 id="csvと図を開いて確認する">CSVと図を開いて確認する</h2>
+<ul>
+<li>output/evaluation.csv：評価行の10列。</li>
+<li>output/residuals.png：両モデルの残差図。</li>
+<li>元CSVは変更しない。</li>
+<li>再実行で出力は置き換わる。</li>
+</ul>
+<p>描画ひな形の説明：本文§7</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+保存に成功したという表示だけでなく、ファイルを開きます。シーエスブイはIDと実測と予測の対応、図は単位と残差の符号を確認します。両言語は同じ保存名なので、比較したい結果はメモしてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: 完成後の検証20行の残差図 -->
+<div class="slide-body">
+<h2 id="完成後の検証20行の残差図">完成後の検証20行の残差図</h2>
+<p><img class="zoomable-image" src="images/residuals.png" alt="同じ検証20行に対する平均予測と単回帰の残差を共通尺度で並べた図"></p>
+<p>完成例：両パネルの縦軸尺度は共通。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+これは評価対象を検証20行へ変更した完成例です。左が平均予測、右が単回帰です。各パネルは同じ行を使い、縦軸の尺度を共通にしています。ゼロ線の上下と広がりを確認してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: 変更演習：評価対象だけを切り替える -->
+<div class="slide-body">
+<h2
+id="変更演習評価対象だけを切り替える">変更演習：評価対象だけを切り替える</h2>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>evaluation <span class="op">=</span> validation.copy()</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>evaluation <span class="ot">&lt;-</span> validation</span></code></pre></div>
+<p><strong>平均・係数・学習行は変更しない。</strong></p>
+<p>50〜70分：本文§8</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+必須変更はこの一か所です。主言語はエクササイズ、他方は照合用ファイルを使います。平均と直線の学習部分をそのままにして、評価対象だけを検証へ切り替えてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: 変更後のチェックポイント -->
+<div class="slide-body">
+<h2 id="変更後のチェックポイント">変更後のチェックポイント</h2>
+<ol type="1">
+<li>評価IDが検証20行。</li>
+<li>訓練平均・係数は変更前と同じ。</li>
+<li>固定の訓練結果と評価結果を比較。</li>
+<li>CSV20行と、両パネルの20点を確認。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+変更後はファイル全体を実行します。評価件数が20になっても、平均や係数が変わったなら学習条件を変えていないか確認してください。CSVと図も同じ対象である必要があります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: 他方の言語で独立照合 -->
+<div class="slide-body">
+<h2 id="他方の言語で独立照合">他方の言語で独立照合</h2>
+<ul>
+<li>元CSVから訓練行を選び、独立に学習。</li>
+<li>ID・件数・平均・係数を照合。</li>
+<li>両モデルの訓練／検証MAE・RMSE。</li>
+<li>主言語の出力CSVを入力にしない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+照合用コードは相手の出力を読み込まず、元のシーエスブイから学習と計算を行います。同じ数字を書き写すことと、独立した計算が一致することは違います。照合側の保存は不要です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: 指定3行を手計算する -->
+<div class="slide-body">
+<h2 id="指定3行を手計算する">指定3行を手計算する</h2>
+<p>E004・E005・E011について：</p>
+<ol type="1">
+<li>切片＋傾き×稼働時間。</li>
+<li>実測−予測。</li>
+<li>絶対値と二乗。</li>
+</ol>
+<p>係数を途中で丸めない。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+指定した三つの行について、得られた係数を使って手計算します。予測値だけでなく、符号、絶対値、二乗も確認してください。この三行だけの平均を20行の指標と取り違えないようにします。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: 符号の答え合わせ -->
+<div class="slide-body">
+<h2 id="符号の答え合わせ">符号の答え合わせ</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th style="text-align: right;">予測kWh（概数）</th>
+<th style="text-align: right;">残差kWh（概数）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E004</td>
+<td style="text-align: right;">27.51299</td>
+<td style="text-align: right;">−6.79299</td>
+</tr>
+<tr>
+<td>E005</td>
+<td style="text-align: right;">31.13182</td>
+<td style="text-align: right;">+6.28818</td>
+</tr>
+<tr>
+<td>E011</td>
+<td style="text-align: right;">27.18400</td>
+<td style="text-align: right;">−2.00400</td>
+</tr>
+</tbody>
+</table>
+<p>正負は過小／過大予測を表す。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+指定行の答え合わせです。イー004とイー011は予測の方が大きいため残差が負です。イー005は予測が小さいため正です。ここに示すのは表示用の概数で、内部計算は丸めていません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 指標の答え合わせ -->
+<div class="slide-body">
+<h2 id="指標の答え合わせ">指標の答え合わせ</h2>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>モデル</th>
+<th style="text-align: right;">MAE</th>
+<th style="text-align: right;">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>訓練60</td>
+<td>平均</td>
+<td style="text-align: right;">6.8092</td>
+<td style="text-align: right;">8.2781</td>
+</tr>
+<tr>
+<td>訓練60</td>
+<td>回帰</td>
+<td style="text-align: right;">3.2914</td>
+<td style="text-align: right;">3.9443</td>
+</tr>
+<tr>
+<td>検証20</td>
+<td>平均</td>
+<td style="text-align: right;">7.0862</td>
+<td style="text-align: right;">8.4193</td>
+</tr>
+<tr>
+<td>検証20</td>
+<td>回帰</td>
+<td style="text-align: right;">3.6599</td>
+<td style="text-align: right;">4.3567</td>
+</tr>
+</tbody>
+</table>
+<p>単位はすべてkWh。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+このデータで得られる指標です。検証20行では単回帰の方がどちらの指標も小さくなりました。訓練より検証の誤差が大きくなっていますが、これを全てのデータに必ず当てはまる規則にしてはいけません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: この比較から言えること -->
+<div class="slide-body">
+<h2 id="この比較から言えること">この比較から言えること</h2>
+<ul>
+<li>この検証20行では単回帰の誤差が小さい。</li>
+<li>同じ対象・指標で比較した結果。</li>
+<li>将来や範囲外の精度は保証しない。</li>
+<li>因果効果を示したわけではない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+結論には対象を付けて説明します。この検証20行では改善しました、と言います。別のデータや実設備でも必ず良いとはいえません。合成データ中の関係と因果効果も区別しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: 12時間の予測は外挿 -->
+<div class="slide-body">
+<h2 id="時間の予測は外挿">12時間の予測は外挿</h2>
+<p><img class="zoomable-image" src="images/extrapolation.svg" alt="訓練範囲1から8時間の直線を12時間へ延長した予測で、範囲外に実測値はない"></p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+訓練範囲は1時間から8時間です。破線は同じ直線を12時間まで延長した部分です。12時間の丸印は予測で、実測点ではありません。この範囲に実測がないため、ずれを確かめることはできません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 計算できても、精度は未確認 -->
+<div class="slide-body">
+<h2 id="計算できても精度は未確認">計算できても、精度は未確認</h2>
+<ul>
+<li>12時間の予測：約54.8187 kWh。</li>
+<li>12時間の実測値はない。</li>
+<li>この入力の誤差は計算しない。</li>
+<li>振り返りで限界を説明する。</li>
+</ul>
+<p>70〜80分：照合・外挿</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+主例の最後に12時間の予測が出ます。値が出たこと自体は、精度が確認できたことを意味しません。演習へ追加実装する必要はありませんが、なぜ誤差を計算できないか説明してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: よくある間違いを点検する -->
+<div class="slide-body">
+<h2 id="よくある間違いを点検する">よくある間違いを点検する</h2>
+<ul>
+<li>検証平均へ更新／検証行で再学習。</li>
+<li>Rのnewdata忘れ／IDの対応ずれ。</li>
+<li>残差をそのまま平均／平方根忘れ。</li>
+<li>n−2で割る／途中で丸める。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+結果が違うときは、まず対象行と定義を確認します。依存環境の問題を固定した正解表示で補ってはいけません。何を実行し、どこでつまずいたかを教員へ伝えてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 確認問題を自分の言葉で -->
+<div class="slide-body">
+<h2 id="確認問題を自分の言葉で">確認問題を自分の言葉で</h2>
+<ol type="1">
+<li>残差−4kWhはどちらへのずれ？</li>
+<li>残差+3、−4のMAE・RMSEは？</li>
+<li>検証誤差が小さくても外挿に注意する理由は？</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+三つの確認問題に答えましょう。符号と計算順序を説明できるか、さらに結果の適用範囲を区別できるかを確認します。本文の自己チェックも使ってください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: Formsへ提出する -->
+<div class="slide-body">
+<h2 id="formsへ提出する">Formsへ提出する</h2>
+<ul>
+<li>主言語、Python全文、R全文。</li>
+<li>実行状況、短い振り返り。</li>
+<li>予想・符号・比較・固定理由・外挿。</li>
+<li>添付提出なし。未完成でも状況を伝える。</li>
+</ul>
+<p>80〜90分：提出・質問</p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+フォームには両言語のコード全文を貼ります。実行結果だけではありません。振り返りには予想と計算結果、指定行の符号、モデル比較、学習条件を固定する理由、外挿の限界を含めます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 31: 自己チェックと質問 -->
+<div class="slide-body">
+<h2 id="自己チェックと質問">自己チェックと質問</h2>
+<ul>
+<li>学習条件を固定した。</li>
+<li>訓練と検証のID・件数を確認した。</li>
+<li>指標の順序と単位を確認した。</li>
+<li>両言語・手計算・保存物を確認した。</li>
+<li>結論と限界を説明できる。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+五つの項目で確認してください。コパイロットを利用したかどうか自体は得点条件にしません。自分で予想し、小さく変更し、独立に確認して説明することを大切にします。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 32: 次回：説明変数を二つにする -->
+<div class="slide-body">
+<h2 id="次回説明変数を二つにする">次回：説明変数を二つにする</h2>
+<p><strong>処理量も使うと、予測はどう変わる？</strong></p>
+<ul>
+<li>今回の評価結果を比較の出発点にする。</li>
+<li>同じデータ・分割を継続する。</li>
+<li>最終確認データはまだ使わない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+次回は説明変数に処理量を追加します。単回帰の評価結果が比較の出発点になります。今回のファイルと結果を残しておいてください。最後に質問を受け付けます。
+</aside>
+
+
+</section></div></div><script src="reveal/reveal.js"></script><script src="image-zoom.js"></script><script src="handout-download.js"></script><script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'none'});</script></body></html>
