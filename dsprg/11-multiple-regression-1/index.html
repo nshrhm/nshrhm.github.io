@@ -1,0 +1,626 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="第11回 重回帰分析1：処理量の追加と条件付き係数、同じ行での誤差比較"><title>第11回 重回帰分析1</title><link rel="stylesheet" href="reveal/reveal.css"><link rel="stylesheet" href="reveal/theme/white.css"><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第11回：説明変数を一つ増やす -->
+<div class="slide-body">
+<h2 id="第11回説明変数を一つ増やす">第11回：説明変数を一つ増やす</h2>
+<p><strong>重回帰分析1</strong></p>
+<ul>
+<li>稼働時間に処理量を加える。</li>
+<li>同じ行で単回帰と比較する。</li>
+<li>もう一方を一定にした係数を読む。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第10回は単回帰の誤差を調べました。今日は処理量を加えると何が変わるかを確かめます。予測がどう変わるかと、係数をどう読むかの二つをつなげます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 教材を保存し、work全体を開く -->
+<div class="slide-body">
+<h2 id="教材を保存しwork全体を開く">教材を保存し、work全体を開く</h2>
+<p><a download="lesson11-student.zip" href="downloads/lesson11-student.zip">教材ZIP</a>
+／
+<a download="lecture_note_11.md" href="downloads/lecture_note_11.md">学生本文</a></p>
+<p><a download="lesson11.py" href="downloads/lesson11.py">Python主例</a>
+／ <a download="lesson11.R" href="downloads/lesson11.R">R主例</a> ／
+<a download="equipment.csv" href="downloads/equipment.csv">CSV</a></p>
+<ol type="1">
+<li>ZIPのlesson11をwork/exercises/へ。</li>
+<li>本文はCtrl+Shift+Vでプレビュー。</li>
+<li>主例を両言語の授業タスクで実行。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ジップのレッスン11フォルダーをワークのエクササイズへ置きます。ワーク全体を開いてください。主例は二変数の完成例です。演習と照合用ファイルは一変数から始まるので、役割を区別しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 今日の到達目標 -->
+<div class="slide-body">
+<h2 id="今日の到達目標">今日の到達目標</h2>
+<ol type="1">
+<li>説明変数を二つに増やして実行する。</li>
+<li>同じ対象の予測・MAE・RMSEを比べる。</li>
+<li>条件付きの係数を説明する。</li>
+</ol>
+<p><strong>予想 → 一列追加 → 独立照合 → 説明</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+説明変数を追加して動かすだけではなく、比較条件が保たれているか確認します。もう一方を一定にする、という言葉を使って係数の意味を説明できるようにしましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 90分の進め方 -->
+<div class="slide-body">
+<h2 id="分の進め方">90分の進め方</h2>
+<ul>
+<li>復習・準備10分、概念15分。</li>
+<li>両言語主例25分、変更演習20分。</li>
+<li>照合・解釈10分、提出・質問10分。</li>
+</ul>
+<p>描画ひな形は完成済みです。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+両言語の実行と確認、提出まで含めて90分です。図のコードを一から書く必要はありません。新しい列を加える場所と、係数の対応を中心に見ていきます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 同じ80行・同じ分割 -->
+<div class="slide-body">
+<h2 id="同じ80行同じ分割">同じ80行・同じ分割</h2>
+<ul>
+<li>train：60行で両モデルを学習。</li>
+<li>validation：同じ20行で両モデルを評価。</li>
+<li>最終確認20行は教員が保持。</li>
+<li>合成設備データ。再分割しない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第8回からのデータをそのまま使います。実設備の測定データではありません。訓練と検証を言語ごとに分け直すことも、検証を学習に加えることもしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: 今回使う列 -->
+<div class="slide-body">
+<h2 id="今回使う列">今回使う列</h2>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>役割・単位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operating_hours</td>
+<td>説明変数：時間</td>
+</tr>
+<tr>
+<td>throughput_units</td>
+<td>追加する説明変数：個</td>
+</tr>
+<tr>
+<td>energy_kwh</td>
+<td>目的変数：kWh</td>
+</tr>
+</tbody>
+</table>
+<p>idとsplitは行・役割の確認に使う。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+稼働時間に処理量を加えます。消費電力量は予測したい目的変数です。目的変数やアイディー、分割ラベルを説明変数に混ぜないようにしましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: 比較条件を保つ -->
+<div class="slide-body">
+<h2 id="比較条件を保つ">比較条件を保つ</h2>
+<ul>
+<li>比較用単回帰は稼働時間一列のまま。</li>
+<li>変更対象だけに処理量を追加。</li>
+<li>訓練行・目的変数・検証行・指標を保つ。</li>
+</ul>
+<p>本文§2・§7で確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+どちらがよいか比べるためには、同じ行と同じ指標が必要です。比較用の単回帰は変更しません。今回は評価対象を切り替えるのではなく、変更対象モデルの説明変数を増やします。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: 二つの入力から一つの予測 -->
+<div class="slide-body">
+<h2 id="二つの入力から一つの予測">二つの入力から一つの予測</h2>
+<p><img class="zoomable-image" src="images/flow.svg" alt="稼働時間と処理量から電力量を予測する流れ"></p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+二つの説明変数から電力量を予測します。切片と二つの係数は、訓練60行から同時に学習します。単回帰の係数に別に計算した処理量の係数を足す方法ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: もう一方を一定にする -->
+<div class="slide-body">
+<h2 id="もう一方を一定にする">もう一方を一定にする</h2>
+<p><img class="zoomable-image" src="images/conditional.svg" alt="5時間を固定し処理量40個から80個へ変えた予測の増分"></p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この図では稼働時間を5時間に固定しています。処理量を40個増やすと、予測値の増分は処理量係数の40倍になります。点は説明用入力の予測であり、実測の点ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: 式と係数の単位 -->
+<div class="slide-body">
+<h2 id="式と係数の単位">式と係数の単位</h2>
+<p>予測 = 切片 ＋ 時間係数×時間 ＋ 処理量係数×個数</p>
+<ul>
+<li>切片：kWh。</li>
+<li>時間係数：kWh/時間。処理量を一定にする。</li>
+<li>処理量係数：kWh/個。時間を一定にする。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+各項を掛けた結果はすべてキロワット時になります。時間係数は処理量を一定にした変化です。切片は両方ゼロの式の値ですが、このデータから実設備の待機電力量だと断定することはできません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: Python：列名のリスト -->
+<div class="slide-body">
+<h2 id="python列名のリスト">Python：列名のリスト</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>candidate_features <span class="op">=</span> [</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;operating_hours&quot;</span>, <span class="st">&quot;throughput_units&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> train[candidate_features]</span></code></pre></div>
+<p>60行×2列の表を学習へ渡す。本文§4。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+列名のリストに二つの名前を入れます。このリストで表から列を選ぶと、60行2列の入力になります。一列のときも二次元の表です。列名の順番を係数の順番と対応づけてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: Python：学習と予測 -->
+<div class="slide-body">
+<h2 id="python学習と予測">Python：学習と予測</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>candidate_model <span class="op">=</span> LinearRegression()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>candidate_model.fit(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    train[candidate_features], train[<span class="st">&quot;energy_kwh&quot;</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> candidate_model.predict(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    evaluation[candidate_features]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+フィットは訓練表と実測値で学習します。予測には評価対象の表を渡します。学習と予測の両方で同じ列名リストを使うので、列の指定が一貫します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: Python：係数を列名と対応づける -->
+<div class="slide-body">
+<h2
+id="python係数を列名と対応づける">Python：係数を列名と対応づける</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(candidate_model.intercept_)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(candidate_features)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(candidate_model.coef_.tolist())</span></code></pre></div>
+<p>係数配列は学習時の列順。途中で丸めない。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+切片と係数を表示します。係数の配列だけを見るのではなく、直前の列名リストと対応させます。トゥーリストは配列を通常の数値リストへ変換します。手計算には丸める前の値を使いましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: R：式の右辺へ一項追加 -->
+<div class="slide-body">
+<h2 id="r式の右辺へ一項追加">R：式の右辺へ一項追加</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>candidate_formula <span class="ot">&lt;-</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  energy_kwh <span class="sc">~</span> operating_hours <span class="sc">+</span> throughput_units</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>candidate_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  candidate_formula, <span class="at">data =</span> train</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>式の+は説明変数の追加。本文§5。</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+式の左側は目的変数、右側は説明変数です。プラスは二つの説明変数を別の項として使う指定です。二つの数値列を足して一列にする意味ではありません。アスタリスクは交互作用も加えるので今回は使いません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: R：名前付き係数と予測 -->
+<div class="slide-body">
+<h2 id="r名前付き係数と予測">R：名前付き係数と予測</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">coef</span>(candidate_model))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  candidate_model, <span class="at">newdata =</span> evaluation</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>係数の名前を読む。newdataを省略しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+コエフは名前付きの係数ベクトルを返します。インターセプトが切片です。予測には検証の表を明示します。ニューデータを省略して訓練行の予測を比較しないように注意しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: 同じ行のMAE・RMSE -->
+<div class="slide-body">
+<h2 id="同じ行のmaermse">同じ行のMAE・RMSE</h2>
+<ul>
+<li>残差 = 実測 − 予測。</li>
+<li>MAE：絶対値 → 平均。</li>
+<li>RMSE：二乗 → 平均 → 平方根。</li>
+<li>訓練60行、検証20行を別々に比較。</li>
+</ul>
+<p>どちらの指標もkWh。第10回§4を復習。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+指標の定義は第10回と同じです。単回帰と重回帰で同じ行を使います。訓練の単回帰と検証の重回帰を比べても、説明変数を増やした効果だけの比較にはなりません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: 主言語で保存するもの -->
+<div class="slide-body">
+<h2 id="主言語で保存するもの">主言語で保存するもの</h2>
+<ul>
+<li>evaluation.csv：検証20行、11列。</li>
+<li>元の5列と、二モデルの予測・残差・絶対誤差。</li>
+<li>residuals.png：二モデルの残差を横並びに。</li>
+<li>同じ名前の出力は次の実行で置き換わる。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+シーエスブイは元の五列に両モデルの三種類の結果を追加した十一列です。主言語で保存します。比較用の値はメモか別名コピーで残してください。保存できたことだけでは課題完成とはいえません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: 残差図の完成例 -->
+<div class="slide-body">
+<h2 id="残差図の完成例">残差図の完成例</h2>
+<p><img class="zoomable-image" src="images/residuals.png" alt="検証20行の単回帰と重回帰の残差図"></p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+左が比較用単回帰、右が二変数へ変更したモデルです。縦軸を共通にして、ゼロからの距離を見ます。横軸は稼働時間ですが、この図は二変数の予測面ではなく、各検証行の残差を表示しています。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: 演習：変更前を先に実行 -->
+<div class="slide-body">
+<h2 id="演習変更前を先に実行">演習：変更前を先に実行</h2>
+<ol type="1">
+<li>主言語のexercise11、他方のverifyを開く。</li>
+<li>未変更では両モデルとも稼働時間一列。</li>
+<li>指標が同じになることを確認。</li>
+<li>処理量追加後の結果を予想する。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここからは演習用ファイルを開きます。主例と異なり、変更対象は一変数です。両モデルの値が同じなのは出発点として正しい状態です。処理量を加えたらどうなるかを一文で予想してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: Pythonで変更する場所 -->
+<div class="slide-body">
+<h2 id="pythonで変更する場所">Pythonで変更する場所</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 変更前</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>candidate_features <span class="op">=</span> [<span class="st">&quot;operating_hours&quot;</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 変更後</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>candidate_features <span class="op">=</span> [</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;operating_hours&quot;</span>, <span class="st">&quot;throughput_units&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div>
+<p>比較用単回帰・評価対象は変更しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+変更するのは候補の説明変数リストです。処理量という列名を追加します。フィットや予測の別の箇所へ違うリストを書き足さず、この共通の指定を使います。比較用の単回帰は残してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: Rで変更する場所 -->
+<div class="slide-body">
+<h2 id="rで変更する場所">Rで変更する場所</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 変更前</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>candidate_formula <span class="ot">&lt;-</span> energy_kwh <span class="sc">~</span> operating_hours</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 変更後</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>candidate_formula <span class="ot">&lt;-</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  energy_kwh <span class="sc">~</span> operating_hours <span class="sc">+</span> throughput_units</span></code></pre></div>
+<p>学習行・目的変数を保つ。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アールでは候補の式へ処理量を加えます。プラスで一項追加するだけです。データを検証行へ変更したり、目的変数を説明変数へ混ぜたりしないように確認しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: 独立した両言語で照合 -->
+<div class="slide-body">
+<h2 id="独立した両言語で照合">独立した両言語で照合</h2>
+<ul>
+<li>元CSVからそれぞれ学習する。</li>
+<li>ID・件数・使用列・列名別係数を確認。</li>
+<li>両モデルの訓練／検証MAE・RMSEを確認。</li>
+<li>E004・E005・E011の行別結果を照合。</li>
+</ul>
+<p>相手の出力CSVを入力にしない。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+一方の出力を他方で読むだけでは、独立した計算になりません。両方とも元データから学習してください。数値が近いだけでなく、同じ行と列を使ったかを確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: E005を手計算する -->
+<div class="slide-body">
+<h2 id="e005を手計算する">E005を手計算する</h2>
+<ul>
+<li>稼働時間：4.8時間。処理量：116個。</li>
+<li>実測：37.42 kWh。</li>
+<li>予測：切片＋時間係数×4.8＋処理量係数×116。</li>
+<li>実測−予測の残差も確認する。</li>
+</ul>
+<p>途中で係数を丸めない。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+指定行の一つを、表示した係数で手計算します。二つの係数を違う列へ掛けていないか確認しましょう。行全体を見て計算することで、列の順序や予測の行ずれにも気づけます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 答え合わせ：係数と指定行 -->
+<div class="slide-body">
+<h2 id="答え合わせ係数と指定行">答え合わせ：係数と指定行</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th style="text-align: right;">概数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>切片</td>
+<td style="text-align: right;">7.643087 kWh</td>
+</tr>
+<tr>
+<td>時間係数</td>
+<td style="text-align: right;">3.157720 kWh/時間</td>
+</tr>
+<tr>
+<td>処理量係数</td>
+<td style="text-align: right;">0.119140 kWh/個</td>
+</tr>
+<tr>
+<td>E005の予測／残差</td>
+<td style="text-align: right;">36.620440／+0.799560 kWh</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+独立計算で得た概数です。手元の表示は丸める前の値で確認してください。時間係数は単回帰の係数と少し異なります。処理量も同時に含めて学習したため、条件付きの関係を表す係数になっています。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: 答え合わせ：検証20行 -->
+<div class="slide-body">
+<h2 id="答え合わせ検証20行">答え合わせ：検証20行</h2>
+<table>
+<thead>
+<tr>
+<th>モデル</th>
+<th style="text-align: right;">MAE</th>
+<th style="text-align: right;">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>単回帰</td>
+<td style="text-align: right;">3.659940</td>
+<td style="text-align: right;">4.356684</td>
+</tr>
+<tr>
+<td>重回帰</td>
+<td style="text-align: right;">1.555286</td>
+<td style="text-align: right;">1.759485</td>
+</tr>
+</tbody>
+</table>
+<p>単位はkWh。この20行では両指標が小さい。</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回の検証二十行では重回帰の両指標が小さくなりました。これは今回のデータと条件での結果です。変数を増やせばいつでも検証誤差が下がるという意味ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: 訓練と検証を分けて読む -->
+<div class="slide-body">
+<h2 id="訓練と検証を分けて読む">訓練と検証を分けて読む</h2>
+<p><img class="zoomable-image" src="images/comparison.svg" alt="単回帰と重回帰の訓練と検証のRMSE比較"></p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+訓練と検証をそれぞれ比較すると、この例ではどちらも重回帰のアールエムエスイーが小さくなっています。ただし、訓練への当てはまりだけで将来の精度は決まりません。検証を繰り返し見ている点も覚えておきましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 5時間を固定して予測を比べる -->
+<div class="slide-body">
+<h2 id="時間を固定して予測を比べる">5時間を固定して予測を比べる</h2>
+<ul>
+<li>40個：約28.197306 kWh。</li>
+<li>80個：約32.962926 kWh。</li>
+<li>差：約4.765620 kWh = 処理量係数×40。</li>
+</ul>
+<p>実測はない。誤差は計算しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+主例の最後にある入力の変更を確認します。時間を同じにすることで、処理量係数だけで予測差を説明できます。実測値のない説明用入力なので、精度を確認できたことにはなりません。この実演を提出用コードへ追加する必要はありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: 比較と解釈の限界 -->
+<div class="slide-body">
+<h2 id="比較と解釈の限界">比較と解釈の限界</h2>
+<ul>
+<li>変数追加が検証性能を必ず改善するとは限らない。</li>
+<li>係数の数値だけで重要度を順位付けしない。</li>
+<li>条件付きの予測関係を因果効果と断定しない。</li>
+<li>各列が範囲内でも、組合せの精度は未保証。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+係数の単位が違うと、数値の大小をそのまま重要さに置き換えることはできません。また、モデルの予測関係と因果効果は別です。訓練範囲に入る値を組み合わせただけで精度が保証されるわけでもありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 確認問題 -->
+<div class="slide-body">
+<h2 id="確認問題">確認問題</h2>
+<ol type="1">
+<li>時間係数を読むとき、何を一定にするか。</li>
+<li>係数と列の対応を誤ると何が起きるか。</li>
+<li>訓練誤差が小さければ将来も必ず良いか。</li>
+</ol>
+<p>本文§9の自己チェック5項目を確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+処理量を一定にしたときの時間の変化が、時間係数です。列との対応を誤ると、違う値を掛けて予測も解釈も間違います。訓練でよく合っても将来の性能は保証されません。自分の言葉で説明できるか確認しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: Formsへ提出する -->
+<div class="slide-body">
+<h2 id="formsへ提出する">Formsへ提出する</h2>
+<ul>
+<li>主言語、Python全文、R全文、実行状況。</li>
+<li>振り返り：予想・追加列・E005・係数の解釈。</li>
+<li>同じ行で比較する理由も書く。</li>
+<li>PDF・CSV・PNGの添付提出はない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+両方のコード全文を貼ります。結果だけの貼り付けにはしません。振り返りでは予想との違いと、係数の単位や一定にした変数を説明してください。保存物は自分で確認しますが、添付提出はありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 31: 困ったときの確認 -->
+<div class="slide-body">
+<h2 id="困ったときの確認">困ったときの確認</h2>
+<ul>
+<li>保存場所とwork全体を確認。</li>
+<li>Python：学習・予測で同じ列リストか。</li>
+<li>R：式の+とnewdataを確認。</li>
+<li>比較用単回帰まで変えていないか。</li>
+</ul>
+<p>未完成でもコードと状況を提出する。</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+列数エラーが出たら学習と予測の入力を見比べます。アールは式とニューデータを確認します。動かないときに定数の表示へ置き換えるのではなく、コードとエラーの状況を伝えて相談してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 32: 次回：候補をどう比べるか -->
+<div class="slide-body">
+<h2 id="次回候補をどう比べるか">次回：候補をどう比べるか</h2>
+<ul>
+<li>今日は処理量を一つ追加した。</li>
+<li>次回は事前に決めた少数の候補を比較する。</li>
+<li>訓練・検証・最終確認の役割を分ける。</li>
+</ul>
+<p>今回のコード・結果・自分の説明を残す。</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日は説明変数を一つ増やし、同じ行で比較しました。次回は事前に決めた候補を比べ、訓練と検証、最終確認の使い分けを考えます。今回の結果と説明を残しておきましょう。
+</aside>
+
+
+</section></div></div><script src="reveal/reveal.js"></script><script src="image-zoom.js"></script><script src="handout-download.js"></script><script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'none'});</script></body></html>
