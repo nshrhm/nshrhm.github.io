@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="360" viewBox="0 0 920 360"><rect width="920" height="360" fill="#f6f8fb"/><g font-family="sans-serif" fill="#16324f"><text x="35" y="45" font-size="27">予測規則を決めるデータと、確かめるデータ</text>
+<rect x="30" y="80" width="255" height="155" rx="14" fill="#d9eaff"/><text x="55" y="120" font-size="26">訓練：60行</text><text x="55" y="163" font-size="22">目的変数の平均を計算</text><text x="55" y="203" font-size="22">予測値を固定する</text>
+<path d="M300 155h65m-15-12 15 12-15 12" fill="none" stroke="#246bce" stroke-width="6"/>
+<rect x="385" y="80" width="225" height="155" rx="14" fill="#dcf2e3"/><text x="410" y="120" font-size="26">検証：20行</text><text x="405" y="163" font-size="22">固定した規則で予測</text><text x="405" y="203" font-size="22">実測との差を確認</text>
+<rect x="650" y="80" width="240" height="155" rx="14" fill="#e6e6e6"/><text x="670" y="120" font-size="26">最終確認：20行</text><text x="670" y="163" font-size="22">今回は配布しない</text><text x="670" y="203" font-size="22">第12回の候補決定後</text>
+<text x="45" y="290" font-size="23">検証の答えから、訓練平均を作り直さない。</text><text x="45" y="330" font-size="23">PythonとRで同じIDの行を使う。</text></g></svg>
