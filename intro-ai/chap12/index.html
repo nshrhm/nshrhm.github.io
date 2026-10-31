@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>第14回 人工知能の今後の動向</title>
+        <meta name="description"
+              content="架空の評価結果で技術動向と活用判断を学ぶ">
+        <meta name="author" content="白濵 成希">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+<!-- 1: 第14回 人工知能の今後の動向の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>第14回 人工知能の今後の動向</h2>
+<p>人工知能概論 ／ 2027年1月7日（木） ／ 白濵 成希</p>
+<p><strong>「できること」と「任せられること」を、条件と根拠から考える。</strong></p>
+<p>技術のつながりを説明し、架空の二方式を比較して、判断の限界を示す。</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3">
+</audio>
+<aside class="notes">
+今回は技術動向と評価、社会課題を結び付けます。新しい製品の名前を覚えることが目標ではありません。 数値で確かめられる部分と、その数値だけでは決められない部分を分けて説明できるようになりましょう。
+</aside>
+</section>
+<section>
+<!-- 2: 自習の進め方の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>自習の進め方</h2>
+<ol type="1">
+<li>スライドで用語と条件を読む。</li>
+<li>操作教材で予想を書き、一つだけ変更する。</li>
+<li>PythonまたはNotebookで同じ数値を確かめる。</li>
+<li>分母・条件・限界を添えて結果を説明する。</li>
+</ol>
+<p>成功の目印：Aの7/12、Bの8/12と、選択A・しきい値80・費用32。</p>
+<p class="material-links">
+<a href="interactive.html" target="_blank" rel="noopener">操作教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3">
+</audio>
+<aside class="notes">
+操作教材は単一HTMLで、ネット接続なしで計算できます。プログラムもAIサービスのアカウントを必要としません。 困ったらテーマのリセットを押し、プログラムは基準設定のコピーからやり直します。
+</aside>
+</section>
+<section>
+<!-- 3: 既習の手法からつなぐの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>既習の手法からつなぐ</h2>
+<ul>
+<li>第3回：学習データと検査データ、汎化。</li>
+<li>第8・10・11回：深層学習、言語と画像の表現。</li>
+<li>第5・12・13回：知識、環境との相互作用、探索。</li>
+</ul>
+<p>今日：これらを組み合わせた技術を、用途と評価条件から見る。</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3">
+</audio>
+<aside class="notes">
+生成AIも、これまでの手法と無関係な魔法ではありません。言語や画像の表現、学習、検索などを組み合わせて考えます。 探索と学習が別だったように、道具を使うことと新しく学習することも区別します。
+</aside>
+</section>
+<section>
+<!-- 4: 事実・予測・宣伝を分けるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>事実・予測・宣伝を分ける</h2>
+<ul>
+<li>事実：どの対象を、いつ、どの条件で測ったか確認できる。</li>
+<li>予測：将来についての見通し。前提と不確実性がある。</li>
+<li>宣伝：魅力を伝える表現。評価条件が省略される場合がある。</li>
+</ul>
+<p>「すべてを解決する」を見たら、対象・比較相手・失敗例を探す。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3">
+</audio>
+<aside class="notes">
+これらは文章の目的や根拠を整理するための区分です。広告の中にも事実は含まれ、研究報告にも将来予測は含まれます。 発信者の肩書だけで結論を出さず、主張ごとに検証できる範囲を確認しましょう。
+</aside>
+</section>
+<section>
+<!-- 5: 情報の確認日を明示するの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>情報の確認日を明示する</h2>
+<p><strong>本教材の情報確認日：2026年10月31日。</strong></p>
+<p>授業日2027年1月7日時点の最新情報を保証しない。</p>
+<ul>
+<li>公表日、対象期間、資料の版を分けて読む。</li>
+<li>新しい発表は、以前の結果と同じ条件か確認する。</li>
+<li>製品の順位や将来の実現時期を暗記しない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3">
+</audio>
+<aside class="notes">
+日付が新しい記事でも、取り上げている実験や調査は古い場合があります。情報確認日とデータの対象期間は別です。 授業前の追加確認が必要な項目は制作資料に残します。この教材では将来の出来事を既成事実にしません。
+</aside>
+</section>
+<section>
+<!-- 6: 生成AIは何を生成するかの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>生成AIは何を生成するか</h2>
+<p>文章・画像・音声などの出力を、入力や学習した規則性に基づいて作る。</p>
+<p>文章の生成例では、文脈に続くトークンを順に選ぶ。</p>
+<p><strong>自然な文章であることと、内容が正しいことは別。</strong></p>
+<p>今日の演習は生成処理を行わず、架空の評価結果を調べる。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3">
+</audio>
+<aside class="notes">
+トークンはモデルが扱う単位で、常に一単語と一致するわけではありません。生成方法はデータの種類やモデルにより異なります。 今回の固定結果から実サービスの性能を推定することはできません。評価の考え方だけを学びます。
+</aside>
+</section>
+<section>
+<!-- 7: Transformerの位置づけの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>Transformerの位置づけ</h2>
+<p>Attentionは、入力のどの情報をどの程度参照するかを重みで表す仕組み。</p>
+<p>TransformerはAttentionを主要な構成要素にするニューラルネットワーク。</p>
+<p>説明用概念図：<strong>入力の表現 → 情報の参照・変換 → 出力の表現</strong></p>
+<p>人間の注意や理解そのものを測定する図ではない。</p>
+<p class="source-note">
+出典：<a href="https://arxiv.org/html/1706.03762v7" target="_blank" rel="noopener">Transformer §3</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3">
+</audio>
+<aside class="notes">
+原論文の第3節ではエンコーダーとデコーダー、その中のAttentionを説明しています。ここでは構成上の位置づけまでを扱います。 すべての生成AIが同じ構成であるとは言えません。またAttentionの重みだけから人間と同じ理解があるとは結論できません。
+</aside>
+</section>
+<section>
+<!-- 8: 学習と推論を分けるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>学習と推論を分ける</h2>
+<table>
+<thead>
+<tr>
+<th>段階</th>
+<th>主な処理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>学習</td>
+<td>データと目的に応じてモデルのパラメーターを調整</td>
+</tr>
+<tr>
+<td>推論</td>
+<td>与えた入力を処理して出力を得る</td>
+</tr>
+</tbody>
+</table>
+<p>会話の履歴を入力として参照することは、重みの更新とは限らない。</p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3">
+</audio>
+<aside class="notes">
+推論のたびに必ず学習が起きるわけではありません。文脈に情報を追加することと、パラメーターを書き換えることを区別します。 サービスが入力を保存したり後の学習に使ったりするかは、別途その利用条件を確認する必要があります。
+</aside>
+</section>
+<section>
+<!-- 9: マルチモーダルの接続の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>マルチモーダルの接続</h2>
+<p>複数の種類の情報を扱う：文章、画像、音声など。</p>
+<p>CLIPは、画像と文章の対応から表現を学ぶ研究例。</p>
+<p>説明用概念図：<strong>画像の表現 ⇄ 対応の学習 ⇄ 文章の表現</strong></p>
+<p>複数種類を扱えることは、すべての課題に強いことを意味しない。</p>
+<p class="source-note">
+出典：<a href="https://arxiv.org/html/2103.00020v1" target="_blank" rel="noopener">CLIP Abstract・§6</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3">
+</audio>
+<aside class="notes">
+CLIPは画像とテキストの対応を学ぶ例として紹介します。CLIP自体を万能な画像生成器とは説明しません。 原論文は細かな分類や物体数を数える課題などの限界も述べています。入力形式の広さと課題の正確さは別に評価します。
+</aside>
+</section>
+<section>
+<!-- 10: RAG：検索結果を生成へ渡すの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>RAG：検索結果を生成へ渡す</h2>
+<p>説明用概念図：<strong>質問 → 文書を検索 → 質問と文書を参照して生成</strong></p>
+<ul>
+<li>モデル内の情報だけでなく、外部文書を参照する。</li>
+<li>文書の更新と、モデルの再学習は同じ操作ではない。</li>
+<li>検索した文書と回答の対応を確かめる。</li>
+</ul>
+<p class="source-note">
+出典：<a href="https://arxiv.org/html/2005.11401v4" target="_blank" rel="noopener">RAG §2</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3">
+</audio>
+<aside class="notes">
+RAG論文の第2節では検索器と生成器を組み合わせます。ここでは処理の流れを簡略化して示します。 検索器が取り出した文章に正しい根拠があるか、それを回答が正確に使ったかは、それぞれ確認が必要です。
+</aside>
+</section>
+<section>
+<!-- 11: 検索しても誤りは残るの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>検索しても誤りは残る</h2>
+<p>架空例：新しい手続きについて質問したが、検索結果は旧版の説明だった。</p>
+<ol type="1">
+<li>文書の日付・版・対象を確かめる。</li>
+<li>回答の主張を、文書の記述と照合する。</li>
+<li>根拠が不足する部分を保留する。</li>
+</ol>
+<p><strong>リンクが付いているだけでは、正しさの証明にならない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3">
+</audio>
+<aside class="notes">
+この例は教材独自の状況設定で、特定サービスの失敗例ではありません。検索と生成のどちらにも確認点があることを示します。 根拠の存在、根拠の適切さ、回答との一致を分けると、どこを改善すべきか説明しやすくなります。
+</aside>
+</section>
+<section>
+<!-- 12: 道具を使うエージェントの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>道具を使うエージェント</h2>
+<p>説明用概念図：<strong>観測 → 次の行動を選ぶ → 道具を使う → 結果を観測</strong></p>
+<p>ReActは、言語モデルによる処理と行動を組み合わせる研究例。</p>
+<p>エージェントであることと、実行中に重みを学習することは別。</p>
+<p>実行できる操作、停止条件、確認する人を決める。</p>
+<p class="source-note">
+出典：<a href="https://arxiv.org/html/2210.03629v3" target="_blank" rel="noopener">ReAct §2–3</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3">
+</audio>
+<aside class="notes">
+第12回の環境との相互作用を思い出してください。外部の検索や計算の結果を次の入力に使う構成があります。 ReActの説明は公開論文の設定に基づきます。すべてのエージェントが同じ構成で動くわけではありません。
+</aside>
+</section>
+<section>
+<!-- 13: 技術性能の進展をどう読むかの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>技術性能の進展をどう読むか</h2>
+<p>AI Index 2026は、複数の課題での性能の進展を報告している。</p>
+<p>ただし、次を一緒に読む。</p>
+<ul>
+<li>課題・問題集合・採点基準。</li>
+<li>道具、試行回数、計算資源などの条件。</li>
+<li>比較対象と測定時期。</li>
+</ul>
+<p>ある試験での向上を、全用途での優位へ広げない。</p>
+<p class="source-note">
+出典：<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener">AI Index 2026 公式解説・確認2026-10-31</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3">
+</audio>
+<aside class="notes">
+ここではAI Indexの公式解説にある技術性能の動向を定性的に紹介します。異なる尺度を一つの知能の数字にまとめることはしません。 ニュースを読むときは、どの条件でどの能力を測った結果なのかを確認しましょう。
+</aside>
+</section>
+<section>
+<!-- 14: 得意と苦手は課題で変わるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>得意と苦手は課題で変わる</h2>
+<p>AI Index 2026は、高度な課題での成果と、別の課題で残る失敗を並べている。</p>
+<p>「難しそうな課題に成功」だけで、身近な課題も任せられるとは限らない。</p>
+<p>今日の架空例でも、全体の順位と通常条件の順位は異なる。</p>
+<p><strong>自分の用途に近い条件で確かめる。</strong></p>
+<p class="source-note">
+出典：<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener">AI Index 2026 公式解説・確認2026-10-31</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3">
+</audio>
+<aside class="notes">
+人間にとっての難しさの順序が、そのままAIの得意不得意になるとは限りません。報告書の能力差という観点を評価演習へつなぎます。 このあと使うAとBは実モデルではなく、この区別を学ぶための固定データです。
+</aside>
+</section>
+<section>
+<!-- 15: 普及と効果を区別するの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>普及と効果を区別する</h2>
+<p>AI Index 2026は、組織や教育などへのAI利用の広がりも扱う。</p>
+<ul>
+<li>利用者が増えたことと、効果が確認されたことは別。</li>
+<li>作業時間、誤り、確認負担を含めて比較する。</li>
+<li>誰に利益・負担が生じるかも考える。</li>
+</ul>
+<p>将来の仕事や学習の変化は、前提を添えて議論する。</p>
+<p class="source-note">
+出典：<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener">AI Index 2026 公式解説・確認2026-10-31</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3">
+</audio>
+<aside class="notes">
+普及率だけでは学習効果や仕事の質は分かりません。対象や調査方法が違う結果を単純に比較しないことも大切です。 今後の見通しを考えるときは、観測された変化と予想を分けて書きます。
+</aside>
+</section>
+<section>
+<!-- 16: 評価する対象と条件をそろえるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>評価する対象と条件をそろえる</h2>
+<p>教材用の固定結果：方式A・Bが同じ12件を処理した設定。</p>
+<p>通常条件N1〜N6、条件変化C1〜C6。正誤ラベルと判定用スコアを持つ。</p>
+<p><strong>実際の質問・回答や、学習済みAIの実測結果ではない。</strong></p>
+<p>方式を比べる前に、同じ入力・採点規則・分母か確認する。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3">
+</audio>
+<aside class="notes">
+二方式には同じケースIDを用意しています。正誤は固定ラベルで、スコアから正誤を作っているわけではありません。 現実の生成文には部分的な正しさもありますが、この演習では二値ラベルへ簡略化しています。
+</aside>
+</section>
+<section>
+<!-- 17: 正誤とスコアは別の情報の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>正誤とスコアは別の情報</h2>
+<p>方式AのN6：<strong>不正解、スコア90</strong>。</p>
+<ul>
+<li>正誤：教材で決めた評価ラベル。</li>
+<li>スコア：回答するか保留するかに使う判定値。</li>
+</ul>
+<p>スコア90は、正答確率90%を意味しない。</p>
+<p>予想してからN6を選び、AとBを比較しよう。</p>
+<p class="material-links">
+<a href="interactive.html#cases" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3">
+</audio>
+<aside class="notes">
+高スコアの誤答を意図的に含めています。現実のモデルのスコアを確率として読むには、その対応を別に検証する必要があります。 数値が大きいという印象だけで信用せず、観測した正誤と区別して説明してください。
+</aside>
+</section>
+<section>
+<!-- 18: 全体の正答率は分母と読むの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>全体の正答率は分母と読む</h2>
+<p>全件回答の基準：<strong>A＝7/12、B＝8/12</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th style="text-align: right;">正解数</th>
+<th style="text-align: right;">件数</th>
+<th style="text-align: right;">正答率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">約58.33%</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">約66.67%</td>
+</tr>
+</tbody>
+</table>
+<p>この固定12件ではBが高い。将来の性能保証ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3">
+</audio>
+<aside class="notes">
+割合だけでなく件数も示します。小さな固定結果で一件違えば、率は大きく動きます。 同じデータを何度集計しても、独立した新しい検査が増えたことにはなりません。
+</aside>
+</section>
+<section>
+<!-- 19: 内訳を見ると順位が変わるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>内訳を見ると順位が変わる</h2>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th style="text-align: right;">A</th>
+<th style="text-align: right;">B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>通常条件6件</td>
+<td style="text-align: right;">5/6</td>
+<td style="text-align: right;">4/6</td>
+</tr>
+<tr>
+<td>条件変化6件</td>
+<td style="text-align: right;">2/6</td>
+<td style="text-align: right;">4/6</td>
+</tr>
+</tbody>
+</table>
+<p>通常条件ではA、条件変化ではBが高い。</p>
+<p>全体だけでは、どの条件で失敗しているか見えにくい。</p>
+<p class="material-links">
+<a href="interactive.html#groups" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3">
+</audio>
+<aside class="notes">
+方式Aは通常条件と条件変化で差があります。方式Bはこの固定例では両方とも四件正解です。 条件の内訳を見たうえで、その内訳が実際の利用場面に近いかを考えます。
+</aside>
+</section>
+<section>
+<!-- 20: 利用比率を仮定して推定するの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>利用比率を仮定して推定する</h2>
+<p>通常条件の割合をwとする。</p>
+<p><strong>推定正答率＝通常条件の正答率×w＋条件変化の正答率×(1−w)</strong></p>
+<p>これは利用比率を仮定した計算。元の12件は変更しない。</p>
+<p>基準w＝0.5では、A＝7/12、B＝8/12。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3">
+</audio>
+<aside class="notes">
+wはゼロから一の割合ですが、画面には百分率で入力します。実際に新しく十二件を測り直した結果ではありません。 各条件内の成績が利用先でも同じという仮定を置いていることを忘れないでください。
+</aside>
+</section>
+<section>
+<!-- 21: 通常条件が75%ならの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>通常条件が75%なら</h2>
+<p>A＝5/6×3/4＋2/6×1/4＝<strong>17/24 ≈ 70.83%</strong></p>
+<p>B＝4/6×3/4＋4/6×1/4＝<strong>2/3 ≈ 66.67%</strong></p>
+<p>推定順位はAが上。元の正解数はA 7件・B 8件のまま。</p>
+<p>説明する問い：何が変わり、何が変わっていないか。</p>
+<p class="material-links">
+<a href="interactive.html#mixture" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3">
+</audio>
+<aside class="notes">
+順位が変わった原因は方式の学習ではなく、利用比率の仮定を変えたことです。元のケースのラベルは同じです。 この違いを言葉で説明できれば、評価条件と結論を対応づけられています。
+</aside>
+</section>
+<section>
+<!-- 22: 回答する・保留するの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>回答する・保留する</h2>
+<p><strong>スコアがしきい値以上なら回答、未満なら保留。</strong></p>
+<p>しきい値80では、スコア80も回答する。</p>
+<ul>
+<li>回答中の正答率＝回答した正解数／回答数。</li>
+<li>回答率＝回答数／全12件。</li>
+</ul>
+<p>保留を正解にも誤答にも数えない。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3">
+</audio>
+<aside class="notes">
+ここから正答率の分母が回答数になることに注意してください。全十二件に対する正解数の割合とは別の指標です。 しきい値を上げた結果を説明するときは、正答率だけでなく何件に回答したかも示します。
+</aside>
+</section>
+<section>
+<!-- 23: しきい値80の比較の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>しきい値80の比較</h2>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th style="text-align: right;">回答</th>
+<th style="text-align: right;">回答した正解</th>
+<th style="text-align: right;">回答中の正答率</th>
+<th style="text-align: right;">回答率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td style="text-align: right;">7件</td>
+<td style="text-align: right;">6件</td>
+<td style="text-align: right;">6/7</td>
+<td style="text-align: right;">7/12</td>
+</tr>
+<tr>
+<td>B</td>
+<td style="text-align: right;">5件</td>
+<td style="text-align: right;">5件</td>
+<td style="text-align: right;">5/5</td>
+<td style="text-align: right;">5/12</td>
+</tr>
+</tbody>
+</table>
+<p>Bの正答率100%は、12件すべてへの正解ではない。</p>
+<p>AのN6は高スコアなので、誤答のまま回答に残る。</p>
+<p class="material-links">
+<a href="interactive.html#abstain" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3">
+</audio>
+<aside class="notes">
+Bは回答した五件には正解していますが、七件を保留しています。すべて任せられるという意味ではありません。 しきい値を上げれば誤答が必ずゼロになる、正答率が必ず上がる、という一般則もありません。
+</aside>
+</section>
+<section>
+<!-- 24: 全件保留と未定義の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>全件保留と未定義</h2>
+<p>しきい値100では、AもBも回答0件。</p>
+<p>回答率＝0/12＝0%。</p>
+<p>回答中の正答率＝0/0なので、<strong>未定義（—）</strong>。</p>
+<p>100%正解とも0%正解とも置かない。条件比較では全件保留を適合候補にしない。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3">
+</audio>
+<aside class="notes">
+分母がゼロのとき、便宜的に百パーセントと置くと判断を誤ります。プログラムではNone、JSONではnullとして保持します。 入力の誤りと、正しく計算した結果が未定義であることも区別します。
+</aside>
+</section>
+<section>
+<!-- 25: 保留にも費用がかかるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>保留にも費用がかかる</h2>
+<p>架空の単位：Aの処理1、Bの処理3、保留後の確認4。</p>
+<p><strong>総費用＝12×処理費用＋保留件数×確認費用</strong></p>
+<p>しきい値80：A＝12×1＋5×4＝32。</p>
+<p>B＝12×3＋7×4＝64。</p>
+<p>保留前にも処理費用がかかる。実料金・消費電力ではない。</p>
+<p class="material-links">
+<a href="interactive.html#costs" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3">
+</audio>
+<aside class="notes">
+確認を追加すれば、その作業にも費用が必要という教材上の計算です。人の確認をすれば必ず正解になるとは仮定していません。 時間や電力をこの費用値から換算することもできません。それぞれ別の測定が必要です。
+</aside>
+</section>
+<section>
+<!-- 26: 要件を満たす候補を比べるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>要件を満たす候補を比べる</h2>
+<p>候補はA・B × しきい値0・80・100の6通り。</p>
+<p>基準要件：<strong>回答中の正答率80%以上、回答率50%以上</strong>。</p>
+<p>適合候補から総費用が最小のものを選ぶ。</p>
+<p>同額なら回答率→正答率→方式A→低いしきい値の順。候補がなければ「該当なし」。</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3">
+</audio>
+<aside class="notes">
+これは六つの候補から選ぶ教材独自の規則です。あらゆるしきい値を最適化する処理ではありません。 テーマ3の利用比率による推定とは切り離し、ここでは固定十二件を使います。
+</aside>
+</section>
+<section>
+<!-- 27: 選択結果と、決められないことの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>選択結果と、決められないこと</h2>
+<p>基準では <strong>A・しきい値80・費用32</strong> を選ぶ。</p>
+<p>B・80は正答率を満たすが、回答率5/12が50%未満。</p>
+<p>必要正答率を90%にすると、必要回答率50%も満たす候補はない。</p>
+<p>この選択は安全性・公平性・実運用での有効性を保証しない。</p>
+<p class="material-links">
+<a href="interactive.html#choose" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3">
+</audio>
+<aside class="notes">
+該当なしはプログラムの失敗ではありません。指定した条件を同時に満たす候補がないという結果です。 条件を都合よく下げる前に、別方式や別データ、確認体制を含めて検討する余地があります。
+</aside>
+</section>
+<section>
+<!-- 28: 誤情報と根拠の確認の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>誤情報と根拠の確認</h2>
+<p>流暢な文章やもっともらしい引用にも、誤りがあり得る。</p>
+<p>架空例：存在しない資料名を根拠として提示した。</p>
+<ul>
+<li>原資料が存在するか。</li>
+<li>原資料にその主張があるか。</li>
+<li>対象期間・条件が一致するか。</li>
+</ul>
+<p>確認できない部分は、確認できた部分と分けて示す。</p>
+<p class="source-note">
+出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3">
+</audio>
+<aside class="notes">
+ここではNISTが挙げる誤った内容や情報の信頼性の課題を扱います。人間らしい口調を根拠の強さと混同しないことが大切です。 出典の数を増やすだけではなく、それぞれが主張を支えているか確かめます。
+</aside>
+</section>
+<section>
+<!-- 29: 偏りと公平性の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>偏りと公平性</h2>
+<p>データの偏りや利用条件の違いで、結果に差が出ることがある。</p>
+<p>誰のどの利益・不利益を、どの基準で比べるかを明確にする。</p>
+<p>本演習の「通常条件／条件変化」は人口集団の区分ではない。</p>
+<p><strong>条件別の正答率だけで、公平・不公平を確定しない。</strong></p>
+<p class="source-note">
+出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3">
+</audio>
+<aside class="notes">
+差を見つけることは出発点ですが、その差の理由や影響を調べる必要があります。公平性の基準は用途や関係者の立場とも関わります。 二つの数値が同じなら社会的課題がすべて解決する、という説明は避けます。
+</aside>
+</section>
+<section>
+<!-- 30: 入力する情報を考えるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>入力する情報を考える</h2>
+<p>個人情報・機密情報を扱う際は、目的・権限・送信先・保存条件を確認する。</p>
+<p>架空例：相談文を評価に使うなら、本人の情報をそのまま送る必要があるか検討する。</p>
+<p>本演習は架空データだけを使い、入力欄の内容を外部へ送信しない。</p>
+<p class="source-note">
+出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3">
+</audio>
+<aside class="notes">
+入力時点だけでなく、保存や共有のされ方も確認対象です。具体的なサービスの条件は変わるため、利用時に確認します。 今日の評価モデルを試すために、実在の人の相談や成績を集める必要はありません。
+</aside>
+</section>
+<section>
+<!-- 31: 著作物と出典を区別して考えるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>著作物と出典を区別して考える</h2>
+<p>生成物にも、既存の著作物・ライセンス・利用条件の確認が必要になる場合がある。</p>
+<p>出典の明示は、利用許可や適法性の自動的な保証ではない。</p>
+<p>NIST資料はリスク整理の指針であり、個別事例の法律判断ではない。</p>
+<p>授業の提出条件は、別途示された指示を確認する。</p>
+<p class="source-note">
+出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3">
+</audio>
+<aside class="notes">
+出典を付ければどのような利用でも認められる、またはAI生成なら常に自由に使える、とは判断できません。 ここでは確認する観点を学びます。具体的な法律上の結論や未発表の授業ルールをこの資料で追加しません。
+</aside>
+</section>
+<section>
+<!-- 32: 外部情報と操作権限の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>外部情報と操作権限</h2>
+<p>検索文書や道具の出力に、意図しない指示が混ざる場合がある。</p>
+<p>説明用概念図：<strong>外部データ → 内容を確認 → 許可した操作だけ実行</strong></p>
+<p>実行できる操作の範囲、重要な操作の確認、停止・復旧の方法を決める。</p>
+<p>外部文書の文章を、そのままシステムへの命令として扱わない。</p>
+<p class="source-note">
+出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3">
+</audio>
+<aside class="notes">
+エージェントが外部とやり取りする場面では、内容だけでなく権限も重要です。たとえば説明文の中の命令を、利用者の依頼と同じ権限で実行するのは問題です。 この授業では攻撃の実装をせず、情報と操作を分ける考え方を扱います。
+</aside>
+</section>
+<section>
+<!-- 33: 人が確認する仕組みの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>人が確認する仕組み</h2>
+<p>「最後に人が見る」だけでは、確認の質は決まらない。</p>
+<ul>
+<li>何を、どの資料と照合するか。</li>
+<li>誰が判断し、分からないとき誰へ相談するか。</li>
+<li>記録を残し、誤りが見つかったらどう戻すか。</li>
+</ul>
+<p>演習の確認費用は、確認後の正解率を表していない。</p>
+<p class="source-note">
+出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3">
+</audio>
+<aside class="notes">
+人による確認にも時間や知識が必要です。AIの出力に引きずられる可能性もあるため、役割や資料を具体的に決めます。 費用を払ったから正しいという結論にはならないことを、演習と結び付けて説明しましょう。
+</aside>
+</section>
+<section>
+<!-- 34: 仕事と学習への影響を確かめるの条件と根拠を説明する -->
+<div class="slide-body">
+<h2>仕事と学習への影響を確かめる</h2>
+<p>架空例：下書き作成は速くなったが、出典確認に時間がかかった。</p>
+<p>作業を分け、全体の時間・質・確認負担を比べる。</p>
+<p>学習では、生成物の完成と、自分で説明できることを区別する。</p>
+<p>将来予測には、用途・対象者・前提を添える。</p>
+<p class="source-note">
+出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3">
+</audio>
+<aside class="notes">
+一工程の短縮を仕事全体の効果と同一視しないことが大切です。影響は使い方や対象者によって変わります。 学習では、結果を受け取るだけでなく、その根拠を自分で説明できるかを確かめてください。
+</aside>
+</section>
+<section>
+<!-- 35: 資源と社会的選択の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>資源と社会的選択</h2>
+<p>学習・推論には計算資源が必要。便益と負担の両方を見る。</p>
+<ul>
+<li>精度だけでなく、費用・時間・利用できる人の範囲。</li>
+<li>資源使用の測定条件と、影響を受ける人。</li>
+<li>本当にAIを使う必要があるかという選択。</li>
+</ul>
+<p>演習の架空費用を、実料金や環境負荷へ換算しない。</p>
+<p class="source-note">
+出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3">
+</audio>
+<aside class="notes">
+NISTは環境への影響もリスクとして整理しています。ただしこの教材では電力などを測定していません。 一つの数値だけで社会的な望ましさを決めず、何を測っていないのかも説明する姿勢を身につけましょう。
+</aside>
+</section>
+<section>
+<!-- 36: 保存して実行するの条件と根拠を説明する -->
+<div class="slide-body exercise-slide">
+<h2>保存して実行する</h2>
+<ol type="1">
+<li>ZIPを保存・展開し、同梱のguide.htmlを開く。</li>
+<li>既存venvを選び、<code>python ai_evaluation.py --demo</code>。</li>
+<li>Notebookは同じ環境のカーネルを選び、再起動して全セル実行。</li>
+</ol>
+<p>成功の目印：A 7/12、B 8/12、選択A・80・費用32。</p>
+<p>Python版は標準ライブラリのみ。Notebookは同梱Pythonをimportしない。</p>
+<p class="material-links">
+<a href="interactive.html" target="_blank" rel="noopener">操作教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a>
+</p>
+<p class="material-links">
+<a href="programs/ai_evaluation.py" download>Pythonを保存</a> ／ <a href="programs/ai_evaluation.ipynb" download>Notebookを保存</a> ／ <a href="programs/ai_evaluation.zip" download>一式ZIPを保存</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3">
+</audio>
+<aside class="notes">
+制作環境と同じPythonの版を学生へ要求しません。解説にあるPython三点十以上と、既存の実行環境を使ってください。 Notebookで古い結果が残っている場合は、カーネルを再起動して上からすべて実行します。
+</aside>
+</section>
+<section>
+<!-- 37: 一項目だけ変える六つの実験の条件と根拠を説明する -->
+<div class="slide-body exercise-slide">
+<h2>一項目だけ変える六つの実験</h2>
+<ol type="1">
+<li>しきい値0→80：回答中の正答率と回答率。</li>
+<li>通常条件50→75%：推定順位。</li>
+<li>確認費用4→10：しきい値80で費用62・106。</li>
+<li>Bの費用3→1：しきい値80でBの総費用40。</li>
+<li>必要回答率50→40%：適合候補が2つになる。</li>
+<li>必要正答率80→90%：該当なし。</li>
+</ol>
+<p>毎回、対応する基準設定のコピーから始める。</p>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3">
+</audio>
+<aside class="notes">
+三番と四番は保留による費用を観察するため、しきい値八十の基準を使います。その基準から変更する値は一つだけです。 前の実験の変更を持ち越さず、基準結果を保存したまま比較します。
+</aside>
+</section>
+<section>
+<!-- 38: 比較結果を説明する型の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>比較結果を説明する型</h2>
+<p><strong>条件 → 計算 → 結論 → 限界</strong></p>
+<p>例：固定12件、しきい値80では、Bは5件に回答して5件正解。</p>
+<p>回答中の正答率は100%だが、回答率は5/12なので、必要回答率50%を満たさない。</p>
+<p>実サービスの能力や安全性は、この架空例から判断できない。</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3">
+</audio>
+<aside class="notes">
+説明に分母と条件を含めると、百パーセントという数字の誤解を防げます。判断に使った要件も明示しましょう。 最後に、未測定の事項を一つ挙げてください。費用や正答率だけで判断できない点が残ります。
+</aside>
+</section>
+<section>
+<!-- 39: 理解確認と次回への接続の条件と根拠を説明する -->
+<div class="slide-body">
+<h2>理解確認と次回への接続</h2>
+<ul>
+<li>RAGで検索した文書があっても、何を確認するか。</li>
+<li>Aが上になる利用条件と、Bが上になる条件は何か。</li>
+<li>正答率100%と回答率100%はどう違うか。</li>
+<li>数値比較だけでは決められないことを一つ挙げる。</li>
+</ul>
+<p>次回は総合演習。課題内容・提出条件は別途示される指示を確認する。</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3">
+</audio>
+<aside class="notes">
+四つの問いを、スライドと操作結果を根拠に説明してください。単語の暗記だけではなく、条件を変えた例を使えると理解が深まります。 このスライドは第十五回の課題や締切を定めるものではありません。
+</aside>
+</section>
+<section>
+<!-- 40: 参考資料と確認範囲の条件と根拠を説明する -->
+<div class="slide-body references-slide">
+<h2>参考資料と確認範囲</h2>
+<ul>
+<li><a href="https://arxiv.org/abs/1706.03762">Vaswaniほか：Transformer</a>、<a href="https://arxiv.org/abs/2103.00020">Radfordほか：CLIP</a></li>
+<li><a href="https://arxiv.org/abs/2005.11401">Lewisほか：RAG</a>、<a href="https://arxiv.org/abs/2210.03629">Yaoほか：ReAct</a></li>
+<li><a href="https://hai.stanford.edu/ai-index/2026-ai-index-report">Stanford AI Index 2026</a></li>
+<li><a href="https://doi.org/10.6028/NIST.AI.600-1">NIST AI 600-1：生成AIプロファイル</a></li>
+</ul>
+<p>確認日2026-10-31。技術の研究例と現在の全製品を同一視しない。A・Bの数値は教材独自の架空データ。</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3">
+</audio>
+<aside class="notes">
+参考資料は説明の根拠を追う入口です。技術論文の本文で確認した節と、公式解説を参照した範囲は出典対応表に記録しています。 本教材の数値演習は原著の実験結果ではありません。公開情報を読む際も、このように情報の由来と時点を区別してください。
+</aside>
+</section>
+</div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealAnimate,
+      RevealChalkboard,
+            RevealChart,
+        ];
+
+        const plugins =  [...printPlugins,
+        RevealZoom,
+        RevealSearch,
+                RevealMarkdown,
+                RevealMenu,
+                RevealFullscreen,
+                RevealAnything,
+                //RevealAudioSlideshow,
+                //RevealAudioRecorder,
+                RevealCustomControls,
+                // poll
+                // question
+                // seminar
+                Verticator
+                 ]
+
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+            height: 720,
+            margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+            customcontrols: {
+                    controls: [
+                            {
+                          id: 'toggle-overview',
+                          title: 'Toggle overview (O)',
+                          icon: '<i class="fa fa-th"></i>',
+                          action: 'Reveal.toggleOverview();'
+                        }
+                        ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+                ]
+            },
+            chart: {
+                    defaults: {
+                        color: 'lightgray', // color of labels
+                        scale: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: "lightgray" } , // color of grid lines
+                        },
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+            },
+                anything: [
+                {
+        className: "plot",
+        defaults: {width:500, height: 500, grid:true},
+        initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+     },
+     {
+        className: "chart",
+        initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+     },
+     {
+        className: "anything",
+        initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+     },
+                    ],
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+        });
+
+
+
+        // Change chalkboard theme :
+        function changeTheme(input) {
+            var config = {};
+            config.theme = input.value;
+            Reveal.getPlugin("RevealChalkboard").configure(config);
+            input.blur();
+        }
+
+        // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+        if (window.location.search.match(/print-pdf-now/gi)) {
+            setTimeout(() => {
+                window.print();
+              }, 2500);
+
+    }
+        </script>
+    </body>
+</html>

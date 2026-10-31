@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第14回 人工知能の今後の動向：操作マニュアル">
+<title>第14回 人工知能の今後の動向：操作マニュアル</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第14回 人工知能の今後の動向：操作マニュアル</h1>
+<h2 id="目標と始め方">目標と始め方</h2>
+<p>架空の二方式について、条件・分母・費用を添えて比較結果を説明します。AIを学習・生成する教材ではありません。前提は割合と第3回の評価の考え方です。</p>
+<p><a href="index.html">スライド</a> ／ <a href="interactive.html">操作教材</a> ／ <a href="interactive.html" download>操作教材を保存</a> ／ <a href="programs/guide.html">プログラム解説</a></p>
+<p>操作教材を開き、テーマ1から始めます。各テーマは「問いを読む→予想を書く→一項目操作→数値を確認→説明を書く」の順です。初期成功の目印はテーマ2のA7/12・B8/12、テーマ6のA・80・費用32です。計算はブラウザー内で動き、API・アカウント・ネット接続は不要です。初回ファイル取得や外部の参考資料を開く場合は別途接続が必要です。</p>
+<p>図は固定データから計算した結果です。スライド内の技術の矢印図は概念図で、両者を区別します。通常条件・条件変化は教材上の区分で、人口集団ではありません。</p>
+<h2 id="結果を一件ずつ見る">1. 結果を一件ずつ見る</h2>
+<p><a href="interactive.html#cases">このテーマを開く</a></p>
+<ul>
+<li>問い：高スコアなら必ず正解か。</li>
+<li>予想：操作前に、どの方式が上か・どの値が変わるかを予想欄へ書く。</li>
+<li>手順：方式A、ケースN6を選び、続いてBのN6を見る。</li>
+<li>想定結果：AのN6はスコア90でも不正解。BのN6も不正解だがスコア60。</li>
+<li>説明する問い：正誤とスコアの役割は何が違うか。</li>
+<li>復帰：このテーマをリセットし、同じ手順を再実行する。</li>
+</ul>
+<h2 id="全体と内訳">2. 全体と内訳</h2>
+<p><a href="interactive.html#groups">このテーマを開く</a></p>
+<ul>
+<li>問い：全体で高い方式は各条件でも高いか。</li>
+<li>予想：操作前に、どの方式が上か・どの値が変わるかを予想欄へ書く。</li>
+<li>手順：全12件→通常条件→条件変化と選ぶ。</li>
+<li>想定結果：全体A7/12・B8/12、通常A5/6・B4/6、条件変化A2/6・B4/6。</li>
+<li>説明する問い：順位を述べるとき、分母と条件はなぜ必要か。</li>
+<li>復帰：このテーマをリセットし、同じ手順を再実行する。</li>
+</ul>
+<h2 id="利用条件が変わる">3. 利用条件が変わる</h2>
+<p><a href="interactive.html#mixture">このテーマを開く</a></p>
+<ul>
+<li>問い：通常条件が多ければ順位は変わるか。</li>
+<li>予想：操作前に、どの方式が上か・どの値が変わるかを予想欄へ書く。</li>
+<li>手順：通常条件の割合を50から75へ変える。</li>
+<li>想定結果：推定A17/24（約70.83%）・B2/3（約66.67%）。固定12件の正解数は不変。</li>
+<li>説明する問い：モデルが改善したのか、利用比率の仮定が変わったのか。</li>
+<li>復帰：このテーマをリセットし、同じ手順を再実行する。</li>
+</ul>
+<h2 id="回答する保留する">4. 回答する・保留する</h2>
+<p><a href="interactive.html#abstain">このテーマを開く</a></p>
+<ul>
+<li>問い：正答率100%なら全件を任せられるか。</li>
+<li>予想：操作前に、どの方式が上か・どの値が変わるかを予想欄へ書く。</li>
+<li>手順：回答しきい値を0→80→100と変える。</li>
+<li>想定結果：80でAは6/7正解・回答率7/12、Bは5/5正解・回答率5/12。100で回答率0、正答率—。</li>
+<li>説明する問い：二つの割合の分母は何か。全件保留を100%正解と呼べない理由は何か。</li>
+<li>復帰：このテーマをリセットし、同じ手順を再実行する。</li>
+</ul>
+<h2 id="確認にも費用がかかる">5. 確認にも費用がかかる</h2>
+<p><a href="interactive.html#costs">このテーマを開く</a></p>
+<ul>
+<li>問い：保留の多い方式は費用が低いか。</li>
+<li>予想：操作前に、どの方式が上か・どの値が変わるかを予想欄へ書く。</li>
+<li>手順：しきい値80を保ち、確認費用4→10を試す。リセット後、Bの費用3→1だけを試す。</li>
+<li>想定結果：基準32・64、確認費用10なら62・106。B単価1ならB40。確認後の正答率は未計算。</li>
+<li>説明する問い：総費用のどの項が変わったか。人の確認で必ず正解になるといえるか。</li>
+<li>復帰：このテーマをリセットし、同じ手順を再実行する。</li>
+</ul>
+<h2 id="条件を満たす候補を選ぶ">6. 条件を満たす候補を選ぶ</h2>
+<p><a href="interactive.html#choose">このテーマを開く</a></p>
+<ul>
+<li>問い：必要正答率90%と回答率50%を同時に満たせるか。</li>
+<li>予想：操作前に、どの方式が上か・どの値が変わるかを予想欄へ書く。</li>
+<li>手順：必要回答率50→40を試す。リセット後、必要正答率80→90だけを試す。</li>
+<li>想定結果：基準はA・80・32。回答率40%ではA80とB80の2候補が適合しA80を選ぶ。正答率90%・回答率50%では該当なし。</li>
+<li>説明する問い：不適合の理由を要件ごとに述べる。この選択だけで実利用の安全性を決められるか。</li>
+<li>復帰：このテーマをリセットし、同じ手順を再実行する。</li>
+</ul>
+<h2 id="移動保存困ったとき">移動・保存・困ったとき</h2>
+<p>テーマのリンクを保存すると直接その画面へ移動できます。戻る・進むはテーマ移動に対応し、その画面の条件を保持します。Tabで操作へ移動し、テーマの矢印キー・Home・Endでも移動できます。Enterでリセット、タッチでも同じ操作ができます。</p>
+<p>テーマごとの条件は独立しています。確認費用のテーマは保留を観察するためしきい値80から始まり、回答保留のテーマは0から始まります。リセットは数値・選択肢・予想・説明をそのテーマだけ初期化し、再読込は全体を初期化します。予想・説明は保存されず、外部送信されません。残す場合は手元のノートへコピーします。</p>
+<p>空欄・小数・範囲外でエラーが出たら0〜100の整数へ直すかリセットしてください。エラー時は前の結果を表示しません。「—」は全件保留で正答率が未定義、「該当なし」は指定要件を満たす候補がないという正常な結果です。</p>
+<p>保存した単一HTMLは単独で操作できます。リンク先のスライド・両マニュアルは含まれないため、元の確認版フォルダーから開きます。テーマが表示されない場合はJavaScriptを有効にして現在のブラウザーで開き直してください。図が細かい場合は画面を拡大し、数値表と文章も確認します。</p>
+</main></body></html>
