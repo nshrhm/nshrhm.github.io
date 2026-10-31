@@ -1,0 +1,672 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="第9回 単回帰分析1：平均による基準予測と誤差の評価"><title>第9回 単回帰分析1</title><link rel="stylesheet" href="reveal/reveal.css"><link rel="stylesheet" href="reveal/theme/white.css"><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第9回：一本の直線で予測する -->
+<div class="slide-body">
+<h2 id="第9回一本の直線で予測する">第9回：一本の直線で予測する</h2>
+<p><strong>単回帰分析1</strong></p>
+<ul>
+<li>訓練行から直線を決める。</li>
+<li>入力を変えて予測する。</li>
+<li>両言語・手計算・図で確かめる。</li>
+</ul>
+<p>0〜10分：準備・第8回の復習</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第8回は全ての記録に同じ訓練平均を返しました。今日は稼働時間を入力として、入力に応じて変化する予測を作ります。複雑なモデルの比較の前に、一本の直線を説明できるようにしましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 教材を保存し、work全体を開く -->
+<div class="slide-body">
+<h2 id="教材を保存しwork全体を開く">教材を保存し、work全体を開く</h2>
+<p><a download="lesson09-student.zip" href="downloads/lesson09-student.zip">教材ZIP</a>
+／
+<a download="lecture_note_09.md" href="downloads/lecture_note_09.md">学生ノート</a></p>
+<p><a download="lesson09.py" href="downloads/lesson09.py">Python主例</a>
+／ <a download="lesson09.R" href="downloads/lesson09.R">R主例</a> ／
+<a download="equipment.csv" href="downloads/equipment.csv">CSV</a></p>
+<ol type="1">
+<li>ZIPの <code>lesson09</code> を <code>work/exercises/</code>
+へ。</li>
+<li>ノートをCtrl+Shift+Vで開く。</li>
+<li>両言語の主例を授業タスクで実行する。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ジップのレッスン09フォルダーを、ワークのエクササイズに置いてください。ワーク全体を開く点はこれまでと同じです。復習資料もジップに入っています。個別保存の場合はデータフォルダーの配置にも注意します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 今日できるようになること -->
+<div class="slide-body">
+<h2 id="今日できるようになること">今日できるようになること</h2>
+<ol type="1">
+<li>何を入力・答え・学習行にしたか言える。</li>
+<li>係数を読み、指定入力を予測できる。</li>
+<li>両言語・手計算・図で確認できる。</li>
+</ol>
+<p><strong>予想 → 実行 → 入力の変更 → 独立照合</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+目標は三つです。実行できたことに加えて、何を学習に使い、どう予測したかを説明しましょう。AIを使った場合も、自分の予想と確認と説明は必要です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 第8回から、何を変える？ -->
+<div class="slide-body">
+<h2 id="第8回から何を変える">第8回から、何を変える？</h2>
+<table>
+<thead>
+<tr>
+<th>第8回</th>
+<th>第9回</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全てに訓練平均を予測</td>
+<td>稼働時間に応じて予測</td>
+</tr>
+<tr>
+<td>一つの数を学習</td>
+<td>切片と傾きを学習</td>
+</tr>
+<tr>
+<td>訓練60行を使用</td>
+<td>同じ訓練60行を使用</td>
+</tr>
+</tbody>
+</table>
+<p>データも分割も変えません。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+変えるのは予測の規則です。データと訓練行は同じに保ちます。平均という基準が役に立たなくなったわけではなく、次回の誤差比較で基準として使います。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 今日の入力と答え -->
+<div class="slide-body">
+<h2 id="今日の入力と答え">今日の入力と答え</h2>
+<ul>
+<li>x：<code>operating_hours</code>（稼働時間・時間）</li>
+<li>y：<code>energy_kwh</code>（消費電力量・kWh）</li>
+<li><code>throughput_units</code> は今回は使わない。</li>
+<li>IDと分割ラベルはモデル入力にしない。</li>
+</ul>
+<p><strong>答えの列をxへ入れない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回の説明変数は稼働時間一列だけです。処理量は後の重回帰で扱う候補として残します。目的変数を入力に混ぜると、予測したい答えを先に教えたことになります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: 同じ80行、訓練は60行 -->
+<div class="slide-body">
+<h2 id="同じ80行訓練は60行">同じ80行、訓練は60行</h2>
+<table>
+<thead>
+<tr>
+<th>区分</th>
+<th style="text-align: right;">行数</th>
+<th>今回</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>訓練</td>
+<td style="text-align: right;">60</td>
+<td>直線の係数を決める</td>
+</tr>
+<tr>
+<td>検証</td>
+<td style="text-align: right;">20</td>
+<td>次回の評価に残す</td>
+</tr>
+<tr>
+<td>最終確認</td>
+<td style="text-align: right;">20</td>
+<td>今回配布しない</td>
+</tr>
+</tbody>
+</table>
+<p>訓練の稼働時間：1〜8時間。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+配布した80行全てで学習しないでください。分割列がトレインの60行を選びます。言語ごとに分け直しません。最終確認20行は今回も配布していません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: 直線の式を読む -->
+<div class="slide-body">
+<h2 id="直線の式を読む">直線の式を読む</h2>
+<p><strong>予測値 ŷ = 切片 a + 傾き b × 入力 x</strong></p>
+<ul>
+<li>a：xが0のときの直線上の値（kWh）。</li>
+<li>b：1時間増えると予測が何kWh増えるか。</li>
+<li>bの単位は <strong>kWh/時間</strong>。</li>
+</ul>
+<p>10〜25分：概念と小例</p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+切片は直線の出発点、傾きは入力の増加に対する予測値の増え方です。係数の数字だけでなく単位も一緒に読みます。予測値は実測値とは区別します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: 学習で決め、予測で使う -->
+<div class="slide-body">
+<h2 id="学習で決め予測で使う">学習で決め、予測で使う</h2>
+<p><img class="zoomable-image" src="images/learning.svg" alt="学習60行から係数を決め、指定入力を予測する流れ" width="920"></p>
+<p>学生ノート§3〜6。図はクリックで拡大。</p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+学習では訓練の稼働時間と消費電力量を使って切片と傾きを決めます。予測では決めた係数を使います。新しい入力には目的変数の実測値がなくても予測できます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: 説明用の小例：ŷ = 10 + 2x -->
+<div class="slide-body">
+<h2 id="説明用の小例ŷ-10-2x">説明用の小例：ŷ = 10 + 2x</h2>
+<p><img class="zoomable-image" src="images/coefficients.svg" alt="切片10kWh、傾き2kWh毎時間の説明用直線" width="920"></p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+例えば切片が10、傾きが2なら、5時間の予測は20キロワット時です。入力が2時間増えると予測は4キロワット時増えます。これは考え方の小例で、配布データの答えではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: 直線は、どう決まる？ -->
+<div class="slide-body">
+<h2 id="直線はどう決まる">直線は、どう決まる？</h2>
+<ul>
+<li>訓練点と直線の縦のずれを見る。</li>
+<li>ずれを二乗して足した量を小さくする。</li>
+<li>これを <strong>最小二乗法</strong> と呼ぶ。</li>
+</ul>
+<p>今回はライブラリで実行します。</p>
+<p>公式の導出・p値一覧は補足。</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+切片と傾きは適当に決めるのではなく、訓練点への当てはまりから決めます。二乗誤差の和を小さくする方法です。第8回のエムエーイーを最小にする方法だと読み替えないようにしてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: 実行前に予想する -->
+<div class="slide-body">
+<h2 id="実行前に予想する">実行前に予想する</h2>
+<p>2・4・6時間を、3・5・7時間へ変えたら？</p>
+<ul>
+<li>予測は増える、減る、同じ？</li>
+<li>切片と傾きは変わる？</li>
+</ul>
+<p><strong>予想を一文メモする。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+実行結果を読む前に予想してください。入力値を変える操作と、訓練データを変えて学習し直す操作を区別します。予想が外れた場合も、確認した過程を振り返りに残します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: 両言語の主例を実行 -->
+<div class="slide-body">
+<h2 id="両言語の主例を実行">両言語の主例を実行</h2>
+<ol type="1">
+<li><code>lesson09.py</code>を保存して授業タスクで実行。</li>
+<li><code>lesson09.R</code>も実行。</li>
+<li>80行、欠損0、訓練60行を確認。</li>
+<li>訓練ID・範囲・係数を読む。</li>
+</ol>
+<p>25〜50分：主例と図</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ファイル全体を実行し、先頭の読み込みから確認します。最初に係数だけを見るのではなく、訓練行の範囲を確認しましょう。主例は同じ保存名を使うので、後の実行で出力が置き換わります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: Python：二次元の入力で学習 -->
+<div class="slide-body">
+<h2 id="python二次元の入力で学習">Python：二次元の入力で学習</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> train[[<span class="st">&quot;operating_hours&quot;</span>]]</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> train[<span class="st">&quot;energy_kwh&quot;</span>]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>model.fit(x, y)</span></code></pre></div>
+<ul>
+<li>xは60行1列の表。</li>
+<li>yは同じ60行の答え。</li>
+<li><code>fit</code>がmodelの係数を決める。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+説明変数は一つでも二次元の表を渡します。角括弧が二重なのはそのためです。エックスとワイの行の順番を対応させます。モデルを作るだけでは学習は終わらず、フィットを呼んで係数を決めます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: R：式と訓練表を渡す -->
+<div class="slide-body">
+<h2 id="r式と訓練表を渡す">R：式と訓練表を渡す</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(energy_kwh <span class="sc">~</span> operating_hours,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> train)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>coefficients <span class="ot">&lt;-</span> <span class="fu">coef</span>(model)</span></code></pre></div>
+<ul>
+<li><code>~</code>の左が答え、右が入力。</li>
+<li><code>data</code>は訓練60行の表。</li>
+<li>戻り値は学習済みモデル。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+エルエムへ式とデータを渡します。チルダの左に目的変数、右に説明変数を書きます。標準の設定では切片が含まれます。コエフで必要な係数を取り出します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: 係数を取り出す -->
+<div class="slide-body">
+<h2 id="係数を取り出す">係数を取り出す</h2>
+<table>
+<thead>
+<tr>
+<th>Python</th>
+<th>R</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>model.intercept_</code></td>
+<td><code>coefficients[[1]]</code></td>
+<td>切片 a</td>
+</tr>
+<tr>
+<td><code>model.coef_[0]</code></td>
+<td><code>coefficients[[2]]</code></td>
+<td>傾き b</td>
+</tr>
+</tbody>
+</table>
+<p>添字：Pythonは0から、Rは1から。</p>
+<p>属性の<code>intercept_</code>に丸括弧は付けません。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+Pythonは属性から、Rは係数ベクトルから値を取り出します。添字の始まりが違います。切片はキロワット時、傾きは一時間あたりのキロワット時で説明します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: Python：新しい入力を予測 -->
+<div class="slide-body">
+<h2 id="python新しい入力を予測">Python：新しい入力を予測</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>queries <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;operating_hours&quot;</span>: [<span class="fl">2.0</span>, <span class="fl">4.0</span>, <span class="fl">6.0</span>]})</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>queries[<span class="st">&quot;prediction_kwh&quot;</span>] <span class="op">=</span> model.predict(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    queries[[<span class="st">&quot;operating_hours&quot;</span>]])</span></code></pre></div>
+<p>入力3行 → 予測3個。係数は固定。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+新しい入力にも学習時と同じ列名を用います。プリディクトは各行の予測値を返します。それを予測列へ保存します。ここでフィットを追加して学習し直す必要はありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: R：newdataを指定する -->
+<div class="slide-body">
+<h2 id="rnewdataを指定する">R：newdataを指定する</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>queries <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">operating_hours =</span> <span class="fu">c</span>(<span class="fl">2.0</span>, <span class="fl">4.0</span>, <span class="fl">6.0</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>queries<span class="sc">$</span>prediction_kwh <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  model, <span class="at">newdata =</span> queries)</span></code></pre></div>
+<p><code>newdata</code>を省くと訓練行への予測になる。</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+Rではニューデータに予測したい入力表を指定します。省略した場合は訓練行への当てはめ値が返るため、今回の三つの入力の予測とは異なります。実測値がない入力でも予測できます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: 保存した図を開く -->
+<div class="slide-body">
+<h2 id="保存した図を開く">保存した図を開く</h2>
+<p><img class="zoomable-image" src="images/regression.png" alt="訓練60点と学習済み直線、3・5・7時間の予測点" width="800"></p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この図は同じ訓練60行で作り、3時間、5時間、7時間の予測を赤い印で示した完成例です。赤い印は実測データではなく直線上の予測です。自分の主例は2時間、4時間、6時間なので、赤い印の位置が異なります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: 図の層を見分ける -->
+<div class="slide-body">
+<h2 id="図の層を見分ける">図の層を見分ける</h2>
+<ul>
+<li>点：訓練60行の実測値。</li>
+<li>紺の線：学習済みmodelの予測。</li>
+<li>赤い×：指定入力への予測。</li>
+</ul>
+<p>横軸：時間 ／ 縦軸：kWh。</p>
+<p><strong>全ての訓練点が線に乗る必要はない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+訓練点と予測点は意味が違います。図を見るときは色だけでなく、どのデータから描いたかを確認します。線用の入力は稼働時間順に並べているだけで、別モデルを学習してはいません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: 必須演習：入力だけを変える -->
+<div class="slide-body">
+<h2 id="必須演習入力だけを変える">必須演習：入力だけを変える</h2>
+<ol type="1">
+<li>主言語の<code>exercise09</code>を選ぶ。</li>
+<li>2・4・6を <strong>3・5・7時間</strong> へ変更。</li>
+<li>ファイル全体を再実行。</li>
+<li>描画ひな形も実行して保存物を開く。</li>
+</ol>
+<p>50〜70分：変更演習</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+主言語を一つ選びます。最初は2、4、6で動くひな形です。予測入力だけを3、5、7に変え、学習の行や式は変えません。描画部分は完成したひな形を使い、まず図の意味を読むことに集中します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: 主言語の保存物 -->
+<div class="slide-body">
+<h2 id="主言語の保存物">主言語の保存物</h2>
+<p><code>exercises/lesson09/output/</code></p>
+<ul>
+<li><code>predictions.csv</code>：入力3行と予測。</li>
+<li><code>regression.png</code>：訓練点・直線・予測点。</li>
+</ul>
+<p>CSV列：<code>operating_hours, prediction_kwh</code></p>
+<p>元CSVに上書きしません。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+実行が終わったら出力フォルダーを開き、CSVの三行と図を確認してください。主例と演習で同じ名前を使うので、必要な比較結果はメモします。保存物をフォームへ添付する課題ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: 他言語は元CSVから独立に -->
+<div class="slide-body">
+<h2 id="他言語は元csvから独立に">他言語は元CSVから独立に</h2>
+<ul>
+<li>他方の<code>verify</code>も3・5・7時間へ変更。</li>
+<li>訓練ID・件数、切片・傾き、予測を確認。</li>
+<li>相手のCSVやモデルを読み込まない。</li>
+<li>照合側はCSV・図の保存不要。</li>
+</ul>
+<p>70〜80分：照合と説明</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+相手の出力を読んで同じ値を表示しても独立した確認にはなりません。元の設備CSVから同じ訓練行を選び、別の言語で学習して比べます。両言語が同じ誤りをする可能性もあるので、課題の入力条件も確かめます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: 手計算で一つ、増分でもう一つ -->
+<div class="slide-body">
+<h2 id="手計算で一つ増分でもう一つ">手計算で一つ、増分でもう一つ</h2>
+<p>自分の係数を使う：</p>
+<ul>
+<li>5時間の予測：<strong>a + b × 5</strong></li>
+<li>3→5時間の増分：<strong>b × 2</strong></li>
+</ul>
+<p>計算途中で係数を丸めない。</p>
+<p>コードから独立して電卓などで確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+係数を使って5時間の予測を計算します。次に、入力が2時間増えた場合の差を確認します。表示された係数を早い段階で一桁に丸めるとずれが生じます。どの精度で確認したかも説明してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 照合するときの順序 -->
+<div class="slide-body">
+<h2 id="照合するときの順序">照合するときの順序</h2>
+<ol type="1">
+<li>元CSVと訓練IDは同じか。</li>
+<li>入力列と目的変数は同じか。</li>
+<li>切片・傾きが一致するか。</li>
+<li>3・5・7時間の予測が一致するか。</li>
+</ol>
+<p>末尾の丸めと、条件違いを区別。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+小数表示の最後の桁だけで不一致と決めないでください。まず入力と学習条件を確認します。PythonとRの内部計算には微小な数値差があり得ますが、指定した条件で計算した値かどうかが重要です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: 答え合わせ：係数と予測 -->
+<div class="slide-body">
+<h2 id="答え合わせ係数と予測">答え合わせ：係数と予測</h2>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th style="text-align: right;">約値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>切片（kWh）</td>
+<td style="text-align: right;">15.34054642</td>
+</tr>
+<tr>
+<td>傾き（kWh/時間）</td>
+<td style="text-align: right;">3.28984896</td>
+</tr>
+<tr>
+<td>3時間／5時間／7時間（kWh）</td>
+<td style="text-align: right;">25.2101／31.7898／38.3695</td>
+</tr>
+</tbody>
+</table>
+<p>3→5時間の増分：約6.5797kWh。</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここで答え合わせです。切片は約15.3405、傾きは約3.28985です。5時間の予測は約31.7898キロワット時です。この数字を固定表示するのではなく、訓練行から学習した結果として得られたことを確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: よくあるつまずき -->
+<div class="slide-body">
+<h2 id="よくあるつまずき">よくあるつまずき</h2>
+<ul>
+<li>80行全体で学習してしまう。</li>
+<li>Pythonの入力を一次元にしてしまう。</li>
+<li>Rの<code>newdata</code>を省いてしまう。</li>
+<li>予測のたびに別のデータで学習し直す。</li>
+<li>図を保存しただけで中身を見ない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+件数や予測が合わないときは、ここに戻って確認します。環境にパッケージがない場合は、答えの固定表示に置き換えず教員へ相談してください。自分のコードとエラーを一緒に示すと原因を確認しやすくなります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 確認問題：説明できる？ -->
+<div class="slide-body">
+<h2 id="確認問題説明できる">確認問題：説明できる？</h2>
+<ol type="1">
+<li>入力を変えても係数が同じなのはなぜ？</li>
+<li>傾き3kWh/時間、入力が2時間増えたら？</li>
+<li>切片を実設備の待機電力量と言える？</li>
+</ol>
+<p>学生ノート§9の問いに、自分の言葉で。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+一つ目は学習済みのモデルをそのまま使うからです。二つ目は予測が6キロワット時増えます。三つ目は訓練範囲に0時間がなく、データも合成なので実設備の待機電力量と断定できません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: 提出：両コード全文と振り返り -->
+<div class="slide-body">
+<h2 id="提出両コード全文と振り返り">提出：両コード全文と振り返り</h2>
+<p>Formsへ：</p>
+<ul>
+<li>主言語、Python全文、R全文、実行状況。</li>
+<li>予想と実測、係数と単位。</li>
+<li>手計算と、係数を固定する理由。</li>
+</ul>
+<p>PDF・CSV・PNGの添付提出は不要。</p>
+<p>80〜90分：提出・質問</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+保存した両方のコード全文をフォームへ貼ります。実行結果だけやマークダウンの囲みは貼りません。未完成の場合も実行状況を伝えてください。提出先と期限は担当教員の正式案内に従います。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 自己チェック：五つ確認 -->
+<div class="slide-body">
+<h2 id="自己チェック五つ確認">自己チェック：五つ確認</h2>
+<ul class="task-list">
+<li><label><input
+type="checkbox" />train60行だけで学習した。</label></li>
+<li><label><input
+type="checkbox" />稼働時間一列・消費電力量・切片あり。</label></li>
+<li><label><input
+type="checkbox" />指定3予測とCSV・PNGを開いた。</label></li>
+<li><label><input
+type="checkbox" />他言語と手計算で照合した。</label></li>
+<li><label><input
+type="checkbox" />全文2本と自分の説明を用意した。</label></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+提出前に五つの条件を確認します。AI利用の有無そのものは加点や減点の条件ではありません。自分で実行し、予想と確認と説明をしたかを見直してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: 解釈の限界を忘れない -->
+<div class="slide-body">
+<h2 id="解釈の限界を忘れない">解釈の限界を忘れない</h2>
+<ul>
+<li>切片：x=0での直線上の値。</li>
+<li>今回の観測範囲は1〜8時間。</li>
+<li>傾きから因果効果を断定しない。</li>
+<li>架空データから実設備の性能を断定しない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+係数には単位と条件があります。稼働時間以外の要因を一定にした実験をしたわけではありません。特に切片は今回観測していない0時間での値です。詳しい外挿の検討は次回に扱います。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 31: 第10回：予測のずれを確かめる -->
+<div class="slide-body">
+<h2 id="第10回予測のずれを確かめる">第10回：予測のずれを確かめる</h2>
+<ul>
+<li>検証20行の実測と予測を比べる。</li>
+<li>残差、MAE・RMSEを読む。</li>
+<li>第8回の平均予測と比較する。</li>
+<li>外挿の限界を考える。</li>
+</ul>
+<p>同じデータ・同じ分割を継続。</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回の指定入力には実測値がないため、そこで誤差を計算することはできません。次回は検証20行を使って予測誤差を調べます。平均モデルより良いかどうかは、同じ条件で比較して説明します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 32: 今日のまとめと質問 -->
+<div class="slide-body">
+<h2 id="今日のまとめと質問">今日のまとめと質問</h2>
+<p><strong>訓練で係数を決め、入力を変えて予測する。</strong></p>
+<ul>
+<li>学習行と使用列を説明する。</li>
+<li>係数・予測・図を対応づける。</li>
+<li>独立した計算で確認する。</li>
+</ul>
+<p>質問はノートの節とコードを示して。</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日の中心は、学習と予測を分けて理解することです。係数を決めた訓練行と、予測した入力を説明できれば、次回の評価へ進む準備ができています。残った疑問はコードとノートの該当箇所を示して質問してください。
+</aside>
+
+
+</section></div></div><script src="reveal/reveal.js"></script><script src="image-zoom.js"></script><script src="handout-download.js"></script><script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'none'});</script></body></html>
