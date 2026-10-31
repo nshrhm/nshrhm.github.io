@@ -1,0 +1,686 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="第8回 機械学習：平均による基準予測と誤差の評価"><title>第8回 機械学習</title><link rel="stylesheet" href="reveal/reveal.css"><link rel="stylesheet" href="reveal/theme/white.css"><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第8回：知らない値を、どう予測する？ -->
+<div class="slide-body">
+<h2
+id="第8回知らない値をどう予測する">第8回：知らない値を、どう予測する？</h2>
+<p><strong>機械学習：平均による基準予測</strong></p>
+<ul>
+<li>予測の規則を作る。</li>
+<li>別のデータで誤差を確かめる。</li>
+<li>PythonとRで独立に照合する。</li>
+</ul>
+<p>0〜10分：準備・復習</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第7回までは記録の要約と説明を行いました。今日は、まだ値を知らない記録に対して予測し、そのずれを確認します。複雑なモデルの前に、平均だけを使う基準予測を作りましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 教材を保存し、work全体を開く -->
+<div class="slide-body">
+<h2 id="教材を保存しwork全体を開く">教材を保存し、work全体を開く</h2>
+<p><a download="lesson08-student.zip" href="downloads/lesson08-student.zip">教材ZIP</a>
+／
+<a download="lecture_note_08.md" href="downloads/lecture_note_08.md">学生ノート</a></p>
+<p><a download="lesson08.py" href="downloads/lesson08.py">Python主例</a>
+／ <a download="lesson08.R" href="downloads/lesson08.R">R主例</a> ／
+<a download="equipment.csv" href="downloads/equipment.csv">CSV</a></p>
+<ol type="1">
+<li>ZIPの <code>lesson08</code> を <code>work/exercises/</code>
+へ。</li>
+<li>ノートをCtrl+Shift+Vでプレビュー。</li>
+<li>両主例を授業タスクで実行する。</li>
+</ol>
+<p><strong>ZIPにノートの参照資料とデータも含まれます。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+まず教材ジップを保存し、レッスン08フォルダーをワークのエクササイズの中に置いてください。コードだけでは準備が終わりません。個別に保存する場合も、データはレッスン08のデータフォルダーへ置きます。詳しい配置と実行方法は学生ノートの第1節にあります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 今日できるようになること -->
+<div class="slide-body">
+<h2 id="今日できるようになること">今日できるようになること</h2>
+<ol type="1">
+<li>列と分割の役割を区別する。</li>
+<li>訓練平均を固定し、両MAEを求める。</li>
+<li>他言語と具体的な行で確認し、説明する。</li>
+</ol>
+<p><strong>予想 → 実行 → 小変更 → 独立した確認</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日の目標は三つです。どの値を予測したいか、何を学習に使ったか、何で確かめたかを言えるようにします。AIを利用しても、この予想と確認と自分の説明は省きません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 第6・7回の道具を再利用する -->
+<div class="slide-body">
+<h2 id="第67回の道具を再利用する">第6・7回の道具を再利用する</h2>
+<table>
+<thead>
+<tr>
+<th>既習</th>
+<th>今回</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CSV・条件抽出</td>
+<td>分割ラベルで行を選ぶ</td>
+</tr>
+<tr>
+<td>列の平均</td>
+<td>訓練行だけの平均を使う</td>
+</tr>
+<tr>
+<td>独立した照合</td>
+<td>対象ID・予測値・MAEを照合</td>
+</tr>
+</tbody>
+</table>
+<p>詳しい復習先は学生ノート§4。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+読み込み、行の抽出、列の平均は既習の道具です。今回は道具を増やすことより、どの行を使うかに注意します。ノートに第4回と第6回の参照資料を同梱しました。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 機械学習の三つの入口 -->
+<div class="slide-body">
+<h2 id="機械学習の三つの入口">機械学習の三つの入口</h2>
+<table>
+<thead>
+<tr>
+<th>種類</th>
+<th>問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>回帰</td>
+<td>数値はいくつか</td>
+</tr>
+<tr>
+<td>分類</td>
+<td>どの種類か</td>
+</tr>
+<tr>
+<td>教師なし学習</td>
+<td>どんなまとまりがあるか</td>
+</tr>
+</tbody>
+</table>
+<p><strong>今日は消費電力量という数値を予測する。</strong></p>
+<p>10〜25分：概念と小例</p>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+回帰と分類は、正解に相当する目的変数を使って規則を決めます。教師なし学習はまとまりや特徴を探します。今日は回帰の入口として、数値を予測する最小限の規則を作ります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: どの列が、何のためにある？ -->
+<div class="slide-body">
+<h2 id="どの列が何のためにある">どの列が、何のためにある？</h2>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>意味・単位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operating_hours</td>
+<td>稼働時間［時間］</td>
+</tr>
+<tr>
+<td>throughput_units</td>
+<td>処理量［個］</td>
+</tr>
+<tr>
+<td>energy_kwh</td>
+<td><strong>目的変数</strong>［kWh］</td>
+</tr>
+<tr>
+<td>id / split</td>
+<td>照合用ID／分割ラベル</td>
+</tr>
+</tbody>
+</table>
+<p>稼働時間・処理量は、次回以降の説明変数候補。</p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+目的変数は予測したい消費電力量です。稼働時間と処理量は予測に使える入力候補ですが、今日はまだ使いません。IDと分割ラベルは分析を管理する列で、予測の説明変数にはしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: 平均だけで予測してもよい？ -->
+<div class="slide-body">
+<h2 id="平均だけで予測してもよい">平均だけで予測してもよい？</h2>
+<ul>
+<li>訓練行から、消費電力量の平均を一つ求める。</li>
+<li>どの行にも同じ値を予測する。</li>
+<li>後のモデルと比べる基準になる。</li>
+</ul>
+<p><strong>今回は説明変数を使わない基準モデル。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+全て同じ予測では役に立たないように思えるかもしれません。それでも、もっと複雑な方法がどれだけ改善したかを比べる出発点になります。平均をデータから決めることが、今回の学習です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: 何で学び、何で確かめる？ -->
+<div class="slide-body">
+<h2 id="何で学び何で確かめる">何で学び、何で確かめる？</h2>
+<p><img class="zoomable-image" src="images/splits.svg" alt="訓練60行で規則を決め、検証20行で確認。最終確認20行は未配布" width="920" height="360"></p>
+<p>学生ノート§3：分割は両言語で共通。</p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+訓練60行で平均を計算し、それを固定して検証20行へ進みます。最終確認20行は今回は配布していません。後の候補比較にも使う検証行を、完全に未使用のテストと呼ばないようにしましょう。図はクリックで拡大できます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: 小例：予測値と絶対誤差 -->
+<div class="slide-body">
+<h2 id="小例予測値と絶対誤差">小例：予測値と絶対誤差</h2>
+<p><img class="zoomable-image" src="images/baseline.svg" alt="訓練平均12 kWhを固定すると検証値9と16の絶対誤差は3と4" width="920" height="360"></p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+訓練値が10と14なら、平均は12です。検証値が9と16でも、予測値は12のままです。図の線と点の距離が絶対誤差で、この例では3と4になります。これは考え方の小例で、配布データの答えではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: MAE：絶対値を取ってから平均 -->
+<div class="slide-body">
+<h2 id="mae絶対値を取ってから平均">MAE：絶対値を取ってから平均</h2>
+<p><img class="zoomable-image" src="images/mae.svg" alt="誤差の平均0.5と絶対誤差の平均3.5の違い" width="920" height="360"></p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+符号付きの誤差をそのまま足すと、過大予測と過小予測が打ち消し合います。今回は一つずつ絶対値にしてから平均します。エムエーイーは平均絶対誤差で、単位は元の消費電力量と同じキロワット時です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: 予想：検証MAEはどうなる？ -->
+<div class="slide-body">
+<h2 id="予想検証maeはどうなる">予想：検証MAEはどうなる？</h2>
+<ul>
+<li>訓練MAEより大きい？ 小さい？</li>
+<li>そう思う理由を一文メモする。</li>
+<li>実行後に、実測値と比べる。</li>
+</ul>
+<p><strong>大小関係が必ず決まるわけではない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+まだ実行結果を見ていない人は、先に予想を一文書いてください。すでに見た人は、どの行の違いが影響したかを考えましょう。検証の方が必ず大きいという一般則はありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: 主例を両方実行する -->
+<div class="slide-body">
+<h2 id="主例を両方実行する">主例を両方実行する</h2>
+<ul>
+<li><code>lesson08.py</code> → Python実行タスク。</li>
+<li><code>lesson08.R</code> → Rファイル実行タスク。</li>
+<li>読み込み80行・5列、欠損0件を確認。</li>
+<li>途中からでなく、ファイル全体を実行。</li>
+</ul>
+<p>25〜50分：主例。読み方は学生ノート§4〜5。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+まず保存して、主例のファイル全体を実行します。PythonとRの両方で同じCSVを読んでいることを確かめます。80行5列と欠損がないことを確認してから、計算結果を読みましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: Python：行を分け、平均を決める -->
+<div class="slide-body">
+<h2 id="python行を分け平均を決める">Python：行を分け、平均を決める</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> records[records[<span class="st">&quot;split&quot;</span>] <span class="op">==</span> <span class="st">&quot;train&quot;</span>].copy()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>validation <span class="op">=</span> records[records[<span class="st">&quot;split&quot;</span>] <span class="op">==</span> <span class="st">&quot;validation&quot;</span>].copy()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>baseline <span class="op">=</span> train[<span class="st">&quot;energy_kwh&quot;</span>].mean()</span></code></pre></div>
+<ul>
+<li>条件が真の行だけを抽出する。</li>
+<li><code>.mean()</code> の入力は訓練行の列。</li>
+<li>戻り値は一つの予測値。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+分割列がトレインと一致する行だけを取り出します。バリデーションも同じように抽出します。重要なのは平均の前にトレインを選んでいることです。コピーや括弧の読み方は学生ノート第4節で確認できます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: R：同じ行から平均を決める -->
+<div class="slide-body">
+<h2 id="r同じ行から平均を決める">R：同じ行から平均を決める</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> <span class="fu">filter</span>(records, split <span class="sc">==</span> <span class="st">&quot;train&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>validation <span class="ot">&lt;-</span> <span class="fu">filter</span>(records, split <span class="sc">==</span> <span class="st">&quot;validation&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> <span class="fu">mean</span>(train<span class="sc">$</span>energy_kwh)</span></code></pre></div>
+<ul>
+<li><code>filter(表, 条件)</code> が対象行を返す。</li>
+<li><code>$energy_kwh</code> が数値列を取り出す。</li>
+<li><code>mean</code> の結果は一つの予測値。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+Rでも処理の順番は同じです。フィルターは表と条件を受け取り、条件に合う行を返します。ドル記号で目的変数の列を取り出し、ミーンに渡します。Pythonと同じ60行になっているか、IDも見てください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: Python：ずれを一行ずつ求める -->
+<div class="slide-body">
+<h2 id="pythonずれを一行ずつ求める">Python：ずれを一行ずつ求める</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>train_error <span class="op">=</span> (train[<span class="st">&quot;energy_kwh&quot;</span>] <span class="op">-</span> baseline).<span class="bu">abs</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>train_mae <span class="op">=</span> train_error.mean()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;訓練MAE kWh&quot;</span>, train_mae)</span></code></pre></div>
+<p><code>.abs()</code> は各要素の絶対値。 <code>.mean()</code>
+は絶対誤差の平均。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+列から一つの数を引くと、各行について同じ予測値との差を計算します。括弧で引き算をまとめてから絶対値を取ります。その60個の絶対誤差の平均が訓練エムエーイーです。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: R：同じ順で絶対誤差を平均する -->
+<div class="slide-body">
+<h2 id="r同じ順で絶対誤差を平均する">R：同じ順で絶対誤差を平均する</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>train_error <span class="ot">&lt;-</span> <span class="fu">abs</span>(train<span class="sc">$</span>energy_kwh <span class="sc">-</span> baseline)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>train_mae <span class="ot">&lt;-</span> <span class="fu">mean</span>(train_error)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;訓練MAE kWh&quot;</span>, train_mae, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<p><code>abs(数値ベクトル)</code> → 同じ長さの絶対値。
+<code>mean(絶対誤差)</code> → 一つの数値。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+Rのエービーエスは数値ベクトルを受け取り、各値の絶対値を返します。行数を減らす操作ではありません。その結果をミーンへ渡し、キャットで単位とともに表示します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: 変えるのは評価する行 -->
+<div class="slide-body">
+<h2 id="変えるのは評価する行">変えるのは評価する行</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>validation_error <span class="op">=</span> (validation[<span class="st">&quot;energy_kwh&quot;</span>] <span class="op">-</span> baseline).<span class="bu">abs</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>validation_mae <span class="op">=</span> validation_error.mean()</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>validation_error <span class="ot">&lt;-</span> <span class="fu">abs</span>(validation<span class="sc">$</span>energy_kwh <span class="sc">-</span> baseline)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>validation_mae <span class="ot">&lt;-</span> <span class="fu">mean</span>(validation_error)</span></code></pre></div>
+<p><strong>baselineを計算し直さない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+トレインをバリデーションに変えて、評価する行だけを変更します。平均を求め直す行は追加しません。検証の答えから平均を作り直してしまうと、確認したい未知の値を予測規則に混ぜたことになります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: 結果を読む順番 -->
+<div class="slide-body">
+<h2 id="結果を読む順番">結果を読む順番</h2>
+<ol type="1">
+<li>訓練60行・検証20行とIDを確認。</li>
+<li>訓練平均が共通か確認。</li>
+<li>両MAEをkWhで読む。</li>
+<li>予想と実測を比べる。</li>
+</ol>
+<p>表示末尾の丸め差と、内部計算の差を区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+最初に数値の大きさだけを見るのではなく、行の範囲から確認しましょう。表示の最後の桁に少し差がある場合は丸めの違いかもしれません。途中で平均を丸めず、内部では元の値を使います。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: 主言語と照合言語を選ぶ -->
+<div class="slide-body">
+<h2 id="主言語と照合言語を選ぶ">主言語と照合言語を選ぶ</h2>
+<table>
+<thead>
+<tr>
+<th>主言語</th>
+<th>完成する2本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>exercise08.py ＋ verify.R</td>
+</tr>
+<tr>
+<td>R</td>
+<td>exercise08.R ＋ verify.py</td>
+</tr>
+</tbody>
+</table>
+<p>主言語は分析とCSV保存、他方は独立した照合。</p>
+<p>50〜70分：必須演習。学生ノート§6。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここから主言語を一つ選びます。主言語のエクササイズと、もう一方のベリファイを完成してください。照合側では図やCSVの保存を繰り返す必要はありません。コードは両方とも提出します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: 必須演習：訓練から検証へ -->
+<div class="slide-body">
+<h2 id="必須演習訓練から検証へ">必須演習：訓練から検証へ</h2>
+<ul>
+<li>ひな形の訓練MAEまでを確認する。</li>
+<li>予測値を固定し、検証MAEを追加する。</li>
+<li>両区分のID・件数・MAEを表示する。</li>
+<li>検証20行の結果をCSVへ保存する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ひな形は訓練の誤差まで動く状態です。主例と学生ノートを参照しながら検証の計算を追加します。主例を利用しても構いませんが、なぜ平均を変えないかを説明できるようにしてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: 保存する表を確認する -->
+<div class="slide-body">
+<h2 id="保存する表を確認する">保存する表を確認する</h2>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>元の記録ID</td>
+</tr>
+<tr>
+<td>energy_kwh</td>
+<td>実測値</td>
+</tr>
+<tr>
+<td>prediction_kwh</td>
+<td>訓練平均による一定予測</td>
+</tr>
+<tr>
+<td>absolute_error_kwh</td>
+<td>各行の絶対誤差</td>
+</tr>
+</tbody>
+</table>
+<p>保存先：<code>output/validation_predictions.csv</code></p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+検証20行について四つの列を保存します。予測の列は全て同じ数になるはずです。絶対誤差は実測値ごとに変わります。元CSVに上書きせず、レッスン08のアウトプットフォルダーに保存します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: CSV保存はノートの部品を使う -->
+<div class="slide-body">
+<h2 id="csv保存はノートの部品を使う">CSV保存はノートの部品を使う</h2>
+<ul>
+<li>Python：列を選ぶ → 列追加 → <code>to_csv</code>。</li>
+<li>R：<code>select</code> → 列追加 → <code>write_csv</code>。</li>
+<li>保存先フォルダーを作る。</li>
+<li>ファイルを開き、20行と列名を確認。</li>
+</ul>
+<p><strong>学生ノート§6に引数と戻り値を説明。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+保存のためのコード部品は学生ノート第6節にあります。フォルダー作成の指定も確認してください。コードが終了しただけで終わらず、ファイルができていることと行数・列名を確かめましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: 他方の言語で、元CSVから照合 -->
+<div class="slide-body">
+<h2 id="他方の言語で元csvから照合">他方の言語で、元CSVから照合</h2>
+<ul>
+<li>主言語の出力CSVを読み込まない。</li>
+<li>訓練・検証のIDと件数を確認。</li>
+<li>訓練平均と両MAEを独立に計算。</li>
+<li>一致しない項目と理由も記録する。</li>
+</ul>
+<p>70〜80分：照合・説明。学生ノート§7。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+照合側では元の配布CSVから計算をやり直します。相手の結果を読み込んで同じ値を表示しても独立した確認にはなりません。同じ誤りでも一致することがあるので、指定した対象IDとの照合も必要です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 3行を手計算で確かめる -->
+<div class="slide-body">
+<h2 id="行を手計算で確かめる">3行を手計算で確かめる</h2>
+<p><strong>E004・E005・E011</strong></p>
+<ol type="1">
+<li>元CSVから実測値を読む。</li>
+<li>訓練平均との差の絶対値を求める。</li>
+<li>保存CSVの同じIDと照合する。</li>
+</ol>
+<p>この3行の平均を20行のMAEと混同しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+指定した三つのIDを探し、自分で求めた訓練平均との差を電卓などで確かめます。これはコードやAIの提案から独立した確認です。三つの行の平均だけでは検証20行の平均にならない点にも注意してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: 答え合わせ：何を学び、何で確認した？ -->
+<div class="slide-body">
+<h2
+id="答え合わせ何を学び何で確認した">答え合わせ：何を学び、何で確認した？</h2>
+<ul>
+<li>訓練平均：<strong>31.236 kWh</strong></li>
+<li>訓練MAE：<strong>6.8092 kWh</strong></li>
+<li>検証MAE：<strong>7.0862 kWh</strong></li>
+</ul>
+<p>訓練60行で予測値を決め、検証20行で確認。
+数値だけでなく、対象行と計算過程も確かめる。</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここで答え合わせをします。訓練平均は31.236、訓練エムエーイーは6.8092、検証エムエーイーは7.0862です。いずれも単位はキロワット時です。正しい値を固定して表示することが目的ではなく、どの行からどう計算したかを確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: よくある誤りを点検する -->
+<div class="slide-body">
+<h2 id="よくある誤りを点検する">よくある誤りを点検する</h2>
+<ul>
+<li>全80行の平均を予測に使う。</li>
+<li>検証平均で予測値を作り直す。</li>
+<li>絶対値を取らずに誤差を平均する。</li>
+<li>同じ結果なら対象IDは見なくてよいと思う。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この四つは数値が出ていても見落としやすい誤りです。間違いを見つけたら、入力の対象、予測値、絶対値、平均の順に戻って確認しましょう。言語間の一致と課題条件への適合は別に確かめます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 確認問題：理由を説明できる？ -->
+<div class="slide-body">
+<h2 id="確認問題理由を説明できる">確認問題：理由を説明できる？</h2>
+<ol type="1">
+<li>検証平均を使うと、何を先に知ったことになる？</li>
+<li>誤差−3と4の平均とMAEは？</li>
+<li>両言語の一致だけで正しいと言える？</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+確認問題を短く考えましょう。一つ目は予測したい答えを予測規則に混ぜる問題です。二つ目は平均誤差が0.5、エムエーイーが3.5です。三つ目は同じ誤りでも一致するので、対象行や手計算の確認が必要です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: Formsへ提出する -->
+<div class="slide-body">
+<h2 id="formsへ提出する">Formsへ提出する</h2>
+<ul>
+<li>主言語・両コード全文・実行状況。</li>
+<li>予想と実測、指定3行の確認、固定する理由。</li>
+<li>PDF・CSVの添付提出は不要。</li>
+<li>配点・締切・URLは担当教員の案内を確認。</li>
+</ul>
+<p>80〜90分：提出・質問。学生ノート§8。</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+保存したコードの全文を、両方ともフォームに貼ってください。実行結果やマークダウンの囲みは貼りません。短い振り返りには予想、実測、三行の確認、訓練平均を固定する理由を含めます。提出先と期限は教員の正式案内に従います。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 提出前の自己チェック -->
+<div class="slide-body">
+<h2 id="提出前の自己チェック">提出前の自己チェック</h2>
+<ul class="task-list">
+<li><label><input
+type="checkbox" />列と分割の役割を説明できる。</label></li>
+<li><label><input
+type="checkbox" />60行・20行と訓練平均を確認した。</label></li>
+<li><label><input
+type="checkbox" />絶対誤差を平均し、単位を付けた。</label></li>
+<li><label><input
+type="checkbox" />他言語と指定3行で確かめた。</label></li>
+<li><label><input
+type="checkbox" />最初から再実行し、全文2本を用意した。</label></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+提出前に五つを確認します。AIの利用そのものは加点や減点の条件ではありません。実行できなかった場合も、どこまで確認できて何に支援が必要かを伝えてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: 補足：RMSEという別の尺度 -->
+<div class="slide-body">
+<h2 id="補足rmseという別の尺度">補足：RMSEという別の尺度</h2>
+<p>誤差を <strong>二乗 → 平均 → 平方根</strong>。</p>
+<ul>
+<li>単位は元のkWhに戻る。</li>
+<li>大きいずれをMAEより強く反映する。</li>
+<li>詳細は第10回。今回はMAEが必修。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+余裕があれば別の誤差尺度も紹介します。ルートエムエスイーは二乗して平均してから平方根を取ります。大きなずれを強く反映しますが、異なる尺度の数値を直接比べて優劣を決めるものではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 31: 次回：同じ行で回帰直線を試す -->
+<div class="slide-body">
+<h2 id="次回同じ行で回帰直線を試す">次回：同じ行で回帰直線を試す</h2>
+<ul>
+<li>第9回は稼働時間から数値を予測する。</li>
+<li>同じ訓練・検証IDを使う。</li>
+<li>今日の基準予測との比較につなげる。</li>
+</ul>
+<p>合成データの結果から実設備の性能・因果は主張しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+次回は一本の回帰直線を使います。データと分割はそのまま使い、平均一定予測と比べる準備をします。今回は教材用の架空データであり、現実の設備の性能や因果関係について結論するものではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 32: まとめ：何を使い、何で確かめた？ -->
+<div class="slide-body">
+<h2
+id="まとめ何を使い何で確かめた">まとめ：何を使い、何で確かめた？</h2>
+<p><strong>訓練で決める → 固定して予測 → 別の行で評価</strong></p>
+<ul>
+<li>予測値を決めた行を説明する。</li>
+<li>MAEを求めた行と単位を説明する。</li>
+<li>再実行と独立した確認を残す。</li>
+</ul>
+<p>詳しい説明・公式資料への参照：学生ノート。</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日の中心は、何を学習に使い、何で確かめたかを分けて説明することです。訓練平均を固定し、対象行を変えて評価できれば、次回のモデル比較への土台になります。疑問が残るところはノートの該当節とコードを示して質問してください。
+</aside>
+
+
+</section></div></div><script src="reveal/reveal.js"></script><script src="image-zoom.js"></script><script src="handout-download.js"></script><script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'none'});</script></body></html>

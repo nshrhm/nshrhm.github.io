@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="360" viewBox="0 0 920 360"><rect width="920" height="360" fill="#f6f8fb"/><g font-family="sans-serif" fill="#16324f"><text x="35" y="48" font-size="28">絶対値を取ってから平均する</text>
+<text x="55" y="120" font-size="30">誤差 −3, +4</text><text x="340" y="120" font-size="30">絶対誤差 3, 4</text><text x="670" y="120" font-size="30">MAE 3.5</text>
+<path d="M265 110h48m-12-10 12 10-12 10M590 110h48m-12-10 12 10-12 10" stroke="#246bce" stroke-width="4" fill="none"/>
+<text x="55" y="210" font-size="27">そのまま平均： (−3 + 4) / 2 = 0.5</text><text x="55" y="265" font-size="27">絶対値の平均： ( 3 + 4) / 2 = 3.5 kWh</text>
+<text x="55" y="325" font-size="23">MAEは「1行当たりの絶対的なずれ」。単位は元と同じ。</text></g></svg>
