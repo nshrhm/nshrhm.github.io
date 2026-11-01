@@ -1,0 +1,578 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="第13回 主成分分析：標準化した4測定値を2軸へ要約する"><title>第13回 主成分分析</title><link rel="stylesheet" href="reveal/reveal.css"><link rel="stylesheet" href="reveal/theme/white.css"><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第13回：4列を2軸へ要約する -->
+<div class="slide-body">
+<h2 id="第13回4列を2軸へ要約する">第13回：4列を2軸へ要約する</h2>
+<p><strong>主成分分析（PCA）</strong></p>
+<ul>
+<li>irisの150行・4測定値。</li>
+<li>標準化を有効にする小変更。</li>
+<li>寄与率・散布図・符号を読む。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+前回は目的変数を予測するモデルを選びました。今回は花の測定値のばらつきを、二つの新しい軸で見ます。目的変数を置かない探索です。標準化を変えることで、どのように要約が変わるか確かめましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 教材を保存し、work全体を開く -->
+<div class="slide-body">
+<h2 id="教材を保存しwork全体を開く">教材を保存し、work全体を開く</h2>
+<p><a download="lesson13-student.zip" href="downloads/lesson13-student.zip">教材ZIP</a>
+／
+<a download="lecture_note_13.md" href="downloads/lecture_note_13.md">学生本文</a></p>
+<p><a download="lesson13.py" href="downloads/lesson13.py">Python主例</a>
+／ <a download="lesson13.R" href="downloads/lesson13.R">R主例</a> ／
+<a download="iris.csv" href="downloads/iris.csv">CSV</a></p>
+<ol type="1">
+<li>ZIPのlesson13をwork/exercises/へ。</li>
+<li>work全体を開く。</li>
+<li>既存のPython／Rタスクで実行。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ジップを展開したレッスン13フォルダーをワークのエクササイズへ置きます。シーエスブイはデータフォルダーに必要です。単独のコードだけでは準備が完了しません。本文はコントロール、シフト、ブイでプレビューできます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 今日の到達目標 -->
+<div class="slide-body">
+<h2 id="今日の到達目標">今日の到達目標</h2>
+<ol type="1">
+<li>数値4列を選び、標準化して実行。</li>
+<li>係数・得点・寄与率を区別。</li>
+<li>両言語と手計算で説明。</li>
+</ol>
+<p><strong>予想 → 小変更 → 独立照合 → 説明</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+コードが動くことに加え、出た表と図を説明することが目標です。主成分の係数と、花ごとの得点は別のものです。二つの言語で向きが反転していても、同じ解を表す場合があることも確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 90分の進め方 -->
+<div class="slide-body">
+<h2 id="分の進め方">90分の進め方</h2>
+<ul>
+<li>復習・準備10分、概念15分。</li>
+<li>両言語主例25分、変更演習20分。</li>
+<li>照合・解釈10分、提出10分。</li>
+</ul>
+<p>描画部分は完成済みです。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日は行列分解を一から実装しません。描画のコードも完成しています。標準化の指定を変更して、結果の違いを読む時間を確保します。詰まった点は実行状況に記録し、提出まで進めましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 前回の予測から、今回の探索へ -->
+<div class="slide-body">
+<h2 id="前回の予測から今回の探索へ">前回の予測から、今回の探索へ</h2>
+<table>
+<thead>
+<tr>
+<th>第12回</th>
+<th>第13回</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目的変数を予測</td>
+<td>ばらつきを要約</td>
+</tr>
+<tr>
+<td>訓練・検証・最終確認</td>
+<td>全150行を探索</td>
+</tr>
+<tr>
+<td>RMSEで比較</td>
+<td>寄与率と配置を読む</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+データ全体で探索することは、将来の予測性能を評価することとは異なります。今回は設備データの最終確認部分を使いません。将来ピーシーエーを予測の前処理に使う場合には、標準化と軸を訓練データだけから決める必要があります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: irisの4測定値 -->
+<div class="slide-body">
+<h2 id="irisの4測定値">irisの4測定値</h2>
+<ul>
+<li>がく片の長さ・幅、花びらの長さ・幅。</li>
+<li>単位はすべて <strong>cm</strong>。150行、欠損なし。</li>
+<li><strong>id・speciesはPCA入力へ入れない。</strong></li>
+<li>両言語で同じローカルCSVを読む。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アイリスは花の測定データです。ここでは四つの長さを使います。種類の名前は含まれていますが、軸を学習する入力には入れません。行の対応はアイディーで確認し、種類は今回の分析の正解にはしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: まず列の尺度を確かめる -->
+<div class="slide-body">
+<h2 id="まず列の尺度を確かめる">まず列の尺度を確かめる</h2>
+<p><strong>同じcmでも、列のばらつきは異なる。</strong></p>
+<ul>
+<li>中心化：列平均を引く。</li>
+<li>標準化：さらに列の標本SDで割る。</li>
+<li>今回のSDは分母 <strong>n−1</strong>。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+同じ単位で測った値でも、列ごとの散らばりは異なります。中心化は平均の位置を揃える操作です。標準化ではさらに標準偏差で割り、尺度を揃えます。今回の標準偏差は件数引く一を分母にします。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: 4列から2軸への流れ -->
+<div class="slide-body">
+<h2 id="列から2軸への流れ">4列から2軸への流れ</h2>
+<p><img class="zoomable-image" src="images/flow.svg" alt="4測定値→標準化→PCA→2軸。idとspeciesを入力にしない" style="max-height:390px"></p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+図の左が元の測定値、中央が中心化と標準化、右が新しい二つの座標です。花の数は百五十のままです。列の数を減らして、データのばらつきを少ない軸で見ます。画像はクリックして拡大できます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: I001の標準化を手で確認 -->
+<div class="slide-body">
+<h2 id="i001の標準化を手で確認">I001の標準化を手で確認</h2>
+<p><img class="zoomable-image" src="images/standardization.svg" alt="I001のがく片長を標準化する式と単位" style="max-height:390px"></p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+がく片の長さ五点一から列平均を引き、標本標準偏差で割ります。平均より短いので標準化値は負になります。単位は打ち消されて無次元です。手計算では途中の平均や標準偏差を丸めないようにします。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: 三つの出力を区別する -->
+<div class="slide-body">
+<h2 id="三つの出力を区別する">三つの出力を区別する</h2>
+<table>
+<thead>
+<tr>
+<th>出力</th>
+<th>意味</th>
+<th>今回の形</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>係数</td>
+<td>4列の組み合わせ方</td>
+<td>4×2</td>
+</tr>
+<tr>
+<td>得点</td>
+<td>各花の新しい座標</td>
+<td>150×2</td>
+</tr>
+<tr>
+<td>寄与率</td>
+<td>全分散に占める割合</td>
+<td>2値</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+係数は軸の作り方、得点は各花の位置です。両方ともピーシー一、ピーシー二という列を持つため、行数や行名で区別してください。寄与率は、元の条件での全分散のどれだけを各軸が表すかを示します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: Python：標準化を明示する -->
+<div class="slide-body">
+<h2 id="python標準化を明示する">Python：標準化を明示する</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data[features]</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>means <span class="op">=</span> X.mean()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sample_sd <span class="op">=</span> X.std(ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> (X <span class="op">-</span> means) <span class="op">/</span> sample_sd <span class="cf">if</span> scaled <span class="cf">else</span> X</span></code></pre></div>
+<p>目的・引数・戻り値は <strong>学生本文§5</strong>。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+四つの列を選び、平均と標本標準偏差を列ごとに計算します。ディーディーオーエフ一が分母の件数引く一に対応します。最後の行は条件が真なら標準化した表を、偽なら元の表を使います。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: Python：学習して座標へ変換 -->
+<div class="slide-body">
+<h2 id="python学習して座標へ変換">Python：学習して座標へ変換</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>            svd_solver<span class="op">=</span><span class="st">&quot;full&quot;</span>, whiten<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>coordinates <span class="op">=</span> model.fit_transform(inputs)</span></code></pre></div>
+<p>PCA自体は中心化するが、尺度は揃えない。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ピーシーエーのモデルを作り、フィット・トランスフォームで軸の学習と得点への変換を行います。保持する成分は二つで、白色化は使いません。モデルを作っただけではまだ軸は決まっていません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: Python：係数の向きを揃える -->
+<div class="slide-body">
+<h2 id="python係数の向きを揃える">Python：係数の向きを揃える</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    model.components_.T,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>features, columns<span class="op">=</span>[<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>ratios <span class="op">=</span> model.explained_variance_ratio_</span></code></pre></div>
+<p>行名を使って元の4列と対応付ける。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+パイソンの係数配列は二行四列です。転置して、四つの測定値を行に置きます。アールと比較するときに位置だけで判断せず、列名と係数を対応付けます。寄与率は学習済みモデルから取り出します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: R：中心化と標準化を指定 -->
+<div class="slide-body">
+<h2 id="r中心化と標準化を指定">R：中心化と標準化を指定</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(X, <span class="at">center =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">scale. =</span> scaled)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>weights <span class="ot">&lt;-</span> model<span class="sc">$</span>rotation[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span></code></pre></div>
+<p><code>scale.</code>の末尾の点も引数名。本文§6。</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アールではピーアールコンプの引数で中心化と標準化を指定します。スケールの末尾の点も名前の一部です。係数行列は元の四つの列を行に持つので、上位二成分を選んで読みます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: R：寄与率の分母は全4成分 -->
+<div class="slide-body">
+<h2 id="r寄与率の分母は全4成分">R：寄与率の分母は全4成分</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>all_ratios <span class="ot">&lt;-</span> model<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="fu">sum</span>(model<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ratios <span class="ot">&lt;-</span> all_ratios[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cumsum</span>(ratios)</span></code></pre></div>
+<p>先に分母を作り、その後で上位2成分を選ぶ。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+エスデブは主成分の標準偏差で、二乗すると分散になります。全四成分の分散合計で割ってから、上位二つを取り出します。最初から二つだけを分母にすると、累積が必ず一になり、要約の割合を誤って説明します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: 両言語の主例を実行 -->
+<div class="slide-body">
+<h2 id="両言語の主例を実行">両言語の主例を実行</h2>
+<ol type="1">
+<li><code>lesson13.py</code>と<code>lesson13.R</code>を実行。</li>
+<li>150行・4列、平均・SDを読む。</li>
+<li>baselineとcandidateを比較。</li>
+<li>指定行 <strong>I001・I051・I101</strong> を探す。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+それぞれの授業タスクで主例を実行してください。比較用は標準化なし、変更対象は標準化ありになっています。全体の表を見た後に、指定した三行を確認します。まだ数値の符号が違っても、すぐに誤りと決めつけません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: 変更前に予想する -->
+<div class="slide-body">
+<h2 id="変更前に予想する">変更前に予想する</h2>
+<ul>
+<li>標準化なしでは、どの列の影響が大きそうか。</li>
+<li>標準化すると配置はどう変わるか。</li>
+<li>2成分の累積寄与率は上がるだろうか。</li>
+</ul>
+<p>予想を一文残してから変更する。</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+自分の予想を短く書いてから演習へ進みます。正しく予想できたかだけを評価するものではありません。実行後に予想と結果を比べ、理由を考えることが大切です。標準化で寄与率が必ず増えると仮定しないでください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: 必須変更は一箇所ずつ -->
+<div class="slide-body">
+<h2 id="必須変更は一箇所ずつ">必須変更は一箇所ずつ</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>standardize <span class="op">=</span> <span class="va">True</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>standardize <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
+<p>主言語のexercise13と、照合言語のverifyを変更。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ひな形は偽の設定なので、そのままでも動きます。しかし比較用と変更対象が両方とも標準化なしになります。主言語と照合言語の二つのファイルで真へ変更し、全体を最初から再実行してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: 変更しない条件を確認 -->
+<div class="slide-body">
+<h2 id="変更しない条件を確認">変更しない条件を確認</h2>
+<ul>
+<li>比較用baselineは標準化なし。</li>
+<li>同じ150行・4測定値。</li>
+<li>取り出す得点はPC1・PC2。</li>
+<li>描画には計算済みの得点を使う。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+一つの条件を変えて影響を確かめるため、他の条件は揃えます。花の数や入力列を変えると、標準化による違いと区別できません。描画のために別のモデルを学習する必要はありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: 寄与率の結果を読む -->
+<div class="slide-body">
+<h2 id="寄与率の結果を読む">寄与率の結果を読む</h2>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th style="text-align: right;">PC1</th>
+<th style="text-align: right;">PC2</th>
+<th style="text-align: right;">累積</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>標準化なし</td>
+<td style="text-align: right;">.924619</td>
+<td style="text-align: right;">.053066</td>
+<td style="text-align: right;">.977685</td>
+</tr>
+<tr>
+<td>標準化あり</td>
+<td style="text-align: right;">.729624</td>
+<td style="text-align: right;">.228508</td>
+<td style="text-align: right;">.958132</td>
+</tr>
+</tbody>
+</table>
+<p><strong>約95.81%は分類の正解率ではない。</strong></p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+標準化後の二成分は、標準化した四列の全分散の約九十五点八一パーセントを保持します。これは花を分類した正解率ではありません。表示していない二成分にも残りの分散があります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: 散布図：各花の新しい座標 -->
+<div class="slide-body">
+<h2 id="散布図各花の新しい座標">散布図：各花の新しい座標</h2>
+<p><img class="zoomable-image" src="images/scores.svg" alt="標準化なしとありのPC1-PC2散布図。各150点" style="max-height:390px"></p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+同じ百五十個の花を、二つの条件で図にしました。各図では縦横の一単位の長さを揃えています。左の得点はセンチメートル、右は無次元です。標準化前後で数値の範囲が違うため、二つの図に同じ範囲を強制する必要はありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: 寄与率が高い方がよい？ -->
+<div class="slide-body">
+<h2 id="寄与率が高い方がよい">寄与率が高い方がよい？</h2>
+<p><strong>前後で「全分散」の基準が変わる。</strong></p>
+<ul>
+<li>標準化なし：元のcmのばらつき。</li>
+<li>標準化あり：各列をSDで揃えたばらつき。</li>
+<li>数字の大小だけで優劣を決めない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回、標準化後の累積寄与率は少し下がりました。だから標準化が失敗したとは言えません。分母となる全分散の基準が変わっているからです。どの尺度でばらつきを捉えたいかを説明する必要があります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: 独立照合は元CSVから -->
+<div class="slide-body">
+<h2 id="独立照合は元csvから">独立照合は元CSVから</h2>
+<ol type="1">
+<li>同じID・150行・4列。</li>
+<li>列平均・n−1標準偏差。</li>
+<li>寄与率・列名付き係数。</li>
+<li>符号を揃えた得点と指定3行。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+照合言語は、相手の保存シーエスブイを読み込まず、元のアイリスから独立に計算します。まず条件を揃えてから結果を比べます。同じ誤りをして二言語が一致することもあるので、課題への適合と一致は別に確認します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 符号だけが違うことがある -->
+<div class="slide-body">
+<h2 id="符号だけが違うことがある">符号だけが違うことがある</h2>
+<ul>
+<li>PC1の係数4個をすべて−1倍。</li>
+<li>PC1の得点150個もすべて−1倍。</li>
+<li>寄与率と点同士の距離は変わらない。</li>
+</ul>
+<p>一部の行だけの反転は別の結果。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+主成分の正負の向きは一意ではありません。係数全体と全得点が同じ向きで反転していれば、同じ軸を表します。各値の絶対値だけを取ると、一部の行だけがおかしい場合まで見逃すので注意しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: 左右反転しても同じ解 -->
+<div class="slide-body">
+<h2 id="左右反転しても同じ解">左右反転しても同じ解</h2>
+<p><img class="zoomable-image" src="images/sign.svg" alt="PC1の係数と全得点の同時符号反転" style="max-height:390px"></p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この二枚はピーシー一の正負の向きを反転した図です。花同士の距離は変わっていません。パイソンとアールでこのような反転があれば、係数と全得点に共通の符号を合わせて比較します。ピーシー二も独立に向きが反転する場合があります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: I001のPC1を手計算 -->
+<div class="slide-body">
+<h2 id="i001のpc1を手計算">I001のPC1を手計算</h2>
+<p><strong>PC1 = z₁w₁ + z₂w₂ + z₃w₃ + z₄w₄</strong></p>
+<ul>
+<li>自分の言語で出た係数を使う。</li>
+<li>4列の対応を確認。途中で丸めない。</li>
+<li>向きに応じ約 <strong>±2.257141</strong>。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+まず標準化した四つの値を用意し、それぞれに対応するピーシー一の係数を掛けます。その四項を足すと、アイゼロゼロ一の得点になります。自分のコードの係数を使うので、正負の向きも自分の得点と一致するはずです。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 主言語の保存物を開く -->
+<div class="slide-body">
+<h2 id="主言語の保存物を開く">主言語の保存物を開く</h2>
+<ul>
+<li><code>scores.csv</code>：ID・PC1・PC2、150行。</li>
+<li><code>explained_variance.csv</code>：2条件×2成分。</li>
+<li><code>pca.png</code>：各150点、条件・軸・単位。</li>
+</ul>
+<p>照合言語は保存不要。本文§10。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+主言語の保存先はレッスン13のアウトプットです。余分な行番号列が付いていないか、アイディーと得点が対応するか確認してください。ピーエヌジーは実際に開きます。画像のバイト列が二言語で同じである必要はありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: 確認問題：説明できるか -->
+<div class="slide-body">
+<h2 id="確認問題説明できるか">確認問題：説明できるか</h2>
+<ol type="1">
+<li>PCAだけで標準偏差は1になるか。</li>
+<li>寄与率の分母を上位2成分だけにすると？</li>
+<li>PC1が逆符号のとき何を確かめるか。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+三つの問いに自分の言葉で答えてください。関数の名前を覚えることより、どの操作が標準化を担当し、寄与率が何を表し、どの違いが同じ解として許されるかを理解することが大切です。本文にも同じ問いがあります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 提出前の自己チェック -->
+<div class="slide-body">
+<h2 id="提出前の自己チェック">提出前の自己チェック</h2>
+<ul>
+<li>150行・4列、id/speciesを除外。</li>
+<li>両言語で標準化を有効化。</li>
+<li>係数・得点・寄与率を区別。</li>
+<li>指定行・手計算・符号を確認。</li>
+<li>CSV・PNG・再実行を確認。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+五項目を一つずつ確認してください。主言語と照合言語のコード全文を提出します。ファイルの添付は不要ですが、コードから保存物を再生成できることは確認します。実行に支援が必要なら、その状態を正直に記録してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: 提出と第14回への接続 -->
+<div class="slide-body">
+<h2 id="提出と第14回への接続">提出と第14回への接続</h2>
+<p><strong>Forms：主言語・両コード全文・実行状況・振り返り</strong></p>
+<ul>
+<li>予想、標準化、累積寄与率、手計算、符号。</li>
+<li>締切・URL・配点は教員の正式案内。</li>
+<li>次回：同じ4測定値で距離と群を考える。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+振り返りでは、予想と実測、標準化で変わった点、累積寄与率の意味、手計算、符号と種類情報の扱いを説明します。次回は同じデータで群を作ります。今回の散布図だけから正しい群の数や分類を確定しないようにしましょう。
+</aside>
+
+
+</section></div></div><script src="reveal/reveal.js"></script><script src="image-zoom.js"></script><script src="handout-download.js"></script><script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'none'});</script></body></html>
