@@ -1,0 +1,535 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="第15回 後半総合演習：条件変更・独立照合・レポート"><title>第15回 後半総合演習</title><link rel="stylesheet" href="reveal/reveal.css"><link rel="stylesheet" href="reveal/theme/white.css"><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第15回：分析をレポートにする -->
+<div class="slide-body">
+<h2 id="第15回分析をレポートにする">第15回：分析をレポートにする</h2>
+<p><strong>後半総合演習</strong></p>
+<ul>
+<li>既習の分析を一つ選ぶ。</li>
+<li>条件を変え、独立に確かめる。</li>
+<li>数値と図で、回答と限界を説明する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今日は後半の総合演習です。新しい手法を増やすのではなく、既習の分析を自分の説明につなげます。選ぶ経路は一つです。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 教材を保存し、work全体を開く -->
+<div class="slide-body">
+<h2 id="教材を保存しwork全体を開く">教材を保存し、work全体を開く</h2>
+<p><a download="lesson15-student.zip" href="downloads/lesson15-student.zip">教材ZIP</a>
+／
+<a download="lecture_note_15.md" href="downloads/lecture_note_15.md">学生本文</a>
+／ <a download="A.py" href="downloads/A.py">A Python</a> ／
+<a download="A.R" href="downloads/A.R">A R</a> ／
+<a download="B.py" href="downloads/B.py">B Python</a> ／
+<a download="B.R" href="downloads/B.R">B R</a> ／
+<a download="equipment.csv" href="downloads/equipment.csv">設備CSV</a>
+／ <a download="iris.csv" href="downloads/iris.csv">iris CSV</a></p>
+<ol type="1">
+<li>ZIPのlesson15をwork/exercises/へ。</li>
+<li>work全体を開き、登録済みタスクで実行。</li>
+<li>詳細・復習・レポートひな形はZIP内。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+教材ジップを展開し、既存のワークのエクササイズにレッスン15を置きます。コードだけでなくデータも必要です。本文には操作と関数の説明があります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 今日の到達目標 -->
+<div class="slide-body">
+<h2 id="今日の到達目標">今日の到達目標</h2>
+<ol type="1">
+<li>指定条件で分析を実行する。</li>
+<li>他方の言語・指定行・保存物で確認する。</li>
+<li>根拠を示して問いに答え、限界を説明する。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+動いたことに加えて、計算が確かめられていることと、問いへの回答が伝わることを目指します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 90分の進め方 -->
+<div class="slide-body">
+<h2 id="分の進め方">90分の進め方</h2>
+<table>
+<thead>
+<tr>
+<th>活動</th>
+<th style="text-align: right;">分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>経路選択・準備／主例説明</td>
+<td style="text-align: right;">10／15</td>
+</tr>
+<tr>
+<td>変更・分析／独立照合</td>
+<td style="text-align: right;">25／10</td>
+</tr>
+<tr>
+<td>レポート／提出確認・質問</td>
+<td style="text-align: right;">20／10</td>
+</tr>
+</tbody>
+</table>
+<p>仕上げは授業後も可。締切は教員の正式案内を確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+授業の後半にレポートをまとめる時間を取ります。授業後の仕上げも認めますが、提出期限は正式な案内を確認してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 経路と主言語を決める -->
+<div class="slide-body">
+<h2 id="経路と主言語を決める">経路と主言語を決める</h2>
+<ul>
+<li>A：処理量追加で予測・誤差・係数はどう変わるか。</li>
+<li>B：群数追加で所属・件数・特徴はどう変わるか。</li>
+<li>主言語は分析・図・保存。他方は変更対象の照合。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+二つの経路のうち、説明したい問いを一つ選びます。主言語は図と保存も担当し、他方は変更対象の独立計算を担当します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: 二経路の共通点 -->
+<div class="slide-body">
+<h2 id="二経路の共通点">二経路の共通点</h2>
+<p><img class="zoomable-image" src="images/routes.svg" alt="二経路と完成物"></p>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+どちらも条件変更、結果比較、独立照合、説明という流れです。両経路を解く必要はありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: まず予想を一文で書く -->
+<div class="slide-body">
+<h2 id="まず予想を一文で書く">まず予想を一文で書く</h2>
+<ul>
+<li>何が、どのように変わると思うか。</li>
+<li>そう考える理由は何か。</li>
+<li>結果と違っても、消さずに比較する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+実行前に予想を書きます。正しい予想を当てることが目的ではありません。結果が違ったときに理由を考える手がかりにします。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: A：設備データの予測 -->
+<div class="slide-body">
+<h2 id="a設備データの予測">A：設備データの予測</h2>
+<ul>
+<li>訓練60行で学習、検証20行で比較。</li>
+<li>目的変数は消費電力量、単位はkWh。</li>
+<li>第11回の方法を使う。最終確認20行は使わない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+回帰経路は第11回の比較を使います。同じ80行の中で訓練と検証の役割を保ち、再分割しません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: A：変える条件は説明変数 -->
+<div class="slide-body">
+<h2 id="a変える条件は説明変数">A：変える条件は説明変数</h2>
+<p><img class="zoomable-image" src="images/regression.svg" alt="回帰の固定条件と変更"></p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+比較用の単回帰を残し、変更対象へ処理量を追加します。行や目的変数まで変えると、何による違いか説明しにくくなります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: A：指定箇所を変更する -->
+<div class="slide-body">
+<h2 id="a指定箇所を変更する">A：指定箇所を変更する</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>candidate_features <span class="op">=</span> [</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;operating_hours&quot;</span>, <span class="st">&quot;throughput_units&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>candidate_formula <span class="ot">&lt;-</span> energy_kwh <span class="sc">~</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  operating_hours <span class="sc">+</span> throughput_units</span></code></pre></div>
+<p>主言語用と照合用の両方で変更。</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+パイソンは説明変数のリスト、アールは学習へ渡す式を変更します。予測もその指定を使います。両言語で同じ条件にしてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: A：同じ行で指標を比較する -->
+<div class="slide-body">
+<h2 id="a同じ行で指標を比較する">A：同じ行で指標を比較する</h2>
+<ul>
+<li>残差＝実測値−予測値。</li>
+<li>MAE＝絶対残差の平均。</li>
+<li>RMSE＝残差二乗の平均の平方根。</li>
+<li>件数と単位kWhを添えて表にする。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+指標は評価対象の件数を分母にします。訓練と検証を取り違えず、両モデルを同じ行で比較します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: A：残差図を読む -->
+<div class="slide-body">
+<h2 id="a残差図を読む">A：残差図を読む</h2>
+<ul>
+<li>横軸：稼働時間。縦軸：残差kWh。</li>
+<li>両パネルの縦軸尺度と0線を確認。</li>
+<li>広がり・偏りを数値と合わせて読む。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+残差図では両パネルの尺度が共通です。点がゼロ付近に集まるか、時間に沿った偏りがないかを読み、指標と合わせて説明します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: A：E005を手計算する -->
+<div class="slide-body">
+<h2 id="ae005を手計算する">A：E005を手計算する</h2>
+<p><strong>予測＝切片＋時間係数×4.8＋処理量係数×116</strong></p>
+<ul>
+<li>係数を途中で丸めない。</li>
+<li>実行結果のID・予測・残差と照合。</li>
+<li>途中式と一致した数値をレポートへ。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+列名と係数を対応させて、指定行の予測を計算します。単なる一致という言葉だけでなく、使った数値と結果を残しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: A：係数と限界を説明する -->
+<div class="slide-body">
+<h2 id="a係数と限界を説明する">A：係数と限界を説明する</h2>
+<ul>
+<li>他方を一定にしたときの予測値の変化。</li>
+<li>単位：時間係数はkWh/時間、処理量はkWh/個。</li>
+<li>因果効果とは断定しない。</li>
+<li>繰り返し見た検証結果は将来性能の保証ではない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+重回帰の係数は条件付きの変化です。単位の違う係数の大きさだけで重要度を比べません。検証データを繰り返し見てきた点も限界です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: B：irisの群分け -->
+<div class="slide-body">
+<h2 id="birisの群分け">B：irisの群分け</h2>
+<ul>
+<li>全150行・4測定値だけを標準化。</li>
+<li>標本標準偏差の分母はn−1。</li>
+<li>IDと種類は入力に含めない。</li>
+<li>第14回の初期中心とLloyd法を継承。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+探索経路では全150行を使います。標準化の定義と初期中心を変えず、群数の変更による違いを比較します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: B：kを2から3へ変える -->
+<div class="slide-body">
+<h2 id="bkを2から3へ変える">B：kを2から3へ変える</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>k_candidate <span class="op">=</span> <span class="dv">3</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>k_candidate <span class="ot">&lt;-</span> <span class="dv">3</span></span></code></pre></div>
+<p>比較用k=2は固定。主言語用と照合用で同じ変更。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+変更箇所は群数の指定です。比較用は二つのまま残し、変更対象だけ三つにします。未変更でも実行できるので、変更を確認してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: B：4次元の群分けを2次元で見る -->
+<div class="slide-body">
+<h2 id="b4次元の群分けを2次元で見る">B：4次元の群分けを2次元で見る</h2>
+<p><img class="zoomable-image" src="images/clusters.svg" alt="標準化と群分けとPCA投影"></p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+群分けは四次元の測定値で行い、図だけを二次元の主成分座標に投影します。同じ座標に色を付けて比較します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: B：群の特徴を元の単位で読む -->
+<div class="slide-body">
+<h2 id="b群の特徴を元の単位で読む">B：群の特徴を元の単位で読む</h2>
+<ul>
+<li>群別件数と4測定値の平均を整理。</li>
+<li>群平均はcm、中心は標準化空間の値。</li>
+<li>群内平方和は所属中心までの二乗距離の合計。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+群平均を元のセンチメートルで読むと、どの測定値が大きい群なのか説明できます。標準化空間の中心と混同しないようにします。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: B：番号を対応付ける -->
+<div class="slide-body">
+<h2 id="b番号を対応付ける">B：番号を対応付ける</h2>
+<ul>
+<li>クラスタ番号に大小・順位の意味はない。</li>
+<li>中心から一対一の対応を決める。</li>
+<li>同じ対応を全150行・集計に適用。</li>
+<li>種類を正解として扱わない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+番号が違っていても同じ群分けの場合があります。中心を見て全体に一貫した対応を決め、行ごとの都合のよい番号変更はしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: B：I001を手計算する -->
+<div class="slide-body">
+<h2 id="bi001を手計算する">B：I001を手計算する</h2>
+<p><strong>各中心までの二乗距離</strong></p>
+<p>(z₁−c₁)²＋(z₂−c₂)²＋(z₃−c₃)²＋(z₄−c₄)²</p>
+<p>3中心への距離を比べ、最小の群と所属を確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+標準化済みの四つの値から各中心までの二乗距離を計算します。四列の順を揃え、途中の丸めを避けてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: B：群数の結論を急がない -->
+<div class="slide-body">
+<h2 id="b群数の結論を急がない">B：群数の結論を急がない</h2>
+<ul>
+<li>群内平方和だけで正しいkを決めない。</li>
+<li>種類が3つだからk=3が正解、とはいえない。</li>
+<li>初期条件に依存する探索結果。</li>
+<li>新規データの予測性能評価とは区別する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回の条件で得られた特徴を説明します。唯一の正解や大域的な最適解だと主張することはできません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: 独立照合は元CSVから -->
+<div class="slide-body">
+<h2 id="独立照合は元csvから">独立照合は元CSVから</h2>
+<ul>
+<li>主言語の出力CSVを照合側へ渡さない。</li>
+<li>A：変更対象の係数・検証予測・残差・指標。</li>
+<li>B：変更対象の標準化・所属・中心・集計。</li>
+<li>照合側に図・保存は不要。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+相手の結果を読み込んで表示するだけでは独立照合になりません。元のデータから計算し直します。照合側の負担は変更対象の確認に絞っています。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: 保存したCSVを読み直す -->
+<div class="slide-body">
+<h2 id="保存したcsvを読み直す">保存したCSVを読み直す</h2>
+<ul>
+<li>出力先はoutput/A/またはoutput/B/。</li>
+<li>analysis.csvとfigure.pngを保存。</li>
+<li>保存前の表と再読込した表を比較。</li>
+<li>両コードを先頭から再実行する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+メッセージだけでなく、ファイルがあり、保存した内容が正しいことを確かめます。再読込の一致と再実行の結果をレポートに残します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 三つの確認を根拠にする -->
+<div class="slide-body">
+<h2 id="三つの確認を根拠にする">三つの確認を根拠にする</h2>
+<p><img class="zoomable-image" src="images/evidence.svg" alt="独立計算・手計算・再実行"></p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+独立計算、指定行、保存と再実行は、それぞれ違う角度から結果を確かめます。具体的な数値を挙げて説明してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: レポートは四章でまとめる -->
+<div class="slide-body">
+<h2 id="レポートは四章でまとめる">レポートは四章でまとめる</h2>
+<ol type="1">
+<li>問いと条件：予想、変更、固定条件。</li>
+<li>数値と図：比較表、単位、今回の図。</li>
+<li>独立照合・手計算・再実行。</li>
+<li>回答と限界、AI利用時の採用箇所と確認方法。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+空のマークダウンまたはワードのひな形を使えます。一、二ページが目安ですが、ページ数自体を評価するものではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: 根拠が伝わる文章にする -->
+<div class="slide-body">
+<h2 id="根拠が伝わる文章にする">根拠が伝わる文章にする</h2>
+<ul>
+<li>「改善した」→ どの対象・指標・数値か。</li>
+<li>「一致した」→ どの行・列・計算か。</li>
+<li>「限界がある」→ 何をいえないのか。</li>
+<li>AI利用の有無そのものは加減点しない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+読み手が追える根拠を添えます。エーアイを利用した場合は、採用した箇所と自分で確かめた方法を記録してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 提出版を一組に揃える -->
+<div class="slide-body">
+<h2 id="提出版を一組に揃える">提出版を一組に揃える</h2>
+<p><img class="zoomable-image" src="images/versions.svg" alt="FormsとClassroomの版対応"></p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+フォームズとクラスルームは提出するものが異なりますが、本人、経路、主言語、提出版は揃えます。再提出では両方を同じ版へ更新します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: 提出するものを確認する -->
+<div class="slide-body">
+<h2 id="提出するものを確認する">提出するものを確認する</h2>
+<ul>
+<li>Forms：経路・主言語・版・Python全文・R全文・実行状況。</li>
+<li>Classroom：PDF・analysis.csv・figure.png。</li>
+<li>コードをClassroomへ重複提出しない。</li>
+<li>締切・配点・実URLは教員の案内で確認。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+コードはフォームズ、レポートと二つの成果物はクラスルームです。同じ版に異なる内容がある場合は対応確認が必要になります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 最後の自己チェック -->
+<div class="slide-body">
+<h2 id="最後の自己チェック">最後の自己チェック</h2>
+<ul>
+<li>両言語の必須変更を終えた。</li>
+<li>指定行・独立計算・保存・再実行を確認した。</li>
+<li>数値と図で問いに答え、限界を説明した。</li>
+<li>本人・経路・主言語・版が提出物で一致する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+提出前に一つずつ確認します。困った箇所は実行状況として伝え、結果を都合よく作ることはしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: 質問と仕上げ -->
+<div class="slide-body">
+<h2 id="質問と仕上げ">質問と仕上げ</h2>
+<p><strong>何を変え、何が変わり、どこまでいえるか。</strong></p>
+<ul>
+<li>数値・図・確認方法を自分の言葉で。</li>
+<li>必要な仕上げは授業後にも。</li>
+<li>操作の詳細・確認問題は学生本文へ。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+この授業全体で、実行するだけでなく結果を確かめ、説明することを練習してきました。最後は自分の問いへの回答としてまとめましょう。質問があれば具体的な行や表示を示してください。
+</aside>
+
+
+</section></div></div><script src="reveal/reveal.js"></script><script src="image-zoom.js"></script><script src="handout-download.js"></script><script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'none'});</script></body></html>
