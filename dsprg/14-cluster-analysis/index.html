@@ -1,0 +1,621 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="第14回 クラスタ分析：群数を2から3へ変えて比較する"><title>第14回 クラスタ分析</title><link rel="stylesheet" href="reveal/reveal.css"><link rel="stylesheet" href="reveal/theme/white.css"><link rel="stylesheet" href="style.css"></head><body><div class="reveal"><div class="slides">
+
+
+<section class="slide level1">
+
+<!-- 1: 第14回：群数を変えて特徴を読む -->
+<div class="slide-body">
+<h2
+id="第14回群数を変えて特徴を読む">第14回：群数を変えて特徴を読む</h2>
+<p><strong>クラスタ分析</strong></p>
+<ul>
+<li>irisの150行・4測定値。</li>
+<li>クラスタ数を2から3へ。</li>
+<li>群の件数・中心・平均を比較。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第13回は四つの測定値を二つの軸へ要約しました。今回は測定値が近い行を群にまとめます。クラスタ数を二から三へ変え、どのような群になるか確かめましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 2: 教材を保存し、work全体を開く -->
+<div class="slide-body">
+<h2 id="教材を保存しwork全体を開く">教材を保存し、work全体を開く</h2>
+<p><a download="lesson14-student.zip" href="downloads/lesson14-student.zip">教材ZIP</a>
+／
+<a download="lecture_note_14.md" href="downloads/lecture_note_14.md">学生本文</a></p>
+<p><a download="lesson14.py" href="downloads/lesson14.py">Python主例</a>
+／ <a download="lesson14.R" href="downloads/lesson14.R">R主例</a> ／
+<a download="iris.csv" href="downloads/iris.csv">CSV</a></p>
+<ol type="1">
+<li>ZIPのlesson14をwork/exercises/へ。</li>
+<li>work全体を開く。</li>
+<li>登録済みのPython／Rタスクで実行。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ジップを展開したレッスン14フォルダーを、既存のワークのエクササイズへ置きます。データフォルダーのシーエスブイも必要です。環境を新しく作らず、登録済みのタスクを使ってください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 3: 今日の到達目標 -->
+<div class="slide-body">
+<h2 id="今日の到達目標">今日の到達目標</h2>
+<ol type="1">
+<li>4測定値を標準化して群分け。</li>
+<li>件数・中心・cm単位の平均を説明。</li>
+<li>両言語と手計算で確認。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+操作、読み取り、確認の三つが目標です。実行が成功したことと、結果を説明できることを分けて確認します。群の番号は順位ではない点も押さえましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 4: 90分の流れ -->
+<div class="slide-body">
+<h2 id="分の流れ">90分の流れ</h2>
+<table>
+<thead>
+<tr>
+<th>活動</th>
+<th style="text-align: right;">分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>復習・距離と中心</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr>
+<td>両言語の主例</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr>
+<td>kの変更演習</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr>
+<td>独立照合・樹形図</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td>提出・質問</td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+前半で距離と中心を理解し、両言語の主例を実行します。後半はクラスタ数を変え、同じ条件の照合と手計算を行います。最後に振り返りと提出の時間を取ります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 5: 第13回から同じCSVを継続 -->
+<div class="slide-body">
+<h2 id="第13回から同じcsvを継続">第13回から同じCSVを継続</h2>
+<ul>
+<li>150行、IDはI001〜I150。</li>
+<li>数値4列はすべてcm。</li>
+<li>id・speciesは学習に使わない。</li>
+<li>全データでの探索。訓練・検証分割なし。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+同じ花のデータを継続します。種類の列は後から参考にできる情報ですが、群分けの入力にも正解ラベルにも使いません。今回は全データの特徴を見る探索であり、新しいデータに対する予測性能の評価ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 6: 列ごとに標準化する -->
+<div class="slide-body">
+<h2 id="列ごとに標準化する">列ごとに標準化する</h2>
+<p><code>z = (測定値 − 列平均) / 標本標準偏差</code></p>
+<ul>
+<li>Python: <code>X.std(ddof=1)</code></li>
+<li>R: <code>sapply(X, sd)</code></li>
+<li>分母はn−1。標準化後は無次元。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+第13回と同じ定義を使います。各列の平均を引いて、標本標準偏差で割ります。行ごとに平均を引く操作ではありません。標準化した値はセンチメートルではなく無次元になります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 7: 尺度が距離へ与える影響 -->
+<div class="slide-body">
+<h2 id="尺度が距離へ与える影響">尺度が距離へ与える影響</h2>
+<ul>
+<li>一つの列だけcm→mmにすると差は10倍。</li>
+<li>二乗距離への寄与は100倍。</li>
+<li>標準化は列の尺度を揃える操作。</li>
+<li>どの目的にも必ず最適とは限らない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+単位が変わるだけで距離への寄与が大きく変わります。今回は測定値を標準化して比較します。ただし、標準化すれば常に最適という意味ではありません。何を近さとしたいかを考える必要があります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 8: 4列で群分けし、2軸で表示 -->
+<div class="slide-body">
+<h2 id="列で群分けし2軸で表示">4列で群分けし、2軸で表示</h2>
+<p><img class="zoomable-image" src="images/flow.svg" alt="4列で標準化・群分けしPCA2軸へ表示する流れ"></p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+クラスタ分析は四次元の標準化データで行います。二つの主成分は結果を見るためだけに使います。図の座標をクラスタ分析へ渡してしまうと、別の問題を解くことになるので注意してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 9: I001から中心までの距離 -->
+<div class="slide-body">
+<h2 id="i001から中心までの距離">I001から中心までの距離</h2>
+<p><img class="zoomable-image" src="images/distance.svg" alt="I001と3中心の二乗距離。4項の合計で無次元"></p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+中心までの距離は、四つの値の差を二乗して足します。ここでは二乗距離を比べています。平方根を取っても大小関係は変わらないので、最も近い中心をそのまま選べます。後でこの一行を手計算します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 10: k-meansの4ステップ -->
+<div class="slide-body">
+<h2 id="k-meansの4ステップ">k-meansの4ステップ</h2>
+<ol type="1">
+<li>k個の初期中心を置く。</li>
+<li>最も近い中心の群へ割り当てる。</li>
+<li>群の平均へ中心を移す。</li>
+<li>所属が安定するまで繰り返す。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回はロイド法による更新を使います。割り当てと平均への移動を繰り返す方法です。中心は固定した代表の花ではなく、群に含まれる測定値の平均として更新されます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 11: 初期中心を両言語で揃える -->
+<div class="slide-body">
+<h2 id="初期中心を両言語で揃える">初期中心を両言語で揃える</h2>
+<table>
+<thead>
+<tr>
+<th>k</th>
+<th>初期中心のID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>I001・I101</td>
+</tr>
+<tr>
+<td>3</td>
+<td>I001・I051・I101</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>標準化後の4値を取得。</li>
+<li>種類を代表する正解中心ではない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+両言語へ同じ初期中心を渡します。番号は演習で固定した条件です。種類の正解中心を指定する意味ではありません。同じ乱数シードだけでは言語間で同じ初期中心になるとは限らないため、今回は値そのものを揃えます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 12: Python：モデルを作って実行 -->
+<div class="slide-body">
+<h2 id="pythonモデルを作って実行">Python：モデルを作って実行</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    init<span class="op">=</span>initial.to_numpy(), n_init<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    algorithm<span class="op">=</span><span class="st">&quot;lloyd&quot;</span>, max_iter<span class="op">=</span><span class="dv">300</span>, tol<span class="op">=</span><span class="fl">1e-10</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>model.fit(Z)</span></code></pre></div>
+<p><code>Z</code>は150行×4列。詳細は本文4節。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ケイミーンズに群数と初期中心を指定し、フィットに標準化した表を渡します。初期中心を準備する部分は完成済みです。種類の列や二つの主成分を入力しないようにしましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 13: Python：結果の向きを読む -->
+<div class="slide-body">
+<h2 id="python結果の向きを読む">Python：結果の向きを読む</h2>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>labels_</code></td>
+<td>150行の所属</td>
+</tr>
+<tr>
+<td><code>cluster_centers_</code></td>
+<td>k行×4列の中心</td>
+</tr>
+<tr>
+<td><code>inertia_</code></td>
+<td>群内平方和</td>
+</tr>
+</tbody>
+</table>
+<p>中心の列順は入力のfeaturesと対応。</p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ラベルズは各行の所属で、通常ゼロから始まります。センターズは群ごとの中心です。行が群、列が入力の四測定値に対応します。イナーシャは所属中心までの二乗距離を全行分足した値です。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 14: R：同じ初期中心で実行 -->
+<div class="slide-body">
+<h2 id="r同じ初期中心で実行">R：同じ初期中心で実行</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(Z, <span class="at">centers =</span> initial,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">nstart =</span> <span class="dv">1</span>, <span class="at">algorithm =</span> <span class="st">&quot;Lloyd&quot;</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter.max =</span> <span class="dv">300</span>)</span></code></pre></div>
+<ul>
+<li><code>cluster</code>: 所属。通常1から。</li>
+<li><code>centers</code>: k×4の中心。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+アールも同じ標準化表と初期中心を使います。クラスタは通常一から始まるので、パイソンの番号をそのまま比較してはいけません。中心の列名と所属アイディーを確認し、群の対応を探します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 15: R：件数と群内平方和 -->
+<div class="slide-body">
+<h2 id="r件数と群内平方和">R：件数と群内平方和</h2>
+<ul>
+<li><code>model$size</code>: 各群の件数。</li>
+<li><code>model$tot.withinss</code>: 二乗距離の合計。</li>
+<li>件数の合計は150。</li>
+<li>群内平方和は無次元。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+群の大きさをまず確認します。合計は百五十です。トータルウィズインエスエスは群内平方和で、パイソンのイナーシャと同じ定義です。分類精度や未来の性能の割合ではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 16: 特徴は元のcm単位でも読む -->
+<div class="slide-body">
+<h2 id="特徴は元のcm単位でも読む">特徴は元のcm単位でも読む</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X.assign(cluster<span class="op">=</span>labels).groupby(<span class="st">&quot;cluster&quot;</span>).mean()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(X, <span class="at">by =</span> <span class="fu">list</span>(<span class="at">cluster =</span> labels), <span class="at">FUN =</span> mean)</span></code></pre></div>
+<p>標準化空間の中心と、元の単位の群平均を区別。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+群の特徴は元の単位へ戻すと説明しやすくなります。ここでは元の表を所属で分けて平均します。標準化した中心と数値は違いますが、中心に標準偏差を掛けて平均を足すと、元の単位の群平均に対応します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 17: 主例の比較結果 -->
+<div class="slide-body">
+<h2 id="主例の比較結果">主例の比較結果</h2>
+<table>
+<thead>
+<tr>
+<th>k</th>
+<th>件数</th>
+<th style="text-align: right;">群内平方和</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>50・100</td>
+<td style="text-align: right;">約220.879294</td>
+</tr>
+<tr>
+<td>3</td>
+<td>50・56・44</td>
+<td style="text-align: right;">約139.099201</td>
+</tr>
+</tbody>
+</table>
+<p>指定初期条件での結果。番号順は変わり得る。</p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+今回の条件ではこの件数と群内平方和になります。番号の順序ではなく、どの行が同じ群かを比べてください。この結果があらゆる初期条件で同じになるとは限らず、大域的な最適解の保証でもありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 18: 小さい平方和だけでkを決めない -->
+<div class="slide-body">
+<h2
+id="小さい平方和だけでkを決めない">小さい平方和だけでkを決めない</h2>
+<ul>
+<li>群数を増やす意味も考える。</li>
+<li>解釈しやすさと分析の目的が必要。</li>
+<li>種類が3つだからk=3が正解、ではない。</li>
+<li>今回はkの変化を観察する演習。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+平方和が小さくなったことだけで、三群が正しいとは結論できません。群数を増やすと分け方が細かくなるためです。今回の課題は、指定された変更をして結果を読み取ることであり、唯一の正しい群数を探すことではありません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 19: 必須変更：2から3へ -->
+<div class="slide-body">
+<h2 id="必須変更2から3へ">必須変更：2から3へ</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>k_candidate <span class="op">=</span> <span class="dv">3</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>k_candidate <span class="ot">&lt;-</span> <span class="dv">3</span></span></code></pre></div>
+<p>主言語のexerciseと、照合言語のverifyの両方を変更。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+変更するのは冒頭の候補クラスタ数です。主言語用と照合用の両方を変更しましょう。比較用の二群、百五十行、四測定値、標準化、初期中心の取得部分は保ちます。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 20: 実行前に予想を書く -->
+<div class="slide-body">
+<h2 id="実行前に予想を書く">実行前に予想を書く</h2>
+<ul>
+<li>件数はどう分かれそうか。</li>
+<li>群平均はどう変わりそうか。</li>
+<li>図の色分けはどう変わりそうか。</li>
+</ul>
+<p>未変更でも実行できるが、課題完成とは区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+実行する前に短い予想を書きます。変更前は比較用と変更対象が両方二群なので、同じ結果が出ます。エラーなく動いたことだけで完成とせず、三群へ変わったことと集計結果を確認してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 21: 同じPCA座標で群分けを比較 -->
+<div class="slide-body">
+<h2 id="同じpca座標で群分けを比較">同じPCA座標で群分けを比較</h2>
+<p><img class="zoomable-image" src="images/clusters.svg" alt="同じPCA座標のk=2とk=3。群分けは標準化4列で計算"></p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+二つの図は同じ主成分座標です。クラスタ数によって色分けが変わります。四次元で計算した所属を二次元へ投影しているので、図で近く見える点にも、表示していない方向の違いがある場合があります。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 22: 主言語の保存物 -->
+<div class="slide-body">
+<h2 id="主言語の保存物">主言語の保存物</h2>
+<table>
+<thead>
+<tr>
+<th>ファイル</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>assignments.csv</td>
+<td>150行のID・所属・二乗距離</td>
+</tr>
+<tr>
+<td>cluster_summary.csv</td>
+<td>比較用2群＋変更対象3群</td>
+</tr>
+<tr>
+<td>clusters.png</td>
+<td>同じ座標の2パネル</td>
+</tr>
+</tbody>
+</table>
+<p>保存先：work/exercises/lesson14/output/</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+保存物は三つです。割り当ての表には百五十行が入り、集計表には完成時に五行が入ります。図の保存部分は完成済みです。ファイルが存在するだけでなく、列、件数、条件を開いて確認しましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 23: 照合側は元CSVから独立に -->
+<div class="slide-body">
+<h2 id="照合側は元csvから独立に">照合側は元CSVから独立に</h2>
+<ul>
+<li>相手のCSVやモデルを読まない。</li>
+<li>150行・4列・平均・標準偏差。</li>
+<li>所属・中心・件数・群平均・平方和。</li>
+<li>照合用コードには保存を要求しない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+もう一方の言語でも元のシーエスブイから独立に計算します。主言語の結果を読み込むだけでは、同じ誤りを見逃す場合があります。入力条件から順に確かめてください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 24: 指定行と手計算で確かめる -->
+<div class="slide-body">
+<h2 id="指定行と手計算で確かめる">指定行と手計算で確かめる</h2>
+<ul>
+<li>I001・I051・I101を確認。</li>
+<li>I001の4標準化値と各中心を表示。</li>
+<li>4つの差の二乗を足す。</li>
+<li>最小の二乗距離と所属を対応付ける。</li>
+</ul>
+<p>途中では丸めず、最後の表示だけ丸める。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+三つの指定行の所属と距離を確認します。手計算はアイゼロゼロイチについて行います。各中心への四項の計算を残し、最小の値の中心へ所属しているかを確かめましょう。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 25: 番号の置換は全行に共通 -->
+<div class="slide-body">
+<h2 id="番号の置換は全行に共通">番号の置換は全行に共通</h2>
+<p><img class="zoomable-image" src="images/labels.svg" alt="クラスタ番号の一対一置換例。全行と中心へ同じ対応を適用"></p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+これは番号の対応の例です。番号が違っても同じ行の集まりなら同じ群分けです。ただし、行ごとに都合のよい番号へ変えてはいけません。一つの対応を全アイディー、中心、集計、図へ共通に適用します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 26: 教員実演：樹形図を読む -->
+<div class="slide-body">
+<h2 id="教員実演樹形図を読む">教員実演：樹形図を読む</h2>
+<p><img class="zoomable-image" style="max-height:350px; width:auto;" src="images/hierarchy.png" alt="6行の完全連結法の樹形図。赤線は2群、青線は3群。距離は無次元"></p>
+<p>赤線：2群 ／ 青線：3群。尺度は全150行から求める。</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+ここで教員の六行の樹形図を見ます。完全連結法は群どうしの最も離れた点の距離を基準にまとめます。二つの高さに横線を引いて群数を数えましょう。ケイミーンズとは異なる手順です。追加コードの実装は必須にしません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 27: 振り返りと提出 -->
+<div class="slide-body">
+<h2 id="振り返りと提出">振り返りと提出</h2>
+<p>Formsの5設問：主言語・Python全文・R全文・実行状況・振り返り。</p>
+<ul>
+<li>予想と結果、k変更による群の変化。</li>
+<li>cm単位での特徴とI001の手計算。</li>
+<li>番号と種類情報の扱い。</li>
+</ul>
+<p>添付提出は不要。締切・URLは教員の案内を確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+主言語の演習コードと照合言語のコードの全文を提出します。振り返りは数値を貼るだけでなく、どの測定値で群を説明できるか、自分の言葉で書いてください。実行できなかった場合も状況を記録します。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 28: 確認問題3問 -->
+<div class="slide-body">
+<h2 id="確認問題3問">確認問題3問</h2>
+<ol type="1">
+<li>cm→mmで二乗距離への寄与は何倍か。</li>
+<li>群番号が違うとき何を対応付けるか。</li>
+<li>平方和の低下だけでkを決められるか。</li>
+</ol>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+確認問題を三つ考えます。単位を変えたときの距離、群番号の対応、平方和だけで群数を選ぶ危険を説明してください。答えの根拠を隣の人や教員へ話して確認しても構いません。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 29: 自己チェック5項目 -->
+<div class="slide-body">
+<h2 id="自己チェック5項目">自己チェック5項目</h2>
+<ul>
+<li>150行・4列・n−1標準化。</li>
+<li>両言語のkを2から3へ。</li>
+<li>番号を対応付けて集計を確認。</li>
+<li>I001の手計算。</li>
+<li>3保存物と4次元／2次元の違い。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+五つの項目を確認してから提出します。群内平方和と分類精度を混同せず、群の番号を順位として読まないようにしましょう。困った点は実行状況とともに残してください。
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- 30: 次回：目的を選んで総合演習 -->
+<div class="slide-body">
+<h2 id="次回目的を選んで総合演習">次回：目的を選んで総合演習</h2>
+<ul>
+<li>回帰による予測、またはPCA・クラスタによる探索。</li>
+<li>問い・変更・確認・説明を一つにつなぐ。</li>
+</ul>
+<p>参考：<a
+href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html">Python
+KMeans</a> ／ <a
+href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kmeans.html">R
+kmeans</a> ／ <a
+href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/hclust.html">R
+hclust</a></p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg" preload="none">
+</audio>
+<aside class="notes">
+次回は用意された経路から目的を選び、総合演習へ進みます。今回の探索を使う場合は、標準化と群の解釈が重要です。結果の見た目だけで結論せず、入力、計算、確認、説明をつなげてください。
+</aside>
+
+
+</section></div></div><script src="reveal/reveal.js"></script><script src="image-zoom.js"></script><script src="handout-download.js"></script><script>Reveal.initialize({width:960,height:700,margin:0.04,center:true,slideNumber:true,transition:'none'});</script></body></html>
