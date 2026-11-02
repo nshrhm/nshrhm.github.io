@@ -1665,6 +1665,335 @@ Deeper replication, broader texts, human-reference comparison, and
 external membership validation remain future work.
 </p>
 </aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 21: Bilingual local Q&A reference; distinguish original experimental wording from explanatory translations. -->
+<div class="slide-body supplement-slide" data-paper-page="21">
+<div class="supplement-language" data-body-language="en" lang="en">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · T: English / 日本語
+</p>
+<h2 id="what-did-we-ask-the-models">What did we ask the models?</h2>
+<div class="supplement-grid"><div>
+<h3>Task and scale · verbatim English</h3>
+<p><span data-source-quote="true">Read the literary text below and rate four reader-side emotions on a 0 to 100 integer scale.</span></p>
+<ul><li><span data-source-quote="true">use integers only</span></li><li><span data-source-quote="true">0 means the emotion is not felt at all</span></li><li><span data-source-quote="true">50 means moderately felt</span></li><li><span data-source-quote="true">100 means extremely strongly felt</span></li><li><span data-source-quote="true">rate the text as a whole after reading it</span></li><li><span data-source-quote="true">keep each reason brief and grounded in the text</span></li></ul>
+</div><div>
+<h3>Dimensions · English reference translation</h3>
+<p><strong>interest</strong><br>How funny, entertaining, or intellectually enjoyable the text feels</p><p><strong>surprise</strong><br>How unexpected, novel, or revelatory the text feels</p><p><strong>sadness</strong><br>How sad, melancholic, or poignant the text feels</p><p><strong>anger</strong><br>How much anger, indignation, or displeasure the text evokes</p>
+</div></div>
+<p class="supplement-source">
+Selected excerpts and explanatory translations; not a complete request.
+The original combines English instructions with Japanese fields.
+</p>
+</div>
+<div class="supplement-language" data-body-language="ja" lang="ja" hidden aria-hidden="true">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · 質疑用補足 · T: English / 日本語
+</p>
+<h2>
+モデルに何を指示したか
+</h2>
+<div class="supplement-grid"><div>
+<h3>課題・採点規則の説明訳</h3>
+<p>以下の文学作品を読み、読者側の4感情を0–100の整数で評価する。</p>
+<ul><li>整数で評価する</li><li>0＝まったく感じない</li><li>50＝中程度に感じる</li><li>100＝極めて強く感じる</li><li>全文を読んだ後、作品全体を評価する</li><li>理由は短く、本文に根拠を置く</li></ul>
+</div><div>
+<h3>感情定義 · 実際の日本語指定</h3>
+<p><strong>おもしろさ / interest</strong><br><span data-source-quote="true">テキストがどの程度おもしろい・愉快・知的に楽しいと感じるか</span></p><p><strong>驚き / surprise</strong><br><span data-source-quote="true">テキストにどの程度意外性・予想外の展開・発見があるか</span></p><p><strong>悲しみ / sadness</strong><br><span data-source-quote="true">テキストがどの程度悲しい・切ない・哀れを感じさせるか</span></p><p><strong>怒り / anger</strong><br><span data-source-quote="true">テキストがどの程度怒り・憤り・不快感を感じさせるか</span></p>
+</div></div>
+<p class="supplement-source">
+選択した原文引用と説明訳。送信全文ではありません。実際の指示は英語と日本語の混在です。
+</p>
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+These are selected task instructions and emotion definitions. The actual
+prompt combines English instructions with Japanese fields.
+</p>
+<p data-caption>
+T switches the display language, not the experimental input. Translated
+explanations are labelled separately from original wording.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 22: Bilingual local Q&A reference; distinguish original experimental wording from explanatory translations. -->
+<div class="slide-body supplement-slide" data-paper-page="22">
+<div class="supplement-language" data-body-language="en" lang="en">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · T: English / 日本語
+</p>
+<h2 id="four-stances-independently-crossed">Four stances, independently
+crossed</h2>
+<div class="supplement-personas">
+<p><strong>p1 · College Freshman</strong><br>a young, open-minded first-year college student</p>
+<p><strong>p2 · Literary Scholar</strong><br>a logical, analytically minded literary scholar</p>
+<p><strong>p3 · The Emotive Poet</strong><br>a sensitive, deeply feeling poet</p>
+<p><strong>p4 · The Emotionless Robot</strong><br>a mechanical, logic-driven robot</p>
+</div>
+<p class="supplement-status">English reference translations of the Japanese stance fields.</p><p class="supplement-control"><strong>Separate API control:</strong> temperature = 0.1 / 0.4 / 0.7 / 0.9<br>Every stance is crossed with all four settings. Temperature is absent from the prompt.</p>
+<p class="supplement-source">
+Source: SCIS stance registry and factorial design. English is
+explanatory; Japanese fields were used in the requests.
+</p>
+</div>
+<div class="supplement-language" data-body-language="ja" lang="ja" hidden aria-hidden="true">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · 質疑用補足 · T: English / 日本語
+</p>
+<h2>
+4つの読みの立場を独立に交差
+</h2>
+<div class="supplement-personas">
+<p><strong>p1 · <span data-source-quote="true">大学1年生</span></strong><br><span data-source-quote="true">若く柔軟な発想を持つ大学1年生</span></p>
+<p><strong>p2 · <span data-source-quote="true">文学研究者</span></strong><br><span data-source-quote="true">論理的で分析的な文学研究者</span></p>
+<p><strong>p3 · <span data-source-quote="true">感情豊かな詩人</span></strong><br><span data-source-quote="true">繊細で感情豊かな詩人</span></p>
+<p><strong>p4 · <span data-source-quote="true">無感情なロボット</span></strong><br><span data-source-quote="true">機械的で論理的なロボット</span></p>
+</div>
+<p class="supplement-status">実際に指定した日本語のペルソナ名と説明。</p><p class="supplement-control"><strong>独立したAPI設定：</strong>温度 = 0.1 / 0.4 / 0.7 / 0.9<br>各ペルソナで全4設定を実施。プロンプトに温度は書かない。</p>
+<p class="supplement-source">
+出典：SCISのペルソナ定義と交差設計。英語は説明用の訳、日本語は実際の指定です。
+</p>
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+These are the four stance descriptions. We keep the task and response
+format fixed while changing the stance fields.
+</p>
+<p data-caption>
+Temperature is a separate API setting. Every stance is combined with
+every temperature; the labels are not a psychological scale.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 23: Bilingual local Q&A reference; distinguish original experimental wording from explanatory translations. -->
+<div class="slide-body supplement-slide" data-paper-page="23">
+<div class="supplement-language" data-body-language="en" lang="en">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · T: English / 日本語
+</p>
+<h2 id="the-pocket-watch">The Pocket Watch</h2>
+<div class="literary-text" data-stimulus="T1" data-part="1">A pocket watch had fallen behind a chest of drawers, where it went on ticking away all by itself.
+
+A mouse found it and laughed.
+
+&quot;What a fool! Nobody's here to look at you—so why do you keep on running?&quot;
+
+&quot;Because I keep running even when no one is looking,&quot; the pocket watch replied, &quot;I am useful whenever someone does look.&quot;
+
+&quot;Anyone who works only when no one is watching, or only when someone is watching—either way, that's a thief.&quot;
+
+The mouse flushed with shame and scurried off without another word.</div>
+<p class="supplement-source">
+T1 · Kyusaku Yumeno · Japanese: experimental input. English: reference
+translation. Existing team-checked machine translation.
+</p>
+</div>
+<div class="supplement-language" data-body-language="ja" lang="ja" hidden aria-hidden="true">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · 質疑用補足 · T: English / 日本語
+</p>
+<h2>
+懐中時計
+</h2>
+<div class="literary-text" data-stimulus="T1" data-part="1">懐中時計が箪笥の向う側へ落ちて一人でチクタクと動いておりました。
+　鼠が見つけて笑いました。
+「馬鹿だなあ。誰も見る者はないのに、何だって動いているんだえ」
+「人の見ない時でも動いているから、いつ見られても役に立つのさ」
+　と懐中時計は答えました。
+「人の見ない時だけか、又は人が見ている時だけに働いているものはどちらも泥棒だよ」
+　鼠は恥かしくなってコソコソと逃げて行きました。&quot;</div>
+<p class="supplement-source">
+T1 · 夢野久作 · 日本語：実験入力。英語：参考訳。
+英語は既存の研究者確認済み機械翻訳。
+</p>
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+This is Text 1, The Pocket Watch. The model received the complete
+Japanese text.
+</p>
+<p data-caption>
+The English version is a reference translation for this audience. Press
+T to see the Japanese experimental input.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 24: Bilingual local Q&A reference; distinguish original experimental wording from explanatory translations. -->
+<div class="slide-body supplement-slide" data-paper-page="24">
+<div class="supplement-language" data-body-language="en" lang="en">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · T: English / 日本語
+</p>
+<h2 id="the-money-and-the-pistol-12">The Money and the Pistol · 1/2</h2>
+<div class="literary-text" data-stimulus="T2" data-part="1">A burglar broke into a miser's house, brandished a pistol, and demanded money. The Miser said:
+
+&quot;I refuse to just hand over money for nothing. But if you'll sell me that pistol, I'll buy it for a thousand yen. Once you have my money, you won't be needing a pistol anyway.&quot;
+
+The burglar thought it over for a while, and in the end sold the pistol to the Miser for a thousand yen. The moment the Miser had the pistol in his hands, he leveled it at the burglar as though ready to fire and bellowed:
+
+&quot;Now then—hand it all over! Not just that money, but everything else you've stolen! Hand it over, or I'll shoot you dead!&quot;
+
+</div>
+<p class="supplement-source">
+T2 · Kyusaku Yumeno · Japanese: experimental input. English: reference
+translation. Display split only; the model received the complete work.
+</p>
+</div>
+<div class="supplement-language" data-body-language="ja" lang="ja" hidden aria-hidden="true">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · 質疑用補足 · T: English / 日本語
+</p>
+<h2>
+お金とピストル · 1/2
+</h2>
+<div class="literary-text" data-stimulus="T2" data-part="1">　泥棒がケチンボの家へ入ってピストルを見せて、お金を出せと言いました。ケチンボは、
+「ただお金を出すのはいやだ。そのピストルを売ってくれるなら千円で買おう。お前は私からお金さえ貰えばそんなピストルは要らないだろう」
+　泥棒は考えておりましたが、とうとうそのピストルを千円でケチンボに売りました。ケチンボは泥棒からピストルを受け取ると、すぐにも泥棒を撃ちそうにしながら、
+「さあ、そのお金ばかりでない、ほかで盗んだお金もみんな出せ。出さないと殺してしまうぞ」
+　と怒鳴りました。
+</div>
+<p class="supplement-source">
+T2 · 夢野久作 · 日本語：実験入力。英語：参考訳。
+分割は表示上のみ。モデルには全文を入力。
+</p>
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+This is the first display page of Text 2, The Money and the Pistol.
+</p>
+<p data-caption>
+The split is only for screen readability. Each experimental request
+contained the complete Japanese work.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 25: Bilingual local Q&A reference; distinguish original experimental wording from explanatory translations. -->
+<div class="slide-body supplement-slide" data-paper-page="25">
+<div class="supplement-language" data-body-language="en" lang="en">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · T: English / 日本語
+</p>
+<h2 id="the-money-and-the-pistol-22">The Money and the Pistol · 2/2</h2>
+<div class="literary-text" data-stimulus="T2" data-part="2">The burglar doubled over laughing.
+
+&quot;Ha ha ha! That's a toy pistol, you fool—pull the trigger all you like, it won't fire a single bullet!&quot;
+
+And with that, he dashed out the front door. The Miser flung the pistol aside and chased after him, and the two were soon grappling in the street—until a policeman happened along and hauled them both off to the station.
+
+When the police looked into the matter, they discovered that the thousand yen the burglar had received was counterfeit, every last bill. And the pistol, as it turned out, was real after all.
+
+Both men were thrown in jail.</div>
+<p class="supplement-source">
+T2 · Kyusaku Yumeno · Japanese: experimental input. English: reference
+translation. Display split only; the model received the complete work.
+</p>
+</div>
+<div class="supplement-language" data-body-language="ja" lang="ja" hidden aria-hidden="true">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · 質疑用補足 · T: English / 日本語
+</p>
+<h2>
+お金とピストル · 2/2
+</h2>
+<div class="literary-text" data-stimulus="T2" data-part="2">　泥棒は腹を抱えて笑いました。
+「アハハ。そのピストルはオモチャのピストルで、撃っても弾丸が出ないのだよ」
+　と言ううちに表へ逃げ出しました。ケチンボはピストルを投げ出して泥棒を追っかけて、往来で取っ組み合いを始めましたが、やがて通りかかったおまわりさんが二人を押えて警察へ連れて行きました。
+　警察でいろいろ調べてみますと、泥棒が貰った千円のお金はみんな贋物のお金で、ピストルはやっぱり本物のピストルでした。
+　二人共牢屋へ入れられました。</div>
+<p class="supplement-source">
+T2 · 夢野久作 · 日本語：実験入力。英語：参考訳。
+分割は表示上のみ。モデルには全文を入力。
+</p>
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+This is the rest of Text 2. Both display pages together preserve the
+complete text in each language.
+</p>
+<p data-caption>
+The English version helps discussion; it was not an English-input
+condition in this SCIS experiment.
+</p>
+</aside>
+</section>
+<section class="slide level1">
+
+<!-- Planned slide 26: Bilingual local Q&A reference; distinguish original experimental wording from explanatory translations. -->
+<div class="slide-body supplement-slide" data-paper-page="26">
+<div class="supplement-language" data-body-language="en" lang="en">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · Q&amp;A reference · T: English / 日本語
+</p>
+<h2 id="the-tattered-ostrich">The Tattered Ostrich</h2>
+<div class="literary-text" data-stimulus="T3" data-part="1">What pleasure can there be in keeping an ostrich?
+In this muddy pen, barely four *tsubo* across, at a zoo—
+aren't those legs far too long-strided?
+Isn't that neck far too long?
+In this country where snow falls, aren't those feathers far too tattered?
+It eats hardtack, sure enough, because hunger compels it—
+but look: aren't those eyes forever gazing into the distance?
+Isn't it burning with an abandon beyond all caring for self or world?
+Isn't it braced, even now, for the coming of a lapis-blue wind?
+Isn't that small, unadorned head spinning with a dream beyond all horizons?
+This is no longer an ostrich, can't you see?
+O humankind—
+enough. Enough of this.</div>
+<p class="supplement-source">
+T3 · Kotaro Takamura · Japanese: experimental input. English: reference
+translation. Existing team-checked machine translation.
+</p>
+</div>
+<div class="supplement-language" data-body-language="ja" lang="ja" hidden aria-hidden="true">
+<p class="eyebrow">
+SCIS &amp; ISIS 2026 · 質疑用補足 · T: English / 日本語
+</p>
+<h2>
+ぼろぼろな駝鳥
+</h2>
+<div class="literary-text" data-stimulus="T3" data-part="1">何が面白おもしろくて駝鳥を飼かうのだ。
+動物園の四坪半のぬかるみの中では、
+脚が大股過ぎるぢゃないか。
+頚があんまり長過ぎるぢゃないか。
+雪の降る国にこれでは羽がぼろぼろ過ぎるぢゃないか。
+腹がへるから堅パンも喰ふだらうが、
+駝鳥の眼は遠くばかり見てゐるぢゃないか。
+身も世もない様に燃えてゐるぢゃないか。
+瑠璃色の風が今にも吹いて来るのを待ちかまへえてゐるぢゃないか。
+あの小さな素朴な頭が無辺大の夢で逆まいてゐるぢゃないか。
+これはもう駝鳥ぢゃないぢゃないか。
+人間よ、
+もう止せ、こんな事は。</div>
+<p class="supplement-source">
+T3 · 高村光太郎 · 日本語：実験入力。英語：参考訳。
+英語は既存の研究者確認済み機械翻訳。
+</p>
+</div>
+</div>
+<aside class="notes">
+<p data-caption>
+This is Text 3, The Tattered Ostrich, used in both heatmap examples on
+slides ten and eleven.
+</p>
+<p data-caption>
+The text gives context for those examples. It does not by itself explain
+the observed score or entropy patterns.
+</p>
+</aside>
 <script src="./captions.js"></script>
 <script src="./image-zoom.js"></script>
 <script src="./translations.js"></script>

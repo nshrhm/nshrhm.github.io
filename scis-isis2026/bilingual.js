@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  // This helper changes only caption text. The original helper owns fragments,
-  // slide-entry resets and the English speaker-note blocks.
+  // One language state controls captions and opted-in supplemental bodies.
+  // The original helper owns fragments, resets and English speaker notes.
   const editable = (target) => Boolean(target?.closest?.(
     "input, textarea, select, [contenteditable]:not([contenteditable='false'])"
   ));
@@ -15,6 +15,7 @@
     const mount = () => {
       const data = window.SCIS_BILINGUAL_DATA;
       const rails = [];
+      const panels = [];
       document.querySelectorAll(".slide-body[data-paper-page]").forEach((body) => {
         const rail = body.closest("section").querySelector(".caption-rail");
         const pairs = data[body.dataset.paperPage];
@@ -28,6 +29,15 @@
           }
         });
         rails.push({ rail, spans, pairs });
+        const localized = Array.from(body.querySelectorAll('[data-body-language]'));
+        if (localized.length) {
+          if (localized.length !== 2 || localized[0].dataset.bodyLanguage !== 'en' ||
+              localized[1].dataset.bodyLanguage !== 'ja' ||
+              localized.some(panel => !panel.textContent.trim())) {
+            throw new Error('Bilingual body: expected one non-empty English/Japanese pair.');
+          }
+          panels.push(...localized);
+        }
       });
 
       const button = document.createElement("button");
@@ -37,6 +47,12 @@
       // Keep the small speaker previews clear; their keyboard bridge still works.
       if (!deck.isSpeakerNotes()) deck.getRevealElement().appendChild(button);
       const applyLocal = (language) => {
+        panels.forEach(panel => {
+          const inactive = panel.dataset.bodyLanguage !== language;
+          panel.hidden = inactive;
+          panel.setAttribute('aria-hidden', String(inactive));
+          panel.inert = inactive;
+        });
         rails.forEach(({ rail, spans, pairs }) => {
           rail.setAttribute("aria-label", language === "ja" ? "日本語字幕" : "English captions");
           spans.forEach((span, index) => {
@@ -46,7 +62,7 @@
         });
         document.documentElement.dataset.captionLanguage = language;
         button.textContent = `T: ${language === "ja" ? "日本語 → EN" : "EN → 日本語"}`;
-        button.setAttribute("aria-label", language === "ja" ? "Switch captions to English" : "字幕を日本語に切り替える");
+        button.setAttribute("aria-label", language === "ja" ? "Switch captions and supplemental text to English" : "字幕と補足本文を日本語に切り替える");
       };
 
       let control;
@@ -92,7 +108,7 @@
         applyLocal(language);
       }
 
-      deck.addKeyBinding({ keyCode: 84, key: "T", description: "Caption language: EN / 日本語" }, (event) => {
+      deck.addKeyBinding({ keyCode: 84, key: "T", description: "Captions and supplemental text: EN / 日本語" }, (event) => {
         if (!suppressed(event)) control.toggle();
       });
       button.addEventListener("click", () => control.toggle());
