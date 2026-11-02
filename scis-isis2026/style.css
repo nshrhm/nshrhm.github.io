@@ -514,3 +514,39 @@ body.image-zoom-open {
   font-size: 18px;
   text-align: right;
 }
+
+/* Closing-slide sharing panel; keep the accepted stylesheet prefix intact. */
+.closing-slide .closing-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 500px;
+  gap: 32px;
+  align-items: start;
+}
+
+.closing-slide .closing-share {
+  text-align: center;
+}
+
+.reveal .closing-slide img.slides-qr {
+  display: block;
+  width: 400px;
+  height: 400px;
+  max-height: none;
+  margin: 0 auto 4px;
+  border: 0;
+  box-shadow: none;
+  background: white;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.reveal .closing-slide .slides-invitation {
+  font-size: 28px;
+  line-height: 1.15;
+  margin: 0 0 4px;
+}
+
+.reveal .closing-slide .slides-url {
+  font-size: 24px;
+  margin: 0;
+}
