@@ -23,3 +23,66 @@
   outline: 3px solid #246bce;
   outline-offset: 3px;
 }
+
+/* Only the six supplemental bodies opt in; original slide layouts stay fixed. */
+.reveal .supplement-language {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.reveal .supplement-language[hidden] {
+  display: none !important;
+}
+
+.reveal .supplement-language[lang="ja"] {
+  font-family: "Noto Sans CJK JP", "Yu Gothic", Meiryo, sans-serif;
+}
+
+.reveal .supplement-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  font-size: 25px;
+}
+
+.reveal .supplement-grid h3 {
+  font-size: 29px;
+  margin-bottom: 12px;
+}
+
+.reveal .supplement-grid p {
+  margin-bottom: 12px;
+}
+
+.reveal .supplement-grid ul {
+  margin-left: 24px;
+}
+
+.reveal .supplement-personas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 36px;
+  font-size: 31px;
+  padding: 20px 0;
+}
+
+.reveal .supplement-status,
+.reveal .supplement-control {
+  font-size: 28px;
+}
+
+.reveal .literary-text {
+  white-space: pre-wrap;
+  font-size: 28px;
+  line-height: 1.3;
+}
+
+.reveal .supplement-source {
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1.3;
+  margin: auto 0 0;
+  padding-top: 12px;
+}

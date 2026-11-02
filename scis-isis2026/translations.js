@@ -422,5 +422,65 @@ window.SCIS_BILINGUAL_DATA = {
       "en": "Deeper replication, broader texts, human-reference comparison, and external membership validation remain future work.",
       "ja": "反復を増やすこと、作品の範囲を広げること、人間の評価との比較、所属関数の外部検証は、今後の課題です。"
     }
+  ],
+  "21": [
+    {
+      "en": "These are selected task instructions and emotion definitions. The actual prompt combines English instructions with Japanese fields.",
+      "ja": "課題の指示と感情定義の抜粋です。実際のプロンプトには英語の指示と日本語の項目が混在しています。"
+    },
+    {
+      "en": "T switches the display language, not the experimental input. Translated explanations are labelled separately from original wording.",
+      "ja": "Tキーで変わるのは表示言語であり、実験入力ではありません。説明訳と実際の文言は区別して表示しています。"
+    }
+  ],
+  "22": [
+    {
+      "en": "These are the four stance descriptions. We keep the task and response format fixed while changing the stance fields.",
+      "ja": "4種類の読みの立場の説明です。課題と回答形式を固定し、立場の指定を変更します。"
+    },
+    {
+      "en": "Temperature is a separate API setting. Every stance is combined with every temperature; the labels are not a psychological scale.",
+      "ja": "温度は別のAPI設定です。すべての立場とすべての温度を組み合わせます。ラベルは心理尺度ではありません。"
+    }
+  ],
+  "23": [
+    {
+      "en": "This is Text 1, The Pocket Watch. The model received the complete Japanese text.",
+      "ja": "Text 1の『懐中時計』です。モデルには日本語の全文を入力しました。"
+    },
+    {
+      "en": "The English version is a reference translation for this audience. Press T to see the Japanese experimental input.",
+      "ja": "英語版は聴衆の理解を助ける参考訳です。Tキーで実験に入力した日本語を表示できます。"
+    }
+  ],
+  "24": [
+    {
+      "en": "This is the first display page of Text 2, The Money and the Pistol.",
+      "ja": "Text 2の『お金とピストル』の前半を表示しています。"
+    },
+    {
+      "en": "The split is only for screen readability. Each experimental request contained the complete Japanese work.",
+      "ja": "分割は画面上の読みやすさのためだけです。実験では各リクエストに日本語の全文を含めました。"
+    }
+  ],
+  "25": [
+    {
+      "en": "This is the rest of Text 2. Both display pages together preserve the complete text in each language.",
+      "ja": "Text 2の後半です。前後のページを合わせると、各言語の全文になります。"
+    },
+    {
+      "en": "The English version helps discussion; it was not an English-input condition in this SCIS experiment.",
+      "ja": "英語版は議論を助けるためのものです。今回のSCIS実験で英語入力の条件を実施したわけではありません。"
+    }
+  ],
+  "26": [
+    {
+      "en": "This is Text 3, The Tattered Ostrich, used in both heatmap examples on slides ten and eleven.",
+      "ja": "Text 3の『ぼろぼろな駝鳥』です。本編10枚目と11枚目のヒートマップで使用した作品です。"
+    },
+    {
+      "en": "The text gives context for those examples. It does not by itself explain the observed score or entropy patterns.",
+      "ja": "作品を示すことで結果の背景を具体化しますが、作品だけで観測されたスコアやエントロピーのパターンを説明できるわけではありません。"
+    }
   ]
 };
