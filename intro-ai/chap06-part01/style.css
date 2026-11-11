@@ -634,3 +634,20 @@ body.image-zoom-open {
 .reveal .material-links { font-size: .72em; line-height: 1.5; }
 .reveal .material-links a { text-decoration: underline; }
 .reveal .exercise-slide { font-size: .72em; }
+
+/* CNN: distinguish the input window, weights, products, and output. */
+.reveal .cnn-flow { display:flex; align-items:center; justify-content:center; gap:1em; margin:.65em 0; }
+.reveal .cnn-figure { margin:0; text-align:center; }
+.reveal .cnn-figure figcaption { font-weight:700; margin-bottom:.3em; }
+.reveal .cnn-figure table { margin:auto; border-collapse:collapse; }
+.reveal .cnn-figure td { text-align:center; border:1px solid #9baebe; min-width:2.3em; padding:.15em .4em; position:relative; }
+.reveal .cnn-figure small { display:block; color:#36516e; font-size:.55em; line-height:1.15; }
+.reveal .cnn-figure .cnn-selected { background:#e9f4ff; }
+.reveal .cnn-figure .cnn-top { border-top:4px solid #246bce; }
+.reveal .cnn-figure .cnn-bottom { border-bottom:4px solid #246bce; }
+.reveal .cnn-figure .cnn-left { border-left:4px solid #246bce; }
+.reveal .cnn-figure .cnn-right { border-right:4px solid #246bce; }
+.reveal .cnn-arrow { color:#246bce; font-weight:700; }
+.reveal .cnn-products { border:2px solid #9baebe; border-radius:8px; padding:.2em .6em; }
+.reveal .cnn-products p { margin:.3em 0; }
+.reveal .cnn-sum { text-align:center; }
