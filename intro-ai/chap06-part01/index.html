@@ -177,90 +177,530 @@
 </aside>
 </section>
 <section>
-<!-- 8: 小さな窓で局所を見るを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>小さな窓で局所を見る</h2>
-<pre class="text"><code>入力の左上2×2     フィルター2×2
-0 1               1 -1
-0 1               1 -1</code></pre>
+<!-- 8: 画像全体と窓内の4画素を対応させる -->
+<div class="slide-body cnn-slide">
+<h2>窓は「今注目する範囲」</h2>
+<p><strong>窓：画像の中で、今の計算に使う範囲。</strong> この例は2×2。</p>
+<div class="cnn-flow">
+<figure class="cnn-figure">
+<figcaption>
+入力全体：4×4
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td class="cnn-selected cnn-top cnn-left">
+<small>A</small>0
+</td>
+<td class="cnn-selected cnn-top cnn-right">
+<small>B</small>1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td class="cnn-selected cnn-bottom cnn-left">
+<small>C</small>0
+</td>
+<td class="cnn-selected cnn-bottom cnn-right">
+<small>D</small>1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<span class="cnn-arrow" aria-hidden="true">→</span>
+<figure class="cnn-figure">
+<figcaption>
+窓の中：2×2
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+<small>A</small>0
+</td>
+<td>
+<small>B</small>1
+</td>
+</tr>
+<tr>
+<td>
+<small>C</small>0
+</td>
+<td>
+<small>D</small>1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
 <ul>
-<li>一つの出力が参照する入力領域を<strong>受容野</strong>という。</li>
-<li>この1層の例では、各出力が見るのは2×2の領域。</li>
+<li>枠の中のA〜Dだけを取り出す。画像全体の値は変えない。</li>
+<li>この1層では、この2×2が出力1個の<strong>受容野</strong>（影響する入力範囲）。</li>
 </ul>
 </div>
 <audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-画像全体を一度に見る代わりに、まず左上の二行二列を取り出します。この出力に影響する入力の範囲が受容野です。層を重ねると、元の入力上で影響する範囲は広がり得ます。ここでは一層だけに注目します。
+窓という言葉は、画像の中で今注目する範囲を表します。左の画像全体のうち、枠で囲った二行二列だけを右へ取り出しました。Aは左上、Bは右上、Cは左下、Dは右下で、左右の図の同じ文字が同じ画素です。切り出しても元の画像は変えません。この一層の例では、出力一個に影響するこの範囲を受容野と呼びます。層を重ねた場合の受容野とは区別して、まずこの四画素を見ましょう。
 </aside>
 </section>
 <section>
-<!-- 9: フィルターは何を調べる？を通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>フィルターは何を調べる？</h2>
+<!-- 9: 画素の値と重みの役割を区別する -->
+<div class="slide-body cnn-slide">
+<h2>フィルターは「掛ける重み」</h2>
+<p><strong>フィルター：窓の各画素に掛ける重みの並び。</strong></p>
+<div class="cnn-flow">
+<figure class="cnn-figure">
+<figcaption>
+画像から取り出した値
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+<small>A</small>0
+</td>
+<td>
+<small>B</small>1
+</td>
+</tr>
+<tr>
+<td>
+<small>C</small>0
+</td>
+<td>
+<small>D</small>1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<span class="cnn-arrow" aria-hidden="true">×</span>
+<figure class="cnn-figure">
+<figcaption>
+対応する位置に掛ける重み
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+<small>A</small>1
+</td>
+<td>
+<small>B</small>-1
+</td>
+</tr>
+<tr>
+<td>
+<small>C</small>1
+</td>
+<td>
+<small>D</small>-1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
 <ul>
-<li>フィルター：局所領域の各値に掛ける重みの並び。</li>
-<li><code>[[1,-1],[1,-1]]</code> は、左側と右側の明るさの差を調べる例。</li>
-<li>正・負・0の応答があり、<strong>大きい値＝物体名</strong>ではない。</li>
-<li>手で決めたフィルターと、学習したフィルターを区別する。</li>
+<li>A同士、B同士、C同士、D同士を掛ける。</li>
+<li>この重みは <strong>左側の合計 − 右側の合計</strong> を調べる。</li>
+<li>今は手で決めた重みを使う。CNNの学習では重みも更新する。</li>
 </ul>
 </div>
 <audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-このフィルターは左側を足し、右側を引きます。縦線の左右で応答の符号が変わります。大きな値が出ても、それだけで猫や車だと分かるわけではありません。後で複数の特徴を組み合わせて分類します。
+窓は見る範囲、フィルターは計算に使う重みです。どちらも二行二列ですが、役割が違います。左は画像の値、右は掛ける重みで、同じ文字の位置を組にします。このフィルターでは左側に一、右側にマイナス一を掛けるので、左側を足して右側を引く計算になります。正や負の値は明るさの差を表し、物体名を直接表すわけではありません。今は仕組みを理解するために手で決めた重みを使います。後半の学習では重み自体も変わります。
 </aside>
 </section>
 <section>
-<!-- 10: 一か所の積と和を求めるを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>一か所の積と和を求める</h2>
-<pre class="text"><code>0×1 ＋ 1×(-1) ＋ 0×1 ＋ 1×(-1) ＝ -2</code></pre>
+<!-- 10: 4組の積と合計が出力1マスになることを示す -->
+<div class="slide-body cnn-slide">
+<h2>4つを掛けて足すと、出力1マス</h2>
+<div class="cnn-flow">
+<div class="cnn-products">
+<p>
+A：0 × 1 = 0
+</p>
+<p>
+B：1 × (−1) = −1
+</p>
+<p>
+C：0 × 1 = 0
+</p>
+<p>
+D：1 × (−1) = −1
+</p>
+</div>
+<span class="cnn-arrow" aria-hidden="true">→</span>
+<div class="cnn-sum">
+合計<br><strong>0 − 1 + 0 − 1<br>= −2</strong>
+</div>
+<span class="cnn-arrow" aria-hidden="true">→</span>
+<figure class="cnn-figure">
+<figcaption>
+出力：左上の1マス
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+<strong>−2</strong>
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+<tr>
+<td>
+…
+</td>
+<td>
+…
+</td>
+<td>
+…
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
 <ul>
-<li>対応する位置どうしを掛け、四つを足す。</li>
-<li>この手計算はバイアス0。</li>
-<li>フィルターは反転せず、そのまま重ねる。</li>
+<li>4個の積を足して、<strong>1個の値</strong>にする（バイアス0）。</li>
+<li>フィルターは反転せず、同じ向きで重ねる。</li>
 </ul>
-<p><a href="interactive.html#convolution" target="_blank" rel="noopener">窓を動かす → 次の値を予想する</a></p>
+<p><a href="interactive.html#convolution" target="_blank" rel="noopener">入力の枠・掛け算・出力を操作して確かめる</a></p>
 </div>
 <audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-左上の答えはマイナス二です。四つの掛け算のうち、二つがマイナス一で、残りはゼロになります。次の窓へ移る前に答えを予想してください。フィルターを反転しない計算規約で教材全体をそろえています。
+窓の四画素とフィルターの四つの重みを、一組ずつ掛けます。AとCの積はゼロ、BとDの積はマイナス一です。四つを足すとマイナス二で、これを出力の左上の一マスに置きます。四つの入力から一つの出力ができました。点々は未提示の場所で、ゼロという意味ではありません。バイアスはゼロ、フィルターは反転させない条件です。リンク先では入力の枠と出力の位置も同時に追えます。
 </aside>
 </section>
 <section>
-<!-- 11: 右へ一つ移動するを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>右へ一つ移動する</h2>
-<pre class="text"><code>次の入力領域       計算
-1 0               1×1 + 0×(-1)
-1 0               + 1×1 + 0×(-1) = 2</code></pre>
-<p>同じ重みでも、重ねる領域が変われば出力が変わる。</p>
+<!-- 11: 画像と重みを保った窓の移動で出力が変わることを比較する -->
+<div class="slide-body cnn-slide">
+<h2>窓を右へ移すと、使う画素が変わる</h2>
+<div class="cnn-flow">
+<figure class="cnn-figure">
+<figcaption>
+移動前：左上の窓
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td class="cnn-selected cnn-top cnn-left">
+<small>A</small>0
+</td>
+<td class="cnn-selected cnn-top cnn-right">
+<small>B</small>1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td class="cnn-selected cnn-bottom cnn-left">
+<small>C</small>0
+</td>
+<td class="cnn-selected cnn-bottom cnn-right">
+<small>D</small>1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<span class="cnn-arrow" aria-hidden="true">→</span>
+<figure class="cnn-figure">
+<figcaption>
+移動後：右へ1マス
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td class="cnn-selected cnn-top cnn-left">
+<small>A</small>1
+</td>
+<td class="cnn-selected cnn-top cnn-right">
+<small>B</small>0
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td class="cnn-selected cnn-bottom cnn-left">
+<small>C</small>1
+</td>
+<td class="cnn-selected cnn-bottom cnn-right">
+<small>D</small>0
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+1
+</td>
+<td>
+0
+</td>
+<td>
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<table>
+<thead>
+<tr>
+<th>窓の位置</th>
+<th>左側の合計 − 右側の合計</th>
+<th>出力の位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>左上</td>
+<td>(0＋0) − (1＋1) = <strong>−2</strong></td>
+<td>左上</td>
+</tr>
+<tr>
+<td>右へ1マス</td>
+<td>(1＋1) − (0＋0) = <strong>＋2</strong></td>
+<td>右隣</td>
+</tr>
+</tbody>
+</table>
+<p><strong>画像もフィルターも同じ。変わったのは参照する範囲。</strong></p>
 </div>
 <audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-一つ右へ移ると、今度は左側に一が二つあります。そのため答えはプラス二です。変えたのは窓の位置だけです。重みそのものが途中で学習されて変わったわけではありません。
+左と右は同じ画像です。変えたのは枠の位置だけで、右へ一マス移しました。移動前の窓は左側がゼロで右側が一、移動後は左側が一で右側がゼロです。同じフィルターを使って左側から右側を引くため、出力はマイナス二からプラス二に変わります。新しい値は特徴マップでも一マス右へ置きます。窓を動かして出力を計算することは、フィルターの重みを学習して変えることとは別です。
 </aside>
 </section>
 <section>
-<!-- 12: 全位置の結果が特徴マップを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>全位置の結果が特徴マップ</h2>
-<pre class="text"><code>-2  2  0
--2  2  0
--2  2  0</code></pre>
+<!-- 12: 窓の開始位置と出力位置の対応を示す -->
+<div class="slide-body cnn-slide">
+<h2>9か所の結果を、特徴マップに並べる</h2>
+<div class="cnn-flow">
+<figure class="cnn-figure">
+<figcaption>
+窓の左上の位置（0始まり）
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+<small>1番目</small>行0 列0
+</td>
+<td>
+<small>2番目</small>行0 列1
+</td>
+<td>
+<small>3番目</small>行0 列2
+</td>
+</tr>
+<tr>
+<td>
+<small>4番目</small>行1 列0
+</td>
+<td>
+<small>5番目</small>行1 列1
+</td>
+<td>
+<small>6番目</small>行1 列2
+</td>
+</tr>
+<tr>
+<td>
+<small>7番目</small>行2 列0
+</td>
+<td>
+<small>8番目</small>行2 列1
+</td>
+<td>
+<small>9番目</small>行2 列2
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<span class="cnn-arrow" aria-hidden="true">→</span>
+<figure class="cnn-figure">
+<figcaption>
+特徴マップ：3×3
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+<small>1番目</small>-2
+</td>
+<td>
+<small>2番目</small>2
+</td>
+<td>
+<small>3番目</small>0
+</td>
+</tr>
+<tr>
+<td>
+<small>4番目</small>-2
+</td>
+<td>
+<small>5番目</small>2
+</td>
+<td>
+<small>6番目</small>0
+</td>
+</tr>
+<tr>
+<td>
+<small>7番目</small>-2
+</td>
+<td>
+<small>8番目</small>2
+</td>
+<td>
+<small>9番目</small>0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
 <ul>
-<li>4×4入力に2×2窓、移動幅1、余白なし → <strong>3×3出力</strong>。</li>
-<li>各値の位置が、入力のどの領域を見たかに対応する。</li>
-<li>この例では各行の模様が同じなので、応答も同じ。</li>
+<li>窓は右へ進み、行末で次の行の左へ移る。</li>
+<li>4×4画像に2×2の窓 → 縦3か所 × 横3か所 = <strong>9か所</strong>。</li>
+<li>同じ番号同士が対応する。9か所とも<strong>同じ4個の重み</strong>を使う。</li>
 </ul>
 </div>
 <audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-窓を右へ動かし、次に一段下へ動かしてすべての位置を調べます。各結果を並べたものが特徴マップです。元の画像より小さくなった理由も考えましょう。端からはみ出す位置には窓を置いていません。
+窓の左上の位置を、行と列の番号で表しました。番号はゼロから始まります。最初は行ゼロ列ゼロ、次は行ゼロ列一、その次は行ゼロ列二です。そこから一段下の左へ戻り、九か所を順に計算します。右の特徴マップの同じ番号に、それぞれの結果を置きます。余白なし、移動幅一なので窓が画像からはみ出す場所は使いません。九か所すべてで使う重みは同じ四個です。出力の個数と重みの個数を区別して次へ進みましょう。
 </aside>
 </section>
 <section>

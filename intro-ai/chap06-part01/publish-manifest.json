@@ -8,18 +8,18 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 50709,
-      "sha256": "a9dffe667454c2b40e4a21a302715dfdf7944e1d9f88a7f5b2e3affcbad9384d"
+      "bytes": 56765,
+      "sha256": "89df65f7b3c2005cc842ed0cc133d5b677ce3023a79bf7bafdff2432f4533385"
     },
     {
       "path": "interactive-guide.html",
-      "bytes": 9045,
-      "sha256": "9a48d0cfddcc39052f9eae00a3c7683ef081f9a4c8aeb0035298d16fc809ba75"
+      "bytes": 11067,
+      "sha256": "7555eb681ca178226ba19d084ff2adf3b81b9334b08c0f42eca225cdbb6a5fb4"
     },
     {
       "path": "interactive.html",
-      "bytes": 18409,
-      "sha256": "5b8f1b073741b93322133136b96b725ea003805c7f720ec3dd28ce39ed62f7bc"
+      "bytes": 23170,
+      "sha256": "e7b32e84075226a64484290a25dd6441c8a71947ddb09b4dedb239a39193f612"
     },
     {
       "path": "libs/highlight.js/11.3.1/styles/monokai.min.css",
@@ -393,8 +393,8 @@
     },
     {
       "path": "style.css",
-      "bytes": 13340,
-      "sha256": "79a650510bbc75144c0efe29972da12d1dafd15e3ca14011b03b42a456a4451b"
+      "bytes": 14485,
+      "sha256": "7b9110e848371dca97a39c99a8ee17ed3d972c23f182b08b35cc1139cfc642e1"
     },
     {
       "path": "voiceovers/slide_01.mp3",
@@ -433,28 +433,28 @@
     },
     {
       "path": "voiceovers/slide_08.mp3",
-      "bytes": 122976,
-      "sha256": "924548c9747cbde73d37f44ea8daddda0ab9103f84a454dd69508a9174b57b80"
+      "bytes": 222192,
+      "sha256": "5c3ab3f448bb8b23d77942938d2adafca3f7125681dd45db8585cfb08cd62d33"
     },
     {
       "path": "voiceovers/slide_09.mp3",
-      "bytes": 114336,
-      "sha256": "c1b007f073598c343cd53e7a0ba77adb8c421475a0d37607bfbc555c9cd65c4a"
+      "bytes": 246240,
+      "sha256": "c4eec1546e5e0a85e6cd8fb6fe2ef7b4b9d9b95452c7d411792769e43273f6e1"
     },
     {
       "path": "voiceovers/slide_10.mp3",
-      "bytes": 114192,
-      "sha256": "a0a9887fd1eb60ac06aa08f8f075d7f7ae1705cbcbc3560a2c05d86ad9bd0b32"
+      "bytes": 211248,
+      "sha256": "2e4d794cb8a27eaa47ea723d83eb22940c2b1de5a641aa9201e03b10f7084d36"
     },
     {
       "path": "voiceovers/slide_11.mp3",
-      "bytes": 97488,
-      "sha256": "debc6c88dbf00447f5a6a05c571752950bd38c9248d52bc9c7a9b1683ce4f982"
+      "bytes": 216144,
+      "sha256": "2b1682abfece1c1d31ac404d3e16992605603c765f398b9a277c10817cdd05e9"
     },
     {
       "path": "voiceovers/slide_12.mp3",
-      "bytes": 111888,
-      "sha256": "8427f50f6cae202bc8d2084c193c743e9454f9209ef54174143a55b60197d4b6"
+      "bytes": 250704,
+      "sha256": "a387f762642e04f914824aca0d6bae612444c7b038f4dc1a107a91533c8da4d3"
     },
     {
       "path": "voiceovers/slide_13.mp3",
@@ -598,10 +598,10 @@
     }
   ],
   "source_hashes": {
-    "slide.md": "4734364bf03fb2e498cb516dcca99fe6cd8f082416bd98b2d3ed1b126428f041",
-    "style.css": "79a650510bbc75144c0efe29972da12d1dafd15e3ca14011b03b42a456a4451b",
-    "interactive.html": "5b8f1b073741b93322133136b96b725ea003805c7f720ec3dd28ce39ed62f7bc",
-    "interactive-guide.md": "004dd133ea00539e41411d53ccc270e0c312594f317e79bb1e287e56f4ec3b8f",
+    "slide.md": "ff0f4b7942acf7f88c8f26703a8c396b12ae6227c88e64742e6bb239ba5cd14e",
+    "style.css": "7b9110e848371dca97a39c99a8ee17ed3d972c23f182b08b35cc1139cfc642e1",
+    "interactive.html": "e7b32e84075226a64484290a25dd6441c8a71947ddb09b4dedb239a39193f612",
+    "interactive-guide.md": "21a54ebf1aaabd1992366600a363940d02bec172affb9c2f0914d621f592d5e3",
     "../programs/guide-part01.md": "de9948482d7bb20d98b6c72d830282c56c7ef455e15cfef5530e1d1a2f4ce100",
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "4bb59dacee5448be81ae8d9aa456d8a5019fc39af31c834193fece12b2a8739f",
@@ -616,11 +616,11 @@
     "voiceovers/slide_05.mp3": "fe4904ac5cb12407cab9a2c4d53dad26387ee7f737dac5b348d3970c1ad1080a",
     "voiceovers/slide_06.mp3": "9ae1dcaf1bc18e6ce50c952b0fa8419652ba7c3ad97b319037f44c5a4e0578ed",
     "voiceovers/slide_07.mp3": "ce3d7efcc31a07b368b2a25b008a61b235e08924302f34a1f8e94b71d5a125ec",
-    "voiceovers/slide_08.mp3": "924548c9747cbde73d37f44ea8daddda0ab9103f84a454dd69508a9174b57b80",
-    "voiceovers/slide_09.mp3": "c1b007f073598c343cd53e7a0ba77adb8c421475a0d37607bfbc555c9cd65c4a",
-    "voiceovers/slide_10.mp3": "a0a9887fd1eb60ac06aa08f8f075d7f7ae1705cbcbc3560a2c05d86ad9bd0b32",
-    "voiceovers/slide_11.mp3": "debc6c88dbf00447f5a6a05c571752950bd38c9248d52bc9c7a9b1683ce4f982",
-    "voiceovers/slide_12.mp3": "8427f50f6cae202bc8d2084c193c743e9454f9209ef54174143a55b60197d4b6",
+    "voiceovers/slide_08.mp3": "5c3ab3f448bb8b23d77942938d2adafca3f7125681dd45db8585cfb08cd62d33",
+    "voiceovers/slide_09.mp3": "c4eec1546e5e0a85e6cd8fb6fe2ef7b4b9d9b95452c7d411792769e43273f6e1",
+    "voiceovers/slide_10.mp3": "2e4d794cb8a27eaa47ea723d83eb22940c2b1de5a641aa9201e03b10f7084d36",
+    "voiceovers/slide_11.mp3": "2b1682abfece1c1d31ac404d3e16992605603c765f398b9a277c10817cdd05e9",
+    "voiceovers/slide_12.mp3": "a387f762642e04f914824aca0d6bae612444c7b038f4dc1a107a91533c8da4d3",
     "voiceovers/slide_13.mp3": "4758ec91d88772e1796c22826150fce82920f24cb6ec7295ed93b372263f1a89",
     "voiceovers/slide_14.mp3": "ce5e09c691ea316805cc1d1fb04a74e5842a3b466bcc5f0dfa6b97b514417ec9",
     "voiceovers/slide_15.mp3": "3a9652f442c600d1f6da6781ef2f069d6569f2606b7a558020efd275ac4ad017",
@@ -651,7 +651,7 @@
     "voiceovers/slide_40.mp3": "2b6b79f884fa7e4361e0e3d5690ba156a61c2a6a6c060f3ad73db45db73772c0"
   },
   "html": {
-    "after_sha256": "a9dffe667454c2b40e4a21a302715dfdf7944e1d9f88a7f5b2e3affcbad9384d"
+    "after_sha256": "89df65f7b3c2005cc842ed0cc133d5b677ce3023a79bf7bafdff2432f4533385"
   },
   "asset_repairs": [],
   "publication_adjustments": [
