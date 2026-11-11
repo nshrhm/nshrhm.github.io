@@ -10,7 +10,9 @@
 .conv-step .product-list{margin:0;padding-left:1.4em;white-space:nowrap}.conv-key{border-left:4px solid #246bce;padding:8px 14px;background:#f4f8ff}
 #products{font-weight:700}#window-position{font-weight:700}.conv-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 @media(max-width:600px){.conv-step{flex:1 1 100%}.conv-flow{gap:22px}}
-</style></head><body><header><p>人工知能概論 ／ 第7回</p><h1>CNNを操作して学ぶ</h1>
+
+.stage-flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;background:#edf6f6;border-radius:8px}.stage-flow span{padding:4px 8px}.stage-flow strong{border:2px solid #006f6b;padding:4px 8px}.matrix td{position:relative;border:1px solid #a7b9c7;min-width:44px}.matrix small{display:block;font-size:.72rem;line-height:1.3}.matrix .chosen{outline:3px solid #0068a8;outline-offset:-3px;background:#e3f2ff}.matrix .added{border:2px dashed #765330;background:#fff3de}.matrix .winner{box-shadow:inset 0 0 0 5px #006f6b;font-weight:bold}.matrix .negative{background:#fbe0db}.matrix .original{border:2px solid #526478}.scroll-table{max-width:100%;overflow-x:auto}details{margin:16px 0;padding:12px;border:1px solid #b9cbd7;border-radius:8px}summary{cursor:pointer;font-weight:600;min-height:44px}.sample-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.sample-card{padding:12px;border:1px solid #a7b9c7;border-radius:10px}.sample-card p{margin:4px 0}.sample-card td{min-width:24px;padding:2px}.bars{max-width:550px}.bar{height:24px;background:#007c78;min-width:1px}.bar-track{background:#edf1f5}.current-step{font-weight:bold}.calculation{font-variant-numeric:tabular-nums;overflow-wrap:anywhere}th{padding:6px}.stage-detail{margin-top:20px}#loss-chart text{font-size:14px} @media(max-width:600px){.matrix td{min-width:34px;padding:4px}.stage-flow{gap:4px}.stage-flow button{flex:1 1 42%}}
+.matrix .pixel-off{background:#25384b;color:white}.matrix .pixel-on{background:white;color:#123}.matrix .chosen.pixel-off,.matrix .chosen.pixel-on{outline-color:#e19b00}</style></head><body><header><p>人工知能概論 ／ 第7回</p><h1>CNNを操作して学ぶ</h1>
 <p>予想してから一つ変える。結果を見て、理由を説明する。</p><p><a href="index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="programs/guide.html">Python・Notebook解説</a></p><nav aria-label="学習テーマ" role="tablist"><button type="button" role="tab" aria-controls="image" data-tab="image">画像と配列</button><button type="button" role="tab" aria-controls="convolution" data-tab="convolution">積と和</button><button type="button" role="tab" aria-controls="shape" data-tab="shape">出力サイズ</button><button type="button" role="tab" aria-controls="pooling" data-tab="pooling">活性化と集約</button><button type="button" role="tab" aria-controls="pipeline" data-tab="pipeline">分類までの流れ</button><button type="button" role="tab" aria-controls="learning" data-tab="learning">小さな学習</button></nav></header><main><section id="image" role="tabpanel" aria-label="画像と配列" hidden><h2>画像と配列</h2>
 <p class="question">問い：1画素を変えると、配列のどこが変わる？</p><p>予想・操作：行と列を決めてから押しましょう。</p><div class="layout"><div id="pixels" class="pixels" aria-label="4行4列の画素"></div><div id="image-result" class="grids"></div></div><p class="explain">結果・説明：行は上下、列は左右です。明るい画素の個数だけで縦線と横線を区別できない理由を説明しましょう。</p><button type="button" id="image-reset">このテーマを初期状態に戻す</button></section><section id="convolution" role="tabpanel" aria-label="積と和" hidden><h2>積と和</h2>
 <div class="conv-key"><p><strong>窓＝今注目する画像の範囲。</strong> この例では2×2の4画素です。</p><p><strong>フィルター＝各画素に掛ける重みの並び。</strong> 窓の値と、同じ位置の重みを掛けます。</p></div>
@@ -24,10 +26,38 @@
 <p id="convolution-explanation" class="explain"></p>
 <p>確認：窓を動かす操作で、フィルターの重みも学習されたでしょうか？ 入力の範囲と重みの数値を見比べて説明しましょう。この画面では重みを学習しません。</p>
 <button type="button" id="convolution-reset">このテーマを初期状態に戻す</button></section><section id="shape" role="tabpanel" aria-label="出力サイズ" hidden><h2>出力サイズ</h2>
-<p class="question">問い：移動幅を2にすると、出力は何行何列？</p><p>予想・操作：入力4、窓2のまま、一つの条件だけ変えます。</p><label>ストライド <select id="stride"><option>1</option><option>2</option></select></label><label>パディング <select id="padding"><option>0</option><option>1</option></select></label><p id="shape-formula" class="answer" aria-live="polite"></p><div id="shape-result" class="grids"></div><p class="explain">結果・説明：余白0で移動幅1なら3×3、移動幅2なら2×2。移動幅1・余白1なら5×5。窓の開始位置から説明できますか？</p><button type="button" id="shape-reset">このテーマを初期状態に戻す</button></section><section id="pooling" role="tabpanel" aria-label="活性化と集約" hidden><h2>活性化と集約</h2>
-<p class="question">問い：同じ領域で最大と平均はどう違う？</p><p>予想・操作：基準の列1・最大から開始。平均へ変えた後、元へ戻して線の位置だけ変えます。</p><label>縦線の列 <select id="line-position"><option>0</option><option selected>1</option><option>2</option><option>3</option></select></label><label>集約 <select id="pool-mode"><option value="max">最大</option><option value="mean">平均</option></select></label><div id="pooling-result" class="grids" aria-live="polite"></div><p class="explain">結果・説明：基準領域[[0,2],[0,2]]では最大2、平均1。列2へ移すと一部の出力が変わります。位置ずれや回転への完全な不変性はありません。</p><button type="button" id="pooling-reset">このテーマを初期状態に戻す</button></section><section id="pipeline" role="tabpanel" aria-label="分類までの流れ" hidden><h2>分類までの流れ</h2>
-<p class="question">問い：特徴マップ2枚は、最後に何個の値になる？</p><p>予想・操作：初期重みを固定して入力だけを選びます。0=縦線、1=横線。</p><label>入力 <select id="sample"><option value="0">学習用 縦・列1</option><option value="1">学習用 縦・列2</option><option value="2">学習用 横・行1</option><option value="3">学習用 横・行2</option><option value="4">確認用 縦・列0</option><option value="5">確認用 縦・列3</option><option value="6">確認用 横・行0</option><option value="7">確認用 横・行3</option></select></label><div id="pipeline-result" class="grids"></div><p id="scores" class="answer" aria-live="polite"></p><p class="explain">結果・説明：3×3×2→ReLU→2×2×2→8値→2スコアです。softmaxの大きさと正解かどうかを分けて説明しましょう。</p><button type="button" id="pipeline-reset">このテーマを初期状態に戻す</button></section><section id="learning" role="tabpanel" aria-label="小さな学習" hidden><h2>小さな学習</h2>
-<p class="question">問い：学習用で成功したら、端の画像も成功する？</p><p>予想・操作：学習率0と0.1を同じ初期値から比較します。実行のたびに初期値へ戻して100回更新します。</p><label>学習率 <select id="rate"><option value=".1">0.1</option><option value="0">0</option></select></label><button id="train" type="button">初期値から100回学習</button><p id="learning-status" role="status">準備できました。</p><p id="learning-summary" class="answer" aria-live="polite"></p><div id="loss-chart"></div><div id="learning-filters" class="grids"></div><p class="explain">結果・説明：基準では損失約0.765126→0.130153、学習用[0,0,1,1]、確認用[1,1,1,1]。未使用の端の縦線を誤分類します。どこまで確認できたかを説明しましょう。</p><button type="button" id="learning-reset">このテーマを初期状態に戻す</button></section></main><footer>人工4×4画像の教育用小例。確認用画像は更新に使いません。数値微分幅1e-6、28パラメーター、全件一括更新。大規模CNNや実画像の性能は検証していません。操作部分は通信なしで動きます。保存した単一HTMLから別教材へ進む場合は公開サイトを利用してください。</footer><script id="cnn-core">'use strict';
+<p><strong>出力サイズ＝計算結果を並べる行数・列数。</strong> 入力全体 → 窓を置ける場所 → 出力1マス → 出力全体の順に見ます。</p>
+<p class="question">問い：窓の左上を置ける場所は、横に何か所、縦に何か所？</p><p>まず余白0・移動幅1で予想し、「次の窓」で数えましょう。行末の次は次の行、最後の次は左上です。</p>
+<label>ストライド（移動幅） <select id="stride"><option>1</option><option>2</option></select></label><label>パディング（周囲の余白） <select id="padding"><option>0</option><option>1</option></select></label>
+<div><button type="button" id="shape-prev">前の窓</button> <button type="button" id="shape-next">次の窓</button></div><p id="shape-position" class="current-step" role="status"></p>
+<div id="shape-result" class="grids"></div><p id="shape-calculation" class="answer"></p><p id="shape-count"></p>
+<details><summary>開始位置の数え方を公式で確かめる</summary><p id="shape-formula" class="calculation"></p><p>4＋2×余白：左右（上下）に余白を足した長さ。そこから窓の長さ2を引くと、窓の左上が届く最後の位置です。移動幅で割り、端からはみ出す途中の一歩を切り捨てます（⌊ ⌋）。最後の＋1は、移動する前の開始位置0も数えるためです。</p></details>
+<details><summary>4条件を比較する（入力4×4、窓2×2）</summary><table><thead><tr><th>余白</th><th>移動幅</th><th>横・縦の開始位置</th><th>出力</th></tr></thead><tbody><tr><td>0</td><td>1</td><td>0, 1, 2</td><td>3×3</td></tr><tr><td>0</td><td>2</td><td>0, 2</td><td>2×2</td></tr><tr><td>1</td><td>1</td><td>0, 1, 2, 3, 4</td><td>5×5</td></tr><tr><td>1</td><td>2</td><td>0, 2, 4</td><td>3×3</td></tr></tbody></table></details>
+<p class="explain">成功の目印：出力の行数・列数を、窓の開始位置の個数から説明できる。条件を変えると窓は左上に戻ります。リセットは余白0・移動幅1です。</p>
+<button type="button" id="shape-reset">このテーマを初期状態に戻す</button></section><section id="pooling" role="tabpanel" aria-label="活性化と集約" hidden><h2>活性化と集約</h2>
+<p class="stage-flow"><strong>① ReLU：値を変える</strong><span>→ ② プーリング：近所の4値を1個にまとめる</span></p><p class="question">問い：負の値を0にした後、4値の代表をどう決める？</p><p>まず列1・最大のまま、左上の4値から結果を予想しましょう。次に平均だけに変え、最後に線の位置だけを変えます。</p>
+<label>縦線の列 <select id="line-position"><option>0</option><option selected>1</option><option>2</option><option>3</option></select></label><label>集約 <select id="pool-mode"><option value="max">最大</option><option value="mean">平均</option></select></label>
+<div id="relu-result" class="grids"></div><p>ReLUは負の値だけを0にします。正の値と0はそのまま。同じ行・列を左右で比べてください。</p>
+<details><summary>9マスのReLU前後を1組ずつ読む</summary><div id="relu-pairs"></div></details>
+<h3>② 窓内の4値 → 代表1個</h3>
+<button type="button" id="pool-prev">前の窓</button> <button type="button" id="pool-next">次の窓</button><p id="pool-position" role="status"></p><div id="pooling-result" class="grids"></div><p id="pool-calculation" class="answer"></p>
+<details><summary>基準の列1と比べる・消える情報を考える</summary><div id="pool-baseline" class="grids"></div><p>最大なら [0,2,0,2] も [2,0,0,0] も2。平均なら [0,2,0,2] も [1,1,1,1] も1。結果が1個になると、元の4値や配置は一意に復元できません。列1→列2では最大出力の左列が2→0になります。位置ずれの影響が小さくなる場合はあっても、必ず同じ出力になるわけではありません。</p></details>
+<p class="explain">成功の目印：ReLUによる値の変更と、集約による個数の減少を区別できる。最大値の同点はすべて太枠です。線位置・集約方法を変えても窓位置は保持。リセットで列1・最大・左上へ戻ります。</p>
+<button type="button" id="pooling-reset">このテーマを初期状態に戻す</button></section><section id="pipeline" role="tabpanel" aria-label="分類までの流れ" hidden><h2>分類までの流れ</h2>
+<p class="question">問い：4×4の画像が、どうして「縦線・横線」の2つの出力になる？</p><p>この画面は<strong>固定した初期重み</strong>を使います。「積と和」の手作りフィルターとは別です。学習画面で更新しても、ここの重みは変わりません。</p>
+<label>入力 <select id="sample"><option value="0">学習用 縦・列1</option><option value="1">学習用 縦・列2</option><option value="2">学習用 横・行1</option><option value="3">学習用 横・行2</option><option value="4">確認用 縦・列0</option><option value="5">確認用 縦・列3</option><option value="6">確認用 横・行0</option><option value="7">確認用 横・行3</option></select></label>
+<p>下の段階を左から選びます。毎回「何を受け取り、何を計算し、何が出たか」を読みましょう。</p><div id="pipeline-stages" class="stage-flow" aria-label="分類の各段階"></div><div id="pipeline-result" class="stage-detail"></div><div id="scores" class="answer" aria-live="polite"></div>
+<p class="explain">表示は小数第4位までに丸めています。計算は丸める前の値で行うため、表示値だけで再計算すると末尾に差が出ます。成功の目印：a1〜b4がどのマスか、予測と正解が違うとき何が失敗かを説明できる。リセットで最初の画像・段階へ戻ります。</p>
+<button type="button" id="pipeline-reset">このテーマを初期状態に戻す</button></section><section id="learning" role="tabpanel" aria-label="小さな学習" hidden><h2>小さな学習</h2>
+<p class="stage-flow"><span>予測する → 正解と比べる → 損失を求める → 重みを少し変える → 繰り返す</span></p><p class="question">問い：中央の線で学習すると、端の線も正しく分類できる？</p><p>学習用の中央4枚だけを重み更新に使います。確認用の端4枚は更新に使いません。まず結果を予想し、学習率0.1で実行。次に0を選び、同じ初期値から比較します。</p>
+<label>学習率 <select id="rate"><option value=".1">0.1</option><option value="0">0</option></select></label><button id="train" type="button">初期値から100回学習</button><p id="learning-status" role="status">準備できました。</p>
+<label>見返す更新回数 <select id="checkpoint"><option value="0">0回</option><option value="1" disabled>1回</option><option value="10" disabled>10回</option><option value="50" disabled>50回</option><option value="100" disabled>100回</option></select></label><p>100回を実際に計算し、途中の重みを保存します。点の間の結果を補間して作ることはありません。</p><p id="learning-summary" class="answer" aria-live="polite"></p><div id="loss-chart"></div>
+<details><summary>選択した回数のフィルターと更新の意味</summary><div id="learning-filters" class="grids"></div><p>新しい重み＝現在の重み−学習率×損失の変化方向。学習率0なら重みは変わりません。この小例は各重みを±0.000001だけ試し、損失の変わり方から更新方向を求めます。フィルター・バイアス・分類の重み、計28個を同時に更新します。窓を動かす操作は重みを変えません。</p></details>
+<h3>学習用：中央の4画像（更新に使う）</h3>
+<div id="train-cards" class="sample-cards"></div><h3>確認用：端の4画像（更新に使わない）</h3>
+<div id="heldout-cards" class="sample-cards"></div>
+<p id="learning-reading" class="explain"></p><p>平均損失は、正解クラスへの出力が小さいほど大きくなる「外し方」の指標。正解数は、大きい方の出力で決めた予測が何枚合ったかです。別々に読みます。学習率変更は0回へ戻り、リセットはさらに学習率0.1へ戻ります。</p>
+<button type="button" id="learning-reset">このテーマを初期状態に戻す</button></section></main><footer>人工4×4画像の教育用小例。確認用画像は更新に使いません。数値微分幅1e-6、28パラメーター、全件一括更新。大規模CNNや実画像の性能は検証していません。操作部分は通信なしで動きます。保存した単一HTMLから別教材へ進む場合は公開サイトを利用してください。</footer><script id="cnn-core">'use strict';
 const INITIAL=[0.13942679845788375, -0.47498924477733306, -0.22497068163088074, -0.27678926185117725, 0.2364712141640124, 0.1766994874229113, 0.3921795677048454, -0.41306116737058385, 0.1, 0.1, -0.07807818031472957, -0.47020278056192966, -0.28136202519639664, 0.005355288103362388, -0.4734640303161364, -0.3011623493133515, 0.1498844377795232, 0.04494148060321668, -0.2795593779593033, 0.08926568387590872, 0.30943045667782665, -0.493501240321939, 0.3058192518328079, 0.19813939498822686, -0.15974948348200813, -0.34452050018821845, 0.0, 0.0];
 const IMAGE=Array.from({length:4},()=>[0,1,0,0]),FILTER=[[1,-1],[1,-1]];
 const copy=x=>JSON.parse(JSON.stringify(x));
@@ -45,8 +75,8 @@ function forward(w,x){const maps=[],activated=[],pooled=[],features=[];
 }
 const loss=(w,data)=>data.reduce((s,[x,y])=>s-forward(w,x).log_probabilities[y],0)/data.length;
 const predict=(w,data)=>data.map(([x])=>{const p=forward(w,x).probabilities;return p[0]>=p[1]?0:1;});
-function train(rate=.1,steps=100,initial=INITIAL){let weights=[...initial];const data=samples([1,2]),history=[loss(weights,data)];
- for(let n=0;n<steps;n++){const g=weights.map((v,j)=>{const plus=[...weights],minus=[...weights];plus[j]+=1e-6;minus[j]-=1e-6;return (loss(plus,data)-loss(minus,data))/2e-6;});weights=weights.map((v,j)=>v-rate*g[j]);history.push(loss(weights,data));}
+function train(rate=.1,steps=100,initial=INITIAL,record=()=>{}){let weights=[...initial];const data=samples([1,2]),history=[loss(weights,data)];record(0,[...weights],history[0]);
+ for(let n=0;n<steps;n++){const g=weights.map((v,j)=>{const plus=[...weights],minus=[...weights];plus[j]+=1e-6;minus[j]-=1e-6;return (loss(plus,data)-loss(minus,data))/2e-6;});weights=weights.map((v,j)=>v-rate*g[j]);history.push(loss(weights,data));record(n+1,[...weights],history.at(-1));}
  return {weights,history,train_predictions:predict(weights,data),heldout_predictions:predict(weights,samples([0,3]))};
 }
 const rounded=x=>typeof x==='number'?Number(x.toFixed(6)):Array.isArray(x)?x.map(rounded):Object.fromEntries(Object.entries(x).map(([k,v])=>[k,rounded(v)]));
@@ -58,7 +88,19 @@ function convolutionStep(position,filterName='vertical'){
  const products=patch.map((r,i)=>r.map((v,j)=>v*kernel[i][j]));
  return {row,col,kernel,patch,products,sum:products.flat().reduce((a,b)=>a+b,0),map:convolve(IMAGE,kernel)};
 }
-const CNN={convolutionStep,INITIAL,IMAGE,FILTER,copy,convolve,relu,pool,samples,forward,loss,predict,train,demo};
+
+function shapeStep(position,stride=1,padding=0){
+ const size=4+2*padding, input=Array.from({length:size},(_,r)=>Array.from({length:size},(_,c)=>IMAGE[r-padding]?.[c-padding]??0));
+ const starts=Array.from({length:Math.floor((size-2)/stride)+1},(_,i)=>i*stride),row=Math.floor(position/starts.length),col=position%starts.length;
+ const top=starts[row],left=starts[col],patch=input.slice(top,top+2).map(r=>r.slice(left,left+2)),products=patch.map((r,i)=>r.map((v,j)=>v*FILTER[i][j]));
+ return {input,starts,row,col,top,left,patch,products,sum:products.flat().reduce((a,b)=>a+b,0),map:convolve(IMAGE,FILTER,stride,padding)};
+}
+function poolStep(position,line=1,mode='max'){
+ const input=samples([line])[0][0],raw=convolve(input,FILTER),activated=relu(raw),row=Math.floor(position/2),col=position%2,patch=activated.slice(row,row+2).map(r=>r.slice(col,col+2)),values=patch.flat();
+ return {input,raw,activated,row,col,patch,values,sum:values.reduce((a,b)=>a+b,0),maximum:Math.max(...values),map:pool(activated,mode)};
+}
+function trainingRun(rate=.1){const snapshots={};const result=train(rate,100,INITIAL,(step,weights,value)=>{if([0,1,10,50,100].includes(step))snapshots[step]={weights,loss:value};});return {...result,snapshots};}
+const CNN={shapeStep,poolStep,trainingRun,convolutionStep,INITIAL,IMAGE,FILTER,copy,convolve,relu,pool,samples,forward,loss,predict,train,demo};
 if(typeof window!=='undefined')window.CNN=CNN;
 </script><script>const tabs=[...document.querySelectorAll('[data-tab]')];
 function route(){const id=location.hash.slice(1),found=tabs.find(b=>b.dataset.tab===id),active=found? id:'image';tabs.forEach(b=>{const selected=b.dataset.tab===active;b.setAttribute('aria-selected',String(selected));document.getElementById(b.dataset.tab).hidden=!selected;});}
@@ -94,13 +136,72 @@ function convRender(){
 $('previous-window').onclick=()=>{pos=(pos+8)%9;convRender();};
 $('next-window').onclick=()=>{pos=(pos+1)%9;convRender();};$('filter').onchange=convRender;
 $('convolution-reset').onclick=()=>{pos=0;$('filter').value='vertical';convRender();};convRender();
-function shapeRender(){const s=Number($('stride').value),p=Number($('padding').value),a=convolve(IMAGE,FILTER,s,p);$('shape-result').innerHTML=grid(a,'出力 '+a.length+'×'+a[0].length);$('shape-formula').textContent='⌊(4 + 2×'+p+' − 2) ÷ '+s+'⌋ + 1 = '+a.length;}
-['stride','padding'].forEach(id=>$(id).onchange=shapeRender);$('shape-reset').onclick=()=>{$('stride').value='1';$('padding').value='0';shapeRender();};shapeRender();
-function poolRender(){const x=samples([Number($('line-position').value)])[0][0],raw=convolve(x,FILTER),a=relu(raw),p=pool(a,$('pool-mode').value);$('pooling-result').innerHTML=grid(x,'入力')+grid(raw,'畳み込み')+grid(a,'ReLU')+grid(p,'プーリング');}
-['line-position','pool-mode'].forEach(id=>$(id).onchange=poolRender);$('pooling-reset').onclick=()=>{$('line-position').value='1';$('pool-mode').value='max';poolRender();};poolRender();
-function pipelineRender(){const n=Number($('sample').value),[x,label]=[...samples([1,2]),...samples([0,3])][n],f=forward(INITIAL,x);$('pipeline-result').innerHTML=grid(x,'入力：正解'+label)+f.maps.map((a,i)=>grid(a,'特徴マップ'+i)).join('')+f.relu.map((a,i)=>grid(a,'ReLU '+i)).join('')+f.pooled.map((a,i)=>grid(a,'プーリング'+i)).join('');$('scores').textContent='8値 '+f.features.map(fmt).join(', ')+' ／ スコア '+f.logits.map(fmt).join(', ')+' ／ softmax '+f.probabilities.map(fmt).join(', ')+' ／ 予測 '+(f.probabilities[0]>=f.probabilities[1]?0:1);}
-$('sample').onchange=pipelineRender;$('pipeline-reset').onclick=()=>{$('sample').value='0';pipelineRender();};pipelineRender();
-let fit=null;
-function learningRender(){const w=fit?fit.weights:INITIAL,history=fit?fit.history:[loss(INITIAL,samples([1,2]))],before=loss(INITIAL,samples([1,2]));$('learning-summary').textContent='更新 '+(history.length-1)+'回 ／ 損失 '+before.toFixed(6)+' → '+history.at(-1).toFixed(6)+' ／ 学習用予測 ['+predict(w,samples([1,2]))+'] ／ 確認用予測 ['+predict(w,samples([0,3]))+'] ／ 両方の正解 [0,0,1,1]';$('learning-filters').innerHTML=[0,1].map(k=>grid([INITIAL.slice(k*4,k*4+2),INITIAL.slice(k*4+2,k*4+4)],'初期フィルター'+k)+grid([w.slice(k*4,k*4+2),w.slice(k*4+2,k*4+4)],'現在フィルター'+k)).join('');const points=history.map((v,i)=>(20+i/Math.max(1,history.length-1)*560)+','+(160-Math.min(v,1)*140)).join(' ');$('loss-chart').innerHTML='<svg viewBox="0 0 600 190" role="img" aria-label="横軸は更新回数、縦軸は平均損失0から1"><path d="M20 20V160H580" fill="none" stroke="#526478"/><polyline points="'+points+'" fill="none" stroke="#007c78" stroke-width="3"/><text x="25" y="185">更新回数 0 → '+(history.length-1)+'</text><text x="25" y="20">平均損失（上が1、下が0）</text></svg>';}
-$('train').onclick=async()=>{$('train').disabled=true;$('learning-status').textContent='同じ初期値から計算しています…';await new Promise(r=>setTimeout(r,30));fit=train(Number($('rate').value),100);learningRender();$('learning-status').textContent='計算完了。学習用と確認用を分けて読みましょう。';$('train').disabled=false;};$('learning-reset').onclick=()=>{fit=null;$('rate').value='.1';$('learning-status').textContent='初期状態に戻しました。';learningRender();};learningRender();
+// Matrix coordinates and names remain available without relying on colour.
+function matrix(a,caption,{top=-9,left=-9,output=false,padding=0,maximum=null,labels=null}={}){
+ return '<figure><figcaption>'+caption+'</figcaption><table class="matrix"><tbody>'+a.map((r,i)=>'<tr>'+r.map((v,j)=>{
+ const chosen=output?i===top&&j===left:i>=top&&i<top+2&&j>=left&&j<left+2;
+ const added=padding>0&&(i<padding||j<padding||i>=a.length-padding||j>=r.length-padding);
+ const tag=labels?labels[i*r.length+j]:chosen?(output?'今回':'ABCD'[(i-top)*2+j-left]):'';
+ return '<td data-row="'+i+'" data-col="'+j+'"'+(chosen&&output?' aria-current="true"':'')+' class="'+(chosen?'chosen ':'')+(added?'added ':padding?'original ':'')+(chosen&&maximum!==null&&v===maximum?'winner ':'')+(a.length===4&&r.length===4&&a.flat().every(x=>x===0||x===1)?(v?'pixel-on ':'pixel-off '):'')+(v<0?'negative':'')+'"><span class="value">'+fmt(v)+'</span><small>'+tag+(added?' 追加0':'')+'</small></td>';
+ }).join('')+'</tr>').join('')+'</tbody></table></figure>';
+}
+let shapePos=0,poolPos=0,stage=0;
+function shapeRender(){
+ const stride=+$('stride').value,padding=+$('padding').value,d=shapeStep(shapePos,stride,padding),count=d.starts.length;
+ $('shape-position').textContent='現在 '+(shapePos+1)+'／'+count*count+'：拡張画像の行'+d.top+' 列'+d.left+' → 出力の行'+d.row+' 列'+d.col;
+ $('shape-result').innerHTML=matrix(d.input,'① 入力（行・列は0始まり）',{top:d.top,left:d.left,padding})+matrix(d.patch,'② 窓内の4値',{top:0,left:0})+matrix(FILTER,'③ 重み（左右の差）',{top:0,left:0})+matrix(d.map,'④ 出力 '+count+'×'+count,{top:d.row,left:d.col,output:true});
+ $('shape-calculation').textContent=d.patch.flat().map((v,i)=>v+'×('+FILTER.flat()[i]+')').join(' + ')+' = '+d.sum+' → 出力の行'+d.row+' 列'+d.col+'へ';
+ $('shape-count').textContent='横の開始位置 ['+d.starts+']：'+count+'か所。縦も ['+d.starts+']：'+count+'か所。だから '+count+'行×'+count+'列。'+(padding?'元画像は拡張画像の行1〜4・列1〜4（実線）。破線の「追加0」が余白。元の行0・列0は拡張後の行1・列1です。':'余白なし。すべて元画像の値です。');
+ $('shape-formula').textContent='⌊(4 + 2×'+padding+' − 2) ÷ '+stride+'⌋ + 1 = '+count;
+}
+['stride','padding'].forEach(id=>$(id).onchange=()=>{shapePos=0;shapeRender();});
+function moveShape(delta){const n=shapeStep(0,+$('stride').value,+$('padding').value).starts.length**2;shapePos=(shapePos+delta+n)%n;shapeRender();}
+$('shape-prev').onclick=()=>moveShape(-1);$('shape-next').onclick=()=>moveShape(1);
+$('shape-reset').onclick=()=>{shapePos=0;$('stride').value='1';$('padding').value='0';shapeRender();};shapeRender();
+function poolRender(){
+ const mode=$('pool-mode').value,d=poolStep(poolPos,+$('line-position').value,mode),baseline=poolStep(0,1,mode);
+ $('relu-result').innerHTML=matrix(d.input,'入力：縦線の列'+$('line-position').value)+matrix(d.raw,'① ReLU前（畳み込みの結果）')+matrix(d.activated,'① ReLU後：同じ位置を比べる');
+ $('relu-pairs').innerHTML='<ul>'+d.raw.flat().map((v,i)=>'<li>行'+Math.floor(i/3)+' 列'+i%3+'：'+v+' → '+Math.max(0,v)+(v<0?'（負なので0）':'（そのまま）')+'</li>').join('')+'</ul>';
+ $('pool-position').textContent='現在 '+(poolPos+1)+'／4：窓の左上は行'+d.row+' 列'+d.col+'（移動幅1）';
+ $('pooling-result').innerHTML=matrix(d.activated,'② ReLU後の全体と窓',{top:d.row,left:d.col,maximum:mode==='max'?d.maximum:null})+matrix(d.patch,'③ 取り出した4値',{top:0,left:0,maximum:mode==='max'?d.maximum:null})+matrix(d.map,'④ '+(mode==='max'?'最大':'平均')+'の出力',{top:d.row,left:d.col,output:true});
+ $('pool-calculation').textContent=(mode==='max'?'最大('+d.values.join(', ')+') = '+d.maximum+'。同点の最大値もすべて太枠。':'('+d.values.join(' + ')+') ÷ 4 = '+d.sum+' ÷ 4 = '+d.map[d.row][d.col])+' → 出力の行'+d.row+' 列'+d.col;
+ $('pool-baseline').innerHTML=matrix(baseline.map,'基準：列1の出力（'+(mode==='max'?'最大':'平均')+'）')+matrix(d.map,'現在：列'+$('line-position').value+'の出力');
+}
+['line-position','pool-mode'].forEach(id=>$(id).onchange=poolRender);$('pool-prev').onclick=()=>{poolPos=(poolPos+3)%4;poolRender();};$('pool-next').onclick=()=>{poolPos=(poolPos+1)%4;poolRender();};
+$('pooling-reset').onclick=()=>{poolPos=0;$('line-position').value='1';$('pool-mode').value='max';poolRender();};poolRender();
+const names=['縦線','横線'],featureNames=['a1','a2','a3','a4','b1','b2','b3','b4'],stages=['画像','2枚の特徴マップ','ReLU','プーリング','8値','2スコア','予測'];
+function bars(probabilities){return '<div class="bars">'+probabilities.map((v,i)=>'<p>'+names[i]+'：'+fmt(v)+'（'+(v*100).toFixed(2)+'%）</p><div class="bar-track"><div class="bar" style="width:'+v*100+'%"></div></div>').join('')+'</div>';}
+function scoreTable(f,c){return '<details><summary>'+names[c]+'用：8値×重み＋バイアス</summary><div class="scroll-table"><table><thead><tr><th>名前</th><th>値</th><th>重み</th><th>積</th></tr></thead><tbody>'+f.features.map((v,i)=>'<tr><th>'+featureNames[i]+'</th><td>'+fmt(v)+'</td><td>'+fmt(INITIAL[10+c*8+i])+'</td><td>'+fmt(v*INITIAL[10+c*8+i])+'</td></tr>').join('')+'</tbody></table></div><p>8個の積の合計 '+fmt(f.logits[c]-INITIAL[26+c])+' ＋ バイアス '+fmt(INITIAL[26+c])+' ＝ スコア '+fmt(f.logits[c])+'</p></details>';}
+function pipelineRender(){
+ const [x,label]=[...samples([1,2]),...samples([0,3])][+$('sample').value],f=forward(INITIAL,x);
+ $('pipeline-stages').innerHTML=stages.map((name,i)=>'<button type="button" data-stage="'+i+'" aria-pressed="'+(i===stage)+'">'+(i+1)+' '+name+'</button>').join('');
+ $('pipeline-stages').querySelectorAll('button').forEach(b=>b.onclick=()=>{stage=+b.dataset.stage;pipelineRender();$('pipeline-stages').querySelector('[data-stage="'+stage+'"]').focus();});
+ let content='';
+ if(stage===0)content='<p>① 入力：明るい画素1、暗い画素0。正解ラベルは計算の答え合わせに使います。予測の計算には画像だけを渡します。</p>'+matrix(x,'入力4×4／正解：'+names[label]);
+ if(stage===1)content='<p>② 同じ画像に2種類の重みを使い、別々の特徴マップを作ります。4組の積の合計にバイアスを足します。</p><div class="grids">'+[0,1].map(k=>matrix([INITIAL.slice(k*4,k*4+2),INITIAL.slice(k*4+2,k*4+4)],'フィルター'+(k?'b':'a')+'／バイアス '+fmt(INITIAL[8+k]))+matrix(f.maps[k],'特徴マップ'+(k?'b':'a')+'（3×3）')).join('')+'</div><details><summary>左上1マスの計算を確かめる</summary>'+[0,1].map(k=>'<p>'+('ab'[k])+'：'+[x[0][0],x[0][1],x[1][0],x[1][1]].map((v,i)=>v+'×('+fmt(INITIAL[k*4+i])+')').join(' + ')+' + '+fmt(INITIAL[8+k])+' = '+fmt(f.maps[k][0][0])+'</p>').join('')+'</details>';
+ if(stage===2)content='<p>③ マスの数は3×3のまま。負なら0、0以上ならそのままです。</p><div class="grids">'+f.maps.map((m,k)=>matrix(m,'マップ'+('ab'[k])+'：前')+matrix(f.relu[k],'マップ'+('ab'[k])+'：ReLU後')).join('')+'</div>';
+ if(stage===3)content='<p>④ 2×2の窓・移動幅1で最大値を取ります。3×3の開始位置は縦2×横2なので、各マップは2×2になります。</p><div class="grids">'+f.relu.map((m,k)=>matrix(m,'ReLU後 '+('ab'[k]),{top:0,left:0,maximum:Math.max(...m.slice(0,2).flatMap(r=>r.slice(0,2)))})+matrix(f.pooled[k],'集約後 '+('ab'[k]),{top:0,left:0,output:true})).join('')+'</div>';
+ if(stage===4)content='<p>⑤ 各マップの左上→右上→左下→右下。aの後にbをつなげます。値は変えず、並び方だけを変えます。</p><div class="grids">'+f.pooled.map((m,k)=>matrix(m,'マップ'+('ab'[k]),{labels:featureNames.slice(k*4,k*4+4)})).join('')+'</div><ol>'+f.features.map((v,i)=>'<li>'+featureNames[i]+' = '+fmt(v)+'</li>').join('')+'</ol>';
+ if(stage===5)content='<p>⑥ 8値に「縦線用」「横線用」の別の重みを掛けて合計し、それぞれバイアスを足します。スコアは負でも構いません。</p>'+[0,1].map(c=>'<p>'+names[c]+'のスコア：'+fmt(f.logits[c])+'</p>'+scoreTable(f,c)).join('');
+ if(stage===6)content='<p>⑦ 2スコアを、正で合計1の2値へ変換します（softmax）。大きい方を予測に選びます。大きい出力でも正解とは限りません。</p>'+bars(f.probabilities)+'<details><summary>softmaxの計算</summary><p>各スコアの指数 exp(スコア) を、2つの指数の合計で割ります。実装は両スコアから最大値を引いて桁あふれを防ぎますが、比率は同じです。</p><p>縦線：exp('+fmt(f.logits[0])+') ÷ {exp('+fmt(f.logits[0])+') + exp('+fmt(f.logits[1])+')} = '+fmt(f.probabilities[0])+'</p></details>';
+ $('pipeline-result').innerHTML='<h3>現在 '+(stage+1)+'／7：'+stages[stage]+'</h3>'+content;
+ const prediction=f.probabilities[0]>=f.probabilities[1]?0:1;
+ $('scores').textContent='固定初期重みでの予測：'+names[prediction]+' ／ 正解：'+names[label]+' ／ '+(prediction===label?'正解':'不正解');
+}
+$('sample').onchange=pipelineRender;$('pipeline-reset').onclick=()=>{$('sample').value='0';stage=0;pipelineRender();};pipelineRender();
+let fit=null,busy=false;
+function sampleCards(w,data,positions){return data.map(([x,y],i)=>{const f=forward(w,x),pred=f.probabilities[0]>=f.probabilities[1]?0:1;return '<article class="sample-card">'+matrix(x,names[y]+'・'+(y?'行':'列')+positions[i%2])+'<p>正解：'+names[y]+' ／ 予測：'+names[pred]+'</p><p>正解クラスへの出力：'+fmt(f.probabilities[y])+'</p><p><strong>'+(pred===y?'○ 正解':'× 不正解')+'</strong></p></article>';}).join('');}
+function learningRender(){
+ const n=+$('checkpoint').value,w=fit?fit.snapshots[n].weights:INITIAL,history=fit?fit.history:[loss(INITIAL,samples([1,2]))],value=history[n],trainPred=predict(w,samples([1,2])),heldPred=predict(w,samples([0,3])),correct=a=>a.filter((v,i)=>v===(i<2?0:1)).length;
+ $('learning-summary').textContent='更新 '+n+'回 ／ 平均損失 '+history[0].toFixed(6)+' → '+value.toFixed(6)+' ／ 学習用 '+correct(trainPred)+'／4正解 ／ 確認用 '+correct(heldPred)+'／4正解';
+ $('learning-filters').innerHTML=[0,1].map(k=>matrix([INITIAL.slice(k*4,k*4+2),INITIAL.slice(k*4+2,k*4+4)],'初期フィルター'+('ab'[k]))+matrix([w.slice(k*4,k*4+2),w.slice(k*4+2,k*4+4)],n+'回のフィルター'+('ab'[k]))).join('');
+ const points=history.slice(0,n+1).map((v,i)=>(60+i*5)+','+(210-v*160)).join(' ');
+ $('loss-chart').innerHTML='<svg viewBox="0 0 650 270" role="img" aria-label="学習用平均損失、更新'+n+'回で'+value.toFixed(6)+'"><text x="60" y="20">学習用4枚の平均損失</text><path d="M60 50V210H560" fill="none" stroke="#526478"/>'+[0,.5,1].map(v=>'<text x="15" y="'+(215-v*160)+'">'+v+'</text><path d="M55 '+(210-v*160)+'H560" stroke="#d5e0e9"/>').join('')+[0,1,10,50,100].map(i=>'<text x="'+(60+i*5)+'" y="'+(i===1?247:230)+'" text-anchor="middle">'+i+'</text>').join('')+'<text x="440" y="260">更新回数</text><polyline points="'+points+'" fill="none" stroke="#007c78" stroke-width="3"/><circle cx="'+(60+n*5)+'" cy="'+(210-value*160)+'" r="6" fill="#a23b00"/><text x="300" y="40">現在 '+n+'回：'+value.toFixed(6)+'</text></svg>';
+ $('train-cards').innerHTML=sampleCards(w,samples([1,2]),[1,2]);$('heldout-cards').innerHTML=sampleCards(w,samples([0,3]),[0,3]);
+ $('learning-reading').textContent=n===100&&+$('rate').value===.1?'100回・学習率0.1：学習用は4／4正解、確認用は2／4正解。端の縦線（列0・列3）の2枚を横線と予測しています。中央4枚での成功から、端でも成功すると結論できません。':'現在の画像別結果を見て、損失の大きさと正解数を分けて読みましょう。学習率0では100回計算しても初期値のままです。';
+}
+function clearLearning(){fit=null;$('checkpoint').value='0';[...$('checkpoint').options].forEach(o=>o.disabled=o.value!=='0');$('learning-status').textContent='初期状態に戻しました。';learningRender();}
+$('checkpoint').onchange=learningRender;$('rate').onchange=clearLearning;
+$('train').onclick=async()=>{if(busy)return;busy=true;['train','rate','learning-reset','checkpoint'].forEach(id=>$(id).disabled=true);$('learning-status').textContent='同じ初期値から計算しています…';try{await new Promise(r=>setTimeout(r,30));fit=trainingRun(+$('rate').value);[...$('checkpoint').options].forEach(o=>o.disabled=false);$('checkpoint').value='100';learningRender();$('learning-status').textContent='計算完了。0・1・10・50・100回を選んで見返せます。';}catch(e){clearLearning();$('learning-status').textContent='計算できませんでした。リセットして再実行してください。';}finally{busy=false;['train','rate','learning-reset','checkpoint'].forEach(id=>$(id).disabled=false);}};
+$('learning-reset').onclick=()=>{$('rate').value='.1';clearLearning();};learningRender();
 </script></body></html>
