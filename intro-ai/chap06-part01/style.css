@@ -651,3 +651,26 @@ body.image-zoom-open {
 .reveal .cnn-products { border:2px solid #9baebe; border-radius:8px; padding:.2em .6em; }
 .reveal .cnn-products p { margin:.3em 0; }
 .reveal .cnn-sum { text-align:center; }
+
+/* Four CNN themes: one operation per slide; readable tables and diagrams. */
+.reveal .cnn-stages .eyebrow {margin:0 0 .2em;}
+.reveal .cnn-stages h2 {margin:.1em 0 .4em;}
+.reveal .stage-diagram {display:flex;flex-wrap:wrap;gap:.7em;align-items:center;justify-content:center;margin:.5em 0;}
+.reveal .stage-figure {margin:.2em;}
+.reveal .stage-figure figcaption {font-size:.7em;font-weight:700;margin-bottom:.2em;}
+.reveal .stage-figure table {margin:0 auto;border-collapse:collapse;font-size:.7em;}
+.reveal .stage-figure td {border:1px solid #7f98aa;min-width:1.7em;padding:.18em .35em;text-align:center;background:#edf5f8;}
+.reveal .stage-figure td small {display:block;font-size:.8em;font-weight:bold;}
+.reveal .stage-figure .focus-cell {outline:3px solid #0072a8;outline-offset:-3px;}
+.reveal .stage-box {padding:.45em .65em;border:2px solid #8aadb9;border-radius:.4em;background:#edf6f6;font-size:.8em;}
+.reveal .stage-box p {margin:.35em 0;}
+.reveal .stage-table {font-size:.78em;margin:.5em auto;}
+.reveal .stage-table th,.reveal .stage-table td {padding:.35em .6em;}
+.reveal .cnn-stages .stage-link {font-size:.65em;margin:.4em 0 0;}
+.reveal .stage-figure td[data-pixel="0"] {background:#25384b;color:white;}
+.reveal .stage-figure td[data-pixel="1"] {background:white;color:#123;}
+.reveal .stage-figure .pad-added {border:2px dashed #765330;background:#fff3de;}
+.reveal .stage-figure .pad-original {border:2px solid #526478;}
+.reveal .stage-plot {display:block;width:78%;height:230px;margin:.3em auto;}
+.reveal .stage-plot text {font-size:23px;fill:#17334c;}
+.reveal .stage-diagram > .stage-table {width:auto;flex:0 1 auto;}

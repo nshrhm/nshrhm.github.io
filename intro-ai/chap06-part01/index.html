@@ -772,344 +772,2901 @@ D：1 × (−1) = −1
 </aside>
 </section>
 <section>
-<!-- 17: ストライドは窓の移動幅を通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>ストライドは窓の移動幅</h2>
+<!-- 17: 窓の開始位置を数えるの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+出力サイズ
+</p>
+<h2>窓の開始位置を数える</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+入力4×4・窓2×2
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td class="focus-cell" data-pixel="0">
+0
+</td>
+<td class="focus-cell" data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td class="focus-cell" data-pixel="0">
+0
+</td>
+<td class="focus-cell" data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="stage-box">
+<strong>横の開始位置</strong>
+<p>
+0 → 1 → 2<br>3か所
+</p>
+</div>
+<figure class="stage-figure">
+<figcaption>
+出力3行×3列
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+-2
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+-2
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+-2
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
 <ul>
-<li>ストライド1：一つずつ移動 → この例では3×3。</li>
-<li>ストライド2：二つずつ移動 → この例では2×2。</li>
-<li>出力の位置数が減り、途中の位置の応答は計算しない。</li>
+<li>出力サイズ＝<strong>計算結果を並べる行数・列数</strong>。</li>
+<li>窓の左上は横に3か所、縦にも3か所 → 9回の計算。</li>
 </ul>
-<p><a href="interactive.html#shape" target="_blank" rel="noopener">移動幅を変える → 出力はいくつ？</a></p>
+<p class="stage-link">
+<a href="interactive.html#shape" target="_blank" rel="noopener">操作教材で確かめる：出力サイズ</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-ストライドを二にすると、画像の値を二倍にするのではなく窓の移動幅を二にします。四行四列の入力に二行二列の窓なら、縦横とも二か所です。窓の位置と出力の値を両方見てください。
+ここからは出力の大きさを考えます。出力サイズとは、計算した結果を何行何列に並べるかです。入力画像の大きさは4かける4、窓は2かける2です。窓の左上を列0、列1、列2に置くと、いずれも画像の中に収まります。列3では右側がはみ出します。したがって横に3か所です。縦も同じように3か所なので、出力は3行3列になります。操作教材では次の窓を押し、左上の開始位置と結果を置くマスを一緒に追いましょう。
 </aside>
 </section>
 <section>
-<!-- 18: パディングは周囲に加える値を通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>パディングは周囲に加える値</h2>
-<ul>
-<li>ここでは画像の上下左右に0を加える。</li>
-<li>パディング1：各辺に1画素分の余白。</li>
-<li>4×4入力・2×2窓・移動幅1なら、出力は<strong>5×5</strong>。</li>
-<li>元の画像を撮り直したり、欠けた内容を復元したりはしない。</li>
-</ul>
+<!-- 18: ストライド＝窓を何マスずつ動かすかの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+出力サイズ
+</p>
+<h2>ストライド＝窓を何マスずつ動かすか</h2>
+<div class="stage-diagram">
+<div class="stage-box">
+<strong>移動幅1</strong>
+<p>
+開始位置 0 → 1 → 2<br>横3か所・縦3か所
+</p>
+</div>
+<div class="stage-box">
+<strong>移動幅2</strong>
+<p>
+開始位置 0 → 2<br>横2か所・縦2か所
+</p>
+</div>
+<figure class="stage-figure">
+<figcaption>
+移動幅2の出力
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+-2
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+-2
+</td>
+<td>
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p>窓の大きさは<strong>2×2のまま</strong>。移動幅だけが変わります。</p>
+<p>開始位置が列2なら、出力では「2番目の列＝列1」です。</p>
+<p class="stage-link">
+<a href="interactive.html#shape" target="_blank" rel="noopener">操作教材で確かめる：出力サイズ</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-パディングは入力の周囲に値を補う操作です。今回のゼロパディングなら、追加した値はすべてゼロです。フィルターを置ける位置が増えるため出力サイズも変わります。画像の未知の内容を推測して復元しているわけではありません。
+ストライドは窓を動かす幅です。窓の大きさを変えるものではありません。移動幅1なら開始位置は0、1、2です。移動幅2なら0の次は2です。その次の4ははみ出すので使えません。横に2か所、縦にも2か所となり、出力は2行2列です。ここで入力の座標と出力の座標を区別しましょう。入力の列2から計算した結果は、出力では2番目、0から数えると列1に入ります。
 </aside>
 </section>
 <section>
-<!-- 19: 出力サイズを数えるを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>出力サイズを数える</h2>
-<p>1方向のサイズ： <strong>⌊(入力＋2×余白−窓)÷移動幅⌋＋1</strong></p>
+<!-- 19: パディング＝画像の周囲に余白を足すの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+出力サイズ
+</p>
+<h2>パディング＝画像の周囲に余白を足す</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+周囲1マスを追加 → 6×6
+</figcaption>
 <table>
-<thead>
-<tr>
-<th>入力</th>
-<th>窓</th>
-<th>余白</th>
-<th>移動幅</th>
-<th>出力</th>
-</tr>
-</thead>
 <tbody>
 <tr>
-<td>4</td>
-<td>2</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
 </tr>
 <tr>
-<td>4</td>
-<td>2</td>
-<td>0</td>
-<td>2</td>
-<td>2</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-original">
+1
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-added">
+0
+</td>
 </tr>
 <tr>
-<td>4</td>
-<td>2</td>
-<td>1</td>
-<td>1</td>
-<td>5</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-original">
+1
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+</tr>
+<tr>
+<td class="pad-added">
+0
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-original">
+1
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+</tr>
+<tr>
+<td class="pad-added">
+0
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-original">
+1
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-original">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+</tr>
+<tr>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
+<td class="pad-added">
+0
+</td>
 </tr>
 </tbody>
 </table>
-<p>小数部分を切り捨てる。縦と横でそれぞれ計算する。</p>
+</figure>
+<div class="stage-box">
+<strong>元画像の位置</strong>
+<p>
+拡張後の行1〜4・列1〜4<br>元の(0,0) → (1,1)
+</p>
+</div>
+<div class="stage-box">
+<strong>移動幅1なら</strong>
+<p>
+開始位置 0,1,2,3,4<br>出力5×5
+</p>
+</div>
+</div>
+<p>余白も数値0として掛け算に使います。</p>
+<p>操作教材では<strong>追加0は破線、元画像は実線</strong>で区別します。</p>
+<p class="stage-link">
+<a href="interactive.html#shape" target="_blank" rel="noopener">操作教材で確かめる：出力サイズ</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-公式を使う前に、窓を置ける開始位置を数える方法でも確認しましょう。余白なしなら一方向の開始位置はゼロ、一、二です。移動幅二ならゼロ、二になります。この公式は窓の要素を間引かない今回の条件です。
+パディングは画像の周りに加える余白です。この例は周囲に1マスずつ0を足します。縦も横も4足す2で6になります。元画像の左上は、拡張後の行1、列1へ移ります。新しい画像の左上から0、1、2、3、4と窓を置けるので、移動幅1なら出力は5行5列です。元画像にあった0も、追加した0も計算上は同じ0ですが、由来は違います。操作教材では破線と追加0というラベルで余白を区別します。
 </aside>
 </section>
 <section>
-<!-- 20: 条件を一つずつ変えるを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>条件を一つずつ変える</h2>
-<ol type="1">
-<li>入力とフィルターを固定する。</li>
-<li>ストライドだけを1から2へ変える。</li>
-<li>初期状態へ戻す。</li>
-<li>パディングだけを0から1へ変える。</li>
-</ol>
-<p><strong>出力の大きさ</strong>と<strong>各位置の値</strong>を別々に比べる。</p>
+<!-- 20: 公式は「何歩進めるか＋最初の1か所」の入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+出力サイズ
+</p>
+<h2>公式は「何歩進めるか＋最初の1か所」</h2>
+<div class="stage-diagram">
+<div class="stage-box">
+<strong>① 長さを決める</strong>
+<p>
+4＋2×余白
+</p>
+</div>
+<div class="stage-box">
+<strong>② 窓の長さを引く</strong>
+<p>
+−2
+</p>
+</div>
+<div class="stage-box">
+<strong>③ 進める回数</strong>
+<p>
+÷移動幅 → 切り捨て
+</p>
+</div>
+<div class="stage-box">
+<strong>④ 最初も数える</strong>
+<p>
+＋1
+</p>
+</div>
+</div>
+<p><strong>出力の一辺＝⌊(4＋2×余白−2)÷移動幅⌋＋1</strong></p>
+<p>例：余白0・移動幅2 → ⌊(4−2)÷2⌋＋1＝2</p>
+<p>0回移動した開始位置0も含めて、2か所です。</p>
+<p class="stage-link">
+<a href="interactive.html#shape" target="_blank" rel="noopener">操作教材で確かめる：出力サイズ</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-いくつもの条件を同時に変えると、結果が何の影響か分かりにくくなります。まず移動幅だけを変え、元に戻してから余白を変えてください。出力が大きくなったことと、認識が正確になったことは同じではありません。
+公式を暗記する前に、それぞれが何を数えているかを確認します。まず入力の長さ4に両端の余白を足します。窓の長さ2を引くと、窓の左上が進める最後の位置が分かります。それを移動幅で割ると何歩進めるかが分かります。途中までの一歩は窓がはみ出すため切り捨てます。最後に1を足すのは、まだ一歩も動いていない最初の位置も1か所と数えるためです。余白なし、移動幅2なら、一歩進めるので最初と合わせて2か所です。
 </aside>
 </section>
 <section>
-<!-- 21: ReLUで負の応答を0にするを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>ReLUで負の応答を0にする</h2>
-<pre class="text"><code>入力   -2  2  0     ReLU後   0  2  0</code></pre>
-<ul>
-<li>ReLU(x)＝max(0,x)。正の値はそのまま、負の値は0。</li>
-<li>要素ごとの非線形変換。配列の縦横サイズは変えない。</li>
-<li>何を残し、何を捨てたかを確認する。</li>
-</ul>
+<!-- 21: 4条件を、開始位置から比べるの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+出力サイズ
+</p>
+<h2>4条件を、開始位置から比べる</h2>
+<table class="stage-table">
+<thead>
+<tr>
+<th>
+余白
+</th>
+<th>
+移動幅
+</th>
+<th>
+横・縦それぞれの開始位置
+</th>
+<th>
+出力
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+1
+</td>
+<td>
+0, 1, 2
+</td>
+<td>
+3×3
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+<td>
+0, 2
+</td>
+<td>
+2×2
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+1
+</td>
+<td>
+0, 1, 2, 3, 4
+</td>
+<td>
+5×5
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+2
+</td>
+<td>
+0, 2, 4
+</td>
+<td>
+3×3
+</td>
+</tr>
+</tbody>
+</table>
+<p>入力4×4、窓2×2、重みは同じ。<strong>一つの条件だけ変えて比較</strong>。</p>
+<p>同じ3×3でも、余白0・移動幅1と余白1・移動幅2は計算する範囲が違います。</p>
+<p class="stage-link">
+<a href="interactive.html#shape" target="_blank" rel="noopener">操作教材で確かめる：出力サイズ</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-ここでのマイナス二は計算間違いではありません。それをReLUがゼロへ変えます。プラス二は二のままです。画像を小さくする操作とは違い、値だけを変えて形は保ちます。
+4つの条件を表で比べましょう。余白なしで移動幅1なら3行3列、移動幅2なら2行2列です。余白を1つ足すと、移動幅1なら5行5列、移動幅2なら3行3列です。最後の条件と最初の条件はどちらも3行3列ですが、同じ計算ではありません。元画像の外側の0を含むか、どの開始位置を選ぶかが違います。出力の大きさが同じでも中身が同じとは限らないことを、操作教材の積と合計で確認してください。
 </aside>
 </section>
 <section>
-<!-- 22: 最大プーリングでまとめるを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>最大プーリングでまとめる</h2>
-<pre class="text"><code>領域     0 2     → 最大値 2
-         0 2</code></pre>
-<ul>
-<li>2×2の値から最大値を一つ取る。</li>
-<li>3×3の特徴マップに移動幅1で適用 → 2×2。</li>
-<li>今日の出力は <code>[[2,2],[2,2]]</code>。</li>
-</ul>
-<p><a href="interactive.html#pooling" target="_blank" rel="noopener">まとめ方を変える → 何が残る？</a></p>
+<!-- 22: ReLU：負の値だけを0へ変えるの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+活性化と集約
+</p>
+<h2>ReLU：負の値だけを0へ変える</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+畳み込みの結果
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+-2
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+-2
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+-2
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="stage-box">
+<strong>各マスで判定</strong>
+<p>
+負なら0<br>0以上ならそのまま
+</p>
+</div>
+<figure class="stage-figure">
+<figcaption>
+ReLU後
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p>−2 → 0 ／ 2 → 2 ／ 0 → 0</p>
+<p><strong>行数・列数は3×3のまま</strong>。位置を動かす処理ではありません。</p>
+<p class="stage-link">
+<a href="interactive.html#pooling" target="_blank" rel="noopener">操作教材で確かめる：活性化と集約</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-プーリングでは、畳み込みのように学習する重みを掛けません。今回の最大プーリングは領域の最大値を選ぶだけです。移動幅一なので領域は重なります。一般的な設定が常に移動幅一という意味ではありません。
+ここから活性化と集約です。まずレルーは、各マスの値を変える処理です。負の値なら0にし、0以上ならそのまま通します。この画像の畳み込み結果は各行がマイナス2、2、0です。それぞれを判定すると0、2、0になります。値は変わりますが、マスの数や位置は変わりません。左上にあったマイナス2は、同じ左上で0になります。次に行うプーリングとは役割が違うことを覚えておきましょう。
 </aside>
 </section>
 <section>
-<!-- 23: 平均プーリングと比べるを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>平均プーリングと比べる</h2>
-<p>同じ領域 <code>[[0,2],[0,2]]</code> を使う。</p>
+<!-- 23: 最大プーリング：4値から最大1個を取るの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+活性化と集約
+</p>
+<h2>最大プーリング：4値から最大1個を取る</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+ReLU後・左上の窓
+</figcaption>
 <table>
-<thead>
-<tr>
-<th>方法</th>
-<th>計算</th>
-<th>結果</th>
-</tr>
-</thead>
 <tbody>
 <tr>
-<td>最大</td>
-<td>一番大きい値を取る</td>
-<td>2</td>
+<td class="focus-cell">
+0
+</td>
+<td class="focus-cell">
+2
+</td>
+<td>
+0
+</td>
 </tr>
 <tr>
-<td>平均</td>
-<td>(0＋2＋0＋2)÷4</td>
-<td>1</td>
+<td class="focus-cell">
+0
+</td>
+<td class="focus-cell">
+2
+</td>
+<td>
+0
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+<td>
+0
+</td>
 </tr>
 </tbody>
 </table>
-<p>最大は強い応答、平均は領域全体の値を反映する。</p>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+取り出した4値
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="stage-box">
+<strong>最大値を選ぶ</strong>
+<p>
+max(0, 2, 0, 2)＝2
+</p>
+</div>
+</div>
+<p><strong>0と2を足す処理ではありません。最大値を選びます。</strong></p>
+<p>最大値2は2か所ありますが、出力は1個の2です。</p>
+<p class="stage-link">
+<a href="interactive.html#pooling" target="_blank" rel="noopener">操作教材で確かめる：活性化と集約</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-入力と領域を同じにして集約方法だけを変えます。最大は二、平均は一です。どちらも元の四つの値すべてを復元できるわけではありません。方法の選択は、どんな情報を残したいかに関係します。
+プーリングは近くの値をまとめる処理です。最大プーリングでは、2かける2の窓から最大値を1つ取り出します。左上の窓には0、2、0、2が入っています。最も大きい値は2なので、出力の左上には2を置きます。2が2か所ありますが、足して4にするのではありません。代表として2を1つ残します。操作教材では同点の最大値をすべて太枠にしてあります。
 </aside>
 </section>
 <section>
-<!-- 24: 位置をずらすとどうなる？を通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>位置をずらすとどうなる？</h2>
-<ul>
-<li>列1の縦線を列2へ動かし、途中の特徴マップを比較する。</li>
-<li>プーリング後に同じ値になる場所も、変わる場所もある。</li>
-<li>端、移動幅、領域の区切りによって結果が変わる。</li>
-<li><strong>位置ずれへの完全な不変性や回転への不変性は保証しない。</strong></li>
-</ul>
-</div>
-<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
-</audio>
-<aside class="notes">
-位置を変えたときに同じ出力になるかは条件次第です。中央から端への移動では、窓が見る領域も変わります。プーリングを入れたからどんな移動や回転でも大丈夫だ、とは言えません。具体的な配列で確かめましょう。
-</aside>
-</section>
-<section>
-<!-- 25: 途中で失われる情報を通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>途中で失われる情報</h2>
-<ul>
-<li>ReLU：負の値どうしの違いを失う。</li>
-<li>最大プーリング：最大でない値や、その詳しい配置を失う。</li>
-<li>小さくするほど必ず分類がよくなる、とは言えない。</li>
-<li>必要な情報が残るかを、目的と結果から確かめる。</li>
-</ul>
-</div>
-<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
-</audio>
-<aside class="notes">
-値をまとめることは計算量を減らす助けになりますが、情報も失います。たとえば最大値が二という結果だけでは、残りの値を決められません。何を省いてよいかは、解きたい問題と確認した結果から考えます。
-</aside>
-</section>
-<section>
-<!-- 26: 画像から二つの分類スコアへを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>画像から二つの分類スコアへ</h2>
-<pre class="text"><code>4×4×1 → 畳み込み → 3×3×2 → ReLU
-       → 最大プーリング → 2×2×2 → 8値 → 2スコア</code></pre>
-<p>全結合層は8値を重み付きで組み合わせる。</p>
-<p><a href="interactive.html#pipeline" target="_blank" rel="noopener">途中の配列と分類スコアを見る</a></p>
-</div>
-<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
-</audio>
-<aside class="notes">
-学習モデルではフィルターを二枚使うため特徴マップも二枚です。プーリング後はそれぞれ二行二列で、合計八個の値になります。最後にこの八個を並べて全結合層へ渡し、縦線と横線のスコアを計算します。
-</aside>
-</section>
-<section>
-<!-- 27: softmaxと予測の読み方を通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>softmaxと予測の読み方</h2>
-<ul>
-<li>2スコアをsoftmaxで、合計1の非負の値へ変換する。</li>
-<li>大きい方を予測ラベルにする：<strong>0＝縦線、1＝横線</strong>。</li>
-<li>同値の場合、この教材では0を選ぶ。</li>
-<li>大きな値でも、実世界での正しさを保証する確率ではない。</li>
-</ul>
-</div>
-<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
-</audio>
-<aside class="notes">
-softmaxの値は二クラスで合計一になります。今回は大きい方を選びます。ただし、モデルが自信を持つことと正解することは別です。人工画像だけの学習結果を現実の写真へそのまま当てはめないようにしましょう。
-</aside>
-</section>
-<section>
-<!-- 28: 損失は学習のための数値を通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>損失は学習のための数値</h2>
-<ul>
-<li>正解ラベルに割り当てた値が小さいほど、交差エントロピー損失は大きい。</li>
-<li>学習用4画像の損失を平均して更新に使う。</li>
-<li>正解数は分類結果、損失は予測値も反映する。別々に見る。</li>
-<li>この実験はフィルターと全結合層の重み・バイアスを更新する。</li>
-</ul>
-</div>
-<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
-</audio>
-<aside class="notes">
-損失は間違いの個数そのものではありません。正解ラベルにどれほどの値を割り当てたかを反映します。今回は四画像の平均損失を使います。畳み込みのフィルターも最後の分類部分も学習対象です。
-</aside>
-</section>
-<section>
-<!-- 29: 学習用と確認用を分けるを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>学習用と確認用を分ける</h2>
-<table>
+<!-- 24: 4か所の窓が、2×2の出力になるの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+活性化と集約
+</p>
+<h2>4か所の窓が、2×2の出力になる</h2>
+<div class="stage-diagram">
+<table class="stage-table">
 <thead>
 <tr>
-<th>用途</th>
-<th>線の位置</th>
-<th>枚数</th>
+<th>
+窓の左上
+</th>
+<th>
+4値
+</th>
+<th>
+出力位置・値
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>学習用</td>
-<td>中央の位置1・2</td>
-<td>縦2＋横2＝4</td>
+<td>
+(0,0)
+</td>
+<td>
+0,2,0,2
+</td>
+<td>
+(0,0)＝2
+</td>
 </tr>
 <tr>
-<td>確認用</td>
-<td>端の位置0・3</td>
-<td>縦2＋横2＝4</td>
+<td>
+(0,1)
+</td>
+<td>
+2,0,2,0
+</td>
+<td>
+(0,1)＝2
+</td>
+</tr>
+<tr>
+<td>
+(1,0)
+</td>
+<td>
+0,2,0,2
+</td>
+<td>
+(1,0)＝2
+</td>
+</tr>
+<tr>
+<td>
+(1,1)
+</td>
+<td>
+2,0,2,0
+</td>
+<td>
+(1,1)＝2
+</td>
 </tr>
 </tbody>
 </table>
-<p>確認用画像は<strong>重み更新に使わない</strong>。両方の結果を報告する。</p>
+<figure class="stage-figure">
+<figcaption>
+出力2×2
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+2
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+2
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p>窓2×2・移動幅1。横2か所 × 縦2か所＝4か所。</p>
+<p class="stage-link">
+<a href="interactive.html#pooling" target="_blank" rel="noopener">操作教材で確かめる：活性化と集約</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+窓を右へ動かすと、4値は2、0、2、0になります。最大値はやはり2です。行末まで来たら次の行の左へ進みます。窓の左上の位置は、行0列0、行0列1、行1列0、行1列1の4か所です。各窓から1つずつ値を取り出し、2行2列に並べます。この例では全て2ですが、異なる範囲から計算した4個の結果です。操作教材の前後ボタンで4か所を確かめてください。
+</aside>
+</section>
+<section>
+<!-- 25: 平均プーリング：4値の合計を4で割るの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+活性化と集約
+</p>
+<h2>平均プーリング：4値の合計を4で割る</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+同じ4値
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="stage-box">
+<strong>最大</strong>
+<p>
+max(0,2,0,2)＝2
+</p>
+</div>
+<div class="stage-box">
+<strong>平均</strong>
+<p>
+(0＋2＋0＋2)÷4<br>＝4÷4＝1
+</p>
+</div>
+</div>
+<p>比べるときは<strong>入力と窓の位置を保ち、集約方法だけ</strong>を変える。</p>
+<p>最大は最も強い値、平均は4値全体の水準を残します。</p>
+<p class="stage-link">
+<a href="interactive.html#pooling" target="_blank" rel="noopener">操作教材で確かめる：活性化と集約</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+同じ窓で平均プーリングも試しましょう。4つの値を全て足すと4です。値は4個あるので4で割り、平均は1になります。最大プーリングの結果2とは違いますが、どちらも同じ4値から作った代表値です。最大は最も強い反応を残し、平均は周囲を含めた全体の水準を表します。操作教材では窓の位置を変えずに最大と平均を切り替えられます。何を変えたから結果が変わったのかを一つずつ確かめましょう。
+</aside>
+</section>
+<section>
+<!-- 26: 線を1列ずらすと、出力も変わることがあるの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+活性化と集約
+</p>
+<h2>線を1列ずらすと、出力も変わることがある</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+基準：縦線は列1
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+2
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+2
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="stage-box">
+<strong>線を右へ1列</strong>
+<p>
+重み・集約方法は同じ
+</p>
+</div>
+<figure class="stage-figure">
+<figcaption>
+縦線は列2
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+2
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p>最大プーリングでも、出力の左列は<strong>2 → 0</strong>。</p>
+<p>位置ずれの影響が小さくなる場合はあっても、同じ出力になる保証はありません。</p>
+<p class="stage-link">
+<a href="interactive.html#pooling" target="_blank" rel="noopener">操作教材で確かめる：活性化と集約</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+線の位置だけを動かしてみます。列1に縦線がある基準画像では、最大プーリングの結果は全て2でした。線を右へ1列ずらし列2にすると、出力の左列は0になります。したがってプーリングを使えば位置が変わっても必ず同じになる、とは言えません。近所の最大値を残すため、小さなずれの影響が小さくなる場合はありますが、窓の境界を越えると結果は変わり得ます。この例では何が変わったかを数値で説明してください。
+</aside>
+</section>
+<section>
+<!-- 27: 1個の結果から、元の4値には戻れないの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+活性化と集約
+</p>
+<h2>1個の結果から、元の4値には戻れない</h2>
+<div class="stage-diagram">
+<div class="stage-box">
+<strong>最大なら</strong>
+<p>
+[0,2,0,2] → 2<br>[2,0,0,0] → 2
+</p>
+</div>
+<div class="stage-box">
+<strong>平均なら</strong>
+<p>
+[0,2,0,2] → 1<br>[1,1,1,1] → 1
+</p>
+</div>
+</div>
+<p><strong>違う入力でも同じ出力</strong>になるので、元の値・配置を一意に復元できません。</p>
+<p>ReLUでも −2 と −1 はどちらも0。情報を残す一方、捨てる情報もあります。</p>
+<p class="stage-link">
+<a href="interactive.html#pooling" target="_blank" rel="noopener">操作教材で確かめる：活性化と集約</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+集約すると何が失われるのでしょうか。最大値2だけを見ても、元が0、2、0、2だったのか、2、0、0、0だったのかは分かりません。平均1でも、元が0、2、0、2なのか、全て1なのかを区別できません。配置を入れ替えても同じ結果になる場合があります。つまり1個の結果から元の4値や配置を一意に戻すことはできません。レルーでも負の値を0にするので、元がマイナス1かマイナス2かは失われます。
+</aside>
+</section>
+<section>
+<!-- 28: 分類までの道順を7段階で見るの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+分類までの流れ
+</p>
+<h2>分類までの道順を7段階で見る</h2>
+<div class="stage-diagram">
+<div class="stage-box">
+<strong>1</strong>
+<p>
+画像<br>4×4
+</p>
+</div>
+<div class="stage-box">
+<strong>2</strong>
+<p>
+特徴マップ<br>3×3が2枚
+</p>
+</div>
+<div class="stage-box">
+<strong>3</strong>
+<p>
+ReLU
+</p>
+</div>
+<div class="stage-box">
+<strong>4</strong>
+<p>
+集約<br>2×2が2枚
+</p>
+</div>
+<div class="stage-box">
+<strong>5</strong>
+<p>
+8値
+</p>
+</div>
+<div class="stage-box">
+<strong>6</strong>
+<p>
+2スコア
+</p>
+</div>
+<div class="stage-box">
+<strong>7</strong>
+<p>
+予測
+</p>
+</div>
+</div>
+<p>この先は<strong>固定初期重み</strong>を使います。手作りの「左右の差」とは別です。</p>
+<p>入力は同じ縦線（列1）。操作教材で段階を選び、数値を追います。</p>
+<p class="stage-link">
+<a href="interactive.html#pipeline" target="_blank" rel="noopener">操作教材で確かめる：分類までの流れ</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+分類までの流れを見ていきます。画像から2枚の特徴マップを作り、レルー、プーリング、8値への並べ替え、2つのスコア、そして予測へ進みます。ここから使う重みは、先ほどの手作りの左右差フィルターとは別です。小さな学習で使うものと同じ固定初期値です。初期状態なので正しく分類できるとは限りません。操作教材ではこの7段階を選んで詳しく見られます。何を受け取って何を出すかを一段階ずつ確認しましょう。
+</aside>
+</section>
+<section>
+<!-- 29: 2種類の重みで、2枚の特徴マップを作るの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+分類までの流れ
+</p>
+<h2>2種類の重みで、2枚の特徴マップを作る</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+フィルターa／バイアス0.1
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.1394
+</td>
+<td>
+-0.475
+</td>
+</tr>
+<tr>
+<td>
+-0.225
+</td>
+<td>
+-0.2768
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+フィルターb／バイアス0.1
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.2365
+</td>
+<td>
+0.1767
+</td>
+</tr>
+<tr>
+<td>
+0.3922
+</td>
+<td>
+-0.4131
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="stage-box">
+<strong>各窓で</strong>
+<p>
+4組の積を足す<br>さらに0.1を足す
+</p>
+</div>
+</div>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+特徴マップa
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+-0.6518
+</td>
+<td>
+0.0145
+</td>
+<td>
+0.1
+</td>
+</tr>
+<tr>
+<td>
+-0.6518
+</td>
+<td>
+0.0145
+</td>
+<td>
+0.1
+</td>
+</tr>
+<tr>
+<td>
+-0.6518
+</td>
+<td>
+0.0145
+</td>
+<td>
+0.1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+特徴マップb
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+-0.1364
+</td>
+<td>
+0.7287
+</td>
+<td>
+0.1
+</td>
+</tr>
+<tr>
+<td>
+-0.1364
+</td>
+<td>
+0.7287
+</td>
+<td>
+0.1
+</td>
+</tr>
+<tr>
+<td>
+-0.1364
+</td>
+<td>
+0.7287
+</td>
+<td>
+0.1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p>表示は小数第4位まで。計算は丸める前の値を使います。</p>
+<p class="stage-link">
+<a href="interactive.html#pipeline" target="_blank" rel="noopener">操作教材で確かめる：分類までの流れ</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-学習用と確認用は線の位置で分けます。確認用を重み更新に混ぜると、別の画像でどこまで通用するかを確かめる意味が変わります。この小さな確認用集合も、実画像の代表的な試験ではありません。
+2種類のフィルターをaとbと呼びます。それぞれ4個の重みを持ち、同じ画像に別々に適用します。各窓で4組の積を足し、さらにバイアス0.1を足します。フィルターaとbでは重みが違うので、同じ画像でも異なる特徴マップができます。各フィルターは画像全体で同じ重みを繰り返し使います。表示は小数第4位までに丸めていますが、内部の計算は丸める前の値を使っています。
 </aside>
 </section>
 <section>
-<!-- 30: 学習の条件をそろえるを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>学習の条件をそろえる</h2>
-<ul>
-<li>28パラメーター、固定初期値、学習率0.1、100回更新。</li>
-<li>毎回4画像すべての平均損失から、一括で更新する。</li>
-<li>小例では中央差分による数値微分を使う。</li>
-<li>学習率0との比較も、<strong>同じ初期値のコピーから</strong>始める。</li>
-</ul>
+<!-- 30: ReLUと集約を、2枚それぞれに適用するの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+分類までの流れ
+</p>
+<h2>ReLUと集約を、2枚それぞれに適用する</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+a：ReLU後
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+0.0145
+</td>
+<td>
+0.1
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+0.0145
+</td>
+<td>
+0.1
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+0.0145
+</td>
+<td>
+0.1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+a：最大集約後
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.0145
+</td>
+<td>
+0.1
+</td>
+</tr>
+<tr>
+<td>
+0.0145
+</td>
+<td>
+0.1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+b：ReLU後
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+0.7287
+</td>
+<td>
+0.1
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+0.7287
+</td>
+<td>
+0.1
+</td>
+</tr>
+<tr>
+<td>
+0
+</td>
+<td>
+0.7287
+</td>
+<td>
+0.1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+b：最大集約後
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.7287
+</td>
+<td>
+0.7287
+</td>
+</tr>
+<tr>
+<td>
+0.7287
+</td>
+<td>
+0.7287
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p>各マップで負の値を0 → 2×2の窓で最大値（移動幅1）。</p>
+<p><strong>3×3が2枚 → 2×2が2枚</strong>。aとbを混ぜて最大を取るわけではありません。</p>
+<p class="stage-link">
+<a href="interactive.html#pipeline" target="_blank" rel="noopener">操作教材で確かめる：分類までの流れ</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-小例なので数値微分で勾配を近似できます。各パラメーターを少し増減させ、損失の差を調べる完成済みコードです。大規模なCNNでは通常、より効率的な誤差逆伝播を使います。比較のたびに初期値をそろえてください。
+2枚の特徴マップには、それぞれ同じ手順を適用します。まず負の値を0にするレルーを通します。次に2かける2の窓、移動幅1で最大値を取り出します。3行3列には窓を4か所置けるので、結果は2行2列になります。これをaとbそれぞれに行います。aとbの値を一緒にして最大値を選ぶのではありません。2枚の区別を保ったまま、次の並べ替えへ進みます。
 </aside>
 </section>
 <section>
-<!-- 31: 学習前後を見比べるを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>学習前後を見比べる</h2>
-<ul>
-<li>基準実験の平均損失：約 <strong>0.765126 → 0.130153</strong>。</li>
-<li>学習用予測：<code>[1,1,1,0] → [0,0,1,1]</code>。</li>
-<li>正解：<code>[0,0,1,1]</code>（縦・縦・横・横）。</li>
-<li>フィルターの値と、予測の変化を両方確認する。</li>
-</ul>
-<p><a href="interactive.html#learning" target="_blank" rel="noopener">同じ初期値から100回学習する</a></p>
+<!-- 31: 2枚の2×2を、a1〜b4の8値へ並べるの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+分類までの流れ
+</p>
+<h2>2枚の2×2を、a1〜b4の8値へ並べる</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+マップa
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.0145<small>a1</small>
+</td>
+<td>
+0.1<small>a2</small>
+</td>
+</tr>
+<tr>
+<td>
+0.0145<small>a3</small>
+</td>
+<td>
+0.1<small>a4</small>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+マップb
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.7287<small>b1</small>
+</td>
+<td>
+0.7287<small>b2</small>
+</td>
+</tr>
+<tr>
+<td>
+0.7287<small>b3</small>
+</td>
+<td>
+0.7287<small>b4</small>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="stage-box">
+<strong>並べる順番</strong>
+<p>
+a1 → a2 → a3 → a4<br>→ b1 → b2 → b3 → b4
+</p>
+</div>
+</div>
+<p>各マップで<strong>左上 → 右上 → 左下 → 右下</strong>。</p>
+<p>値を足したり平均したりせず、値を保ったまま1列に並べます。</p>
+<p class="stage-link">
+<a href="interactive.html#pipeline" target="_blank" rel="noopener">操作教材で確かめる：分類までの流れ</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-固定条件の実験では平均損失が下がり、学習用の四画像は正しく分類できるようになります。数値は小数六桁に丸めています。別の条件でも必ず同じ結果になるという意味ではありません。操作教材で更新前後のフィルターも見てください。
+2行2列のマップaに、左上からa1、右上a2、左下a3、右下a4と名前を付けます。マップbも同じ順番でb1からb4です。まずaの4値を並べ、その後にbの4値を続けます。合計8個です。この処理では値を変えません。足し合わせたり平均したりするのではなく、並び方だけを変えます。どのマスが8値のどこに来たのか、同じ名前を目印にたどってください。
 </aside>
 </section>
 <section>
-<!-- 32: 端の画像では誤りが残るを通して計算と観察の根拠を対応させる -->
-<div class="slide-body">
-<h2>端の画像では誤りが残る</h2>
-<ul>
-<li>学習後の確認用予測：<code>[1,1,1,1]</code>。</li>
-<li>正解は <code>[0,0,1,1]</code>。端の縦線2枚を誤分類する。</li>
-<li>学習用4枚の成功だけで「縦横を理解した」と結論しない。</li>
-<li>入力の違い、途中の応答、予測を根拠に説明する。</li>
-</ul>
+<!-- 32: 同じ8値から「縦線用」「横線用」のスコアの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+分類までの流れ
+</p>
+<h2>同じ8値から「縦線用」「横線用」のスコア</h2>
+<table class="stage-table">
+<thead>
+<tr>
+<th>
+クラス
+</th>
+<th>
+計算
+</th>
+<th>
+結果
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+縦線
+</td>
+<td>
+a1×w1 ＋ … ＋ b4×w8 ＋ バイアス
+</td>
+<td>
+-0.4742
+</td>
+</tr>
+<tr>
+<td>
+横線
+</td>
+<td>
+a1×v1 ＋ … ＋ b4×v8 ＋ バイアス
+</td>
+<td>
+-0.0402
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>8値は共通、掛ける重みはクラスごとに別</strong>（各8個）。</p>
+<p>例：縦線用のa1の寄与 ≈ 0.0145×(−0.0781) ≈ −0.0011</p>
+<p>操作教材の計算表で全8組とバイアス0を確かめます。</p>
+<p class="stage-link">
+<a href="interactive.html#pipeline" target="_blank" rel="noopener">操作教材で確かめる：分類までの流れ</a>
+</p>
 </div>
 <audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-学習用で全問正解しても、確認用では縦線を横線と予測します。失敗を隠さず、どの入力でどんな誤りが残ったかを報告しましょう。中央と端の特徴マップを比べることが、理由を考える手がかりになります。
+縦線か横線かを決めるために、8値から2つのスコアを作ります。縦線用には8個の重みがあり、各値に対応する重みを掛けて足し、バイアスも足します。横線用には別の8個の重みがあります。入力の8値は共通でも掛ける重みが違うため、スコアが変わります。この画像では縦線用が約マイナス0.4742、横線用が約マイナス0.0402です。スコアは負でも構いません。操作教材では8組全ての掛け算を計算表で追えます。
 </aside>
 </section>
 <section>
-<!-- 33: 自習は一周ずつ進めるを通して計算と観察の根拠を対応させる -->
+<!-- 33: softmaxの出力と、予測・正解を分けるの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+分類までの流れ
+</p>
+<h2>softmaxの出力と、予測・正解を分ける</h2>
+<div class="stage-diagram">
+<div class="stage-box">
+<strong>2スコア</strong>
+<p>
+縦 −0.4742<br>横 −0.0402
+</p>
+</div>
+<div class="stage-box">
+<strong>softmax</strong>
+<p>
+縦 0.3932<br>横 0.6068
+</p>
+</div>
+<div class="stage-box">
+<strong>大きい方を選ぶ</strong>
+<p>
+予測：横線<br>正解：縦線 → 不正解
+</p>
+</div>
+</div>
+<p>softmax：正の2値へ変換し、合計を1にする。</p>
+<p><strong>大きい出力＝正解の保証ではない</strong>。正解ラベルと比べて判定します。</p>
+<p class="stage-link">
+<a href="interactive.html#pipeline" target="_blank" rel="noopener">操作教材で確かめる：分類までの流れ</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+2つのスコアをソフトマックスで変換すると、正の値になり合計が1になります。この例では縦線への出力が約0.3932、横線への出力が約0.6068です。大きい方を選ぶので予測は横線です。しかし画像の正解は縦線なので不正解です。出力の大きさと正解かどうかは別の話です。ソフトマックスの値が大きいから必ず当たるわけではありません。正解ラベルを別に用意して比べる必要があります。
+</aside>
+</section>
+<section>
+<!-- 34: 学習＝正解と比べ、重みを少しずつ変えるの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+小さな学習
+</p>
+<h2>学習＝正解と比べ、重みを少しずつ変える</h2>
+<div class="stage-diagram">
+<div class="stage-box">
+<strong>① 予測する</strong>
+<p>
+現在の重みを使う
+</p>
+</div>
+<div class="stage-box">
+<strong>② 正解と比べる</strong>
+<p>
+損失を求める
+</p>
+</div>
+<div class="stage-box">
+<strong>③ 更新する</strong>
+<p>
+重みを少し変える
+</p>
+</div>
+<div class="stage-box">
+<strong>④ 繰り返す</strong>
+<p>
+次の予測へ
+</p>
+</div>
+</div>
+<p><strong>窓の移動</strong>：同じ重みで、参照範囲を変える。</p>
+<p><strong>重みの学習</strong>：同じ学習用画像で、掛ける数やバイアスを変える。</p>
+<p class="stage-link">
+<a href="interactive.html#learning" target="_blank" rel="noopener">操作教材で確かめる：小さな学習</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここから小さな学習です。現在の重みで予測し、正解と比べて損失を求め、重みを少し変え、また予測します。この繰り返しを学習と呼びます。窓を動かすこととは区別してください。窓を動かすときは同じ重みを使い、画像のどの範囲を見るかを変えます。学習ではフィルターや分類に使う重み、バイアスそのものを変えます。この教材では28個のパラメーターをまとめて更新します。
+</aside>
+</section>
+<section>
+<!-- 35: 中央4枚で学習し、端4枚で確認するの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+小さな学習
+</p>
+<h2>中央4枚で学習し、端4枚で確認する</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+縦・列1
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+縦・列2
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+横・行1
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+横・行2
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p><strong>上：学習用4枚（更新に使う）／ 下：確認用4枚（更新に使わない）</strong></p>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+縦・列0
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+縦・列3
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+横・行0
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+横・行3
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p class="stage-link">
+<a href="interactive.html#learning" target="_blank" rel="noopener">操作教材で確かめる：小さな学習</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+画像は8枚あります。上の4枚は中央に線がある画像で、重みを更新するために使います。下の4枚は端に線がある画像で、学習後にどこまで分類できるかを確認するために使います。どちらも縦線2枚と横線2枚ですが、位置が違います。確認用画像を重み更新に混ぜてしまうと、まだ学習していない位置でどうなるかを確かめられません。役割を分けて観察しましょう。
+</aside>
+</section>
+<section>
+<!-- 36: 損失：正解への出力が小さいほど大きいの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+小さな学習
+</p>
+<h2>損失：正解への出力が小さいほど大きい</h2>
+<div class="stage-diagram">
+<div class="stage-box">
+<strong>正解が縦線の1枚</strong>
+<p>
+縦への出力 0.3932<br>損失 ≈ −log(0.3932)<br>≈ 0.9335
+</p>
+</div>
+<div class="stage-box">
+<strong>学習用4枚の平均</strong>
+<p>
+各画像の損失を足す<br>4で割る<br>初期値 ≈ 0.765126
+</p>
+</div>
+</div>
+<p>損失は<strong>外し方の程度</strong>、正解数は<strong>何枚当たったか</strong>。</p>
+<p>正解数が同じでも、正解への出力が変われば損失は変わります。</p>
+<p class="stage-link">
+<a href="interactive.html#learning" target="_blank" rel="noopener">操作教材で確かめる：小さな学習</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+損失は予測の外し方を表す数値です。この教材では、正解クラスへの出力の対数にマイナスを付けます。たとえば正解が縦線で、縦線への出力が約0.3932なら、1枚の損失は約0.9335です。正解への出力が1に近いほど損失は小さくなります。学習に使う数値は、中央4枚それぞれの損失を足して4で割った平均です。初期値は約0.765126です。正解数は当たった枚数だけを数えるので、平均損失とは分けて読みましょう。
+</aside>
+</section>
+<section>
+<!-- 37: 学習率＝重みを変える量の調整の入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+小さな学習
+</p>
+<h2>学習率＝重みを変える量の調整</h2>
+<div class="stage-diagram">
+<div class="stage-box">
+<strong>損失の変わり方を調べる</strong>
+<p>
+各重みを±0.000001<br>試して方向を求める
+</p>
+</div>
+<div class="stage-box">
+<strong>少しずつ更新する</strong>
+<p>
+新しい重み＝現在の重み<br>−学習率×変化方向
+</p>
+</div>
+</div>
+<ul>
+<li>学習率 <strong>0</strong>：更新量0 → 100回でも同じ重み。</li>
+<li>学習率 <strong>0.1</strong>：同じ初期値から100回の変化を観察。</li>
+</ul>
+<p>比較では入力・初期値・回数をそろえます。</p>
+<p class="stage-link">
+<a href="interactive.html#learning" target="_blank" rel="noopener">操作教材で確かめる：小さな学習</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+重みをどれだけ変えるかを調整するのが学習率です。この小例では、各重みをプラスとマイナスに0.000001だけ変え、損失がどう変わるかを調べます。その方向に学習率を掛け、現在の重みから引きます。学習率0なら掛けた結果が0なので、何回計算しても重みは変わりません。0.1なら更新が進みます。比較するときは入力、初期値、更新回数を同じにし、学習率だけを変えましょう。これは仕組みを観察するための小さな計算です。
+</aside>
+</section>
+<section>
+<!-- 38: 学習すると、フィルターの数値も変わるの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+小さな学習
+</p>
+<h2>学習すると、フィルターの数値も変わる</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+a：0回
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.1394
+</td>
+<td>
+-0.475
+</td>
+</tr>
+<tr>
+<td>
+-0.225
+</td>
+<td>
+-0.2768
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+a：100回
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.0695
+</td>
+<td>
+-0.475
+</td>
+</tr>
+<tr>
+<td>
+-0.2949
+</td>
+<td>
+-0.2768
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+b：0回
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.2365
+</td>
+<td>
+0.1767
+</td>
+</tr>
+<tr>
+<td>
+0.3922
+</td>
+<td>
+-0.4131
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+b：100回
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td>
+0.5696
+</td>
+<td>
+-0.5696
+</td>
+</tr>
+<tr>
+<td>
+0.949
+</td>
+<td>
+-0.9356
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p>学習率0.1。<strong>画像ではなく、掛ける数が変化</strong>しています。</p>
+<p>操作教材で0・1・10・50・100回を選び、同じ位置の重みを比べます。</p>
+<p class="stage-link">
+<a href="interactive.html#learning" target="_blank" rel="noopener">操作教材で確かめる：小さな学習</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+学習前後のフィルターを見てみましょう。画像の数値を変えたわけではありません。画像に掛ける重みが変わっています。フィルターaもbも、それぞれ同じ位置の値を比べてください。フィルター以外に、バイアスや分類用の重みも更新しています。操作教材では0回、1回、10回、50回、100回の実際の状態を保存しています。途中の値を想像で埋めたものではありません。回数を選び、少しずつどう変わったかを確かめましょう。
+</aside>
+</section>
+<section>
+<!-- 39: 損失グラフは「回数」と「平均損失」を読むの入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+小さな学習
+</p>
+<h2>損失グラフは「回数」と「平均損失」を読む</h2>
+<svg class="stage-plot" viewBox="0 0 900 290" role="img" aria-label="学習用平均損失が0回の0.765126から100回の0.130153へ低下">
+<path d="M80 40V230H780" fill="none" stroke="#526478"/><text x="25" y="237">0</text><text x="25" y="142.0">0.5</text><text x="25" y="47">1</text><text x="80" y="260" text-anchor="middle">0</text><text x="150" y="260" text-anchor="middle">10</text><text x="430" y="260" text-anchor="middle">50</text><text x="780" y="260" text-anchor="middle">100</text><polyline points="80,84.626 87,86.532 94,87.939 101,89.133 108,90.175 115,91.108 122,91.960 129,92.757 136,93.516 143,94.251 150,94.977 157,95.705 164,96.446 171,97.211 178,98.013 185,98.861 192,99.770 199,100.749 206,101.817 213,102.986 220,104.273 227,105.695 234,107.270 241,108.733 248,110.284 255,111.641 262,113.211 269,114.489 276,116.072 283,117.354 290,118.943 297,120.306 304,121.897 311,123.411 318,125.002 325,126.729 332,128.316 339,130.288 346,131.914 353,134.021 360,135.989 367,138.092 374,140.062 381,142.140 388,144.287 395,146.506 402,148.709 409,151.195 416,153.286 423,154.971 430,157.483 437,159.644 444,160.083 451,162.488 458,164.787 465,166.417 472,167.797 479,170.182 486,171.316 493,171.805 500,174.327 507,175.351 514,177.606 521,177.843 528,179.231 535,181.227 542,181.379 549,182.582 556,183.859 563,184.849 570,186.484 577,187.434 584,188.301 591,188.442 598,189.385 605,190.768 612,191.627 619,192.266 626,193.446 633,194.334 640,194.276 647,195.372 654,195.628 661,196.521 668,197.484 675,198.373 682,198.593 689,199.311 696,199.798 703,199.884 710,200.706 717,201.466 724,201.954 731,202.257 738,202.947 745,203.592 752,204.029 759,204.013 766,204.637 773,204.991 780,205.271" fill="none" stroke="#007c78" stroke-width="4"/><text x="100" y="35">平均損失 0.765126 → 0.130153</text><text x="700" y="285">更新回数</text>
+</svg>
+<p>学習率0.1。0・1・10・50・100回を操作教材で見返す。</p>
+<p>横軸は更新回数、縦軸は損失。低いほど学習用への出力は改善。</p>
+<p>確認用の成功は、このグラフだけでは分かりません。</p>
+<p class="stage-link">
+<a href="interactive.html#learning" target="_blank" rel="noopener">操作教材で確かめる：小さな学習</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+損失グラフの横軸は更新回数、縦軸は学習用4枚の平均損失です。初期値の約0.765126から、1回、10回、50回、100回と実際の計算結果を見ます。100回では約0.130153になりました。値が下がると、学習用画像について正解への出力が改善したと読めます。ただし、このグラフは確認用画像の成績ではありません。グラフが下がったことだけから、見ていない位置の画像でも正しく分類できるとは言えません。
+</aside>
+</section>
+<section>
+<!-- 40: 100回後：学習用は4枚すべて正解の入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+小さな学習
+</p>
+<h2>100回後：学習用は4枚すべて正解</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+縦線 → 縦線 ○
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+縦線 → 縦線 ○
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+横線 → 横線 ○
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+横線 → 横線 ○
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p><strong>学習用4／4正解</strong>。中央の列1・2、行1・2で確認。</p>
+<p>この4枚は重みの更新に使った画像です。次は未使用の4枚を見ます。</p>
+<p class="stage-link">
+<a href="interactive.html#learning" target="_blank" rel="noopener">操作教材で確かめる：小さな学習</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+100回更新した後の学習用画像を見ます。中央の縦線2枚は縦線と予測され、中央の横線2枚は横線と予測されました。したがって学習用は4枚中4枚正解です。これは学習に使った画像での結果です。十分に学習できた部分は確認できますが、別の画像でも成功するかはまだ分かりません。次に、重みの更新には使わなかった端の画像を見ましょう。
+</aside>
+</section>
+<section>
+<!-- 41: 100回後：端の縦線2枚は、横線と誤分類の入力・操作・結果を対応させる -->
+<div class="slide-body cnn-stages">
+<p class="eyebrow">
+小さな学習
+</p>
+<h2>100回後：端の縦線2枚は、横線と誤分類</h2>
+<div class="stage-diagram">
+<figure class="stage-figure">
+<figcaption>
+縦線 → 横線 ×
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+縦線 → 横線 ×
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+横線 → 横線 ○
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<figure class="stage-figure">
+<figcaption>
+横線 → 横線 ○
+</figcaption>
+<table>
+<tbody>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+<td data-pixel="0">
+0
+</td>
+</tr>
+<tr>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+<td data-pixel="1">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+</div>
+<p><strong>確認用2／4正解</strong>。列0・列3の縦線を取り違えました。</p>
+<p>中央での成功を、端や実写真の成功に広げて結論しない。</p>
+<p>何を学習に使い、何で確認したかを添えて結果を説明します。</p>
+<p class="stage-link">
+<a href="interactive.html#learning" target="_blank" rel="noopener">操作教材で確かめる：小さな学習</a>
+</p>
+</div>
+<audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+端の画像4枚では、予測が全て横線になりました。横線の2枚は正解ですが、列0と列3にある縦線2枚は不正解です。確認用は4枚中2枚正解でした。学習用4枚では全て正解でも、端の縦線を区別できるようになったわけではありません。入力する位置が変わると失敗する例を、自分の目で確かめてください。この小さな結果から、実写真や大規模な画像での性能は結論できません。何を学習に使い、何で確認したかを添えて説明しましょう。
+</aside>
+</section>
+<section>
+<!-- 42: 自習は一周ずつ進めるを通して計算と観察の根拠を対応させる -->
 <div class="slide-body">
 <h2>自習は一周ずつ進める</h2>
 <ol type="1">
@@ -1120,14 +3677,14 @@ softmaxの値は二クラスで合計一になります。今回は大きい方�
 <li>「変えたもの・変わった結果・理由」を説明する。</li>
 </ol>
 </div>
-<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 操作して終わりにせず、予想と結果の違いを言葉にしましょう。結果が変わらなかった場合も、理由を考える材料になります。元の状態へ戻せるように、基準データを保存して実験します。
 </aside>
 </section>
 <section>
-<!-- 34: 保存して、最初の実行へを通して計算と観察の根拠を対応させる -->
+<!-- 43: 保存して、最初の実行へを通して計算と観察の根拠を対応させる -->
 <div class="slide-body">
 <h2>保存して、最初の実行へ</h2>
 <p><a href="programs/cnn_basics.ipynb" download>Notebookを保存</a> ／ <a href="programs/cnn_basics.py" download>Pythonを保存</a> ／ <a href="programs/cnn_basics.zip" download>一式ZIPを保存</a></p>
@@ -1138,14 +3695,14 @@ softmaxの値は二クラスで合計一になります。今回は大きい方�
 </ol>
 <p><a href="programs/guide.html" target="_blank" rel="noopener">開始方法・出力・エラー対処を読む</a></p>
 </div>
-<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 最初は値を変更せず、すべてのセルを上から実行してください。NotebookはPython版を同じフォルダーに置かなくても動きます。カーネル選択や必要なパッケージで困ったら解説を開きましょう。制作側と同じPython版を用意する必要はありません。
 </aside>
 </section>
 <section>
-<!-- 35: 一つ変更して比較するを通して計算と観察の根拠を対応させる -->
+<!-- 44: 一つ変更して比較するを通して計算と観察の根拠を対応させる -->
 <div class="slide-body">
 <h2>一つ変更して比較する</h2>
 <table>
@@ -1181,14 +3738,14 @@ softmaxの値は二クラスで合計一になります。今回は大きい方�
 </table>
 <p>元データをコピーし、<strong>予想→実行→比較→説明</strong>。</p>
 </div>
-<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 実験ごとに変える場所を決めています。フィルターの符号、移動幅、まとめ方、学習率を一つずつ試しましょう。学習率を変えるときは直前の学習済み重みを使わず、元の初期値から始めます。分からなくなったらカーネルを再起動して全セル実行します。
 </aside>
 </section>
 <section>
-<!-- 36: 理解確認と次回への接続を通して計算と観察の根拠を対応させる -->
+<!-- 45: 理解確認と次回への接続を通して計算と観察の根拠を対応させる -->
 <div class="slide-body">
 <h2>理解確認と次回への接続</h2>
 <ul>
@@ -1198,14 +3755,14 @@ softmaxの値は二クラスで合計一になります。今回は大きい方�
 </ul>
 <p>次回：深層学習2（自己符号化器・LSTM・GAN）。</p>
 </div>
-<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 ここまでの三つの問いを、自分の言葉で説明してみましょう。式だけでなく、実際の入力や途中の数値を根拠に使ってください。次回は別の深層学習の構成へ進みます。今日のCNNの範囲と区別して整理しましょう。
 </aside>
 </section>
 <section>
-<!-- 37: 補足：パラメーター数とサイズを通して計算と観察の根拠を対応させる -->
+<!-- 46: 補足：パラメーター数とサイズを通して計算と観察の根拠を対応させる -->
 <div class="slide-body">
 <h2>補足：パラメーター数とサイズ</h2>
 <ul>
@@ -1215,14 +3772,14 @@ softmaxの値は二クラスで合計一になります。今回は大きい方�
 <li>出力サイズの式は、窓を間引かない条件（dilation＝1）。</li>
 </ul>
 </div>
-<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 ここは補足です。配列の要素数と、学習するパラメーター数を分けて数えます。畳み込みの出力は十八個ですが、重みとバイアスは十個です。同じ重みを共有しているためです。
 </aside>
 </section>
 <section>
-<!-- 38: 補足：畳み込みという呼び名を通して計算と観察の根拠を対応させる -->
+<!-- 47: 補足：畳み込みという呼び名を通して計算と観察の根拠を対応させる -->
 <div class="slide-body">
 <h2>補足：畳み込みという呼び名</h2>
 <ul>
@@ -1232,14 +3789,14 @@ softmaxの値は二クラスで合計一になります。今回は大きい方�
 <li>計算規約をそろえてから、資料やコードの値を比較する。</li>
 </ul>
 </div>
-<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_47.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 別の本で同じフィルターなのに答えの向きが違ったら、反転を含む定義か確認してください。本教材は一般的なCNN実装の規約に合わせています。どちらの用語が出ても、実際にどんな計算をしているかを見ましょう。
 </aside>
 </section>
 <section>
-<!-- 39: 補足：実験の限界を通して計算と観察の根拠を対応させる -->
+<!-- 48: 補足：実験の限界を通して計算と観察の根拠を対応させる -->
 <div class="slide-body">
 <h2>補足：実験の限界</h2>
 <ul>
@@ -1249,14 +3806,14 @@ softmaxの値は二クラスで合計一になります。今回は大きい方�
 <li>教室での見やすさ・学生実機の使いやすさは別途確認する。</li>
 </ul>
 </div>
-<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_48.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 再現できる小例にも限界があります。勾配の近似に使う幅や、最大値が同じになる点の扱いも結果に影響します。この教材で計算を理解したことを、大規模な画像認識システムを評価したことと同一視しないでください。
 </aside>
 </section>
 <section>
-<!-- 40: 補足：参考資料と復習先を通して計算と観察の根拠を対応させる -->
+<!-- 49: 補足：参考資料と復習先を通して計算と観察の根拠を対応させる -->
 <div class="slide-body">
 <h2>補足：参考資料と復習先</h2>
 <ul>
@@ -1267,7 +3824,7 @@ softmaxの値は二クラスで合計一になります。今回は大きい方�
 </ul>
 <p><a href="interactive-guide.html" target="_blank" rel="noopener">操作の復習</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの復習</a></p>
 </div>
-<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_49.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 計算規約を確認したいときは公式資料を参照できます。ただし、演習の実行にPyTorchは必要ありません。復習は操作マニュアルとプログラム解説から始めてください。自分の予想、操作、結果、説明を一組にすると理解を確かめやすくなります。
