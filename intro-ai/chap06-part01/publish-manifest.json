@@ -368,23 +368,23 @@
     },
     {
       "path": "programs/cnn_basics.ipynb",
-      "bytes": 13940,
-      "sha256": "a13622d508b3b925015184c9692fca00e55b29ab98ced773db68bcbe399ef54f"
+      "bytes": 48105,
+      "sha256": "b49d455af73a25b10dc7c6d6622b8a73105e5c17bb7eccaa259a526db7759a6e"
     },
     {
       "path": "programs/cnn_basics.py",
-      "bytes": 6781,
-      "sha256": "f5128a02f5ddb4d5c90262e9c74bf6c789fb13af0ce2140d61d491b340a55ba7"
+      "bytes": 15797,
+      "sha256": "4d96da81abc31c545d2c1fbe3db1c1713234f5059a936a15699c34c8a1aea730"
     },
     {
       "path": "programs/cnn_basics.zip",
-      "bytes": 36129,
-      "sha256": "28cc7dcc8ddf3d25a9a3f260a0b89d2b9d5a9835fd340d8e7770a30651db202c"
+      "bytes": 48767,
+      "sha256": "2083628b83fb466ead40d996ceae069d6b55f290b8b623faf9e83b0c8c97d49e"
     },
     {
       "path": "programs/guide.html",
-      "bytes": 11813,
-      "sha256": "79e4ff19fd42574a32c355b7a337631264b1d92ea9ce4a73c551bb82b3a36687"
+      "bytes": 14648,
+      "sha256": "2cf90dd8c3a5dbb0029ca9c4c98a53335a688ec65730aaffe564fa921e2f37dc"
     },
     {
       "path": "programs/requirements.txt",
@@ -650,9 +650,9 @@
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "c651c9417a0d4a9906d1bb8abfa15aa8dd96f0a1aa50515466a78b1c50f23b17",
     "learning-bundle.json": "0c0cbad69c7d3a78c6b7090275ef01604eade0bc9220e3a2f0434dd846e9da75",
-    "../programs/guide-part01.md": "6d8fd7ad62f36d94aa17f1da78de34cf41e2eeaee646411d52f99cfbe3e45b7b",
-    "../programs/cnn_basics.py": "f5128a02f5ddb4d5c90262e9c74bf6c789fb13af0ce2140d61d491b340a55ba7",
-    "../programs/cnn_basics.ipynb": "a13622d508b3b925015184c9692fca00e55b29ab98ced773db68bcbe399ef54f",
+    "../programs/guide-part01.md": "923190e14c6701f474e8ac58efd7143b4e2d82c04487e65b4c6df8a49c0e394f",
+    "../programs/cnn_basics.py": "4d96da81abc31c545d2c1fbe3db1c1713234f5059a936a15699c34c8a1aea730",
+    "../programs/cnn_basics.ipynb": "b49d455af73a25b10dc7c6d6622b8a73105e5c17bb7eccaa259a526db7759a6e",
     "../programs/requirements.txt": "79b48e7a8fa8706e2d439ba5d16edcf2638a3ad8b53ee04be2c868f521be2dcd",
     "voiceovers/slide_01.mp3": "bb476230b598d1baf76d46048e41c37d6d0871ea2e5268ff06f76acd290052dc",
     "voiceovers/slide_02.mp3": "44d7881e316897fadb4a324cb4dd187e389fc3c4ca88c2805669b58919ae9437",
