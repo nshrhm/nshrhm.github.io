@@ -1,11 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="ニューロン・XOR・勾配更新・RNN・ボルツマンマシン・SOMを操作して学ぶオフライン教材">
-<title>値の流れを、見て動かす｜人工知能概論 第6回</title>
-<style>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description"
+              content="ニューロン・XOR・勾配更新・RNN・ボルツマンマシン・SOMを操作して学ぶオフライン教材">
+        <title>値の流れを、見て動かす｜人工知能概論 第6回</title>
+        <style>
 :root{--ink:#142f45;--muted:#516575;--paper:#f3f6f7;--line:#c9d7df;--teal:#006c78;--blue:#215ab3;--gold:#ffc85b;--orange:#a3490c}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 system-ui,-apple-system,"Segoe UI",sans-serif}h1,h2,h3,p{margin:0}h1{font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.4}h2{font-size:clamp(1.4rem,3vw,2rem);line-height:1.5}h3{font-size:1.08rem}p+p{margin-top:8px}button,input,select{font:inherit;color:var(--ink)}button,select,input[type=number]{border:1px solid #91a7b6;border-radius:8px;background:white;padding:7px 11px;max-width:100%}button{font-weight:650;cursor:pointer}button:hover{background:#e8eff8}button:disabled{opacity:.5;cursor:default}button.primary,button[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:3px}input[type=number]{width:85px}input[type=checkbox]{width:20px;height:20px;accent-color:var(--teal)}a{color:#1b559c}.shell{max-width:1260px;padding:0 28px;margin:auto}.masthead{background:var(--ink);color:white;padding:25px 0}.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.eyebrow{font-size:.8rem;letter-spacing:.1em;font-weight:700}#projection{font-size:.85rem;flex-shrink:0;background:white;color:var(--ink);border-color:#91a7b6}.masthead p{margin-top:10px;color:#cbdce7}.nav{display:flex;gap:6px;flex-wrap:wrap;padding:17px 0}.nav button{flex:1;min-width:140px;text-align:left;font-size:.9rem;border-color:var(--line)}.nav b{color:#728ba1;margin-right:8px}.nav [aria-pressed=true] b{color:var(--gold)}.lesson-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:6px 0 12px}.lesson-head button{white-space:nowrap}.intro{max-width:940px;margin-bottom:14px}.question{background:#fff6df;border-left:5px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:18px}.question strong{margin-right:8px}.workspace{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,1fr);gap:20px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:17px;padding:20px;min-width:0}.panel h3{margin-bottom:10px}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}.controls label{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.small{font-size:.85rem}.muted{color:var(--muted)}.result{padding:15px;background:#eaf3f5;border-radius:12px;margin-top:14px}.result strong{font-size:1.2rem}.notice{background:#fff6df;border-left:4px solid #b57900;padding:10px 13px;margin-top:10px;font-size:.9rem}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.84rem;margin:8px 0}.stepper{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:13px}.stepper output{font-size:.85rem;color:var(--muted);width:100%}.steps-note{color:var(--muted);font-size:.83rem;margin:8px 0}.card{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fafcfd;min-width:0}.card+.card{margin-top:10px}.chosen{border:2px solid var(--blue)!important;background:#edf3ff!important}.ok{color:var(--teal)}.missing{color:var(--orange)}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.chip{border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:#f5f8fa;font-size:.85rem}.chip.initial{border-left:5px solid var(--teal)}.chip.derived{border-left:5px solid var(--blue)}.chip.used{outline:2px solid var(--orange);outline-offset:1px}.fact-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.fact-inputs label{display:flex;gap:6px;align-items:center;font-size:.94rem}.rule{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:9px 0;background:#fafcfd}.rule.active{border:2px solid var(--blue);background:#edf3ff}.rule.used{box-shadow:inset 5px 0 var(--orange)}.rule.off{border-style:dashed;color:var(--muted)}.rule-head{display:flex;justify-content:space-between;gap:8px;font-size:.85rem}.conditions{display:flex;gap:5px;flex-wrap:wrap;align-items:center;font-size:.88rem}.conditions span{padding:2px 5px;border-radius:4px;background:#edf2f5}.conditions .met{background:#dff3ee;color:#00575f}.conditions .unmet{background:#fff0db;color:#87410d}.rule-conclusion{margin-top:5px;font-weight:700}.frame-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.frame-value{font-size:1.9rem;font-weight:800;margin:12px 0}.arrow-down{font-size:1.4rem;text-align:center;color:var(--blue)}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--line)}th{background:#f1f5f8}caption{text-align:left;margin:7px 0;color:var(--muted)}details{margin-top:17px;padding:12px 17px;background:white;border:1px solid var(--line);border-radius:12px}summary{font-weight:700;cursor:pointer}details[open]>summary{margin-bottom:14px}details p{margin-top:8px}.answer{background:#f7fafc}.plot svg{display:block;width:100%;height:auto}svg text{font:16px system-ui,sans-serif;fill:var(--ink)}svg .node-label{font-size:17px;font-weight:650}svg .tiny{font-size:13px}.proof,.proof ul{list-style:none;padding:0;margin:0}.proof ul{margin:8px 0 0 17px;padding-left:15px;border-left:2px solid var(--line)}.proof li{margin:7px 0}.proof-node{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fafcfd;font-size:.95rem}.proof-node small{display:block;font-size:.8rem;color:var(--muted)}.proof-node.proven{border-left:5px solid var(--teal)}.proof-node.unproved{border-left:5px dashed var(--orange)}.proof-node.current{outline:2px solid var(--blue)}.system-flow{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}.system-flow .card{text-align:center;margin:0;padding:10px;font-size:.88rem}.system-flow b{display:block}.footer-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:24px 0}.footer-nav span{font-size:.85rem;color:var(--muted)}footer{border-top:1px solid var(--line);padding:20px 0 30px;color:var(--muted);font-size:.82rem}[hidden]{display:none!important}
 @media(min-width:761px){.projection .masthead{padding:4px 0}.projection .topline{margin:0}.projection #projection{padding:3px 10px}.projection h1,.projection .masthead p,.projection .intro,.projection .study-only,.projection footer{display:none}.projection .nav{padding:5px 0}.projection .nav button{padding:5px 8px;font-size:.85rem}.projection .lesson-head{margin:3px 0 6px}.projection h2{font-size:1.45rem}.projection .lesson-head button{padding:4px 10px}.projection .question{padding:6px 14px;margin-bottom:10px;font-size:.95rem}.projection .panel{padding:13px}.projection .workspace{gap:14px}.projection .result{padding:11px;margin-top:10px}.projection .result p{font-size:.87rem}.projection .controls{margin:6px 0;gap:7px}.projection .stepper{margin-top:8px}.projection .stepper button{padding:4px 9px;font-size:.9rem}.projection .plot svg{max-height:295px}.projection .footer-nav{margin:12px 0}.projection .rule{margin:5px 0;padding:6px 9px}.projection .proof-node{padding:4px 8px;font-size:.88rem}.projection .proof li{margin:4px 0}.projection .proof ul{margin-top:4px}.projection .small,.projection .notice{font-size:.78rem}.projection .fact-inputs{margin:6px 0;gap:5px}.projection .steps-note{display:none}.projection .chips{margin-top:6px;gap:5px}.projection .chip{padding:3px 7px;font-size:.78rem}}
@@ -19,101 +20,401 @@
 @media(max-width:760px){.som-workspace{grid-template-columns:1fr}.numeric-grid{font-size:.9rem}.numeric-grid input{width:72px}.plot svg{min-width:560px}.plot.square svg{min-width:0}.map .card{font-size:.85rem}.map .small{font-size:.75rem}}
 @media(min-width:761px){.projection #som-plot{max-width:320px}.projection #som-plot svg{max-height:300px}.projection #som-plot svg text,.projection #som-plot svg .tiny{font-size:24px}}
 #energy-seed{width:160px}
-</style>
-</head>
-<body>
-<header class="masthead"><div class="shell"><div class="topline"><span class="eyebrow">人工知能概論 2026 ／ 第6回 ニューラルネットワーク</span><button type="button" id="projection" aria-pressed="false">投影表示にする</button></div><h1>値の流れを、見て動かす。</h1>
-<p>出力・重み・状態。いま変わったのは、どれだろう？</p></div></header>
-<div class="shell"><nav aria-label="教材の移動" class="study-only"><a href="index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作の使い方</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの使い方</a></nav><nav class="nav" aria-label="学ぶテーマ">
-<button type="button" data-tab="neuron" aria-controls="neuron" aria-pressed="true"><b>01</b>ニューロン</button>
-<button type="button" data-tab="xor" aria-controls="xor" aria-pressed="false"><b>02</b>XORと中間層</button>
-<button type="button" data-tab="gradient" aria-controls="gradient" aria-pressed="false"><b>03</b>勾配と更新</button>
-<button type="button" data-tab="rnn" aria-controls="rnn" aria-pressed="false"><b>04</b>RNNの状態</button>
-<button type="button" data-tab="energy" aria-controls="energy" aria-pressed="false"><b>05</b>確率と状態</button>
-<button type="button" data-tab="som" aria-controls="som" aria-pressed="false"><b>06</b>SOMの近傍</button>
-</nav><main>
-<noscript><p class="question">操作にはJavaScriptを有効にしてください。ネット接続は不要です。</p></noscript>
-<section id="neuron" aria-labelledby="neuron-title">
-<div class="lesson-head"><h2 id="neuron-title">01　掛ける、足す、変換する</h2>
-<button type="button" data-reset="neuron">リセット</button></div>
-<p class="intro">人工ニューロンは入力を重み付きで足し、活性化関数で変換する計算モデルです。脳のすべての働きを再現するものではありません。</p>
-<p class="question"><strong>まず予想</strong>しきい値が−1なら、合計から引くと値は増える？ 減る？</p>
-<div class="workspace"><div class="panel"><div id="neuron-inputs" class="numeric-grid"></div><div class="controls"><label for="neuron-function">活性化関数 <select id="neuron-function"><option value="step">ステップ</option><option value="sigmoid">シグモイド</option><option value="relu">ReLU</option></select></label></div>
-<div id="neuron-flow" class="plot" tabindex="0" role="region" aria-label="ニューロンの計算図。狭い画面では横スクロール"></div><p class="mobile-note">図は左右にスクロールできます。</p><div class="stepper" data-steps="neuron"></div></div>
-<div class="panel"><h3>総入力から出力へ</h3>
-<div id="neuron-curve" class="plot square"></div><div id="neuron-result" class="result" role="status" aria-live="polite"></div></div></div>
-<details class="study-only"><summary>詳しく見る：バイアス・境界・ソフトマックス</summary><p>u = x₁w₁ + x₂w₂ − v。しきい値vは合計から一度だけ引きます。バイアスb = −vなら、最後にbを足す式と同じです。ステップはu=0でも1。ReLUは負なら0、正ならそのままで、上限1ではありません。</p><p>シグモイドはσ(u)=1/(1+exp(−u))。数学的には有限の入力で0と1の間ですが、端に近づくと傾きが小さくなります。数値計算では丸めにより0や1と表示されることがあります。</p>
-<h3>ソフトマックスは、二つのスコアを一緒に使う</h3>
-<div id="softmax-inputs" class="numeric-grid"></div><div id="softmax-bars" class="bars"></div><p id="softmax-result"></p><p>各スコアを指数関数で変換して合計で割ります。各値へのシグモイドの独立適用とは違います。出力が確率分布の形でも、実際の正解頻度との一致を保証しません。</p></details>
-<details class="answer study-only"><summary>確認：重みと入力のどちらを変えても「学習」？</summary><p>入力を変えて出力を求めるのは推論です。ここでは重みも手で変更できますが、それだけでデータに合わせて学習したことにはなりません。学習で重みを更新する計算は03で扱います。</p></details>
-</section>
-
-<section id="xor" aria-labelledby="xor-title" hidden>
-<div class="lesson-head"><h2 id="xor-title">02　中間層を通ると、見え方が変わる</h2>
-<button type="button" data-reset="xor">リセット</button></div>
-<p class="intro">2入力・中間2ユニット・出力1ユニットの固定ネットワークを使います。重みは演習と同じです。重みを学習する機能ではなく、順方向の計算を観察します。</p>
-<p class="question"><strong>まず予想</strong>二つの入力が違うときだけ1になるXORを、中間層はどう表すでしょうか？</p>
-<div class="workspace"><div class="panel"><div id="xor-samples" class="samples"></div><div class="controls"><label for="xor-threshold">h₁のしきい値 <select id="xor-threshold"><option value="-1">−1：元の固定例</option><option value="-2">−2：境界を試す</option></select></label></div><div id="xor-network" class="plot" tabindex="0" role="region" aria-label="固定ネットワークの順伝播。横スクロール可能"></div><p class="mobile-note">図は左右にスクロールできます。</p><div class="stepper" data-steps="xor"></div></div>
-<div class="panel"><h3>今の入力の途中結果</h3>
-<div id="xor-result" class="result" role="status" aria-live="polite"></div><div id="xor-table" class="table-wrap"></div></div></div>
-<details class="study-only"><summary>詳しく見る：入力空間と中間の表現・単一パーセプトロン</summary><div id="xor-spaces" class="plot" tabindex="0" role="region" aria-label="XORの入力空間と中間表現の比較"></div><p class="mobile-note">図は左右にスクロールできます。</p><p>入力空間では対角の2点が1なので、一本の直線で0と1を分離できません。中間層のステップ変換を通すと、出力ユニットが分けられる配置になります。同じ位置へ写る入力はラベルを併記します。</p><p>固定した中間の重みは(−2,3)・(−2,1)、しきい値は(−1,0.5)。出力の重みは(−60,94)、しきい値は−1。すべて総入力0も出力1です。</p><div class="controls"><label for="xor-linear"><input type="checkbox" id="xor-linear">別例：中間の非線形変換を外す</label></div><div id="xor-linear-result" class="formula"></div><p>この別例はh=2x+1、o=3h−2。ReLUを挟む場合と比較します。上の固定XORネットワークの重みを変更する操作ではありません。</p></details>
-<details class="answer study-only"><summary>確認：XORを表現できれば、学習も汎化も成功？</summary><p>別の問題です。この例は手で固定した重みで4入力を計算しています。学習がその重みを見つけられることや、未知のデータでもよい結果になることを実証したものではありません。</p></details>
-</section>
-
-<section id="gradient" aria-labelledby="gradient-title" hidden>
-<div class="lesson-head"><h2 id="gradient-title">03　勾配を求めてから、重みを動かす</h2>
-<button type="button" data-reset="gradient">リセット</button></div>
-<p class="intro">出力を計算し、正解とのずれを損失にし、勾配を求め、最後に重みを更新します。逆伝播は勾配の計算で、重み更新とは別の処理です。</p>
-<p class="question"><strong>まず予想</strong>学習率を大きくすると、1回の更新で必ず損失が小さくなるでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="controls"><label for="gradient-mode">計算の例 <select id="gradient-mode"><option value="single">1重み：o = wx</option><option value="chain">2段：h = ax、o = bh</option></select></label></div><div id="gradient-inputs" class="numeric-grid"></div><div class="controls"><label for="gradient-rate">学習率η <select id="gradient-rate"><option value="0">0</option><option value="0.125" selected>0.125</option><option value="0.25">0.25</option><option value="0.5">0.5</option><option value="1">1</option></select></label></div><div id="gradient-flow" class="plot" tabindex="0" role="region" aria-label="順方向の値と逆方向の勾配。横スクロール可能"></div><div class="stepper" data-steps="gradient"></div></div>
-<div class="panel"><div id="gradient-stages" class="stages"></div><div id="gradient-result" class="result" role="status" aria-live="polite"></div><div id="gradient-loss" class="bars"></div><p class="small muted">1入力・1回の更新の実計算です。多層の非線形ネットワーク全体の訓練や、未知データの性能評価ではありません。</p></div></div>
-<details class="study-only"><summary>詳しく見る：更新前の値で求める勾配・パーセプトロンとの違い</summary><div id="gradient-formulas" class="formula"></div><p>2段の例ではaとbの両勾配を更新前の値から計算し、その後で同時に更新します。更新済みのbをaの勾配へ混ぜません。バイアスはない線形の小例です。</p><h3>別の更新則：単一パーセプトロン</h3>
-<p>ステップ出力yに対して、wᵢ ← wᵢ + η(t−y)xᵢ、バイアスb ← b + η(t−y)。これは上の滑らかな損失の勾配計算と同じ手順ではありません。</p><div class="controls"><label for="perceptron-target">入力(1,0)の正解t <select id="perceptron-target"><option value="1">1</option><option value="0">0</option></select></label><button type="button" id="perceptron-update">別例を1回更新</button></div><div id="perceptron-result"></div><p>別例の初期重み(−2,3)、バイアス1、η=1に毎回戻して計算します。XOR全体を学習する機能ではありません。</p></details>
-<details class="answer study-only"><summary>確認：勾配を計算した時点で、重みは変わった？</summary><p>まだ変えていません。勾配は変化の方向と大きさの手掛かりです。学習率を掛けて引く更新を実行したときに重みが変わります。学習率が大きいと行き過ぎて損失が増える例も確認できます。</p></details>
-</section>
-
-<section id="rnn" aria-labelledby="rnn-title" hidden>
-<div class="lesson-head"><h2 id="rnn-title">04　前の状態を、次の計算へ渡す</h2>
-<button type="button" data-reset="rnn">リセット</button></div>
-<p class="intro">RNNは同じ重みを各時刻で使い、前の状態と今の入力から次の状態を計算します。この例はhₜ = ReLU(xₜ + r hₜ₋₁)、初期状態0です。</p>
-<p class="question"><strong>まず予想</strong>[1,0]と[0,1]は同じ数を含みます。最後の状態も同じになるでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="controls"><label for="rnn-preset">入力系列 <select id="rnn-preset"><option value="10">[1, 0]</option><option value="01">[0, 1]</option><option value="long">[1, −1, 2, 0]</option><option value="custom" disabled>編集した系列</option></select></label><label for="rnn-weight">共有する重みr <select id="rnn-weight"><option value="0.5">0.5</option><option value="0">0</option><option value="1">1</option></select></label></div><div id="rnn-inputs" class="numeric-grid"></div><div id="rnn-unroll" class="plot" tabindex="0" role="region" aria-label="RNNの時間展開。横スクロール可能"></div><p class="mobile-note">図は左右にスクロールできます。</p><div class="stepper" data-steps="rnn"></div></div>
-<div class="panel"><h3>いまの状態と共有する重み</h3>
-<div id="rnn-result" class="result" role="status" aria-live="polite"></div><div id="rnn-trace" class="table-wrap"></div></div></div>
-<details class="study-only"><summary>詳しく見る：順序の比較と状態のリセット</summary><div id="rnn-compare"></div><p>各系列は初期状態0から別々に計算します。時刻ごとに変わるhと、時刻を通じて共有するrを区別してください。ここではrを学習しません。r=0なら前の状態からの寄与がなくなります。</p><p>系列処理はRNNだけで可能という意味ではありません。この例は1次元の固定計算で、長期依存の学習、BPTT、LSTM、GRUは扱いません。</p></details>
-<details class="answer study-only"><summary>確認：状態が毎回変わったので、学習したと言える？</summary><p>言えません。ここでは共有する重みを固定して、状態を計算しています。パラメータをデータに合わせて変更する学習とは分けて考えます。</p></details>
-</section>
-
-<section id="energy" aria-labelledby="energy-title" hidden>
-<div class="lesson-head"><h2 id="energy-title">05　エネルギーが上がる更新もある</h2>
-<button type="button" data-reset="energy">リセット</button></div>
-<p class="intro">二つのユニットの状態を、一つずつ交互に更新します。確定的な更新と確率的な更新を、同じ固定の重み・バイアスで比べる教育用の小例です。</p>
-<p class="question"><strong>まず予想</strong>確率的な状態更新では、エネルギーが一時的に上がることもあるでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="controls"><label for="energy-mode">更新方法 <select id="energy-mode"><option value="hopfield">確定的：ホップフィールド型</option><option value="boltzmann">確率的：ボルツマン型</option></select></label><label for="energy-initial">初期状態 <select id="energy-initial"><option value="10">(1,0)</option><option value="00">(0,0)</option><option value="01">(0,1)</option><option value="11">(1,1)</option></select></label></div>
-<div id="energy-network" class="plot" tabindex="0" role="region" aria-label="対称結合した2ユニットの状態"></div><div class="params"><span>固定：w₁₂ = w₂₁ = 2</span><span>b₁ = b₂ = −1</span><span>自己結合なし</span></div><div class="stepper" data-steps="energy"></div><p class="small muted">「最後まで」は20回の状態更新です。最適解や収束を保証する回数ではありません。</p></div>
-<div class="panel"><h3>全4状態とエネルギー</h3>
-<div id="energy-states" class="table-wrap"></div><div id="energy-result" class="result" role="status" aria-live="polite"></div></div></div>
-<details class="study-only"><summary>詳しく見る：確率・乱数・状態履歴</summary><p>E(s₁,s₂) = −2s₁s₂ + s₁ + s₂（状態は0か1）。ユニットiの総入力zᵢ = 2sⱼ − 1。確定的更新はzᵢの符号で0／1を決め、0なら状態を保持。確率的更新はP(sᵢ=1)=σ(zᵢ)、0以上1未満の乱数qがこの確率より小さいとき1にします。</p>
-<div class="controls"><label for="energy-seed">乱数シード <input id="energy-seed" type="number" min="0" max="4294967295" step="1" value="42"></label><label for="energy-draw">qの決め方 <select id="energy-draw"><option value="random">シード付き乱数</option><option value="0.1">0.1に固定して観察</option><option value="0.9">0.9に固定して観察</option></select></label><button type="button" id="energy-up">上がる更新の例</button></div><p>qを固定する操作は、特定の結果を観察するための条件指定です。正しい乱数サンプリングや分布の推定とは扱いません。「上がる更新の例」は初期(0,0)・確率的更新・q=0.1にします。</p>
-<div id="energy-probabilities" class="bars"></div><p class="small">上の確率は4状態を列挙した P(s)=exp(−E(s))/Σexp(−E) の計算値。20回の履歴の出現率ではありません。温度は1に固定しています。</p><div id="energy-trace" class="scroll-table"></div><p>一つずつの更新・対称結合という条件で確定的更新のエネルギーを確認します。同時更新に広げません。ボルツマンマシンの重み学習、RBM、温度の最適化は実装していません。</p></details>
-<details class="answer study-only"><summary>確認：エネルギーが下がれば、欲しい記憶を得た？</summary><p>この例では状態(0,0)と(1,1)が同じ最低エネルギーです。どちらが目的の答えかを学習したわけではありません。状態を動かすこと、望む答えを得ること、重みを学習することは区別します。</p></details>
-</section>
-
-<section id="som" aria-labelledby="som-title" hidden>
-<div class="lesson-head"><h2 id="som-title">06　「近い」には、二つの意味がある</h2>
-<button type="button" data-reset="som">リセット</button></div>
-<p class="intro">SOMは入力空間で最も近い代表ベクトルを探し、その勝者と地図上の隣接ノードを動かします。この例は正解ラベルを使わない1回の更新です。</p>
-<p class="question"><strong>まず予想</strong>入力に一番近いAだけでなく、地図で隣のBも動くでしょうか？</p>
-<div class="workspace som-workspace"><div class="panel"><h3>入力空間：ベクトル間の距離</h3>
-<div id="som-inputs" class="numeric-grid"></div><div id="som-plot" class="plot square"></div><p class="small muted">◆は入力。クリック・タップ・ドラッグ、または数値欄で移動できます。薄い形は更新前、濃い形は更新後です。同じ位置のラベルはまとめて表示します。</p><div class="stepper" data-steps="som"></div></div>
-<div class="panel"><h3>地図：A — B — Cの並び</h3>
-<div id="som-map" class="map"></div><div class="controls"><label for="som-rate">学習率η <select id="som-rate"><option value="0.5">0.5</option><option value="0">0</option><option value="1">1</option></select></label><label for="som-neighbor">隣接の係数 <select id="som-neighbor"><option value="0.5">0.5</option><option value="0">0：勝者のみ</option><option value="1">1</option></select></label></div><div id="som-result" class="result" role="status" aria-live="polite"></div></div></div>
-<details class="study-only"><summary>詳しく見る：距離の二乗と更新する成分</summary><div id="som-table" class="table-wrap"></div><p>新しい値 = 元の値 + η × 近傍係数 × (入力 − 元の値)。勝者の近傍係数は1、隣接は選択値、範囲外は0です。同距離なら地図上の順A→B→Cで先のノードを選びます。</p><p>入力空間のx・yと、地図上の並びは別です。ここでは2次元入力・1次元地図です。入力や係数を変えるたびに元の代表ベクトルからやり直し、反復学習・収束・実データ性能は評価しません。</p></details>
-<details class="answer study-only"><summary>確認：入力に遠いBが動くのは、距離計算の間違い？</summary><p>違います。勝者は入力空間で選び、更新する近傍は地図の並びで選びます。Aが勝者ならBは隣接、Cは範囲外です。Bが勝者ならAとCの両方が隣接になります。</p></details>
-</section>
-</main><div class="footer-nav"><button type="button" id="prev">← 前のテーマ</button><span>予想する → 動かす → 何が変わったかを説明する</span><button type="button" id="next">次のテーマ →</button></div>
-<footer><p>すべて教材用の小例です。操作結果の保存・送信は行いません。各テーマの状態は独立しています。</p><details><summary>スライドとの対応・出典・この教材の範囲</summary><p>01：4〜10枚 ／ 02：11〜17枚 ／ 03：16・18〜23枚 ／ 04：24〜27枚 ／ 05：28〜30枚 ／ 06：31〜35枚。固定ネットワーク・勾配・RNN・SOMの基準値は既存Python演習と一致させています。</p><p>外部データ、汎用の学習ライブラリ、多層非線形ネットワーク・RNN・ボルツマンマシンの訓練、SOMの反復学習は含みません。確率的状態更新のみ、シード付き乱数を使います。学習性能や汎化の実験ではありません。</p><p>説明の根拠：<a href="https://cs231n.github.io/neural-networks-1/">Stanford CS231n：ニューロンと非線形性</a> ／ <a href="https://cs231n.github.io/optimization-2/">逆伝播</a> ／ <a href="https://docs.pytorch.org/docs/2.14/generated/torch.nn.RNN.html">PyTorch：RNN</a> ／ <a href="https://www.cs.toronto.edu/~hinton/csc321/readings/boltz321.pdf">Hinton：Boltzmann Machines</a> ／ <a href="https://users.ics.aalto.fi/mikkok/thesis/book/node12.html">Kurimo：SOM algorithm</a>。外部リンクを開く場合はネット接続が必要です。</p></details></footer></div>
-<script id="neural-model">
+        </style>
+    </head>
+    <body>
+        <header class="masthead">
+            <div class="shell">
+                <div class="topline">
+                    <span class="eyebrow">人工知能概論 2026 ／ 第6回 ニューラルネットワーク</span><button type="button"
+        id="projection"
+        aria-pressed="false">投影表示にする</button>
+                </div>
+                <h1>値の流れを、見て動かす。</h1>
+                <p>出力・重み・状態。いま変わったのは、どれだろう？</p>
+            </div>
+        </header>
+        <div class="shell">
+            <nav aria-label="教材の移動" class="study-only">
+                <a href="index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作の使い方</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの使い方</a>
+            </nav>
+            <nav class="nav" aria-label="学ぶテーマ">
+                <button type="button"
+                        data-tab="neuron"
+                        aria-controls="neuron"
+                        aria-pressed="true"><b>01</b>ニューロン</button>
+                <button type="button" data-tab="xor" aria-controls="xor" aria-pressed="false"><b>02</b>XORと中間層</button>
+                <button type="button"
+                        data-tab="gradient"
+                        aria-controls="gradient"
+                        aria-pressed="false"><b>03</b>勾配と更新</button>
+                <button type="button" data-tab="rnn" aria-controls="rnn" aria-pressed="false"><b>04</b>RNNの状態</button>
+                <button type="button"
+                        data-tab="energy"
+                        aria-controls="energy"
+                        aria-pressed="false"><b>05</b>確率と状態</button>
+                <button type="button" data-tab="som" aria-controls="som" aria-pressed="false"><b>06</b>SOMの近傍</button>
+            </nav>
+            <main>
+                <noscript>
+                    <p class="question">操作にはJavaScriptを有効にしてください。ネット接続は不要です。</p>
+                </noscript>
+                <section id="neuron" aria-labelledby="neuron-title">
+                    <div class="lesson-head">
+                        <h2 id="neuron-title">01　掛ける、足す、変換する</h2>
+                        <button type="button" data-reset="neuron">リセット</button>
+                    </div>
+                    <p class="intro">人工ニューロンは入力を重み付きで足し、活性化関数で変換する計算モデルです。脳のすべての働きを再現するものではありません。</p>
+                    <p class="question"><strong>まず予想</strong>しきい値が−1なら、合計から引くと値は増える？ 減る？</p>
+                    <div class="workspace">
+                        <div class="panel">
+                            <div id="neuron-inputs" class="numeric-grid"></div>
+                            <div class="controls">
+                                <label for="neuron-function">
+                                    活性化関数
+                                    <select id="neuron-function">
+                                        <option value="step">ステップ</option>
+                                        <option value="sigmoid">シグモイド</option>
+                                        <option value="relu">ReLU</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div id="neuron-flow"
+                                 class="plot"
+                                 tabindex="0"
+                                 role="region"
+                                 aria-label="ニューロンの計算図。狭い画面では横スクロール"></div>
+                            <p class="mobile-note">図は左右にスクロールできます。</p>
+                            <div class="stepper" data-steps="neuron"></div>
+                        </div>
+                        <div class="panel">
+                            <h3>総入力から出力へ</h3>
+                            <div id="neuron-curve" class="plot square"></div>
+                            <div id="neuron-result" class="result" role="status" aria-live="polite"></div>
+                        </div>
+                    </div>
+                    <details class="study-only">
+                        <summary>詳しく見る：バイアス・境界・ソフトマックス</summary>
+                        <p>u = x₁w₁ + x₂w₂ − v。しきい値vは合計から一度だけ引きます。バイアスb = −vなら、最後にbを足す式と同じです。ステップはu=0でも1。ReLUは負なら0、正ならそのままで、上限1ではありません。</p>
+                        <p>シグモイドはσ(u)=1/(1+exp(−u))。数学的には有限の入力で0と1の間ですが、端に近づくと傾きが小さくなります。数値計算では丸めにより0や1と表示されることがあります。</p>
+                        <h3>ソフトマックスは、二つのスコアを一緒に使う</h3>
+                        <div id="softmax-inputs" class="numeric-grid"></div>
+                        <div id="softmax-bars" class="bars"></div>
+                        <p id="softmax-result"></p>
+                        <p>各スコアを指数関数で変換して合計で割ります。各値へのシグモイドの独立適用とは違います。出力が確率分布の形でも、実際の正解頻度との一致を保証しません。</p>
+                    </details>
+                    <details class="answer study-only">
+                        <summary>確認：重みと入力のどちらを変えても「学習」？</summary>
+                        <p>入力を変えて出力を求めるのは推論です。ここでは重みも手で変更できますが、それだけでデータに合わせて学習したことにはなりません。学習で重みを更新する計算は03で扱います。</p>
+                    </details>
+                </section>
+                <section id="xor" aria-labelledby="xor-title" hidden>
+                    <div class="lesson-head">
+                        <h2 id="xor-title">02　中間層を通ると、見え方が変わる</h2>
+                        <button type="button" data-reset="xor">リセット</button>
+                    </div>
+                    <p class="intro">2入力・中間2ユニット・出力1ユニットの固定ネットワークを使います。重みは演習と同じです。重みを学習する機能ではなく、順方向の計算を観察します。</p>
+                    <p class="question"><strong>まず予想</strong>二つの入力が違うときだけ1になるXORを、中間層はどう表すでしょうか？</p>
+                    <div class="workspace">
+                        <div class="panel">
+                            <div id="xor-samples" class="samples"></div>
+                            <div class="controls">
+                                <label for="xor-threshold">
+                                    h₁のしきい値
+                                    <select id="xor-threshold">
+                                        <option value="-1">−1：元の固定例</option>
+                                        <option value="-2">−2：境界を試す</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div id="xor-network"
+                                 class="plot"
+                                 tabindex="0"
+                                 role="region"
+                                 aria-label="固定ネットワークの順伝播。横スクロール可能"></div>
+                            <p class="mobile-note">図は左右にスクロールできます。</p>
+                            <div class="stepper" data-steps="xor"></div>
+                        </div>
+                        <div class="panel">
+                            <h3>今の入力の途中結果</h3>
+                            <div id="xor-result" class="result" role="status" aria-live="polite"></div>
+                            <div id="xor-table" class="table-wrap"></div>
+                        </div>
+                    </div>
+                    <details class="study-only">
+                        <summary>詳しく見る：入力空間と中間の表現・単一パーセプトロン</summary>
+                        <div id="xor-spaces"
+                             class="plot"
+                             tabindex="0"
+                             role="region"
+                             aria-label="XORの入力空間と中間表現の比較"></div>
+                        <p class="mobile-note">図は左右にスクロールできます。</p>
+                        <p>入力空間では対角の2点が1なので、一本の直線で0と1を分離できません。中間層のステップ変換を通すと、出力ユニットが分けられる配置になります。同じ位置へ写る入力はラベルを併記します。</p>
+                        <p>固定した中間の重みは(−2,3)・(−2,1)、しきい値は(−1,0.5)。出力の重みは(−60,94)、しきい値は−1。すべて総入力0も出力1です。</p>
+                        <div class="controls">
+                            <label for="xor-linear">
+                                <input type="checkbox" id="xor-linear">別例：中間の非線形変換を外す
+                            </label>
+                        </div>
+                        <div id="xor-linear-result" class="formula"></div>
+                        <p>この別例はh=2x+1、o=3h−2。ReLUを挟む場合と比較します。上の固定XORネットワークの重みを変更する操作ではありません。</p>
+                    </details>
+                    <details class="answer study-only">
+                        <summary>確認：XORを表現できれば、学習も汎化も成功？</summary>
+                        <p>別の問題です。この例は手で固定した重みで4入力を計算しています。学習がその重みを見つけられることや、未知のデータでもよい結果になることを実証したものではありません。</p>
+                    </details>
+                </section>
+                <section id="gradient" aria-labelledby="gradient-title" hidden>
+                    <div class="lesson-head">
+                        <h2 id="gradient-title">03　勾配を求めてから、重みを動かす</h2>
+                        <button type="button" data-reset="gradient">リセット</button>
+                    </div>
+                    <p class="intro">出力を計算し、正解とのずれを損失にし、勾配を求め、最後に重みを更新します。逆伝播は勾配の計算で、重み更新とは別の処理です。</p>
+                    <p class="question"><strong>まず予想</strong>学習率を大きくすると、1回の更新で必ず損失が小さくなるでしょうか？</p>
+                    <div class="workspace">
+                        <div class="panel">
+                            <div class="controls">
+                                <label for="gradient-mode">
+                                    計算の例
+                                    <select id="gradient-mode">
+                                        <option value="single">1重み：o = wx</option>
+                                        <option value="chain">2段：h = ax、o = bh</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div id="gradient-inputs" class="numeric-grid"></div>
+                            <div class="controls">
+                                <label for="gradient-rate">
+                                    学習率η
+                                    <select id="gradient-rate">
+                                        <option value="0">0</option>
+                                        <option value="0.125" selected>0.125</option>
+                                        <option value="0.25">0.25</option>
+                                        <option value="0.5">0.5</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div id="gradient-flow"
+                                 class="plot"
+                                 tabindex="0"
+                                 role="region"
+                                 aria-label="順方向の値と逆方向の勾配。横スクロール可能"></div>
+                            <div class="stepper" data-steps="gradient"></div>
+                        </div>
+                        <div class="panel">
+                            <div id="gradient-stages" class="stages"></div>
+                            <div id="gradient-result" class="result" role="status" aria-live="polite"></div>
+                            <div id="gradient-loss" class="bars"></div>
+                            <p class="small muted">1入力・1回の更新の実計算です。多層の非線形ネットワーク全体の訓練や、未知データの性能評価ではありません。</p>
+                        </div>
+                    </div>
+                    <details class="study-only">
+                        <summary>詳しく見る：更新前の値で求める勾配・パーセプトロンとの違い</summary>
+                        <div id="gradient-formulas" class="formula"></div>
+                        <p>2段の例ではaとbの両勾配を更新前の値から計算し、その後で同時に更新します。更新済みのbをaの勾配へ混ぜません。バイアスはない線形の小例です。</p>
+                        <h3>別の更新則：単一パーセプトロン</h3>
+                        <p>ステップ出力yに対して、wᵢ ← wᵢ + η(t−y)xᵢ、バイアスb ← b + η(t−y)。これは上の滑らかな損失の勾配計算と同じ手順ではありません。</p>
+                        <div class="controls">
+                            <label for="perceptron-target">
+                                入力(1,0)の正解t
+                                <select id="perceptron-target">
+                                    <option value="1">1</option>
+                                    <option value="0">0</option>
+                                </select></label><button type="button" id="perceptron-update">別例を1回更新</button>
+                            </div>
+                            <div id="perceptron-result"></div>
+                            <p>別例の初期重み(−2,3)、バイアス1、η=1に毎回戻して計算します。XOR全体を学習する機能ではありません。</p>
+                        </details>
+                        <details class="answer study-only">
+                            <summary>確認：勾配を計算した時点で、重みは変わった？</summary>
+                            <p>まだ変えていません。勾配は変化の方向と大きさの手掛かりです。学習率を掛けて引く更新を実行したときに重みが変わります。学習率が大きいと行き過ぎて損失が増える例も確認できます。</p>
+                        </details>
+                    </section>
+                    <section id="rnn" aria-labelledby="rnn-title" hidden>
+                        <div class="lesson-head">
+                            <h2 id="rnn-title">04　前の状態を、次の計算へ渡す</h2>
+                            <button type="button" data-reset="rnn">リセット</button>
+                        </div>
+                        <p class="intro">RNNは同じ重みを各時刻で使い、前の状態と今の入力から次の状態を計算します。この例はhₜ = ReLU(xₜ + r hₜ₋₁)、初期状態0です。</p>
+                        <p class="question"><strong>まず予想</strong>[1,0]と[0,1]は同じ数を含みます。最後の状態も同じになるでしょうか？</p>
+                        <div class="workspace">
+                            <div class="panel">
+                                <div class="controls">
+                                    <label for="rnn-preset">
+                                        入力系列
+                                        <select id="rnn-preset">
+                                            <option value="10">[1, 0]</option>
+                                            <option value="01">[0, 1]</option>
+                                            <option value="long">[1, −1, 2, 0]</option>
+                                            <option value="custom" disabled>編集した系列</option>
+                                        </select></label><label for="rnn-weight">共有する重みr
+                                            <select id="rnn-weight">
+                                                <option value="0.5">0.5</option>
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div id="rnn-inputs" class="numeric-grid"></div>
+                                    <div id="rnn-unroll"
+                                         class="plot"
+                                         tabindex="0"
+                                         role="region"
+                                         aria-label="RNNの時間展開。横スクロール可能"></div>
+                                    <p class="mobile-note">図は左右にスクロールできます。</p>
+                                    <div class="stepper" data-steps="rnn"></div>
+                                </div>
+                                <div class="panel">
+                                    <h3>いまの状態と共有する重み</h3>
+                                    <div id="rnn-result" class="result" role="status" aria-live="polite"></div>
+                                    <div id="rnn-trace" class="table-wrap"></div>
+                                </div>
+                            </div>
+                            <details class="study-only">
+                                <summary>詳しく見る：順序の比較と状態のリセット</summary>
+                                <div id="rnn-compare"></div>
+                                <p>各系列は初期状態0から別々に計算します。時刻ごとに変わるhと、時刻を通じて共有するrを区別してください。ここではrを学習しません。r=0なら前の状態からの寄与がなくなります。</p>
+                                <p>系列処理はRNNだけで可能という意味ではありません。この例は1次元の固定計算で、長期依存の学習、BPTT、LSTM、GRUは扱いません。</p>
+                            </details>
+                            <details class="answer study-only">
+                                <summary>確認：状態が毎回変わったので、学習したと言える？</summary>
+                                <p>言えません。ここでは共有する重みを固定して、状態を計算しています。パラメータをデータに合わせて変更する学習とは分けて考えます。</p>
+                            </details>
+                        </section>
+                        <section id="energy" aria-labelledby="energy-title" hidden>
+                            <div class="lesson-head">
+                                <h2 id="energy-title">05　エネルギーが上がる更新もある</h2>
+                                <button type="button" data-reset="energy">リセット</button>
+                            </div>
+                            <p class="intro">二つのユニットの状態を、一つずつ交互に更新します。確定的な更新と確率的な更新を、同じ固定の重み・バイアスで比べる教育用の小例です。</p>
+                            <p class="question"><strong>まず予想</strong>確率的な状態更新では、エネルギーが一時的に上がることもあるでしょうか？</p>
+                            <div class="workspace">
+                                <div class="panel">
+                                    <div class="controls">
+                                        <label for="energy-mode">
+                                            更新方法
+                                            <select id="energy-mode">
+                                                <option value="hopfield">確定的：ホップフィールド型</option>
+                                                <option value="boltzmann">確率的：ボルツマン型</option>
+                                            </select></label><label for="energy-initial">初期状態
+                                                <select id="energy-initial">
+                                                    <option value="10">(1,0)</option>
+                                                    <option value="00">(0,0)</option>
+                                                    <option value="01">(0,1)</option>
+                                                    <option value="11">(1,1)</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div id="energy-network"
+                                             class="plot"
+                                             tabindex="0"
+                                             role="region"
+                                             aria-label="対称結合した2ユニットの状態"></div>
+                                        <div class="params"><span>固定：w₁₂ = w₂₁ = 2</span><span>b₁ = b₂ = −1</span><span>自己結合なし</span></div>
+                                        <div class="stepper" data-steps="energy"></div>
+                                        <p class="small muted">「最後まで」は20回の状態更新です。最適解や収束を保証する回数ではありません。</p>
+                                    </div>
+                                    <div class="panel">
+                                        <h3>全4状態とエネルギー</h3>
+                                        <div id="energy-states" class="table-wrap"></div>
+                                        <div id="energy-result" class="result" role="status" aria-live="polite"></div>
+                                    </div>
+                                </div>
+                                <details class="study-only">
+                                    <summary>詳しく見る：確率・乱数・状態履歴</summary>
+                                    <p>E(s₁,s₂) = −2s₁s₂ + s₁ + s₂（状態は0か1）。ユニットiの総入力zᵢ = 2sⱼ − 1。確定的更新はzᵢの符号で0／1を決め、0なら状態を保持。確率的更新はP(sᵢ=1)=σ(zᵢ)、0以上1未満の乱数qがこの確率より小さいとき1にします。</p>
+                                    <div class="controls">
+                                        <label for="energy-seed">
+                                            乱数シード
+                                            <input id="energy-seed"
+                                                   type="number"
+                                                   min="0"
+                                                   max="4294967295"
+                                                   step="1"
+                                                   value="42"></label><label for="energy-draw">qの決め方
+                                                <select id="energy-draw">
+                                                    <option value="random">シード付き乱数</option>
+                                                    <option value="0.1">0.1に固定して観察</option>
+                                                    <option value="0.9">0.9に固定して観察</option>
+                                                </select></label><button type="button" id="energy-up">上がる更新の例</button>
+                                            </div>
+                                            <p>qを固定する操作は、特定の結果を観察するための条件指定です。正しい乱数サンプリングや分布の推定とは扱いません。「上がる更新の例」は初期(0,0)・確率的更新・q=0.1にします。</p>
+                                            <div id="energy-probabilities" class="bars"></div>
+                                            <p class="small">上の確率は4状態を列挙した P(s)=exp(−E(s))/Σexp(−E) の計算値。20回の履歴の出現率ではありません。温度は1に固定しています。</p>
+                                            <div id="energy-trace" class="scroll-table"></div>
+                                            <p>一つずつの更新・対称結合という条件で確定的更新のエネルギーを確認します。同時更新に広げません。ボルツマンマシンの重み学習、RBM、温度の最適化は実装していません。</p>
+                                        </details>
+                                        <details class="answer study-only">
+                                            <summary>確認：エネルギーが下がれば、欲しい記憶を得た？</summary>
+                                            <p>この例では状態(0,0)と(1,1)が同じ最低エネルギーです。どちらが目的の答えかを学習したわけではありません。状態を動かすこと、望む答えを得ること、重みを学習することは区別します。</p>
+                                        </details>
+                                    </section>
+                                    <section id="som" aria-labelledby="som-title" hidden>
+                                        <div class="lesson-head">
+                                            <h2 id="som-title">06　「近い」には、二つの意味がある</h2>
+                                            <button type="button" data-reset="som">リセット</button>
+                                        </div>
+                                        <p class="intro">SOMは入力空間で最も近い代表ベクトルを探し、その勝者と地図上の隣接ノードを動かします。この例は正解ラベルを使わない1回の更新です。</p>
+                                        <p class="question"><strong>まず予想</strong>入力に一番近いAだけでなく、地図で隣のBも動くでしょうか？</p>
+                                        <div class="workspace som-workspace">
+                                            <div class="panel">
+                                                <h3>入力空間：ベクトル間の距離</h3>
+                                                <div id="som-inputs" class="numeric-grid"></div>
+                                                <div id="som-plot" class="plot square"></div>
+                                                <p class="small muted">◆は入力。クリック・タップ・ドラッグ、または数値欄で移動できます。薄い形は更新前、濃い形は更新後です。同じ位置のラベルはまとめて表示します。</p>
+                                                <div class="stepper" data-steps="som"></div>
+                                            </div>
+                                            <div class="panel">
+                                                <h3>地図：A — B — Cの並び</h3>
+                                                <div id="som-map" class="map"></div>
+                                                <div class="controls">
+                                                    <label for="som-rate">
+                                                        学習率η
+                                                        <select id="som-rate">
+                                                            <option value="0.5">0.5</option>
+                                                            <option value="0">0</option>
+                                                            <option value="1">1</option>
+                                                        </select></label><label for="som-neighbor">隣接の係数
+                                                            <select id="som-neighbor">
+                                                                <option value="0.5">0.5</option>
+                                                                <option value="0">0：勝者のみ</option>
+                                                                <option value="1">1</option>
+                                                            </select>
+                                                        </label>
+                                                    </div>
+                                                    <div id="som-result"
+                                                         class="result"
+                                                         role="status"
+                                                         aria-live="polite"></div>
+                                                </div>
+                                            </div>
+                                            <details class="study-only">
+                                                <summary>詳しく見る：距離の二乗と更新する成分</summary>
+                                                <div id="som-table" class="table-wrap"></div>
+                                                <p>新しい値 = 元の値 + η × 近傍係数 × (入力 − 元の値)。勝者の近傍係数は1、隣接は選択値、範囲外は0です。同距離なら地図上の順A→B→Cで先のノードを選びます。</p>
+                                                <p>入力空間のx・yと、地図上の並びは別です。ここでは2次元入力・1次元地図です。入力や係数を変えるたびに元の代表ベクトルからやり直し、反復学習・収束・実データ性能は評価しません。</p>
+                                            </details>
+                                            <details class="answer study-only">
+                                                <summary>確認：入力に遠いBが動くのは、距離計算の間違い？</summary>
+                                                <p>違います。勝者は入力空間で選び、更新する近傍は地図の並びで選びます。Aが勝者ならBは隣接、Cは範囲外です。Bが勝者ならAとCの両方が隣接になります。</p>
+                                            </details>
+                                        </section>
+                                    </main>
+                                    <div class="footer-nav">
+                                        <button type="button" id="prev">← 前のテーマ</button><span>予想する → 動かす → 何が変わったかを説明する</span><button type="button" id="next">次のテーマ →</button>
+                                    </div>
+                                    <footer>
+                                        <p>すべて教材用の小例です。操作結果の保存・送信は行いません。各テーマの状態は独立しています。</p>
+                                        <details>
+                                            <summary>スライドとの対応・出典・この教材の範囲</summary>
+                                            <p>01：4〜11枚 ／ 02：12〜19枚 ／ 03：18・20〜28枚 ／ 04：29〜33枚 ／ 05：34〜36枚 ／ 06：37〜42枚。固定ネットワーク・勾配・RNN・SOMの基準値は既存Python演習と一致させています。</p>
+                                            <p>外部データ、汎用の学習ライブラリ、多層非線形ネットワーク・RNN・ボルツマンマシンの訓練、SOMの反復学習は含みません。確率的状態更新のみ、シード付き乱数を使います。学習性能や汎化の実験ではありません。</p>
+                                            <p>説明の根拠：<a href="https://cs231n.github.io/neural-networks-1/">Stanford CS231n：ニューロンと非線形性</a> ／ <a href="https://cs231n.github.io/optimization-2/">逆伝播</a> ／ <a href="https://docs.pytorch.org/docs/2.14/generated/torch.nn.RNN.html">PyTorch：RNN</a> ／ <a href="https://www.cs.toronto.edu/~hinton/csc321/readings/boltz321.pdf">Hinton：Boltzmann Machines</a> ／ <a href="https://users.ics.aalto.fi/mikkok/thesis/book/node12.html">Kurimo：SOM algorithm</a>。外部リンクを開く場合はネット接続が必要です。</p>
+                                        </details>
+                                    </footer>
+                                </div>
+                                <script id="neural-model">
 'use strict';
 var Neural=(()=>{
   const INPUTS=Object.freeze([[0,0],[0,1],[1,0],[1,1]].map(Object.freeze));
@@ -136,8 +437,8 @@ var Neural=(()=>{
   function demo(){return {forward:INPUTS.map(x=>forward(x)),activations:[-2,0,2].map(u=>({u,step:step(u),sigmoid:Number(sigmoid(u).toFixed(6)),relu:relu(u)})),softmax_equal:softmax([0,0]),gradient:gradient(),gradient_large_rate:gradient(2,3,2,1),chain:chain(),rnn_10:recurrent([1,0]),rnn_01:recurrent([0,1]),rnn_no_recurrence:recurrent([1,0],0),som:som([1,0])};}
   return {INPUTS,HIDDEN_WEIGHTS,HIDDEN_THRESHOLDS,OUTPUT_WEIGHTS,OUTPUT_THRESHOLD,PROTOTYPES,step,relu,sigmoid,softmax,neuron,forward,gradient,chain,recurrent,som,perceptron,energy,rng,updateState,energyRun,distribution,demo};
 })();
-</script>
-<script id="neural-ui">
+                                </script>
+                                <script id="neural-ui">
 'use strict';
 (()=>{
   const N=Neural,$=id=>document.getElementById(id),names=['neuron','xor','gradient','rnn','energy','som'];
@@ -232,8 +533,84 @@ var Neural=(()=>{
   plot.onpointerdown=e=>{if(!e.isPrimary||e.button!==0)return;pointer=e.pointerId;plot.setPointerCapture(pointer);moveSample(e);};plot.onpointermove=e=>{if(e.pointerId===pointer)moveSample(e);};plot.onpointerup=plot.onpointercancel=()=>{pointer=null;};
   function themeFromHash(){const i=names.indexOf(location.hash.slice(1));show(i<0?0:i,false);}
   addEventListener('hashchange',themeFromHash);addEventListener('popstate',themeFromHash);
-  rnnInputs();names.forEach(name=>renderers[name]());themeFromHash();
+  rnnInputs();globalThis.NeuralTeaching=()=>structuredClone(state);
+  document.querySelectorAll('[data-reset]').forEach(b=>{b.id=b.id||b.dataset.reset+'-reset';});
+  names.forEach(name=>renderers[name]());themeFromHash();
 })();
+                                </script>
+                                <!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+(()=>{
+const N=Neural,S=()=>NeuralTeaching(),f=n=>Number(n.toFixed(6)),step=(title,body)=>({title,body:'<p>'+body+'</p>'}),table=(h,rs)=>'<div class="table-wrap"><table><tr>'+h.map(v=>'<th>'+v+'</th>').join('')+'</tr>'+rs.map(r=>'<tr>'+r.map(v=>'<td>'+v+'</td>').join('')+'</tr>').join('')+'</table></div>';
+installTeachingSteps([
+{id:'neuron',title:'入力ごとに掛け、足してから変換する',steps:()=>{const s=S().neuron,u=s.x1*s.w1+s.x2*s.w2-s.v,y=s.fn==='step'?N.step(u):s.fn==='relu'?N.relu(u):N.sigmoid(u);return [step('入力と重み',`x₁=${s.x1}にw₁=${s.w1}、x₂=${s.x2}にw₂=${s.w2}を対応させます。入力の値と重みは役割が違います。`),step('積と合計',`${s.x1}×${s.w1}=${f(s.x1*s.w1)}、${s.x2}×${s.w2}=${f(s.x2*s.w2)}。合計からしきい値${s.v}を引くとu=${f(u)}。`),step('活性化',`現在の関数${s.fn}へu=${f(u)}を渡すと出力は${f(y)}です。合計uと変換後の出力を分けて読みます。`),step('比較と復帰','入力だけ、重みだけ、関数だけを一つずつ変えます。しきい値−1を引くことは+1を足すことです。リセットで基準の値へ戻します。')];},details:()=>'<p>初期値では1×(−2)+0×3−(−1)=−1。ステップ関数はu≥0なら1、そうでなければ0です。下のsoftmaxは二つのスコアを一組として変換する別例で、各値を独立に処理しません。</p>'},
+{id:'xor',title:'中間層の出力を、次の層の入力にする',steps:()=>{const s=S().xor,x=N.INPUTS[s.input],r=N.forward(x,[s.threshold,.5]);return [step('入力をそろえる',`二つの中間ニューロンへ同じ(${x.join(',')})を渡します。それぞれ異なる重みとしきい値を持ちます。`),step('中間の積和',table(['ニューロン','計算','合計','変換後'],N.HIDDEN_WEIGHTS.map((w,i)=>[i+1,`${x[0]}×${w[0]}+${x[1]}×${w[1]}−(${[s.threshold,.5][i]})`,f(r.hidden_u[i]),r.hidden[i]]))),step('出力層へ渡す',`${r.hidden[0]}×(−60)+${r.hidden[1]}×94−(−1)=${r.output_u}。ステップ関数を通して出力${r.output}です。元の入力を直接掛け直すのではありません。`),step('比較と復帰','4入力のボタンを切り替えて同じ計算を繰り返します。重みは固定のままです。リセットで元の入力としきい値へ戻します。')];},details:()=>'<p>上のXORとは別の一次元例：'+(S().xor.linear?'変換なし o=3(2x+1)−2=6x+1。入力−1・0・1への出力は−5・1・7。':'ReLUあり o=3 max(0,2x+1)−2。入力−1・0・1への出力は−2・1・7。')+' この切替はXORの4入力の表を変更しません。</p>'+table(['入力','中間合計','中間出力','最終出力'],N.INPUTS.map(x=>{const r=N.forward(x,[S().xor.threshold,.5]);return [x.join(','),r.hidden_u.join(','),r.hidden.join(','),r.output];}))},
+{id:'gradient',title:'ずれを測る → 勾配 → 重みを一度更新',steps:()=>{const s=S().gradient,r=s.mode==='single'?N.gradient(s.x,s.t,s.a,s.rate):N.chain(s.x,s.t,s.a,s.b,s.rate);return [step('更新前の予測',`入力x=${s.x}、正解t=${s.t}、更新前の出力=${f(r.output_before)}。ずれは${f(r.output_before-s.t)}です。`),step('損失',`ずれを二乗して2で割ると、損失=${f(r.loss_before)}。正解数とは別の量で、出力が正解からどれだけ離れたかを測ります。`),step('更新の計算',s.mode==='single'?`勾配=(出力−正解)×入力=${f(r.gradient)}。新重み=${s.a}−${s.rate}×${f(r.gradient)}=${f(r.weight_after)}。`:`更新前の値からaの勾配${f(r.grad_a)}、bの勾配${f(r.grad_b)}を求めます。両方を求めてからa=${f(r.a_after)}、b=${f(r.b_after)}へ更新します。`),step('更新後と復帰',`一回更新すると出力${f(r.output_after)}、損失${f(r.loss_after)}。これは今の条件からの一回の計算です。上の更新ボタンで表示を切り替え、リセットで更新前へ戻します。`)];},details:()=>'<p>基準の単層：x=2、t=3、w=2。出力4、損失0.5、勾配2。学習率0.125でw=1.75、出力3.5、損失0.125。学習率1ではw=0、出力0、損失4.5へ悪化します。大きく動かせばよいとは限りません。</p>'},
+{id:'rnn',title:'前の状態を、次の時刻へ渡す',steps:()=>{const s=S().rnn,hs=N.recurrent(s.sequence,s.r);return [step('入力列と初期状態',`入力列は[${s.sequence.join(',')}]、前の状態への重みr=${s.r}。最初の状態h₀=0から始めます。`),step('時刻ごとの積和',table(['時刻','入力x','前のh','x+r×前のh','ReLU後h'],s.sequence.map((x,i)=>{const prev=i?hs[i-1]:0;return [i+1,x,f(prev),f(x+s.r*prev),f(hs[i])];}))),step('最後の状態',`同じ重み${s.r}を各時刻で使い、最後の状態は${f(hs.at(-1))}。状態が変わったのであり、時間を進めただけで重みを学習したのではありません。`),step('順序を比べて戻す','r=0.5で[1,0]はh=1→0.5、[0,1]は0→1。同じ二値でも順序が違うと結果が変わります。リセットで[1,0]へ戻します。')];},details:()=>'<p>hₜ=ReLU(xₜ+r×hₜ₋₁)。[1,0]の2時刻目は0+0.5×1=0.5。r=0では前の状態を使わず、最後の状態は最後の入力だけで決まります。この画面は固定重みの状態計算です。</p>'},
+{id:'energy',title:'状態の変更と、重みの変更を分ける',steps:()=>{const s=S().energy,initial=s.initial.split('').map(Number),rs=N.energyRun(initial,s.mode,s.seed,s.draw==='random'?null:Number(s.draw),20),r=rs[s.step];return [step('固定した規則',`初期状態は${initial.join(',')}、方式${s.mode}。結合としきい値は固定で、二つの状態を交互に更新します。`),step('現在の手順',`更新${s.step}回の状態は[${r.state.join(',')}]、エネルギー${f(r.energy)}です。状態を一つ変える前後で値を比べます。`),step('選び方の違い',s.mode==='hopfield'?'固定した規則で状態を決めます。上の次の手順で、どちらの状態を更新するかと合計値を対応付けます。':'確率pと乱数qを比べ、q<pなら1を選びます。確率が同じでも乱数によって状態が違う場合があります。'),step('比較と復帰','方式や初期状態を一つ変え、同じ手順数で比較します。リセットで初期状態[1,0]へ戻します。これはパラメータを学ぶ操作ではありません。')];},details:()=>'<p>状態は0か1。相手の状態からz=2×相手−1を計算します。確率方式ではsigmoid(z)と乱数を比較します。乱数種を固定すると手順を再現できますが、一般に同じ一回の結果になるという保証ではありません。</p>'},
+{id:'som',title:'近い代表点を選び、入力側へ少し動かす',steps:()=>{const s=S().som,x=[s.x,s.y],r=N.som(x,N.PROTOTYPES,s.rate,s.neighbor);return [step('入力と代表点',`入力は(${x.join(',')})。三つの代表点それぞれとの距離の二乗を計算します。正解ラベルを用いる分類の学習とは違います。`),step('勝者を選ぶ',`距離²は${r.squared_distances.map(f).join('・')}。最小の代表点${r.winner+1}が勝者です。同点では先の点を選びます。`),step('各点を更新',table(['点','元の位置','係数','更新後'],N.PROTOTYPES.map((p,i)=>[i+1,p.join(','),f(s.rate*(i===r.winner?1:Math.abs(i-r.winner)===1?s.neighbor:0)),r.updated[i].map(f).join(',')]))),step('比較と復帰','更新は元の点+係数×(入力−元の点)。隣の係数だけを0にして動く点を比べます。リセットで基準入力(1,0)と元の代表点へ戻します。')];},details:()=>'<p>勝者と隣接点を区別します。入力に一度で一致させるのではなく、係数に応じて差の一部だけを動きます。上の図の線は代表点の隣接関係であり、入力の正解ラベルではありません。</p>'}
+]);})();
+
 </script>
-</body>
-</html>
+<!-- teaching-steps:end -->
+                            </body>
+                        </html>

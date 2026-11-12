@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第8回 深層学習2：Python／Notebook解説">
+<title>第8回 深層学習2：Python／Notebook解説</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第8回 深層学習2：Python／Notebook解説</h1>
+<h2 id="学習目標と保存">学習目標と保存</h2>
+<p>自己符号化器の再構成誤差、LSTMのセル状態と出力、GANの交互更新を再現し、一つの条件を変えて説明します。第6・7回のニューロン・損失・状態の考え方と、Pythonの変数・リスト・関数を使います。処理コードの全てを一度に書き直す必要はありません。</p>
+<p><a href="deep_learning2.ipynb" download>Notebookを保存</a> ／ <a href="deep_learning2.py" download>Pythonを保存</a> ／ <a href="deep_learning2.zip" download>一式ZIPを保存</a></p>
+<p><a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a></p>
+<p>ZIPを自分の学習用フォルダーへ保存し、展開します。中にはPython、Notebook、このHTML解説、環境用のrequirements.txtがあります。元のZIP・Notebookを基準版として残し、編集する時はコピーを作ってください。第8回は未公開のローカル確認版です。ZIP内で同梱外教材へのリンクが使えない時は、元のプレビュー画面へ戻ります。</p>
+<p>計算はPython標準ライブラリのみです。外部データ・APIキー・GPU・PyTorchは不要です。Python 3.10以降を想定し、制作用のPython 3.14を要求しません。Notebookの実行にはJupyterカーネルが必要です。</p>
+<h2 id="既存venvとカーネルを選ぶ">既存venvとカーネルを選ぶ</h2>
+<ol type="1">
+<li>VS Codeで展開したフォルダーを開きます。</li>
+<li>ターミナルで、授業で用意したvenvを有効化します。Windowsでは既存venvの <code>Scripts\activate</code>、macOS／Linuxでは <code>source .venv/bin/activate</code> が一般的な例です。自分の環境の場所を指定します。</li>
+<li><code>python -c "import sys; print(sys.executable)"</code> で、使用するPythonがvenv内か確認します。</li>
+<li>Notebook右上のカーネル選択で、その環境を選びます。ipykernelがなければ、選んだvenv内で <code>python -m pip install ipykernel</code> を実行します。システムPythonへ追加しません。</li>
+<li>カーネルを再起動して「すべて実行」を選びます。途中のセルだけを先に実行しないでください。</li>
+</ol>
+<p>Notebookは単体で動き、同梱Pythonをimportしません。コードセルには必要な関数を収録しています。パッケージ準備後の教材計算はオフラインで実行できます。requirements.txtは制作時のNotebook環境の記録です。既存の実行環境がある場合に、全パッケージを入れ直す必要はありません。</p>
+<h2 id="入力と計算条件">入力と計算条件</h2>
+<ul>
+<li>自己符号化器：5成分のうち1成分だけが1の人工データ5行。入力と目標は同じ。5→3→5構造、sigmoid、全25成分のMSE、学習率4、シード65535、1,000回。シードから初期値を作る32bit LCGは教材の再現用です。</li>
+<li>LSTM：手動ゲートの初期値は前のc=1、f=0.8、i=0.5、g=0.6、o=0.75。系列の理想化例は初期c=0、i=o=1、候補[1,0,0,0]、f=0.8です。</li>
+<li>固定重みLSTM：f=σ(0.5x+0.2h前+1)、i=σ(x−0.1h前)、g=tanh(x+0.3h前)、o=σ(0.4x+0.1h前)。説明用の未学習の係数です。</li>
+<li>GAN：実データ[1,2,3]、ノイズ[−1,0,1]。G(z)=az+b、D(x)=σ(wx+d)。初期(a,b,w,d)=(0.5,−1,1,0)。学習率0.1でD→Gを1回ずつ更新します。</li>
+</ul>
+<p>入力は全て授業用の人工データで、実際の画像や文章の性能を検証するものではありません。</p>
+<h2 id="基準結果の読み方">基準結果の読み方</h2>
+<p>Notebookの「基準結果」セルが出力する <code>baseline_result</code> を確認します。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>項目</th>
+<th>確認する値</th>
+<th>読み方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>autoencoder.before / after</td>
+<td>0.316058 → 0.004639</td>
+<td>学習用5行の全成分MSE</td>
+</tr>
+<tr>
+<td>autoencoder.first.output</td>
+<td>[0.923913, 0.063290, 0.078707, 0.000197, 0.090264]</td>
+<td>最初の入力の再構成</td>
+</tr>
+<tr>
+<td>gates.cell / hidden</td>
+<td>1.1 / 0.600374</td>
+<td>セル状態と出力は別</td>
+</tr>
+<tr>
+<td>sequenceのcell</td>
+<td>1 → 0.8 → 0.64 → 0.512</td>
+<td>候補が0でもfにより減衰</td>
+</tr>
+<tr>
+<td>fixed_lstm.cell / hidden</td>
+<td>0.556770 / 0.302683</td>
+<td>固定重みから求めた例</td>
+</tr>
+<tr>
+<td>gan.after_d</td>
+<td>a=0.5, b=−1, w=1.046032, d=−0.013111</td>
+<td>Gを固定したDの更新</td>
+</tr>
+<tr>
+<td>gan.after_g</td>
+<td>a=0.493075, b=−0.923188, w=1.046032, d=−0.013111</td>
+<td>Dを固定したGの更新</td>
+</tr>
+</tbody>
+</table>
+<p>表示は小数点以下6桁です。基準結果が出て最後の変更実験までエラーなく進めば、開始から結果確認まで完了です。再構成の改善は、この人工データでの結果です。LSTMは学習済みの言語モデルではなく、GANも一巡で分布再現に成功したわけではありません。</p>
+<h2 id="一つ変更する6実験">一つ変更する6実験</h2>
+<p>Notebookの各「変更実験」セルを使います。元の <code>DATA</code>・<code>GAN_INITIAL</code>・<code>baseline_result</code> を変更せず、コピーや別変数に結果を保存します。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>セル</th>
+<th>予想・操作</th>
+<th>想定結果・説明する問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>変更実験1：入力</td>
+<td><code>trial_x = DATA[1][:]</code> を固定初期重みへ入力</td>
+<td>元の5行は不変。中間表現と再構成は最初の入力と異なる。どの入力を変えたか？</td>
+</tr>
+<tr>
+<td>変更実験2：回数</td>
+<td><code>trial_fit = train_autoencoder(2000)</code></td>
+<td>MSE≈0.001924。同じ初期値で回数だけ比較できているか？</td>
+</tr>
+<tr>
+<td>変更実験3：出力ゲート</td>
+<td><code>trial_gate = gate_step(output_gate=0)</code></td>
+<td>h=0、c=1.1。出力を抑えることと忘れることの違いは？</td>
+</tr>
+<tr>
+<td>変更実験4：順序</td>
+<td>候補のコピーを逆順にする</td>
+<td>最後のc=1。書き込んだ後に何回fを掛けたか？</td>
+</tr>
+<tr>
+<td>変更実験5：生成器</td>
+<td><code>trial_params</code> のbだけ0へ変更し、z=0で計算</td>
+<td>G(0)=0、D(G(0))=0.5。これは手動変更で、学習ではない。</td>
+</tr>
+<tr>
+<td>変更実験6：学習率</td>
+<td>GANの学習率を0としてD→Gを更新</td>
+<td>a,b,w,dが全て初期値のまま。更新式のどこが0になったか？</td>
+</tr>
+</tbody>
+</table>
+<p>予想を自分のメモに書いてからセルを実行し、基準値との違いを説明します。試す値をさらに変える場合も、一つずつ変更してください。自己符号化器の回数は0〜4,000の整数、学習率は0〜4です。ゲートは0〜1、候補は−1〜1、GANの学習率は0〜1です。</p>
+<h2 id="python版を実行する">Python版を実行する</h2>
+<p>venvを有効にしたターミナルで、保存したファイルのフォルダーから実行します。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> deep_learning2.py <span class="at">--demo</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> deep_learning2.py <span class="at">--demo</span> <span class="at">--json</span></span></code></pre></div>
+<p>前者は説明と基準結果、後者は照合用JSONを表示します。演習の値を変更する場合はNotebookの変更実験セルを使うと、基準結果を残して比較できます。</p>
+<p>uvを利用する場合の補足（uvの利用は必須ではありません）：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run <span class="at">--no-project</span> python deep_learning2.py <span class="at">--demo</span></span></code></pre></div>
+<h2 id="元に戻す困ったとき">元に戻す・困ったとき</h2>
+<ul>
+<li><code>NameError</code>：先に定義するセルが未実行です。カーネルを再起動し、上から全セル実行します。</li>
+<li>importエラー・カーネルが見つからない：Pythonの場所とNotebookのカーネルを確認します。Notebook環境を整える場合は選んだvenvへipykernelを追加します。</li>
+<li>ファイルが見つからない：ZIPを展開し、ターミナルの作業フォルダーを確認します。Notebook単体の計算には同梱ファイルは不要です。</li>
+<li>基準値が違う：基準データ・初期値・学習回数を変更していないか確認します。元のZIPから新しいフォルダーへ展開し、再起動・全セル実行します。</li>
+<li>操作画面と微小に違う：表示の丸めを確認します。内部数値は絶対・相対許容誤差1e−9で照合し、基準JSONは6桁で比較しています。</li>
+<li>元へ戻す：編集用コピーを閉じ、保持した元のNotebookを開きます。再起動だけでは編集したソースは元に戻りません。</li>
+</ul>
+<p>教室や学生の端末での実行結果と、制作者のローカル実行確認は別に記録します。</p>
+<h2 id="段階表示とプログラムの対応">段階表示とプログラムの対応</h2>
+<p>操作教材の「計算の内訳・確かめること」を開き、符号化の重み・復号の重み・同じ位置の二乗誤差をコードの出力と比較します。スライドは小数4〜6桁、操作教材は6桁の表示で、プログラムの計算精度とは区別します。</p>
+<p>LSTMでは各時刻の「保持量＋書込量」が次のセル状態になります。GANはD更新でa,bが同じ、G更新でw,dが同じことを確認してください。「説明を次へ」は学習を実行しません。実計算は既存の実行ボタンとNotebookのセル実行で確認します。Python／Notebookの固定データ・学習条件・基準結果は変更していません。</p>
+</main></body></html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第3回 分類と汎化：保存と実行">
+<title>第3回 分類と汎化：保存と実行</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第3回 分類と汎化：保存と実行</h1>
+<p><a href="generalization.py">Python</a>・<a href="generalization.ipynb">Notebook</a>を同じフォルダーへ保存します。入力は架空の固定データです。学習8件、検証4件、テスト4件の役割を変えずに実行しましょう。</p>
+<h2 id="開始と成功の目印">開始と成功の目印</h2>
+<p>授業のvenvを有効にして <code>python generalization.py --demo</code> を実行します。Python 3.10以降の標準ライブラリで動きます。既存のuv環境なら <code>uv run python generalization.py --demo</code> でも実行できます。</p>
+<p>Notebookは授業のvenvをカーネルに選び、再起動して全セルを実行します。Jupyterがなければvenv内で <code>python -m pip install -r requirements.txt</code> を実行してください。同梱Pythonのimportや外部データの取得は不要です。</p>
+<p>基準結果はしきい値25、学習7/8・検証3/4・テスト3/4。記憶モデルは学習8/8・検証2/4・テスト2/4です。学習用だけで二つのモデルを作り、検証でしきい値モデルを選んで固定してからテストします。テストを見て選び直しません。</p>
+<h2 id="入力途中の判定正解数を対応させる">入力・途中の判定・正解数を対応させる</h2>
+<p>操作教材の「学習の流れ」で学習→検証→選択固定→テストへ進みます。例えば検証のx=35は25以上なので予測1ですが、正解は0です。4件の○を数えると3件、正解率は3÷4=75%です。正解ラベルは採点に使い、推論の入力には渡しません。</p>
+<p>学習データのコピーでtr03のラベルを変更し、しきい値候補の誤り数を比較してから再学習します。入力xだけを24→25へ変える実験とは区別してください。計算は正確な分数を用い、件数・予測は完全一致で照合します。</p>
+<h2 id="戻す困ったとき">戻す・困ったとき</h2>
+<p>変更前のファイルを保存し、変更はコピーで行います。復帰は元ファイルを開き、Notebookのカーネルを再起動して全セル実行です。途中セルだけの再実行で状態を混ぜないようにします。ファイルが見つからないときは保存フォルダー、モジュールのエラーでは選択したvenv・カーネルを確認してください。</p>
+</main></body></html>

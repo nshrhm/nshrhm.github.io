@@ -231,7 +231,44 @@
 </aside>
 </section>
 <section>
-<!-- 10: 最小コストの経路の要点を数値または具体例で説明する -->
+<!-- 10: 「研究生活」を、二つの道で読むを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>「研究生活」を、二つの道で読む</h2>
+<p class="eyebrow">
+辞書で分割 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>文字の境界</strong>
+<p>
+0 研 1 究 2 生 3 活 4
+</p>
+</div>
+<div>
+<strong>道A</strong>
+<p>
+研究(0→2)＋生活(2→4)
+</p>
+</div>
+<div>
+<strong>道B</strong>
+<p>
+研究生(0→3)＋活(3→4)
+</p>
+</div>
+</div>
+<p>道Aのコストは <strong>1＋1＝2</strong>。道Bは <strong>1＋5＝6</strong>。</p>
+<p>最後までつないだ合計が小さい道Aを選ぶ。</p>
+<p>「活」のコストだけ0にすると、道Bの合計は1になる。</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+境界番号は文字ではなく文字の間に付けます。先頭0から末尾4までつながる経路を比べます。最初に一番長い語を選ぶだけでは全体の最小コストは決まりません。
+</aside>
+</section>
+<section>
+<!-- 11: 最小コストの経路の要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>最小コストの経路</h2>
 <p>各文字位置までの最良コストを記録する。</p>
@@ -240,14 +277,14 @@
 <p>活のコストを5→0にすると、研究生／活の合計は1。</p>
 <p><a href="interactive.html#morph" target="_blank" rel="noopener">操作して確かめる</a></p>
 </div>
-<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 動的計画法では途中の計算を記録して利用します。 この教材では同点を辞書の掲載順で比べます。得られた最小値は、この辞書とコストのもとでの最小値です。
 </aside>
 </section>
 <section>
-<!-- 11: 未知語に出会ったらの要点を数値または具体例で説明する -->
+<!-- 12: 未知語に出会ったらの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>未知語に出会ったら</h2>
 <p>辞書にない文字も、1文字ずつ「未知」の候補にする。</p>
@@ -255,14 +292,14 @@
 <p>「猫が笑う」の「笑」「う」は、この小型辞書では未知。</p>
 <p><strong>未知という表示は、その言葉が存在しないという意味ではない。</strong></p>
 </div>
-<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 辞書には猫、犬、が、眠る、走ると分割比較用の語しかありません。 未知文字も常に候補に含めるという教材用規則です。文字列を連結すると元の入力へ戻ることを確かめます。
 </aside>
 </section>
 <section>
-<!-- 12: 形態素解析の次にの要点を数値または具体例で説明する -->
+<!-- 13: 形態素解析の次にの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>形態素解析の次に</h2>
 <p>構文解析：語の係り受けや構造を調べる。</p>
@@ -270,14 +307,14 @@
 <p>分割・品詞だけで、文脈や意味が全て確定するわけではない。</p>
 <p>MeCabの実用的な処理と、今回の小型辞書モデルを区別する。</p>
 </div>
-<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 前処理からどのような情報を得て、何がまだ分からないのかを説明しましょう。 本日は構文木の探索や意味表現の実装には進みません。
 </aside>
 </section>
 <section>
-<!-- 13: コーパスを決めるの要点を数値または具体例で説明する -->
+<!-- 14: コーパスを決めるの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>コーパスを決める</h2>
 <p>自作の4文を、それぞれ1文書として使う。</p>
@@ -289,14 +326,14 @@
 </ul>
 <p>以下の統計は、この明示した空白区切りに対する値。</p>
 </div>
-<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 コーパスは文章を集めたデータです。 ここでは辞書解析の結果が変わる影響と、統計計算の影響を分けるため、区切り済みの4文を固定します。
 </aside>
 </section>
 <section>
-<!-- 14: 回数を数えるBoWの要点を数値または具体例で説明する -->
+<!-- 15: 回数を数えるBoWの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>回数を数えるBoW</h2>
 <p>語彙の順序：猫・が・眠る・犬・走る</p>
@@ -304,14 +341,14 @@
 <p>Bag-of-Wordsは、文書内の語の出現回数を並べる。</p>
 <p>語順を入れ替えても同じ回数なら、同じ表現になる。</p>
 </div>
-<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 ベクトルの各位置と語彙の対応を確認してください。 単語表現と文書表現は対象が異なります。BoWでは今回は一文書を一行で表しています。
 </aside>
 </section>
 <section>
-<!-- 15: bigramは隣り合う二つの要点を数値または具体例で説明する -->
+<!-- 16: bigramは隣り合う二つの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>bigramは隣り合う二つ</h2>
 <p>文頭 → 猫 → が → 眠る → 文末</p>
@@ -319,14 +356,14 @@
 <p>「が」の次：眠る2回、走る2回。</p>
 <p>語彙は5語＋文末。文頭は予測される語に含めない。</p>
 </div>
-<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 予測の対象を決めないと、分母が変わります。 文頭と文末は処理用の記号です。実際に入力する語と混同しないでください。
 </aside>
 </section>
 <section>
-<!-- 16: 次の語の確率の要点を数値または具体例で説明する -->
+<!-- 17: 次の語の確率の要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>次の語の確率</h2>
 <p>平滑化なし：P(眠る｜が)＝2／4＝0.5</p>
@@ -335,14 +372,14 @@
 <p>「観測されなかった」と「日本語として不可能」は違う。</p>
 <p><a href="interactive.html#bigram" target="_blank" rel="noopener">操作して確かめる</a></p>
 </div>
-<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 縦棒の右側が、分かっている文脈です。 コーパスが小さいため観測されない組合せは多くあります。ゼロという結果だけで言語全体の可能性を否定できません。
 </aside>
 </section>
 <section>
-<!-- 17: 加算平滑化で比べるの要点を数値または具体例で説明する -->
+<!-- 18: 加算平滑化で比べるの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>加算平滑化で比べる</h2>
 <p>P(次の語｜文脈)＝(回数＋α)／(文脈の回数＋α×語彙数)</p>
@@ -350,14 +387,51 @@
 <p>眠る：3／10＝0.3、猫：1／10＝0.1</p>
 <p>全6候補の確率を足すと1になる。</p>
 </div>
-<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 観測のない候補にも確率を配るため、観測された候補の確率も変わります。 加算平滑化は説明しやすい方法ですが、この方法があらゆる用途で最適という意味ではありません。
 </aside>
 </section>
 <section>
-<!-- 18: 頻度だけで特徴を選べるかの要点を数値または具体例で説明する -->
+<!-- 19: 「が」の後を数え、分母も増やすを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>「が」の後を数え、分母も増やす</h2>
+<p class="eyebrow">
+次の語の確率 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>数えた4回</strong>
+<p>
+眠る2回、走る2回
+</p>
+</div>
+<div>
+<strong>α=1を全6候補へ</strong>
+<p>
+分母4＋1×6＝10
+</p>
+</div>
+<div>
+<strong>眠るの確率</strong>
+<p>
+(2＋1)÷10＝0.3
+</p>
+</div>
+</div>
+<p>猫・が・犬・文末は各0回 → <strong>(0＋1)÷10＝0.1</strong>。</p>
+<p>0.3＋0.3＋0.1×4＝1。分子だけ増やさない。</p>
+<p>α=0なら眠る・走るは各0.5。平滑化の前後を比べる。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+基準コーパスの語彙5語と文末記号を合わせた6候補です。各候補に1を足すため、分母も6増やします。現れなかった候補にも確率を割り当てます。
+</aside>
+</section>
+<section>
+<!-- 20: 頻度だけで特徴を選べるかの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>頻度だけで特徴を選べるか</h2>
 <p>「が」は全ての文書に現れる。</p>
@@ -365,14 +439,14 @@
 <p>よく現れることと、文書を区別する手掛かりになることは異なる。</p>
 <p>TFとIDFを組み合わせて比べる。</p>
 </div>
-<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 助詞が多く現れるという観察自体は誤りではありません。 文書の特徴を比べたいという目的に対して、文書全体での現れ方も使います。
 </aside>
 </section>
 <section>
-<!-- 19: TFとDFを分けるの要点を数値または具体例で説明する -->
+<!-- 21: TFとDFを分けるの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>TFとDFを分ける</h2>
 <p>TF＝文書内の語の回数／その文書の語数</p>
@@ -380,14 +454,14 @@
 <p>先頭文書の猫：TF＝1／3、DF＝2</p>
 <p>同じ文書で猫を2回にしても、その文書によるDFの増加分は1。</p>
 </div>
-<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 TFは文書ごとに計算し、DFは文書集合全体で数えます。 DFを総出現回数と取り違えないことが、今日の重要な確認点です。
 </aside>
 </section>
 <section>
-<!-- 20: TF-IDFを計算するの要点を数値または具体例で説明する -->
+<!-- 22: TF-IDFを計算するの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>TF-IDFを計算する</h2>
 <p>IDF＝ln(文書数／DF)、TF-IDF＝TF×IDF</p>
@@ -396,14 +470,51 @@ TFは文書ごとに計算し、DFは文書集合全体で数えます。 DFを�
 <p>今回は自然対数。平滑化・ベクトル正規化は行わない。</p>
 <p><a href="interactive.html#tfidf" target="_blank" rel="noopener">操作して確かめる</a></p>
 </div>
-<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 TF-IDFには実装によって異なる定義があります。 比較する時は対数の底や正規化の有無をそろえてください。がの値がゼロでも日本語に不要という意味ではありません。
 </aside>
 </section>
 <section>
-<!-- 21: 文書を追加するとの要点を数値または具体例で説明する -->
+<!-- 23: TFは文書内、DFは文書の数を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>TFは文書内、DFは文書の数</h2>
+<p class="eyebrow">
+文書の特徴 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>先頭文書</strong>
+<p>
+猫 が 眠る：3語
+</p>
+</div>
+<div>
+<strong>猫のTF</strong>
+<p>
+1÷3
+</p>
+</div>
+<div>
+<strong>猫のDF</strong>
+<p>
+全4文書のうち2文書
+</p>
+</div>
+</div>
+<p>IDF＝log(4÷2)≈0.693147。</p>
+<p><strong>TF-IDF＝(1÷3)×0.693147≈0.231049</strong>。</p>
+<p>「が」は全4文書にある → log(4÷4)=0 → TF-IDFも0。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+猫の出現回数は先頭文書で1、猫がある文書は全体で2です。同じ数え方ではありません。自然対数を使います。文書を追加すると先頭文書を変えなくてもIDFが変わります。
+</aside>
+</section>
+<section>
+<!-- 24: 文書を追加するとの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>文書を追加すると</h2>
 <p>「猫 が 眠る」を1文書追加する。</p>
@@ -411,28 +522,28 @@ TF-IDFには実装によって異なる定義があります。 比較する時�
 <p>猫のDFは3、文書数は5。IDF＝ln(5／3)。</p>
 <p>先頭文書のTF-IDFは約0.170275へ変わる。</p>
 </div>
-<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 変更したのは文書集合であり、先頭文書の語数や回数は変えていません。 既存文書の数値も、比較対象の文書集合によって変わることを観察してください。
 </aside>
 </section>
 <section>
-<!-- 22: 統計から言えることの範囲の要点を数値または具体例で説明する -->
+<!-- 25: 統計から言えることの範囲の要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>統計から言えることの範囲</h2>
 <p>bigram：近い語のつながり。長い文脈の全ては扱わない。</p>
 <p>TF-IDF：文書集合内での特徴。意味の正しさを保証しない。</p>
 <p>コーパスの量・偏り・区切り方が結果へ影響する。</p>
 </div>
-<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 小さな教材データの値を、日本語全体の統計だと受け取らないでください。 学習に使うデータと評価に使うデータを分ける考え方は、自然言語処理でも重要です。
 </aside>
 </section>
 <section>
-<!-- 23: one-hotで単語を表すの要点を数値または具体例で説明する -->
+<!-- 26: one-hotで単語を表すの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>one-hotで単語を表す</h2>
 <p>語彙：猫・が・眠る・犬・走る</p>
@@ -440,14 +551,14 @@ TF-IDFには実装によって異なる定義があります。 比較する時�
 <p>別の語は別の位置を1にする。</p>
 <p>識別はできるが、似た使われ方はこの表現に直接入っていない。</p>
 </div>
-<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 one-hotは一つの語を表すための表現です。 先ほどの文書のBoWと見た目が似ていても、表す対象と値の意味が異なります。
 </aside>
 </section>
 <section>
-<!-- 24: 周辺の語を数えるの要点を数値または具体例で説明する -->
+<!-- 27: 周辺の語を数えるの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>周辺の語を数える</h2>
 <p>左右1語を文脈とし、文の境界を越えない。</p>
@@ -455,14 +566,14 @@ one-hotは一つの語を表すための表現です。 先ほどの文書のBoW
 <p>犬の共起：が2回 → [0,2,0,0,0]</p>
 <p>この4文では、猫と犬の共起表現が一致する。</p>
 </div>
-<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 同じような周辺語が現れる単語を、数値で比べる考え方です。 今回の一致は小さなコーパスが原因です。猫と犬が同じ意味だという結論にはなりません。
 </aside>
 </section>
 <section>
-<!-- 25: コサイン類似度の要点を数値または具体例で説明する -->
+<!-- 28: コサイン類似度の要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>コサイン類似度</h2>
 <p>コサイン類似度＝内積／(一方の長さ×他方の長さ)</p>
@@ -470,14 +581,51 @@ one-hotは一つの語を表すための表現です。 先ほどの文書のBoW
 <p>共起の猫・犬：内積4、長さ2・2 → 類似度1</p>
 <p>ゼロベクトルを含む場合は未定義。</p>
 </div>
-<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 分母の長さは要素の二乗和の平方根です。 未定義をゼロと表示すると、情報がない場合と直交する場合を混同します。
 </aside>
 </section>
 <section>
-<!-- 26: 表現と窓幅を変えるの要点を数値または具体例で説明する -->
+<!-- 29: 同じ周辺語を持つと、数の並びが似るを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>同じ周辺語を持つと、数の並びが似る</h2>
+<p class="eyebrow">
+単語の表現 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>列順</strong>
+<p>
+猫・が・眠る・犬・走る
+</p>
+</div>
+<div>
+<strong>猫の共起</strong>
+<p>
+[0, 2, 0, 0, 0]
+</p>
+</div>
+<div>
+<strong>犬の共起</strong>
+<p>
+[0, 2, 0, 0, 0]
+</p>
+</div>
+</div>
+<p>窓幅1：猫も犬も「が」の隣に2回現れる。</p>
+<p>内積＝4、両方の長さ＝2 → <strong>4÷(2×2)＝1</strong>。</p>
+<p>one-hotでは別の列が1なので内積0、類似度0。</p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+このコーパスでの共起表現が同じという結果です。意味が完全に同じという主張ではありません。列の名前をそろえ、同じ列同士を掛けて足すことを確認しましょう。
+</aside>
+</section>
+<section>
+<!-- 30: 表現と窓幅を変えるの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>表現と窓幅を変える</h2>
 <p>one-hotと共起回数を切り替える。</p>
@@ -485,14 +633,14 @@ one-hotは一つの語を表すための表現です。 先ほどの文書のBoW
 <p><strong>共起表は数えた結果。まだWord2Vecの重みではない。</strong></p>
 <p><a href="interactive.html#vectors" target="_blank" rel="noopener">操作して確かめる</a></p>
 </div>
-<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 各行のラベルを見て、どの単語を表しているか確認します。 文脈の範囲を広げると、得られる情報も変わります。窓幅が大きいほど常に良いとは限りません。
 </aside>
 </section>
 <section>
-<!-- 27: Word2Vecの二つの向きの要点を数値または具体例で説明する -->
+<!-- 31: Word2Vecの二つの向きの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>Word2Vecの二つの向き</h2>
 <p>CBOW：周辺語から中心語を予測する。</p>
@@ -500,14 +648,14 @@ one-hotは一つの語を表すための表現です。 先ほどの文書のBoW
 <p>今回はSkip-gramを小さく実装する。</p>
 <p>予測に役立つように、単語に対応するベクトルを学習する。</p>
 </div>
-<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 Word2Vecは単に単語の出現回数を並べる手法ではありません。 学習の向きを混同しないように、入力と予測対象を矢印で示してください。
 </aside>
 </section>
 <section>
-<!-- 28: 中心語と周辺語の組の要点を数値または具体例で説明する -->
+<!-- 32: 中心語と周辺語の組の要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>中心語と周辺語の組</h2>
 <p>「猫 が 眠る」、左右1語：</p>
@@ -515,14 +663,14 @@ Word2Vecは単に単語の出現回数を並べる手法ではありません。
 <p>4文で16組。文の順、中心位置、周辺位置の順に処理。</p>
 <p>語彙5語、入力ベクトル・出力ベクトルは各2次元。</p>
 </div>
-<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 同じがという中心語に対して、複数の予測対象があります。 一つの組を強く当てることと、全ての組の平均で良くなることを区別して観察します。
 </aside>
 </section>
 <section>
-<!-- 29: 予測確率から損失への要点を数値または具体例で説明する -->
+<!-- 33: 予測確率から損失への要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>予測確率から損失へ</h2>
 <p>中心語の入力ベクトルと、各候補の出力ベクトルの内積を計算。</p>
@@ -531,14 +679,51 @@ Word2Vecは単に単語の出現回数を並べる手法ではありません。
 <p>まず「猫→が」の1組だけを更新する。</p>
 <p><a href="interactive.html#skipgram" target="_blank" rel="noopener">操作して確かめる</a></p>
 </div>
-<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 全ての候補について確率を計算します。 計算を安定させるため内積の最大値を引いてから指数をとります。この操作でも確率は変わりません。
 </aside>
 </section>
 <section>
-<!-- 30: 更新する二種類のベクトルの要点を数値または具体例で説明する -->
+<!-- 34: 猫から「が」を当てる、最初の1組を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>猫から「が」を当てる、最初の1組</h2>
+<p class="eyebrow">
+Skip-gram ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>入力</strong>
+<p>
+中心語：猫
+</p>
+</div>
+<div>
+<strong>5語の候補</strong>
+<p>
+各出力ベクトルと内積
+</p>
+</div>
+<div>
+<strong>正解</strong>
+<p>
+周辺語：が
+</p>
+</div>
+</div>
+<p>5スコア → softmaxで5確率 → <strong>−log(「が」の確率)</strong>。</p>
+<p>学習率×勾配を引き、猫の入力と全語の出力ベクトルを更新。</p>
+<p>1組の更新と、全16組を回す1エポックを区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+猫が眠るという文から、中心語の猫と周辺語のがを取り出します。入力用と出力用の二種類のベクトルを使います。全勾配を更新前の値で求めてから更新します。詳細の実数値は操作教材と同じ初期シードから表示します。
+</aside>
+</section>
+<section>
+<!-- 35: 更新する二種類のベクトルの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>更新する二種類のベクトル</h2>
 <p>損失の勾配から、中心語の入力ベクトルと候補語の出力ベクトルを更新する。</p>
@@ -546,14 +731,14 @@ Word2Vecは単に単語の出現回数を並べる手法ではありません。
 <p>学習率0なら変化なし。基準は学習率0.1、20エポック。</p>
 <p>単語の表示には学習した入力ベクトルを使う。</p>
 </div>
-<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 出力側の計算に更新済みの入力を使うと、意図した勾配更新ではなくなります。 詳しい式はプログラム解説にあります。まず画面で、どの行が変わるのかを見てください。
 </aside>
 </section>
 <section>
-<!-- 31: 学習結果の読み方と限界の要点を数値または具体例で説明する -->
+<!-- 36: 学習結果の読み方と限界の要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>学習結果の読み方と限界</h2>
 <p>1組の損失と、全16組の平均損失を区別する。</p>
@@ -561,14 +746,14 @@ Word2Vecは単に単語の出現回数を並べる手法ではありません。
 <p>静的な単語表現は、同じ語の文脈ごとの意味を直接区別しない。</p>
 <p>単語の足し引きが、どの語・データでも成功するとは限らない。</p>
 </div>
-<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 小さなデータと二次元のモデルで、実用的な意味関係の獲得を保証してはいけません。 入力とシードを固定した比較は再現性の確認であり、性能評価とは異なります。
 </aside>
 </section>
 <section>
-<!-- 32: 音声認識と音声合成の要点を数値または具体例で説明する -->
+<!-- 37: 音声認識と音声合成の要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>音声認識と音声合成</h2>
 <p>音声認識：音声 → 文字列</p>
@@ -576,28 +761,28 @@ Word2Vecは単に単語の出現回数を並べる手法ではありません。
 <p>音声応答システムでは、認識の後に応答の処理を行い、合成して読み上げる。</p>
 <p>今日は認識での候補選択を扱う。</p>
 </div>
-<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 スライドの読み上げ音声を作る工程は音声合成です。 今回の演習では録音や音声の生成を行いません。処理の方向を確実に区別してください。
 </aside>
 </section>
 <section>
-<!-- 33: 波形から候補への要点を数値または具体例で説明する -->
+<!-- 38: 波形から候補への要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>波形から候補へ</h2>
 <p>概念図：音声波形 → 短い時間ごとの特徴 → 音響情報 → 文字列候補</p>
 <p>音響情報と、語の並びや出現に関する言語情報を利用できる。</p>
 <p>雑音・発音・録音条件・文脈によって判断が変わり得る。</p>
 </div>
-<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 これは処理を説明するための概念図で、今回のコードが波形を処理するという意味ではありません。 実用システムには統合して学習する構成もあります。全方式が独立した部品を同じようにつなぐわけではありません。
 </aside>
 </section>
 <section>
-<!-- 34: 二つの情報で候補を比べるの要点を数値または具体例で説明する -->
+<!-- 39: 二つの情報で候補を比べるの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>二つの情報で候補を比べる</h2>
 <p>人工例：「あめ」の候補を雨・飴とする。</p>
@@ -628,14 +813,51 @@ Word2Vecは単に単語の出現回数を並べる手法ではありません。
 <p>音響だけなら雨、両方を使うと飴。</p>
 <p><a href="interactive.html#speech" target="_blank" rel="noopener">操作して確かめる</a></p>
 </div>
-<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 ここに示す数値は人が設定した教材用の値です。 実際の録音から推定した値ではなく、雨と飴の認識率を示すものでもありません。
 </aside>
 </section>
 <section>
-<!-- 35: 言語情報の重みを変えるの要点を数値または具体例で説明する -->
+<!-- 40: 音だけで選ぶ場合と、言葉も使う場合を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>音だけで選ぶ場合と、言葉も使う場合</h2>
+<p class="eyebrow">
+音声候補 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>音響尤度</strong>
+<p>
+雨0.6、飴0.4
+</p>
+</div>
+<div>
+<strong>事前確率</strong>
+<p>
+雨0.2、飴0.8
+</p>
+</div>
+<div>
+<strong>λ=1の比較</strong>
+<p>
+雨0.12、飴0.32
+</p>
+</div>
+</div>
+<p>音だけ（λ=0）なら <strong>雨</strong>。両方なら <strong>飴</strong>。</p>
+<p>計算画面では log音響＋λ×log事前 を使う。同じ順位になる。</p>
+<p>人工的に与えた候補値の比較。録音の認識結果ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+雨と飴は同じ読みの候補です。音響の値と事前確率は異なる手掛かりです。基準のλが1なら積で比較した場合とlogの和の順位は一致します。スコアは正解保証ではありません。
+</aside>
+</section>
+<section>
+<!-- 41: 言語情報の重みを変えるの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>言語情報の重みを変える</h2>
 <p>順位スコア＝ln(音響尤度)＋λ ln(事前確率)</p>
@@ -643,14 +865,14 @@ Word2Vecは単に単語の出現回数を並べる手法ではありません。
 <p>スコアを認識の正答率と解釈しない。</p>
 <p>もっとも高い候補でも、正しい文字列とは限らない。</p>
 </div>
-<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 対数を使うと積を和として扱えます。 確率を対数へ入れるため、ゼロ以下の値を受け付けません。誤入力のときに古い結果を正しい結果として見せないようにしています。
 </aside>
 </section>
 <section>
-<!-- 36: 認識の誤りを考えるの要点を数値または具体例で説明する -->
+<!-- 42: 認識の誤りを考えるの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>認識の誤りを考える</h2>
 <p>正解と比較して、置換・削除・挿入を区別する。</p>
@@ -658,29 +880,29 @@ Word2Vecは単に単語の出現回数を並べる手法ではありません。
 <p>正解データと区切り方をそろえて評価する。</p>
 <p>今回の候補選択は、実音声での精度評価ではない。</p>
 </div>
-<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 正解の文章を見ずに、もっともらしさだけで精度を評価できません。 表記や分割条件によって数え方が変わるため、比較条件を先に決めることが大切です。
 </aside>
 </section>
 <section>
-<!-- 37: 保存して基準結果を実行するの要点を数値または具体例で説明する -->
+<!-- 43: 保存して基準結果を実行するの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>保存して基準結果を実行する</h2>
 <p><a href="programs/natural_language_processing.py" download>Pythonを保存</a> ／ <a href="programs/natural_language_processing.ipynb" download>Notebookを保存</a> ／ <a href="programs/natural_language_processing.zip" download>一式ZIPを保存</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> natural_language_processing.py <span class="at">--demo</span></span></code></pre></div>
+<div class="sourceCode" id="slide-43-cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="slide-43-cb1-1"><a href="#slide-43-cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> natural_language_processing.py <span class="at">--demo</span></span></code></pre></div>
 <p>Notebookは既存venvのカーネルを選び、再起動して全セル実行。</p>
 <p><a href="programs/guide.html" target="_blank" rel="noopener">保存・環境・結果の読み方</a></p>
 </div>
-<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 ZIPを展開してから、同梱のguide.htmlを開いてください。 Notebookは同梱Pythonを読み込まずに動きます。制作側のuvを既習とはしません。
 </aside>
 </section>
 <section>
-<!-- 38: 一つ変えて比較するの要点を数値または具体例で説明する -->
+<!-- 44: 一つ変えて比較するの要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>一つ変えて比較する</h2>
 <table>
@@ -707,14 +929,14 @@ ZIPを展開してから、同梱のguide.htmlを開いてください。 Notebo
 </table>
 <p>基準のコピーを変更し、元の入力・結果を残す。</p>
 </div>
-<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 複数の条件を同時に変えると、原因の説明が難しくなります。 各マニュアルに六つの変更例とリセット方法があります。結果だけでなく分母や更新対象を確認してください。
 </aside>
 </section>
 <section>
-<!-- 39: 理解確認と次回の要点を数値または具体例で説明する -->
+<!-- 45: 理解確認と次回の要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>理解確認と次回</h2>
 <ul>
@@ -725,14 +947,14 @@ ZIPを展開してから、同梱のguide.htmlを開いてください。 Notebo
 </ul>
 <p>次回：画像認識（特徴抽出・テンプレートマッチング）。</p>
 </div>
-<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 四つの問いに、自分が操作した数値を一つ添えて答えましょう。 確認クイズの配信方法は担当者からの案内に従ってください。ここでは提出期限や成績条件を追加しません。
 </aside>
 </section>
 <section>
-<!-- 40: 参考資料の要点を数値または具体例で説明する -->
+<!-- 46: 参考資料の要点を数値または具体例で説明する -->
 <div class="slide-body">
 <h2>参考資料</h2>
 <ul>
@@ -742,7 +964,7 @@ ZIPを展開してから、同梱のguide.htmlを開いてください。 Notebo
 </ul>
 <p>教材の辞書・4文・数値条件は自作。出典と昨年度の対応</p>
 </div>
-<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 参考資料への移動にはネット接続が必要です。 操作教材の計算はオフラインで行えます。原著の説明と、教材の簡略化の範囲を分けて確認してください。

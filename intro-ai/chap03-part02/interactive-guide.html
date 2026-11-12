@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第4回 機械学習2 操作マニュアル">
+<title>第4回 機械学習2 操作マニュアル</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第4回 機械学習2 操作マニュアル</h1>
+<p><a href="interactive.html">図解教材を開く</a> ／ <a href="interactive.html" download="interactive.html">単一HTMLを保存</a> ／ <a href="index.html">スライド</a></p>
+<h2 id="開き方と授業での使い方">開き方と授業での使い方</h2>
+<p><code>interactive.html</code> をブラウザーで開く。ダウンロードして配布する場合も、この1ファイルだけで動く。JavaScriptを有効にしたブラウザーを使い、Python・サーバー・ネット接続は不要。外部の出典リンクを開く場合だけネット接続が必要になる。</p>
+<p>上の5つのボタン、または「前の手法」「次の手法」で移動する。各章で「まず予想」の問いを考え、図を操作し、結果が変わった理由を説明する。「詳しく見る」と確認問題は開閉でき、リセットはその章の状態と詳細表示を初期状態に戻す。章を移動しただけでは操作した状態を保持し、ページを再読み込みすると全章が初期状態に戻る。保存・送信・成績記録は行わない。</p>
+<p>授業で投影する場合は「投影表示にする」を選ぶ。導入文と詳細説明を隠し、主な図・操作・結果を近くに配置する。森は「特徴候補と分岐」の段階で木の経路を、「出力の集約」の段階で各木の出力を大きく見せる。「前の段階」で経路に戻れる。通常表示へ戻すと学生が説明と確認問題を読みながら試せる。点はクリック・タップ・ドラッグで動かせるほか、数値入力欄や矢印キーでも変更できる。Tabキーで操作部品を移動する。Aは丸、Bは四角、予測対象はひし形として色以外でも区別する。</p>
+<p>授業時間や提出・評価・出席条件は新たに設定していない。既存スライド・Python・Notebook・クイズ・音声・exportとは独立した補助教材である。</p>
+<h2 id="スライドとの対応と観察例">スライドとの対応と観察例</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>図解</th>
+<th>スライド</th>
+<th>操作と想定される観察</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k近傍法</td>
+<td>6〜12</td>
+<td>入力(2, 3)でk=1ならB、k=3ならA。近傍T4・T2・T3の距離の二乗は1・5・9。「尺度用の2件」でyを3で割ると、入力(0, 0)のk=1の予測がBからAへ変わる</td>
+</tr>
+<tr>
+<td>決定木</td>
+<td>13〜18</td>
+<td>手で特徴・しきい値を選び、学習ボタンの結果と比較する。1段の学習結果はx ≤ 4、加重Giniは3/14。詳細では最大深さ1〜3を変える。青枠で予測経路をたどる</td>
+</tr>
+<tr>
+<td>アンサンブル</td>
+<td>19〜22</td>
+<td>同じ入力(2, 3)への予測B・A・Aを集約してA。誤りの重なりの別例では、各モデルの正解件数が同じでも多数決の結果が異なる</td>
+</tr>
+<tr>
+<td>ランダムフォレスト</td>
+<td>23〜27</td>
+<td>元データ→復元抽出→特徴候補と分岐→集約を順に表示する。重複ID・未抽出ID、各分岐の特徴、葉の確率出力を確認する。シード42・入力(2, 3)ではP(A)が0.5・0.5・0、平均1/3でB。ラベルの多数決はA</td>
+</tr>
+<tr>
+<td>SVM</td>
+<td>28〜31</td>
+<td>A={1,2}、B={6,7}で境界4・両側の余白2。Aの支持点2を3へ動かすと最大余白の境界は4.5。異なるクラスが同じ位置にある場合などは、この解析例では分離できないと表示する</td>
+</tr>
+</tbody>
+</table>
+<p>基本操作の数値は丸める前の値で計算し、画面は小数点以下最大3桁で表示する。四捨五入により、表示値を使って手計算した結果と最終桁が異なる場合がある。</p>
+<h2 id="データの由来と簡略化した範囲">データの由来と簡略化した範囲</h2>
+<p>共通の7件と尺度用の2件は <a href="programs/neighbors_and_trees.py">既存Python演習</a> と同じ架空データ。データはHTML内に保持し、別ファイルを読み込まない。IDは識別と同距離時の順序に使い、特徴として距離には入れない。距離が同じならID順、同票ならA。分岐候補は異なる特徴値の中点で、同じ加重Giniならx優先、次に小さいしきい値。不純度が改善しなければ分岐しない。数値比較の許容誤差は検証で <code>1e-9</code> とする。</p>
+<ul>
+<li><strong>k近傍法</strong>：整数座標0〜8、kは学習件数以下。尺度はyを1または3で割る。全例との距離を調べる一様投票で、距離重み付き投票や高速探索は扱わない。</li>
+<li><strong>決定木</strong>：既存演習は1段。HTMLではその処理を最大3段まで再帰的に適用し、領域と経路を表示する。深くした結果を実用上の精度の根拠にはしない。</li>
+<li><strong>アンサンブル</strong>：k=1・k=3・1段決定木のハード投票を使う。誤りの重なりの表とバギング／ブースティングの図は別の概念例であり、上のモデルによる性能実験ではない。</li>
+<li><strong>森</strong>：3本・最大深さ2・各分岐の特徴候補1個に固定。Mulberry32による疑似乱数を使い、シードは0〜4294967295。各木に7件を復元抽出し、重複した例も件数に含める。特徴が一定または不純度が改善しなければ葉とする。葉でのAの割合を各木の確率出力とし、その平均が0.5以上ならA。シードと入力が同じなら同じ結果を再現する。scikit-learnの再現実装ではなく、性能の比較・校正・OOB評価は行わない。</li>
+<li><strong>SVM</strong>：スライドの分離可能な一次元例で、クラス間の端点の中点を解析的に求める。上下の描画位置は見やすさのためで、特徴は横軸だけ。クラスの左右が逆でも計算し、区間が重なるか接触すれば分離不能とする。境界上は正しく分離できたとは扱わない。ソフトマージンの図は固定した境界と1点の違反量に対するCの重みを示す。特徴変換の図はz=x²の導入例。一般のSVMソルバー、Cの最適化、RBFの学習を実装したものではない。</li>
+</ul>
+<p>計算で求める図と、別の架空例・概念図を画面でも明記する。外部データ・生成画像・実測の性能値は使わない。</p>
+<p>技術説明の根拠は、既存スライドと2026年10月22日に確認したscikit-learn公式資料：<a href="https://scikit-learn.org/stable/modules/neighbors.html">Nearest Neighbors</a>、<a href="https://scikit-learn.org/stable/modules/tree.html">Decision Trees</a>、<a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests">Ensemble methods</a>、<a href="https://scikit-learn.org/stable/modules/svm.html#mathematical-formulation">Support Vector Machines</a>。公式資料は説明の根拠であり、教材の実行依存には追加しない。</p>
+<h2 id="一段ずつ説明を追う2026-11-12改訂">一段ずつ説明を追う（2026-11-12改訂）</h2>
+<p>操作欄の下の「前の段階」「次の段階」で説明を読みます。「現在○／○」と下線が現在位置です。説明の移動では計算条件は変わりません。上の入力欄・実行ボタンで条件や計算を変えると、説明の値も更新されます。「説明を最初へ」は説明のみ、テーマのリセットは入力・計算も戻します。</p>
+<h3 id="からt4への距離を計算する">(2,3)からT4への距離を計算する</h3>
+<p>予想：T2は(0−2)²+(2−3)²=5、T3は(2−2)²+(0−3)²=9。近い順はT4・T2・T3。 操作：対応テーマで一条件を変える。結果の根拠を途中計算から説明し、テーマのリセットで元に戻す。</p>
+<h3 id="近い点を選んでからラベルを数える">近い点を選んでから、ラベルを数える</h3>
+<p>予想：座標から近さを決め、選んだ点のラベルで投票する。入力は同じで、kだけを変更した比較。 操作：対応テーマで一条件を変える。結果の根拠を途中計算から説明し、テーマのリセットで元に戻す。</p>
+<h3 id="左右の混ざりを件数で重み付けする">左右の混ざりを、件数で重み付けする</h3>
+<p>予想：左の混ざりは1−(3/4)²−(1/4)²=3/8。分岐候補を比べ、最小の質問を選ぶ。 操作：対応テーマで一条件を変える。結果の根拠を途中計算から説明し、テーマのリセットで元に戻す。</p>
+<h3 id="同じ入力23に三つのモデルで答える">同じ入力(2,3)に三つのモデルで答える</h3>
+<p>予想：モデルの予測を集めた結果であり、正解率が改善したという測定結果ではない。 操作：対応テーマで一条件を変える。結果の根拠を途中計算から説明し、テーマのリセットで元に戻す。</p>
+<h3 id="ラベルの多数決と確率平均は違う">ラベルの多数決と確率平均は違う</h3>
+<p>予想：これは集約方法を比べる手動例。乱数種42で作った実際の森の確率とは区別する。 操作：対応テーマで一条件を変える。結果の根拠を途中計算から説明し、テーマのリセットで元に戻す。</p>
+<h3 id="狭い側の余白を1から2へ広げる">狭い側の余白を、1から2へ広げる</h3>
+<p>予想：一次元で分離できる例。境界を右へ動かし続けると、今度はB側の余白が狭くなる。 操作：対応テーマで一条件を変える。結果の根拠を途中計算から説明し、テーマのリセットで元に戻す。</p>
+<h3 id="保存して距離と分岐を照合する">保存して、距離と分岐を照合する</h3>
+<p>ZIPを保存し新規カーネルで全セル実行する。入力(2,3)への予測を確かめ、元ファイルで復帰する。</p>
+<p>数値の内訳は「計算の内訳・確かめること」を開いて確認します。表示は丸めていますが計算は内部精度です。予想と結果が違ったときは、入力・更新した量・結果の順に確認し、テーマをリセットして同じ条件からやり直します。</p>
+</main></body></html>

@@ -142,4 +142,8 @@ li { margin: .35em 0; }
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> neuralnet.py <span class="at">--demo</span></span></code></pre></div>
 <p>固定例をまとめて表示します。照合用JSONは <code>--demo --json</code>。Python本体は標準ライブラリだけで動きます。uvを使う人は <code>uv run --no-project python neuralnet.py --demo</code> でも実行できます。</p>
 <p>ZIPの <code>requirements.txt</code> は既存のNotebook検証環境の依存一覧です。動いている授業用カーネルの環境を一律に入れ替える必要はありません。</p>
+<h2 id="段階表示とコードを対応させる">段階表示とコードを対応させる</h2>
+<p>操作教材の「計算の内訳・確かめること」を開き、入力と同じ順序で途中の値を比較します。説明の前後移動では計算は進みません。プログラム側では同じ固定入力と条件でセルを実行し、表示の丸めによる末尾の差と、計算条件の違いを区別してください。</p>
+<p>neuronとforwardで入力ごとの積と中間値を照合します。gradientは損失0.5→0.125、chainは更新前のa・bから両勾配を計算します。recurrentの[1,0]は状態1→0.5。状態の進行とパラメータの学習を区別してください。</p>
+<p>Python／Notebookの計算コード・固定データ・期待値は変更していません。変更実験は元データのコピーで行い、再実行前には説明済みの初期化手順を使います。</p>
 </main></body></html>

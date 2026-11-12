@@ -281,7 +281,44 @@
 </aside>
 </section>
 <section>
-<!-- 10: 一点交叉で組み合わせるを具体例と操作で説明できるようにする -->
+<!-- 10: 6個体の中で、選ばれる割合を作るを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>6個体の中で、選ばれる割合を作る</h2>
+<p class="eyebrow">
+GAの選択 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>個体1</strong>
+<p>
+100000 → 1点
+</p>
+</div>
+<div>
+<strong>全員の合計</strong>
+<p>
+1+2+3+3+3+4 = 16
+</p>
+</div>
+<div>
+<strong>個体1の確率</strong>
+<p>
+1÷16 = 0.0625
+</p>
+</div>
+</div>
+<p>001111は4点なので <strong>4÷16＝0.25</strong>。</p>
+<p>点数が大きいほど選ばれやすい。必ず選ぶという意味ではない。</p>
+<p>個体1を111111へ変えると、他の個体の割合も変わる。</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+1の個数を適応度とする6個体の例です。個体1だけの点数で確率を決めず、全員の点数合計で割ります。個体1を変更すると分母も変わります。親は重複して選ぶことができます。
+</aside>
+</section>
+<section>
+<!-- 11: 一点交叉で組み合わせるを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>一点交叉で組み合わせる</h2>
 <p>切断位置を2とする手計算例：</p>
@@ -293,14 +330,51 @@
 <li>プログラムは切断位置1〜5を乱数で選ぶ。</li>
 </ul>
 </div>
-<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 交叉は既存の部分を組み合わせます。 良い部分同士が組み合わさる場合もあれば、よい組合せが壊れる場合もあります。 切断位置は左から何ビット残すかという意味です。
 </aside>
 </section>
 <section>
-<!-- 11: 突然変異でビットを反転するを具体例と操作で説明できるようにする -->
+<!-- 12: 切った場所の右側を、親同士で交換を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>切った場所の右側を、親同士で交換</h2>
+<p class="eyebrow">
+GAの交叉 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>親A</strong>
+<p>
+110｜000
+</p>
+</div>
+<div>
+<strong>親B</strong>
+<p>
+001｜111
+</p>
+</div>
+<div>
+<strong>子</strong>
+<p>
+110111 ／ 001000
+</p>
+</div>
+</div>
+<p>左3個と右3個を分け、<strong>右側を交換</strong>する手計算例。</p>
+<p>子の点数は5と1。両方が親より良くなるとは限らない。</p>
+<p>操作教材では実際に選ばれた親と切断位置を追う。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+これは交叉の規則を理解する手計算例で、固定乱数による最初の親の組とは区別します。子の前半は片方の親、後半はもう片方の親から来ます。突然変異はこの後の別の操作です。
+</aside>
+</section>
+<section>
+<!-- 13: 突然変異でビットを反転するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>突然変異でビットを反転する</h2>
 <p><code>101010</code> の3番目を反転 → <code>100010</code></p>
@@ -312,14 +386,14 @@
 <p>率0：反転なし ／ 率1：全ビット反転</p>
 <p>新しい候補を作れるが、適応度が上がるとは限らない。</p>
 </div>
-<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 各ビットで独立に乱数を使います。 一つも変わらない場合や複数が変わる場合があります。 変異率を上げるほど結果がよくなるという単調な関係は仮定しません。
 </aside>
 </section>
 <section>
-<!-- 12: 一世代の更新順序を具体例と操作で説明できるようにする -->
+<!-- 14: 一世代の更新順序を具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>一世代の更新順序</h2>
 <p><strong>評価 → 親を選択 → 交叉 → 突然変異 → 次世代</strong></p>
@@ -331,14 +405,14 @@
 <p>最後の組の余った子は使わない。旧集団を途中で書き換えない。</p>
 <p><a href="interactive.html#ga-generation" target="_blank" rel="noopener">操作：GAの世代交代</a></p>
 </div>
-<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 子ができるたびに親の選択元を入れ替えると、別の更新規則になります。 この教材は一世代を通して同じ旧集団から選びます。 最後の組も二個体分の突然変異を計算し、乱数消費を統一します。
 </aside>
 </section>
 <section>
-<!-- 13: 基準の一世代を追うを具体例と操作で説明できるようにする -->
+<!-- 15: 基準の一世代を追うを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>基準の一世代を追う</h2>
 <p>固定シード65535、突然変異率0.1。</p>
@@ -367,14 +441,14 @@
 <p>次世代：<code>001111, 001010, 110101, 110111, 010000, 001101</code></p>
 <p>この実行例での改善と、毎回の改善保証を区別する。</p>
 </div>
-<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 先頭の001111はエリートとして保存されました。 選ばれた親番号は画面では1始まりで表示します。 プログラムの内部インデックスは0始まりなので、traceを見る際は1を足して対応させます。
 </aside>
 </section>
 <section>
-<!-- 14: エリート保存が守るものを具体例と操作で説明できるようにする -->
+<!-- 16: エリート保存が守るものを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>エリート保存が守るもの</h2>
 <p>最良個体を1個、そのまま次世代に残す。</p>
@@ -385,14 +459,14 @@
 </ul>
 <p>問い：最良6、平均5.2 → 最良6、平均4.8は起こり得る？</p>
 </div>
-<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 最良個体を変異の対象から外してコピーすることが条件です。 集団の他の個体は変化するので、平均が下がることがあります。 基準実行でもその違いを確認できます。
 </aside>
 </section>
 <section>
-<!-- 15: 多様性と探索の偏りを具体例と操作で説明できるようにする -->
+<!-- 17: 多様性と探索の偏りを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>多様性と探索の偏り</h2>
 <ul>
@@ -403,14 +477,14 @@
 <p>今回の多様性指標：<strong>異なるビット列の種類数</strong>。</p>
 <p>同じ最良値でも、集団の中身を比較する。</p>
 </div>
-<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 多様性には複数の測り方があります。 教材では分かりやすい種類数を使います。 同じ評価値の候補が複数あっても、ビット列が異なれば別の種類です。
 </aside>
 </section>
 <section>
-<!-- 16: GAの変更実験を具体例と操作で説明できるようにする -->
+<!-- 18: GAの変更実験を具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>GAの変更実験</h2>
 <ol type="1">
@@ -422,14 +496,14 @@
 <p>基準実行の探索中最良は6。変更後も同じになるか予想する。</p>
 <p>一つのシードでの結果から、手法の優劣を一般化しない。</p>
 </div>
-<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 基準結果を残したまま別の変数に変更実験の結果を保存します。 最終最良値が同じ場合でも、そこへ至る履歴や集団の中身は異なるかもしれません。
 </aside>
 </section>
 <section>
-<!-- 17: ACO：情報を経路に残すを具体例と操作で説明できるようにする -->
+<!-- 19: ACO：情報を経路に残すを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>ACO：情報を経路に残す</h2>
 <p><strong>蟻コロニー最適化（Ant Colony Optimization）</strong></p>
@@ -441,14 +515,14 @@
 <p>今回は三つの完成した経路を選ぶ簡略モデル。</p>
 <p>一般のACOは、巡回路などを段階的に構成する問題にも使う。</p>
 </div>
-<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 自然界の蟻の比喩は導入であり、プログラム内のフェロモンは数値です。 今回のモデルでは途中の頂点を選ぶ処理を省きます。 ACO全般を三経路の選択と定義しないでください。
 </aside>
 </section>
 <section>
-<!-- 18: 三つの経路を評価するを具体例と操作で説明できるようにする -->
+<!-- 20: 三つの経路を評価するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>三つの経路を評価する</h2>
 <table>
@@ -480,14 +554,14 @@
 <p>目的：短い経路を選びやすくする。</p>
 <p>既知の最短はAの4。図の見た目の線長と数値の距離は区別する。</p>
 </div>
-<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 三経路の長さは教材用に設定した値です。 この小問題では最短経路が最初から分かりますが、更新の計算を追うことが目的です。 実問題を解いた実績とは扱いません。
 </aside>
 </section>
 <section>
-<!-- 19: 経路を確率的に選ぶを具体例と操作で説明できるようにする -->
+<!-- 21: 経路を確率的に選ぶを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>経路を確率的に選ぶ</h2>
 <p><strong>重み = フェロモン ÷ 経路長</strong></p>
@@ -499,14 +573,14 @@
 </ul>
 <p><a href="interactive.html#aco-choice" target="_blank" rel="noopener">操作：ACOの経路選択</a></p>
 </div>
-<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 この式はフェロモンと距離の重みをそれぞれ1乗にした教材の設定です。 ACOには他の重み付けもあります。 三つの重みが全て0の場合、この教材は一様確率に戻します。
 </aside>
 </section>
 <section>
-<!-- 20: 初期確率を手計算するを具体例と操作で説明できるようにする -->
+<!-- 22: 初期確率を手計算するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>初期確率を手計算する</h2>
 <p>重みの合計 = 1/4 + 1/6 + 1/8 = 13/24</p>
@@ -534,14 +608,51 @@
 </table>
 <p>Bのフェロモンだけを2にすると、Bの確率は8/17になる。</p>
 </div>
-<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 フェロモン2の経路Bの重みは2割る6です。 他の重みは変わりませんが、合計が変わるためAとCの確率も変わります。 画面の表示は小数点以下6桁に丸めています。
 </aside>
 </section>
 <section>
-<!-- 21: 蒸発：過去の情報を弱めるを具体例と操作で説明できるようにする -->
+<!-- 23: 道の長さを、そのまま確率にしないを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>道の長さを、そのまま確率にしない</h2>
+<p class="eyebrow">
+ACOの選択 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>重み</strong>
+<p>
+A:1/4、B:1/6、C:1/8
+</p>
+</div>
+<div>
+<strong>重みの合計</strong>
+<p>
+13/24
+</p>
+</div>
+<div>
+<strong>確率</strong>
+<p>
+A:6/13、B:4/13、C:3/13
+</p>
+</div>
+</div>
+<p>目印÷長さで重みを作り、<strong>重みの合計で割る</strong>。</p>
+<p>短いAが選ばれやすいが、BやCも選ばれる。</p>
+<p>Bの長さだけ変え、Bの目印だけ変えた場合と比較する。</p>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+全てのフェロモンが1の初期状態です。長さは4、6、8です。確率は長さそのものではなく、フェロモンを長さで割った重みを正規化したものです。
+</aside>
+</section>
+<section>
+<!-- 24: 蒸発：過去の情報を弱めるを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>蒸発：過去の情報を弱める</h2>
 <p>蒸発後 = (1 − 蒸発率) × 更新前のフェロモン</p>
@@ -553,14 +664,14 @@
 </ul>
 <p>蒸発と、次に行う追加を分けて観察する。</p>
 </div>
-<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 蒸発は古い情報を弱めますが、それだけで短い経路を選ぶわけではありません。 全て0になる場合は例外として教材の一様選択規則が働きます。
 </aside>
 </section>
 <section>
-<!-- 22: 追加：評価結果を反映するを具体例と操作で説明できるようにする -->
+<!-- 25: 追加：評価結果を反映するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>追加：評価結果を反映する</h2>
 <p>蟻1匹の追加量 = <strong>6 ÷ 通った経路の長さ</strong></p>
@@ -581,14 +692,14 @@
 <p>新しい値 = 蒸発後 + その経路を通った全蟻の追加量</p>
 <p>各経路を1匹ずつ通った例：1 → 0.75 → 2.25・1.75・1.5。</p>
 </div>
-<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 分子の6は教材で固定した強さです。 短い経路では一匹あたりの追加量が大きくなります。 実際の基準実行では六匹が選ぶため、この各一匹の手計算例とは通過数が異なります。
 </aside>
 </section>
 <section>
-<!-- 23: 六匹の選択から一括更新を具体例と操作で説明できるようにする -->
+<!-- 26: 六匹の選択から一括更新を具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>六匹の選択から一括更新</h2>
 <p>同じ反復内では、<strong>全ての蟻が更新前の値で選択</strong>する。</p>
@@ -613,14 +724,50 @@
 </table>
 <p><a href="interactive.html#aco-update" target="_blank" rel="noopener">操作：選択 → 蒸発 → 追加</a></p>
 </div>
-<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 一匹が通るたびにフェロモンを変えると、後の蟻が参照する確率が変わります。 この教材ではその方式を採用しません。 操作画面では三つのボタンで状態の違いを確認できます。
 </aside>
 </section>
 <section>
-<!-- 24: 反復すると何が起こるかを具体例と操作で説明できるようにする -->
+<!-- 27: Aを通った2匹は、いくつ目印を足す？を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>Aを通った2匹は、いくつ目印を足す？</h2>
+<p class="eyebrow">
+ACOの更新 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>選択を数える</strong>
+<p>
+B B A B A C → Aは2匹
+</p>
+</div>
+<div>
+<strong>先に蒸発</strong>
+<p>
+1 × (1−0.25) = 0.75
+</p>
+</div>
+<div>
+<strong>後から追加</strong>
+<p>
+0.75 + 6×2÷4 = 3.75
+</p>
+</div>
+</div>
+<p>同様にBは3.75、Cは1.5。<strong>蒸発後＋追加量</strong>を次へ渡す。</p>
+<p>6匹は全て更新前の同じ確率を使う。1匹ずつ更新しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+初期シードの最初の選択からAの更新だけを取り出した例です。追加量の6は教材で定めた定数、2はAの通過数、4はAの経路長です。数字の役割を分けて読みましょう。
+</aside>
+</section>
+<section>
+<!-- 28: 反復すると何が起こるかを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>反復すると何が起こるか</h2>
 <ul>
@@ -631,14 +778,14 @@
 <p>基準20反復の探索中最短は4。</p>
 <p><strong>最短経路に必ず集中するという保証ではない。</strong></p>
 </div>
-<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 正のフィードバックは探索を集中させる一方、好ましくない偏りを強める可能性があります。 初期フェロモンや蒸発率を変え、通過数と確率を分けて観察してください。
 </aside>
 </section>
 <section>
-<!-- 25: ACOの変更実験を具体例と操作で説明できるようにする -->
+<!-- 29: ACOの変更実験を具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>ACOの変更実験</h2>
 <ol type="1">
@@ -649,14 +796,14 @@
 <p>最初の通過数は同じ。追加後は <strong>3.5・3.5・1.25</strong>。</p>
 <p>説明：なぜ最初の選択は変わらず、その後の確率が変わる？</p>
 </div>
-<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 最初の選択に使う初期フェロモンはどちらも同じです。 蒸発率が使われるのは選択の後なので、最初の通過数は変わりません。 その因果関係を説明しましょう。
 </aside>
 </section>
 <section>
-<!-- 26: AFSA：魚の行動に着想を得るを具体例と操作で説明できるようにする -->
+<!-- 30: AFSA：魚の行動に着想を得るを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>AFSA：魚の行動に着想を得る</h2>
 <p><strong>人工魚群アルゴリズム（Artificial Fish Swarm Algorithm）</strong></p>
@@ -668,14 +815,14 @@
 <p>今回は行動を追うための2次元の教材用モデル。</p>
 <p>原著の完全再現・PSOの発展形という説明はしない。</p>
 </div>
-<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 人工魚群にはさまざまな実装があります。 この教材の混雑上限や行動の選び方は説明しやすいように定めたものです。 原著の書誌と概要の確認だけから、細かな式まで原著由来と主張しません。
 </aside>
 </section>
 <section>
-<!-- 27: 位置と評価値を分けるを具体例と操作で説明できるようにする -->
+<!-- 31: 位置と評価値を分けるを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>位置と評価値を分ける</h2>
 <p>探索範囲：−2 ≤ x,y ≤ 2</p>
@@ -704,14 +851,14 @@
 </table>
 <p>魚の位置が解の候補、評価値はその位置のよさを測る数値。</p>
 </div>
-<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 原点からの距離の二乗なので、原点で最小値0になります。 目的関数に合わせて良い方向が決まります。 魚が画面上で右へ移動したから改善、とは判断できません。
 </aside>
 </section>
 <section>
-<!-- 28: 視野と移動幅を具体例と操作で説明できるようにする -->
+<!-- 32: 視野と移動幅を具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>視野と移動幅</h2>
 <ul>
@@ -723,14 +870,14 @@
 <p>視野を広げることと、一歩を大きくすることは違う。</p>
 <p><a href="interactive.html#fish-action" target="_blank" rel="noopener">操作：AFSAの行動</a></p>
 </div>
-<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 視野は候補を調べる範囲、移動幅は実際に位置を変える量の上限です。 方向移動の式を暗記するより、目標まで0.1なら0.2進まないことを確認してください。
 </aside>
 </section>
 <section>
-<!-- 29: 採餌：周囲の候補を試すを具体例と操作で説明できるようにする -->
+<!-- 33: 採餌：周囲の候補を試すを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>採餌：周囲の候補を試す</h2>
 <ol type="1">
@@ -742,14 +889,14 @@
 <p><strong>採餌は、ほかの魚について行くこととは異なる。</strong></p>
 <p>ランダム移動では、評価値が悪化することもある。</p>
 </div>
-<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 採餌候補には他の魚がいなくても構いません。 近傍に魚がいない配置で実験できます。 ランダム移動は改善を条件にしないので、各魚の値が単調によくなるとは限りません。
 </aside>
 </section>
 <section>
-<!-- 30: 群れ形成：近傍の中心を見るを具体例と操作で説明できるようにする -->
+<!-- 34: 群れ形成：近傍の中心を見るを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>群れ形成：近傍の中心を見る</h2>
 <p>近傍の魚の座標の平均を、候補の中心位置とする。</p>
@@ -761,14 +908,14 @@
 </ul>
 <p>中心がいつもよい位置になるとは限らない。</p>
 </div>
-<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 座標の平均と評価値の平均は違います。 この例では中心の評価値は0.04です。 魚が集まること自体を目的とせず、評価と混雑を確認します。
 </aside>
 </section>
 <section>
-<!-- 31: 追尾：近傍の最良魚を見るを具体例と操作で説明できるようにする -->
+<!-- 35: 追尾：近傍の最良魚を見るを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>追尾：近傍の最良魚を見る</h2>
 <p>近傍の中で、最もよい評価値を持つ魚を探す。</p>
@@ -780,14 +927,51 @@
 <li>同値なら、この教材では追尾を優先する。</li>
 </ul>
 </div>
-<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 近傍の最良魚は、探索空間全体の最適解ではありません。 ここでは他の魚の現在位置を参照します。 過去の全体最良へ速度を調整するPSOの説明と混同しないようにします。
 </aside>
 </section>
 <section>
-<!-- 32: 混雑を判定するを具体例と操作で説明できるようにする -->
+<!-- 36: 良い位置まで、一気に飛ぶわけではないを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>良い位置まで、一気に飛ぶわけではない</h2>
+<p class="eyebrow">
+人工魚群の移動 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>魚1</strong>
+<p>
+(1,0)、評価1
+</p>
+</div>
+<div>
+<strong>良い仲間</strong>
+<p>
+(0.5,0)、評価0.25
+</p>
+</div>
+<div>
+<strong>移動幅0.2</strong>
+<p>
+(0.8,0)、評価0.64
+</p>
+</div>
+</div>
+<p>追尾の場面を選ぶ。<strong>目標方向へ最大0.2</strong>だけ近付く。</p>
+<p>位置は(x,y)の2個、評価はx²+y²の1個。小さいほど良い。</p>
+<p>視野と混雑条件も確認してから、候補を採用する。</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+操作教材の追尾の場面です。目標までの距離0.5より移動幅0.2が小さいため、仲間の位置にはまだ届きません。視野内にいることと混雑条件を満たすことも必要です。
+</aside>
+</section>
+<section>
+<!-- 37: 混雑を判定するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>混雑を判定する</h2>
 <p>教材独自の条件：<strong>候補位置の視野内にいる他の魚が2匹以下</strong>。</p>
@@ -799,14 +983,14 @@
 <p>混雑上限を0にすると、追尾候補は利用できる？</p>
 <p>この「匹数上限」を、原著の式として扱わない。</p>
 </div>
-<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 混雑の判定は移動前の集団を使います。 追尾先の魚自身も他の魚として数えるため、上限0なら通常は追尾を採用できません。 この単純な上限は教材の仕様です。
 </aside>
 </section>
 <section>
-<!-- 33: 全魚を更新して記録するを具体例と操作で説明できるようにする -->
+<!-- 38: 全魚を更新して記録するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>全魚を更新して記録する</h2>
 <ol type="1">
@@ -818,14 +1002,51 @@
 <p>探索中最良：<strong>0.5 → 約0.000632</strong>（既知最適は0）。</p>
 <p><a href="interactive.html#fish-search" target="_blank" rel="noopener">操作：AFSAの反復探索</a></p>
 </div>
-<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 最初の魚を動かしてから次の魚の近傍を調べる方式とは異なります。 探索中最良位置は記録・表示するだけで、更新式を引っ張る目標には使いません。
 </aside>
 </section>
 <section>
-<!-- 34: AFSAの変更実験と限界を具体例と操作で説明できるようにする -->
+<!-- 39: 今いる魚の最良と、保存した最良を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>今いる魚の最良と、保存した最良</h2>
+<p class="eyebrow">
+人工魚群の反復 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>現在の6匹</strong>
+<p>
+現在の評価から最小を選ぶ
+</p>
+</div>
+<div>
+<strong>これまでの記録</strong>
+<p>
+過去を含む最小を保存
+</p>
+</div>
+<div>
+<strong>図の赤十字</strong>
+<p>
+記録した位置
+</p>
+</div>
+</div>
+<p>現在の最良が悪化しても、<strong>保存した最良は悪化しない</strong>。</p>
+<p>赤十字は記録。魚を引っ張る目標には使わない。</p>
+<p>移動幅0と0.2を同じ初期値から比較する。</p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最良という言葉に二つの範囲があります。現在の集団だけで選ぶか、それまでの全反復で選ぶかです。記録を保存することは、現在の魚をその位置へ動かすこととは別です。
+</aside>
+</section>
+<section>
+<!-- 40: AFSAの変更実験と限界を具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>AFSAの変更実験と限界</h2>
 <ul>
@@ -837,14 +1058,14 @@
 <p>単一シード、単純な関数、教材用の混雑条件での結果。</p>
 <p><strong>実問題での性能や、他手法より優れることは未確認。</strong></p>
 </div>
-<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 近傍が増えると候補が増えますが、混雑により却下されることもあります。 そのため視野を広げれば必ず改善するとはいえません。 条件をそろえた複数の実験が必要です。
 </aside>
 </section>
 <section>
-<!-- 35: PSOとの違いを整理するを具体例と操作で説明できるようにする -->
+<!-- 41: PSOとの違いを整理するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>PSOとの違いを整理する</h2>
 <table>
@@ -876,14 +1097,14 @@
 <p>どちらも群知能。人工魚群をPSOの単なる別名とはしない。</p>
 <p>今回はPSOの実装・パラメーター演習は扱わない。</p>
 </div>
-<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 PSOにも複数の情報共有の方式があります。 表は代表的な基本形との比較であり、すべての変種を分類し尽くすものではありません。 昨年度のPSO演習を人工魚群と呼び換えて転用しないことが大切です。
 </aside>
 </section>
 <section>
-<!-- 36: 保存して基準結果を再現するを具体例と操作で説明できるようにする -->
+<!-- 42: 保存して基準結果を再現するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>保存して基準結果を再現する</h2>
 <p><a href="programs/evolutionary_computation.ipynb" download>Notebookを保存</a> ／ <a href="programs/evolutionary_computation.py" download>Pythonを保存</a> ／ <a href="programs/evolutionary_computation.zip" download>解説付きZIPを保存</a></p>
@@ -892,17 +1113,17 @@ PSOにも複数の情報共有の方式があります。 表は代表的な基�
 <li>既存venvを有効化し、Notebookは対応カーネルを選ぶ。</li>
 <li>カーネル再起動後に全セル実行する。</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> evolutionary_computation.py <span class="at">--demo</span></span></code></pre></div>
+<div class="sourceCode" id="slide-42-cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="slide-42-cb1-1"><a href="#slide-42-cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> evolutionary_computation.py <span class="at">--demo</span></span></code></pre></div>
 <p>成功の目印：GA=6、ACO=4、AFSA≈0.000632。</p>
 </div>
-<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 Python単体の計算には追加ライブラリが不要です。 Notebookの実行には既存のJupyter環境を使えます。 基準値が異なったら入力・シード・セルの実行順序を確認し、ファイルのコピーで再開してください。
 </aside>
 </section>
 <section>
-<!-- 37: 一つだけ変えて説明するを具体例と操作で説明できるようにする -->
+<!-- 43: 一つだけ変えて説明するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>一つだけ変えて説明する</h2>
 <table>
@@ -930,14 +1151,14 @@ Python単体の計算には追加ライブラリが不要です。 Notebookの�
 <p>「何を変えたか → 何が変わったか → 規則から説明」の順に書く。</p>
 <p>基準入力は残し、変更用のコピーと別の結果変数を使う。</p>
 </div>
-<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 基準を上書きすると、比較の根拠が失われます。 マニュアルとNotebookには六つの変更例を用意しています。 結果が同じだった場合も、条件と比較した値を明記してください。
 </aside>
 </section>
 <section>
-<!-- 38: 三手法を比較するを具体例と操作で説明できるようにする -->
+<!-- 44: 三手法を比較するを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>三手法を比較する</h2>
 <table>
@@ -969,14 +1190,14 @@ Python単体の計算には追加ライブラリが不要です。 Notebookの�
 <p>共通：評価関数、乱数、停止条件を決める。</p>
 <p>異なる問題の最終値だけで、手法の優劣を決めない。</p>
 </div>
-<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 三つの問題の数値は尺度もよい方向も異なります。 比較するなら同じ問題、評価回数などの条件をそろえる必要があります。 この授業では更新の仕組みの比較を優先します。
 </aside>
 </section>
 <section>
-<!-- 39: 理解確認と次回を具体例と操作で説明できるようにする -->
+<!-- 45: 理解確認と次回を具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>理解確認と次回</h2>
 <ul>
@@ -988,14 +1209,14 @@ Python単体の計算には追加ライブラリが不要です。 Notebookの�
 <p>クイズは本文を根拠に復習する。配信・提出条件は別の案内に従う。</p>
 <p>次回（12月3日）：自然言語処理。</p>
 </div>
-<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 各問いを数値か更新規則と結び付けて答えましょう。 クイズの公開URLや新しい提出期限をこの教材では設定しません。 次回は文章や言葉を扱う処理へ進みます。
 </aside>
 </section>
 <section>
-<!-- 40: 参考資料と教材モデルを具体例と操作で説明できるようにする -->
+<!-- 46: 参考資料と教材モデルを具体例と操作で説明できるようにする -->
 <div class="slide-body">
 <h2>参考資料と教材モデル</h2>
 <ul>
@@ -1007,7 +1228,7 @@ Python単体の計算には追加ライブラリが不要です。 Notebookの�
 <p>原著本文未確認の式を原著の完全再現とは扱わない。</p>
 <p>採用箇所・訂正理由の出典対応表（制作資料）</p>
 </div>
-<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 参考資料のリンクを開く場合はネット接続が必要です。 操作教材の計算はオフラインで動きます。 制作資料では、原著のどこまで確認できたかと教材で独自に定めた条件を区別して記録しています。

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第4回 近傍・決定木・多数決：保存と実行">
+<title>第4回 近傍・決定木・多数決：保存と実行</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第4回 近傍・決定木・多数決：保存と実行</h1>
+<p><a href="neighbors_and_trees.py">Python</a> ／ <a href="neighbors_and_trees.ipynb">Notebook</a> ／ <a href="neighbors_and_trees.zip" download>一式ZIPを保存</a></p>
+<h2 id="開始と成功の目印">開始と成功の目印</h2>
+<p>同じフォルダーへ保存し、授業のvenvを有効にして <code>python neighbors_and_trees.py --demo</code> を実行します。Python 3.10以降の標準ライブラリを使います。既存uv環境なら <code>uv run python neighbors_and_trees.py --demo</code> でも実行できます。</p>
+<p>Notebookは授業のvenvをカーネルに選び、再起動して全セルを実行します。Jupyterがない場合はvenv内で <code>python -m pip install -r requirements.txt</code> を実行します。Notebook単体で動き、同梱PythonやJSONの読込みは不要です。</p>
+<h2 id="固定例を追う">固定例を追う</h2>
+<p>入力(2,3)からの距離の二乗はT4が1、T2が5、T3が9。k=1ではB、k=3ではAです。同距離はID順、同票はA。1段の木はx≤4ならA、それ以外はB。3モデルの予測B・A・Aを多数決するとAです。</p>
+<p>操作教材の距離表で差を二乗して足す過程を追い、Pythonの同じIDと比較してください。木では左A3・B1のGiniが3/8、右B3のGiniが0、加重平均は(4×3/8+3×0)÷7=3/14です。混ざりの減る質問を選ぶ学習と、決まった質問をたどる推論を分けます。</p>
+<p>検証ではk=1が2/4、k=3が4/4なのでk=3を選びます。固定後のテストは4/4。この小さな架空例の結果です。Pythonは近傍・1段の木・ハード投票を実装し、操作教材のランダムフォレストとSVMの追加図解は含みません。</p>
+<h2 id="一つ変える戻す">一つ変える・戻す</h2>
+<p><code>python neighbors_and_trees.py --query 2 3 --k 1</code> と <code>--k 3</code> を比較します。次はコピーでT4のラベルだけを変え、木の分岐が変わるか予想します。原データと基準結果は保持してください。計算は分数、予測・件数は完全一致。操作教材の小数は表示の丸めを区別します。</p>
+<p>復帰は元ファイルを開き直し、カーネルを再起動して全セル実行です。ファイルが見つからないときは保存先、モジュール不足ではvenvとカーネルを確認します。途中セルだけの再実行で前の変数を混ぜないでください。</p>
+</main></body></html>

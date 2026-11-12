@@ -347,5 +347,114 @@ function activate(id,focus=false){if(!ids.includes(id))id=ids[0];for(const key o
 for(const id of ids){const tab=el('tab-'+id);tab.onclick=()=>{location.hash=id;activate(id);};tab.onkeydown=e=>{let i=ids.indexOf(id);if(e.key==='ArrowRight')i=(i+1)%6;else if(e.key==='ArrowLeft')i=(i+5)%6;else if(e.key==='Home')i=0;else if(e.key==='End')i=5;else return;e.preventDefault();location.hash=ids[i];activate(ids[i],true);};}
 window.addEventListener('hashchange',()=>activate(location.hash.slice(1)));activate(location.hash.slice(1));
             </script>
-        </body>
+    <!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+{
+const f=n=>Number(n).toFixed(6),p=s=>'<p>'+s+'</p',boxes=xs=>'<div class="ts-flow">'+xs.map(([k,v])=>'<div class="ts-card"><strong>'+k+'</strong>'+v+'</div>').join('<span>→</span>')+'</div>';
+const selection=()=>{const pop=[...EVO.POPULATION];pop[0]=el('bits').value;return {pop,...EVO.gaEvaluate(pop)};};
+const generation=()=>{let pop=[...EVO.POPULATION],last=null,before=pop;const rng=new EVO.RNG(num('ga-seed'));for(let i=0;i<Math.max(1,gaN);i++){before=pop;last=EVO.gaStep(pop,rng,num('mutation'));pop=last.population;}return {before,last};};
+const fish=()=>{const points=scene();return {points,a:EVO.fishAction(points,0,new EVO.RNG(),num('visual'),.2,num('crowd'))};};
+installTeachingSteps([
+{id:'ga-selection',title:'良い個体ほど親に選ばれやすくする',steps:()=>{const r=selection(),sum=r.fitness.reduce((a,b)=>a+b,0);return [
+{title:'個体の中身',body:boxes([...r.pop[0]].map((v,i)=>[(i+1)+'番目',v]))+p('1個体は6個の0／1です。この例では、1が多い個体を良い解とします。ビット列を10進数へ変換した大小ではありません。')},
+{title:'1を数える',body:boxes([['入力個体',r.pop[0]],['数えるもの','1の個数'],['適応度',r.fitness[0]]])+p('001111は4点、100000は1点。左側の桁だから高得点、という重み付けはありません。')},
+{title:'全体の中の割合',body:p('6個体の適応度合計は '+sum+'。個体1の選択確率は '+r.fitness[0]+' ÷ '+sum+' = '+f(r.probabilities[0])+'。')+p('全員の割合を足すと1です。良い個体ほど選ばれやすいですが、最大の個体を必ず選ぶわけではありません。同じ親を複数回選ぶこともあります。')},
+{title:'一つ変えて比較',body:p('入力欄の個体1を100000から111111に変えてください。個体1の点数だけでなく合計も変わるので、他の個体の選択確率も変化します。下の表で全6個体を確認します。')}
+];},details:()=>{const r=selection();return table(['個体','ビット列','1の個数','選択確率'],r.pop.map((v,i)=>[i+1,v,r.fitness[i],f(r.probabilities[i])]))+p('初期合計は16。全個体の適応度が0なら等確率とする規約です。');}},
+{id:'ga-generation',title:'親のどこを子へ渡すか',steps:()=>{const {before,last}=generation(),t=last.trace[0],cut=t.cut;return [
+{title:'更新前と親',body:p((gaN===0?'初期状態から次の1世代の予告です。':'最後に実行した世代の内訳です。')+'「次の世代」ボタンで計算を進めます。')+boxes(t.parents.map(i=>['親'+(i+1),before[i]]))},
+{title:'同じ位置で切る',body:boxes(t.parents.map(i=>['切断位置'+cut,before[i].slice(0,cut)+' ｜ '+before[i].slice(cut)]))+p('左側を残し、右側を交換します。切る位置は1〜5のいずれかです。親が同じなら交換しても変化しないことがあります。')},
+{title:'交換した子',body:boxes(t.crossed.map((v,i)=>['交叉後の子'+(i+1),v]))+p('子1は親1の左＋親2の右、子2は親2の左＋親1の右です。交叉だけで点数が必ず上がるとは限りません。')},
+{title:'ビットを反転',body:boxes(t.mutated.map((v,i)=>['突然変異後'+(i+1),v]))+p('各ビットについて突然変異率 '+num('mutation')+' で0↔1を反転します。交叉後と比べ、変わった場所を確認してください。')},
+{title:'6個体へそろえる',body:p('更新前で最良だった個体 '+before[last.elite_index]+' を先頭に残します（エリート保存）。続いて子を入れ、6個体で止めます。最後の組の2番目は使いません。')+p('平均・最良・異なる個体数は別の指標です。全員が同じになると多様性は1種類になります。')}
+];},details:()=>{const {before,last}=generation();return table(['親のビット列','切断位置','交叉後','変異後'],last.trace.map(t=>[t.parents.map(i=>before[i]).join(' / '),t.cut,t.crossed.join(' / '),t.mutated.join(' / ')]))+p('乱数は既存の種から再現しています。説明の前後移動では世代数も乱数の状態も進めません。');}},
+{id:'aco-choice',title:'長さと目印から、経路の割合を作る',steps:()=>{const tau=[1,num('tau-b'),1],len=[4,num('length-b'),8],r=EVO.acoProbabilities(tau,len),sum=tau.reduce((s,v,i)=>s+v/len[i],0);return [
+{title:'3本の道',body:boxes(len.map((v,i)=>[['A','B','C'][i]+'の長さ',v]))+p('長さは移動に掛かる費用です。フェロモンは以前の探索が残した目印で、長さとは別の値です。')},
+{title:'目印を長さで割る',body:boxes(len.map((v,i)=>[['A','B','C'][i]+'の重み',tau[i]+' ÷ '+v+' = '+f(tau[i]/v)]))+p('同じ目印なら短い道ほど重みが大きくなります。道Bだけ目印を増やして比べましょう。')},
+{title:'合計で割る',body:p('3本の重み合計 '+f(sum)+' で各重みを割ります。')+boxes(r.map((v,i)=>[['A','B','C'][i]+'の確率',f(v)]))+p('確率の合計は1。道を選ぶ抽選に使う割合であり、最短路である確率ではありません。')},
+{title:'一つの条件を変える',body:p('道Bの長さだけ増やすとBの重みは下がります。次にリセットし、Bのフェロモンだけ増やします。長さと目印のどちらが選択へ働いたか、下の表の列を指して説明します。')}
+];},details:()=>p('初期の重みは1/4、1/6、1/8、合計13/24。確率は6/13、4/13、3/13です。図の線の長さは実距離に比例しません。数値を比較してください。')},
+{id:'aco-update',title:'選ぶ・薄くする・足すを分ける',steps:()=>{const r=acoPending;return [
+{title:'更新前の目印',body:boxes(acoTau.map((v,i)=>[['A','B','C'][i],f(v)]))+p('初期値は3本とも1です。今の状態は '+['選択待ち','6匹の選択済み','蒸発済み'][phase]+'。説明の段階とは別に、上の操作ボタンで更新します。')},
+{title:'6匹を数える',body:p(r?'直近の選択順：'+r.choices.map(i=>['A','B','C'][i]).join(' → ')+'。通過数A/B/C = '+r.counts.join(' / ')+'。':'「① 経路を選ぶ」で6匹の選択を実行します。初期シード65535ではB→B→A→B→A→Cです。')+p('6匹とも更新前の同じ確率で選びます。1匹ごとに目印を増やす規約ではありません。')},
+{title:'まず蒸発',body:p('古い目印 × (1 − 蒸発率 '+num('rho')+') を求めます。初期1、蒸発率0.25なら0.75が残ります。')+(r?boxes(r.evaporated.map((v,i)=>[['A','B','C'][i]+' 蒸発後',f(v)])):'')},
+{title:'通過数に応じて追加',body:p('追加量 = 6 × 通過数 ÷ 経路長。初期の1巡ではA:6×2÷4=3、B:6×3÷6=3、C:6×1÷8=0.75。')+(r?boxes(r.tau.map((v,i)=>[['A','B','C'][i]+' 更新後',f(v)])):'')+p('蒸発後に追加量を足した値を、次の選択に使います。初期1巡の結果は3.75、3.75、1.5です。')}
+];},details:()=>p('表示中の値は操作済みの段階に対応します。「蒸発済み」では追加をまだ画面へ反映していません。蒸発と追加を逆にすると新しい目印まで薄まるので別の計算になります。途中から条件を変えると初期状態へ戻ります。')},
+{id:'fish-action',title:'位置の数と、良さを表す数を分ける',steps:()=>{const {points,a}=fish(),v=points[0];return [
+{title:'位置を評価',body:boxes([['魚1の位置',v.map(f).join(', ')],['評価 x²+y²',f(EVO.objective(v))]])+p('この例では原点(0,0)に近いほど評価が小さく、良い位置です。位置は2個の数、評価は1個の数です。')},
+{title:'近所を調べる',body:p('視野 '+num('visual')+' の内側にいる他の魚：'+(a.neighbors.map(i=>i+1).join(', ')||'なし')+'。点線の円が視野です。')+p('良い仲間へ向かう追尾、仲間の中心へ向かう群れ形成を候補にします。混雑上限 '+num('crowd')+' も確認します。')},
+{title:'候補を比べる',body:p('採用した行動：'+names[a.action]+'。目標が良いこと、混雑条件を満たすことを確認し、利用可能な候補を比べます。使える候補がなければ採餌を試み、改善が見つからなければランダム移動します。')},
+{title:'目標へ少し動く',body:boxes([['移動前',v.map(f).join(', ')],['移動後',a.position.map(f).join(', ')],['移動後の評価',f(EVO.objective(a.position))]])+p('目標まで一気に飛ばず、最大0.2だけ近付きます。移動後の点を元の点と区別し、評価が改善したか確認します。')}
+];},details:()=>{const {a}=fish();return table(['候補','目標位置','目標評価','移動後位置','利用可能'],a.candidates.map(c=>[names[c.action],c.target.map(f).join(', '),f(EVO.objective(c.target)),c.position.map(f).join(', '),c.accepted?'はい':'いいえ']))+p('基準例の行動は簡略化した人工魚群モデルです。実際の魚の行動を予測するモデルではありません。');}},
+{id:'fish-search',title:'今の最良と、過去の最良を比べる',steps:()=>{const r=EVO.runFish(fishN,1,num('fish-step'),2,num('fish-seed')),h=r.history.at(-1);return [
+{title:'6匹を用意',body:p('初期位置は固定した6点です。視野1、混雑上限2で探索します。移動幅 '+num('fish-step')+' と乱数シード '+num('fish-seed')+' を操作できます。')},
+{title:'同じ時点から更新',body:p('各魚は、全員が移動する前の位置を参照して行動を決めます。全員の新しい位置が決まってから次の反復へ移ります。')},
+{title:'現在の6匹を比較',body:boxes([['反復',fishN],['現在最良',f(h.current_best)],['探索中最良',f(h.best_seen)]])+p('現在最良は今いる6匹の最小値。探索中最良は初期から今までに見つけた最小値です。赤十字は記録で、魚を引っ張る目標には使いません。')},
+{title:'移動幅を比較',body:p('移動幅0なら位置は変わりません。リセットして0.2へ戻すと位置が動きます。反復20回の値を比べ、最適解を必ず発見したとは言えない理由も説明しましょう。')}
+];},details:()=>p('横軸は反復回数、縦軸は評価値です。現在値が悪化しても、保存した探索中最良値は悪化しません。最良値だけでなく下の全6匹の座標と評価も確認します。')}
+]);
+}
+
+</script>
+<!-- teaching-steps:end -->
+    </body>
     </html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="第1回 AI概観を具体例で確かめる">
+        <title>第1回 AI概観：操作教材</title><style>*{box-sizing:border-box}body{margin:0;background:#f2f5fa;color:#192d42;font-family:system-ui,"Noto Sans JP",sans-serif;line-height:1.65;font-size:18px}main{max-width:1180px;margin:auto;padding:24px}h1{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.3}h2{font-size:1.55rem;color:#163b61}a{color:#1558a3}header{border-bottom:4px solid #246bce;padding-bottom:20px}.intro{max-width:58em}nav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}button,select,input,textarea{font:inherit}button,select{padding:10px 14px;min-height:44px;border:1px solid #6783a1;border-radius:6px;background:white;color:#16324f}button{cursor:pointer}button[aria-selected="true"],#ae-train,#d-step,#g-step{background:#164f82;color:white}button:disabled{opacity:.5;cursor:default}:focus-visible{outline:3px solid #ba6400;outline-offset:3px}section{background:white;padding:24px;border-radius:10px;border:1px solid #cedbe9}section[hidden]{display:none}.question{font-weight:700;border-left:5px solid #bb7600;padding:10px 16px;background:#fff8e8}textarea{display:block;width:100%;max-width:100%;margin:6px 0 18px;border:1px solid #90a2b5;border-radius:6px;padding:10px}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:16px 0}.controls label{font-weight:600}input[type=range]{width:160px;max-width:100%;min-height:44px;accent-color:#246bce}.result{background:#f4f8fd;padding:18px;border-radius:6px;margin:16px 0;min-height:160px}.metric{font-size:1.35em;font-weight:700}.explain{border-top:1px solid #cbd7e5;padding-top:15px}table{border-collapse:collapse;width:100%;margin:12px 0;font-variant-numeric:tabular-nums}th,td{padding:8px;border-bottom:1px solid #b8cbe1;text-align:right}th:first-child,td:first-child{text-align:left}caption{text-align:left;font-weight:700}figure{margin:16px 0}svg{display:block;width:100%;height:auto;max-height:220px}figcaption{font-size:.9em;color:#415a72}code{overflow-wrap:anywhere}footer{margin-top:25px;font-size:.9em}output{font-variant-numeric:tabular-nums}.flow{display:flex;align-items:center;justify-content:space-around;gap:8px;flex-wrap:wrap}.box{padding:12px;border:2px solid #246bce;border-radius:7px;background:white}.table-wrap{overflow:auto} @media(max-width:600px){body{font-size:16px}main{padding:12px}section{padding:14px}.result{padding:10px}th,td{padding:5px;font-size:.85em}.controls{gap:8px}h2{font-size:1.3rem}}</style>
+    </head>
+    <body>
+        <main>
+            <header>
+                <h1>第1回 AI概観を一段ずつ</h1>
+                <p>架空の小さな例で入力・処理・出力を確認します。外部通信は行いません。</p>
+                <p><a href="index.html">スライド</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="interactive.html"
+    download>この教材を保存</a></p>
+            </header>
+            <nav role="tablist" aria-label="テーマ">
+                <button type="button"
+                        id="tab-applications"
+                        data-tab="applications"
+                        role="tab"
+                        aria-controls="applications"
+                        aria-selected="false"
+                        tabindex="-1">入力と出力</button><button type="button"
+        id="tab-learning"
+        data-tab="learning"
+        role="tab"
+        aria-controls="learning"
+        aria-selected="false"
+        tabindex="-1">学習と利用</button><button type="button"
+        id="tab-service"
+        data-tab="service"
+        role="tab"
+        aria-controls="service"
+        aria-selected="false"
+        tabindex="-1">モデルとサービス</button>
+            </nav>
+            <section id="applications"
+                     role="tabpanel"
+                     aria-labelledby="tab-applications"
+                     hidden>
+                <h2>入力と出力</h2>
+                <p>予想してから、一つの条件だけを変え、結果の理由を説明しましょう。</p>
+                <label>
+                    予想<textarea id="applications-prediction"></textarea>
+                </label>
+                <div class="controls">
+                    <label>
+                        例<select id="application">
+                        <option value="ocr">文字を読む</option>
+                        <option value="recommend">候補を薦める</option>
+                        <option value="generate">文章を作る</option>
+                    </select></label><button type="button" id="applications-reset">このテーマをリセット</button>
+                </div>
+                <p id="applications-error" role="alert"></p>
+                <div id="applications-result" class="result" aria-live="polite"></div>
+            </section>
+            <section id="learning" role="tabpanel" aria-labelledby="tab-learning" hidden>
+                <h2>学習と利用</h2>
+                <p>予想してから、一つの条件だけを変え、結果の理由を説明しましょう。</p>
+                <label>
+                    予想<textarea id="learning-prediction"></textarea>
+                </label>
+                <div class="controls">
+                    <label>
+                        新しい入力の数<input id="query" type="number" min="0" max="6" step="0.5" value="3.5"></label><button type="button" id="fit">4件から境界を学習</button><button type="button" id="learning-reset">このテーマをリセット</button>
+                </div>
+                <p id="learning-error" role="alert"></p>
+                <div id="learning-result" class="result" aria-live="polite"></div>
+            </section>
+            <section id="service" role="tabpanel" aria-labelledby="tab-service" hidden>
+                <h2>モデルとサービス</h2>
+                <p>予想してから、一つの条件だけを変え、結果の理由を説明しましょう。</p>
+                <label>
+                    予想<textarea id="service-prediction"></textarea>
+                </label>
+                <div class="controls">
+                    <label>
+                        入力の種類<select id="service-input">
+                        <option value="text">文字で「こんにちは」</option>
+                        <option value="voice">声で「こんにちは」（概念例）</option>
+                    </select></label><button type="button" id="service-reset">このテーマをリセット</button>
+                </div>
+                <p id="service-error" role="alert"></p>
+                <div id="service-result" class="result" aria-live="polite"></div>
+            </section>
+            <footer>
+                入力は保存しません。各テーマのリセットで初期状態へ戻ります。保存したHTML単体で操作できます。スライド・マニュアルは同梱ファイルを使います。
+            </footer>
+        </main>
+        <script id="intro-core">const IntroAI=(()=>{const data=[[1,0],[2,0],[4,1],[5,1]],candidates=[1.5,3,4.5];const predict=(x,t)=>Number(x>=t);function train(){const rows=candidates.map(t=>({threshold:t,correct:data.filter(([x,y])=>predict(x,t)===y).length}));return {rows,threshold:rows.reduce((a,b)=>b.correct>a.correct?b:a).threshold};}return {data,candidates,predict,train};})();</script>
+        <script>
+const ids=["applications", "learning", "service"],$=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let learned=false;
+const examples={ocr:['画像の文字「出口」','画像の形から文字候補を求める','文字列「出口」','見間違いがないか画像と照合する'],recommend:['架空の利用履歴と候補本A/B','候補に順位を付ける','本B、本Aの順','利用者が本当に望むかは別に確認する'],generate:['「図書室を案内する一文を書いて」','文脈に続く語を組み合わせる','「図書室では本を読めます。」という例文','事実や条件が正しいか確認する']};
+function resetModel(id){if(id==='learning')learned=false;}
+function render(id){try{let text='';if(id==='applications'){const x=examples[$('application').value];text=x[0]+' → '+x[1]+' → '+x[2]+'。'+x[3]+'。これは仕組みの概念例で、実際の画像認識や生成を実行した結果ではありません。';}if(id==='learning'){if(!$('query').value.trim())throw Error('数を入力してください');const x=Number($('query').value);if(!Number.isFinite(x)||x<0||x>6)throw Error('0〜6を入力してください');text=learned?'選んだ境界3。新しい入力'+x+'は'+(IntroAI.predict(x,3)?'大きい側':'小さい側')+'。入力だけ変えても境界は3のままです。':'まだ学習していません。4件の例から境界を選ぶボタンを押してください。';}if(id==='service')text=$('service-input').value==='voice'?'声 → 音声を文字へ → 言語モデル → 返答文 → 読み上げ。概念図です。録音・認識・音声生成は行いません。':'文字 → 言語モデル → 返答文 → 画面に表示。概念図です。モデルの外に入力画面や表示処理があります。';$(id+'-result').textContent=text;$(id+'-error').textContent='';}catch(e){$(id+'-error').textContent=e.message;$(id+'-result').textContent='入力を直すかリセットしてください。';}}
+$('fit').onclick=()=>{learned=true;render('learning');};
+
+const defaults=Object.fromEntries(ids.map(id=>[id,[...$(id).querySelectorAll('input,select')].map(e=>({id:e.id,value:e.value}))]));
+function activate(){const chosen=location.hash.slice(1),id=ids.includes(chosen)?chosen:ids[0];for(const k of ids){$(k).hidden=k!==id;$('tab-'+k).setAttribute('aria-selected',String(k===id));$('tab-'+k).tabIndex=k===id?0:-1;}}
+for(const [i,id] of ids.entries()){$('tab-'+id).onclick=()=>{location.hash=id;activate();};$('tab-'+id).onkeydown=e=>{const j=e.key==='Home'?0:e.key==='End'?ids.length-1:e.key==='ArrowRight'?(i+1)%ids.length:e.key==='ArrowLeft'?(i+ids.length-1)%ids.length:null;if(j!==null){e.preventDefault();location.hash=ids[j];activate();$('tab-'+ids[j]).focus();}};$(id+'-reset').onclick=()=>{for(const v of defaults[id])$(v.id).value=v.value;$(id+'-prediction').value='';resetModel(id);render(id);};for(const input of $(id).querySelectorAll('input,select'))input.addEventListener('input',()=>render(id));render(id);}
+addEventListener('hashchange',activate);activate();
+
+        </script>
+        <!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+{
+const p=s=>'<p>'+s+'</p',box=xs=>'<div class="ts-flow">'+xs.map(([k,v])=>'<div class="ts-card"><strong>'+k+'</strong>'+v+'</div>').join('<span>→</span>')+'</div>';
+installTeachingSteps([
+{id:'applications',title:'名前より先に、何を受け取り何を返すか',steps:()=>{const x=examples[$('application').value];return [
+{title:'入力',body:p(x[0]+'。機械へ何を渡したかを具体的に言います。')},
+{title:'処理',body:p(x[1]+'。入力をそのまま表示するだけとは違います。ここでは役割を説明する概念例です。')},
+{title:'出力',body:p(x[2]+'。出力は画像、文字、順位など、目的によって形が変わります。')},
+{title:'確かめること',body:p(x[3]+'。出力が得られたことと、役立つ正しい結果だったことを分けて説明します。')}
+];},details:()=>p('例を切り替え、入力・処理・出力の三つを説明します。推薦は候補を並べ、生成は新しい内容を作ります。一つのサービスが複数の処理を組み合わせる場合もあります。')},
+{id:'learning',title:'例から境界を選び、別の数を分ける',steps:()=>{const r=IntroAI.train(),x=Number($('query').value);return [
+{title:'答え付きの例',body:box(IntroAI.data.map(([v,y])=>['入力'+v,y?'大きい側':'小さい側']))+p('数1・2は小さい側、4・5は大きい側という、教材用の答え付き4件です。')},
+{title:'候補を比べる',body:box(r.rows.map(a=>['境界'+a.threshold,'4件中'+a.correct+'件一致']))+p('入力が境界以上なら大きい側、それ未満なら小さい側。三つの候補を全4件で試します。')},
+{title:'学習で境界を選ぶ',body:p('最も答えと一致した境界は3です。これがこの小例のモデル。上の学習ボタンで選択した境界を使用します。現在は'+(learned?'学習済み':'未学習')+'です。')},
+{title:'新しい入力に使う',body:p(learned?'新しい入力'+x+'を境界3と比較 → '+(IntroAI.predict(x,3)?'大きい側':'小さい側')+'。':'学習ボタンを押してから、新しい入力の結果を読みましょう。')+p('例から境界を選ぶのが学習、選んだ境界を使うのが推論です。この4件に合ったことだけでは未知の正解を保証できません。')}
+];},details:()=>p('境界を選ぶための候補は1.5・3・4.5に限定しています。実用AI全体の学習方法を再現したわけではありません。入力だけ変えると同じ境界で推論します。リセットすると未学習状態へ戻ります。')},
+{id:'service',title:'モデルを、サービスの一つの部品として見る',steps:()=>{const voice=$('service-input').value==='voice';return [
+{title:'利用者から受け取る',body:p(voice?'声を入力として受け取る概念例です。モデルへ渡す前に音声を文字へ変換する部品が必要です。':'文字の入力画面から「こんにちは」を受け取る概念例です。')},
+{title:'モデルの役割',body:p('入力の文脈から返答文を作る部分を言語モデルが担います。入力欄や保存先や利用権限そのものとは区別します。')},
+{title:'利用者へ返す',body:p(voice?'返答文を読み上げる部品へ渡します。言語モデルの文章生成と、音声合成は別の処理です。':'返答文を画面へ表示します。同じモデルでも表示方法や周囲の機能によってサービスは異なります。')},
+{title:'一連の流れ',body:box(voice?[['声','音声入力'],['文字','音声認識'],['返答文','言語モデル'],['声','読み上げ']]:[['文字','入力画面'],['返答文','言語モデル'],['画面','表示']])+p('この教材は概念図を切り替えるだけで、録音・外部通信・実モデルの生成は行いません。')}
+];},details:()=>p('サービス名を挙げるだけで仕組みを説明したことにせず、「どの部品が何を受け取り、何を返すか」を言葉にします。リセットで文字入力の例へ戻ります。')}
+]);
+}
+
+</script>
+<!-- teaching-steps:end -->
+    </body>
+</html>

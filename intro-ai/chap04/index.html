@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
         <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
         <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+              href="libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css">
         <!-- highlight Theme -->
         <link rel="stylesheet"
               href="libs/highlight.js/11.3.1/styles/monokai.min.css">
@@ -309,7 +309,43 @@
 </aside>
 </section>
 <section>
-<!-- 9: 継承の条件と実装範囲を区別 -->
+<!-- 9: スマホから、二つの矢印をたどるを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>スマホから、二つの矢印をたどる</h2>
+<p class="eyebrow">
+知識表現と推論：関係の経路 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>出発点</strong>
+<p>
+スマホ
+</p>
+</div>
+<div>
+<strong>1本目</strong>
+<p>
+携帯型端末へ
+</p>
+</div>
+<div>
+<strong>2本目</strong>
+<p>
+コンピュータへ
+</p>
+</div>
+</div>
+<p>どちらも「種類から上位の種類へ」のis-a。端末Aという個体や電池という部分の関係とは区別する。</p>
+<p><a href="interactive.html#network" target="_blank" rel="noopener">操作：カードと手順を対応付ける</a></p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+どちらも「種類から上位の種類へ」のis-a。端末Aという個体や電池という部分の関係とは区別する。 これは教材内の架空の定義です。入力に与えた事実と、規則から追加した結論を区別して読みます。条件を一つだけ変えて根拠の変化を確認します。
+</aside>
+</section>
+<section>
+<!-- 10: 継承の条件と実装範囲を区別 -->
 <div class="slide-body ">
 <h2>継承：上位の性質を利用する</h2>
 <p>教材内で「すべてのコンピュータは情報を処理する」と定める。</p>
@@ -338,14 +374,14 @@
 出典：S1
 </p>
 </div>
-<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 is-aリンクの探索と、性質の継承は関係していますが、同じ処理ではありません。 今回は継承の考え方を図で説明し、Pythonではis-aの経路だけを実装します。 上位の性質を下位に適用できるのは、その性質をどんな条件で定めたかによります。
 </aside>
 </section>
 <section>
-<!-- 10: 無条件な属性継承を避ける -->
+<!-- 11: 無条件な属性継承を避ける -->
 <div class="slide-body ">
 <h2>継承にも、例外の扱いが必要</h2>
 <ul>
@@ -358,14 +394,14 @@ is-aリンクの探索と、性質の継承は関係していますが、同じ�
 出典：S1／S3／架空例
 </p>
 </div>
-<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 ここからの貸出例は架空の運用です。実際の学校の貸出条件ではありません。 すべてに当てはまる定義と、例外があり得る既定値は違います。 既定値を使う場合、個別の情報と食い違ったらどちらを優先するかを決めておく必要があります。
 </aside>
 </section>
 <section>
-<!-- 11: 到達不能を否定と区別 -->
+<!-- 12: 到達不能を否定と区別 -->
 <div class="slide-body ">
 <h2>経路が見つからないとき</h2>
 <p>質問：<strong>スマホはノートPCの一種ですか？</strong></p>
@@ -379,14 +415,14 @@ is-aリンクの探索と、性質の継承は関係していますが、同じ�
 出典：S1／S2 §2／演習の規約
 </p>
 </div>
-<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 この教材の知識には、種類同士が互いに重ならないという否定の情報を入れていません。 したがって、経路がないときは、肯定を導けなかったと報告します。 日常感覚で答えを補わず、今与えられている知識から何が言えるかを考えましょう。
 </aside>
 </section>
 <section>
-<!-- 12: 循環時の停止と知識の点検を導入・操作教材へ接続 -->
+<!-- 13: 循環時の停止と知識の点検を導入・操作教材へ接続 -->
 <div class="slide-body ">
 <h2>循環は、探索を止めて確認する</h2>
 <div class="flow" role="img" aria-label="AからBを経てAに戻る循環">
@@ -418,14 +454,14 @@ is-aリンクの探索と、性質の継承は関係していますが、同じ�
 出典：旧コード静的確認／新規演習
 </p>
 </div>
-<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 昨年度の実装は循環した知識を与えると、探索が終わらない場合があります。 今年度版は一度調べたノードを記録して、同じ場所に戻ったら停止します。 これは一般にあらゆる循環が誤りという意味ではなく、今回の分類階層を点検するための扱いです。 図解教材の「関係をたどる」を開き、循環の例を選びます。どこで止まるか予想し、次の手順で一つずつ確かめてください。
 </aside>
 </section>
 <section>
-<!-- 13: 旧図4.2をスロット名付きの表へ再構成 -->
+<!-- 14: 旧図4.2をスロット名付きの表へ再構成 -->
 <div class="slide-body ">
 <h2>フレーム：対象ごとに項目をまとめる</h2>
 <p><strong>フレーム</strong>は、対象や状況に関する知識をまとめる構造。</p>
@@ -456,14 +492,14 @@ is-aリンクの探索と、性質の継承は関係していますが、同じ�
 出典：S1／S3／架空例
 </p>
 </div>
-<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 意味ネットワークでは関係に注目しました。フレームでは一つの対象の項目をまとめます。 貸出端末Aの種類、保管場所、充電状態を同じ表に並べてみました。 この値は説明用に作ったものです。実際の機器から計測した値ではありません。
 </aside>
 </section>
 <section>
-<!-- 14: 値の意味と欠損を明確化 -->
+<!-- 15: 値の意味と欠損を明確化 -->
 <div class="slide-body ">
 <h2>スロットには、意味と単位を決める</h2>
 <table>
@@ -497,14 +533,14 @@ is-aリンクの探索と、性質の継承は関係していますが、同じ�
 出典：S1／教材設計上の規約
 </p>
 </div>
-<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 表があっても、単位や値の意味が不明なら誤読が起きます。 例えば七という値だけでは、七時間か七日かわかりません。 未記入の情報と、確認した結果がゼロだった情報も分けて扱いましょう。
 </aside>
 </section>
 <section>
-<!-- 15: 既定値と個別指定の優先を例示 -->
+<!-- 16: 既定値と個別指定の優先を例示 -->
 <div class="slide-body ">
 <h2>既定値と個別の値を区別する</h2>
 <p>架空の貸出フレームでは、<strong>個別指定を既定値より優先</strong>する。</p>
@@ -534,14 +570,50 @@ is-aリンクの探索と、性質の継承は関係していますが、同じ�
 出典：S3／架空例
 </p>
 </div>
-<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 既定値は、毎回同じ値を書く手間を減らすための仕組みです。 この例では標準を七日とし、端末Aだけ三日とします。優先規則も明示しています。 この規約を、あらゆるフレームシステムの唯一の仕様だとは考えないでください。
 </aside>
 </section>
 <section>
-<!-- 16: 表現方法の比較を具体的な問いにする・操作教材へ接続 -->
+<!-- 17: 標準7日でも、この端末は3日を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>標準7日でも、この端末は3日</h2>
+<p class="eyebrow">
+知識表現と推論：既定値と個別指定 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>標準の項目</strong>
+<p>
+貸出日数7日
+</p>
+</div>
+<div>
+<strong>個別の項目</strong>
+<p>
+貸出日数3日
+</p>
+</div>
+<div>
+<strong>採用</strong>
+<p>
+個別指定を優先して3日
+</p>
+</div>
+</div>
+<p>個別指定を未指定にすると7日。両方未指定なら不明。7+3=10日にはしない。</p>
+<p><a href="interactive.html#frame" target="_blank" rel="noopener">操作：カードと手順を対応付ける</a></p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+個別指定を未指定にすると7日。両方未指定なら不明。7+3=10日にはしない。 これは教材内の架空の定義です。入力に与えた事実と、規則から追加した結論を区別して読みます。条件を一つだけ変えて根拠の変化を確認します。
+</aside>
+</section>
+<section>
+<!-- 18: 表現方法の比較を具体的な問いにする・操作教材へ接続 -->
 <div class="slide-body ">
 <h2>ネットワークとフレームを使い分ける</h2>
 <table>
@@ -574,14 +646,14 @@ is-aリンクの探索と、性質の継承は関係していますが、同じ�
 出典：S1
 </p>
 </div>
-<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 表現方法は一つだけを選ぶ必要はありません。知りたいことに合わせて使い分けます。 種類のつながりを見るときはリンク、ある端末の値をまとめて見るときはフレームが役立ちます。 このあと扱う規則とも、組み合わせることができます。 図解教材の「既定値と例外」で、個別の日数を未指定にしてみましょう。どの値が採用され、どこから来た値なのかを説明してください。
 </aside>
 </section>
 <section>
-<!-- 17: 前件・後件・発火を架空例で説明 -->
+<!-- 19: 前件・後件・発火を架空例で説明 -->
 <div class="slide-body ">
 <h2>プロダクションルール：条件と結論</h2>
 <pre class="text"><code>IF 利用登録済み AND 講習修了
@@ -595,14 +667,14 @@ THEN 利用資格あり</code></pre>
 出典：S1
 </p>
 </div>
-<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 規則は、どの条件のときに何を導くかを書いたものです。 この例では登録済みだけでも、講習修了だけでも足りません。両方が必要です。 一般のプロダクションルールは動作や状態変更も扱いますが、今回の演習は事実の追加に限定します。
 </aside>
 </section>
 <section>
-<!-- 18: 本文と演習で同一の三規則を使う -->
+<!-- 20: 本文と演習で同一の三規則を使う -->
 <div class="slide-body ">
 <h2>架空の機器貸出：三つの規則</h2>
 <table>
@@ -636,14 +708,14 @@ THEN 利用資格あり</code></pre>
 出典：S1／新規の架空例
 </p>
 </div>
-<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 昨年度の半導体メモリの分類例を、前提の少ない機器貸出の例に置き換えました。 一つの申請についてだけ考え、別の利用者の情報が混ざらないようにしています。 貸出候補と貸出準備可は違う結論です。予約確認がどこで必要になるかを見てください。
 </aside>
 </section>
 <section>
-<!-- 19: 前向き推論を適用順付きで図示 -->
+<!-- 21: 前向き推論を適用順付きで図示 -->
 <div class="slide-body ">
 <h2>前向き推論：事実から進む</h2>
 <div class="flow" role="img" aria-label="初期事実からR1、R2を順に適用">
@@ -669,14 +741,50 @@ THEN 利用資格あり</code></pre>
 出典：S1
 </p>
 </div>
-<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 最初にわかっている三つの事実から出発します。 R1で利用資格ありを導けると、その結論をR2の条件として使えます。 これが前向き推論です。事実を起点に、適用できる規則を調べていきます。
 </aside>
 </section>
 <section>
-<!-- 20: 事実の累積と不足条件を可視化 -->
+<!-- 22: 二枚の事実がそろったら、一枚足すを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>二枚の事実がそろったら、一枚足す</h2>
+<p class="eyebrow">
+知識表現と推論：事実から結論へ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>入力カード</strong>
+<p>
+利用登録済み・講習修了
+</p>
+</div>
+<div>
+<strong>R1の照合</strong>
+<p>
+二条件ともある
+</p>
+</div>
+<div>
+<strong>追加する結論</strong>
+<p>
+利用資格あり
+</p>
+</div>
+</div>
+<p>在庫ありは初期事実として別に保持する。追加した利用資格ありを、次のR2の条件に使う。</p>
+<p><a href="interactive.html#forward" target="_blank" rel="noopener">操作：カードと手順を対応付ける</a></p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+在庫ありは初期事実として別に保持する。追加した利用資格ありを、次のR2の条件に使う。 これは教材内の架空の定義です。入力に与えた事実と、規則から追加した結論を区別して読みます。条件を一つだけ変えて根拠の変化を確認します。
+</aside>
+</section>
+<section>
+<!-- 23: 事実の累積と不足条件を可視化 -->
 <div class="slide-body ">
 <h2>途中の結論も、作業用の事実になる</h2>
 <table>
@@ -706,14 +814,50 @@ THEN 利用資格あり</code></pre>
 出典：S1
 </p>
 </div>
-<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 この表は、各段階で新たに加わる事実を示しています。 今回の演習は以前の事実を消さずに追加するので、途中の結論も後続の規則から利用できます。 予約確認済みという入力はないため、R3は適用されません。条件を推測で補わないことが大切です。
 </aside>
 </section>
 <section>
-<!-- 21: 停止条件を実装に合わせて明確化・操作教材へ接続 -->
+<!-- 24: R2は使えるが、R3には一枚足りないを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>R2は使えるが、R3には一枚足りない</h2>
+<p class="eyebrow">
+知識表現と推論：事実から結論へ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>R2</strong>
+<p>
+資格あり ＆ 在庫あり
+</p>
+</div>
+<div>
+<strong>追加</strong>
+<p>
+貸出候補
+</p>
+</div>
+<div>
+<strong>R3</strong>
+<p>
+予約確認済みが足りない
+</p>
+</div>
+</div>
+<p>貸出準備可を導けないことと、貸出不可を証明することは違う。予約のカードだけを加えるとR3が使える。</p>
+<p><a href="interactive.html#forward" target="_blank" rel="noopener">操作：カードと手順を対応付ける</a></p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+貸出準備可を導けないことと、貸出不可を証明することは違う。予約のカードだけを加えるとR3が使える。 これは教材内の架空の定義です。入力に与えた事実と、規則から追加した結論を区別して読みます。条件を一つだけ変えて根拠の変化を確認します。
+</aside>
+</section>
+<section>
+<!-- 25: 停止条件を実装に合わせて明確化・操作教材へ接続 -->
 <div class="slide-body ">
 <h2>前向き推論は、いつ止まるか</h2>
 <p>今回の演習は、<strong>新しい事実が増えなくなったら終了</strong>。</p>
@@ -730,14 +874,14 @@ THEN 利用資格あり</code></pre>
 出典：S1／新規演習
 </p>
 </div>
-<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 使える事実をすべて使い切るまで、という止め方ではありません。使われない事実が残っていても止まります。 規則を逆の順に並べた場合は、もう一度先頭から調べる必要が生じます。 今回の処理では結論の種類が有限で、一度追加したものは増えないため停止します。 図解教材の「事実から進む」で予約確認済みを追加します。どの規則まで進むかを予想し、適用した条件と結論を確かめましょう。
 </aside>
 </section>
 <section>
-<!-- 22: 逆含意と後ろ向き推論を区別 -->
+<!-- 26: 逆含意と後ろ向き推論を区別 -->
 <div class="slide-body ">
 <h2>後ろ向き推論：確かめたい結論から戻る</h2>
 <div class="flow" role="img" aria-label="目標を導く規則を探して条件を調べる">
@@ -763,14 +907,14 @@ THEN 利用資格あり</code></pre>
 出典：S1
 </p>
 </div>
-<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 後ろ向き推論では、最初に確かめたい目標を置きます。 貸出候補を結論とするR2を探し、その条件を確かめます。利用資格ありはR1にさかのぼれます。 貸出候補だから登録済みだと無条件に逆算しているわけではありません。条件が証明できるかを調べています。
 </aside>
 </section>
 <section>
-<!-- 23: 目標から事実までの証明を示す -->
+<!-- 27: 目標から事実までの証明を示す -->
 <div class="slide-body ">
 <h2>後ろ向きに、条件を一つずつ確かめる</h2>
 <table>
@@ -800,14 +944,50 @@ THEN 利用資格あり</code></pre>
 出典：S1／架空例の手計算
 </p>
 </div>
-<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 ここでは前向き推論と同じ規則、同じ初期事実を使っています。 必要な条件を事実までたどれたので、目標を支持できます。 もし初期事実に講習修了がなければ、この規則群からは目標を証明できません。それだけで貸出不可と断定はしません。
 </aside>
 </section>
 <section>
-<!-- 24: 同一の知識で比較し逆向きの誤解を防ぐ・操作教材へ接続 -->
+<!-- 28: 貸出候補を確かめるために、条件へ戻るを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>貸出候補を確かめるために、条件へ戻る</h2>
+<p class="eyebrow">
+知識表現と推論：結論から条件へ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>目標</strong>
+<p>
+貸出候補
+</p>
+</div>
+<div>
+<strong>R2の条件</strong>
+<p>
+利用資格あり・在庫あり
+</p>
+</div>
+<div>
+<strong>R1へ戻る</strong>
+<p>
+利用登録済み・講習修了
+</p>
+</div>
+</div>
+<p>枝の条件をすべて確かめて上へ戻る。「貸出候補なら登録済み」という逆向きの規則を作ったのではない。</p>
+<p><a href="interactive.html#backward" target="_blank" rel="noopener">操作：カードと手順を対応付ける</a></p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+枝の条件をすべて確かめて上へ戻る。「貸出候補なら登録済み」という逆向きの規則を作ったのではない。 これは教材内の架空の定義です。入力に与えた事実と、規則から追加した結論を区別して読みます。条件を一つだけ変えて根拠の変化を確認します。
+</aside>
+</section>
+<section>
+<!-- 29: 同一の知識で比較し逆向きの誤解を防ぐ・操作教材へ接続 -->
 <div class="slide-body ">
 <h2>前向き・後ろ向きの違い</h2>
 <table>
@@ -844,14 +1024,14 @@ THEN 利用資格あり</code></pre>
 出典：S1
 </p>
 </div>
-<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 二つの方法の違いは、探索の出発点と進み方にあります。 同じ貸出候補を確かめる場合でも、調べる順序を比べると違いが見えます。 今回はPythonで前向き推論を実行し、後ろ向き推論は表を使って手で確認します。 図解教材の「目標から確認」で、目標を貸出準備可へ変えてみましょう。どの条件が不足するかを、目標から戻って説明してください。
 </aside>
 </section>
 <section>
-<!-- 25: 言語の系譜から同一の機器例へ置換 -->
+<!-- 30: 言語の系譜から同一の機器例へ置換 -->
 <div class="slide-body ">
 <h2>述語：関係を名前と引数で書く</h2>
 <pre class="text"><code>is_a(スマホ, 携帯型端末)
@@ -865,14 +1045,14 @@ is_a(携帯型端末, コンピュータ)</code></pre>
 出典：S1／S4／教材の擬似記法
 </p>
 </div>
-<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 述語の記法を使うと、関係を文章より短く、一定の形で書けます。 ここは読み方を学ぶ擬似記法であり、そのままPythonで実行するコードではありません。 直接の関係だけを問い合わせる場合と、経路をたどる規則を追加した場合は区別しましょう。
 </aside>
 </section>
 <section>
-<!-- 26: 未導出理由を分ける -->
+<!-- 31: 未導出理由を分ける -->
 <div class="slide-body ">
 <h2>「導けない」には、違う理由がある</h2>
 <table>
@@ -902,14 +1082,14 @@ is_a(携帯型端末, コンピュータ)</code></pre>
 出典：S1／S2／演習の規約
 </p>
 </div>
-<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 名前を知らない場合と、名前はあるが経路がない場合は違います。 さらに、循環で処理を止めた場合は知識の構造を点検する必要があります。 どれも単にいいえと出力すると、何が起きたのかわからなくなります。
 </aside>
 </section>
 <section>
-<!-- 27: 未知のカテゴリだけ否定する旧方針を統一 -->
+<!-- 32: 未知のカテゴリだけ否定する旧方針を統一 -->
 <div class="slide-body ">
 <h2>開世界：書いていないことは不明</h2>
 <ul>
@@ -922,14 +1102,14 @@ is_a(携帯型端末, コンピュータ)</code></pre>
 出典：S2 §2／S1
 </p>
 </div>
-<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 開世界では、知識ベースがすべてを知っているとは仮定しません。 これは何も否定できないという意味ではありません。否定の情報があれば、それに基づいて判断できる場合があります。 今回のプログラムには明示的な否定を入れていないので、経路がないときは不明とします。
 </aside>
 </section>
 <section>
-<!-- 28: 閉世界の適用範囲と仮定を明示・操作教材へ接続 -->
+<!-- 33: 閉世界の適用範囲と仮定を明示・操作教材へ接続 -->
 <div class="slide-body ">
 <h2>閉世界：対象範囲を決めて否定として扱う</h2>
 <p>架空例：<strong>今日の予約台帳が完全である</strong>と仮定する。</p>
@@ -959,14 +1139,50 @@ is_a(携帯型端末, コンピュータ)</code></pre>
 出典：S2 §2／架空例
 </p>
 </div>
-<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 閉世界では、定めた範囲で導けないことを偽として扱います。 この例は、今日の予約台帳が完全という運用上の仮定に基づきます。現実のあらゆる情報が完全という主張ではありません。 今回のis-aプログラムに、この台帳の運用を自動的に持ち込むことはしません。 図解教材の「不明となし」で、完全性の仮定を外してみましょう。同じ未記載でも答えが変わる理由を説明してください。
 </aside>
 </section>
 <section>
-<!-- 29: 構成要素を演習へ対応付ける -->
+<!-- 34: 同じ「Bの記載なし」でも、答えが違うを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>同じ「Bの記載なし」でも、答えが違う</h2>
+<p class="eyebrow">
+知識表現と推論：不明と否定 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>開世界</strong>
+<p>
+書いていない → 不明
+</p>
+</div>
+<div>
+<strong>完全な閉世界</strong>
+<p>
+この台帳の範囲では否定
+</p>
+</div>
+<div>
+<strong>未反映あり</strong>
+<p>
+完全性が崩れる → 不明
+</p>
+</div>
+</div>
+<p>記録・判断の仮定・結論を分ける。現実全体に存在しないと断定しない。</p>
+<p><a href="interactive.html#world" target="_blank" rel="noopener">操作：カードと手順を対応付ける</a></p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+記録・判断の仮定・結論を分ける。現実全体に存在しないと断定しない。 これは教材内の架空の定義です。入力に与えた事実と、規則から追加した結論を区別して読みます。条件を一つだけ変えて根拠の変化を確認します。
+</aside>
+</section>
+<section>
+<!-- 35: 構成要素を演習へ対応付ける -->
 <div class="slide-body ">
 <h2>エキスパートシステム：専門知識を使う</h2>
 <ul>
@@ -979,14 +1195,14 @@ is_a(携帯型端末, コンピュータ)</code></pre>
 出典：S1／S5
 </p>
 </div>
-<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 エキスパートシステムでは、知識を記述する部分と推論の仕組みを分けて考えます。 専門家のすべての能力を再現できるという意味ではありません。扱う分野と知識に限りがあります。 今回の貸出例は、この基本構成を観察するための小さな教材です。
 </aside>
 </section>
 <section>
-<!-- 30: 三要素と演習の変数・処理を対応 -->
+<!-- 36: 三要素と演習の変数・処理を対応 -->
 <div class="slide-body ">
 <h2>貸出例を、三つの構成要素に対応させる</h2>
 <div class="flow" role="img" aria-label="規則を参照した推論エンジンが作業用の事実を読み追加する">
@@ -1012,14 +1228,14 @@ is_a(携帯型端末, コンピュータ)</code></pre>
 出典：S1／新規演習
 </p>
 </div>
-<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 図の矢印は処理の関わりを示しています。is-aリンクではありません。 エンジンは毎回ワーキングメモリを読み直し、新しい条件がそろったかを確かめます。 知識ベースを変えても、同じ照合の処理を使える点に注目してください。
 </aside>
 </section>
 <section>
-<!-- 31: 説明の範囲を限定・操作教材へ接続 -->
+<!-- 37: 説明の範囲を限定・操作教材へ接続 -->
 <div class="slide-body ">
 <h2>説明できるのは、使った根拠</h2>
 <p>貸出候補と表示された理由：</p>
@@ -1035,14 +1251,14 @@ is_a(携帯型端末, コンピュータ)</code></pre>
 出典：S1／教材の適用履歴
 </p>
 </div>
-<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 履歴を見ると、どの規則が適用されたかを確認できます。 しかし、講習修了という入力が誤っていた場合でも、プログラムはその事実を使います。 根拠が追えることと、その根拠自体が正しいことは分けて確かめましょう。 図解教材の「根拠を説明」で貸出候補を選び、使われた事実と規則をたどります。追加した順序と、説明のために戻る順序を区別しましょう。
 </aside>
 </section>
 <section>
-<!-- 32: 知識工学と保守を具体化 -->
+<!-- 38: 知識工学と保守を具体化 -->
 <div class="slide-body ">
 <h2>知識を作り、保ち続ける難しさ</h2>
 <ul>
@@ -1055,14 +1271,14 @@ is_a(携帯型端末, コンピュータ)</code></pre>
 出典：S1／教材の検証方針
 </p>
 </div>
-<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 知識を書くには、普段は言葉にしていない判断条件を明らかにする必要があります。 例えば予約の運用が変わったら、対応する規則も見直さなければなりません。 小さな固定例で期待する結果を用意し、変更後にも確認することが役立ちます。
 </aside>
 </section>
 <section>
-<!-- 33: Notebookの入手・実行と成功の目印を示す -->
+<!-- 39: Notebookの入手・実行と成功の目印を示す -->
 <div class="slide-body exercise-slide">
 <h2>演習：入手して、まず実行する</h2>
 <p class="material-links">
@@ -1082,14 +1298,14 @@ is_a(携帯型端末, コンピュータ)</code></pre>
 出典：既存の単体Notebook・Python演習
 </p>
 </div>
-<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 Notebookを保存するリンクからファイルをダウンロードし、授業用フォルダーに置いてVS Codeで開きます。 授業用Pythonのカーネルを選び、再起動してから上のセルからすべて実行してください。準備で迷ったら使い方のページを開きます。 成功の目印はスマホからコンピュータへの経路と、基準入力のR1、R2です。予約確認がないのでR3は適用されません。 Python版と一式ZIPも保存できます。まずは計算を変えず、入力と結果の対応を確認しましょう。
 </aside>
 </section>
 <section>
-<!-- 34: 予想・セルの変更・比較・理由の説明をつなぐ -->
+<!-- 40: 予想・セルの変更・比較・理由の説明をつなぐ -->
 <div class="slide-body exercise-slide">
 <h2>予想して、一つ変えて、説明する</h2>
 <p><strong>予想 → コピーで変更 → 実行 → 基準と比較 → 理由を説明</strong></p>
@@ -1127,14 +1343,14 @@ Notebookを保存するリンクからファイルをダウンロードし、授
 出典：既存Notebookの実験セル／手で確認した期待値
 </p>
 </div>
-<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 実行する前に結果を予想し、変更は元データのコピーで行います。Notebookの予約確認を追加するセルでは、R3まで進むことを確認します。 講習修了を除く実験は、使い方のコードを新しいセルへ貼り付けて試してください。R1の条件が足りず、後続の規則も進みません。 知識を追加するセルでは、コンピュータから電子機器へのリンクを加えます。未知語だった問いに経路ができる理由を説明しましょう。 元の事実と知識、基準の結果は残します。結果だけでなく、どのリンクや条件が変化を生んだかを言葉にしてください。
 </aside>
 </section>
 <section>
-<!-- 35: 到達目標の理解確認に再構成 -->
+<!-- 41: 到達目標の理解確認に再構成 -->
 <div class="slide-body ">
 <h2>理解確認：答えと理由を説明する</h2>
 <ol type="1">
@@ -1147,14 +1363,14 @@ Notebookを保存するリンクからファイルをダウンロードし、授
 出典：本文7・20・26–28
 </p>
 </div>
-<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 一つ目は、部品と種類の上下を混同していないかを確認する問いです。電池Aがスマホの一種だとは言えません。 二つ目は予約確認済みが不足していること、三つ目はこの知識からはわかりませんと答えることが要点です。 本文を見直して理由を説明してください。これとは別に本文に基づく四択クイズを用意しています。
 </aside>
 </section>
 <section>
-<!-- 36: まとめと第6回への接続 -->
+<!-- 42: まとめと第6回への接続 -->
 <div class="slide-body ">
 <h2>まとめと、次回への接続</h2>
 <ul>
@@ -1168,19 +1384,19 @@ Notebookを保存するリンクからファイルをダウンロードし、授
 出典：本文／今年度schedule.md
 </p>
 </div>
-<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 今日は知識の表現と、結論までの道筋を学びました。答えだけでなく、根拠と限界も説明できるようにしましょう。 疑問があれば、どのリンクや条件で迷ったかを挙げてください。 次回はニューラルネットワークです。知識の書き方が変わっても、入力と結果を確かめる姿勢を保ちます。
 </aside>
 </section>
 <section>
-<!-- 37: 記法の詳細を補足に分離 -->
+<!-- 43: 記法の詳細を補足に分離 -->
 <div class="slide-body ">
 <h2>補足：Prologでは条件から目標を確かめる</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode prolog"><code class="sourceCode prolog"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>registered(aki)<span class="kw">.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>trained(aki)<span class="kw">.</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>eligible(<span class="dt">X</span>) <span class="kw">:-</span> registered(<span class="dt">X</span>)<span class="kw">,</span> trained(<span class="dt">X</span>)<span class="kw">.</span></span></code></pre></div>
+<div class="sourceCode" id="slide-43-cb1"><pre class="sourceCode prolog"><code class="sourceCode prolog"><span id="slide-43-cb1-1"><a href="#slide-43-cb1-1" aria-hidden="true" tabindex="-1"></a>registered(aki)<span class="kw">.</span></span>
+<span id="slide-43-cb1-2"><a href="#slide-43-cb1-2" aria-hidden="true" tabindex="-1"></a>trained(aki)<span class="kw">.</span></span>
+<span id="slide-43-cb1-3"><a href="#slide-43-cb1-3" aria-hidden="true" tabindex="-1"></a>eligible(<span class="dt">X</span>) <span class="kw">:-</span> registered(<span class="dt">X</span>)<span class="kw">,</span> trained(<span class="dt">X</span>)<span class="kw">.</span></span></code></pre></div>
 <ul>
 <li><code>:-</code> の右が条件、左が結論。<code>X</code> は変数。</li>
 <li><code>eligible(aki)</code> の問いを、二つの条件へ分けて調べる。</li>
@@ -1190,14 +1406,14 @@ Notebookを保存するリンクからファイルをダウンロードし、授
 出典：S4／新規の架空例
 </p>
 </div>
-<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 これは補足で、確認クイズの出題範囲外です。 akiという架空の利用者について、登録済みと講習修了の事実を記述しています。 eligibleを目標にすると、右側の二つの条件を確認します。このコードのProlog処理系での実行は今回の検証には含めません。
 </aside>
 </section>
 <section>
-<!-- 38: 高速化を補足に置き実装と区別 -->
+<!-- 44: 高速化を補足に置き実装と区別 -->
 <div class="slide-body ">
 <h2>補足：OPS5とRETE</h2>
 <ul>
@@ -1210,14 +1426,14 @@ Notebookを保存するリンクからファイルをダウンロードし、授
 出典：S1／S6
 </p>
 </div>
-<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 規則が多数あると、毎回すべての条件を照合する負担が大きくなります。 RETEは、条件照合の途中の結果を保持して再利用する考え方です。単純な一本の木とだけ説明するのは避けます。 今回は動作を目で追えることを優先し、これらの実用処理系を導入しません。
 </aside>
 </section>
 <section>
-<!-- 39: 採用と修正の境界を記録 -->
+<!-- 45: 採用と修正の境界を記録 -->
 <div class="slide-body ">
 <h2>補足：昨年度から変えた点</h2>
 <ul>
@@ -1231,14 +1447,14 @@ Notebookを保存するリンクからファイルをダウンロードし、授
 出典：S1／source-map.md
 </p>
 </div>
-<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 昨年度の構成を土台にして、例と説明を今年度の目標に合わせました。 特に、後ろ向き推論と逆向きの含意の違い、導けないことと否定の違いを明確にしています。 原資料は変更せず、変更の理由を対応表に残しています。
 </aside>
 </section>
 <section>
-<!-- 40: 一次資料と未確認事項を示す -->
+<!-- 46: 一次資料と未確認事項を示す -->
 <div class="slide-body references-slide">
 <h2>補足：出典と確認範囲</h2>
 <ul>
@@ -1254,7 +1470,7 @@ Notebookを保存するリンクからファイルをダウンロードし、授
 出典：各一次資料／2026年10月8日確認
 </p>
 </div>
-<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+<audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
 外部資料は、昨年度資料の説明を確認し補足するために参照しました。 図や貸出データは授業用に新たに作った例で、実際の運用実績ではありません。 教科書のページ番号や処理系の性能を確認したかのような記載はしていません。
@@ -1270,7 +1486,6 @@ Notebookを保存するリンクからファイルをダウンロードし、授
         <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
@@ -1282,7 +1497,6 @@ Notebookを保存するリンクからファイルをダウンロードし、授
         <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
@@ -1297,10 +1511,8 @@ Notebookを保存するリンクからファイルをダウンロードし、授
   const printPlugins = [
       RevealNotes,
       RevealHighlight,
-      RevealMath.MathJax3,
       RevealAnimate,
       RevealChalkboard,
-            RevealEmbedTweet,
             RevealChart,
         ];
 
@@ -1448,12 +1660,6 @@ Notebookを保存するリンクからファイルをダウンロードし、授
                     pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
                     radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
             },
-            math: {
-                mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
-                config: 'TeX-AMS_HTML-full',
-                // pass other options into `MathJax.Hub.Config()`
-                TeX: { Macros: { RR: "{\\bf R}" } }
-                },
                 anything: [
                 {
         className: "plot",

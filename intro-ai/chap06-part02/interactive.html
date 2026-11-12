@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="自己符号化器・LSTM・GANを数値で操作して理解する">
+        <title>第8回 深層学習2：操作教材</title><style>*{box-sizing:border-box}body{margin:0;background:#f2f5fa;color:#192d42;font-family:system-ui,"Noto Sans JP",sans-serif;line-height:1.65;font-size:18px}main{max-width:1180px;margin:auto;padding:24px}h1{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.3}h2{font-size:1.55rem;color:#163b61}a{color:#1558a3}header{border-bottom:4px solid #246bce;padding-bottom:20px}.intro{max-width:58em}nav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}button,select,input,textarea{font:inherit}button,select{padding:10px 14px;min-height:44px;border:1px solid #6783a1;border-radius:6px;background:white;color:#16324f}button{cursor:pointer}button[aria-selected="true"],#ae-train,#d-step,#g-step{background:#164f82;color:white}button:disabled{opacity:.5;cursor:default}:focus-visible{outline:3px solid #ba6400;outline-offset:3px}section{background:white;padding:24px;border-radius:10px;border:1px solid #cedbe9}section[hidden]{display:none}.question{font-weight:700;border-left:5px solid #bb7600;padding:10px 16px;background:#fff8e8}textarea{display:block;width:100%;max-width:100%;margin:6px 0 18px;border:1px solid #90a2b5;border-radius:6px;padding:10px}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:16px 0}.controls label{font-weight:600}input[type=range]{width:160px;max-width:100%;min-height:44px;accent-color:#246bce}.result{background:#f4f8fd;padding:18px;border-radius:6px;margin:16px 0;min-height:160px}.metric{font-size:1.35em;font-weight:700}.explain{border-top:1px solid #cbd7e5;padding-top:15px}table{border-collapse:collapse;width:100%;margin:12px 0;font-variant-numeric:tabular-nums}th,td{padding:8px;border-bottom:1px solid #b8cbe1;text-align:right}th:first-child,td:first-child{text-align:left}caption{text-align:left;font-weight:700}figure{margin:16px 0}svg{display:block;width:100%;height:auto;max-height:220px}figcaption{font-size:.9em;color:#415a72}code{overflow-wrap:anywhere}footer{margin-top:25px;font-size:.9em}output{font-variant-numeric:tabular-nums}.flow{display:flex;align-items:center;justify-content:space-around;gap:8px;flex-wrap:wrap}.box{padding:12px;border:2px solid #246bce;border-radius:7px;background:white}.table-wrap{overflow:auto} @media(max-width:600px){body{font-size:16px}main{padding:12px}section{padding:14px}.result{padding:10px}th,td{padding:5px;font-size:.85em}.controls{gap:8px}h2{font-size:1.3rem}}</style>
+    </head>
+    <body>
+        <main>
+            <header>
+                <p>人工知能概論 ／ 第8回</p>
+                <h1>再構成する・記憶する・生成する</h1>
+                <p class="intro">第6・7回の重み、損失、RNNの状態を使います。問いを読む → 予想を書く → 一つ操作する → 数値で説明する。計算図はこの教材の小さな例であり、実用モデルの性能を表しません。</p>
+                <p><a href="index.html">スライドへ</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="programs/guide.html">Python／Notebook解説</a></p>
+            </header>
+            <nav role="tablist" aria-label="学習テーマ">
+                <button type="button"
+                        id="tab-reconstruction"
+                        role="tab"
+                        data-tab="reconstruction"
+                        aria-controls="reconstruction"
+                        aria-selected="false"
+                        tabindex="-1">1. 符号化と再構成</button><button type="button"
+        id="tab-ae-learning"
+        role="tab"
+        data-tab="ae-learning"
+        aria-controls="ae-learning"
+        aria-selected="false"
+        tabindex="-1">2. 自己符号化器の学習</button><button type="button"
+        id="tab-gates"
+        role="tab"
+        data-tab="gates"
+        aria-controls="gates"
+        aria-selected="false"
+        tabindex="-1">3. LSTMのゲート</button><button type="button"
+        id="tab-sequence"
+        role="tab"
+        data-tab="sequence"
+        aria-controls="sequence"
+        aria-selected="false"
+        tabindex="-1">4. 系列と記憶</button><button type="button"
+        id="tab-gan-roles"
+        role="tab"
+        data-tab="gan-roles"
+        aria-controls="gan-roles"
+        aria-selected="false"
+        tabindex="-1">5. GANの二つの役割</button><button type="button"
+        id="tab-gan-update"
+        role="tab"
+        data-tab="gan-update"
+        aria-controls="gan-update"
+        aria-selected="false"
+        tabindex="-1">6. GANの交互更新</button>
+            </nav>
+            <section id="reconstruction"
+                     role="tabpanel"
+                     aria-labelledby="tab-reconstruction"
+                     hidden>
+                <h2>1. 符号化と再構成</h2>
+                <p class="question">問い：入力の1の位置を変えると、中間表現と再構成はどう変わる？</p>
+                <label>操作前の予想（保存されません）<textarea id="reconstruction-prediction"
+          rows="2"
+          placeholder="変わる値と、その理由を予想しましょう"></textarea></label>
+                <div class="controls">
+                    <label for="ae-input">入力の1の位置</label><select id="ae-input">
+                        <option value="0">1番目</option>
+                        <option value="1">2番目</option>
+                        <option value="2">3番目</option>
+                        <option value="3">4番目</option>
+                        <option value="4">5番目</option>
+                    </select><button id="reconstruction-reset" type="button">このテーマをリセット</button>
+                </div>
+                <div id="reconstruction-result" class="result" aria-live="polite"></div>
+                <p class="explain">説明する：重みは固定した初期値です。中間表現3個から、元の入力と比較できる5個の値へ戻します。カテゴリ分類の正答率とは区別してください。</p>
+            </section>
+            <section id="ae-learning"
+                     role="tabpanel"
+                     aria-labelledby="tab-ae-learning"
+                     hidden>
+                <h2>2. 自己符号化器の学習</h2>
+                <p class="question">問い：回数を増やすと全25成分の平均二乗誤差はどうなる？</p>
+                <label>操作前の予想（保存されません）<textarea id="ae-learning-prediction"
+          rows="2"
+          placeholder="変わる値と、その理由を予想しましょう"></textarea></label>
+                <div class="controls">
+                    <label for="ae-steps">学習回数</label><select id="ae-steps">
+                        <option value="0">0回</option>
+                        <option value="1000" selected>1,000回</option>
+                        <option value="2000">2,000回</option>
+                    </select><button id="ae-train"
+        type="button">同じ初期値から実行</button><button id="ae-learning-reset"
+        type="button">このテーマをリセット</button>
+                </div>
+                <div id="ae-learning-result" class="result" aria-live="polite"></div>
+                <p class="explain">説明する：初期値はシード65535、学習率4。各実行は最初から開始します。この5行への適合は、未知データの性能を保証しません。</p>
+            </section>
+            <section id="gates" role="tabpanel" aria-labelledby="tab-gates" hidden>
+                <h2>3. LSTMのゲート</h2>
+                <p class="question">問い：出力ゲートを0にすると、セル状態も消える？</p>
+                <label>操作前の予想（保存されません）<textarea id="gates-prediction"
+          rows="2"
+          placeholder="変わる値と、その理由を予想しましょう"></textarea></label>
+                <div class="controls">
+                    <label for="forget">
+                        忘却ゲート f <output id="forget-value" for="forget">0.8</output></label><input id="forget" type="range" min="0" max="1" step="0.05" value="0.8"><label for="input-gate">入力ゲート i <output id="input-gate-value" for="input-gate">0.5</output></label><input id="input-gate" type="range" min="0" max="1" step="0.05" value="0.5"><label for="candidate">書き込み候補 g <output id="candidate-value" for="candidate">0.6</output></label><input id="candidate" type="range" min="-1" max="1" step="0.05" value="0.6"><label for="output-gate">出力ゲート o <output id="output-gate-value" for="output-gate">0.75</output></label><input id="output-gate"
+       type="range"
+       min="0"
+       max="1"
+       step="0.05"
+       value="0.75"><button id="gates-reset" type="button">このテーマをリセット</button>
+                </div>
+                <div id="gates-result" class="result" aria-live="polite"></div>
+                <p class="explain">説明する：前のセル状態は1。残す量と書く量を足してcを作り、h=o×tanh(c)を計算します。手動ゲートの実験であり、ゲートの学習結果ではありません。0と1は理想化した端点です。</p>
+            </section>
+            <section id="sequence" role="tabpanel" aria-labelledby="tab-sequence" hidden>
+                <h2>4. 系列と記憶</h2>
+                <p class="question">問い：同じ値を違う順序で書くと、最後の状態は同じ？</p>
+                <label>操作前の予想（保存されません）<textarea id="sequence-prediction"
+          rows="2"
+          placeholder="変わる値と、その理由を予想しましょう"></textarea></label>
+                <div class="controls">
+                    <label for="sequence-order">候補列（生の入力とは区別）</label><select id="sequence-order">
+                        <option value="first">[1, 0, 0, 0]</option>
+                        <option value="last">[0, 0, 0, 1]</option>
+                    </select><label for="sequence-forget">忘却ゲート f <output id="sequence-forget-value" for="sequence-forget">0.8</output></label><input id="sequence-forget"
+       type="range"
+       min="0"
+       max="1"
+       step="0.1"
+       value="0.8"><button id="sequence-reset" type="button">このテーマをリセット</button>
+                </div>
+                <div id="sequence-result" class="result" aria-live="polite"></div>
+                <p class="explain">説明する：初期c=0、入力・出力ゲート=1の理想化例です。候補が0の時刻はcにfが掛かります。保持と順序の影響を各時刻の数値で説明してください。</p>
+            </section>
+            <section id="gan-roles" role="tabpanel" aria-labelledby="tab-gan-roles" hidden>
+                <h2>5. GANの二つの役割</h2>
+                <p class="question">問い：生成値を変えると、固定した識別器の判定はどう変わる？</p>
+                <label>操作前の予想（保存されません）<textarea id="gan-roles-prediction"
+          rows="2"
+          placeholder="変わる値と、その理由を予想しましょう"></textarea></label>
+                <div class="controls">
+                    <label for="gan-z">ノイズ z</label><select id="gan-z">
+                        <option value="-1">−1</option>
+                        <option value="0" selected>0</option>
+                        <option value="1">1</option>
+                    </select><label for="gan-b">生成器のバイアス b <output id="gan-b-value" for="gan-b">−1</output></label><input id="gan-b" type="range" min="-2" max="2" step="0.1" value="-1"><button id="gan-roles-reset" type="button">このテーマをリセット</button>
+                </div>
+                <div id="gan-roles-result" class="result" aria-live="polite"></div>
+                <p class="explain">説明する：生成器G(z)=0.5z+b、識別器D(x)=sigmoid(x)。Dが1に近いほど実データ由来と判定する方向です。ここではbを手で変え、学習は行っていません。判定値は品質の保証ではありません。</p>
+            </section>
+            <section id="gan-update"
+                     role="tabpanel"
+                     aria-labelledby="tab-gan-update"
+                     hidden>
+                <h2>6. GANの交互更新</h2>
+                <p class="question">問い：DとGの更新で、どのパラメーターだけが変わる？</p>
+                <label>操作前の予想（保存されません）<textarea id="gan-update-prediction"
+          rows="2"
+          placeholder="変わる値と、その理由を予想しましょう"></textarea></label>
+                <div class="controls">
+                    <label for="gan-rate">学習率</label><select id="gan-rate">
+                        <option value="0">0</option>
+                        <option value="0.1" selected>0.1</option>
+                        <option value="0.2">0.2</option>
+                    </select><button id="d-step" type="button">① Dを1回更新</button><button id="g-step" type="button" disabled>② Gを1回更新</button><button id="gan-update-reset" type="button">このテーマをリセット</button>
+                </div>
+                <div id="gan-update-result" class="result" aria-live="polite"></div>
+                <p class="explain">説明する：実データは[1,2,3]、ノイズは[-1,0,1]。D更新中はa・b、G更新中はw・dを固定します。Dの損失は実・生成各群の交差エントロピー平均の和、Gは平均−log D(G(z))です。交互更新は40巡まで。安定収束や生成品質は保証しません。</p>
+            </section>
+            <footer>
+                各テーマのリセットで数値・予想を初期状態へ戻せます。ブラウザー更新でも全て初期化されます。操作・計算はこのHTMLだけでオフライン実行できます。スライドやマニュアルへの移動には同梱ファイルが必要です。
+            </footer>
+        </main>
+        <script id="dl2-core">const DL2 = (() => {
+ const DATA=Array.from({length:5},(_,i)=>Array.from({length:5},(_,j)=>+(i===j)));
+ const REAL=[1,2,3],NOISE=[-1,0,1],INITIAL={a:.5,b:-1,w:1,d:0};
+ const sigmoid=x=>x>=0?1/(1+Math.exp(-x)):Math.exp(x)/(1+Math.exp(x));
+ const clone=x=>JSON.parse(JSON.stringify(x));
+ function initial(){let s=65535;const v=()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return 2*s/4294967296-1;};return {enc:Array.from({length:3},()=>Array.from({length:6},v)),dec:Array.from({length:5},()=>Array.from({length:4},v))};}
+ function reconstruct(x,p){const hidden=p.enc.map(w=>sigmoid(x.reduce((s,v,i)=>s+v*w[i],0)+w[5]));const output=p.dec.map(w=>sigmoid(hidden.reduce((s,v,i)=>s+v*w[i],0)+w[3]));return {hidden,output,mse:output.reduce((s,v,i)=>s+(v-x[i])**2,0)/5};}
+ const loss=(p,data=DATA)=>data.reduce((s,x)=>s+reconstruct(x,p).mse,0)/data.length;
+ function gradient(p,data=DATA){const grad={enc:p.enc.map(r=>r.map(()=>0)),dec:p.dec.map(r=>r.map(()=>0))};for(const x of data){const {hidden:h,output:y}=reconstruct(x,p);const dy=y.map((v,k)=>2*(v-x[k])*v*(1-v)/(5*data.length));const dh=h.map((v,j)=>dy.reduce((s,t,k)=>s+t*p.dec[k][j],0)*v*(1-v));for(let k=0;k<5;k++)for(let j=0;j<4;j++)grad.dec[k][j]+=dy[k]*(j<3?h[j]:1);for(let j=0;j<3;j++)for(let i=0;i<6;i++)grad.enc[j][i]+=dh[j]*(i<5?x[i]:1);}return grad;}
+ function train(steps=1000,rate=4,data=DATA){if(!Number.isInteger(steps)||steps<0||steps>4000||rate<0||rate>4)throw Error('学習条件が範囲外です');const weights=initial(),history=[{step:0,mse:loss(weights,data)}];for(let step=1;step<=steps;step++){const g=gradient(weights,data);for(const key of ['enc','dec'])weights[key].forEach((row,i)=>row.forEach((v,j)=>{row[j]-=rate*g[key][i][j];}));if(step%100===0||step===steps)history.push({step,mse:loss(weights,data)});}return {weights,history,reconstructions:data.map(x=>reconstruct(x,weights))};}
+ function gate(previous=1,forget=.8,input_gate=.5,candidate=.6,output_gate=.75){const kept=forget*previous,written=input_gate*candidate,cell=kept+written;return {kept,written,cell,hidden:output_gate*Math.tanh(cell)};}
+ function fixed(x,pc=0,ph=0){const f=sigmoid(.5*x+.2*ph+1),i=sigmoid(x-.1*ph),g=Math.tanh(x+.3*ph),o=sigmoid(.4*x+.1*ph);return {...gate(pc,f,i,g,o),forget:f,input_gate:i,candidate:g,output_gate:o};}
+ function sequence(candidates=[1,0,0,0],forget=.8){let c=0;return candidates.map(x=>{const r=gate(c,forget,1,x,1);c=r.cell;return r;});}
+ const generate=(z,p)=>p.a*z+p.b, discriminate=(x,p)=>sigmoid(p.w*x+p.d);
+ const softplus=x=>Math.max(x,0)+Math.log1p(Math.exp(-Math.abs(x)));
+ function losses(p){const r=REAL.map(x=>p.w*x+p.d),f=NOISE.map(z=>p.w*generate(z,p)+p.d);return {d_loss:r.reduce((s,x)=>s+softplus(-x),0)/r.length+f.reduce((s,x)=>s+softplus(x),0)/f.length,g_loss:f.reduce((s,x)=>s+softplus(-x),0)/f.length};}
+ function ganGradient(p,target){if(target==='d'){const g={w:0,d:0};for(const [xs,label] of [[REAL,1],[NOISE.map(z=>generate(z,p)),0]])for(const x of xs){const delta=(discriminate(x,p)-label)/xs.length;g.w+=delta*x;g.d+=delta;}return g;}if(target==='g'){const g={a:0,b:0};for(const z of NOISE){const delta=(discriminate(generate(z,p),p)-1)*p.w/NOISE.length;g.a+=delta*z;g.b+=delta;}return g;}throw Error('更新対象はdまたはg');}
+ function ganStep(p,target,rate=.1){const q={...p};for(const [k,v] of Object.entries(ganGradient(p,target)))q[k]-=rate*v;return q;}
+ const rounded=x=>typeof x==='number'?Math.round(x*1e6)/1e6:Array.isArray(x)?x.map(rounded):Object.fromEntries(Object.entries(x).map(([k,v])=>[k,rounded(v)]));
+ function demo(){const trained=train(),after_d=ganStep(INITIAL,'d'),after_g=ganStep(after_d,'g');return rounded({autoencoder:{before:loss(initial()),after:trained.history.at(-1).mse,first:trained.reconstructions[0]},gates:gate(),sequence:sequence(),fixed_lstm:fixed(1),gan:{initial:{...INITIAL},after_d,after_g,generated:NOISE.map(z=>generate(z,after_g)),losses:losses(after_g)}});}
+ return {DATA,REAL,NOISE,INITIAL,initial,reconstruct,loss,gradient,train,gate,fixed,sequence,generate,discriminate,losses,ganGradient,ganStep,demo,clone};
+})();
+        </script>
+        <script>
+const $=id=>document.getElementById(id),num=id=>Number($(id).value),fmt=x=>Number(x).toFixed(6);
+const themes=['reconstruction','ae-learning','gates','sequence','gan-roles','gan-update'];
+const table=(caption,headers,rows)=>'<div class="table-wrap"><table><caption>'+caption+'</caption><thead><tr>'+headers.map(h=>'<th scope="col">'+h+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map((v,i)=>i===0?'<th scope="row">'+v+'</th>':'<td>'+v+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+function chart(values,label){const max=Math.max(1,...values.map(Math.abs)),n=values.length;return '<figure><svg viewBox="0 0 700 180" role="img" aria-label="'+label+'"><line x1="20" y1="145" x2="680" y2="145" stroke="#5c7896"/>'+values.map((v,i)=>{const x=40+i*620/n,h=Math.abs(v)/max*100;return '<rect x="'+x+'" y="'+(145-h)+'" width="'+Math.min(60,450/n)+'" height="'+h+'" fill="#246bce"/><text x="'+x+'" y="'+(137-h)+'" font-size="16">'+v.toFixed(3)+'</text><text x="'+x+'" y="169" font-size="16">'+(i+1)+'</text>';}).join('')+'</svg><figcaption>'+label+'。正確な値は表を参照。</figcaption></figure>';}
+let trained=null,gan={...DL2.INITIAL},phase='d',round=0,trace=[];
+function reconstruction(){const x=DL2.DATA[num('ae-input')],r=DL2.reconstruct(x,DL2.initial());$('reconstruction-result').innerHTML='<div class="flow"><span class="box">入力5個</span><span>→</span><span class="box">中間表現3個</span><span>→</span><span class="box">再構成5個</span></div>'+table('固定初期重みでの計算',['成分',1,2,3,4,5],[['入力',...x],['再構成',...r.output.map(fmt)]])+table('中間表現',['成分',1,2,3],[['値',...r.hidden.map(fmt)]])+chart(r.output,'再構成5成分の計算値')+'<p class="metric">この入力のMSE = '+fmt(r.mse)+'</p>';}
+function learning(){const h=trained?trained.history:[{step:0,mse:DL2.loss(DL2.initial())}];$('ae-learning-result').innerHTML='<p class="metric">更新 '+h.at(-1).step+'回：MSE '+fmt(h[0].mse)+' → '+fmt(h.at(-1).mse)+'</p>'+chart(h.map(x=>x.mse),'計測時点ごとの全25成分のMSE')+table('学習経過',['更新回数','MSE'],h.map(x=>[x.step,fmt(x.mse)]))+'<p>各実行は同じ初期値から。比較用：1,000回は0.004639、2,000回は0.001924。</p>';}
+function gates(){for(const id of ['forget','input-gate','candidate','output-gate'])$(id+'-value').textContent=$(id).value;const r=DL2.gate(1,num('forget'),num('input-gate'),num('candidate'),num('output-gate'));$('gates-result').innerHTML='<div class="flow"><span class="box">保持 '+fmt(r.kept)+'</span><span>＋</span><span class="box">書き込み '+fmt(r.written)+'</span><span>→</span><span class="box">c = '+fmt(r.cell)+'</span></div><p class="metric">h = o × tanh(c) = '+fmt(r.hidden)+'</p>'+table('手動指定による計算',['量','値'],[['前のc','1.000000'],['残す量 f×前のc',fmt(r.kept)],['書く量 i×g',fmt(r.written)],['新しいc',fmt(r.cell)],['出力h',fmt(r.hidden)]]);}
+function sequence(){const xs=$('sequence-order').value==='first'?[1,0,0,0]:[0,0,0,1],r=DL2.sequence(xs,num('sequence-forget'));$('sequence-forget-value').textContent=$('sequence-forget').value;$('sequence-result').innerHTML=chart(r.map(x=>x.cell),'各時刻のセル状態c')+table('候補・セル状態・出力',['時刻','候補g','c','h'],r.map((x,i)=>[i+1,xs[i],fmt(x.cell),fmt(x.hidden)]))+'<p class="metric">最後のc = '+fmt(r.at(-1).cell)+'</p>';}
+function roles(){const p={...DL2.INITIAL,b:num('gan-b')},x=DL2.generate(num('gan-z'),p);$('gan-b-value').textContent=$('gan-b').value;$('gan-roles-result').innerHTML='<div class="flow"><span class="box">z = '+num('gan-z')+'</span><span>→ G →</span><span class="box">生成値 '+fmt(x)+'</span><span>→ D →</span><span class="box">'+fmt(DL2.discriminate(x,p))+'</span></div>'+table('実データ・生成値への識別器の出力',['由来','値','Dの出力'],[...DL2.REAL.map(v=>['実データ',v,fmt(DL2.discriminate(v,p))]),['生成器',fmt(x),fmt(DL2.discriminate(x,p))]])+'<p>実データ／生成データという由来を表す判定値です。</p>';}
+function update(){const l=DL2.losses(gan);$('d-step').disabled=phase!=='d'||round>=40;$('g-step').disabled=phase!=='g'||round>=40;$('gan-update-result').innerHTML='<p class="metric">完了 '+round+'巡 ／ '+(round>=40?'上限です。リセットして再開。':'次は'+phase.toUpperCase()+'の更新')+'</p>'+table('パラメーター（G:a,b ／ D:w,d）',['時点','a','b','w','d'],[['初期',...Object.values(DL2.INITIAL).map(fmt)],['現在',...['a','b','w','d'].map(k=>fmt(gan[k]))]])+table('現在の生成値',['z','G(z)','D(G(z))'],DL2.NOISE.map(z=>[z,fmt(DL2.generate(z,gan)),fmt(DL2.discriminate(DL2.generate(z,gan),gan))]))+'<p>D損失 = '+fmt(l.d_loss)+' ／ G損失 = '+fmt(l.g_loss)+'</p>'+table('最近の更新（最大8件）',['操作','固定した重み','D損失','G損失'],trace.slice(-8));}
+function show(id,focus=false){if(!themes.includes(id)){id=themes[0];history.replaceState(null,'','#'+id);}for(const t of themes){$(t).hidden=t!==id;$('tab-'+t).setAttribute('aria-selected',String(t===id));$('tab-'+t).tabIndex=t===id?0:-1;}if(focus)$('tab-'+id).focus();}
+for(const [i,id] of themes.entries()){$('tab-'+id).addEventListener('click',()=>{location.hash=id;show(id);});$('tab-'+id).addEventListener('keydown',e=>{let j;if(e.key==='Home')j=0;else if(e.key==='End')j=5;else if(e.key==='ArrowRight')j=(i+1)%6;else if(e.key==='ArrowLeft')j=(i+5)%6;else return;e.preventDefault();location.hash=themes[j];show(themes[j],true);});}
+window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+$('ae-input').addEventListener('change',reconstruction);
+$('ae-train').addEventListener('click',()=>{trained=DL2.train(num('ae-steps'));learning();});
+for(const id of ['forget','input-gate','candidate','output-gate'])$(id).addEventListener('input',gates);
+$('sequence-order').addEventListener('change',sequence);$('sequence-forget').addEventListener('input',sequence);
+$('gan-z').addEventListener('change',roles);$('gan-b').addEventListener('input',roles);
+for(const target of ['d','g'])$(target+'-step').addEventListener('click',()=>{if(phase!==target||round>=40)return;gan=DL2.ganStep(gan,target,num('gan-rate'));const l=DL2.losses(gan);trace.push([target.toUpperCase(),target==='d'?'a,b':'w,d',fmt(l.d_loss),fmt(l.g_loss)]);phase=target==='d'?'g':'d';if(target==='g')round++;update();});
+const resetters={reconstruction:()=>{$('ae-input').value='0';reconstruction();},'ae-learning':()=>{$('ae-steps').value='1000';trained=null;learning();},gates:()=>{for(const [id,v] of Object.entries({forget:.8,'input-gate':.5,candidate:.6,'output-gate':.75}))$(id).value=v;gates();},sequence:()=>{$('sequence-order').value='first';$('sequence-forget').value='.8';sequence();},'gan-roles':()=>{$('gan-z').value='0';$('gan-b').value='-1';roles();},'gan-update':()=>{gan={...DL2.INITIAL};phase='d';round=0;trace=[];$('gan-rate').value='.1';update();}};
+for(const id of themes)$(id+'-reset').addEventListener('click',()=>{$(id+'-prediction').value='';resetters[id]();});
+reconstruction();learning();gates();sequence();roles();update();show(location.hash.slice(1));
+        </script>
+<!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+/* Lesson-owned explanations. All changing numbers come from the existing DL2 core. */
+{
+const f=x=>Number(x).toFixed(6), p=s=>'<p>'+s+'</p';
+const values=(name,x)=>'<p><strong>'+name+'</strong></p><div class="ts-values">'+x.map((v,i)=>'<span><small>'+(i+1)+'番</small><br>'+f(v)+'</span>').join('')+'</div>';
+const flow=items=>'<div class="ts-flow">'+items.map(([name,value])=>'<div class="ts-card"><strong>'+name+'</strong>'+value+'</div>').join('<span aria-hidden="true">→</span>')+'</div>';
+const multiplication=(x,w)=>x.map((v,i)=>f(v)+' × '+f(w[i])).join(' ＋ ')+' ＋ バイアス '+f(w[x.length]);
+const rdata=()=>{const x=DL2.DATA[num('ae-input')],w=DL2.initial();return {x,w,...DL2.reconstruct(x,w)};};
+installTeachingSteps([
+{id:'reconstruction',title:'入力を小さく表して、元の形へ戻す',steps:()=>{
+ const r=rdata();return [
+ {title:'入力の場所',body:values('入力 x：1がある場所を5個の数で表す',r.x)+p('1番から5番までの順序を保ちます。上の選択欄で1の位置を変えてください。これはカテゴリを当てる問題ではなく、この5個を再現する問題です。')},
+ {title:'5個から3個へ',body:flow([['使う入力','x の5個'],['重みを掛けて足す','各中間成分ごとに別の重み'],['0〜1に変換','sigmoid（シグモイド）']])+values('中間表現 h',r.hidden)+p('例えば h1：'+multiplication(r.x,r.w.enc[0])+'。この和をsigmoidへ入れると '+f(r.hidden[0])+'。1の位置を変えると、掛かる重みも変わります。')},
+ {title:'3個から5個へ',body:values('復元した出力 y',r.output)+p('例えば y1：'+multiplication(r.hidden,r.w.dec[0])+'。sigmoidで変換すると '+f(r.output[0])+'。出力の1番は、入力の1番と比較します。符号化と復号には別々の重みを使います。')},
+ {title:'同じ場所で比べる',body:flow([['入力1番',f(r.x[0])],['出力1番',f(r.output[0])],['二乗したずれ',f((r.output[0]-r.x[0])**2)]])+p('5か所の二乗したずれを足して5で割ると MSE = '+f(r.mse)+'。小さいほど、この入力をよく再現しています。現在は未学習の固定重みなので、1の場所を正しく再現できるとは限りません。')}
+ ];},details:()=>{const r=rdata();return table('全ての符号化計算',['中間成分','入力×重み＋バイアス','sigmoid後'],r.hidden.map((v,i)=>['h'+(i+1),multiplication(r.x,r.w.enc[i]),f(v)]))+table('全ての復号計算',['出力','中間表現×重み＋バイアス','sigmoid後'],r.output.map((v,i)=>['y'+(i+1),multiplication(r.hidden,r.w.dec[i]),f(v)]))+table('同じ位置のずれ',['位置','入力','出力','(出力−入力)²'],r.x.map((v,i)=>[i+1,v,f(r.output[i]),f((r.output[i]-v)**2)]))+p('表示は小数6桁です。計算は丸める前の値を使います。入力だけを変えても、重みの学習にはなりません。');}},
+{id:'ae-learning',title:'5枚それぞれを再現できる重みへ',steps:()=>{
+ const initial=DL2.initial(),w=trained?trained.weights:initial,h=trained?trained.history:[{step:0,mse:DL2.loss(initial)}],g=DL2.gradient(initial);
+ return [
+ {title:'5種類を用意',body:DL2.DATA.map((x,i)=>values('入力 '+(i+1),x)).join('')+p('正解も同じ5個の数です。5種類×5成分、合計25成分を使います。')},
+ {title:'現在の重みで再現',body:values('入力1',DL2.DATA[0])+values('現在の再構成1',DL2.reconstruct(DL2.DATA[0],w).output)+p('同じ位置の値を比べます。「1に近付けたい場所」と「0に近付けたい場所」の両方を確認します。')},
+ {title:'ずれを平均',body:p('各成分のずれを二乗し、全25成分を足して25で割ります。')+flow([['未学習のMSE',f(h[0].mse)],['現在の更新回数',h.at(-1).step+'回'],['現在のMSE',f(h.at(-1).mse)]])+p('これは正解率ではありません。25個の連続値のずれの平均です。')},
+ {title:'重みを少し変える',body:p('最初の1回を例にします。入力1→中間1の重みは '+f(initial.enc[0][0])+'。勾配は '+f(g.enc[0][0])+'、学習率は4なので、更新後は '+f(initial.enc[0][0])+' − 4 × '+f(g.enc[0][0])+' = '+f(initial.enc[0][0]-4*g.enc[0][0])+' です。')+p('同じ更新前の重みから全勾配を求めてから更新します。上の「同じ初期値から実行」で選んだ回数だけ繰り返します。回数を選ぶだけでは学習しません。')},
+ {title:'学習した5枚を確認',body:p('下の学習経過は実際に計算した値です。重みを変えると5枚の再構成も変わります。')+p('この5枚で誤差が小さくても、未知の画像を再現できるとはまだ言えません。0回と1,000回を同じ初期値から比較し、どの成分が改善したか説明しましょう。')}
+ ];},details:()=>{const w=trained?trained.weights:DL2.initial();return table('5入力の再構成：現在の実計算',['入力','入力の5値','出力の5値','MSE'],DL2.DATA.map((x,i)=>{const r=DL2.reconstruct(x,w);return [i+1,x.join(', '),r.output.map(f).join(', '),f(r.mse)];}))+p('元の25成分と同じ順序で比較します。学習履歴の横方向は更新回数です。下の表で正確な回数を確認できます。');}},
+{id:'gates',title:'記憶を残す・書く・外へ出す',steps:()=>{
+ const a=num('forget'),b=num('input-gate'),g=num('candidate'),o=num('output-gate'),r=DL2.gate(1,a,b,g,o);return [
+ {title:'前の記憶を残す',body:flow([['前の記憶 c','1'],['残す割合 f',a],['残った量',f(r.kept)]])+p(a+' × 1 = '+f(r.kept)+'。f=0なら前の記憶を残さず、f=1なら全部残す理想化例です。')},
+ {title:'新しく書き込む',body:flow([['書く候補 g',g],['書く割合 i',b],['書き込む量',f(r.written)]])+p(b+' × '+g+' = '+f(r.written)+'。候補が負なら記憶を減らす方向にも働きます。')},
+ {title:'記憶を合計',body:p(f(r.kept)+' ＋ '+f(r.written)+' = 新しい c '+f(r.cell))+p('二つの量を足したものが内部の記憶です。出力ゲートoは、ここには掛けません。')},
+ {title:'外へ出す量',body:flow([['記憶 c',f(r.cell)],['tanhで変換',f(Math.tanh(r.cell))],['oを掛けた出力 h',f(r.hidden)]])+p('o='+o+'。oだけを0にするとhは0になりますが、cは残ります。内部の記憶と外へ渡す出力を区別しましょう。')}
+ ];},details:()=>p('ここでは前のc=1とゲートの値を手で指定しています。通常のLSTMでは入力と前の出力から重み付き計算でゲートを求めます。この操作はゲートの学習ではありません。0と1は理想化した端点です。')},
+{id:'sequence',title:'記憶を次の時刻へ渡す',steps:()=>{
+ const xs=$('sequence-order').value==='first'?[1,0,0,0]:[0,0,0,1],a=num('sequence-forget'),rs=DL2.sequence(xs,a);
+ return rs.map((r,i)=>({title:'時刻'+(i+1),body:flow([['前の記憶',f(i?rs[i-1].cell:0)],['残す量',a+' × '+f(i?rs[i-1].cell:0)+' = '+f(r.kept)],['今回書く量','1 × '+xs[i]+' = '+f(r.written)],['次へ渡すc',f(r.cell)]])+p('c'+(i+1)+' = '+f(r.kept)+' ＋ '+f(r.written)+' = '+f(r.cell)+'。出力hは tanh(c) = '+f(r.hidden)+'。')+p(i===3?'最後の状態を比較します。f=0.8で最初に1を書くと0.512、最後に書くと1。早く書いた値ほど、その後にfを掛けられる回数が多くなります。':'次の段階では、このcを「前の記憶」として使います。')}));
+ },details:()=>p('上の候補列は生の入力ではなく、書き込み候補gの列です。初期c=0、i=o=1の理想化例です。候補を逆順にしても総和は同じですが、最後の記憶は必ずしも同じになりません。f=1で両方を比較すると最後のcは1です。')},
+{id:'gan-roles',title:'作る役と見分ける役を分ける',steps:()=>{
+ const z=num('gan-z'),b=num('gan-b'),w={...DL2.INITIAL,b},x=DL2.generate(z,w),d=DL2.discriminate(x,w);return [
+ {title:'材料の数 z',body:p('ノイズz='+z+'を材料として選びます。実データ[1,2,3]とは別の入力です。この教材では画像ではなく1個の数を作ります。')},
+ {title:'生成器Gで作る',body:flow([['ノイズ',z],['0.5を掛けてbを足す','0.5 × '+z+' ＋ ('+b+')'],['生成値 G(z)',f(x)]])+p('bを変えると生成値が動きます。これは手動の変更で、損失から求めた学習ではありません。')},
+ {title:'識別器Dで見る',body:flow([['Dに渡す生成値',f(x)],['固定した変換','sigmoid(x)'],['Dの出力',f(d)]])+p('Dは生成値を受け取り、実データ由来と判定する方向の値を出します。1に近いほどその方向ですが、作品の品質を採点しているわけではありません。')},
+ {title:'実データと比べる',body:p('下の表では同じDに実データ1・2・3も渡しています。Dの重みは固定したまま、bだけ変えて生成値とDの出力を比較しましょう。')}
+ ];},details:()=>p('G(z)=a×z+b、ここではa=0.5。D(x)=sigmoid(w×x+d)、ここではw=1、d=0。交互更新のテーマではa,b,w,dを学習しますが、このテーマの初期重みは独立しています。')},
+{id:'gan-update',title:'片方を固定してから、もう片方を更新',steps:()=>{
+ const target=phase,grad=DL2.ganGradient(gan,target),rate=num('gan-rate'),next=DL2.ganStep(gan,target,rate);return [
+ {title:'現在の2モデル',body:flow([['Gの重み','a='+f(gan.a)+'、b='+f(gan.b)],['Dの重み','w='+f(gan.w)+'、d='+f(gan.d)]])+p('実データ[1,2,3]とノイズ[-1,0,1]を使います。説明を進めるだけでは更新しません。上のD／G更新ボタンが計算を実行します。')},
+ {title:'次の更新対象',body:p('次は '+target.toUpperCase()+' を更新します。'+(target==='d'?'Gのa,bは固定し、実データと生成データを見分けるDのw,dを変えます。':'Dのw,dは固定し、生成値が実データ由来と判定される方向へGのa,bを変えます。Dの計算を通して勾配を求めるので、Dを使わないという意味ではありません。'))},
+ {title:'勾配から新しい重み',body:table('次のボタンを押した場合の計算（まだ未実行）',['重み','現在','勾配','学習率','更新後'],Object.keys(grad).map(k=>[k,f(gan[k]),f(grad[k]),rate,f(next[k])]))+p('更新後 = 現在 − 学習率 × 勾配。学習率0なら変化しません。')},
+ {title:'実行して交代',body:p('上の有効な更新ボタンを1回押し、下の現在値と固定した重みを確認します。D更新の後はG更新へ交代し、両方終わると1巡です。')+p('損失は各モデルの目的に対応する別の数値です。両方が毎回下がるとは限りません。リセットで初期重み・学習率0.1・Dからの開始に戻ります。')}
+ ];},details:()=>p('Dの損失は実データ群と生成データ群それぞれの交差エントロピー平均の和。Gの損失は生成データの −log D(G(z)) の平均です。表の数字は6桁表示、更新は内部精度です。学習率だけの比較は必ずリセットして同じ初期値から開始します。')}
+]);
+}
+
+</script>
+<!-- teaching-steps:end -->
+    </body>
+</html>

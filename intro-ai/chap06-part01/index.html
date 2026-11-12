@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
         <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
         <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+              href="libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css">
         <!-- highlight Theme -->
         <link rel="stylesheet"
               href="libs/highlight.js/11.3.1/styles/monokai.min.css">
@@ -100,12 +100,13 @@
 </tr>
 </tbody>
 </table>
+<p><strong>しきい値を引く＝逆符号のバイアスを足す</strong>（−(−1)＝＋1）。</p>
 <p><strong>出力を計算すること</strong>と<strong>重みを学習すること</strong>を区別する。</p>
 </div>
 <audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg">
 </audio>
 <aside class="notes">
-前回のニューロンの計算を思い出しましょう。今回は入力が画像の小さな領域になります。同じ計算を場所を変えながら使います。重みが固定されたときの計算を理解してから、重みを変える学習を扱います。
+前回の入力と重みの積を足す計算を、今回は画像の小さな領域に使います。前回のしきい値マイナス1を引く例は、バイアスプラス1を足すのと同じです。窓を動かすと参照する入力が変わり、同じ重みを使います。一方、学習では予測と正解のずれを使って重みを変えます。入力の変更、窓の移動、重みの更新を分けて説明しましょう。
 </aside>
 </section>
 <section>
@@ -3840,7 +3841,6 @@ b：100回
         <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/math/math.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
@@ -3852,7 +3852,6 @@ b：100回
         <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
-        <script src="libs/reveal.js/4.3.1/plugin/embed-tweet/plugin.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
         <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
@@ -3867,10 +3866,8 @@ b：100回
   const printPlugins = [
       RevealNotes,
       RevealHighlight,
-      RevealMath.MathJax3,
       RevealAnimate,
       RevealChalkboard,
-            RevealEmbedTweet,
             RevealChart,
         ];
 
@@ -4018,12 +4015,6 @@ b：100回
                     pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
                     radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
             },
-            math: {
-                mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
-                config: 'TeX-AMS_HTML-full',
-                // pass other options into `MathJax.Hub.Config()`
-                TeX: { Macros: { RR: "{\\bf R}" } }
-                },
                 anything: [
                 {
         className: "plot",

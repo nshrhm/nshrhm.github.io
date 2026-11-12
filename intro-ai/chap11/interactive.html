@@ -130,7 +130,7 @@
                                                 探索順<select id="pruning-order">
                                                 <option value="forward">正順 A→B→C</option>
                                                 <option value="reverse">逆順 C→B→A</option>
-                                            </select></label><button type="button" id="pruning-next">一段階進む</button><button type="button" id="pruning-all">最後まで</button>
+                                            </select></label><button type="button" id="pruning-prev">一段階戻る</button><button type="button" id="pruning-next">一段階進む</button><button type="button" id="pruning-all">最後まで</button>
                                         </div>
                                         <div id="pruning-tree"></div>
                                         <div id="pruning-result" class="result" aria-live="polite"></div>
@@ -223,18 +223,125 @@ $(target).innerHTML=svg+'</svg><p class="hint">緑＝訪問済み／破線＝枝
 function guarded(k,fn){try{$(k+'-error').textContent='';fn();}catch(e){$(k+'-error').textContent=e.message;$(k+'-result').textContent='入力を直すと再計算します。';if($(k+'-tree'))$(k+'-tree').replaceChildren();if($(k+'-moves'))$(k+'-moves').replaceChildren();if(k==='play')$('play-ai').disabled=true;}}
 function renderFixed(k){guarded(k,()=>{let c=G.clone(G.TREE_BASE);if(k==='minimax')c.leaves=c.leaves.map((_,i)=>read('leaf-'+i));if(k==='cutoff'){c.depth=read('cutoff-depth',0,2);c.heuristics=c.heuristics.map((_,i)=>read('heuristic-'+i));}if(k==='ordering')c.reverse=$(k+'-order').value==='reverse';const r=G.searchTree(c);tree(k+'-tree',c,r.trace);if(k==='ordering'){$(k+'-result').innerHTML=metrics(r,'ミニマックス')+metrics(G.searchTree({...c,algorithm:'alphabeta'}),'αβ枝刈り')+'<p>逆順は各MINの子も逆にします。根値が同じでも、省略できる枝は変わります。</p>';}else{$(k+'-result').innerHTML=metrics(r,c.depth<2?'打切りを含む推定結果':'終端までの結果')+(k==='cutoff'?metrics(G.searchTree({...c,depth:2}),'同じ利得で終端まで探索'):'')+'<details><summary>探索履歴（実際の計算）</summary><pre class="trace"></pre></details>';$(k+'-result').querySelector('pre').textContent=JSON.stringify(r.trace,null,2);}});}
 function resetPruning(){step=0;pruningRun=G.searchTree({algorithm:'alphabeta',reverse:$('pruning-order').value==='reverse'});renderPruning();}
-function renderPruning(){const trace=pruningRun.trace.slice(0,step),event=trace.at(-1);tree('pruning-tree',G.TREE_BASE,trace);const labels={enter:'節点へ入る',evaluate:'評価する',update:'子の値で更新',prune:'残りを枝刈り',return:'親へ返す'};let content=`<p class="step">${step} / ${pruningRun.trace.length} 段階</p>`;if(event){content+=`<p>${event.id}：${labels[event.event]}</p>`;const windowEvent=trace.filter(e=>e.id===event.id&&'alpha'in e).at(-1);if(windowEvent)content+=`<p>α = ${windowEvent.alpha} ／ β = ${windowEvent.beta}</p>`;if('value'in event)content+=`<p>${event.bound==='upper'?'上限':event.bound==='lower'?'下限':event.event==='update'?'探索済みの子からの暫定値':'値'}：${event.value}</p>`;if(event.skipped)content+=`<p>未探索のまま省略：${event.skipped.join('、')}</p>`;}else content+='<p>一段階進むを押してください。α = −∞、β = ＋∞から開始します。</p>';if(step===pruningRun.trace.length)content+=metrics(pruningRun,'探索終了');content+=`<p>現在の訪問 ${trace.filter(e=>e.event==='enter').length} 節点、評価 ${trace.filter(e=>e.event==='evaluate').length} 回</p>`;$('pruning-result').innerHTML=content;$('pruning-next').disabled=step>=pruningRun.trace.length;$('pruning-all').disabled=step>=pruningRun.trace.length;}
+function renderPruning(){const trace=pruningRun.trace.slice(0,step),event=trace.at(-1);tree('pruning-tree',G.TREE_BASE,trace);const labels={enter:'節点へ入る',evaluate:'評価する',update:'子の値で更新',prune:'残りを枝刈り',return:'親へ返す'};let content=`<p class="step">${step} / ${pruningRun.trace.length} 段階</p>`;if(event){content+=`<p>${event.id}：${labels[event.event]}</p>`;const windowEvent=trace.filter(e=>e.id===event.id&&'alpha'in e).at(-1);if(windowEvent)content+=`<p>α = ${windowEvent.alpha} ／ β = ${windowEvent.beta}</p>`;if('value'in event)content+=`<p>${event.bound==='upper'?'上限':event.bound==='lower'?'下限':event.event==='update'?'探索済みの子からの暫定値':'値'}：${event.value}</p>`;if(event.skipped)content+=`<p>未探索のまま省略：${event.skipped.join('、')}</p>`;}else content+='<p>一段階進むを押してください。α = −∞、β = ＋∞から開始します。</p>';if(step===pruningRun.trace.length)content+=metrics(pruningRun,'探索終了');content+=`<p>現在の訪問 ${trace.filter(e=>e.event==='enter').length} 節点、評価 ${trace.filter(e=>e.event==='evaluate').length} 回</p>`;$('pruning-result').innerHTML=content;$('pruning-prev').disabled=step===0;$('pruning-next').disabled=step>=pruningRun.trace.length;$('pruning-all').disabled=step>=pruningRun.trace.length;}
 function resetGame(k){guarded(k,()=>{const piles=[read(k+'-left',0,4),read(k+'-right',0,4)];G.legalMoves(piles);games[k]={piles,player:1,history:[]};renderGame(k);});}
 function renderGame(k){const g=games[k],terminal=g.piles.every(n=>n===0);let svg='<svg class="diagram" viewBox="0 0 600 180" role="img" aria-label="ニムの左右の山">';g.piles.forEach((n,i)=>{svg+=`<text x="20" y="${45+i*80}">${i?'右':'左'}：${n}個</text>`;for(let j=0;j<n;j++)svg+=`<circle cx="${165+j*100}" cy="${40+i*80}" r="25" fill="#24887e"/>`;});$(k+'-board').innerHTML=svg+'</svg>';$(k+'-moves').replaceChildren();for(const a of G.legalMoves(g.piles)){const b=document.createElement('button');b.type='button';b.textContent=actionText(a);b.dataset.action=a.join(',');b.disabled=k==='play'&&g.player===-1;b.addEventListener('click',()=>move(k,a));$(k+'-moves').append(b);}let text=`<p>局面 (${g.piles.join(',')}) ／ 手番 ${g.player===1?'MAX':'MIN'}</p>`;text+=terminal?`<p class="badge">終了：${g.player===1?'MIN':'MAX'}の勝ち（手番側には合法手がありません）</p>`:'<p>合法手を一つ選んでください。</p>';if(k==='play'){$('play-ai').disabled=terminal||g.player===1;for(const algorithm of ['minimax','alphabeta'])text+=metrics(G.searchNim({piles:g.piles,player:g.player,algorithm}),algorithm==='minimax'?'現在局面のミニマックス':'現在局面のαβ');}text+='<h3>対局履歴</h3><ol>'+g.history.map(h=>`<li>${h}</li>`).join('')+'</ol>';$(k+'-result').innerHTML=text;}
 function move(k,a){guarded(k,()=>{const g=games[k],next=G.applyMove(g.piles,a);g.history.push(`${g.player===1?'MAX':'MIN'}：${actionText(a)} → (${next.join(',')})`);g.piles=next;g.player*=-1;renderGame(k);});}
 $('play-ai').addEventListener('click',()=>guarded('play',()=>{const g=games.play;if(g.player!==-1||!G.legalMoves(g.piles).length)return;move('play',G.searchNim({piles:g.piles,player:g.player,algorithm:$('play-method').value}).best_action);}));
 for(const k of ['rules','play'])for(const suffix of ['left','right','method'])if($(k+'-'+suffix))$(k+'-'+suffix).addEventListener(suffix==='method'?'change':'input',()=>resetGame(k));
 for(const k of ['minimax','cutoff','ordering'])$(k).querySelectorAll('input,select').forEach(el=>el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>renderFixed(k)));
+$('pruning-prev').addEventListener('click',()=>{step=Math.max(0,step-1);renderPruning();});
 $('pruning-order').addEventListener('change',resetPruning);$('pruning-next').addEventListener('click',()=>{step=Math.min(step+1,pruningRun.trace.length);renderPruning();});$('pruning-all').addEventListener('click',()=>{step=pruningRun.trace.length;renderPruning();});
 function reset(k){$(k).querySelectorAll('input').forEach(e=>e.value=e.defaultValue);$(k).querySelectorAll('select').forEach(e=>{e.selectedIndex=Array.from(e.options).findIndex(o=>o.defaultSelected);if(e.selectedIndex<0)e.selectedIndex=0;});$(k).querySelectorAll('textarea').forEach(e=>e.value='');$(k+'-error').textContent='';if(['rules','play'].includes(k))resetGame(k);else if(k==='pruning')resetPruning();else renderFixed(k);}
 function activate(){const k=location.hash.slice(1),active=ids.includes(k)?k:'rules';for(const id of ids){$(id).hidden=id!==active;$('tab-'+id).setAttribute('aria-selected',String(id===active));$('tab-'+id).tabIndex=id===active?0:-1;}}
 for(const k of ids){$(k+'-reset').addEventListener('click',()=>reset(k));$('tab-'+k).addEventListener('keydown',e=>{let i=ids.indexOf(k);if(e.key==='ArrowRight')i=(i+1)%6;else if(e.key==='ArrowLeft')i=(i+5)%6;else if(e.key==='Home')i=0;else if(e.key==='End')i=5;else return;e.preventDefault();location.hash=ids[i];$('tab-'+ids[i]).focus();});reset(k);}window.addEventListener('hashchange',activate);activate();
 
                                             </script>
-                                        </body>
+                                    <!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+{
+const p=s=>'<p>'+s+'</p',box=xs=>'<div class="ts-flow">'+xs.map(([k,v])=>'<div class="ts-card"><strong>'+k+'</strong>'+v+'</div>').join('<span>→</span>')+'</div>';
+const fixed=()=>G.TREE_BASE.leaves.map((_,i)=>read('leaf-'+i));
+installTeachingSteps([
+{id:'rules',title:'石の配置と手番から、次の局面を作る',steps:()=>{const g=games.rules,m=G.legalMoves(g.piles);return [
+{title:'今の局面',body:box([['左の山',g.piles[0]+'個'],['右の山',g.piles[1]+'個'],['手番',g.player===1?'MAX':'MIN']])+p('山の数だけでなく、どちらの番かも局面の一部です。最後の石を取った側が勝ちます。')},
+{title:'合法手を数える',body:p(m.length?m.map(actionText).join(' ／ '):'合法手なし：終端です。')+p('1回の手では片方の山から1個以上取ります。両方の山から同時には取れません。初期(3,2)なら3＋2＝5手です。')},
+{title:'次の局面',body:m.length?box([['例：選ぶ手',actionText(m[0])],['石の数',G.applyMove(g.piles,m[0]).join(', ')],['次の手番',g.player===1?'MIN':'MAX']])+p('合法手ボタンを押すと、その子の局面へ移ります。説明だけ進めても石は取りません。'):p('手を選べない側が負けです。リセットで(3,2)、MAXの手番に戻ります。')},
+{title:'木として見る',body:p('今の局面を親、合法手を枝、手を適用した局面を子として並べます。先の手も同じように展開するとゲーム木になります。局面の数と合法手の数を混ぜないでください。')}
+];},details:()=>p('同じ(0,0)でも手番側は負けです。利得をMAXの視点で統一するので、MAXが勝つと+1、MINが勝つと−1です。')},
+{id:'minimax',title:'相手が選ぶ小さい値を、先に求める',steps:()=>{const v=fixed(),mins=[0,1,2].map(i=>Math.min(v[2*i],v[2*i+1])),r=G.searchTree({leaves:v});return [
+{title:'葉の値を読む',body:box(['A','B','C'].map((name,i)=>[name+'の子',v.slice(i*2,i*2+2).join(' と ')]))+p('この固定木はニムの木とは別の手計算例です。全ての値はMAXにとっての良さを表します。')},
+{title:'MINは小さい方',body:box(mins.map((v,i)=>[['A','B','C'][i]+'から戻る値',v]))+p('相手MINはMAXの値を小さくする方を選びます。大きい葉があっても、MAXがその葉へ必ず進めるとは限りません。')},
+{title:'MAXはその中の最大',body:p('max('+mins.join(', ')+') = '+r.value+'。根で選ぶ手は '+r.best_action+'。')+p('基準はA:min(3,5)=3、B:min(2,9)=2、C:min(0,4)=0。根は3を選ぶのでAです。9のあるBへは行きません。')},
+{title:'一つの葉を変更',body:p('B1を2から6へ変えると、Bはmin(6,9)=6になり、根でBを選びます。変更が親、その親へどう伝わったか図をたどり、リセットします。')}
+];},details:()=>p('根の値と選ぶ手は別の出力です。同点は探索順で先に見つけた手を保持します。値が同じでも選択手が変わる場合があります。')},
+{id:'cutoff',title:'途中の見積りと、終端の結果を分ける',steps:()=>{const depth=read('cutoff-depth',0,2),h=G.TREE_BASE.heuristics.map((_,i)=>read('heuristic-'+i)),r=G.searchTree({depth,heuristics:h});return [
+{title:'どこまで読むか',body:p('現在の深さ制限は '+depth+'。根は深さ0、A/B/Cは深さ1、葉は深さ2です。深さ0なら合法手を比べる前に根で止まります。')},
+{title:'途中なら評価関数',body:box([['根の見積り',h[0]],['A／B／Cの見積り',h.slice(1).join(' / ')]])+p('終端に届かない場合だけ、ここで指定した見積りを使います。実際の終端利得と同じとは限りません。')},
+{title:'打切りから戻す',body:p('現在の根の値 '+r.value+'、手 '+actionText(r.best_action)+'。終端評価 '+r.terminal_evaluations+' 回、打切り評価 '+r.cutoff_evaluations+' 回。')},
+{title:'最後までと比べる',body:p('基準の深さ1は見積り[1,4,2]からBを選びます。深さ2なら実際のMIN値[3,2,0]からAを選びます。見積りが良い手を保証しない具体例です。')}
+];},details:()=>p('深さ1でAの見積りを1→5にするとAを選びます。しかし終端利得は一つも変更していません。探索の深さと評価関数を一つずつ変更し、影響を分けて確認してください。')},
+{id:'pruning',title:'もう採用されない枝を、評価前に省く',steps:()=>{const trace=pruningRun.trace.slice(0,step),e=trace.at(-1),w=e?trace.filter(x=>x.id===e.id&&'alpha'in x).at(-1):null;return [
+{title:'今どこを探索中か',body:p(e?'実計算の段階 '+step+'／'+pruningRun.trace.length+'、節点 '+e.id+'、操作 '+({enter:'入る',evaluate:'評価する',update:'子から更新',prune:'省略する',return:'親へ返す'}[e.event])+'。':'まだ探索前です。上の「一段階進む」で探索の実履歴を進めます。')+p('この説明の前後移動と、探索の段階移動は別です。木の枠・訪問済み・未探索の表示を確認します。')},
+{title:'分かっている境界',body:p(w?'この節点の直近の境界：α='+w.alpha+'、β='+w.beta+'。':'開始時はα=−∞、β=＋∞で、まだ制約がありません。')+p('αはMAXが既に確保できる下限、βはMINが既に確保できる上限です。途中の値は必ずしもその枝の正確な最終値ではありません。')},
+{title:'省略できる理由',body:p('基準の順序ではAから3を確保します。BのMINで最初の葉2を見ると、Bの最終値は2以下。残りが何でもAの3を超えないので、B2を評価する必要がありません。')+p(e?.skipped?'今省略した枝：'+e.skipped.join(', ')+'。':'現在の実履歴でpruneの段階まで進めて確かめます。')},
+{title:'評価していない値',body:p('B2を省略した時点で「Bは正確に2」と確定したわけではなく、「Bは2以下」が分かっています。未探索の葉を0として計算してはいけません。')+p('最後まで進めた根の値は '+pruningRun.value+'。省略枝は '+(pruningRun.pruned.join(', ')||'なし')+'。順序を変えて比較し、リセットします。')}
+];},details:()=>p('α≥βになったら残りの子を省略できます。基準順序では終端評価6回を4回へ減らし、根の値3と選択Aを保ちます。逆順では省略できる枝が変わります。前の探索段階へ戻っても結果は再学習せず、保存した履歴を見返します。')},
+{id:'ordering',title:'答えと、調べた回数を別々に比べる',steps:()=>{const reverse=$('ordering-order').value==='reverse',a=G.searchTree({reverse}),b=G.searchTree({reverse,algorithm:'alphabeta'});return [
+{title:'読む順番',body:p(reverse?'C→B→A、各MINの子も逆順で読みます。':'A→B→C、各MINの子も通常順で読みます。')+p('葉の利得を変える操作ではありません。調べる順序だけを変えています。')},
+{title:'全て調べた結果',body:box([['ミニマックスの値',a.value],['手',a.best_action],['評価回数',a.evaluations]])},
+{title:'省略した結果',body:box([['αβの値',b.value],['手',b.best_action],['評価回数',b.evaluations]])+p('未探索：'+(b.pruned.join(', ')||'なし')+'。両方式の根値が一致することを確認します。')},
+{title:'順序の効果',body:p('良い境界を早く得られると省略が増えます。根値が同じでも計算回数は変わります。「強くなった」と「少ない計算で同じ答えを得た」を区別します。')}
+];},details:()=>p('同点の場合は先に見つけた手を保持するので、探索順で選択手が変わることはあります。根値の一致と手の同一性を別々に確認してください。')},
+{id:'play',title:'現在の局面から、次の一手を読む',steps:()=>{const g=games.play,r=G.searchNim({piles:g.piles,player:g.player,algorithm:$('play-method').value});return [
+{title:'盤面と手番',body:box([['左／右の石',g.piles.join(' / ')],['現在の手番',g.player===1?'MAX':'MIN']])+p('人はMAX、AIはMINです。石の数を変更した場合は新しい対局になります。')},
+{title:'探索の視点',body:p('現在の根値 '+r.value+'、探索で選ぶ手 '+actionText(r.best_action)+'。値は常にMAXの視点です。MINの番なら小さい方を選びます。')},
+{title:'手を実行',body:p('MAXの番は合法手を選び、MINの番はAIの一手ボタンを押します。手を取った後は手番も交代します。対局履歴と盤面を対応付けましょう。')},
+{title:'終端から振り返る',body:p('石がなくなると、次の手番側は合法手がなく負けます。学習で重みを変えたのではなく、定めた規則と利得で先を探索しています。リセットで最初の対局へ戻ります。')}
+];},details:()=>p('ミニマックスとαβで根値を比較できます。小さな完全情報・決定的ゲームの例であり、将棋や不確実なゲーム全般の性能を示しません。')}
+]);
+}
+
+</script>
+<!-- teaching-steps:end -->
+    </body>
                                     </html>
