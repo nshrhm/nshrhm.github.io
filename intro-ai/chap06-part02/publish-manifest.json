@@ -368,23 +368,23 @@
     },
     {
       "path": "programs/deep_learning2.ipynb",
-      "bytes": 17940,
-      "sha256": "05b5e36df6b19438c97cf79ef9fdce07644098318b48d8a2cf357b33b6614e4b"
+      "bytes": 39564,
+      "sha256": "dc97bdb35554bfbf23ff2612463b1d6195eceb83ffa94fee8e07bbb1a96a19b6"
     },
     {
       "path": "programs/deep_learning2.py",
-      "bytes": 7419,
-      "sha256": "ba227e2a21023b8d119c105a092f85852fbd2ad73a971f1cd42549165b6ef005"
+      "bytes": 14584,
+      "sha256": "1ceb9146b3f7472471d14fc95d0e7941690553e11b2591bbae85e7d9533570c2"
     },
     {
       "path": "programs/deep_learning2.zip",
-      "bytes": 37630,
-      "sha256": "29546395c155be7754eda0dc247bc640631293a5fac32201cfa49df3bcafa782"
+      "bytes": 45600,
+      "sha256": "5996c3f999ff918069153d78a75c691b29c74f5e125f2335113bb4418f231417"
     },
     {
       "path": "programs/guide.html",
-      "bytes": 12525,
-      "sha256": "3e3e5fd3f15d5c91b9e3db2b8f4c49ce32f21e73c9bfcb3de12566212c8b4b56"
+      "bytes": 15119,
+      "sha256": "53a16888291e9ff128db1bd5bbd81c03f53e2bf87afb2a2591786430e9886b2a"
     },
     {
       "path": "programs/requirements.txt",
@@ -650,9 +650,9 @@
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "a3add59c148ddcd7fad6fd0019ed910e87ccb63ef6849eff7297abbeed0321e4",
     "learning-bundle.json": "fd1d5454742d97f5da3d8a2c9be3e413cc060b6aac124122e7029ccbc60d23a9",
-    "../programs/guide-part02.md": "7f6d590a416079826094936e1360e5ca0617194cb2a68a729dee669a65c86636",
-    "../programs/deep_learning2.py": "ba227e2a21023b8d119c105a092f85852fbd2ad73a971f1cd42549165b6ef005",
-    "../programs/deep_learning2.ipynb": "05b5e36df6b19438c97cf79ef9fdce07644098318b48d8a2cf357b33b6614e4b",
+    "../programs/guide-part02.md": "144d66af3eddd23db3305100d2f40b5471d54c4440a693939c697cefc04d9815",
+    "../programs/deep_learning2.py": "1ceb9146b3f7472471d14fc95d0e7941690553e11b2591bbae85e7d9533570c2",
+    "../programs/deep_learning2.ipynb": "dc97bdb35554bfbf23ff2612463b1d6195eceb83ffa94fee8e07bbb1a96a19b6",
     "../programs/requirements.txt": "79b48e7a8fa8706e2d439ba5d16edcf2638a3ad8b53ee04be2c868f521be2dcd",
     "voiceovers/slide_01.mp3": "4f431abf204e29c6ca5ce35d521617f84ae0d06f20677cf874269d3e07a4731e",
     "voiceovers/slide_02.mp3": "92c277d6d207c25a1514a7bc6e22d34c41effedd0603112b73a17147f13c1f08",

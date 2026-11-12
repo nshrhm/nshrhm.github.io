@@ -23,6 +23,47 @@ li { margin: .35em 0; }
 @media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
 </style></head>
 <body><main><h1>第10回 プログラムの保存・学び方</h1>
+<h2 id="入力とコードを一段ずつ追うプログラム改訂版">入力とコードを一段ずつ追う（プログラム改訂版）</h2>
+<p>Notebookの先頭に、入力→途中計算→結果→一条件の変更を追う節を追加しました。初回は既存venvのカーネルで再起動→全セル実行。その後、一節ずつ予想してからShift+Enterで実行します。関数の定義セルは計算方法を登録し、次の短い実行セルが値を表示します。表示専用の補助コードは変更不要です。</p>
+<p>成功の目印：研究＋生活、がの次の語の確率の和1、がのIDF=0、音のみなら雨・言語を加えると飴。</p>
+<h3 id="切り分け候補と合計コスト">切り分け候補と合計コスト</h3>
+<p>予想：活のコストを下げると経路は変わるか。</p>
+<p>操作：example_costを5から0へ変更し、同じセルを実行します。</p>
+<p>結果確認：研究＋生活から研究生＋活へ変わる。</p>
+<p>理由を説明：単語の区切りを何で決めたか。</p>
+<p>復帰：example_cost=5に戻して再実行します。</p>
+<h3 id="回数を数えて確率にする">回数を数えて確率にする</h3>
+<p>予想：未観測の語へどう値を割り当てるか。</p>
+<p>操作：example_alphaを1から0へ変更し、同じセルを実行します。</p>
+<p>結果確認：α=0では未観測の語が0、確率の和は1。</p>
+<p>理由を説明：回数と分母の対応。</p>
+<p>復帰：example_alpha=1に戻して再実行します。</p>
+<h3 id="文書の特徴量を作る">文書の特徴量を作る</h3>
+<p>予想：頻出語は必ず強い特徴か。</p>
+<p>操作：example_documentを0から1へ変更し、同じセルを実行します。</p>
+<p>結果確認：がのDF=4、IDF=0。</p>
+<p>理由を説明：TFとIDFの分母の違い。</p>
+<p>復帰：example_document=0に戻して再実行します。</p>
+<h3 id="ベクトルの類似度を読む">ベクトルの類似度を読む</h3>
+<p>予想：窓幅で何を数える対象が変わるか。</p>
+<p>操作：example_windowを1から2へ変更し、同じセルを実行します。</p>
+<p>結果確認：共起行列と内積・長さを確認。</p>
+<p>理由を説明：共起が似ることの限界。</p>
+<p>復帰：example_window=1に戻して再実行します。</p>
+<h3 id="ベクトルを一回更新する">ベクトルを一回更新する</h3>
+<p>予想：更新しない場合は何が残るか。</p>
+<p>操作：example_rateを0.1から0へ変更し、同じセルを実行します。</p>
+<p>結果確認：学習率0では入力側・出力側とも不変。</p>
+<p>理由を説明：予測出力と正解との差がどこへ使われたか。</p>
+<p>復帰：example_rate=0.1に戻して再実行します。</p>
+<h3 id="音と言語の候補スコア">音と言語の候補スコア</h3>
+<p>予想：文脈を外すと何を選ぶか。</p>
+<p>操作：example_weightを1から0へ変更し、同じセルを実行します。</p>
+<p>結果確認：λ=1は飴、λ=0は雨。</p>
+<p>理由を説明：実際の音声認識精度の評価ではない理由。</p>
+<p>復帰：example_weight=1に戻して再実行します。</p>
+<p>Python版も<code>python natural_language_processing.py --explain all</code>で同じ入力・途中計算・結果を表示します。テーマごとの指定は<code>--explain morph</code>、<code>--explain bigram</code>、<code>--explain tfidf</code>、<code>--explain vectors</code>、<code>--explain update</code>、<code>--explain speech</code>です。既存の基準実行とJSON出力は維持しています。</p>
+<p>図表は実際の計算から得た値を表示し、小数の丸めは表示に限ります。見返すだけで元データを書き換えません。変更したセルを初期値へ戻して再実行し、実行順が分からなくなったらカーネルを再起動して全セル実行します。同梱Pythonをimportしない単独Notebookです。依存の初回導入を除き計算中の通信は不要です。</p>
 <p>目標は、途中の数値から処理の結果を説明すること。計算本体はPython標準ライブラリだけで動きます。解析器、学習済みモデル、音声録音、APIキーは使いません。</p>
 <p><a href="natural_language_processing.py" download>Pythonを保存</a> ／ <a href="natural_language_processing.ipynb" download>Notebookを保存</a> ／ <a href="natural_language_processing.zip" download>一式ZIPを保存</a></p>
 <p><a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a></p>

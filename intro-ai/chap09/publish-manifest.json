@@ -368,23 +368,23 @@
     },
     {
       "path": "programs/guide.html",
-      "bytes": 14934,
-      "sha256": "cbd92a17d5eb1836e38286b5647eaf2a5c9d96b411edabbb78b629f2309bafe3"
+      "bytes": 18517,
+      "sha256": "10ab0fa7cd6a8be62da4cd0c399629f634520e895012f038d070638cb2e94776"
     },
     {
       "path": "programs/image_recognition.ipynb",
-      "bytes": 14372,
-      "sha256": "9a3aefc8fd4aeafe85ead016584e3d286e5bcab17ce695001d3c41f801c03243"
+      "bytes": 39075,
+      "sha256": "cde3981c1fbe1e0dee896e3fc1801ebfc27b32cc73b5672be7a1affcee1aea18"
     },
     {
       "path": "programs/image_recognition.py",
-      "bytes": 5769,
-      "sha256": "82f219224316eb70e5c973d5d598a83c5e0f5e98dc0b0b4cd213fa38f860ff89"
+      "bytes": 13920,
+      "sha256": "a8e1cdbc78426865745f273099c2b9bb513d384a1346b9767edc95628088d430"
     },
     {
       "path": "programs/image_recognition.zip",
-      "bytes": 35340,
-      "sha256": "24f62cec86493a4cacf116937898bf9eefeb6a7cd73a1a80cecfb68aa9c7cce8"
+      "bytes": 44643,
+      "sha256": "4f6d4a21efb6db3357626b7fd417c6aab531283cd08c95b6507453c68d971c7f"
     },
     {
       "path": "programs/requirements.txt",
@@ -640,9 +640,9 @@
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "0f9dc4e88c833bd98231a0e6427a706742bfe57c3a16a9198081cb9d8393028e",
     "learning-bundle.json": "ecb57b79943b8a771d3577d9b99ed72e1cf9ce4315c16a2d0d49adb32f58a49f",
-    "programs/guide.md": "faeb6a6ae77f07c6c799c373d75a89a4fed792fa3afa1b95aba0ccbbb8d86255",
-    "programs/image_recognition.py": "82f219224316eb70e5c973d5d598a83c5e0f5e98dc0b0b4cd213fa38f860ff89",
-    "programs/image_recognition.ipynb": "9a3aefc8fd4aeafe85ead016584e3d286e5bcab17ce695001d3c41f801c03243",
+    "programs/guide.md": "0d6a6c49e04e7074f4b4378b3229f4f3bd75e1cca38e6a691fe1425b3e02553c",
+    "programs/image_recognition.py": "a8e1cdbc78426865745f273099c2b9bb513d384a1346b9767edc95628088d430",
+    "programs/image_recognition.ipynb": "cde3981c1fbe1e0dee896e3fc1801ebfc27b32cc73b5672be7a1affcee1aea18",
     "programs/requirements.txt": "6f3f67f2166b75f550260357092914162d463a9b8dc688743be7814ad51d3791",
     "voiceovers/slide_01.mp3": "f37c0fcade0dff04b0682c8cb3b3fd501956208fd84a15476baf6109415dfead",
     "voiceovers/slide_02.mp3": "2f8513ff65e5b17c82e77b12d9317242987a8600ff8e1d4bd40e747fd2eb6402",

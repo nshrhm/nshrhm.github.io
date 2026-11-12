@@ -368,23 +368,23 @@
     },
     {
       "path": "programs/game_search.ipynb",
-      "bytes": 19740,
-      "sha256": "8ca24431929aa05b41c5f9ef9d9dc33a033a33afadea2851027fe98c5796342d"
+      "bytes": 39857,
+      "sha256": "52bf57fc7859c3c8afc5a2457e3a645ced3da8c7809a0da550121eb269650f31"
     },
     {
       "path": "programs/game_search.py",
-      "bytes": 8811,
-      "sha256": "7af45ed40a023784a03bb8c35cb8fd30ce9f88c2d70ff3643426498d462d674a"
+      "bytes": 14881,
+      "sha256": "7a00118ecb9818e815ad3b41cfe0501185cc39046a274f11e42127a60c6535bf"
     },
     {
       "path": "programs/game_search.zip",
-      "bytes": 37619,
-      "sha256": "2e23ed2a7132e190fe681db9cde59c40df4a9f2919ab190918ab0ef845725a36"
+      "bytes": 45399,
+      "sha256": "efe5017b983fa6a0bd769f7cb908d8149e3781b79c8c14819ffd153567be5df3"
     },
     {
       "path": "programs/guide.html",
-      "bytes": 14145,
-      "sha256": "4f336de8fd8360bbe952dde5ce04cbc48ae8b834241ffac048195341c26db085"
+      "bytes": 17220,
+      "sha256": "77808ec98fde486067e81811c5dffe5c648cc196b0398215e8e21abc866cf251"
     },
     {
       "path": "programs/requirements.txt",
@@ -635,9 +635,9 @@
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "9d8f0d70f18c6fad76391def4ab55f8f80c6a85d85d601956797b3b5d5c01b12",
     "learning-bundle.json": "560f0e45e3ad10bca6b8d30da10b088bb8a288d9885886ef09bff5dfd7f26f41",
-    "programs/guide.md": "894f3de0d5efa26cc251bf3a31debaa4546adf93f2fbfc3d2b1b2c0bad10125b",
-    "programs/game_search.py": "7af45ed40a023784a03bb8c35cb8fd30ce9f88c2d70ff3643426498d462d674a",
-    "programs/game_search.ipynb": "8ca24431929aa05b41c5f9ef9d9dc33a033a33afadea2851027fe98c5796342d",
+    "programs/guide.md": "a3d8dba48ef03a4041a89759dd195fd7c3727d53c0f9c3f87a7a9689ecda11d1",
+    "programs/game_search.py": "7a00118ecb9818e815ad3b41cfe0501185cc39046a274f11e42127a60c6535bf",
+    "programs/game_search.ipynb": "52bf57fc7859c3c8afc5a2457e3a645ced3da8c7809a0da550121eb269650f31",
     "programs/requirements.txt": "b47be6c6091135467c100424f49bc4c8a7850ae0067f863e55af22ace66f0935",
     "voiceovers/slide_01.mp3": "5f6f047197aa96b11007695aa8f8c3b778a21793c63c57d5a78700930fb123da",
     "voiceovers/slide_02.mp3": "3ddac268a809943af8ef84313b4c4dabb6395edb0d724927b9c2f12a5f530db5",

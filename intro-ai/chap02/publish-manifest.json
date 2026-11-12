@@ -368,23 +368,23 @@
     },
     {
       "path": "programs/doctor.ipynb",
-      "bytes": 13823,
-      "sha256": "b2dfb074f33f056a3c6ce14afa0e76d2ea89cd25f5ece58fe6e6529da56d1058"
+      "bytes": 27252,
+      "sha256": "caa4acc4ff5112aeea946fb8ce2e29a4d9d25dcfd7a45712ccd3b913279cf7f9"
     },
     {
       "path": "programs/doctor.py",
-      "bytes": 3764,
-      "sha256": "217c1937d76f1b02b22fdf505a2983b7bedf5fca9b10ab99847181c177876bc4"
+      "bytes": 8223,
+      "sha256": "9ab3ef39621fb19df60ffa808adef78669a152cf70010e28e9f73d8d97c7c09c"
     },
     {
       "path": "programs/doctor.zip",
-      "bytes": 32321,
-      "sha256": "a6bea833bd5aa94c7c8c86d250c586a279ad2f67d3416be5d2dcdf89272a4a2f"
+      "bytes": 38407,
+      "sha256": "1163aba045b9be3b004bdc0b98da27131644cbbc0b3c374a58d05f8f323daa34"
     },
     {
       "path": "programs/guide.html",
-      "bytes": 5750,
-      "sha256": "3c3f9233bb09ce186580bd922a68fbf7fc19cee26999b5b26fc1398feb2eb81a"
+      "bytes": 8510,
+      "sha256": "813c709ccd546db6d88fb7ab102d11b8452286078709f95066c0c98f1d8b4605"
     },
     {
       "path": "programs/requirements.txt",
@@ -630,9 +630,9 @@
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "bbed13f8e0d3e32e40c6c46ab73189c35d62418c4f52f7a2f98ae4cf900537a6",
     "learning-bundle.json": "b8a09742daf726f225d596910bc16d8b183009651595e38b4f052bcbc62359d1",
-    "programs/guide.md": "9fa8e2cb30be3c6c0dad1dd71bc12540e331c889b1c99b315623594b105ac6c8",
-    "programs/doctor.py": "217c1937d76f1b02b22fdf505a2983b7bedf5fca9b10ab99847181c177876bc4",
-    "programs/doctor.ipynb": "b2dfb074f33f056a3c6ce14afa0e76d2ea89cd25f5ece58fe6e6529da56d1058",
+    "programs/guide.md": "c4f3aed79376ec0a36a8bab8f9b637a9ab5294fb0f3f1f29984470c1aeefef71",
+    "programs/doctor.py": "9ab3ef39621fb19df60ffa808adef78669a152cf70010e28e9f73d8d97c7c09c",
+    "programs/doctor.ipynb": "caa4acc4ff5112aeea946fb8ce2e29a4d9d25dcfd7a45712ccd3b913279cf7f9",
     "programs/requirements.txt": "69d8a5bda766afb7eea53e40f3fec22ee72a4af452e3875f8537322d34a2b8eb",
     "voiceovers/slide_01.mp3": "e87859c058fdc811db693ce5a40a7d32fd116bf4b6a29b741c63b7c5a884958c",
     "voiceovers/slide_02.mp3": "6940cc644a55c6419d76b5bda215b735ece75319061c5ba7631afb4bc02ad73d",

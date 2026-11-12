@@ -23,6 +23,35 @@ li { margin: .35em 0; }
 @media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
 </style></head>
 <body><main><h1>第3回 分類と汎化：保存と実行</h1>
+<h2 id="入力とコードを一段ずつ追うプログラム改訂版">入力とコードを一段ずつ追う（プログラム改訂版）</h2>
+<p>Notebookの先頭に、入力→途中計算→結果→一条件の変更を追う節を追加しました。初回は既存venvのカーネルで再起動→全セル実行。その後、一節ずつ予想してからShift+Enterで実行します。関数の定義セルは計算方法を登録し、次の短い実行セルが値を表示します。表示専用の補助コードは変更不要です。</p>
+<p>成功の目印：しきい値モデルは学習7/8・検証3/4、記憶モデルは学習8/8・検証2/4。検証でしきい値モデルを選ぶ。</p>
+<h3 id="事例の役割">事例の役割</h3>
+<p>予想：どの事例を作成に使うか。</p>
+<p>操作：example_partを’training’から’test’へ変更し、同じセルを実行します。</p>
+<p>結果確認：学習8・検証4・テスト4。</p>
+<p>理由を説明：評価を選択に使わない理由。</p>
+<p>復帰：example_part=’training’に戻して再実行します。</p>
+<h3 id="学習中の候補比較">学習中の候補比較</h3>
+<p>予想：どこに境界を置くか。</p>
+<p>操作：example_labelを1から0へ変更し、同じセルを実行します。</p>
+<p>結果確認：基準はしきい値25・学習誤り1。</p>
+<p>理由を説明：同点時の規約。</p>
+<p>復帰：example_label=1に戻して再実行します。</p>
+<h3 id="各事例の予測">各事例の予測</h3>
+<p>予想：学習で全問正解なら十分か。</p>
+<p>操作：example_modelを’threshold’から’memory’へ変更し、同じセルを実行します。</p>
+<p>結果確認：検証では記憶モデル2/4。</p>
+<p>理由を説明：予測の入力に正解を含めない理由。</p>
+<p>復帰：example_model=’threshold’に戻して再実行します。</p>
+<h3 id="選択と未知評価">選択と未知評価</h3>
+<p>予想：選択に使うのはどの区分か。</p>
+<p>操作：example_validation_labelを0から1へ変更し、同じセルを実行します。</p>
+<p>結果確認：検証を変えて比較し、テストは固定。</p>
+<p>理由を説明：検証とテストの違い。</p>
+<p>復帰：example_validation_label=0に戻して再実行します。</p>
+<p>Python版も<code>python generalization.py --explain all</code>で同じ入力・途中計算・結果を表示します。テーマごとの指定は<code>--explain splits</code>、<code>--explain threshold</code>、<code>--explain predictions</code>、<code>--explain selection</code>です。既存の基準実行とJSON出力は維持しています。</p>
+<p>図表は実際の計算から得た値を表示し、小数の丸めは表示に限ります。見返すだけで元データを書き換えません。変更したセルを初期値へ戻して再実行し、実行順が分からなくなったらカーネルを再起動して全セル実行します。同梱Pythonをimportしない単独Notebookです。依存の初回導入を除き計算中の通信は不要です。</p>
 <p><a href="generalization.py">Python</a>・<a href="generalization.ipynb">Notebook</a>を同じフォルダーへ保存します。入力は架空の固定データです。学習8件、検証4件、テスト4件の役割を変えずに実行しましょう。</p>
 <h2 id="開始と成功の目印">開始と成功の目印</h2>
 <p>授業のvenvを有効にして <code>python generalization.py --demo</code> を実行します。Python 3.10以降の標準ライブラリで動きます。既存のuv環境なら <code>uv run python generalization.py --demo</code> でも実行できます。</p>

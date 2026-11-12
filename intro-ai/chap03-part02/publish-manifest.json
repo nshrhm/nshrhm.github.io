@@ -368,23 +368,23 @@
     },
     {
       "path": "programs/guide.html",
-      "bytes": 4275,
-      "sha256": "48813bf1afb3baa790ff03c3b332c27d80ed8742749026c74ad7ae15026362a3"
+      "bytes": 7335,
+      "sha256": "ca327bb3b93015f133f26a9dba89d1ac797a1ec231b45c04b53f5d4ea533eec2"
     },
     {
       "path": "programs/neighbors_and_trees.ipynb",
-      "bytes": 14226,
-      "sha256": "a5bd7a6f91a319405fcb6f6537254c1c5fc18f5a01b5ef018a580bd7e2ea7c3c"
+      "bytes": 34601,
+      "sha256": "71342914211762a3490aaadb1c751cd194bf9af18eea4a4736f67633f57a4edf"
     },
     {
       "path": "programs/neighbors_and_trees.py",
-      "bytes": 8370,
-      "sha256": "14758ad333e246296a0340b8f2363ef93e66b12e5bb69602bc6b5cb1080f7c27"
+      "bytes": 14096,
+      "sha256": "3cb95681942dc3bbc37fcc69de0ef3bc4911750391634ef563e67e5dbec8fea2"
     },
     {
       "path": "programs/neighbors_and_trees.zip",
-      "bytes": 33718,
-      "sha256": "a290afdc6b8d16441803a52168825d950732f62b2c43f0b116c0d03d78cfc190"
+      "bytes": 41324,
+      "sha256": "51f7d4468dcc86c4988dcc8965ba3ed375c01b64a152189aab229f90dfbab57d"
     },
     {
       "path": "programs/requirements.txt",
@@ -645,9 +645,9 @@
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "abf4befc3d820325fbc74ccbe565a44598fc66207331babf71a53d42b80acf0c",
     "learning-bundle.json": "1c8508a459c78eae2c62ab862d92a9601b378db84c5a86a1a0b589706e1a6ebc",
-    "../programs/guide-part02.md": "19cc553bae4d39c49b15b65d4f610d6b061479a1cae8192ec878aad3bf4c2238",
-    "../programs/neighbors_and_trees.py": "14758ad333e246296a0340b8f2363ef93e66b12e5bb69602bc6b5cb1080f7c27",
-    "../programs/neighbors_and_trees.ipynb": "a5bd7a6f91a319405fcb6f6537254c1c5fc18f5a01b5ef018a580bd7e2ea7c3c",
+    "../programs/guide-part02.md": "9b8e6e8838a4daccf6abb6688870f3757d7a4f86e68b7004d8a46460cc8426e2",
+    "../programs/neighbors_and_trees.py": "3cb95681942dc3bbc37fcc69de0ef3bc4911750391634ef563e67e5dbec8fea2",
+    "../programs/neighbors_and_trees.ipynb": "71342914211762a3490aaadb1c751cd194bf9af18eea4a4736f67633f57a4edf",
     "../programs/requirements.txt": "1864b7c73415c218c529bf6713b4eff098183e4d0ca8fccff09b91063573f5b6",
     "voiceovers/slide_01.mp3": "d91f14c8bf59ccb6605d61ac5a5b3f2e378aaeded982d6de7d37a53f696b7ee5",
     "voiceovers/slide_02.mp3": "b07c92c54e261cdd941fa32b73f4c996a2507ba8c02a5cf1c3ffb9e271531479",
