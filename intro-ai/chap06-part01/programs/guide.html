@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="第7回 CNN：プログラムの保存・実行・学び方">
-<title>第7回 CNN：プログラムの保存・実行・学び方</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+<meta name="description" content="第7回 CNN：短いコードから途中の値を読む">
+<title>第7回 CNN：短いコードから途中の値を読む</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
 * { box-sizing: border-box; }
 body { margin: 0; font-size: 18px; line-height: 1.85; }
 main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
@@ -22,79 +22,29 @@ li { margin: .35em 0; }
 @media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
 @media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
 </style></head>
-<body><main><h1>第7回 CNN：プログラムの保存・実行・学び方</h1>
+<body><main><h1>第7回 CNN：短いコードから途中の値を読む</h1>
 <p>
-<a href="../index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a>
+<a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a>
 </p>
-<h2 id="何を学ぶか">何を学ぶか</h2>
-<p>4×4の人工画像から、畳み込み→ReLU→プーリング→分類までの値を追います。続いて、小さなCNNの学習前後を比べます。問いは「学習用の画像で成功したら、別の位置の線でも成功するか」です。GPU、外部画像、PyTorchは使いません。Python版の計算には標準ライブラリだけを使います。</p>
-<h2 id="保存して開始する">保存して開始する</h2>
+<h2 id="この教材でできるようになること">この教材でできるようになること</h2>
+<p>4×4画像の「どの値を使い、何を掛け、どこへ結果を置いたか」をコードと図で説明します。その後、分類と小さな学習を追い、学習用での成功と確認用の失敗を区別します。前提はPythonのリスト、添字、for文、関数です。人工画像8枚だけを使い、外部画像・通信・GPU・PyTorchは使いません。</p>
+<p>このNotebookは、第07回のスライド・操作教材と同じ例を使う段階説明版です。図とコードを並べて確認できます。</p>
+<h2 id="保存と最初の実行">保存と最初の実行</h2>
 <p>
-<a href="cnn_basics.ipynb" download>Notebookを保存</a> ／ <a href="cnn_basics.py" download>Python版を保存</a> ／ <a href="requirements.txt" download>Notebook用依存一覧を保存</a> ／ <a href="cnn_basics.zip" download>一式ZIPを保存</a>
+<a href="cnn_basics.ipynb" download>Notebookを保存</a> ／ <a href="cnn_basics.py" download>Pythonを保存</a> ／ <a href="requirements.txt" download>Notebook用依存一覧</a> ／ <a href="cnn_basics.zip" download>一式ZIPを保存</a>
 </p>
 <ol type="1">
-<li>ZIPを展開するか、Notebookを作業フォルダーに保存します。</li>
-<li>VS CodeでNotebookを開きます。Python・Jupyter拡張機能を使用します。</li>
-<li>右上のカーネル選択から、これまで使っているvenvのPythonを選びます。制作用Python 3.14に合わせる必要はありません。教材コードの対象はPython 3.10以降です。</li>
-<li>カーネルを再起動し、「すべて実行」を選びます。初回はコードを変更しません。</li>
-<li>「基準結果」の畳み込み1行目 <code>[-2,2,0]</code> と損失約 <code>0.130153</code> を確認します。</li>
+<li>このページのZIPを保存・展開します。元のファイルを残し、作業するNotebookは別名でも保存します。</li>
+<li>VS Codeで展開先を開き、既存の授業用venvを有効にします。授業のWSL環境なら<code>venvc</code>でclass環境を有効にし、<code>which python</code>を確認します。配布環境の想定は<code>/home/datasci/.venvs/class/bin/python</code>です。自分の端末の実際の設定と照合してください。</li>
+<li>Notebook右上で同じvenvのカーネルを選びます。教材コードはPython 3.10以降を対象とし、制作用Python 3.14への変更は不要です。</li>
+<li>初回はコードを変えず、カーネルを再起動して「すべて実行」。最初の出力で<code>sys.executable</code>とバージョンを確認します。</li>
+<li>学習セルが実行中の間は完了を待ちます。最後までエラーなく進み、畳み込み1行目<code>[-2,2,0]</code>、学習後平均損失約<code>0.130153</code>、学習用4/4・確認用2/4が見えれば開始確認は成功です。</li>
 </ol>
-<p>NotebookはPythonファイルをimportしないので、Notebook一つでも実行できます。実行前に必要な環境を整えれば、計算中の通信は不要です。</p>
-<h2 id="カーネルが見つからないとき">カーネルが見つからないとき</h2>
-<p>既存venvを有効化したターミナルで <code>python --version</code> を確認します。Notebook用パッケージがなければ、そのvenv内で次を実行します。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div>
-<p>その後、VS CodeでPython環境とNotebookカーネルを選び直します。環境がない場合は作業フォルダーで <code>python -m venv .venv</code> を実行し、Windowsなら <code>.venv\Scripts\activate</code>、macOS/Linuxなら <code>source .venv/bin/activate</code> で有効化します。システム全体へインストールする必要はありません。</p>
-<h2 id="出力と概念の対応">出力と概念の対応</h2>
-<table>
-<thead>
-<tr>
-<th>出力</th>
-<th>読み方・基準結果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>convolution</td>
-<td>3×3の積和。各行[-2,2,0]</td>
-</tr>
-<tr>
-<td>relu</td>
-<td>負の値を0へ。各行[0,2,0]</td>
-</tr>
-<tr>
-<td>stride2</td>
-<td>移動幅2。2×2で各行[-2,0]</td>
-</tr>
-<tr>
-<td>max_pool / mean_pool</td>
-<td>同じ2×2領域の最大2／平均1</td>
-</tr>
-<tr>
-<td>loss_before / loss_after</td>
-<td>学習用平均損失：約0.765126→0.130153</td>
-</tr>
-<tr>
-<td>train_before / train_after</td>
-<td>学習用予測：[1,1,1,0]→[0,0,1,1]</td>
-</tr>
-<tr>
-<td>heldout_after</td>
-<td>確認用予測：[1,1,1,1]。端の縦線を誤分類</td>
-</tr>
-</tbody>
-</table>
-<p>ラベル0は縦線、1は横線。並びは縦の2位置、横の2位置です。正解は両集合とも <code>[0,0,1,1]</code>。学習用は位置1・2、確認用は位置0・3で、位置は0始まりです。確認用画像は重み更新に使いません。</p>
-<p>学習は2×2フィルター2枚とバイアス、全結合層を合わせた28パラメーターです。ReLUの後に2×2・移動幅1の最大プーリングを適用し、8値から2スコアを作ります。softmaxは最大スコアを引いて計算し、同じ値ならラベル0を選びます。</p>
-<h2 id="操作教材の段階と結び付ける">操作教材の段階と結び付ける</h2>
-<ul>
-<li><strong>出力サイズ（17〜21枚目）：</strong> 開始位置を横・縦に数えてから <code>stride2</code> を読みます。余白0・移動幅2なら開始位置は0と2で2×2です。</li>
-<li><strong>活性化と集約（22〜27枚目）：</strong> <code>convolution</code> と <code>relu</code> の同じマスを比較。次に窓内4値から <code>max_pool</code> と <code>mean_pool</code> を計算します。</li>
-<li><strong>分類（28〜33枚目）：</strong> 初期重みの2枚のマップを別々にReLU・集約し、左上→右上→左下→右下の順でa1〜a4、続いてb1〜b4。8値にクラス別の重みとバイアスを適用して2スコアを作ります。</li>
-<li><strong>学習（34〜41枚目）：</strong> 操作教材の0・1・10・50・100回は実際の更新から保存した状態です。Notebookは同じ条件の基準結果・前後比較を実行します。平均損失と正解数、学習用と確認用を分けて読みます。</li>
-</ul>
-<p>「積と和」の手作り重みと、分類・学習の固定初期重みは別です。窓の移動では重みを変えず、学習では重みを変えます。画面の丸め表示で再計算すると末尾に差が出ますが、計算は内部精度を維持します。</p>
-<h2 id="一つ変えて比べる">一つ変えて比べる</h2>
-<p>基準データを直接上書きせず、各実験セルに用意したコピーを使います。実行前の予想と、実行後の説明を一組にします。</p>
+<p>Notebookは同梱Pythonをimportせず、一つのファイルで実行できます。標準ライブラリで計算し、図表にはNotebook環境に含まれるIPythonの表示機能を使います。図のための追加ライブラリやネット接続は不要です。</p>
+<p>カーネル用依存がない場合だけ、既存venv内で<code>python -m pip install -r requirements.txt</code>を実行します。初回取得には通信が必要です。インストール先とNotebookカーネルが同じか確認し、システム全体へは入れません。</p>
+<h2 id="一段ずつ読む方法">一段ずつ読む方法</h2>
+<p>全セル実行の確認後、先頭から一節ずつ読み直します。セル左の▶、またはShift+Enterで実行します。関数の定義セルは「計算方法に名前を付ける」段階で、値が表示されなくても正常です。その次の短い実行セルが入力を渡し、計算して表示します。</p>
+<p>冒頭の「図表を表示する準備」は変更しません。表示用補助関数には折り畳み指定がありますが、表示環境によって見え方は異なります。HTML/SVGの書き方を学ぶ必要はありません。図の表題、行・列、太枠と数値を読みます。表示は丸めますが内部計算は丸めません。</p>
 <table>
 <colgroup>
 <col style="width: 25%" />
@@ -104,57 +54,140 @@ li { margin: .35em 0; }
 </colgroup>
 <thead>
 <tr>
-<th>セル</th>
-<th>変えるもの</th>
-<th>期待結果</th>
-<th>説明する問い</th>
+<th>Notebookの節</th>
+<th>予想してから操作</th>
+<th>結果の確認と説明</th>
+<th>戻し方</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>実験A</td>
-<td>signを1と-1で比較</td>
-<td>[-2,2,0]が[2,-2,0]に</td>
-<td>ReLUの後は何が残る？</td>
+<td>1 入力画像</td>
+<td><code>image[0][1]</code>は何か</td>
+<td>行0・列1の値は1。添字は0始まり</td>
+<td>実行セルでIMAGEをコピーし直す</td>
 </tr>
 <tr>
-<td>実験B</td>
-<td>trial_strideを1と2で比較</td>
-<td>3×3から2×2に</td>
-<td>どの位置を計算しなくなった？</td>
+<td>2 窓と積和</td>
+<td><code>window_position=0</code>から1へ</td>
+<td>4組の積の合計が−2→＋2。重みは同じで参照範囲が変わる</td>
+<td>0へ戻して実行</td>
 </tr>
 <tr>
-<td>実験C</td>
-<td>trial_modeをmaxとmeanで比較</td>
-<td>2から1に</td>
-<td>強い応答と領域平均はどう違う？</td>
+<td>3 出力サイズ</td>
+<td><code>shape_stride</code>を1/2、<code>shape_padding</code>を0/1へ</td>
+<td>開始位置の数が出力の縦横の個数。4条件で3・5・2・3</td>
+<td>stride=1、padding=0、position=0</td>
 </tr>
 <tr>
-<td>実験D</td>
-<td>trial_rateを0と0.1で比較</td>
-<td>0なら重み・損失は不変</td>
-<td>学習用の成功だけで十分？</td>
+<td>4 ReLUと集約</td>
+<td><code>line_position=1</code>、<code>pool_mode='max'</code>を<code>'mean'</code>へ</td>
+<td>ReLU後[0,2,0]。窓内[0,2,0,2]の最大2・平均1</td>
+<td>line=1、mode=‘max’、position=0</td>
+</tr>
+<tr>
+<td>5 分類</td>
+<td><code>sample_index</code>を0〜7へ</td>
+<td>2枚の2×2をa1〜a4、b1〜b4へ並べる。予測と正解を別に読む</td>
+<td>sample_index=1</td>
+</tr>
+<tr>
+<td>6a 1重みの更新</td>
+<td>学習率0ならどうなるか</td>
+<td>±1e-6で損失を求め、重み−学習率×勾配を確認</td>
+<td>weight_index=0、learning_rate=0.1</td>
+</tr>
+<tr>
+<td>6b 100回学習</td>
+<td>0と0.1で損失はどう変わるか</td>
+<td>同じ初期値から各100更新。途中5時点を実計算から保存</td>
+<td>セル再実行で初期値から再計算</td>
+</tr>
+<tr>
+<td>6c 途中を見返す</td>
+<td><code>checkpoint</code>を0/1/10/50/100へ</td>
+<td>図の現在点・重み・画像別予測が対応。表示だけで再学習しない</td>
+<td>checkpoint=0。selected_rateは0/0.1</td>
+</tr>
+<tr>
+<td>7 基準結果</td>
+<td>図で読んだ結果がJSONのどこにあるか</td>
+<td>既存基準をbaseline_resultへ保存</td>
+<td>セル再実行。実験で上書きしない</td>
 </tr>
 </tbody>
 </table>
-<p>実験Dの <code>train</code> は呼ぶたびに初期値をコピーします。学習済みの重みを続けて更新する比較ではありません。「学習前後」のセルでは初期フィルターと更新後フィルター、画像ごとの正解・予測も見られます。</p>
+<p>出力サイズの条件を変えたら<code>shape_position=0</code>へ戻してください。余白1では元画像は拡張後の行1・列1から始まります。表の「開始」は拡張後の座標、「元画像の位置」は余白を引いた座標です。負の座標はPythonの負の添字で画素を読む意味ではなく、元画像の外側を表します。追加した0は破線と「追加0」の表示で元画像の0と区別します。</p>
+<p>公式<code>(4 + 2*p - 2) // s + 1</code>は、余白込みの長さから窓幅を引き、移動幅で割り、端数を切り捨て、最初の位置0を＋1で数えています。まず図の開始位置を数えてから公式へ進みます。</p>
+<h2 id="分類と学習を混同しない">分類と学習を混同しない</h2>
+<p>「窓と積和」は手作りフィルター<code>[[1,-1],[1,-1]]</code>、バイアス0です。「分類」は固定初期重み2枚とバイアスを使います。学習を実行しても、分類セルは毎回<code>INITIAL_WEIGHTS</code>を使うので初期状態のままです。</p>
+<p>2×2の並べ方は左上→右上→左下→右下。まずa、次にbです。クラスごとの8重みとの積を足し、最後にバイアスを足してスコアにします。softmaxの2値は和が1ですが、予測の正しさを保証しません。正解クラスへの出力と正誤も別々に見ます。</p>
+<p>学習用は中央の位置1・2にある縦線2枚・横線2枚。確認用は端の位置0・3にある4枚です。確認用を重みの更新には使いません。学習用の平均損失は4画像の<code>−log(正解クラスへの出力)</code>の平均で、正解数ではありません。</p>
+<p>学習率0.1・100回で平均損失は約0.765126→0.130153。学習用予測は<code>[1,1,1,0]</code>→<code>[0,0,1,1]</code>、確認用は<code>[1,1,1,1]</code>です。0は縦線、1は横線。確認用の端の縦線2枚が横線と誤分類されます。この小例の成功率を実写真の性能として扱いません。</p>
+<h2 id="一つ変える実験ad">一つ変える実験A〜D</h2>
+<p>各セルは基準のコピーから開始します。変更前の予想と、変更後の「どの値が、なぜ変わったか」を一組で書きます。</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>実験</th>
+<th>変更</th>
+<th>期待結果</th>
+<th>復帰</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td><code>sign=-1</code></td>
+<td>積和の1行目[2,−2,0]。ReLU後に残る位置を説明</td>
+<td>sign=1</td>
+</tr>
+<tr>
+<td>B</td>
+<td><code>trial_stride=2</code></td>
+<td>2×2、各行[−2,0]。開始位置1を使わなくなる</td>
+<td>trial_stride=1</td>
+</tr>
+<tr>
+<td>C</td>
+<td><code>trial_mode='mean'</code></td>
+<td>各出力1。最大2との情報の違いを説明</td>
+<td>‘max’</td>
+</tr>
+<tr>
+<td>D</td>
+<td><code>trial_rate</code>を0と0.1で比較</td>
+<td>0では重み・損失不変。0.1で学習しても確認用の誤りが残る</td>
+<td>再実行で初期値へ戻って比較</td>
+</tr>
+</tbody>
+</table>
+<p>位置をずらす比較では、線の列0〜3と集約max/meanの一覧も見ます。元の4値や配置は集約結果だけでは復元できません。例えば[0,2,0,2]と[2,0,2,0]は配置が異なっても最大・平均は同じです。一方、線の列1→列2では結果が変わるため、位置ずれに必ず強くなるとは言えません。</p>
+<h2 id="python版で同じ計算表を見る">Python版で同じ計算表を見る</h2>
+<p>venvを有効にしたターミナルで、展開先から実行します。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> cnn_basics.py <span class="at">--explain</span> convolution</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> cnn_basics.py <span class="at">--explain</span> size</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> cnn_basics.py <span class="at">--explain</span> activation</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> cnn_basics.py <span class="at">--explain</span> classification</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> cnn_basics.py <span class="at">--explain</span> learning</span></code></pre></div>
+<p><code>--explain all</code>は全テーマを順に表示します。分類は8画像、学習は2学習率×5時点を表示するため長い出力になります。各テーマを一つずつ読むのが基本です。同じコマンドを再実行すれば固定初期状態から始まります。</p>
+<p>従来の基準結果は<code>python cnn_basics.py --demo</code>、JSONだけなら<code>python cnn_basics.py --demo --json</code>。<code>--explain</code>とは同時指定しません。uvを使う場合は<code>uv run --no-project python cnn_basics.py --explain convolution</code>でも実行できます。</p>
 <h2 id="元に戻す困ったとき">元に戻す・困ったとき</h2>
 <ul>
-<li>実行順が分からない、<code>NameError</code>：カーネルを再起動して全セル実行します。</li>
-<li>値が基準と違う：変更したセル、フィルター、位置、学習率を確認します。配布Notebookを別名で再保存して比較できます。</li>
-<li><code>ModuleNotFoundError</code>：選択中のカーネルが、依存を入れたvenvと同じか確認します。</li>
-<li>計算中：実行完了を待ちます。止めた場合はカーネル再起動からやり直します。</li>
-<li>ダウンロードが文字表示になる：リンクを右クリックして保存し、<code>.ipynb</code>／<code>.py</code> の拡張子を保ちます。</li>
-<li>保存HTMLから他教材へ進めない：公開サイトの <a href="https://nshrhm.github.io/intro-ai/chap06-part01/">第7回スライド</a>を開きます。</li>
+<li><code>NameError</code>、実行順が不明：カーネル再起動→すべて実行。</li>
+<li>位置の範囲エラー：その節の初期値へ戻す。条件変更後は窓位置を0へ戻す。</li>
+<li>図が表示されない：Notebookのコードセルを実行したか確認。信頼設定は内容を確認した教材に限って変更します。数値の基準はPython版でも読めます。</li>
+<li><code>ModuleNotFoundError</code>：依存を入れたvenvとカーネルが一致するか確認。</li>
+<li>学習中：セルの完了を待つ。停止した場合はカーネル再起動からやり直す。</li>
+<li>変更して結果が戻らない：元の配布ファイルを別名保存し、基準と比較。初期定数を直接変更せずコピーを使う。</li>
 </ul>
-<h2 id="python版で実行する">Python版で実行する</h2>
-<p>venvを有効化し、保存したフォルダーで実行します。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> cnn_basics.py <span class="at">--demo</span></span></code></pre></div>
-<p>JSONだけを表示する場合は <code>--json</code> を追加します。Notebookと同じ基準値が表示されます。uvを使う人は補足として <code>uv run --no-project python cnn_basics.py --demo</code> でも実行できます。</p>
 <h2 id="計算条件と限界">計算条件と限界</h2>
-<p>人工画像8枚だけの教材です。初期値はPythonのseed 42から固定し、学習率0.1・100回・4画像の全件一括更新を使います。中央差分の幅は1e-6。ReLUの0や最大値の同値付近では勾配近似に注意が必要です。大規模CNNで通常使う誤差逆伝播より計算量が多い方法なので、小例に限っています。</p>
-<p>表示する基準JSONは小数6桁です。学習用画像の成功は実写真の認識性能を意味しません。最後に「変えた条件・予想・結果・根拠」を説明しましょう。</p>
-<h2 id="第06回からつなげて説明する">第06回からつなげて説明する</h2>
-<p>入力×重みの合計からしきい値vを引くことは、バイアスb=−vを足すことと同じです。例えばv=−1ならb=+1。「積と和」はバイアス0の手作りフィルター、「分類までの流れ」は固定初期重みとバイアスを使います。両者の値を混ぜないでください。</p>
-<p>予想：窓を一つ右へ動かすと何が変わるか。操作：「積と和」の次の窓を押す。確認：参照する4画素は変わり、重みは同じ。説明：この移動は学習ではない。リセット後に「小さな学習」で0回と100回を比べ、こちらは重みが変わったことを確認します。</p>
+<p>seed 42、2×2フィルター2枚・畳み込みバイアス2個・分類重み16個・分類バイアス2個、計28パラメーターです。ReLU、2×2・移動幅1の最大プーリングを使います。同値の予測はラベル0を選びます。数値微分幅1e-6、全4画像で勾配を求めてから一括更新します。ReLUの0や最大値が同じ点付近では数値微分は近似です。大規模CNNで通常使う誤差逆伝播より遅く、この小例の説明用です。</p>
+<p>第06回との接続：しきい値vを引くことはバイアスb=−vを足すことと同じです。例：v=−1ならb=＋1。窓の移動は見る範囲を変え、学習は重みを変えます。</p>
 </main></body></html>
