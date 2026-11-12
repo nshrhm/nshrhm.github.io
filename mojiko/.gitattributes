@@ -1,0 +1,2 @@
+# iCalendar uses CRLF, including folded UTF-8 lines.
+*.ics text eol=crlf whitespace=cr-at-eol

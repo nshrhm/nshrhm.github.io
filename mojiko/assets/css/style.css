@@ -55,3 +55,31 @@ img{max-width:100%;display:block}
 figure.photo-card{margin:0}.hero-mini .hero-content{max-width:860px}.route-card .actions .btn{margin-top:2px}
 @media (max-width:860px){.schedule-grid{grid-template-columns:1fr}.source-list.two-col{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}.ferry-strip span{flex:1;justify-content:center}.media-card img{aspect-ratio:4/3}}
 @media (prefers-color-scheme:dark){.schedule-grid>div{background:rgba(12,39,45,.85)}.ferry-strip span{background:rgba(255,255,255,.08);color:#d9f1f5}}
+
+/* Friday itinerary: readable labels, status and narrow phone layouts. */
+[hidden]{display:none!important}
+.check-content,.time-description{display:block}
+.time-title{display:block;font-size:18px;font-weight:800;line-height:1.4;margin-bottom:5px}
+.time-description{color:#53686e}
+.check-wrap input{flex:0 0 22px}
+.time-card.done .time-title{text-decoration:line-through}
+.next-status{font-weight:700;color:var(--brand)}
+.route-card>div,.time-card>div,.restaurant>div{min-width:0}
+a,button{overflow-wrap:anywhere}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media(max-width:480px){
+  .time-card{grid-template-columns:1fr;gap:8px}
+  .time-card .time{text-align:left;padding-left:38px}
+  .time-card .dot{top:17px}
+  .time-card .check-wrap{margin-left:2px}
+  .tabs{gap:2px}.tab{padding:12px 5px}
+  .source-list a{align-items:flex-start;flex-direction:column;gap:4px}
+  .source-list a:after{display:none}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{transition:none;transform:none}}
+@media(prefers-color-scheme:dark){
+  .time-description,.time-card p,.restaurant p,.schedule-grid p,.lead,.story-item p{color:#c2d4d9}
+  .next-status,.time-card .time,.brand,.tag,.bottom-nav a.active{color:#d9f1f5}
+  .tab{color:#d9f1f5}.tab.active{background:#224650;color:#fff}
+  .tag.green{color:#b6d5bc}.tag.gold{color:#f7d797}
+}
