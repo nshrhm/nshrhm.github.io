@@ -23,6 +23,29 @@ li { margin: .35em 0; }
 @media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
 </style></head>
 <body><main><h1>第8回 深層学習2：Python／Notebook解説</h1>
+<h2 id="入力とコードを一段ずつ追うプログラム改訂版">入力とコードを一段ずつ追う（プログラム改訂版）</h2>
+<p>Notebookの先頭に、入力→途中計算→結果→一条件の変更を追う節を追加しました。初回は既存venvのカーネルで再起動→全セル実行。その後、一節ずつ予想してからShift+Enterで実行します。関数の定義セルは計算方法を登録し、次の短い実行セルが値を表示します。表示専用の補助コードは変更不要です。</p>
+<p>成功の目印：全25出力のMSE約0.316058→0.004639、手動ゲートc=1.1、D→Gの更新で固定側が不変。</p>
+<h3 id="値から3値再び5値へ">5値から3値、再び5値へ</h3>
+<p>予想：どの値が再構成の正解か。</p>
+<p>操作：example_positionを0〜4へ変更</p>
+<p>結果確認：入力自身が正解。初期と1000回後の5個の出力が図に並ぶ。</p>
+<p>理由を説明：1入力のMSEと全入力のMSEの分母の違い。</p>
+<p>復帰：example_position=0で再実行</p>
+<h3 id="時刻ごとに記憶を更新する">時刻ごとに記憶を更新する</h3>
+<p>予想：0入力でも記憶はすぐ消えるか。</p>
+<p>操作：example_forgetを0.8→0へ</p>
+<p>結果確認：0.8なら1→0.8→0.64→0.512、0なら直後から0。</p>
+<p>理由を説明：時刻更新と重み学習は何が違うか。</p>
+<p>復帰：example_forget=0.8</p>
+<h3 id="dを更新してからgを更新する">Dを更新してからGを更新する</h3>
+<p>予想：どの2個の重みを固定するか。</p>
+<p>操作：example_rateを0.1→0へ</p>
+<p>結果確認：D更新はw,dのみ、G更新はa,bのみ変わる。</p>
+<p>理由を説明：G更新でどの時点のDを使うか。</p>
+<p>復帰：example_rate=0.1</p>
+<p>Python版も<code>python deep_learning2.py --explain all</code>で同じ入力・途中計算・結果を表示します。テーマごとの指定は<code>--explain autoencoder</code>、<code>--explain lstm</code>、<code>--explain gan</code>です。既存の基準実行とJSON出力は維持しています。</p>
+<p>図表は実際の計算から得た値を表示し、小数の丸めは表示に限ります。見返すだけで元データを書き換えません。変更したセルを初期値へ戻して再実行し、実行順が分からなくなったらカーネルを再起動して全セル実行します。同梱Pythonをimportしない単独Notebookです。依存の初回導入を除き計算中の通信は不要です。</p>
 <h2 id="学習目標と保存">学習目標と保存</h2>
 <p>自己符号化器の再構成誤差、LSTMのセル状態と出力、GANの交互更新を再現し、一つの条件を変えて説明します。第6・7回のニューロン・損失・状態の考え方と、Pythonの変数・リスト・関数を使います。処理コードの全てを一度に書き直す必要はありません。</p>
 <p><a href="deep_learning2.ipynb" download>Notebookを保存</a> ／ <a href="deep_learning2.py" download>Pythonを保存</a> ／ <a href="deep_learning2.zip" download>一式ZIPを保存</a></p>

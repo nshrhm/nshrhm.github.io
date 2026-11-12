@@ -368,23 +368,23 @@
     },
     {
       "path": "programs/guide.html",
-      "bytes": 16996,
-      "sha256": "53252e938cf395710354298cb8a6bb19e26179f8bb5aa5c50ed5894b8cd063f8"
+      "bytes": 19794,
+      "sha256": "36154f243f6ea349713047cc152511fb0290c3769ce5819f5ae6f5811a7ddf9d"
     },
     {
       "path": "programs/knowledge_reasoning.ipynb",
-      "bytes": 9388,
-      "sha256": "3b9c0c1eaea25837da08480aa4130b4bf99539b9b2132ad2f5e4e33082b45227"
+      "bytes": 25215,
+      "sha256": "c6f4b17befb43c0fcdb798fc0ee743362c4f33301da113b246c77c7db329e447"
     },
     {
       "path": "programs/knowledge_reasoning.py",
-      "bytes": 4697,
-      "sha256": "ed7d57948adbae84903692dc0923d5b8d03dcb308270f2d82fe3a1389729c17f"
+      "bytes": 9651,
+      "sha256": "50c48bde9798eb04e5b06e5b9255fd8fe2b44cad257811360668c00b8bdda21d"
     },
     {
       "path": "programs/knowledge_reasoning.zip",
-      "bytes": 34816,
-      "sha256": "ff53e9a113fdf8f11e97c661fd2e6d6269f7b57218a711071e2b211a73481202"
+      "bytes": 41566,
+      "sha256": "a8ca97768a737529a8f22b4035b84827ddfae7bbc0e4f2e2b7948b8ee9a44542"
     },
     {
       "path": "programs/requirements.txt",
@@ -635,9 +635,9 @@
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "e9a8c6c6e2c532e05db5d4c5f9344133aa34324ca011b86a12a7c1d4914cd460",
     "learning-bundle.json": "8cd223d49794eb70c6391c349c7419c54efeb028a353a7a23a8ec0028e204648",
-    "programs/guide.md": "50079e7ea1e2ff63703bfb04d53f43e5ff0784bf6f619f8c55d5ea4e0032283c",
-    "programs/knowledge_reasoning.py": "ed7d57948adbae84903692dc0923d5b8d03dcb308270f2d82fe3a1389729c17f",
-    "programs/knowledge_reasoning.ipynb": "3b9c0c1eaea25837da08480aa4130b4bf99539b9b2132ad2f5e4e33082b45227",
+    "programs/guide.md": "9dd7800ce30195f0b41bfba9596c452a5720e0b6daeb0e1bfc3983559b120224",
+    "programs/knowledge_reasoning.py": "50c48bde9798eb04e5b06e5b9255fd8fe2b44cad257811360668c00b8bdda21d",
+    "programs/knowledge_reasoning.ipynb": "c6f4b17befb43c0fcdb798fc0ee743362c4f33301da113b246c77c7db329e447",
     "programs/requirements.txt": "79b48e7a8fa8706e2d439ba5d16edcf2638a3ad8b53ee04be2c868f521be2dcd",
     "voiceovers/slide_01.mp3": "3eca800d35b58f0b6e4efb232d1276ce999510c350f6b9778c65f87a0804d98e",
     "voiceovers/slide_02.mp3": "da7dff57ac72e33c3cb3833c78558f8df51c17a1f7179f65339964d874292e34",

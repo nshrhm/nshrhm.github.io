@@ -23,6 +23,47 @@ li { margin: .35em 0; }
 @media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
 </style></head>
 <body><main><h1>第6回：プログラムの使い方・学び方</h1>
+<h2 id="入力とコードを一段ずつ追うプログラム改訂版">入力とコードを一段ずつ追う（プログラム改訂版）</h2>
+<p>Notebookの先頭に、入力→途中計算→結果→一条件の変更を追う節を追加しました。初回は既存venvのカーネルで再起動→全セル実行。その後、一節ずつ予想してからShift+Enterで実行します。関数の定義セルは計算方法を登録し、次の短い実行セルが値を表示します。表示専用の補助コードは変更不要です。</p>
+<p>成功の目印：1重みの更新はw2→1.75、損失0.5→0.125。系列[1,0]の状態は[1,0.5]。</p>
+<h3 id="積としきい値と層">積としきい値と層</h3>
+<p>予想：しきい値は何回引くか。</p>
+<p>操作：example_inputsを(0, 1)から(1, 1)へ変更し、同じセルを実行します。</p>
+<p>結果確認：各積・合計・中間出力・最終出力が対応する。</p>
+<p>理由を説明：層をつなぐ値は何か。</p>
+<p>復帰：example_inputs=(0, 1)に戻して再実行します。</p>
+<h3 id="活性化の比較">活性化の比較</h3>
+<p>予想：負の入力はどうなるか。</p>
+<p>操作：example_uを-2から1へ変更し、同じセルを実行します。</p>
+<p>結果確認：stepとReLUは0、sigmoidは0より大きい。</p>
+<p>理由を説明：関数の役割の違い。</p>
+<p>復帰：example_u=-2に戻して再実行します。</p>
+<h3 id="損失から更新">損失から更新</h3>
+<p>予想：大きい学習率は必ず良いか。</p>
+<p>操作：example_rateを0.125から1へ変更し、同じセルを実行します。</p>
+<p>結果確認：学習率1では損失4.5へ増える。</p>
+<p>理由を説明：勾配と更新方向。</p>
+<p>復帰：example_rate=0.125に戻して再実行します。</p>
+<h3 id="段の同時更新">2段の同時更新</h3>
+<p>予想：どの時点の重みで勾配を求めるか。</p>
+<p>操作：example_chain_rateを0.125から0へ変更し、同じセルを実行します。</p>
+<p>結果確認：勾配a6・b4から同時更新。</p>
+<p>理由を説明：順番に古い値と新しい値を混ぜない理由。</p>
+<p>復帰：example_chain_rate=0.125に戻して再実行します。</p>
+<h3 id="時間方向の状態">時間方向の状態</h3>
+<p>予想：0入力でも状態が残るか。</p>
+<p>操作：example_recurrent_weightを0.5から0へ変更し、同じセルを実行します。</p>
+<p>結果確認：再帰重み0.5では状態1→0.5。</p>
+<p>理由を説明：順序と前の状態の役割。</p>
+<p>復帰：example_recurrent_weight=0.5に戻して再実行します。</p>
+<h3 id="勝者と隣接点の更新">勝者と隣接点の更新</h3>
+<p>予想：誰をどれだけ動かすか。</p>
+<p>操作：example_som_rateを0.5から0へ変更し、同じセルを実行します。</p>
+<p>結果確認：距離二乗1・5・9から勝者0。</p>
+<p>理由を説明：入力空間の距離と地図上の隣接の違い。</p>
+<p>復帰：example_som_rate=0.5に戻して再実行します。</p>
+<p>Python版も<code>python neuralnet.py --explain all</code>で同じ入力・途中計算・結果を表示します。テーマごとの指定は<code>--explain forward</code>、<code>--explain activation</code>、<code>--explain gradient</code>、<code>--explain chain</code>、<code>--explain rnn</code>、<code>--explain som</code>です。既存の基準実行とJSON出力は維持しています。</p>
+<p>図表は実際の計算から得た値を表示し、小数の丸めは表示に限ります。見返すだけで元データを書き換えません。変更したセルを初期値へ戻して再実行し、実行順が分からなくなったらカーネルを再起動して全セル実行します。同梱Pythonをimportしない単独Notebookです。依存の初回導入を除き計算中の通信は不要です。</p>
 <nav aria-label="教材の移動">
 <a href="../index.html#/33" target="_blank" rel="noopener">演習スライド</a> ／ <a href="../interactive.html" target="_blank" rel="noopener">図解教材</a> ／ <a href="../interactive-guide.html" target="_blank" rel="noopener">図解教材の使い方</a>
 </nav>

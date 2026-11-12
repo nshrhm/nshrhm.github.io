@@ -29,7 +29,11 @@ def validate_piles(piles):
 
 def legal_moves(piles):
     validate_piles(piles)
-    return [[i, take] for i, n in enumerate(piles) for take in range(1, n + 1)]
+    moves = []
+    for pile_index, stones in enumerate(piles):
+        for take in range(1, stones + 1):
+            moves.append([pile_index, take])
+    return moves
 
 
 def apply_move(piles, action):
@@ -191,5 +195,101 @@ def main():
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
-if __name__ == "__main__":
-    main()
+
+def lesson_moves(piles=(3,2)):
+    rows = []
+    for action in legal_moves(piles):
+        after = apply_move(piles,action)
+        rows.append((list(piles),action[0],action[1],after))
+    result = search_nim({'piles':list(piles)})
+    return {'title':'局面から合法手を作る','question':'1回に両方の山から取れるか',
+            'input':list(piles),'columns':['元の山','選ぶ山番号','取る個数','次の局面'],'rows':rows,
+            'result':summary(result),'comparison':'(3,2)→(2,2)にすると合法手と勝敗を比べられる。',
+            'explanation':'一つの山から1個以上取る。山番号は0始まり。利得はMAX側から見て勝ち+1・負け−1。探索は学習ではない。',
+            'reset':'piles=(3,2)に戻す。元の局面を変更せず探索する。'}
+
+
+def lesson_minimax(leaf_b1=2):
+    config = deepcopy(TREE_BASE)
+    config['leaves'][2] = leaf_b1
+    result = search_tree(config)
+    rows = []
+    for event in result['trace']:
+        if event['event'] in ('evaluate','update','return'):
+            rows.append((event['event'],event['id'],event.get('action','—'),event['value'],event.get('bound','—')))
+    return {'title':'葉からMIN、MINからMAXへ値を戻す','question':'最も大きい葉9の枝を選べばよいか',
+            'input':config['leaves'],'columns':['処理','節点','調べた子','現在値','値の確かさ'],'rows':rows,
+            'tables':[('木の親子関係',['親・役割','子1','子2'],[(name+' MIN',config['leaves'][2*i],config['leaves'][2*i+1]) for i,name in enumerate('ABC')])],
+            'result':summary(result),'comparison':'B1を2→6にすると、BでMINが返す値は2→6、根の選択もA→Bになる。',
+            'explanation':'根RはMAX、A・B・CはMIN。相手が小さい値を選ぶことを織り込む。updateは調査済みの子だけの暫定値、returnはその探索の返却値。',
+            'reset':'leaf_b1=2で再実行。'}
+
+
+def lesson_depth(depth=2):
+    result = search_tree({'depth':depth})
+    rows = [(e['id'],e['kind'],e['value']) for e in result['trace'] if e['event']=='evaluate']
+    return {'title':'終端の利得と途中の評価値を区別する','question':'浅く読むと同じ手を選ぶか',
+            'input':f'深さ={depth}、途中評価R,A,B,C={TREE_BASE["heuristics"]}',
+            'columns':['評価する節点','terminal=終端 / cutoff=打切り','値'],'rows':rows,
+            'result':summary(result),'comparison':'深さ2では手A・値3、深さ1では手B・推定値4。',
+            'explanation':'深さ1の値は葉まで読んだ確定利得ではなく、指定した評価関数の推定値。深く読めば常に現実の最善が保証されるという例ではない。',
+            'reset':'depth=2で再実行。'}
+
+
+def lesson_alphabeta(reverse=False):
+    result = search_tree({'algorithm':'alphabeta','reverse':reverse})
+    rows = []
+    bounds = {}
+    for event in result['trace']:
+        node = event['id']
+        if event['event'] in ('enter','update'):
+            bounds[node] = (event['alpha'],event['beta'])
+        alpha,beta = bounds.get(node,('—','—'))
+        reason = ''
+        if event['event']=='prune':
+            reason = f'α={alpha} ≥ β={beta}。未訪問 {event["skipped"]} は根の選択を改善しない。'
+        rows.append((event['event'],node,event.get('value','—'),alpha,beta,event.get('bound','—'),reason))
+    full = search_tree({'reverse':reverse})
+    return {'title':'αとβが出会ったら、その先を省略する','question':'省略した葉の値を計算済みと言えるか',
+            'input':f'同じ木、子の順序を逆にする={reverse}',
+            'columns':['処理','節点','値','α: MAXの下限','β: MINの上限','返却値の種別','省略の理由'],'rows':rows,
+            'tables':[('全探索と比較',['方式','根の値','選んだ手','評価した葉数','省略'],[('minimax',full['value'],full['best_action'],full['evaluations'],full['pruned']),('αβ',result['value'],result['best_action'],result['evaluations'],result['pruned'])])],
+            'result':summary(result),'comparison':'reverse=Trueでも根の値は3。評価数と省略位置は探索順に依存する。',
+            'explanation':'upperは上限、lowerは下限、exactは確定値。枝刈りの返却値をすべて厳密値と読まない。-inf/+infはまだ制約のない境界。',
+            'reset':'reverse=Falseで再実行。探索履歴も初めから作る。'}
+
+STUDY_THEMES = {'moves': lesson_moves, 'minimax': lesson_minimax, 'depth': lesson_depth, 'alphabeta': lesson_alphabeta}
+
+def explain_lesson(theme='all'):
+    """表示は丸めても、計算には元の値を使う。"""
+    functions = STUDY_THEMES if theme == 'all' else {theme: STUDY_THEMES[theme]}
+    for name, function in functions.items():
+        report = function()
+        print('\nテーマ:', report['title'])
+        print('問い:', report['question'])
+        print('入力:', report['input'])
+        print(' | '.join(report['columns']))
+        for row in report['rows']:
+            print(' | '.join(str(value) for value in row))
+        for title, columns, rows in report.get('tables', []):
+            print(title, ' | '.join(columns))
+            for row in rows:
+                print(' | '.join(str(value) for value in row))
+        print('結果:', report['result'])
+        print('一つ変える:', report['comparison'])
+        print('読み取り:', report['explanation'])
+        print('戻す:', report['reset'])
+
+
+def study_cli():
+    parser = argparse.ArgumentParser(description='入力→途中計算→結果を読む')
+    parser.add_argument('--explain', choices=['all', *STUDY_THEMES], required=True)
+    args = parser.parse_args()
+    explain_lesson(args.explain)
+
+if __name__ == '__main__':
+    import sys
+    if '--explain' in sys.argv:
+        study_cli()
+    else:
+        main()

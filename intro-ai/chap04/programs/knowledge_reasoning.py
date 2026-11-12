@@ -38,7 +38,7 @@ def isa_path(parents, start, target):
         path.append(current)
 
 
-def forward_chain(initial_facts, rules):
+def forward_chain(initial_facts, rules, record=None):
     """肯定的な事実を追加する最小推論器。規則順に照合し、追加時だけ記録。"""
     facts = set(initial_facts)  # 呼び出し元の事実は変えない
     trace = []
@@ -46,7 +46,12 @@ def forward_chain(initial_facts, rules):
     while changed:
         changed = False
         for rule_id, conditions, conclusion in rules:
-            if set(conditions) <= facts and conclusion not in facts:
+            missing = [condition for condition in conditions if condition not in facts]
+            already_known = conclusion in facts
+            if record is not None:
+                record.append((rule_id, sorted(facts), list(conditions), missing, conclusion,
+                               '追加済み' if already_known else '条件不足' if missing else '追加する'))
+            if not missing and not already_known:
                 facts.add(conclusion)
                 trace.append({"rule": rule_id, "conditions": list(conditions),
                               "conclusion": conclusion})
@@ -94,5 +99,76 @@ def main():
         print("貸出準備可:", "導けた" if "貸出準備可" in result[key]["facts"] else "導けない（否定ではない）")
 
 
-if __name__ == "__main__":
-    main()
+
+def lesson_isa(target='コンピュータ'):
+    result = isa_path(PARENTS,'スマホ',target)
+    rows = [(i,name,'目標に到達' if name==target else '親を調べる' if name in PARENTS else '親の記録なし',PARENTS.get(name,'—')) for i,name in enumerate(result['path'])]
+    if not rows:
+        rows=[('—','スマホ','探索前に未知語を検出','—')]
+    return {'title':'分類の矢印を一つずつたどる','question':'経路がなければ否定してよいか',
+            'input':f'スマホは{target}か。教材内の単一親の分類。',
+            'columns':['段階','現在の用語','処理','記録された親'],'rows':rows,
+            'result':result,'comparison':'コンピュータ→ノートPCでは、経路をたどっても目標へ着かずunknown。',
+            'explanation':'スマホ→携帯型端末→コンピュータという分類上の関係。現実の全分類を収録したデータではなく、未到達は否定ではない。',
+            'reset':'target="コンピュータ"で再実行。'}
+
+
+def lesson_forward(reservation=False):
+    facts = list(FACTS)
+    if reservation:
+        facts.append('予約確認済み')
+    trace = []
+    result = forward_chain(facts,RULES,record=trace)
+    return {'title':'事実カードと規則の条件を照合する','question':'どの規則で新しい事実が増えたか',
+            'input':facts,'columns':['規則','その時点の事実','必要条件','不足条件','結論','判定'],'rows':trace,
+            'tables':[('実際に追加した順',['規則','使った条件','追加した事実'],[(r['rule'],r['conditions'],r['conclusion']) for r in result['trace']])],
+            'result':result['facts'],'comparison':'予約確認済みを追加するとR3も条件がそろい、貸出準備可が加わる。',
+            'explanation':'同じ周回内でも、先の規則で加えた事実を後の規則が使える。追加がなくなるまで繰り返す。規則の適用と単なる照合を区別する。',
+            'reset':'reservation=Falseで再実行。FACTSのコピーを使う。'}
+
+
+def lesson_missing(remove_training=True):
+    facts = [f for f in FACTS if not (remove_training and f=='講習修了')]
+    result = forward_chain(facts,RULES)
+    rows = [(fact,'記録あり' if fact in result['facts'] else '導けない（不明）') for fact in ['講習修了','利用資格あり','貸出候補','貸出準備可']]
+    return {'title':'導けないことと否定を区別する','question':'講習修了が記録にない人は未修了と断定できるか',
+            'input':facts,'columns':['調べたい事実','この知識から言えること'],'rows':rows,
+            'result':result,'comparison':'講習修了を除くとR1・R2が導けない。戻すと利用資格あり・貸出候補まで導ける。',
+            'explanation':'このプログラムは肯定的事実を追加する前向き推論器。明示的な否定・例外の優先順位・後ろ向き探索は実装していない。事実がないことを否定へ置き換えない。',
+            'reset':'remove_training=Trueで再実行。元のFACTSは保持。'}
+
+STUDY_THEMES = {'isa': lesson_isa, 'forward': lesson_forward, 'missing': lesson_missing}
+
+def explain_lesson(theme='all'):
+    """表示は丸めても、計算には元の値を使う。"""
+    functions = STUDY_THEMES if theme == 'all' else {theme: STUDY_THEMES[theme]}
+    for name, function in functions.items():
+        report = function()
+        print('\nテーマ:', report['title'])
+        print('問い:', report['question'])
+        print('入力:', report['input'])
+        print(' | '.join(report['columns']))
+        for row in report['rows']:
+            print(' | '.join(str(value) for value in row))
+        for title, columns, rows in report.get('tables', []):
+            print(title, ' | '.join(columns))
+            for row in rows:
+                print(' | '.join(str(value) for value in row))
+        print('結果:', report['result'])
+        print('一つ変える:', report['comparison'])
+        print('読み取り:', report['explanation'])
+        print('戻す:', report['reset'])
+
+
+def study_cli():
+    parser = argparse.ArgumentParser(description='入力→途中計算→結果を読む')
+    parser.add_argument('--explain', choices=['all', *STUDY_THEMES], required=True)
+    args = parser.parse_args()
+    explain_lesson(args.explain)
+
+if __name__ == '__main__':
+    import sys
+    if '--explain' in sys.argv:
+        study_cli()
+    else:
+        main()

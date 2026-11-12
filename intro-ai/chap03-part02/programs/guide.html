@@ -23,6 +23,35 @@ li { margin: .35em 0; }
 @media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
 </style></head>
 <body><main><h1>第4回 近傍・決定木・多数決：保存と実行</h1>
+<h2 id="入力とコードを一段ずつ追うプログラム改訂版">入力とコードを一段ずつ追う（プログラム改訂版）</h2>
+<p>Notebookの先頭に、入力→途中計算→結果→一条件の変更を追う節を追加しました。初回は既存venvのカーネルで再起動→全セル実行。その後、一節ずつ予想してからShift+Enterで実行します。関数の定義セルは計算方法を登録し、次の短い実行セルが値を表示します。表示専用の補助コードは変更不要です。</p>
+<p>成功の目印：問い合わせ(2,3)ではk1がB・k3がA。分岐候補の加重Giniを比べ、3モデルの票を数える。</p>
+<h3 id="近傍の選択">近傍の選択</h3>
+<p>予想：どの点が投票するか。</p>
+<p>操作：example_kを3から1へ変更し、同じセルを実行します。</p>
+<p>結果確認：距離順と採用k件が対応する。</p>
+<p>理由を説明：距離とラベルの役割。</p>
+<p>復帰：example_k=3に戻して再実行します。</p>
+<h3 id="尺度と距離">尺度と距離</h3>
+<p>予想：単位を変えると近さはどうなるか。</p>
+<p>操作：example_y_scaleを1から3へ変更し、同じセルを実行します。</p>
+<p>結果確認：S1の距離二乗9→1。</p>
+<p>理由を説明：距離の各項への寄与。</p>
+<p>復帰：example_y_scale=1に戻して再実行します。</p>
+<h3 id="段決定木">1段決定木</h3>
+<p>予想：どの分岐が混ざりを減らすか。</p>
+<p>操作：example_t4を’B’から’A’へ変更し、同じセルを実行します。</p>
+<p>結果確認：候補ごとの左右の事例と加重Giniが表示される。</p>
+<p>理由を説明：件数で重み付けする理由。</p>
+<p>復帰：example_t4=’B’に戻して再実行します。</p>
+<h3 id="モデルの多数決">モデルの多数決</h3>
+<p>予想：誰が何票入れるか。</p>
+<p>操作：example_pointを(2, 3)から(7, 7)へ変更し、同じセルを実行します。</p>
+<p>結果確認：3モデルの予測とA/B票数が対応する。</p>
+<p>理由を説明：集約しても必ず正解とは限らない理由。</p>
+<p>復帰：example_point=(2, 3)に戻して再実行します。</p>
+<p>Python版も<code>python neighbors_and_trees.py --explain all</code>で同じ入力・途中計算・結果を表示します。テーマごとの指定は<code>--explain neighbors</code>、<code>--explain scale</code>、<code>--explain tree</code>、<code>--explain votes</code>です。既存の基準実行とJSON出力は維持しています。</p>
+<p>図表は実際の計算から得た値を表示し、小数の丸めは表示に限ります。見返すだけで元データを書き換えません。変更したセルを初期値へ戻して再実行し、実行順が分からなくなったらカーネルを再起動して全セル実行します。同梱Pythonをimportしない単独Notebookです。依存の初回導入を除き計算中の通信は不要です。</p>
 <p><a href="neighbors_and_trees.py">Python</a> ／ <a href="neighbors_and_trees.ipynb">Notebook</a> ／ <a href="neighbors_and_trees.zip" download>一式ZIPを保存</a></p>
 <h2 id="開始と成功の目印">開始と成功の目印</h2>
 <p>同じフォルダーへ保存し、授業のvenvを有効にして <code>python neighbors_and_trees.py --demo</code> を実行します。Python 3.10以降の標準ライブラリを使います。既存uv環境なら <code>uv run python neighbors_and_trees.py --demo</code> でも実行できます。</p>

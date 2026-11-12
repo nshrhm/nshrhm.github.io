@@ -80,7 +80,11 @@ def crossover(a, b, cut):
 def mutate(bits, rate, rng):
     fitness(bits)
     finite(rate, 0, 1, '突然変異率')
-    return ''.join(str(1 - int(c)) if rng.random() < rate else c for c in bits)
+    changed = []
+    for bit in bits:
+        draw = rng.random()
+        changed.append(str(1 - int(bit)) if draw < rate else bit)
+    return ''.join(changed)
 
 
 def ga_step(population, rng, mutation=0.1):
@@ -131,8 +135,10 @@ def aco_update(tau, counts, evaporation=0.25, lengths=LENGTHS):
         integer(count, 0, 6, '通過数')
     if sum(counts) > 6:
         raise ValueError('蟻は最大6匹です')
-    evaporated = [(1 - evaporation) * t for t in tau]
-    deposits = [6 * n / d for n, d in zip(counts, lengths)]
+    evaporated, deposits = [], []
+    for pheromone, count, length in zip(tau, counts, lengths):
+        evaporated.append((1 - evaporation) * pheromone)
+        deposits.append(6 * count / length)
     return {'evaporated': evaporated, 'deposits': deposits,
             'tau': [t + d for t, d in zip(evaporated, deposits)]}
 
@@ -231,7 +237,10 @@ def fish_action(points, index, rng, visual=1.0, step=0.2, crowd=2):
 
 def fish_step(points, rng, visual=1.0, step=0.2, crowd=2):
     # 全魚の候補を同じ旧状態から作る。同一反復内の新位置を参照しない。
-    actions = [fish_action(points, i, rng, visual, step, crowd) for i in range(len(points))]
+    actions = []
+    for index in range(len(points)):
+        action = fish_action(points, index, rng, visual, step, crowd)
+        actions.append(action)
     return {'positions': [a['position'] for a in actions], 'actions': actions}
 
 
@@ -275,16 +284,108 @@ def demo():
                     'fish_step': fish_step(POSITIONS, RNG()), 'fish': run_fish()})
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--demo', action='store_true', help='固定条件で三手法を実行')
-    parser.add_argument('--json', action='store_true', help='検証用JSONを表示')
+
+def lesson_ga(mutation=0.1):
+    """同じ6個体を評価し、親の選択→交叉→突然変異→次世代を追う。"""
+    population = list(POPULATION)
+    evaluation = ga_evaluate(population)
+    result = ga_step(population,RNG(),mutation)
+    rows = [(i,bits,evaluation['fitness'][i],evaluation['probabilities'][i],i==result['elite_index']) for i,bits in enumerate(population)]
+    crosses = []
+    for pair,item in enumerate(result['trace']):
+        parent_a,parent_b = item['parents']
+        for child in range(2):
+            crosses.append((pair,population[parent_a],population[parent_b],item['cut'],item['crossed'][child],item['mutated'][child]))
+    next_rows = [(i,bits,fitness(bits)) for i,bits in enumerate(result['population'])]
+    return {'title':'GA：6個体の次世代を作る','question':'評価が高い個体だけが親になるか',
+            'input':population,'columns':['番号','個体','1の個数=評価','親になる確率','エリート保存'],'rows':rows,
+            'tables':[('同じ親から交叉→突然変異',['組','親A','親B','切る位置','交叉後','突然変異後'],crosses),('採用する6個体',['次世代番号','個体','評価'],next_rows)],
+            'result':f"次世代{result['population']}",
+            'comparison':f"同じseed・突然変異0の次世代{ga_step(population,RNG(),0)['population']}",
+            'explanation':'評価を合計で割って選択確率にする。親は復元抽出。エリート1個と子5個を採用し、最後の組の余分な子は捨てる。',
+            'reset':'mutation=0.1で再実行。同じ初期集団とseedから開始する。'}
+
+
+def lesson_aco(evaporation=0.25):
+    """経路を選ぶ確率と、選んだ後の蒸発・加算を分ける。"""
+    tau = [1.,1.,1.]
+    result = aco_step(tau,RNG(),evaporation)
+    weights = [t/d for t,d in zip(tau,LENGTHS)]
+    rows = [(i,LENGTHS[i],tau[i],weights[i],result['probabilities'][i],result['counts'][i],result['evaporated'][i],result['deposits'][i],result['tau'][i]) for i in range(3)]
+    return {'title':'ACO：選択→蒸発→通過数に応じた加算','question':'短い経路はどの計算で有利になるか',
+            'input':f'経路長{LENGTHS}、初期フェロモン{tau}、6匹、蒸発率{evaporation}',
+            'columns':['経路','長さ','初期τ','τ÷長さ','選択確率','通過数','蒸発後','6×通過数÷長さ','更新後'],'rows':rows,
+            'tables':[('各蟻の選択（同じ初期確率から6回選ぶ）',['蟻','選んだ経路'],list(enumerate(result['choices'])))],
+            'result':f"更新後τ={result['tau']}; 次回の確率={aco_probabilities(result['tau'])}",
+            'comparison':f"蒸発率0.5でのτ={aco_step(tau,RNG(),0.5)['tau']}",
+            'explanation':'選択した6匹の通過数を集計してから、一度だけ蒸発と加算を行う。今回選択する確率と次回の確率を混ぜない。',
+            'reset':'evaporation=0.25で再実行。τは[1,1,1]へ戻る。'}
+
+
+def lesson_fish(visual=1.0):
+    """同じ旧位置から各魚の候補・評価・移動を比較する。"""
+    points = copy.deepcopy(POSITIONS)
+    result = fish_step(points,RNG(),visual=visual)
+    rows, candidates = [], []
+    for index,action in enumerate(result['actions']):
+        old,new = points[index],action['position']
+        rows.append((index,old,objective(old),action['neighbors'],action['action'],new,objective(new)))
+        for candidate in action['candidates']:
+            candidates.append((index,candidate['action'],candidate['target'],objective(candidate['target']),candidate['density'],candidate['accepted']))
+        for target in action['trials']:
+            candidates.append((index,'prey試行',target,objective(target),'—',objective(target)<objective(old)))
+    return {'title':'人工魚群：候補の評価から移動を決める','question':'近くの魚へ必ず移動するか',
+            'input':f'6匹、視野{visual}、移動幅0.2。目的値x²+y²は小さいほどよい。',
+            'columns':['魚','旧位置','旧評価','近傍番号','選択行動','新位置','新評価'],'rows':rows,
+            'tables':[('候補と判定（採用は改善と混雑条件で決まる）',['魚','候補の種類','候補位置','評価','混雑','受理'],candidates)],
+            'result':f"今回の最良評価={min(objective(point) for point in result['positions'])}",
+            'comparison':f"視野2の行動={[a['action'] for a in fish_step(points,RNG(),visual=2)['actions']]}",
+            'explanation':'追尾・群れの候補を改善と混雑で判定し、使えなければ探索する。同じ反復では全魚が更新前の位置を参照する。単一seedで最適到達は保証しない。',
+            'reset':'visual=1.0で再実行。6匹の初期位置とseedを戻す。'}
+
+STUDY_THEMES = {'ga': lesson_ga, 'aco': lesson_aco, 'fish': lesson_fish}
+
+def explain_lesson(theme='all'):
+    """表示は丸めても、計算には元の値を使う。"""
+    functions = STUDY_THEMES if theme == 'all' else {theme: STUDY_THEMES[theme]}
+    for name, function in functions.items():
+        report = function()
+        print('\nテーマ:', report['title'])
+        print('問い:', report['question'])
+        print('入力:', report['input'])
+        print(' | '.join(report['columns']))
+        for row in report['rows']:
+            print(' | '.join(str(value) for value in row))
+        for title, columns, rows in report.get('tables', []):
+            print(title, ' | '.join(columns))
+            for row in rows:
+                print(' | '.join(str(value) for value in row))
+        print('結果:', report['result'])
+        print('一つ変える:', report['comparison'])
+        print('読み取り:', report['explanation'])
+        print('戻す:', report['reset'])
+
+
+def study_cli():
+    parser = argparse.ArgumentParser(description='入力→途中計算→結果を読む')
+    parser.add_argument('--explain', choices=['all', *STUDY_THEMES], required=True)
     args = parser.parse_args()
-    result = demo()
-    if args.json:
-        print(json.dumps(result, ensure_ascii=False))
+    explain_lesson(args.explain)
+
+if __name__ == '__main__':
+    import sys
+    if '--explain' in sys.argv:
+        study_cli()
     else:
-        print('GA 初期最良4 →', result['ga']['best_seen'], '（大きいほどよい、既知最適6）')
-        print('ACO 探索中の最短経路長:', result['aco']['best_seen'], '（既知最短4）')
-        print('AFSA 初期最良0.5 →', result['fish']['best_seen'], '（小さいほどよい、既知最適0）')
-        print('単一シードの教材例です。最適解への到達を保証しません。')
+        parser = argparse.ArgumentParser(description=__doc__)
+        parser.add_argument('--demo', action='store_true', help='固定条件で三手法を実行')
+        parser.add_argument('--json', action='store_true', help='検証用JSONを表示')
+        args = parser.parse_args()
+        result = demo()
+        if args.json:
+            print(json.dumps(result, ensure_ascii=False))
+        else:
+            print('GA 初期最良4 →', result['ga']['best_seen'], '（大きいほどよい、既知最適6）')
+            print('ACO 探索中の最短経路長:', result['aco']['best_seen'], '（既知最短4）')
+            print('AFSA 初期最良0.5 →', result['fish']['best_seen'], '（小さいほどよい、既知最適0）')
+            print('単一シードの教材例です。最適解への到達を保証しません。')

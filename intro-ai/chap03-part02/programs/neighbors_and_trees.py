@@ -76,7 +76,7 @@ def gini(rows):
     return 1 - sum(Fraction(n, len(rows)) ** 2 for n in counts.values())
 
 
-def fit_stump(train):
+def fit_stump(train, record=None):
     """候補の加重Giniが最小となる1回の分岐を学習側だけで選ぶ。"""
     validate_rows(train)
     base = majority([row[3] for row in train])
@@ -89,6 +89,8 @@ def fit_stump(train):
             right = [row for row in train if row[axis + 1] > threshold]
             weighted = (len(left) * gini(left) + len(right) * gini(right)) / len(train)
             candidates.append((weighted, axis, threshold, left, right))
+            if record is not None:
+                record.append((axis, threshold, list(left), list(right), gini(left), gini(right), weighted))
     if not candidates:
         return {"axis": None, "threshold": None, "left": base, "right": base,
                 "weighted_gini": gini(train)}
@@ -184,5 +186,96 @@ def main():
             print("尺度変更:", result["scale_example"])
 
 
-if __name__ == "__main__":
-    main()
+
+def lesson_neighbors(k=3):
+    all_neighbors = nearest(TRAIN,QUERY,len(TRAIN))
+    chosen = nearest(TRAIN,QUERY,k)
+    coordinates = {r[0]:r[1:3] for r in TRAIN}
+    rows = []
+    for rank,(distance,identity,label) in enumerate(all_neighbors,1):
+        x,y=coordinates[identity]
+        rows.append((rank,identity,x-QUERY[0],y-QUERY[1],str(distance),label,rank<=k))
+    return {'title':'距離→近いk件→投票','question':'最も近い1件と近い3件で同じ予測か',
+            'input':f'問い合わせ点{QUERY}、k={k}',
+            'columns':['順位','ID','xの差','yの差','距離の二乗','ラベル','投票に使う'],'rows':rows,
+            'result':{'投票':[r[2] for r in chosen],'予測':predict_knn(TRAIN,QUERY,k)},
+            'comparison':'k1はB、k3はA。距離同点ならID順、投票同数ならA。',
+            'explanation':'距離の二乗=(x差)^2+(y差)^2。平方根を取らなくても順位は同じ。正解ラベルは距離計算に使わない。',
+            'reset':'k=3で再実行。'}
+
+
+def lesson_scale(y_scale=1):
+    rows_data = (('S1',0,3,'A'),('S2',2,0,'B'))
+    ranked = nearest(rows_data,(0,0),2,(1,y_scale))
+    return {'title':'尺度をそろえると近さが変わる','question':'同じ座標なら近い点は変わらないか',
+            'input':f'問い合わせ(0,0)、yを{y_scale}で割って距離を計算。',
+            'columns':['順位','ID','距離の二乗','ラベル'],'rows':[(i+1,r[1],str(r[0]),r[2]) for i,r in enumerate(ranked)],
+            'tables':[('差を尺度で割る',['ID','x差','y差','x差/1','y差/尺度'],[(r[0],r[1],r[2],r[1],str(Fraction(r[2],y_scale))) for r in rows_data])],
+            'result':predict_knn(rows_data,(0,0),1,(1,y_scale)),
+            'comparison':'y_scale1→3で、S1の距離二乗9→1。S2の4より近くなる。',
+            'explanation':'特徴の単位が異なると距離への寄与が偏る。尺度の決め方は学習側で定め、テストの正解を見て調整しない。',
+            'reset':'y_scale=1で再実行。'}
+
+
+def lesson_tree(label_t4='B'):
+    train = list(TRAIN)
+    train[3] = (*train[3][:3],label_t4)
+    trace = []
+    model = fit_stump(train,record=trace)
+    rows,tables = [],[]
+    for axis,t,left,right,gl,gr,g in trace:
+        rows.append(('xy'[axis],str(t),len(left),str(gl),len(right),str(gr),str(g)))
+        tables.append((f'{"xy"[axis]}≤{t}の振り分け',['側','ID','ラベル'],[(side,r[0],r[3]) for side,data in [('左',left),('右',right)] for r in data]))
+    return {'title':'分岐候補ごとの混ざり具合を比べる','question':'片方だけ純粋なら良い分岐か',
+            'input':f'T4のラベル={label_t4}。学習7件をコピー。',
+            'columns':['軸','しきい値','左件数','左Gini','右件数','右Gini','加重Gini'],'rows':rows,'tables':tables,
+            'result':model,'comparison':'T4のラベルB→Aで同じ候補の混ざり具合と選択結果を比較する。',
+            'explanation':'Gini=1−(A割合)^2−(B割合)^2。加重値=(左件数×左Gini＋右件数×右Gini)/全件数。同点ならx優先、次に小さいしきい値。1段の決定木である。',
+            'reset':'label_t4="B"で再実行。TRAINは変更しない。'}
+
+
+def lesson_votes(point=(2,3)):
+    stump = fit_stump(TRAIN)
+    votes = [predict_knn(TRAIN,point,1),predict_knn(TRAIN,point,3),predict_stump(stump,point)]
+    return {'title':'三つの予測を一票ずつ集める','question':'三つの予測が異なると何を返すか',
+            'input':list(point),'columns':['モデル','投票'],'rows':list(zip(['k=1','k=3','1段決定木'],votes)),
+            'tables':[('票の集計',['ラベル','票数'],[(label,votes.count(label)) for label in ('A','B')])],
+            'result':majority(votes),'comparison':'点(2,3)→(7,7)で各モデルの票を比較する。',
+            'explanation':'この教材は異なる3モデルの多数決。ランダムフォレストやSVMの実装ではない。多数決でも各モデルが同じ誤りをすれば誤答する。',
+            'reset':'point=(2,3)で再実行。'}
+
+STUDY_THEMES = {'neighbors': lesson_neighbors, 'scale': lesson_scale, 'tree': lesson_tree, 'votes': lesson_votes}
+
+def explain_lesson(theme='all'):
+    """表示は丸めても、計算には元の値を使う。"""
+    functions = STUDY_THEMES if theme == 'all' else {theme: STUDY_THEMES[theme]}
+    for name, function in functions.items():
+        report = function()
+        print('\nテーマ:', report['title'])
+        print('問い:', report['question'])
+        print('入力:', report['input'])
+        print(' | '.join(report['columns']))
+        for row in report['rows']:
+            print(' | '.join(str(value) for value in row))
+        for title, columns, rows in report.get('tables', []):
+            print(title, ' | '.join(columns))
+            for row in rows:
+                print(' | '.join(str(value) for value in row))
+        print('結果:', report['result'])
+        print('一つ変える:', report['comparison'])
+        print('読み取り:', report['explanation'])
+        print('戻す:', report['reset'])
+
+
+def study_cli():
+    parser = argparse.ArgumentParser(description='入力→途中計算→結果を読む')
+    parser.add_argument('--explain', choices=['all', *STUDY_THEMES], required=True)
+    args = parser.parse_args()
+    explain_lesson(args.explain)
+
+if __name__ == '__main__':
+    import sys
+    if '--explain' in sys.argv:
+        study_cli()
+    else:
+        main()

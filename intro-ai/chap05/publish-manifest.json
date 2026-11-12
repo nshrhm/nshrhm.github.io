@@ -368,23 +368,23 @@
     },
     {
       "path": "programs/guide.html",
-      "bytes": 19301,
-      "sha256": "0d64ae0864d8befe88968783c45caf4a822f4551eb86c05599d355ec906834f8"
+      "bytes": 23262,
+      "sha256": "29556652acddf58ee52f26424ee54788b3d5c449e073379c0a55106ce0b901ea"
     },
     {
       "path": "programs/neuralnet.ipynb",
-      "bytes": 14676,
-      "sha256": "bec207a5b74420d3e5095ea6bcb21ec7da7ed3fdeaaf5128c2e4f37c15fa7306"
+      "bytes": 39457,
+      "sha256": "502cceea3670050c82edc7a8eb7b51e5a7bc5fbf9284ce73225651d20c0f9d2a"
     },
     {
       "path": "programs/neuralnet.py",
-      "bytes": 6809,
-      "sha256": "f283b496a1ff52f96b53e1f46b72aeb2ff0e7e75d561989ca23d7df999ce71db"
+      "bytes": 14669,
+      "sha256": "e57af13b95392951e28e84ca08388860317ae94b0be5616be3eb2860dd9cee54"
     },
     {
       "path": "programs/neuralnet.zip",
-      "bytes": 37863,
-      "sha256": "ac4507b06da46757e2a891f24815c1ef2e62696251fcca6e517de3c5436160d6"
+      "bytes": 46785,
+      "sha256": "33f06cad6b2b7affe8e3eb70c9746c15bba242c9f6d0f96e94002cd475613474"
     },
     {
       "path": "programs/requirements.txt",
@@ -640,9 +640,9 @@
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "d792388056afe78210aa7ac5a4319e602c5e255b0cf1dcbba41de83744d16104",
     "learning-bundle.json": "7ae20ff18ab82f5039b027a5bfd1d9635c6f4f4dfe9c5833011f1e6a27fdbb3b",
-    "programs/guide.md": "3d97cecec798db48c9f4a0531bc258f5eb5fda896b951bbfc84bb8eecd0b84ff",
-    "programs/neuralnet.py": "f283b496a1ff52f96b53e1f46b72aeb2ff0e7e75d561989ca23d7df999ce71db",
-    "programs/neuralnet.ipynb": "bec207a5b74420d3e5095ea6bcb21ec7da7ed3fdeaaf5128c2e4f37c15fa7306",
+    "programs/guide.md": "aced065972571b740202fb38b10b4423f2634ab9d84e7b9e167df295cb05da0b",
+    "programs/neuralnet.py": "e57af13b95392951e28e84ca08388860317ae94b0be5616be3eb2860dd9cee54",
+    "programs/neuralnet.ipynb": "502cceea3670050c82edc7a8eb7b51e5a7bc5fbf9284ce73225651d20c0f9d2a",
     "programs/requirements.txt": "79b48e7a8fa8706e2d439ba5d16edcf2638a3ad8b53ee04be2c868f521be2dcd",
     "voiceovers/slide_01.mp3": "952e757191f141f9e2d57fec9c7c87a391ae54152caa23223b36bcde54bba136",
     "voiceovers/slide_02.mp3": "08ce9fdb1536378846c45b08f77c9684f20a2a2ecc2db9136b5baf13dbe16983",
