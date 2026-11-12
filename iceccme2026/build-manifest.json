@@ -1,11 +1,11 @@
 {
   "variant": "short",
   "source": "short/slide.md",
-  "source_sha256": "cfa0fb9d166d81c061f1eecc612881325215fa1a52ef51850f4bc645c7723634",
+  "source_sha256": "7978e41478516c501d344925aa0f04c0c0e3592aaa5708a0cafbea9048e3d59c",
   "renderer": "pandoc markdown-native_divs-smart to revealjs; bundled Reveal 4.3.1",
   "statistics": {
     "slides": 17,
-    "words": 1054,
+    "words": 1089,
     "captions": 66
   },
   "files": {
@@ -31,11 +31,22 @@
     "_reveal/plugin/notes/notes.js": "b3e598656f6bdc1b8accd9c20480a191922f428d8a127641bbe3494fd30fffcb",
     "_reveal/plugin/search/search.js": "a3607816a4d21d69727d62ce4e997ba32a720765a46c123f9ee4052d9a463d45",
     "_reveal/plugin/zoom/zoom.js": "c8e0985b56e66476212c84c170a63ab4a495fcbae54777f1cf6adb0c68c6c934",
+    "bilingual.css": "cd795b476af6cc5472e8e82d4b82b3862fc5529dea0333ddbd12669042fa9c5c",
+    "bilingual.js": "2fd2db0df270e8599d215ba4bbcb7532122ef7a655a9bc6baf1aa68512af7343",
     "captions.js": "177b82c14098573397f8ee928ce7f5f1e547bf51236179b4c65d91a08f5c39ac",
     "fig/figure2_ja_ranking.png": "bdb4c62d86f3eeb325000d5dd573bba4fab2f2e2a42e28a0d7a61fb42c47b92d",
     "fig/figure3_cross_language_drift.png": "8e750c268a1b8cbac4cae512e695573294af80f85921fbc73d6af8eaf705faf0",
     "image-zoom.js": "fcd2bdec2e58e0d12210fef80e617c58785fb877cbf2f61842643f082803bdd7",
-    "index.html": "eba4d32e34a7de03c4b38b91390e79834775a2162365769c5984b07bf6cdab89",
-    "style.css": "1961a0060df146178b6921b4624b028f686f42b3be6ff3741b6c08fedee240b0"
+    "index.html": "d365d55b577ab022a68dab21407f7bbb30d7202f368420b93bb10f2af3048107",
+    "style.css": "1240230864449bbe95ac5bc73fcc8357c337d9feb3be9eba7bf636cff26b79f2",
+    "translations.js": "25b05ec7b605e7cad19500dd0b318a88b7cf37c016a5b416fde8bb8f832a96c2"
+  },
+  "bilingual": {
+    "translation_source": "short/captions.en-ja.json",
+    "translation_sha256": "b5e1222b649de75028e3431d988c05fe930fb96982d9e2153e377d60e6051240",
+    "slide_sha256": "7978e41478516c501d344925aa0f04c0c0e3592aaa5708a0cafbea9048e3d59c",
+    "caption_units": 66,
+    "generator_sha256": "fbb36af3bd80cedaf73e6f174975a5bab88eafcbd179d0aab95368d1977238ec",
+    "command": "make -C paper/iceccme2026/presentation short"
   }
 }

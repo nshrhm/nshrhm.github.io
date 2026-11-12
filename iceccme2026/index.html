@@ -31,6 +31,7 @@
   </style>
   <link rel="stylesheet" href="_reveal/dist/theme/white.css" id="theme">
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="bilingual.css"/>
   <meta name="description" content="ICECCME2026 venue presentation on Japanese human ratings, conditional uncertainty, and translated-condition drift">
 </head>
 <body>
@@ -42,8 +43,14 @@
 
 <!-- Page 1 (source page 1): Introduce the submitted paper, authors and compact screening purpose. -->
 <div class="slide-body title-slide" data-paper-page="1">
-<p class="eyebrow">
-ICECCME 2026 · Paper 648 · Bali, Indonesia · 15–17 October 2026
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026 · Paper 648 · Bali, Indonesia ·
+15–17 October 2026</span>
 </p>
 <h2
 id="a-compact-japanese-human-grounded-benchmark-for-literary-emotion-understanding-with-englishchinese-robustness-probes">A
@@ -76,8 +83,13 @@ readers. This is a compact screening study.
 
 <!-- Page 2: Orient a first-time listener with the two experiment paths and their different references. -->
 <div class="slide-body" data-paper-page="3">
-<p class="eyebrow">
-ICECCME 2026 · Study overview
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><strong aria-current="step">Introduction</strong>
+<span aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026</span>
 </p>
 <h2 id="how-close-are-ai-ratings-to-readers">How close are AI ratings to
 readers?</h2>
@@ -131,8 +143,13 @@ still disagree with readers.
 
 <!-- Page 3 (source page 4): State the fixed human benchmark and neutral-reader model protocol. -->
 <div class="slide-body design-slide" data-paper-page="4">
-<p class="eyebrow">
-ICECCME 2026 · Experimental design
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <strong aria-current="step">Methods</strong>
+<span aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026</span>
 </p>
 <h2 id="three-works-four-emotions-twelve-fixed-cells">Three works, four
 emotions, twelve fixed cells</h2>
@@ -167,12 +184,12 @@ six models are listed in Table I.
 </div>
 <aside class="notes">
 <p data-caption>
-We use three works and four emotions: interest, surprise, sadness, and
-anger. Scores range from zero to one hundred.
+To answer these two questions, we compare the scores in two ways. We use
+three works and four emotions: interest, surprise, sadness, and anger.
 </p>
 <p data-caption>
-We collected ninety-one student responses, with eighty-six to ninety-one
-usable ratings per cell.
+Scores range from zero to one hundred. We collected ninety-one student
+responses, with eighty-six to ninety-one usable ratings per cell.
 </p>
 <p data-caption>
 Six models scored three languages and three works, with ten repetitions.
@@ -191,8 +208,13 @@ Ninety rows needed retries. No scores were imputed.
 
 <!-- Page 4: Show a verified request excerpt and distinguish the requested output from the numeric analysis. -->
 <div class="slide-body" data-paper-page="prompt">
-<p class="eyebrow">
-ICECCME 2026 · The model task
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <strong aria-current="step">Methods</strong>
+<span aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026</span>
 </p>
 <h2 id="what-did-we-ask-the-models">What did we ask the models?</h2>
 <p class="figure-intro">
@@ -248,8 +270,13 @@ explanations.
 
 <!-- Page 5 (source page 5): Merge metric definitions, conditional uncertainty and composition checks. -->
 <div class="slide-body" data-paper-page="5">
-<p class="eyebrow">
-ICECCME 2026 · Metrics, uncertainty and sensitivity
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <strong aria-current="step">Methods</strong>
+<span aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026</span>
 </p>
 <h2 id="two-distances-with-uncertainty-checks">Two distances, with
 uncertainty checks</h2>
@@ -312,8 +339,13 @@ sensitivity.
 
 <!-- Page 6 (source page 7): Report conditional uncertainty without claiming a unique best model. -->
 <div class="slide-body" data-paper-page="7">
-<p class="eyebrow">
-ICECCME 2026 · Alignment with Japanese human ratings
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <strong aria-current="step">Results</strong>
+<span aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026</span>
 </p>
 <h2 id="the-top-four-models-are-not-clearly-separated">The top four
 models are not clearly separated</h2>
@@ -327,8 +359,9 @@ apply to 12 fixed cells.
 </div>
 <aside class="notes">
 <p data-caption>
-Look at the left panel of Figure 2. Lower MAE means closer agreement
-with Japanese readers.
+Now, let’s look at the results, starting with agreement with Japanese
+readers. Look at the left panel of Figure 2. Lower MAE means closer
+agreement.
 </p>
 <p data-caption>
 Among the top four models, every pairwise MAE-difference interval
@@ -344,8 +377,13 @@ show equivalence.
 
 <!-- Page 7 (source page 8): Explain observed signed-error concentration and composition sensitivity without causal claims. -->
 <div class="slide-body" data-paper-page="8">
-<p class="eyebrow">
-ICECCME 2026 · Cell errors and composition sensitivity
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <strong aria-current="step">Results</strong>
+<span aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026</span>
 </p>
 <h2 id="error-direction-depends-on-the-story">Error direction depends on
 the story</h2>
@@ -384,8 +422,13 @@ emotions. These checks show sensitivity, not a causal explanation.
 
 <!-- Page 8 (source page 9): Explain within-model translated-condition drift and its interpretation boundary. -->
 <div class="slide-body" data-paper-page="9">
-<p class="eyebrow">
-ICECCME 2026 · Translated-condition robustness
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <strong aria-current="step">Results</strong>
+<span aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026</span>
 </p>
 <h2 id="drift-measures-change-from-japanese-scores">Drift measures
 change from Japanese scores</h2>
@@ -399,8 +442,8 @@ Conditional 95% intervals
 </div>
 <aside class="notes">
 <p data-caption>
-Figure 3 shows change from each model’s Japanese scores. Lower drift
-means less change.
+Now, our second question: how much do scores change across languages?
+Lower drift means less change from each model’s Japanese scores.
 </p>
 <p data-caption>
 Both text and instructions change language. Drift does not measure
@@ -416,8 +459,13 @@ effects.
 
 <!-- Page 9 (source page 10): Read the frozen Table I as a two-axis screening summary, not a deployment score. -->
 <div class="slide-body table-slide" data-paper-page="10">
-<p class="eyebrow">
-ICECCME 2026 · Table I
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <strong aria-current="step">Results</strong>
+<span aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026</span>
 </p>
 <h2 id="human-agreement-and-stability-differ">Human agreement and
 stability differ</h2>
@@ -630,8 +678,14 @@ combined deployment score.
 
 <!-- Page 10: Close with the approved contribution and next validation step, retaining the screening boundary. -->
 <div class="slide-body" data-paper-page="11">
-<p class="eyebrow">
-ICECCME 2026 · Conclusions
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span>
+<strong aria-current="step">Conclusion</strong></span><span
+class="section-context">ICECCME 2026</span>
 </p>
 <h2 id="a-practical-starting-point-for-evaluation">A practical starting
 point for evaluation</h2>
@@ -652,8 +706,8 @@ multilingual human references.
 </div>
 <aside class="notes">
 <p data-caption>
-This study gives us a practical starting point. Measure human alignment
-and translated-condition stability separately.
+Let me conclude with the main lesson: human agreement and stability need
+separate evaluation. This study gives us a practical starting point.
 </p>
 <p data-caption>
 Read average scores together with uncertainty, cell errors, and
@@ -674,8 +728,13 @@ and matched multilingual human references.
 
 <!-- Page 11 (source page 13): Preserve the submitted acknowledgments and funding, then invite questions. -->
 <div class="slide-body closing-slide" data-paper-page="13">
-<p class="eyebrow">
-ICECCME 2026 · Acknowledgments / Q&amp;A
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026 · Acknowledgments / Q&amp;A</span>
 </p>
 <h2 id="thank-you.-questions">Thank you. Questions?</h2>
 <div class="content-grid">
@@ -715,9 +774,14 @@ Thank you. Questions?
 
 <!-- Page 12 (Q&A only): Make verified prompt wording available for questions without exposing provider responses or claiming a full prompt reproduction. -->
 <div class="slide-body" data-paper-page="qa-prompt">
-<p class="eyebrow">
-ICECCME 2026 · Q&amp;A reference · Selected verbatim EN excerpts (not
-the full prompt)
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026 · Q&amp;A reference · Selected
+verbatim EN excerpts (not the full prompt)</span>
 </p>
 <h2 id="english-prompt-role-definitions-and-rules">English prompt: role,
 definitions and rules</h2>
@@ -764,8 +828,14 @@ personas in this study.
 
 <!-- Page 13 (Q&A only): Show the complete fixed T1 English stimulus without adding a literary or causal interpretation. -->
 <div class="slide-body" data-paper-page="qa-t1">
-<p class="eyebrow">
-ICECCME 2026 · Q&amp;A reference · T1 · Kyusaku Yumeno
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026 · Q&amp;A reference · T1 · Kyusaku
+Yumeno</span>
 </p>
 <h2 id="the-pocket-watch">The Pocket Watch</h2>
 <p class="detail-line">
@@ -810,8 +880,14 @@ will not read every line aloud.
 
 <!-- Page 14 (Q&A only): Preserve the fixed T2 stimulus in reading order; split only its display, not the experimental input. -->
 <div class="slide-body" data-paper-page="qa-t2-1">
-<p class="eyebrow">
-ICECCME 2026 · Q&amp;A reference · T2 · Kyusaku Yumeno
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026 · Q&amp;A reference · T2 · Kyusaku
+Yumeno</span>
 </p>
 <h2 id="the-money-and-the-pistol-12">The Money and the Pistol · 1/2</h2>
 <p class="detail-line">
@@ -853,8 +929,14 @@ the complete work in one request.
 
 <!-- Page 15 (Q&A only): Preserve the fixed T2 stimulus in reading order; split only its display, not the experimental input. -->
 <div class="slide-body" data-paper-page="qa-t2-2">
-<p class="eyebrow">
-ICECCME 2026 · Q&amp;A reference · T2 · Kyusaku Yumeno
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026 · Q&amp;A reference · T2 · Kyusaku
+Yumeno</span>
 </p>
 <h2 id="the-money-and-the-pistol-22">The Money and the Pistol · 2/2</h2>
 <p class="detail-line">
@@ -897,8 +979,14 @@ not establish why the models differed from readers.
 
 <!-- Page 16 (Q&A only): Show the complete fixed T3 English stimulus while keeping the Japanese result distinct from translated-text interpretation. -->
 <div class="slide-body" data-paper-page="qa-t3">
-<p class="eyebrow">
-ICECCME 2026 · Q&amp;A reference · T3 · Kotaro Takamura
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026 · Q&amp;A reference · T3 · Kotaro
+Takamura</span>
 </p>
 <h2 id="the-tattered-ostrich">The Tattered Ostrich</h2>
 <p class="detail-line">
@@ -935,8 +1023,14 @@ translation.
 
 <!-- Page 17 (Q&A only): Retain all detailed limitations for questions without weakening the main result boundaries. -->
 <div class="slide-body" data-paper-page="qa-limits">
-<p class="eyebrow">
-ICECCME 2026 · Q&amp;A reference · Limitations
+<p class="eyebrow section-roadmap">
+<span class="section-steps"
+aria-label="Talk structure"><span>Introduction</span> <span
+aria-hidden="true">→</span> <span>Methods</span> <span
+aria-hidden="true">→</span> <span>Results</span> <span
+aria-hidden="true">→</span> <span>Conclusion</span></span><span
+class="section-context">ICECCME 2026 · Q&amp;A reference ·
+Limitations</span>
 </p>
 <h2 id="where-the-evidence-stops">Where the evidence stops</h2>
 <div class="content-grid">
@@ -998,6 +1092,8 @@ references.
 </aside>
 <script src="./captions.js"></script>
 <script src="./image-zoom.js"></script>
+<script src="./translations.js"></script>
+<script src="./bilingual.js"></script>
 </section>
     </div>
   </div>
