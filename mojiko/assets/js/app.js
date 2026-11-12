@@ -1,7 +1,7 @@
 (() => {
   const root = document.documentElement;
   const body = document.body;
-  const storagePrefix = 'mojiko:2026-11-13:v1:';
+  const storagePrefix = 'mojiko:2026-11-13:v2:';
   const storage = {
     get(key) { try { return localStorage.getItem(storagePrefix + key); } catch { return null; } },
     set(key, value) {
@@ -129,7 +129,7 @@
 
   document.querySelectorAll('[data-share]').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const data = {title: document.title, text: '2026年11月13日（金）門司港レトロ旅のしおり・推奨Aは船なし', url: location.href};
+      const data = {title: document.title, text: '2026年11月13日（金）09:00自宅出発・唐戸経由で巌流島上陸。焼きカレーとプリン、16:00頃帰宅は努力目標。', url: location.href};
       try {
         if (navigator.share) await navigator.share(data);
         else if (navigator.clipboard) { await navigator.clipboard.writeText(location.href); btn.textContent = 'URLコピー済み'; }
