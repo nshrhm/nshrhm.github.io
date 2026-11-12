@@ -1,11 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="近傍、決定木、アンサンブル、ランダムフォレスト、SVMを操作して学ぶオフライン図解教材">
-<title>動かしてわかる機械学習｜人工知能概論 第4回</title>
-<style>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description"
+              content="近傍、決定木、アンサンブル、ランダムフォレスト、SVMを操作して学ぶオフライン図解教材">
+        <title>動かしてわかる機械学習｜人工知能概論 第4回</title>
+        <style>
 :root{--ink:#142f45;--muted:#516575;--paper:#f3f6f7;--line:#c9d7df;--a:#006c78;--b:#af4a0b;--accent:#215ab3;--gold:#ffc85b;--white:#fff;--radius:18px}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button,select,input[type=number]{border:1px solid #91a7b6;border-radius:8px;background:white;color:var(--ink);padding:.45rem .7rem}button{cursor:pointer;font-weight:650}button:hover{background:#e8eff8}button:disabled{cursor:default;opacity:.5}button.primary{background:var(--ink);color:white;border-color:var(--ink)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}input[type=range]{accent-color:var(--accent);max-width:100%;width:145px}input[type=number]{width:5.3rem}a{color:#1b559c}h1,h2,h3,p{margin:0}h1{font-size:clamp(1.8rem,4vw,2.9rem);line-height:1.4;letter-spacing:.025em}h2{font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.5}h3{font-size:1.1rem}p+p{margin-top:.6rem}small,.small{font-size:.86rem}.muted{color:var(--muted)}.eyebrow{font-size:.8rem;letter-spacing:.16em;font-weight:700}.shell{max-width:1260px;margin:auto;padding:0 28px}.masthead{background:var(--ink);color:white;padding:27px 0 30px}.topline{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:16px}.topline button{font-size:.88rem}.masthead p{color:#cbdce7;margin-top:9px}.nav{display:flex;gap:7px;flex-wrap:wrap;padding:18px 0}.nav button{flex:1;min-width:130px;text-align:left;font-size:.94rem;border-color:var(--line)}.nav button[aria-pressed=true]{background:var(--ink);color:white}.nav b{display:inline-block;margin-right:8px;color:#768fa6}.nav button[aria-pressed=true] b{color:var(--gold)}main{padding-bottom:26px}.lesson-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:7px 0 13px}.intro{max-width:850px;margin-bottom:14px}.question{border-left:5px solid var(--gold);background:#fff6df;padding:13px 19px;border-radius:0 10px 10px 0;margin-bottom:20px}.question strong{margin-right:10px}.workspace{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(285px,1fr);gap:20px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:0}.panel>h3{margin-bottom:8px}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:13px;margin:10px 0 14px}.controls label{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.controls .wide{width:100%}.query-controls{padding:9px 0;border-top:1px solid var(--line)}.legend{display:flex;flex-wrap:wrap;gap:18px;font-size:.86rem}.a{color:var(--a);font-weight:750}.b{color:var(--b);font-weight:750}.q{color:#152e46;font-weight:750}svg{width:100%;height:auto;display:block;overflow:visible}svg text{font-family:inherit;fill:var(--ink);font-size:15px}svg .tick{font-size:12px;fill:var(--muted)}svg .label{font-size:13px;font-weight:650}svg .query{cursor:grab;touch-action:none}.plot{margin-top:6px}.result{border-radius:12px;background:#eaf3f5;padding:15px;margin:14px 0 0}.result strong{font-size:1.22rem}.result p{font-size:.95rem}.step{display:inline-grid;place-items:center;background:var(--ink);color:#fff;border-radius:50%;width:28px;height:28px;font-size:.85rem;margin-right:7px}.stack{display:grid;gap:14px}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.vote{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);padding:12px 15px;border-radius:10px}.badge{display:inline-block;font-weight:800;padding:1px 12px;border-radius:20px;background:#e5edef}.badge.a{background:#daf2f0}.badge.b{background:#ffeadb}.arrow{text-align:center;font-size:1.6rem;color:var(--accent)}.votes-flow{display:grid;gap:8px}.meter{height:17px;display:flex;background:#ffeadb;border-radius:5px;overflow:hidden;margin:9px 0}.meter span{background:var(--a)}details{margin-top:18px;border:1px solid var(--line);border-radius:12px;background:white;padding:12px 18px}summary{cursor:pointer;font-weight:700}details[open]>summary{margin-bottom:15px}details p,details .table-wrap{margin-top:10px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#f1f5f8}tr.selected{background:#e8f4f3}caption{text-align:left;margin-bottom:7px;color:var(--muted)}.tree{list-style:none;margin:8px 0;padding:0}.tree .tree{margin:6px 0 6px 12px;padding-left:13px;border-left:2px solid var(--line)}.tree-node{display:inline-block;padding:6px 10px;border:1px solid var(--line);border-radius:8px;line-height:1.5;font-size:.9rem}.tree-node.active{border:2px solid var(--accent);background:#edf3ff}.branch{font-size:.8rem;color:var(--muted);margin-right:6px}.forest{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}.forest .panel{padding:15px}.sample{font-size:.88rem;word-spacing:4px;margin-top:10px}.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.chip{padding:1px 7px;border:1px solid var(--line);border-radius:5px;background:#f5f8fa;font-size:.85rem}.phases{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.phases span{padding:5px 10px;border-radius:6px;background:#edf1f5;font-size:.9rem}.phases .current{background:var(--ink);color:white}.explain-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}.flow span{border:1px solid var(--line);padding:9px 12px;border-radius:8px;background:#f5f8fa}.answer{background:#f7fafc}.footer-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:25px 0 0}.footer-nav span{font-size:.85rem;color:var(--muted)}footer{border-top:1px solid var(--line);padding:20px 0 35px;color:var(--muted);font-size:.82rem}.projection .masthead{padding:12px 0}.projection .masthead h1{font-size:1.55rem}.projection .masthead p,.projection .intro,.projection .study-only{display:none}.projection .panel{padding:16px}.projection .workspace{grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr)}.projection .result strong{font-size:1.5rem}[hidden]{display:none!important}@media(max-width:760px){.shell{padding:0 16px}.workspace,.projection .workspace,.explain-grid,.forest{grid-template-columns:1fr}.nav{gap:6px}.nav button{min-width:100px;flex-basis:30%;font-size:.85rem;padding:9px}.panel{padding:15px}.topline{align-items:flex-start}.eyebrow{font-size:.7rem}.question{padding:11px 13px}.lesson-head{align-items:flex-start}.lesson-head button{white-space:nowrap}.footer-nav span{display:none}.masthead{padding-top:20px}body{font-size:16px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}@media print{.masthead{background:white;color:#142f45}.nav,.controls,.footer-nav,.topline button,.lesson-head button{display:none}.workspace{display:block}.panel{break-inside:avoid;margin-bottom:15px}}
 /* Projection keeps the active experiment and its result close together. */
@@ -41,97 +42,295 @@
 </style>
 </head>
 <body>
-<header class="masthead"><div class="shell">
-  <div class="topline"><span class="eyebrow">人工知能概論 2026 ／ 第4回 機械学習2</span><button id="projection" type="button" aria-pressed="false">投影表示にする</button></div>
-  <h1>動かしてわかる、機械学習。</h1>
-  <p>近い例で決める。質問で分ける。予測を合わせる。境界を考える。</p>
-</div></header>
+<header class="masthead">
+<div class="shell">
+<div class="topline">
+<span class="eyebrow">人工知能概論 2026 ／ 第4回 機械学習2</span><button id="projection" type="button" aria-pressed="false">投影表示にする</button>
+</div>
+<h1>動かしてわかる、機械学習。</h1>
+<p>近い例で決める。質問で分ける。予測を合わせる。境界を考える。</p>
+</div>
+</header>
 <div class="shell">
 <nav class="nav" aria-label="学ぶ手法">
-  <button type="button" data-tab="knn" aria-pressed="true" aria-controls="knn"><b>01</b>k近傍法</button>
-  <button type="button" data-tab="tree" aria-pressed="false" aria-controls="tree"><b>02</b>決定木</button>
-  <button type="button" data-tab="ensemble" aria-pressed="false" aria-controls="ensemble"><b>03</b>アンサンブル</button>
-  <button type="button" data-tab="forest" aria-pressed="false" aria-controls="forest"><b>04</b>ランダムフォレスト</button>
-  <button type="button" data-tab="svm" aria-pressed="false" aria-controls="svm"><b>05</b>SVM</button>
+<button type="button" data-tab="knn" aria-pressed="true" aria-controls="knn"><b>01</b>k近傍法</button>
+<button type="button" data-tab="tree" aria-pressed="false" aria-controls="tree"><b>02</b>決定木</button>
+<button type="button" data-tab="ensemble" aria-pressed="false" aria-controls="ensemble"><b>03</b>アンサンブル</button>
+<button type="button" data-tab="forest" aria-pressed="false" aria-controls="forest"><b>04</b>ランダムフォレスト</button>
+<button type="button" data-tab="svm" aria-pressed="false" aria-controls="svm"><b>05</b>SVM</button>
 </nav>
 <main>
-<noscript><p class="question">操作するにはブラウザーのJavaScriptを有効にしてください。外部への通信は不要です。</p></noscript>
+<noscript>
+<p class="question">操作するにはブラウザーのJavaScriptを有効にしてください。外部への通信は不要です。</p>
+</noscript>
 <section id="knn" aria-labelledby="knn-title">
-  <div class="lesson-head"><h2 id="knn-title">01　近い例に聞いてみよう</h2>
-<button type="button" data-reset="knn">リセット</button></div>
-  <p class="intro">k近傍法は、予測したい点に近い学習例をk件集め、そのラベルから答えを決めます。この教材では1件を1票として数えます。</p>
-  <p class="question"><strong>まず予想</strong>入力が (2, 3) のとき、近い1件と近い3件では、同じ答えになるでしょうか？</p>
-  <div class="workspace"><div class="panel">
-    <div class="legend"><span class="a">● A</span><span class="b">■ B</span><span class="q">◆ 予測したい点</span></div>
-    <div id="knn-plot" class="plot"></div>
-    <p class="small muted">図をクリック／タップ、または◆をドラッグして移動。下の入力欄でも操作できます。</p>
-    <div class="controls query-controls" data-query="knn"></div>
-  </div><div class="panel">
-    <h3><span class="step">1</span>近い何件に聞く？</h3>
-    <div class="controls"><label for="knn-k">k <input id="knn-k" type="range" min="1" max="7" value="3"><output id="knn-k-value" for="knn-k">3</output></label></div>
-    <h3><span class="step">2</span>近い順に集める</h3>
-    <div id="knn-ranks"></div><div id="knn-result" class="result" aria-live="polite"></div>
-    <details><summary>尺度も変えてみる</summary><p>同じ座標でも、距離を測る尺度を変えると近い順が変わります。</p>
-      <div class="controls"><label for="knn-data">データ <select id="knn-data"><option value="main">共通の7件</option><option value="scale">尺度用の2件</option></select></label><label for="knn-scale">yの尺度 <select id="knn-scale"><option value="1">そのまま</option><option value="3">yを3で割る</option></select></label></div>
-      <p class="small">「尺度用の2件」では入力を (0, 0)、kを1にします。図のy座標も変換します。前処理の尺度は学習側で決め、予測対象にも同じ変換を適用します。</p>
-    </details>
-  </div></div>
-  <details class="study-only"><summary>詳しく見る：距離と同点の規約</summary><p>距離の二乗 = (xの差)² + (yの差 ÷ 尺度)²。平方根を取らなくても近い順は同じです。上の表はこの値です。同距離はID順、同票はAとします。これは既存Python演習と共通の教材内の規約で、一般に決まった規則ではありません。奇数kでも、多クラス分類や同距離の境目の問題は別に残ります。</p></details>
-  <details class="answer study-only"><summary>確認：kを大きくすれば、必ずよくなる？</summary><p>いいえ。広い範囲の多数派を反映するため、小さな領域の違いを見落とすこともあります。kは検証データで選び、選んだ後に独立したテストデータで確認します。この図の予測だけで汎化性能は判断できません。</p></details>
+<div class="lesson-head">
+<h2 id="knn-title">01　近い例に聞いてみよう</h2>
+<button type="button" data-reset="knn">リセット</button>
+</div>
+<p class="intro">k近傍法は、予測したい点に近い学習例をk件集め、そのラベルから答えを決めます。この教材では1件を1票として数えます。</p>
+<p class="question"><strong>まず予想</strong>入力が (2, 3) のとき、近い1件と近い3件では、同じ答えになるでしょうか？</p>
+<div class="workspace">
+<div class="panel">
+<div class="legend"><span class="a">● A</span><span class="b">■ B</span><span class="q">◆ 予測したい点</span></div>
+<div id="knn-plot" class="plot"></div>
+<p class="small muted">図をクリック／タップ、または◆をドラッグして移動。下の入力欄でも操作できます。</p>
+<div class="controls query-controls" data-query="knn"></div>
+</div>
+<div class="panel">
+<h3><span class="step">1</span>近い何件に聞く？</h3>
+<div class="controls">
+<label for="knn-k">
+k
+<input id="knn-k" type="range" min="1" max="7" value="3"><output id="knn-k-value" for="knn-k">3</output>
+</label>
+</div>
+<h3><span class="step">2</span>近い順に集める</h3>
+<div id="knn-ranks"></div>
+<div id="knn-result" class="result" aria-live="polite"></div>
+<details>
+<summary>尺度も変えてみる</summary>
+<p>同じ座標でも、距離を測る尺度を変えると近い順が変わります。</p>
+<div class="controls">
+<label for="knn-data">
+データ
+<select id="knn-data">
+<option value="main">共通の7件</option>
+<option value="scale">尺度用の2件</option>
+</select></label><label for="knn-scale">yの尺度
+<select id="knn-scale">
+<option value="1">そのまま</option>
+<option value="3">yを3で割る</option>
+</select>
+</label>
+</div>
+<p class="small">「尺度用の2件」では入力を (0, 0)、kを1にします。図のy座標も変換します。前処理の尺度は学習側で決め、予測対象にも同じ変換を適用します。</p>
+</details>
+</div>
+</div>
+<details class="study-only">
+<summary>詳しく見る：距離と同点の規約</summary>
+<p>距離の二乗 = (xの差)² + (yの差 ÷ 尺度)²。平方根を取らなくても近い順は同じです。上の表はこの値です。同距離はID順、同票はAとします。これは既存Python演習と共通の教材内の規約で、一般に決まった規則ではありません。奇数kでも、多クラス分類や同距離の境目の問題は別に残ります。</p>
+</details>
+<details class="answer study-only">
+<summary>確認：kを大きくすれば、必ずよくなる？</summary>
+<p>いいえ。広い範囲の多数派を反映するため、小さな領域の違いを見落とすこともあります。kは検証データで選び、選んだ後に独立したテストデータで確認します。この図の予測だけで汎化性能は判断できません。</p>
+</details>
 </section>
 <section id="tree" aria-labelledby="tree-title" hidden>
-  <div class="lesson-head"><h2 id="tree-title">02　質問でデータを分けよう</h2>
-<button type="button" data-reset="tree">リセット</button></div>
-  <p class="intro">決定木は「xは4以下？」のような質問をたどります。質問を学習で決めることと、できた木で予測することを分けて観察しましょう。</p>
-  <p class="question"><strong>まず予想</strong>x ≤ 1 と x ≤ 4 では、どちらがAとBの混ざり方を減らせるでしょうか？</p>
-  <div class="workspace"><div class="panel"><div class="legend"><span class="a">● A</span><span class="b">■ B</span><span class="q">◆ 予測したい点</span></div><div id="tree-plot" class="plot"></div><div class="controls query-controls" data-query="tree"></div><p class="small muted">図の色分けは木の予測領域。線は学習した分岐です。</p></div>
-  <div class="panel"><h3><span class="step">1</span>一つの質問を試す</h3>
-<div class="controls"><label for="tree-axis">特徴 <select id="tree-axis"><option value="0">x</option><option value="1">y</option></select></label><label for="tree-threshold">しきい値 <select id="tree-threshold"><option>1</option><option selected>4</option><option>7</option></select></label></div>
-    <h3><span class="step">2</span>データから質問を選ぶ</h3>
-<div class="controls"><button id="tree-learn" type="button" class="primary">学習する</button><span class="small">候補の中で混ざり方が最小の分岐へ</span></div>
-    <div id="tree-model"></div><div id="tree-result" class="result" aria-live="polite"></div>
-  </div></div>
-  <details class="study-only"><summary>詳しく見る：候補の比較・木の深さ</summary><p>Gini不純度は、ラベルが一種類なら0、AとBが半々なら0.5。左右の件数で重み付けした値を比べます。同点はx優先、次に小さいしきい値。不純度が改善しなければ分岐を止めます。</p><div id="tree-candidates" class="table-wrap"></div><div class="controls"><label for="tree-depth">学習する木の最大深さ <select id="tree-depth"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label></div><p>深さを変えると自動で再学習します。手動で質問を選ぶと1段の木に戻ります。細かく分けられることと、未知の入力で正しいことは別です。</p></details>
-  <details class="answer study-only"><summary>確認：木の経路を説明できたら、原因もわかった？</summary><p>説明できるのはモデルが予測した経路です。「x ≤ 4だからAと予測した」は、現実でxがAの原因であることの証明ではありません。</p></details>
+<div class="lesson-head">
+<h2 id="tree-title">02　質問でデータを分けよう</h2>
+<button type="button" data-reset="tree">リセット</button>
+</div>
+<p class="intro">決定木は「xは4以下？」のような質問をたどります。質問を学習で決めることと、できた木で予測することを分けて観察しましょう。</p>
+<p class="question"><strong>まず予想</strong>x ≤ 1 と x ≤ 4 では、どちらがAとBの混ざり方を減らせるでしょうか？</p>
+<div class="workspace">
+<div class="panel">
+<div class="legend"><span class="a">● A</span><span class="b">■ B</span><span class="q">◆ 予測したい点</span></div>
+<div id="tree-plot" class="plot"></div>
+<div class="controls query-controls" data-query="tree"></div>
+<p class="small muted">図の色分けは木の予測領域。線は学習した分岐です。</p>
+</div>
+<div class="panel">
+<h3><span class="step">1</span>一つの質問を試す</h3>
+<div class="controls">
+<label for="tree-axis">
+特徴
+<select id="tree-axis">
+<option value="0">x</option>
+<option value="1">y</option>
+</select></label><label for="tree-threshold">しきい値
+<select id="tree-threshold">
+<option>1</option>
+<option selected>4</option>
+<option>7</option>
+</select>
+</label>
+</div>
+<h3><span class="step">2</span>データから質問を選ぶ</h3>
+<div class="controls">
+<button id="tree-learn" type="button" class="primary">学習する</button><span class="small">候補の中で混ざり方が最小の分岐へ</span>
+</div>
+<div id="tree-model"></div>
+<div id="tree-result" class="result" aria-live="polite"></div>
+</div>
+</div>
+<details class="study-only">
+<summary>詳しく見る：候補の比較・木の深さ</summary>
+<p>Gini不純度は、ラベルが一種類なら0、AとBが半々なら0.5。左右の件数で重み付けした値を比べます。同点はx優先、次に小さいしきい値。不純度が改善しなければ分岐を止めます。</p>
+<div id="tree-candidates" class="table-wrap"></div>
+<div class="controls">
+<label for="tree-depth">
+学習する木の最大深さ
+<select id="tree-depth">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+</select>
+</label>
+</div>
+<p>深さを変えると自動で再学習します。手動で質問を選ぶと1段の木に戻ります。細かく分けられることと、未知の入力で正しいことは別です。</p>
+</details>
+<details class="answer study-only">
+<summary>確認：木の経路を説明できたら、原因もわかった？</summary>
+<p>説明できるのはモデルが予測した経路です。「x ≤ 4だからAと予測した」は、現実でxがAの原因であることの証明ではありません。</p>
+</details>
 </section>
 <section id="ensemble" aria-labelledby="ensemble-title" hidden>
-  <div class="lesson-head"><h2 id="ensemble-title">03　三つの予測を合わせよう</h2>
-<button type="button" data-reset="ensemble">リセット</button></div>
-  <p class="intro">アンサンブルは複数のモデルの出力を組み合わせる考え方です。同じ種類の手法を使った別々のモデルも含みます。</p>
-  <p class="question"><strong>まず予想</strong>一つのモデルだけがB、残りの二つがAと答えたら、1票ずつの多数決ではどうなるでしょうか？</p>
-  <div class="workspace"><div class="panel"><div class="legend"><span class="a">● A</span><span class="b">■ B</span><span class="q">◆ 同じ入力を3モデルへ</span></div><div id="ensemble-plot" class="plot"></div><div class="controls query-controls" data-query="ensemble"></div></div><div class="panel"><h3>同じ入力 → それぞれの予測 → 集約</h3>
-<div id="ensemble-votes" class="votes-flow"></div><div id="ensemble-result" class="result" aria-live="polite"></div><p class="small muted">ここでは学習済みの3モデルを同じ1票として扱います。</p></div></div>
-  <details class="study-only"><summary>誤りを補える場合・補えない場合を比べる</summary><div class="controls"><label for="ensemble-errors">例 <select id="ensemble-errors"><option value="different">誤りが別々</option><option value="same">誤りが重なる</option></select></label></div><div id="ensemble-error-table" class="table-wrap"></div><p>この表は誤りの重なりだけを比べる架空例です。上の3モデルの実行結果ではありません。モデル数を増やすだけで改善するとは限りません。</p></details>
-  <details class="study-only"><summary>詳しく見る：モデルの作り方にも違いがある</summary><h3>バギング：再抽出して、それぞれ学ぶ</h3>
-<div class="flow"><span>元の学習例</span>→<span>複数の復元抽出標本</span>→<span>それぞれのモデル</span>→<span>集約</span></div><h3>ブースティング：先の結果を踏まえて、順に学ぶ</h3>
-<div class="flow"><span>モデル1</span>→<span>誤りなどを踏まえモデル2</span>→<span>さらに追加</span>→<span>集約</span></div><p>誤りの利用や重み付けの具体的方法は手法によって異なります。投票は出力の集約方法に注目した言葉です。</p></details>
-  <details class="answer study-only"><summary>確認：全員が同じ間違いをすると？</summary><p>多数決でもその間違いが残ります。モデルをコピーして票数だけ増やしても、新しい情報は増えません。組合せの効果は未知のデータで確かめます。</p></details>
+<div class="lesson-head">
+<h2 id="ensemble-title">03　三つの予測を合わせよう</h2>
+<button type="button" data-reset="ensemble">リセット</button>
+</div>
+<p class="intro">アンサンブルは複数のモデルの出力を組み合わせる考え方です。同じ種類の手法を使った別々のモデルも含みます。</p>
+<p class="question"><strong>まず予想</strong>一つのモデルだけがB、残りの二つがAと答えたら、1票ずつの多数決ではどうなるでしょうか？</p>
+<div class="workspace">
+<div class="panel">
+<div class="legend"><span class="a">● A</span><span class="b">■ B</span><span class="q">◆ 同じ入力を3モデルへ</span></div>
+<div id="ensemble-plot" class="plot"></div>
+<div class="controls query-controls" data-query="ensemble"></div>
+</div>
+<div class="panel">
+<h3>同じ入力 → それぞれの予測 → 集約</h3>
+<div id="ensemble-votes" class="votes-flow"></div>
+<div id="ensemble-result" class="result" aria-live="polite"></div>
+<p class="small muted">ここでは学習済みの3モデルを同じ1票として扱います。</p>
+</div>
+</div>
+<details class="study-only">
+<summary>誤りを補える場合・補えない場合を比べる</summary>
+<div class="controls">
+<label for="ensemble-errors">
+例
+<select id="ensemble-errors">
+<option value="different">誤りが別々</option>
+<option value="same">誤りが重なる</option>
+</select>
+</label>
+</div>
+<div id="ensemble-error-table" class="table-wrap"></div>
+<p>この表は誤りの重なりだけを比べる架空例です。上の3モデルの実行結果ではありません。モデル数を増やすだけで改善するとは限りません。</p>
+</details>
+<details class="study-only">
+<summary>詳しく見る：モデルの作り方にも違いがある</summary>
+<h3>バギング：再抽出して、それぞれ学ぶ</h3>
+<div class="flow"><span>元の学習例</span>→<span>複数の復元抽出標本</span>→<span>それぞれのモデル</span>→<span>集約</span></div>
+<h3>ブースティング：先の結果を踏まえて、順に学ぶ</h3>
+<div class="flow"><span>モデル1</span>→<span>誤りなどを踏まえモデル2</span>→<span>さらに追加</span>→<span>集約</span></div>
+<p>誤りの利用や重み付けの具体的方法は手法によって異なります。投票は出力の集約方法に注目した言葉です。</p>
+</details>
+<details class="answer study-only">
+<summary>確認：全員が同じ間違いをすると？</summary>
+<p>多数決でもその間違いが残ります。モデルをコピーして票数だけ増やしても、新しい情報は増えません。組合せの効果は未知のデータで確かめます。</p>
+</details>
 </section>
 <section id="forest" aria-labelledby="forest-title" hidden>
-  <div class="lesson-head"><h2 id="forest-title">04　違いのある木で、森を作ろう</h2>
-<button type="button" data-reset="forest">リセット</button></div>
-  <p class="intro">決定木を組み合わせるアンサンブルです。学習例を取り直すことと、各分岐で調べる特徴を選ぶことの両方で、木に違いを作ります。</p>
-  <p class="question"><strong>まず予想</strong>7件から「選んでは戻す」を7回繰り返すと、7種類すべての例が入るでしょうか？</p>
-  <div class="panel"><div class="controls"><label for="forest-seed">乱数シード <input id="forest-seed" type="number" min="0" max="4294967295" step="1" value="42" style="width:9rem"></label><button id="forest-resample" type="button">次のシードで再抽出</button><button id="forest-prev" type="button" disabled>前の段階</button><button id="forest-next" type="button" class="primary">次へ：復元抽出</button></div><div id="forest-phases" class="phases"></div><div id="forest-stage" aria-live="polite"></div><div class="controls query-controls" data-query="forest"></div><p class="small muted">3本の木／最大深さ2／各分岐の特徴候補1個。学習用7件だけを抽出します。</p></div>
-  <div id="forest-trees" class="forest"></div><div id="forest-result" class="result" aria-live="polite" hidden></div>
-  <details class="study-only"><summary>詳しく見る：多数決と確率平均は同じ？</summary><p>木単体のラベルを数える方法と、各木のクラス確率を平均する方法は結果が異なる場合があります。下はスライド26の架空の確率出力例で、上の森の出力とは別です。</p><div id="probability-controls" class="controls"></div><div id="probability-result" aria-live="polite"></div><p class="small">この教材の森は、葉に入った学習例のAの割合を各木の確率出力とし、平均が0.5以上ならAとします。同率をAにするのは教材内の規約です。scikit-learnのRF分類器も確率出力を平均しますが、この小さな実装は同ライブラリの再現実装ではありません。確率出力が現実の確率として校正済みとは限りません。</p></details>
-  <details class="answer study-only"><summary>確認：分岐の質問まで、当てずっぽうで決める？</summary><p>いいえ。ランダムに選ぶのは調べる特徴の候補です。この教材では各分岐でxかyを1個選び、その特徴で可能なしきい値を比較して加重Giniが最小のものを使います。選んだ特徴が一定、または混ざり方が改善しない場合は葉にします。同じシードなら同じ森を再現できますが、よい成績の保証にはなりません。</p></details>
+<div class="lesson-head">
+<h2 id="forest-title">04　違いのある木で、森を作ろう</h2>
+<button type="button" data-reset="forest">リセット</button>
+</div>
+<p class="intro">決定木を組み合わせるアンサンブルです。学習例を取り直すことと、各分岐で調べる特徴を選ぶことの両方で、木に違いを作ります。</p>
+<p class="question"><strong>まず予想</strong>7件から「選んでは戻す」を7回繰り返すと、7種類すべての例が入るでしょうか？</p>
+<div class="panel">
+<div class="controls">
+<label for="forest-seed">
+乱数シード
+<input id="forest-seed" type="number" min="0" max="4294967295" step="1" value="42" style="width:9rem"></label><button id="forest-resample" type="button">次のシードで再抽出</button><button id="forest-prev" type="button" disabled>前の段階</button><button id="forest-next" type="button" class="primary">次へ：復元抽出</button>
+</div>
+<div id="forest-phases" class="phases"></div>
+<div id="forest-stage" aria-live="polite"></div>
+<div class="controls query-controls" data-query="forest"></div>
+<p class="small muted">3本の木／最大深さ2／各分岐の特徴候補1個。学習用7件だけを抽出します。</p>
+</div>
+<div id="forest-trees" class="forest"></div>
+<div id="forest-result" class="result" aria-live="polite" hidden></div>
+<details class="study-only">
+<summary>詳しく見る：多数決と確率平均は同じ？</summary>
+<p>木単体のラベルを数える方法と、各木のクラス確率を平均する方法は結果が異なる場合があります。下はスライド30の架空の確率出力例で、上の森の出力とは別です。</p>
+<div id="probability-controls" class="controls"></div>
+<div id="probability-result" aria-live="polite"></div>
+<p class="small">この教材の森は、葉に入った学習例のAの割合を各木の確率出力とし、平均が0.5以上ならAとします。同率をAにするのは教材内の規約です。scikit-learnのRF分類器も確率出力を平均しますが、この小さな実装は同ライブラリの再現実装ではありません。確率出力が現実の確率として校正済みとは限りません。</p>
+</details>
+<details class="answer study-only">
+<summary>確認：分岐の質問まで、当てずっぽうで決める？</summary>
+<p>いいえ。ランダムに選ぶのは調べる特徴の候補です。この教材では各分岐でxかyを1個選び、その特徴で可能なしきい値を比較して加重Giniが最小のものを使います。選んだ特徴が一定、または混ざり方が改善しない場合は葉にします。同じシードなら同じ森を再現できますが、よい成績の保証にはなりません。</p>
+</details>
 </section>
 <section id="svm" aria-labelledby="svm-title" hidden>
-  <div class="lesson-head"><h2 id="svm-title">05　境界の「余白」を広げよう</h2>
-<button type="button" data-reset="svm">リセット</button></div>
-  <p class="intro">まずは一直線上でAとBを分けられる場合です。どちらのクラスにも近づきすぎない境界を探します。ここでの余白は、境界から各クラスの最も近い点までの距離です。</p>
-  <p class="question"><strong>まず予想</strong>Aが1と2、Bが6と7のとき、境界を3・4・5に置くと、狭い側の余白が最も大きいのはどれでしょうか？</p>
-  <div class="workspace"><div class="panel"><div class="legend"><span class="a">● A</span><span class="b">■ B</span><span>二重の枠＝この分離可能例の支持点</span></div><div id="svm-plot"></div><div id="svm-result" class="result" aria-live="polite"></div></div><div class="panel"><h3><span class="step">1</span>境界を動かす</h3>
-<div class="controls"><label for="svm-boundary">境界 <input id="svm-boundary" type="range" min="0" max="8" step="0.25" value="4"><output id="svm-boundary-value">4</output></label><button id="svm-optimize" type="button" class="primary">最大の余白</button></div><h3><span class="step">2</span>学習点を動かす</h3>
-<div id="svm-points" class="controls"></div><p class="small">点は0〜8、0.5刻み。支持点の位置を変えたら「最大の余白」を押して境界を比べましょう。</p></div></div>
-  <details class="study-only"><summary>詳しく見る：分け切れないときとCの役割</summary><p>ソフトマージンでは、余白の確保と、余白への侵入・誤分類に対するペナルティの両方を考えます。次は境界4、余白の線2・6を固定した概念図です。</p><div class="explain-grid"><div id="svm-soft-plot"></div><div><div class="controls"><label for="svm-soft">Aの点を <select id="svm-soft"><option value="3">3へ：正しく分類、余白に侵入</option><option value="5">5へ：誤分類</option></select></label><label for="svm-c">C <select id="svm-c"><option value="0.1">0.1</option><option value="1" selected>1</option><option value="10">10</option></select></label></div><div id="svm-soft-result" class="result" aria-live="polite"></div></div></div><p>他の条件が同じなら、Cが大きいほど違反を重く扱います。ここでは同じ境界の違反にかかる重みだけを計算し、境界の再学習は行いません。Cは検証で選びます。</p></details>
-  <details class="study-only"><summary>詳しく見る：特徴を変換すると、分け方が変わる</summary><p>Aが−1と1、Bが−3と3の例です。元のx軸では一つの境界で分けられません。z = x²へ変換すると、Aは1、Bは9となり、z = 5で分けられます。</p><div class="controls"><button id="kernel-toggle" type="button" aria-pressed="false">変換後を見る</button></div><div id="kernel-plot"></div><p class="small">元の空間では境界はx = ±√5。この変換に対応する内積はK(x, x′) = x²x′²です。カーネルは変換後の内積に対応する計算を利用します。これは特徴変換の導入例で、RBFカーネルの学習実験ではありません。</p></details>
-  <details class="answer study-only"><summary>確認：支持点は、いつでも「最も近い2点」？</summary><p>いいえ。この分離可能な一次元の例では境界に近い点が支持点ですが、多次元では2点とは限りません。ソフトマージンでは余白の内側や誤分類の点も関わります。余白を広く取ることやカーネルの利用だけで、未知のデータの正解は保証されません。</p></details>
+<div class="lesson-head">
+<h2 id="svm-title">05　境界の「余白」を広げよう</h2>
+<button type="button" data-reset="svm">リセット</button>
+</div>
+<p class="intro">まずは一直線上でAとBを分けられる場合です。どちらのクラスにも近づきすぎない境界を探します。ここでの余白は、境界から各クラスの最も近い点までの距離です。</p>
+<p class="question"><strong>まず予想</strong>Aが1と2、Bが6と7のとき、境界を3・4・5に置くと、狭い側の余白が最も大きいのはどれでしょうか？</p>
+<div class="workspace">
+<div class="panel">
+<div class="legend"><span class="a">● A</span><span class="b">■ B</span><span>二重の枠＝この分離可能例の支持点</span></div>
+<div id="svm-plot"></div>
+<div id="svm-result" class="result" aria-live="polite"></div>
+</div>
+<div class="panel">
+<h3><span class="step">1</span>境界を動かす</h3>
+<div class="controls">
+<label for="svm-boundary">
+境界
+<input id="svm-boundary" type="range" min="0" max="8" step="0.25" value="4"><output id="svm-boundary-value">4</output></label><button id="svm-optimize" type="button" class="primary">最大の余白</button>
+</div>
+<h3><span class="step">2</span>学習点を動かす</h3>
+<div id="svm-points" class="controls"></div>
+<p class="small">点は0〜8、0.5刻み。支持点の位置を変えたら「最大の余白」を押して境界を比べましょう。</p>
+</div>
+</div>
+<details class="study-only">
+<summary>詳しく見る：分け切れないときとCの役割</summary>
+<p>ソフトマージンでは、余白の確保と、余白への侵入・誤分類に対するペナルティの両方を考えます。次は境界4、余白の線2・6を固定した概念図です。</p>
+<div class="explain-grid">
+<div id="svm-soft-plot"></div>
+<div>
+<div class="controls">
+<label for="svm-soft">
+Aの点を
+<select id="svm-soft">
+<option value="3">3へ：正しく分類、余白に侵入</option>
+<option value="5">5へ：誤分類</option>
+</select></label><label for="svm-c">C
+<select id="svm-c">
+<option value="0.1">0.1</option>
+<option value="1" selected>1</option>
+<option value="10">10</option>
+</select>
+</label>
+</div>
+<div id="svm-soft-result" class="result" aria-live="polite"></div>
+</div>
+</div>
+<p>他の条件が同じなら、Cが大きいほど違反を重く扱います。ここでは同じ境界の違反にかかる重みだけを計算し、境界の再学習は行いません。Cは検証で選びます。</p>
+</details>
+<details class="study-only">
+<summary>詳しく見る：特徴を変換すると、分け方が変わる</summary>
+<p>Aが−1と1、Bが−3と3の例です。元のx軸では一つの境界で分けられません。z = x²へ変換すると、Aは1、Bは9となり、z = 5で分けられます。</p>
+<div class="controls">
+<button id="kernel-toggle" type="button" aria-pressed="false">変換後を見る</button>
+</div>
+<div id="kernel-plot"></div>
+<p class="small">元の空間では境界はx = ±√5。この変換に対応する内積はK(x, x′) = x²x′²です。カーネルは変換後の内積に対応する計算を利用します。これは特徴変換の導入例で、RBFカーネルの学習実験ではありません。</p>
+</details>
+<details class="answer study-only">
+<summary>確認：支持点は、いつでも「最も近い2点」？</summary>
+<p>いいえ。この分離可能な一次元の例では境界に近い点が支持点ですが、多次元では2点とは限りません。ソフトマージンでは余白の内側や誤分類の点も関わります。余白を広く取ることやカーネルの利用だけで、未知のデータの正解は保証されません。</p>
+</details>
 </section>
-<div class="footer-nav"><button id="prev" type="button" disabled>← 前の手法</button><span>予想する → 動かす → 理由を言葉にする</span><button id="next" type="button">次の手法 →</button></div>
+<div class="footer-nav">
+<button id="prev" type="button" disabled>← 前の手法</button><span>予想する → 動かす → 理由を言葉にする</span><button id="next" type="button">次の手法 →</button>
+</div>
 </main>
-<footer><p>教材用の架空データです。測定値や実用上の性能を示すものではありません。操作結果の保存・送信は行いません。</p><details class="study-only"><summary>教材の対応と出典</summary><p>スライド6〜12：k近傍法／13〜18：決定木／19〜22：アンサンブル／23〜27：ランダムフォレスト／28〜31：SVM。7件のデータと同点規約は第4回Python演習と共通です。森は教育用の小規模実装、SVMは分離可能な一次元の解析例と補足の概念図です。</p><p>説明の根拠：scikit-learn公式資料 <a href="https://scikit-learn.org/stable/modules/neighbors.html">Nearest Neighbors</a>、<a href="https://scikit-learn.org/stable/modules/tree.html">Decision Trees</a>、<a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests">Ensemble methods</a>、<a href="https://scikit-learn.org/stable/modules/svm.html#mathematical-formulation">Support Vector Machines</a>。確認日：2026年10月22日。リンク先の閲覧にはネット接続が必要です。</p></details></footer>
+<footer>
+<p>教材用の架空データです。測定値や実用上の性能を示すものではありません。操作結果の保存・送信は行いません。</p>
+<details class="study-only">
+<summary>教材の対応と出典</summary>
+<p>スライド6〜14：k近傍法／15〜21：決定木／22〜26：アンサンブル／27〜32：ランダムフォレスト／33〜37：SVM。7件のデータと同点規約は第4回Python演習と共通です。森は教育用の小規模実装、SVMは分離可能な一次元の解析例と補足の概念図です。</p>
+<p>説明の根拠：scikit-learn公式資料 <a href="https://scikit-learn.org/stable/modules/neighbors.html">Nearest Neighbors</a>、<a href="https://scikit-learn.org/stable/modules/tree.html">Decision Trees</a>、<a href="https://scikit-learn.org/stable/modules/ensemble.html#random-forests">Ensemble methods</a>、<a href="https://scikit-learn.org/stable/modules/svm.html#mathematical-formulation">Support Vector Machines</a>。確認日：2026年10月22日。リンク先の閲覧にはネット接続が必要です。</p>
+</details>
+</footer>
 </div>
 <script id="ml-model">
 /* Pure calculations, shared by the UI and the repository checks. No DOM dependencies. */
@@ -321,8 +520,88 @@ document.querySelectorAll('[data-reset]').forEach(b=>{b.onclick=()=>{const name=
   if(name==='svm'){['a','b'].forEach(group=>[0,1].forEach(i=>$(`svm-${group}${i}`).value=state.svm[group][i]));$('svm-soft').value=3;$('svm-c').value=1;}
   render(name);
 };});
-names.forEach(render);
+globalThis.MethodsTeaching=()=>structuredClone(state);
+function route(){const i=names.indexOf(location.hash.slice(1));if(i>=0)show(i);}
+window.addEventListener('hashchange',route);
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.tab;}));
+['prev','next'].forEach(id=>$(id).addEventListener('click',()=>{location.hash=names[active];}));
+document.querySelectorAll('[data-reset]').forEach(b=>{b.id=b.id||b.dataset.reset+'-reset';});
+names.forEach(render);route();
 })();
 </script>
+<!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+(()=>{
+const M=ML,S=()=>MethodsTeaching(),f=n=>Number(n.toFixed(4)),step=(title,body)=>({title,body:'<p>'+body+'</p>'}),rows=(heads,rs)=>'<div class="table-wrap"><table><tr>'+heads.map(h=>'<th>'+h+'</th>').join('')+'</tr>'+rs.map(r=>'<tr>'+r.map(v=>'<td>'+v+'</td>').join('')+'</tr>').join('')+'</table></div>';
+const rank=()=>{const s=S().knn;return M.nearest(s.data==='main'?M.TRAIN:M.SCALE,s.q,s.k,s.scale);};
+installTeachingSteps([
+{id:'knn',title:'差を二乗する → 近い順 → 投票',steps:()=>{const s=S().knn,r=rank(),a=r.filter(x=>x.label==='A').length;return [step('入力',`入力は(${s.q.join(',')})、k=${s.k}です。各学習点の座標から入力座標を引き、横と縦の差を調べます。`),step('距離を計算',rows(['ID','横の差²','縦の差²（尺度調整後）','合計'],r.map(x=>[x.id,f((x.x-s.q[0])**2),f(((x.y-s.q[1])/s.scale)**2),f(x.d2)]))),step('近傍の票を数える',`${r.map(x=>x.id+':'+x.label).join('、')}。A ${a}票・B ${r.length-a}票なので、予測は${M.majority(r.map(x=>x.label))}です。同票はAとします。`),step('一条件を変える','入力を固定してk=1と3を比べます。リセットすると入力(2,3)・k=3・尺度1へ戻ります。選ぶ近傍が変わったため票数が変わる、と説明します。')];},details:()=>{const s=S().knn;return '<p>すべての候補を比較し、距離の二乗が小さい順にk件を取ります。同距離はID順です。</p>'+rows(['ID','x','y','距離²','ラベル'],M.nearest(s.data==='main'?M.TRAIN:M.SCALE,s.q,s.data==='main'?7:2,s.scale).map(r=>[r.id,r.x,r.y,f(r.d2),r.label]));}},
+{id:'tree',title:'混ざりを測って質問を選ぶ',steps:()=>{const s=S().tree,m=s.manual?M.manualTree(M.TRAIN,s.axis,s.threshold):M.fitTree(M.TRAIN,s.depth),l=M.TRAIN.filter(r=>r[s.axis+1]<=s.threshold),r=M.TRAIN.filter(r=>r[s.axis+1]>s.threshold);return [step('入力7件','Aが3件、Bが4件の同じ7点を使います。質問の候補ごとに、左へ行くIDと右へ行くIDを分けます。'),step('質問で分ける',`${s.axis===0?'x':'y'} ≤ ${s.threshold}：左${l.map(x=>x[0]).join('・')}／右${r.map(x=>x[0]).join('・')}。左右それぞれのラベルの混ざりを測ります。`),step('件数で重みを付ける',`左${l.length}件のGini=${f(M.gini(l))}、右${r.length}件は${f(M.gini(r))}。(${l.length}×${f(M.gini(l))}+${r.length}×${f(M.gini(r))})÷7=${f(m.score??m.gini)}。`),step('選んだ木で推論',`入力(${s.q.join(',')})を決まった質問へ通すと${M.leaf(m,s.q).label}。質問を選び直す学習とは別です。リセットで1段の学習した木へ戻します。`)];},details:()=>'<p>Gini=1−P(A)²−P(B)²。すべて同じラベルなら0。同じ最小値ならx、次に小さい境界を優先します。</p>'+rows(['候補','左／右の件数','加重Gini'],M.candidates(M.TRAIN).map(c=>[(c.axis?'y':'x')+'≤'+c.threshold,c.left.length+'/'+c.right.length,f(c.score)]))},
+{id:'ensemble',title:'同じ入力への三つの予測を集める',steps:()=>{const q=S().ensemble.q,v=[M.knn(M.TRAIN,q,1),M.knn(M.TRAIN,q,3),M.leaf(M.fitTree(M.TRAIN),q).label];return [step('入力をそろえる',`三つのモデルへ同じ(${q.join(',')})を渡します。異なる入力への答えを集めるのではありません。`),step('各モデルの予測',`近傍k=1:${v[0]}、近傍k=3:${v[1]}、1段の木:${v[2]}。ラベルを1票ずつ集めます。`),step('多数決',`Aは${v.filter(x=>x==='A').length}票、Bは${v.filter(x=>x==='B').length}票。集約結果は${M.majority(v)}です。正解との比較は別途必要です。`),step('間違う場所を比べる','下の例で「異なる」「同じ」誤りへ切り替えます。同じ誤りを三つ集めても修正できません。リセットで入力と比較例を戻します。')];},details:()=>'<p>初期入力(2,3)ではB・A・A→A。これは予測の集約例です。実用性能が改善したという評価結果ではありません。正解付きの別例で検証して判断します。</p>'},
+{id:'forest',title:'抽出した例 → 木 → 確率の平均',steps:()=>{const s=S().forest,trees=M.forest(s.seed),ps=trees.map(t=>M.leaf(t.tree,s.q).p),a=M.aggregate(ps);return [step('入力を固定',`入力(${s.q.join(',')})、乱数種${s.seed}です。元の7件から各木に7件を復元抽出します。同じIDを複数回取れます。`),step('実際の抽出',trees.map((t,i)=>`木${i+1}: ${t.rows.map(r=>r[0]).join('・')}`).join('<br>')),step('葉の比率を平均',`木ごとのP(A)=${ps.map(f).join('・')}。合計÷3=${f(a.mean)}なので、平均での予測は${a.soft}です。`),step('比較して戻す','種を一つ変えると抽出と木が変わります。入力を動かすと到達する葉が変わります。リセットは種42・入力(2,3)へ戻します。')];},details:()=>{const s=S().forest,a=M.aggregate(s.probabilities);return `<p>下の手動比較は実際の森とは別の例です。P(A)=${s.probabilities.join('・')}なら平均${f(a.mean)}→${a.soft}、ラベルの多数決は${a.hard}。初期0.6・0.6・0では平均0.4→B、ラベルA・A・B→Aとなります。</p>`;}},
+{id:'svm',title:'点と境界の距離から余白を読む',steps:()=>{const s=S().svm,m=M.margin(s.a,s.b,s.boundary);return [step('図の入力',`Aの位置${s.a.join('・')}、Bの位置${s.b.join('・')}、境界${s.boundary}。特徴は横方向だけで、上下の配置は読みやすさのためです。`),step('境界に近い点を見る',m.separable?`境界を支える点はA=${m.supportA}、B=${m.supportB}。それぞれの余白は${f(m.a)}と${f(m.b)}。狭い側は${f(m.minimum)}です。`:'二種類の範囲が重なっています。この一次元の一本の境界で完全には分けられないため、最大余白の式を適用しません。'),step('境界を動かす',m.separable?`両側の距離がそろう中点は(${m.supportA}+${m.supportB})÷2=${m.optimum}。片側だけを広げると、他方は狭くなります。`:'下の違反量の図は固定境界の別例です。完全に分けられない場合には余白と誤りの両方を考えます。'),step('比較と復帰','初期点のまま境界4→3へ動かすと余白2・2→1・3、狭い側は2→1。リセットで境界4へ戻します。これは一次元の説明例です。')];},details:()=>'<p>初期A=1・2、B=6・7。支える点2と6の中点4で余白2。変換の別例ではx=−3・−1・1・3をz=x²へ写すと9・1・1・9。Aは1、Bは9なのでz=5で分けられます。</p>'}
+]);})();
+
+</script>
+<!-- teaching-steps:end -->
 </body>
 </html>

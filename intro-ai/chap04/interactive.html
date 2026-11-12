@@ -1,11 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="関係、フレーム、前向き・後ろ向き推論、世界仮説を動かして学ぶオフライン教材">
-<title>つなぐ・たどる・説明する｜人工知能概論 第5回</title>
-<style>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="関係、フレーム、前向き・後ろ向き推論、世界仮説を動かして学ぶオフライン教材">
+        <title>つなぐ・たどる・説明する｜人工知能概論 第5回</title>
+        <style>
 :root{--ink:#142f45;--muted:#516575;--paper:#f3f6f7;--line:#c9d7df;--teal:#006c78;--blue:#215ab3;--gold:#ffc85b;--orange:#a3490c}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 system-ui,-apple-system,"Segoe UI",sans-serif}h1,h2,h3,p{margin:0}h1{font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.4}h2{font-size:clamp(1.4rem,3vw,2rem);line-height:1.5}h3{font-size:1.08rem}p+p{margin-top:8px}button,input,select{font:inherit;color:var(--ink)}button,select,input[type=number]{border:1px solid #91a7b6;border-radius:8px;background:white;padding:7px 11px;max-width:100%}button{font-weight:650;cursor:pointer}button:hover{background:#e8eff8}button:disabled{opacity:.5;cursor:default}button.primary,button[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offset:3px}input[type=number]{width:85px}input[type=checkbox]{width:20px;height:20px;accent-color:var(--teal)}a{color:#1b559c}.shell{max-width:1260px;padding:0 28px;margin:auto}.masthead{background:var(--ink);color:white;padding:25px 0}.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.eyebrow{font-size:.8rem;letter-spacing:.1em;font-weight:700}#projection{font-size:.85rem;flex-shrink:0;background:white;color:var(--ink);border-color:#91a7b6}.masthead p{margin-top:10px;color:#cbdce7}.nav{display:flex;gap:6px;flex-wrap:wrap;padding:17px 0}.nav button{flex:1;min-width:140px;text-align:left;font-size:.9rem;border-color:var(--line)}.nav b{color:#728ba1;margin-right:8px}.nav [aria-pressed=true] b{color:var(--gold)}.lesson-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:6px 0 12px}.lesson-head button{white-space:nowrap}.intro{max-width:940px;margin-bottom:14px}.question{background:#fff6df;border-left:5px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:18px}.question strong{margin-right:8px}.workspace{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,1fr);gap:20px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:17px;padding:20px;min-width:0}.panel h3{margin-bottom:10px}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}.controls label{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.small{font-size:.85rem}.muted{color:var(--muted)}.result{padding:15px;background:#eaf3f5;border-radius:12px;margin-top:14px}.result strong{font-size:1.2rem}.notice{background:#fff6df;border-left:4px solid #b57900;padding:10px 13px;margin-top:10px;font-size:.9rem}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.84rem;margin:8px 0}.stepper{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:13px}.stepper output{font-size:.85rem;color:var(--muted);width:100%}.steps-note{color:var(--muted);font-size:.83rem;margin:8px 0}.card{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fafcfd;min-width:0}.card+.card{margin-top:10px}.chosen{border:2px solid var(--blue)!important;background:#edf3ff!important}.ok{color:var(--teal)}.missing{color:var(--orange)}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.chip{border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:#f5f8fa;font-size:.85rem}.chip.initial{border-left:5px solid var(--teal)}.chip.derived{border-left:5px solid var(--blue)}.chip.used{outline:2px solid var(--orange);outline-offset:1px}.fact-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.fact-inputs label{display:flex;gap:6px;align-items:center;font-size:.94rem}.rule{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:9px 0;background:#fafcfd}.rule.active{border:2px solid var(--blue);background:#edf3ff}.rule.used{box-shadow:inset 5px 0 var(--orange)}.rule.off{border-style:dashed;color:var(--muted)}.rule-head{display:flex;justify-content:space-between;gap:8px;font-size:.85rem}.conditions{display:flex;gap:5px;flex-wrap:wrap;align-items:center;font-size:.88rem}.conditions span{padding:2px 5px;border-radius:4px;background:#edf2f5}.conditions .met{background:#dff3ee;color:#00575f}.conditions .unmet{background:#fff0db;color:#87410d}.rule-conclusion{margin-top:5px;font-weight:700}.frame-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.frame-value{font-size:1.9rem;font-weight:800;margin:12px 0}.arrow-down{font-size:1.4rem;text-align:center;color:var(--blue)}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--line)}th{background:#f1f5f8}caption{text-align:left;margin:7px 0;color:var(--muted)}details{margin-top:17px;padding:12px 17px;background:white;border:1px solid var(--line);border-radius:12px}summary{font-weight:700;cursor:pointer}details[open]>summary{margin-bottom:14px}details p{margin-top:8px}.answer{background:#f7fafc}.plot svg{display:block;width:100%;height:auto}svg text{font:16px system-ui,sans-serif;fill:var(--ink)}svg .node-label{font-size:17px;font-weight:650}svg .tiny{font-size:13px}.proof,.proof ul{list-style:none;padding:0;margin:0}.proof ul{margin:8px 0 0 17px;padding-left:15px;border-left:2px solid var(--line)}.proof li{margin:7px 0}.proof-node{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fafcfd;font-size:.95rem}.proof-node small{display:block;font-size:.8rem;color:var(--muted)}.proof-node.proven{border-left:5px solid var(--teal)}.proof-node.unproved{border-left:5px dashed var(--orange)}.proof-node.current{outline:2px solid var(--blue)}.system-flow{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}.system-flow .card{text-align:center;margin:0;padding:10px;font-size:.88rem}.system-flow b{display:block}.footer-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:24px 0}.footer-nav span{font-size:.85rem;color:var(--muted)}footer{border-top:1px solid var(--line);padding:20px 0 30px;color:var(--muted);font-size:.82rem}[hidden]{display:none!important}
 @media(min-width:761px){.projection .masthead{padding:4px 0}.projection .topline{margin:0}.projection #projection{padding:3px 10px}.projection h1,.projection .masthead p,.projection .intro,.projection .study-only,.projection footer{display:none}.projection .nav{padding:5px 0}.projection .nav button{padding:5px 8px;font-size:.85rem}.projection .lesson-head{margin:3px 0 6px}.projection h2{font-size:1.45rem}.projection .lesson-head button{padding:4px 10px}.projection .question{padding:6px 14px;margin-bottom:10px;font-size:.95rem}.projection .panel{padding:13px}.projection .workspace{gap:14px}.projection .result{padding:11px;margin-top:10px}.projection .result p{font-size:.87rem}.projection .controls{margin:6px 0;gap:7px}.projection .stepper{margin-top:8px}.projection .stepper button{padding:4px 9px;font-size:.9rem}.projection .plot svg{max-height:295px}.projection .footer-nav{margin:12px 0}.projection .rule{margin:5px 0;padding:6px 9px}.projection .proof-node{padding:4px 8px;font-size:.88rem}.projection .proof li{margin:4px 0}.projection .proof ul{margin-top:4px}.projection .small,.projection .notice{font-size:.78rem}.projection .fact-inputs{margin:6px 0;gap:5px}.projection .steps-note{display:none}.projection .chips{margin-top:6px;gap:5px}.projection .chip{padding:3px 7px;font-size:.78rem}}
@@ -13,109 +13,388 @@
 @media print{.nav,.controls,.stepper,.footer-nav,.topline button,.lesson-head button{display:none}.workspace{display:block}.panel{break-inside:avoid;margin-bottom:12px}.masthead{background:white;color:var(--ink)}}
 .mobile-note{display:none}
 @media(max-width:760px){.plot{overflow-x:auto}.plot svg{min-width:620px}.mobile-note{display:block;font-size:.82rem;color:var(--muted)}}
-</style>
-</head>
-<body>
-<header class="masthead"><div class="shell"><div class="topline"><span class="eyebrow">人工知能概論 2026 ／ 第5回 知識表現と推論</span><button type="button" id="projection" aria-pressed="false">投影表示にする</button></div><h1>つなぐ・たどる・説明する。</h1>
-<p>その結論は、どこから来た？ 知識と推論を動かして確かめる。</p></div></header>
-<div class="shell"><nav class="study-only" aria-label="教材の移動" style="padding-top:12px"><a href="index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">使い方</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの使い方・保存</a></nav><nav class="nav" aria-label="学ぶテーマ">
-<button type="button" data-tab="network" aria-controls="network" aria-pressed="true"><b>01</b>関係をたどる</button>
-<button type="button" data-tab="frame" aria-controls="frame" aria-pressed="false"><b>02</b>既定値と例外</button>
-<button type="button" data-tab="forward" aria-controls="forward" aria-pressed="false"><b>03</b>事実から進む</button>
-<button type="button" data-tab="backward" aria-controls="backward" aria-pressed="false"><b>04</b>目標から確認</button>
-<button type="button" data-tab="world" aria-controls="world" aria-pressed="false"><b>05</b>不明と「なし」</button>
-<button type="button" data-tab="expert" aria-controls="expert" aria-pressed="false"><b>06</b>根拠を説明</button>
-</nav><main>
-<noscript><p class="question">操作にはJavaScriptを有効にしてください。ネット接続は不要です。</p></noscript>
-
-<section id="network" aria-labelledby="network-title">
-<div class="lesson-head"><h2 id="network-title">01　矢印をたどると、何がわかる？</h2>
-<button type="button" data-reset="network">リセット</button></div>
-<p class="intro">種類から上位の種類へ進む矢印がis-aです。この図は教材内で定めた分類で、現実の機器分類を網羅するものではありません。</p>
-<p class="question"><strong>まず予想</strong>スマホからノートPCへ道がなければ、「スマホはノートPCではない」と言い切れるでしょうか？</p>
-<div class="workspace"><div class="panel">
-<div class="controls"><label for="net-preset">試す例 <select id="net-preset"><option value="base">端末分類</option><option value="unknown">未知の名前</option><option value="cycle">循環 A → B → A</option></select></label></div>
-<div class="controls"><label for="net-start">出発点 <select id="net-start"></select></label><label for="net-target">目標 <select id="net-target"></select></label></div>
-<div id="net-plot" class="plot" role="region" aria-label="is-a関係図。狭い画面では左右にスクロールできます" tabindex="0"></div><p class="mobile-note">図は左右にスワイプできます。キーボードでは図に移動して左右キーを使います。</p><p class="small muted">矢印：下位 → 上位。青い太線は今までにたどった経路。</p>
-<div class="stepper" data-steps="network"></div></div>
-<div class="panel"><h3>経路と、答えの理由</h3>
-<div id="net-result" class="result" role="status" aria-live="polite"></div>
-<div id="net-edit"><h3>関係を一つ変える</h3>
-<div class="controls"><label for="net-child">下位の種類 <select id="net-child"></select></label><label for="net-parent">新しい親 <select id="net-parent"></select></label><button type="button" id="net-apply">関係を更新</button></div><p class="small muted">「親なし」でリンクを削除。自分自身や下位を親にすると、循環を試せます。編集すると探索は最初に戻ります。</p></div></div></div>
-<details class="study-only"><summary>詳しく見る：種類・個体・部分と、直接の関係</summary>
-<div class="plot" id="relations-plot" role="region" aria-label="種類・個体・部分の関係図。左右にスクロールできます" tabindex="0"></div><p class="mobile-note">関係図は左右にスクロールできます。</p><p>この探索がたどるのはis-aだけです。個体や部分のリンクを、そのまま同じ種類の矢印としてつなぎません。</p><div id="net-direct"></div><p>キーと値の両方を既知語とするのが既存演習の規約です。リンク削除でどこにも現れなくなった名前は未知語になります。同じ既知語への問いは、移動0回で到達です。</p></details>
-<details class="answer study-only"><summary>確認：経路がない場合と、循環で止まる場合は同じ？</summary><p>違います。経路なしはこの知識から導けない状態。循環は再訪を検出して停止した状態です。どちらも「否定の事実を得た」とは扱いません。循環の途中で目標に着けば、その有限の経路は示せます。</p></details>
-</section>
-
-<section id="frame" aria-labelledby="frame-title" hidden>
-<div class="lesson-head"><h2 id="frame-title">02　「いつも」と「この端末」は違う</h2>
-<button type="button" data-reset="frame">リセット</button></div>
-<p class="intro">フレームは対象の項目をまとめる表です。項目をスロットと呼びます。この架空例では、個別指定を既定値より優先します。</p>
-<p class="question"><strong>まず予想</strong>標準は7日、端末Aには3日と書かれています。どちらを採用するでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="frame-grid">
-<div class="card" id="frame-standard"><h3>標準の貸出端末</h3>
-<div class="controls"><label for="frame-default">既定の期間 <select id="frame-default"></select></label></div><p class="small">個別の情報がないときの候補</p></div>
-<div class="card" id="frame-individual"><h3>端末A</h3>
-<p class="small">種類：タブレット ／ 保管：棚1</p><div class="controls"><label for="frame-specific">個別の期間 <select id="frame-specific"></select></label></div><div class="controls"><label for="frame-exhibit"><input type="checkbox" id="frame-exhibit">展示専用：貸出不可</label></div></div></div>
-<div class="arrow-down" aria-hidden="true">↓</div><div id="frame-adopted" class="card"></div><div class="stepper" data-steps="frame"></div></div>
-<div class="panel"><h3>値と出所を分けて読む</h3>
-<div id="frame-result" class="result" role="status" aria-live="polite"></div><p class="steps-note">1. 既定値を見る → 2. 個別指定を確認 → 3. 採用する値を決める</p></div></div>
-<details class="study-only"><summary>詳しく見る：未記入は0ではない・継承の条件</summary><div class="controls"><label for="frame-charge">端末Aの充電状態 <select id="frame-charge"><option value="80">80%</option><option value="0">0%</option><option value="">未記入</option></select></label></div><p id="frame-charge-result"></p><p>貸出期間は「日」、充電状態は「%」。貸出不可は別のスロットです。期間が書かれているだけで貸出可能とは判断しません。</p><div class="card">教材内の定義：すべてのコンピュータは情報を処理する → この分類に属するスマホにも適用</div><p>このような定義と「通常は7日」という既定値は違います。性質は適用条件を確認して継承します。ここでは一つの標準と個体の優先だけを計算し、一般の多重継承は扱いません。</p></details>
-<details class="answer study-only"><summary>確認：個別指定も既定値もなかったら？</summary><p>期間は未指定です。勝手に0日や7日を補いません。また、既定値から得た期間と、個別に確認した期間では情報の出所が違います。</p></details>
-</section>
-
-<section id="forward" aria-labelledby="forward-title" hidden>
-<div class="lesson-head"><h2 id="forward-title">03　事実が増えると、次の規則が動く</h2>
-<button type="button" data-reset="forward">リセット</button></div>
-<p class="intro">前向き推論は、今ある事実から条件のそろう規則を探します。この貸出例は架空の規則で、実際の学校の運用ではありません。</p>
-<p class="question"><strong>まず予想</strong>登録・講習・在庫がそろえば、予約確認がなくても「貸出準備可」まで進めるでしょうか？</p>
-<div class="workspace"><div class="panel"><h3>初期事実を選ぶ</h3>
-<div id="forward-inputs" class="fact-inputs"></div><div id="forward-rules"></div><div class="stepper" data-steps="forward"></div></div>
-<div class="panel"><h3>作業用の事実</h3>
-<div class="legend"><span>● 初期事実</span><span>◆ 規則で追加した事実</span></div><div id="forward-facts" class="chips"></div><div id="forward-result" class="result" role="status" aria-live="polite"></div><p class="steps-note">一手ごとに規則を照合します。「一巡して追加なし」が停止の目印です。</p></div></div>
-<details class="study-only"><summary>詳しく見る：照合順序と、追加した結論の履歴</summary><div class="controls"><label for="forward-order">規則の順序 <select id="forward-order"><option value="normal">R1 → R2 → R3</option><option value="reverse">R3 → R2 → R1</option></select></label></div><div id="forward-trace" class="table-wrap"></div><p>一つ追加しても次の規則へ進み、一巡後に再走査します。新しい事実が一つも増えない一巡で停止します。順序を変えると照合過程は変わりますが、この肯定事実を追加する規則群では最終事実集合は同じです。</p></details>
-<details class="answer study-only"><summary>確認：「講習修了」を外すと、以前の結論はどうなる？</summary><p>この教材では入力を変えるたびに初期事実から計算し直します。以前の「利用資格あり」や「貸出候補」を持ち越しません。規則R1はすべての条件が必要なので、登録だけでは発火しません。</p></details>
-</section>
-
-<section id="backward" aria-labelledby="backward-title" hidden>
-<div class="lesson-head"><h2 id="backward-title">04　答えから、必要な条件を探す</h2>
-<button type="button" data-reset="backward">リセット</button></div>
-<p class="intro">後ろ向き推論は目標を置き、その結論を出せる規則の条件を確認します。規則の意味を逆向きにするわけではありません。</p>
-<p class="question"><strong>まず予想</strong>「貸出候補」を確かめるために、最初にどの規則を調べるでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="controls"><label for="backward-goal">確かめたい目標 <select id="backward-goal"></select></label></div><div id="backward-tree"></div><div class="stepper" data-steps="backward"></div></div>
-<div class="panel"><h3>使える初期事実</h3>
-<div id="backward-inputs" class="fact-inputs"></div><div id="backward-result" class="result" role="status" aria-live="polite"></div><p class="small muted">○ 確認できた ／ ? この知識では未証明 ／ … 確認中。木の線は「必要な条件へ」のつながりです。</p></div></div>
-<details class="study-only"><summary>詳しく見る：結論を与えても、前提は逆算できない</summary><div class="controls"><label for="backward-inverse"><input type="checkbox" id="backward-inverse">初期事実を「貸出候補」だけにする</label></div><div id="backward-inverse-result"></div><p>この切り替えでは、上の目標を「利用登録済み」に変更します。結論から登録・講習の事実を作る逆向き規則はありません。通常の例へ戻すと初期目標は「貸出候補」です。</p><p>Python演習は前向き推論だけを実装しています。ここは同じ固定規則を使う追加の教育用実装です。変数の単一化や汎用Prolog処理系は含みません。</p></details>
-<details class="answer study-only"><summary>確認：条件が一つ見つからなければ「貸出不可」？</summary><p>この知識では証明できない、という結果です。「貸出不可」という別の結論を導いたことにはなりません。どの条件まで確認でき、何が不足したかを読み取ります。</p></details>
-</section>
-
-<section id="world" aria-labelledby="world-title" hidden>
-<div class="lesson-head"><h2 id="world-title">05　書かれていない。それは「なし」？</h2>
-<button type="button" data-reset="world">リセット</button></div>
-<p class="intro">同じ未記載でも、知識が完全だと仮定する範囲によって扱いが違います。ここでは「今日の端末予約」だけを考えます。</p>
-<p class="question"><strong>まず予想</strong>台帳に端末Bがないとき、「予約なし」と判断してよいのは、どんな場合でしょうか？</p>
-<div class="workspace"><div class="panel"><h3>今日の予約台帳</h3>
-<div class="controls"><label for="world-a"><input type="checkbox" id="world-a" checked>端末Aの予約を記載</label><label for="world-b"><input type="checkbox" id="world-b">端末Bの予約を記載</label></div><div id="world-ledger"></div><div class="controls"><label for="world-target">調べる端末 <select id="world-target"><option value="B">端末B</option><option value="A">端末A</option></select></label></div><div class="stepper" data-steps="world"></div></div>
-<div class="panel"><div class="controls"><label for="world-mode">未記載の扱い <select id="world-mode"><option value="open">開世界</option><option value="closed">閉世界</option></select></label></div><div class="controls"><label for="world-complete"><input type="checkbox" id="world-complete" checked>閉世界で使う仮定：今日の台帳は完全</label></div><div id="world-result" class="result" role="status" aria-live="polite"></div><div id="world-warning" class="notice"></div></div></div>
-<details class="study-only"><summary>詳しく見る：台帳が未更新なら、前提が崩れる</summary><div class="controls"><button type="button" id="world-stale">Bの予約が未反映の例にする</button></div><div id="world-stale-result"></div><p>この例では外から「Bの予約がまだ反映されていない」と知らせます。システムが未知の予約を自動で発見する機能ではありません。</p><p>開世界は、何も否定できないという意味ではありません。明示的に「予約なし」と確認した知識を使うこととは別です。この台帳の簡易計算器には明示的否定や矛盾処理を実装しません。01のis-a探索へ閉世界を自動適用することもありません。</p></details>
-<details class="answer study-only"><summary>確認：「今日の予約なし」から、明日の予約もないと言える？</summary><p>言えません。閉世界を適用したのは「完全と仮定した今日の台帳」です。範囲の外や、完全性が保証できない台帳へ同じ判断を広げません。</p></details>
-</section>
-
-<section id="expert" aria-labelledby="expert-title" hidden>
-<div class="lesson-head"><h2 id="expert-title">06　結論を選んで、根拠へ戻る</h2>
-<button type="button" data-reset="expert">リセット</button></div>
-<p class="intro">知識ベースに規則を置き、推論エンジンが作業用の事実を増やします。説明できるのは、実際に使った規則と事実です。</p>
-<p class="question"><strong>まず予想</strong>R2を無効にしたら、R1で導いた「利用資格あり」も消えるでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="system-flow"><div class="card"><b>知識ベース</b>R1・R2・R3</div><span aria-hidden="true">→</span><div class="card"><b>推論エンジン</b>条件を照合</div></div><div id="expert-rules"></div><div class="stepper" data-steps="expert"></div></div>
-<div class="panel"><h3>作業用の事実</h3>
-<div id="expert-inputs" class="fact-inputs"></div><div id="expert-facts" class="chips"></div><div class="controls"><label for="expert-target">説明する結論 <select id="expert-target"></select></label></div><div id="expert-result" class="result" role="status" aria-live="polite"></div></div></div>
-<details class="study-only"><summary>詳しく見る：規則を保守する・説明の範囲</summary><div id="expert-enabled" class="controls"></div><div id="expert-trace" class="table-wrap"></div><p>有効・無効を変えると初期事実から計算し直します。不要になった結論を残しません。枠線で示す根拠は、この実行で最初に追加した際の説明です。あり得る根拠をすべて列挙する機能ではありません。</p><p>知識の内容が現実に正しいか、例外が漏れていないかは別の確認が必要です。適用履歴があるだけで、結論の実用上の正しさまで保証されるわけではありません。</p></details>
-<details class="answer study-only"><summary>確認：規則を変えることと、事実を変えることは同じ？</summary><p>事実は今回の入力、規則は条件と結論の関係です。どちらを変えても結果は変わり得ますが、変更したものを区別して記録します。R2だけを無効にしても、条件がそろっていればR1の「利用資格あり」は導けます。</p></details>
-</section>
-</main><div class="footer-nav"><button type="button" id="prev">← 前のテーマ</button><span>予想する → たどる → 根拠を言葉にする</span><button type="button" id="next">次のテーマ →</button></div>
-<footer><p>すべて教材内の定義・架空例です。操作結果の保存・送信は行いません。テーマ間の編集状態は独立しています。</p><details><summary>スライドとの対応・出典・この教材の範囲</summary><p>01：5〜12・25〜26枚 ／ 02：9〜10・13〜16枚 ／ 03：17〜21枚 ／ 04：22〜24枚 ／ 05：26〜28枚 ／ 06：29〜35枚。端末分類・R1〜R3と基準の事実は既存Python演習と同じです。</p><p>後ろ向き推論、フレーム、台帳の判断は追加の教育用実装。OWL・Prolog・RETE・多重継承・変数の単一化・完全な説明列挙は実装しません。</p><p>説明の根拠：<a href="https://www.w3.org/TR/owl2-primer/">W3C OWL 2 Primer</a>（クラス・個体・開世界）／ <a href="https://web.mit.edu/dxh/www/marvin/web.media.mit.edu/~minsky/papers/Frames/frames.html">Minsky: A Framework for Representing Knowledge</a>（フレームと既定値）。個別指定の優先はこの教材の規約です。外部リンクを開く場合はネット接続が必要です。</p></details></footer></div>
-
-<script id="knowledge-model">
+        </style>
+    </head>
+    <body>
+        <header class="masthead">
+            <div class="shell">
+                <div class="topline">
+                    <span class="eyebrow">人工知能概論 2026 ／ 第5回 知識表現と推論</span><button type="button"
+        id="projection"
+        aria-pressed="false">投影表示にする</button>
+                </div>
+                <h1>つなぐ・たどる・説明する。</h1>
+                <p>その結論は、どこから来た？ 知識と推論を動かして確かめる。</p>
+            </div>
+        </header>
+        <div class="shell">
+            <nav class="study-only" aria-label="教材の移動" style="padding-top:12px">
+                <a href="index.html" target="_blank" rel="noopener">スライド</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">使い方</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラムの使い方・保存</a>
+            </nav>
+            <nav class="nav" aria-label="学ぶテーマ">
+                <button type="button"
+                        data-tab="network"
+                        aria-controls="network"
+                        aria-pressed="true"><b>01</b>関係をたどる</button>
+                <button type="button"
+                        data-tab="frame"
+                        aria-controls="frame"
+                        aria-pressed="false"><b>02</b>既定値と例外</button>
+                <button type="button"
+                        data-tab="forward"
+                        aria-controls="forward"
+                        aria-pressed="false"><b>03</b>事実から進む</button>
+                <button type="button"
+                        data-tab="backward"
+                        aria-controls="backward"
+                        aria-pressed="false"><b>04</b>目標から確認</button>
+                <button type="button"
+                        data-tab="world"
+                        aria-controls="world"
+                        aria-pressed="false"><b>05</b>不明と「なし」</button>
+                <button type="button"
+                        data-tab="expert"
+                        aria-controls="expert"
+                        aria-pressed="false"><b>06</b>根拠を説明</button>
+            </nav>
+            <main>
+                <noscript>
+                    <p class="question">操作にはJavaScriptを有効にしてください。ネット接続は不要です。</p>
+                </noscript>
+                <section id="network" aria-labelledby="network-title">
+                    <div class="lesson-head">
+                        <h2 id="network-title">01　矢印をたどると、何がわかる？</h2>
+                        <button type="button" data-reset="network">リセット</button>
+                    </div>
+                    <p class="intro">種類から上位の種類へ進む矢印がis-aです。この図は教材内で定めた分類で、現実の機器分類を網羅するものではありません。</p>
+                    <p class="question"><strong>まず予想</strong>スマホからノートPCへ道がなければ、「スマホはノートPCではない」と言い切れるでしょうか？</p>
+                    <div class="workspace">
+                        <div class="panel">
+                            <div class="controls">
+                                <label for="net-preset">
+                                    試す例
+                                    <select id="net-preset">
+                                        <option value="base">端末分類</option>
+                                        <option value="unknown">未知の名前</option>
+                                        <option value="cycle">循環 A → B → A</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="controls">
+                                <label for="net-start">
+                                    出発点
+                                    <select id="net-start"></select></label><label for="net-target">目標
+                                        <select id="net-target"></select>
+                                    </label>
+                                </div>
+                                <div id="net-plot"
+                                     class="plot"
+                                     role="region"
+                                     aria-label="is-a関係図。狭い画面では左右にスクロールできます"
+                                     tabindex="0"></div>
+                                <p class="mobile-note">図は左右にスワイプできます。キーボードでは図に移動して左右キーを使います。</p>
+                                <p class="small muted">矢印：下位 → 上位。青い太線は今までにたどった経路。</p>
+                                <div class="stepper" data-steps="network"></div>
+                            </div>
+                            <div class="panel">
+                                <h3>経路と、答えの理由</h3>
+                                <div id="net-result" class="result" role="status" aria-live="polite"></div>
+                                <div id="net-edit">
+                                    <h3>関係を一つ変える</h3>
+                                    <div class="controls">
+                                        <label for="net-child">
+                                            下位の種類
+                                            <select id="net-child"></select></label><label for="net-parent">新しい親
+                                                <select id="net-parent"></select></label><button type="button" id="net-apply">関係を更新</button>
+                                            </div>
+                                            <p class="small muted">「親なし」でリンクを削除。自分自身や下位を親にすると、循環を試せます。編集すると探索は最初に戻ります。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <details class="study-only">
+                                    <summary>詳しく見る：種類・個体・部分と、直接の関係</summary>
+                                    <div class="plot"
+                                         id="relations-plot"
+                                         role="region"
+                                         aria-label="種類・個体・部分の関係図。左右にスクロールできます"
+                                         tabindex="0"></div>
+                                    <p class="mobile-note">関係図は左右にスクロールできます。</p>
+                                    <p>この探索がたどるのはis-aだけです。個体や部分のリンクを、そのまま同じ種類の矢印としてつなぎません。</p>
+                                    <div id="net-direct"></div>
+                                    <p>キーと値の両方を既知語とするのが既存演習の規約です。リンク削除でどこにも現れなくなった名前は未知語になります。同じ既知語への問いは、移動0回で到達です。</p>
+                                </details>
+                                <details class="answer study-only">
+                                    <summary>確認：経路がない場合と、循環で止まる場合は同じ？</summary>
+                                    <p>違います。経路なしはこの知識から導けない状態。循環は再訪を検出して停止した状態です。どちらも「否定の事実を得た」とは扱いません。循環の途中で目標に着けば、その有限の経路は示せます。</p>
+                                </details>
+                            </section>
+                            <section id="frame" aria-labelledby="frame-title" hidden>
+                                <div class="lesson-head">
+                                    <h2 id="frame-title">02　「いつも」と「この端末」は違う</h2>
+                                    <button type="button" data-reset="frame">リセット</button>
+                                </div>
+                                <p class="intro">フレームは対象の項目をまとめる表です。項目をスロットと呼びます。この架空例では、個別指定を既定値より優先します。</p>
+                                <p class="question"><strong>まず予想</strong>標準は7日、端末Aには3日と書かれています。どちらを採用するでしょうか？</p>
+                                <div class="workspace">
+                                    <div class="panel">
+                                        <div class="frame-grid">
+                                            <div class="card" id="frame-standard">
+                                                <h3>標準の貸出端末</h3>
+                                                <div class="controls">
+                                                    <label for="frame-default">
+                                                        既定の期間
+                                                        <select id="frame-default"></select>
+                                                    </label>
+                                                </div>
+                                                <p class="small">個別の情報がないときの候補</p>
+                                            </div>
+                                            <div class="card" id="frame-individual">
+                                                <h3>端末A</h3>
+                                                <p class="small">種類：タブレット ／ 保管：棚1</p>
+                                                <div class="controls">
+                                                    <label for="frame-specific">
+                                                        個別の期間
+                                                        <select id="frame-specific"></select>
+                                                    </label>
+                                                </div>
+                                                <div class="controls">
+                                                    <label for="frame-exhibit">
+                                                        <input type="checkbox" id="frame-exhibit">展示専用：貸出不可
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="arrow-down" aria-hidden="true">↓</div>
+                                        <div id="frame-adopted" class="card"></div>
+                                        <div class="stepper" data-steps="frame"></div>
+                                    </div>
+                                    <div class="panel">
+                                        <h3>値と出所を分けて読む</h3>
+                                        <div id="frame-result" class="result" role="status" aria-live="polite"></div>
+                                        <p class="steps-note">1. 既定値を見る → 2. 個別指定を確認 → 3. 採用する値を決める</p>
+                                    </div>
+                                </div>
+                                <details class="study-only">
+                                    <summary>詳しく見る：未記入は0ではない・継承の条件</summary>
+                                    <div class="controls">
+                                        <label for="frame-charge">
+                                            端末Aの充電状態
+                                            <select id="frame-charge">
+                                                <option value="80">80%</option>
+                                                <option value="0">0%</option>
+                                                <option value="">未記入</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <p id="frame-charge-result"></p>
+                                    <p>貸出期間は「日」、充電状態は「%」。貸出不可は別のスロットです。期間が書かれているだけで貸出可能とは判断しません。</p>
+                                    <div class="card">教材内の定義：すべてのコンピュータは情報を処理する → この分類に属するスマホにも適用</div>
+                                    <p>このような定義と「通常は7日」という既定値は違います。性質は適用条件を確認して継承します。ここでは一つの標準と個体の優先だけを計算し、一般の多重継承は扱いません。</p>
+                                </details>
+                                <details class="answer study-only">
+                                    <summary>確認：個別指定も既定値もなかったら？</summary>
+                                    <p>期間は未指定です。勝手に0日や7日を補いません。また、既定値から得た期間と、個別に確認した期間では情報の出所が違います。</p>
+                                </details>
+                            </section>
+                            <section id="forward" aria-labelledby="forward-title" hidden>
+                                <div class="lesson-head">
+                                    <h2 id="forward-title">03　事実が増えると、次の規則が動く</h2>
+                                    <button type="button" data-reset="forward">リセット</button>
+                                </div>
+                                <p class="intro">前向き推論は、今ある事実から条件のそろう規則を探します。この貸出例は架空の規則で、実際の学校の運用ではありません。</p>
+                                <p class="question"><strong>まず予想</strong>登録・講習・在庫がそろえば、予約確認がなくても「貸出準備可」まで進めるでしょうか？</p>
+                                <div class="workspace">
+                                    <div class="panel">
+                                        <h3>初期事実を選ぶ</h3>
+                                        <div id="forward-inputs" class="fact-inputs"></div>
+                                        <div id="forward-rules"></div>
+                                        <div class="stepper" data-steps="forward"></div>
+                                    </div>
+                                    <div class="panel">
+                                        <h3>作業用の事実</h3>
+                                        <div class="legend"><span>● 初期事実</span><span>◆ 規則で追加した事実</span></div>
+                                        <div id="forward-facts" class="chips"></div>
+                                        <div id="forward-result" class="result" role="status" aria-live="polite"></div>
+                                        <p class="steps-note">一手ごとに規則を照合します。「一巡して追加なし」が停止の目印です。</p>
+                                    </div>
+                                </div>
+                                <details class="study-only">
+                                    <summary>詳しく見る：照合順序と、追加した結論の履歴</summary>
+                                    <div class="controls">
+                                        <label for="forward-order">
+                                            規則の順序
+                                            <select id="forward-order">
+                                                <option value="normal">R1 → R2 → R3</option>
+                                                <option value="reverse">R3 → R2 → R1</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div id="forward-trace" class="table-wrap"></div>
+                                    <p>一つ追加しても次の規則へ進み、一巡後に再走査します。新しい事実が一つも増えない一巡で停止します。順序を変えると照合過程は変わりますが、この肯定事実を追加する規則群では最終事実集合は同じです。</p>
+                                </details>
+                                <details class="answer study-only">
+                                    <summary>確認：「講習修了」を外すと、以前の結論はどうなる？</summary>
+                                    <p>この教材では入力を変えるたびに初期事実から計算し直します。以前の「利用資格あり」や「貸出候補」を持ち越しません。規則R1はすべての条件が必要なので、登録だけでは発火しません。</p>
+                                </details>
+                            </section>
+                            <section id="backward" aria-labelledby="backward-title" hidden>
+                                <div class="lesson-head">
+                                    <h2 id="backward-title">04　答えから、必要な条件を探す</h2>
+                                    <button type="button" data-reset="backward">リセット</button>
+                                </div>
+                                <p class="intro">後ろ向き推論は目標を置き、その結論を出せる規則の条件を確認します。規則の意味を逆向きにするわけではありません。</p>
+                                <p class="question"><strong>まず予想</strong>「貸出候補」を確かめるために、最初にどの規則を調べるでしょうか？</p>
+                                <div class="workspace">
+                                    <div class="panel">
+                                        <div class="controls">
+                                            <label for="backward-goal">
+                                                確かめたい目標
+                                                <select id="backward-goal"></select>
+                                            </label>
+                                        </div>
+                                        <div id="backward-tree"></div>
+                                        <div class="stepper" data-steps="backward"></div>
+                                    </div>
+                                    <div class="panel">
+                                        <h3>使える初期事実</h3>
+                                        <div id="backward-inputs" class="fact-inputs"></div>
+                                        <div id="backward-result" class="result" role="status" aria-live="polite"></div>
+                                        <p class="small muted">○ 確認できた ／ ? この知識では未証明 ／ … 確認中。木の線は「必要な条件へ」のつながりです。</p>
+                                    </div>
+                                </div>
+                                <details class="study-only">
+                                    <summary>詳しく見る：結論を与えても、前提は逆算できない</summary>
+                                    <div class="controls">
+                                        <label for="backward-inverse">
+                                            <input type="checkbox" id="backward-inverse">初期事実を「貸出候補」だけにする
+                                        </label>
+                                    </div>
+                                    <div id="backward-inverse-result"></div>
+                                    <p>この切り替えでは、上の目標を「利用登録済み」に変更します。結論から登録・講習の事実を作る逆向き規則はありません。通常の例へ戻すと初期目標は「貸出候補」です。</p>
+                                    <p>Python演習は前向き推論だけを実装しています。ここは同じ固定規則を使う追加の教育用実装です。変数の単一化や汎用Prolog処理系は含みません。</p>
+                                </details>
+                                <details class="answer study-only">
+                                    <summary>確認：条件が一つ見つからなければ「貸出不可」？</summary>
+                                    <p>この知識では証明できない、という結果です。「貸出不可」という別の結論を導いたことにはなりません。どの条件まで確認でき、何が不足したかを読み取ります。</p>
+                                </details>
+                            </section>
+                            <section id="world" aria-labelledby="world-title" hidden>
+                                <div class="lesson-head">
+                                    <h2 id="world-title">05　書かれていない。それは「なし」？</h2>
+                                    <button type="button" data-reset="world">リセット</button>
+                                </div>
+                                <p class="intro">同じ未記載でも、知識が完全だと仮定する範囲によって扱いが違います。ここでは「今日の端末予約」だけを考えます。</p>
+                                <p class="question"><strong>まず予想</strong>台帳に端末Bがないとき、「予約なし」と判断してよいのは、どんな場合でしょうか？</p>
+                                <div class="workspace">
+                                    <div class="panel">
+                                        <h3>今日の予約台帳</h3>
+                                        <div class="controls">
+                                            <label for="world-a">
+                                                <input type="checkbox" id="world-a" checked>端末Aの予約を記載</label><label for="world-b"><input type="checkbox" id="world-b">端末Bの予約を記載
+                                                </label>
+                                            </div>
+                                            <div id="world-ledger"></div>
+                                            <div class="controls">
+                                                <label for="world-target">
+                                                    調べる端末
+                                                    <select id="world-target">
+                                                        <option value="B">端末B</option>
+                                                        <option value="A">端末A</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="stepper" data-steps="world"></div>
+                                        </div>
+                                        <div class="panel">
+                                            <div class="controls">
+                                                <label for="world-mode">
+                                                    未記載の扱い
+                                                    <select id="world-mode">
+                                                        <option value="open">開世界</option>
+                                                        <option value="closed">閉世界</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="controls">
+                                                <label for="world-complete">
+                                                    <input type="checkbox" id="world-complete" checked>閉世界で使う仮定：今日の台帳は完全
+                                                </label>
+                                            </div>
+                                            <div id="world-result" class="result" role="status" aria-live="polite"></div>
+                                            <div id="world-warning" class="notice"></div>
+                                        </div>
+                                    </div>
+                                    <details class="study-only">
+                                        <summary>詳しく見る：台帳が未更新なら、前提が崩れる</summary>
+                                        <div class="controls">
+                                            <button type="button" id="world-stale">Bの予約が未反映の例にする</button>
+                                        </div>
+                                        <div id="world-stale-result"></div>
+                                        <p>この例では外から「Bの予約がまだ反映されていない」と知らせます。システムが未知の予約を自動で発見する機能ではありません。</p>
+                                        <p>開世界は、何も否定できないという意味ではありません。明示的に「予約なし」と確認した知識を使うこととは別です。この台帳の簡易計算器には明示的否定や矛盾処理を実装しません。01のis-a探索へ閉世界を自動適用することもありません。</p>
+                                    </details>
+                                    <details class="answer study-only">
+                                        <summary>確認：「今日の予約なし」から、明日の予約もないと言える？</summary>
+                                        <p>言えません。閉世界を適用したのは「完全と仮定した今日の台帳」です。範囲の外や、完全性が保証できない台帳へ同じ判断を広げません。</p>
+                                    </details>
+                                </section>
+                                <section id="expert" aria-labelledby="expert-title" hidden>
+                                    <div class="lesson-head">
+                                        <h2 id="expert-title">06　結論を選んで、根拠へ戻る</h2>
+                                        <button type="button" data-reset="expert">リセット</button>
+                                    </div>
+                                    <p class="intro">知識ベースに規則を置き、推論エンジンが作業用の事実を増やします。説明できるのは、実際に使った規則と事実です。</p>
+                                    <p class="question"><strong>まず予想</strong>R2を無効にしたら、R1で導いた「利用資格あり」も消えるでしょうか？</p>
+                                    <div class="workspace">
+                                        <div class="panel">
+                                            <div class="system-flow">
+                                                <div class="card"><b>知識ベース</b>R1・R2・R3</div>
+                                                <span aria-hidden="true">→</span>
+                                                <div class="card"><b>推論エンジン</b>条件を照合</div>
+                                            </div>
+                                            <div id="expert-rules"></div>
+                                            <div class="stepper" data-steps="expert"></div>
+                                        </div>
+                                        <div class="panel">
+                                            <h3>作業用の事実</h3>
+                                            <div id="expert-inputs" class="fact-inputs"></div>
+                                            <div id="expert-facts" class="chips"></div>
+                                            <div class="controls">
+                                                <label for="expert-target">
+                                                    説明する結論
+                                                    <select id="expert-target"></select>
+                                                </label>
+                                            </div>
+                                            <div id="expert-result" class="result" role="status" aria-live="polite"></div>
+                                        </div>
+                                    </div>
+                                    <details class="study-only">
+                                        <summary>詳しく見る：規則を保守する・説明の範囲</summary>
+                                        <div id="expert-enabled" class="controls"></div>
+                                        <div id="expert-trace" class="table-wrap"></div>
+                                        <p>有効・無効を変えると初期事実から計算し直します。不要になった結論を残しません。枠線で示す根拠は、この実行で最初に追加した際の説明です。あり得る根拠をすべて列挙する機能ではありません。</p>
+                                        <p>知識の内容が現実に正しいか、例外が漏れていないかは別の確認が必要です。適用履歴があるだけで、結論の実用上の正しさまで保証されるわけではありません。</p>
+                                    </details>
+                                    <details class="answer study-only">
+                                        <summary>確認：規則を変えることと、事実を変えることは同じ？</summary>
+                                        <p>事実は今回の入力、規則は条件と結論の関係です。どちらを変えても結果は変わり得ますが、変更したものを区別して記録します。R2だけを無効にしても、条件がそろっていればR1の「利用資格あり」は導けます。</p>
+                                    </details>
+                                </section>
+                            </main>
+                            <div class="footer-nav">
+                                <button type="button" id="prev">← 前のテーマ</button><span>予想する → たどる → 根拠を言葉にする</span><button type="button" id="next">次のテーマ →</button>
+                            </div>
+                            <footer>
+                                <p>すべて教材内の定義・架空例です。操作結果の保存・送信は行いません。テーマ間の編集状態は独立しています。</p>
+                                <details>
+                                    <summary>スライドとの対応・出典・この教材の範囲</summary>
+                                    <p>01：5〜13・30〜31枚 ／ 02：10〜11・14〜18枚 ／ 03：19〜25枚 ／ 04：26〜29枚 ／ 05：31〜33枚 ／ 06：35〜41枚。端末分類・R1〜R3と基準の事実は既存Python演習と同じです。</p>
+                                    <p>後ろ向き推論、フレーム、台帳の判断は追加の教育用実装。OWL・Prolog・RETE・多重継承・変数の単一化・完全な説明列挙は実装しません。</p>
+                                    <p>説明の根拠：<a href="https://www.w3.org/TR/owl2-primer/">W3C OWL 2 Primer</a>（クラス・個体・開世界）／ <a href="https://web.mit.edu/dxh/www/marvin/web.media.mit.edu/~minsky/papers/Frames/frames.html">Minsky: A Framework for Representing Knowledge</a>（フレームと既定値）。個別指定の優先はこの教材の規約です。外部リンクを開く場合はネット接続が必要です。</p>
+                                </details>
+                            </footer>
+                        </div>
+                        <script id="knowledge-model">
 'use strict';
 var Knowledge = (() => {
   const PARENTS=Object.freeze({'携帯型端末':'コンピュータ','ノートPC':'コンピュータ','据え置き型PC':'コンピュータ','スマホ':'携帯型端末','タブレット':'携帯型端末','デスクトップ':'据え置き型PC','サーバ':'据え置き型PC'});
@@ -194,8 +473,8 @@ var Knowledge = (() => {
   }
   return {PARENTS,FACTS,INPUTS,RULES,copy,isa,forward,backward,resolveFrame,world,explanation,demo};
 })();
-</script>
-<script id="knowledge-ui">
+                        </script>
+                        <script id="knowledge-ui">
 'use strict';
 (() => {
   const K=Knowledge,$=id=>document.getElementById(id),names=['network','frame','forward','backward','world','expert'];
@@ -296,8 +575,84 @@ var Knowledge = (() => {
   document.querySelectorAll('[data-enable]').forEach(input=>input.onchange=()=>{const s=state.expert,id=input.dataset.enable;s.enabled=input.checked?[...s.enabled,id]:s.enabled.filter(x=>x!==id);resetProgress('expert');});
   $('expert-target').onchange=e=>{state.expert.target=e.target.value;renderExpert();};
   $('expert-facts').onclick=e=>{const button=e.target.closest('[data-explain]');if(!button)return;const fact=button.dataset.explain;state.expert.target=fact;renderExpert();[...$('expert-facts').querySelectorAll('button')].find(b=>b.dataset.explain===fact)?.focus();};
+  globalThis.KnowledgeTeaching=()=>structuredClone(state);
+  document.querySelectorAll('[data-reset]').forEach(b=>{b.id=b.id||b.dataset.reset+'-reset';});
   names.forEach(name=>renderers[name]());show(themeFromHash(),false);
 })();
+                        </script>
+                        <!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+(()=>{
+const K=Knowledge,S=()=>KnowledgeTeaching(),step=(title,body)=>({title,body:'<p>'+body+'</p>'}),cards=xs=>'<div class="ts-values">'+xs.map(x=>'<span>'+x+'</span>').join('')+'</div>',calc=name=>{const s=S()[name];return K.forward(s.facts,name==='expert'?K.RULES.filter(r=>s.enabled.includes(r.id)):s.order==='reverse'?[...K.RULES].reverse():K.RULES);};
+installTeachingSteps([
+{id:'network',title:'名前から矢印をたどって根拠にする',steps:()=>{const s=S().network,r=K.isa(s.parents,s.start,s.target);return [step('問いと入力',`「${s.start}は${s.target}の種類か」を、登録したis-aの矢印だけで確かめます。現実の全知識を調べる画面ではありません。`),step('一歩ずつたどる',`上の次の手順で矢印を一つずつ追います。現在の手順は${s.step}。確認する経路は${r.path.join(' → ')||'登録された名前なし'}です。`),step('結果の意味',r.status==='yes'?'この辞書では目標に到達する経路があります。出発点、途中、目標の順で根拠を説明できます。':r.status==='cycle'?'同じ名前を再訪する循環です。終わらない探索を止め、登録した矢印を点検します。':'この知識には名前か経路が足りません。「種類ではない」と否定したのではなく、ここからは導けない状態です。'),step('比較と復帰','スマホの親を変更して経路がどう変わるか予想します。リセットでスマホ→携帯型端末→コンピュータの基準例へ戻します。')];},details:()=>'<p>is-aは種類から上位の種類へ向かいます。「端末Aはタブレットの個体」「電池Aは端末Aの部分」とは矢印の意味が違います。逆向きにたどって同じ結論を出すことはできません。</p>'},
+{id:'frame',title:'既定値と個別指定を順に確認する',steps:()=>{const s=S().frame,r=K.resolveFrame(s.standard,s.specific,s.exhibit);return [step('入力欄',`標準の貸出日数=${s.standard??'未指定'}、個別指定=${s.specific??'未指定'}。まず項目名と単位「日」を確認します。`),step('適用の順序','この教材では個別の値があればそちらを使い、なければ標準値を使います。二つの日数を足す規則ではありません。'),step('現在の値',`採用日数は${r.days??'不明'}、根拠は${r.source==='individual'?'個別指定':r.source==='default'?'既定値':'どちらにも指定がない'}です。展示品かどうかとは別の項目です。`),step('比較と復帰','個別指定3日を未指定へ変えると標準7日が使われます。両方未指定なら不明です。リセットで標準7・個別3へ戻します。')];},details:()=>'<p>標準7・個別3→3日、標準7・個別なし→7日、両方なし→不明。例外がないのか、まだ調べていないのかも区別して登録します。これは教材で定めた優先規約です。</p>'},
+{id:'forward',title:'事実カードを照合し、結論カードを足す',steps:()=>{const s=S().forward,c=calc('forward'),e=c.steps[s.step],r=K.RULES.find(r=>r.id===e.rule);return [step('初期事実',cards(s.facts)+'初めに与えたカードです。規則で導いた結論とは分けて表示します。'),step('今調べる規則',r?`${r.id}：${r.conditions.join(' ＆ ')} → ${r.conclusion}。足りない条件は${e.missing.join('・')||'なし'}。上の手順ボタンで一規則ずつ進めます。`:'現在は開始または一巡の区切りです。上の「次の手順」で、どの条件を照合するか確かめます。'),step('今ある事実',cards(e.facts)+(e.kind==='add'?`条件がそろったので${e.conclusion}を追加しました。次の規則の条件にも使えます。`:'新しい結論を追加しない手順もあります。条件不足と、既にある結論を区別します。')),step('停止と比較','一巡して新しい事実が増えなければ停止します。予約確認済みだけを追加しR3が使えるか比べ、リセットで初期3事実へ戻します。')];},details:()=>K.RULES.map(r=>`<p><strong>${r.id}</strong> ${r.conditions.join(' ＆ ')} → ${r.conclusion}</p>`).join('')+'<p>基準ではR1→利用資格あり、R2→貸出候補。R3には予約確認済みが足りません。規則を逆順にすると周回は増えても最終事実は同じです。</p>'},
+{id:'backward',title:'欲しい結論から、必要な条件へ戻る',steps:()=>{const s=S().backward,c=K.backward(s.inverse?['貸出候補']:s.facts,s.goal),e=c.events[s.step];return [step('目標を置く',`確認したい結論は「${s.goal}」。それを結論に持つ規則を探し、必要な条件を子の目標にします。`),step('現在の確認',`上の手順${s.step}では「${e.message}」。木の枠と、いま確認している条件名を対応付けます。`),step('すべての条件を確かめる','R2の貸出候補なら、利用資格ありと在庫ありが必要です。利用資格ありはR1の登録と講習へ戻り、一つずつ初期事実で確認します。'),step('不足と復帰','講習修了を外すと、その枝を証明できません。貸出候補が与えられただけで登録済みを逆算する規則はありません。リセットで基準の事実と目標へ戻します。')];},details:()=>'<p>貸出候補 ← R2 ← 利用資格あり・在庫あり。利用資格あり ← R1 ← 利用登録済み・講習修了。矢印を戻るのは証明に必要な条件の探索です。「AならB」から「BならA」を追加する操作ではありません。</p>'},
+{id:'world',title:'記録なしを、不明と否定に分ける',steps:()=>{const s=S().world,record=s.target==='A'?s.a:s.b,r=K.world(record,s.mode,s.complete);return [step('問いと台帳',`端末${s.target}の記載は${record?'あり':'なし'}。まず記録そのものを確かめ、現実の状態とは分けます。`),step('仮定を確認',`現在は${s.mode==='open'?'開世界：未記載でもあり得る':'閉世界：対象範囲の台帳を使う'}、完全性は${s.complete?'満たす設定':'満たさない設定'}です。`),step('結果を読む',`判定は${{yes:'記載あり',no:'この完全な台帳の範囲では否定',unknown:'不明'}[r.status]}。未記載という同じ入力でも、仮定が違えば答えが変わります。`),step('比較と復帰','Bの記載を外したまま開世界と閉世界を比べます。未反映例で完全性が崩れる場合も確認し、リセットで開世界の基準へ戻します。')];},details:()=>'<p>Bが未記載：開世界→不明。閉世界かつ完全な台帳→範囲内で否定。閉世界でも未反映がある→不明。現実全体について、永久に存在しないと証明するものではありません。</p>'},
+{id:'expert',title:'結論から、使った事実と規則を説明する',steps:()=>{const s=S().expert,c=calc('expert'),e=c.steps[s.step],why=K.explanation(s.facts,e.trace,s.target);return [step('三つの役割','知識ベースは規則R1〜R3、作業用の事実はチェックしたカード、推論機構は条件を順に照合する手順です。'),step('現在の知識',`有効な規則は${s.enabled.join('・')||'なし'}。説明したい結論は${s.target}です。手順を進めると事実が追加されます。`),step('使った根拠',why.found?`現在の結論に関係する事実は${why.facts.join('・')}、規則は${why.rules.join('・')||'なし（初期事実）'}です。`:'この手順では目標の根拠がまだありません。最後まで進めても導けないなら、初期事実と有効な規則を点検します。'),step('一条件を変える','R2だけを無効にすると貸出候補への経路が切れます。根拠を説明できても登録内容の正しさは別に点検します。リセットで全規則を有効に戻します。')];},details:()=>'<p>基準の貸出候補は「登録済み・講習修了→R1→利用資格あり」と「在庫あり→R2」に依存します。予約確認済みは貸出候補には不要ですが、貸出準備可には必要です。</p>'}
+]);})();
+
 </script>
-</body>
-</html>
+<!-- teaching-steps:end -->
+                    </body>
+                </html>

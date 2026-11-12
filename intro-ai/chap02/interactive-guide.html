@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第2回 AIの歴史：簡易ELIZAの操作マニュアル">
+<title>第2回 AIの歴史：簡易ELIZAの操作マニュアル</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第2回 AIの歴史：簡易ELIZAの操作マニュアル</h1>
+<h2 id="始め方と目標">始め方と目標</h2>
+<p><a href="index.html">スライド</a> ／ <a href="interactive.html" download="interactive.html">操作教材を保存</a> ／ <a href="programs/guide.html">Python／Notebookの解説</a></p>
+<p>ブラウザーで、入力から規則の選択と応答を追います。文字列の一致・規則の順序・対話状態を区別できれば到達です。保存したHTMLは単体でオフライン動作し、入力を外部へ送りません。原ELIZA全体ではなく、既存の授業用簡易版と同じ処理です。</p>
+<h2 id="基本の操作">基本の操作</h2>
+<p>テーマを選び、予想を書いてから一条件を変えます。TabとEnter、テーマタブでは左右矢印・Home・Endが使えます。説明の前後移動は対話を進めません。「次の固定入力に応答」が実際に1回処理する操作です。各テーマのリセットは数値・予想・カウンタを戻します。メモは保存されません。</p>
+<p>「文字列と規則」「規則の優先順」は毎回、新しい対話の1回目として計算します。「対話の状態」は既存Pythonと同じ20入力を使い、回数を保持します。状態をそろえず比較すると、規則ではなくオウム返し周期の影響が混ざります。</p>
+<h2 id="一段ずつ説明を追う2026-11-12改訂">一段ずつ説明を追う（2026-11-12改訂）</h2>
+<p>操作欄の下の「前の段階」「次の段階」で説明を読みます。「現在○／○」と下線が現在位置です。説明の移動では計算条件は変わりません。上の入力欄・実行ボタンで条件や計算を変えると、説明の値も更新されます。「説明を最初へ」は説明のみ、テーマのリセットは入力・計算も戻します。</p>
+<h3 id="母が心配ですはどの規則で止まる">「母が心配です」は、どの規則で止まる？</h3>
+<p>予想：含まれる規則は全て使うか。操作：母が心配ですを入力。確認：不一致、一致、調べていない規則。リセット。</p>
+<h3 id="同じ入力でも規則の順序で変わる">同じ入力でも、規則の順序で変わる</h3>
+<p>予想：同じ文なら応答は同じか。操作：心配を先頭へ変更。確認：最初の一致と応答。人の編集と学習を区別し、リセット。</p>
+<h3 id="規則を書く場合と重みを学ぶ場合">規則を書く場合と、重みを学ぶ場合</h3>
+<p>予想：応答文だけで仕組みを特定できるか。操作：規則教材の内訳を読む。確認：人が書いた規則の場所。学習するモデルとの違いを説明する。</p>
+<h3 id="回目は規則より先にオウム返し">6回目は、規則より先にオウム返し</h3>
+<p>予想：5回目と6回目のどちらで変わるか。操作：一回ずつ6回応答。確認：前後カウンタと採用処理。周期2へ変える前にリセット。</p>
+<h3 id="保存してブラウザーと同じ結果を確かめる">保存して、ブラウザーと同じ結果を確かめる</h3>
+<p>予想：状態を引き継ぐと比較に何が混ざるか。操作：ZIPを保存し、新規カーネルで全セル実行。確認：固定20応答。新しいDoctorで比較して復帰する。</p>
+<p>数値の内訳は「計算の内訳・確かめること」を開いて確認します。表示は丸めていますが計算は内部精度です。予想と結果が違ったときは、入力・更新した量・結果の順に確認し、テーマをリセットして同じ条件からやり直します。</p>
+</main></body></html>

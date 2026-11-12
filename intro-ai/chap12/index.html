@@ -109,7 +109,8 @@
 <!-- 5: 情報の確認日を明示するの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>情報の確認日を明示する</h2>
-<p><strong>本教材の情報確認日：2026年10月31日。</strong></p>
+<p><strong>動向の再確認：2026年11月12日。</strong></p>
+<p>その他の原出典確認：2026年10月31日。</p>
 <p>授業日2027年1月7日時点の最新情報を保証しない。</p>
 <ul>
 <li>公表日、対象期間、資料の版を分けて読む。</li>
@@ -120,7 +121,7 @@
 <audio controls src="./voiceovers/slide_05.mp3">
 </audio>
 <aside class="notes">
-日付が新しい記事でも、取り上げている実験や調査は古い場合があります。情報確認日とデータの対象期間は別です。 授業前の追加確認が必要な項目は制作資料に残します。この教材では将来の出来事を既成事実にしません。
+動向と検索・外部操作の役割は2026年11月12日に原資料で再確認しました。日付が新しい記事でも、取り上げている実験や調査は古い場合があります。情報確認日とデータの対象期間は別です。 授業前の追加確認が必要な項目は制作資料に残します。この教材では将来の出来事を既成事実にしません。
 </aside>
 </section>
 <section>
@@ -225,7 +226,44 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 </aside>
 </section>
 <section>
-<!-- 11: 検索しても誤りは残るの条件と根拠を説明する -->
+<!-- 11: 「図書室は何時まで？」に答える例を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>「図書室は何時まで？」に答える例</h2>
+<p class="eyebrow">
+検索と生成 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>質問</strong>
+<p>
+図書室の閉室時刻は？
+</p>
+</div>
+<div>
+<strong>検索</strong>
+<p>
+架空の案内文：平日は17時
+</p>
+</div>
+<div>
+<strong>生成</strong>
+<p>
+案内文を参照して回答
+</p>
+</div>
+</div>
+<p>検索は資料を見つける操作。生成は回答文を作る操作。</p>
+<p>休日の質問なのに平日の資料を使えば、検索しても誤る。</p>
+<p><strong>教材用の架空例</strong>。実際の学校の開室情報ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+RAGの論文で説明される検索と生成の役割を、架空の案内質問に置き換えた概念例です。検索した資料が質問の条件に合うか、回答が資料の内容に対応するかをそれぞれ確認します。新しい資料を入力に渡すことと重みを再学習することも区別してください。
+</aside>
+</section>
+<section>
+<!-- 12: 検索しても誤りは残るの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>検索しても誤りは残る</h2>
 <p>架空例：新しい手続きについて質問したが、検索結果は旧版の説明だった。</p>
@@ -236,14 +274,14 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 </ol>
 <p><strong>リンクが付いているだけでは、正しさの証明にならない。</strong></p>
 </div>
-<audio controls src="./voiceovers/slide_11.mp3">
+<audio controls src="./voiceovers/slide_12.mp3">
 </audio>
 <aside class="notes">
 この例は教材独自の状況設定で、特定サービスの失敗例ではありません。検索と生成のどちらにも確認点があることを示します。 根拠の存在、根拠の適切さ、回答との一致を分けると、どこを改善すべきか説明しやすくなります。
 </aside>
 </section>
 <section>
-<!-- 12: 道具を使うエージェントの条件と根拠を説明する -->
+<!-- 13: 道具を使うエージェントの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>道具を使うエージェント</h2>
 <p>説明用概念図：<strong>観測 → 次の行動を選ぶ → 道具を使う → 結果を観測</strong></p>
@@ -254,14 +292,51 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 出典：<a href="https://arxiv.org/html/2210.03629v3" target="_blank" rel="noopener">ReAct §2–3</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_12.mp3">
+<audio controls src="./voiceovers/slide_13.mp3">
 </audio>
 <aside class="notes">
 第12回の環境との相互作用を思い出してください。外部の検索や計算の結果を次の入力に使う構成があります。 ReActの説明は公開論文の設定に基づきます。すべてのエージェントが同じ構成で動くわけではありません。
 </aside>
 </section>
 <section>
-<!-- 13: 技術性能の進展をどう読むかの条件と根拠を説明する -->
+<!-- 14: 案内することと、予約を実行することを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>案内することと、予約を実行すること</h2>
+<p class="eyebrow">
+道具を使う処理 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>生成</strong>
+<p>
+空き教室の候補を説明
+</p>
+</div>
+<div>
+<strong>参照の道具</strong>
+<p>
+予約表の空きを調べる
+</p>
+</div>
+<div>
+<strong>変更の道具</strong>
+<p>
+予約表へ書き込む
+</p>
+</div>
+</div>
+<p>回答文を作るだけでは、<strong>予約したことにはならない</strong>。</p>
+<p>外部操作の結果を読み、成功・失敗を確認する。</p>
+<p>教材用の概念例。今回の操作教材は外部へ予約を送信しない。</p>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ReActの研究例は言語による判断と外部環境への行動を交互に扱います。ここでは架空の予約例で、参照と変更の違いを示します。実行結果を確認せず文章だけで成功を宣言してはいけません。実サービスごとの権限設定は別に確認が必要です。
+</aside>
+</section>
+<section>
+<!-- 15: 技術性能の進展をどう読むかの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>技術性能の進展をどう読むか</h2>
 <p>AI Index 2026は、複数の課題での性能の進展を報告している。</p>
@@ -273,17 +348,17 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 </ul>
 <p>ある試験での向上を、全用途での優位へ広げない。</p>
 <p class="source-note">
-出典：<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener">AI Index 2026 公式解説・確認2026-10-31</a>
+出典：<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener">AI Index 2026 公式解説・再確認2026-11-12</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_13.mp3">
+<audio controls src="./voiceovers/slide_15.mp3">
 </audio>
 <aside class="notes">
 ここではAI Indexの公式解説にある技術性能の動向を定性的に紹介します。異なる尺度を一つの知能の数字にまとめることはしません。 ニュースを読むときは、どの条件でどの能力を測った結果なのかを確認しましょう。
 </aside>
 </section>
 <section>
-<!-- 14: 得意と苦手は課題で変わるの条件と根拠を説明する -->
+<!-- 16: 得意と苦手は課題で変わるの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>得意と苦手は課題で変わる</h2>
 <p>AI Index 2026は、高度な課題での成果と、別の課題で残る失敗を並べている。</p>
@@ -291,17 +366,17 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 <p>今日の架空例でも、全体の順位と通常条件の順位は異なる。</p>
 <p><strong>自分の用途に近い条件で確かめる。</strong></p>
 <p class="source-note">
-出典：<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener">AI Index 2026 公式解説・確認2026-10-31</a>
+出典：<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener">AI Index 2026 公式解説・再確認2026-11-12</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_14.mp3">
+<audio controls src="./voiceovers/slide_16.mp3">
 </audio>
 <aside class="notes">
 人間にとっての難しさの順序が、そのままAIの得意不得意になるとは限りません。報告書の能力差という観点を評価演習へつなぎます。 このあと使うAとBは実モデルではなく、この区別を学ぶための固定データです。
 </aside>
 </section>
 <section>
-<!-- 15: 普及と効果を区別するの条件と根拠を説明する -->
+<!-- 17: 普及と効果を区別するの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>普及と効果を区別する</h2>
 <p>AI Index 2026は、組織や教育などへのAI利用の広がりも扱う。</p>
@@ -312,17 +387,17 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 </ul>
 <p>将来の仕事や学習の変化は、前提を添えて議論する。</p>
 <p class="source-note">
-出典：<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener">AI Index 2026 公式解説・確認2026-10-31</a>
+出典：<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank" rel="noopener">AI Index 2026 公式解説・再確認2026-11-12</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_15.mp3">
+<audio controls src="./voiceovers/slide_17.mp3">
 </audio>
 <aside class="notes">
 普及率だけでは学習効果や仕事の質は分かりません。対象や調査方法が違う結果を単純に比較しないことも大切です。 今後の見通しを考えるときは、観測された変化と予想を分けて書きます。
 </aside>
 </section>
 <section>
-<!-- 16: 評価する対象と条件をそろえるの条件と根拠を説明する -->
+<!-- 18: 評価する対象と条件をそろえるの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>評価する対象と条件をそろえる</h2>
 <p>教材用の固定結果：方式A・Bが同じ12件を処理した設定。</p>
@@ -330,14 +405,14 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 <p><strong>実際の質問・回答や、学習済みAIの実測結果ではない。</strong></p>
 <p>方式を比べる前に、同じ入力・採点規則・分母か確認する。</p>
 </div>
-<audio controls src="./voiceovers/slide_16.mp3">
+<audio controls src="./voiceovers/slide_18.mp3">
 </audio>
 <aside class="notes">
 二方式には同じケースIDを用意しています。正誤は固定ラベルで、スコアから正誤を作っているわけではありません。 現実の生成文には部分的な正しさもありますが、この演習では二値ラベルへ簡略化しています。
 </aside>
 </section>
 <section>
-<!-- 17: 正誤とスコアは別の情報の条件と根拠を説明する -->
+<!-- 19: 正誤とスコアは別の情報の条件と根拠を説明する -->
 <div class="slide-body">
 <h2>正誤とスコアは別の情報</h2>
 <p>方式AのN6：<strong>不正解、スコア90</strong>。</p>
@@ -351,14 +426,14 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 <a href="interactive.html#cases" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_17.mp3">
+<audio controls src="./voiceovers/slide_19.mp3">
 </audio>
 <aside class="notes">
 高スコアの誤答を意図的に含めています。現実のモデルのスコアを確率として読むには、その対応を別に検証する必要があります。 数値が大きいという印象だけで信用せず、観測した正誤と区別して説明してください。
 </aside>
 </section>
 <section>
-<!-- 18: 全体の正答率は分母と読むの条件と根拠を説明する -->
+<!-- 20: 全体の正答率は分母と読むの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>全体の正答率は分母と読む</h2>
 <p>全件回答の基準：<strong>A＝7/12、B＝8/12</strong>。</p>
@@ -388,14 +463,51 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 </table>
 <p>この固定12件ではBが高い。将来の性能保証ではない。</p>
 </div>
-<audio controls src="./voiceovers/slide_18.mp3">
+<audio controls src="./voiceovers/slide_20.mp3">
 </audio>
 <aside class="notes">
 割合だけでなく件数も示します。小さな固定結果で一件違えば、率は大きく動きます。 同じデータを何度集計しても、独立した新しい検査が増えたことにはなりません。
 </aside>
 </section>
 <section>
-<!-- 19: 内訳を見ると順位が変わるの条件と根拠を説明する -->
+<!-- 21: 正解の○を数え、全件で割るを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>正解の○を数え、全件で割る</h2>
+<p class="eyebrow">
+12件の評価 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>Aの通常6件</strong>
+<p>
+○○○○○× → 5
+</p>
+</div>
+<div>
+<strong>Aの条件変化6件</strong>
+<p>
+○○×××× → 2
+</p>
+</div>
+<div>
+<strong>Aの全12件</strong>
+<p>
+(5＋2)÷12 = 7/12
+</p>
+</div>
+</div>
+<p>Bは通常4、変化4 → <strong>8/12</strong>。全体ではBが上。</p>
+<p>通常だけならA5/6、B4/6。集計する範囲も示す。</p>
+<p>A・Bは教材独自の架空方式。実サービスの性能ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+正答率はどのケースを分母にしたかと一緒に読みます。通常条件だけの順位と全体の順位は同じではありません。カードの○と×を実際に数えて、表の集計値へつなげます。
+</aside>
+</section>
+<section>
+<!-- 22: 内訳を見ると順位が変わるの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>内訳を見ると順位が変わる</h2>
 <table>
@@ -425,14 +537,14 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 <a href="interactive.html#groups" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_19.mp3">
+<audio controls src="./voiceovers/slide_22.mp3">
 </audio>
 <aside class="notes">
 方式Aは通常条件と条件変化で差があります。方式Bはこの固定例では両方とも四件正解です。 条件の内訳を見たうえで、その内訳が実際の利用場面に近いかを考えます。
 </aside>
 </section>
 <section>
-<!-- 20: 利用比率を仮定して推定するの条件と根拠を説明する -->
+<!-- 23: 利用比率を仮定して推定するの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>利用比率を仮定して推定する</h2>
 <p>通常条件の割合をwとする。</p>
@@ -440,14 +552,14 @@ RAG論文の第2節では検索器と生成器を組み合わせます。ここ�
 <p>これは利用比率を仮定した計算。元の12件は変更しない。</p>
 <p>基準w＝0.5では、A＝7/12、B＝8/12。</p>
 </div>
-<audio controls src="./voiceovers/slide_20.mp3">
+<audio controls src="./voiceovers/slide_23.mp3">
 </audio>
 <aside class="notes">
 wはゼロから一の割合ですが、画面には百分率で入力します。実際に新しく十二件を測り直した結果ではありません。 各条件内の成績が利用先でも同じという仮定を置いていることを忘れないでください。
 </aside>
 </section>
 <section>
-<!-- 21: 通常条件が75%ならの条件と根拠を説明する -->
+<!-- 24: 通常条件が75%ならの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>通常条件が75%なら</h2>
 <p>A＝5/6×3/4＋2/6×1/4＝<strong>17/24 ≈ 70.83%</strong></p>
@@ -458,14 +570,51 @@ wはゼロから一の割合ですが、画面には百分率で入力します�
 <a href="interactive.html#mixture" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_21.mp3">
+<audio controls src="./voiceovers/slide_24.mp3">
 </audio>
 <aside class="notes">
 順位が変わった原因は方式の学習ではなく、利用比率の仮定を変えたことです。元のケースのラベルは同じです。 この違いを言葉で説明できれば、評価条件と結論を対応づけられています。
 </aside>
 </section>
 <section>
-<!-- 22: 回答する・保留するの条件と根拠を説明する -->
+<!-- 25: 利用割合を変えても、元の正解数は同じを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>利用割合を変えても、元の正解数は同じ</h2>
+<p class="eyebrow">
+仮定した利用条件 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>通常が75%</strong>
+<p>
+Aの寄与：(5/6)×0.75
+</p>
+</div>
+<div>
+<strong>変化が25%</strong>
+<p>
+Aの寄与：(2/6)×0.25
+</p>
+</div>
+<div>
+<strong>足した推定</strong>
+<p>
+A=17/24≈70.83%
+</p>
+</div>
+</div>
+<p>Bは両群4/6 → 推定 <strong>66.67%</strong>。この仮定ならAが上。</p>
+<p>元の12件の正解数はA7・B8のまま。</p>
+<p><strong>観測した件数</strong>と、利用割合を仮定した<strong>推定値</strong>を区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+通常条件を多く使うと仮定すると、通常に強いAの寄与が大きくなります。データを書き換えたり新しい正解を作ったりしていません。この仮定が実際の利用場面に合うかは別の確認です。
+</aside>
+</section>
+<section>
+<!-- 26: 回答する・保留するの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>回答する・保留する</h2>
 <p><strong>スコアがしきい値以上なら回答、未満なら保留。</strong></p>
@@ -476,14 +625,14 @@ wはゼロから一の割合ですが、画面には百分率で入力します�
 </ul>
 <p>保留を正解にも誤答にも数えない。</p>
 </div>
-<audio controls src="./voiceovers/slide_22.mp3">
+<audio controls src="./voiceovers/slide_26.mp3">
 </audio>
 <aside class="notes">
 ここから正答率の分母が回答数になることに注意してください。全十二件に対する正解数の割合とは別の指標です。 しきい値を上げた結果を説明するときは、正答率だけでなく何件に回答したかも示します。
 </aside>
 </section>
 <section>
-<!-- 23: しきい値80の比較の条件と根拠を説明する -->
+<!-- 27: しきい値80の比較の条件と根拠を説明する -->
 <div class="slide-body">
 <h2>しきい値80の比較</h2>
 <table>
@@ -519,14 +668,51 @@ wはゼロから一の割合ですが、画面には百分率で入力します�
 <a href="interactive.html#abstain" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_23.mp3">
+<audio controls src="./voiceovers/slide_27.mp3">
 </audio>
 <aside class="notes">
 Bは回答した五件には正解していますが、七件を保留しています。すべて任せられるという意味ではありません。 しきい値を上げれば誤答が必ずゼロになる、正答率が必ず上がる、という一般則もありません。
 </aside>
 </section>
 <section>
-<!-- 24: 全件保留と未定義の条件と根拠を説明する -->
+<!-- 28: 回答した7件と、依頼された12件を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>回答した7件と、依頼された12件</h2>
+<p class="eyebrow">
+保留のある評価 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>方式A・閾値80</strong>
+<p>
+回答7件、そのうち正解6件
+</p>
+</div>
+<div>
+<strong>正答率</strong>
+<p>
+6÷7 ≈ 85.71%
+</p>
+</div>
+<div>
+<strong>回答率</strong>
+<p>
+7÷12 ≈ 58.33%
+</p>
+</div>
+</div>
+<p>方式Bは正答率 <strong>5/5=100%</strong>、回答率 <strong>5/12≈41.67%</strong>。</p>
+<p>AのN6はスコア90でも誤答。保留せず回答側に残る。</p>
+<p>正答率だけでなく、<strong>何件に答えたか</strong>も確認する。</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+しきい値以上かどうかで回答側と保留側に分けます。正解かどうかを先に知って保留するわけではありません。正答率と回答率では分母が違うので、割合だけで比較しないでください。
+</aside>
+</section>
+<section>
+<!-- 29: 全件保留と未定義の条件と根拠を説明する -->
 <div class="slide-body">
 <h2>全件保留と未定義</h2>
 <p>しきい値100では、AもBも回答0件。</p>
@@ -534,14 +720,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 <p>回答中の正答率＝0/0なので、<strong>未定義（—）</strong>。</p>
 <p>100%正解とも0%正解とも置かない。条件比較では全件保留を適合候補にしない。</p>
 </div>
-<audio controls src="./voiceovers/slide_24.mp3">
+<audio controls src="./voiceovers/slide_29.mp3">
 </audio>
 <aside class="notes">
 分母がゼロのとき、便宜的に百パーセントと置くと判断を誤ります。プログラムではNone、JSONではnullとして保持します。 入力の誤りと、正しく計算した結果が未定義であることも区別します。
 </aside>
 </section>
 <section>
-<!-- 25: 保留にも費用がかかるの条件と根拠を説明する -->
+<!-- 30: 保留にも費用がかかるの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>保留にも費用がかかる</h2>
 <p>架空の単位：Aの処理1、Bの処理3、保留後の確認4。</p>
@@ -553,14 +739,51 @@ Bは回答した五件には正解していますが、七件を保留してい�
 <a href="interactive.html#costs" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_25.mp3">
+<audio controls src="./voiceovers/slide_30.mp3">
 </audio>
 <aside class="notes">
 確認を追加すれば、その作業にも費用が必要という教材上の計算です。人の確認をすれば必ず正解になるとは仮定していません。 時間や電力をこの費用値から換算することもできません。それぞれ別の測定が必要です。
 </aside>
 </section>
 <section>
-<!-- 26: 要件を満たす候補を比べるの条件と根拠を説明する -->
+<!-- 31: 保留した後にも、費用が必要を具体例の対応から説明する -->
+<div class="slide-body">
+<h2>保留した後にも、費用が必要</h2>
+<p class="eyebrow">
+費用 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>Aの全件処理</strong>
+<p>
+12×1 = 12
+</p>
+</div>
+<div>
+<strong>Aの保留確認</strong>
+<p>
+5×4 = 20
+</p>
+</div>
+<div>
+<strong>Aの総費用</strong>
+<p>
+12＋20 = 32
+</p>
+</div>
+</div>
+<p>Bは <strong>12×3＋7×4＝64</strong>。しきい値80で比較。</p>
+<p>保留前にも全12件を処理している。</p>
+<p>確認後の正答率・待ち時間は、この式では計算していない。</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+保留件数だけ処理費用を除くと過小評価になります。処理費用は全件、確認費用は保留件数に掛けます。架空単位の費用モデルで、人の確認が完全に正しいという仮定は含みません。
+</aside>
+</section>
+<section>
+<!-- 32: 要件を満たす候補を比べるの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>要件を満たす候補を比べる</h2>
 <p>候補はA・B × しきい値0・80・100の6通り。</p>
@@ -568,14 +791,51 @@ Bは回答した五件には正解していますが、七件を保留してい�
 <p>適合候補から総費用が最小のものを選ぶ。</p>
 <p>同額なら回答率→正答率→方式A→低いしきい値の順。候補がなければ「該当なし」。</p>
 </div>
-<audio controls src="./voiceovers/slide_26.mp3">
+<audio controls src="./voiceovers/slide_32.mp3">
 </audio>
 <aside class="notes">
 これは六つの候補から選ぶ教材独自の規則です。あらゆるしきい値を最適化する処理ではありません。 テーマ3の利用比率による推定とは切り離し、ここでは固定十二件を使います。
 </aside>
 </section>
 <section>
-<!-- 27: 選択結果と、決められないことの条件と根拠を説明する -->
+<!-- 33: 条件を満たす候補から、費用で選ぶを具体例の対応から説明する -->
+<div class="slide-body">
+<h2>条件を満たす候補から、費用で選ぶ</h2>
+<p class="eyebrow">
+選択の手順 ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>必要条件</strong>
+<p>
+正答率80%以上・回答率50%以上
+</p>
+</div>
+<div>
+<strong>A／80</strong>
+<p>
+85.71%・58.33% → 適合
+</p>
+</div>
+<div>
+<strong>B／80</strong>
+<p>
+100%・41.67% → 回答率不足
+</p>
+</div>
+</div>
+<p>適合候補の中で最小費用を選ぶ → <strong>A／80、費用32</strong>。</p>
+<p>必要正答率を90%へ上げると、この条件では該当なし。</p>
+<p>選択できたことは、全用途での安全性や公平性の証明ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+固定12件と6候補の範囲で、条件を満たしてから費用を比較します。条件に合う候補がなければ選択なしを返します。正答率と回答率を一つの値にまとめず、それぞれの条件を確認します。
+</aside>
+</section>
+<section>
+<!-- 34: 選択結果と、決められないことの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>選択結果と、決められないこと</h2>
 <p>基準では <strong>A・しきい値80・費用32</strong> を選ぶ。</p>
@@ -586,14 +846,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 <a href="interactive.html#choose" target="_blank" rel="noopener">操作して確かめる</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_27.mp3">
+<audio controls src="./voiceovers/slide_34.mp3">
 </audio>
 <aside class="notes">
 該当なしはプログラムの失敗ではありません。指定した条件を同時に満たす候補がないという結果です。 条件を都合よく下げる前に、別方式や別データ、確認体制を含めて検討する余地があります。
 </aside>
 </section>
 <section>
-<!-- 28: 誤情報と根拠の確認の条件と根拠を説明する -->
+<!-- 35: 誤情報と根拠の確認の条件と根拠を説明する -->
 <div class="slide-body">
 <h2>誤情報と根拠の確認</h2>
 <p>流暢な文章やもっともらしい引用にも、誤りがあり得る。</p>
@@ -608,14 +868,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_28.mp3">
+<audio controls src="./voiceovers/slide_35.mp3">
 </audio>
 <aside class="notes">
 ここではNISTが挙げる誤った内容や情報の信頼性の課題を扱います。人間らしい口調を根拠の強さと混同しないことが大切です。 出典の数を増やすだけではなく、それぞれが主張を支えているか確かめます。
 </aside>
 </section>
 <section>
-<!-- 29: 偏りと公平性の条件と根拠を説明する -->
+<!-- 36: 偏りと公平性の条件と根拠を説明する -->
 <div class="slide-body">
 <h2>偏りと公平性</h2>
 <p>データの偏りや利用条件の違いで、結果に差が出ることがある。</p>
@@ -626,14 +886,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_29.mp3">
+<audio controls src="./voiceovers/slide_36.mp3">
 </audio>
 <aside class="notes">
 差を見つけることは出発点ですが、その差の理由や影響を調べる必要があります。公平性の基準は用途や関係者の立場とも関わります。 二つの数値が同じなら社会的課題がすべて解決する、という説明は避けます。
 </aside>
 </section>
 <section>
-<!-- 30: 入力する情報を考えるの条件と根拠を説明する -->
+<!-- 37: 入力する情報を考えるの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>入力する情報を考える</h2>
 <p>個人情報・機密情報を扱う際は、目的・権限・送信先・保存条件を確認する。</p>
@@ -643,14 +903,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_30.mp3">
+<audio controls src="./voiceovers/slide_37.mp3">
 </audio>
 <aside class="notes">
 入力時点だけでなく、保存や共有のされ方も確認対象です。具体的なサービスの条件は変わるため、利用時に確認します。 今日の評価モデルを試すために、実在の人の相談や成績を集める必要はありません。
 </aside>
 </section>
 <section>
-<!-- 31: 著作物と出典を区別して考えるの条件と根拠を説明する -->
+<!-- 38: 著作物と出典を区別して考えるの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>著作物と出典を区別して考える</h2>
 <p>生成物にも、既存の著作物・ライセンス・利用条件の確認が必要になる場合がある。</p>
@@ -661,14 +921,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_31.mp3">
+<audio controls src="./voiceovers/slide_38.mp3">
 </audio>
 <aside class="notes">
 出典を付ければどのような利用でも認められる、またはAI生成なら常に自由に使える、とは判断できません。 ここでは確認する観点を学びます。具体的な法律上の結論や未発表の授業ルールをこの資料で追加しません。
 </aside>
 </section>
 <section>
-<!-- 32: 外部情報と操作権限の条件と根拠を説明する -->
+<!-- 39: 外部情報と操作権限の条件と根拠を説明する -->
 <div class="slide-body">
 <h2>外部情報と操作権限</h2>
 <p>検索文書や道具の出力に、意図しない指示が混ざる場合がある。</p>
@@ -679,14 +939,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_32.mp3">
+<audio controls src="./voiceovers/slide_39.mp3">
 </audio>
 <aside class="notes">
 エージェントが外部とやり取りする場面では、内容だけでなく権限も重要です。たとえば説明文の中の命令を、利用者の依頼と同じ権限で実行するのは問題です。 この授業では攻撃の実装をせず、情報と操作を分ける考え方を扱います。
 </aside>
 </section>
 <section>
-<!-- 33: 人が確認する仕組みの条件と根拠を説明する -->
+<!-- 40: 人が確認する仕組みの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>人が確認する仕組み</h2>
 <p>「最後に人が見る」だけでは、確認の質は決まらない。</p>
@@ -700,14 +960,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_33.mp3">
+<audio controls src="./voiceovers/slide_40.mp3">
 </audio>
 <aside class="notes">
 人による確認にも時間や知識が必要です。AIの出力に引きずられる可能性もあるため、役割や資料を具体的に決めます。 費用を払ったから正しいという結論にはならないことを、演習と結び付けて説明しましょう。
 </aside>
 </section>
 <section>
-<!-- 34: 仕事と学習への影響を確かめるの条件と根拠を説明する -->
+<!-- 41: 仕事と学習への影響を確かめるの条件と根拠を説明する -->
 <div class="slide-body">
 <h2>仕事と学習への影響を確かめる</h2>
 <p>架空例：下書き作成は速くなったが、出典確認に時間がかかった。</p>
@@ -718,14 +978,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_34.mp3">
+<audio controls src="./voiceovers/slide_41.mp3">
 </audio>
 <aside class="notes">
 一工程の短縮を仕事全体の効果と同一視しないことが大切です。影響は使い方や対象者によって変わります。 学習では、結果を受け取るだけでなく、その根拠を自分で説明できるかを確かめてください。
 </aside>
 </section>
 <section>
-<!-- 35: 資源と社会的選択の条件と根拠を説明する -->
+<!-- 42: 資源と社会的選択の条件と根拠を説明する -->
 <div class="slide-body">
 <h2>資源と社会的選択</h2>
 <p>学習・推論には計算資源が必要。便益と負担の両方を見る。</p>
@@ -739,14 +999,14 @@ Bは回答した五件には正解していますが、七件を保留してい�
 出典：<a href="https://doi.org/10.6028/NIST.AI.600-1" target="_blank" rel="noopener">NIST AI 600-1 §2–3／架空例は教材独自</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_35.mp3">
+<audio controls src="./voiceovers/slide_42.mp3">
 </audio>
 <aside class="notes">
 NISTは環境への影響もリスクとして整理しています。ただしこの教材では電力などを測定していません。 一つの数値だけで社会的な望ましさを決めず、何を測っていないのかも説明する姿勢を身につけましょう。
 </aside>
 </section>
 <section>
-<!-- 36: 保存して実行するの条件と根拠を説明する -->
+<!-- 43: 保存して実行するの条件と根拠を説明する -->
 <div class="slide-body exercise-slide">
 <h2>保存して実行する</h2>
 <ol type="1">
@@ -763,14 +1023,14 @@ NISTは環境への影響もリスクとして整理しています。ただし�
 <a href="programs/ai_evaluation.py" download>Pythonを保存</a> ／ <a href="programs/ai_evaluation.ipynb" download>Notebookを保存</a> ／ <a href="programs/ai_evaluation.zip" download>一式ZIPを保存</a>
 </p>
 </div>
-<audio controls src="./voiceovers/slide_36.mp3">
+<audio controls src="./voiceovers/slide_43.mp3">
 </audio>
 <aside class="notes">
 制作環境と同じPythonの版を学生へ要求しません。解説にあるPython三点十以上と、既存の実行環境を使ってください。 Notebookで古い結果が残っている場合は、カーネルを再起動して上からすべて実行します。
 </aside>
 </section>
 <section>
-<!-- 37: 一項目だけ変える六つの実験の条件と根拠を説明する -->
+<!-- 44: 一項目だけ変える六つの実験の条件と根拠を説明する -->
 <div class="slide-body exercise-slide">
 <h2>一項目だけ変える六つの実験</h2>
 <ol type="1">
@@ -783,14 +1043,14 @@ NISTは環境への影響もリスクとして整理しています。ただし�
 </ol>
 <p>毎回、対応する基準設定のコピーから始める。</p>
 </div>
-<audio controls src="./voiceovers/slide_37.mp3">
+<audio controls src="./voiceovers/slide_44.mp3">
 </audio>
 <aside class="notes">
 三番と四番は保留による費用を観察するため、しきい値八十の基準を使います。その基準から変更する値は一つだけです。 前の実験の変更を持ち越さず、基準結果を保存したまま比較します。
 </aside>
 </section>
 <section>
-<!-- 38: 比較結果を説明する型の条件と根拠を説明する -->
+<!-- 45: 比較結果を説明する型の条件と根拠を説明する -->
 <div class="slide-body">
 <h2>比較結果を説明する型</h2>
 <p><strong>条件 → 計算 → 結論 → 限界</strong></p>
@@ -798,14 +1058,14 @@ NISTは環境への影響もリスクとして整理しています。ただし�
 <p>回答中の正答率は100%だが、回答率は5/12なので、必要回答率50%を満たさない。</p>
 <p>実サービスの能力や安全性は、この架空例から判断できない。</p>
 </div>
-<audio controls src="./voiceovers/slide_38.mp3">
+<audio controls src="./voiceovers/slide_45.mp3">
 </audio>
 <aside class="notes">
 説明に分母と条件を含めると、百パーセントという数字の誤解を防げます。判断に使った要件も明示しましょう。 最後に、未測定の事項を一つ挙げてください。費用や正答率だけで判断できない点が残ります。
 </aside>
 </section>
 <section>
-<!-- 39: 理解確認と次回への接続の条件と根拠を説明する -->
+<!-- 46: 理解確認と次回への接続の条件と根拠を説明する -->
 <div class="slide-body">
 <h2>理解確認と次回への接続</h2>
 <ul>
@@ -816,14 +1076,14 @@ NISTは環境への影響もリスクとして整理しています。ただし�
 </ul>
 <p>次回は総合演習。課題内容・提出条件は別途示される指示を確認する。</p>
 </div>
-<audio controls src="./voiceovers/slide_39.mp3">
+<audio controls src="./voiceovers/slide_46.mp3">
 </audio>
 <aside class="notes">
 四つの問いを、スライドと操作結果を根拠に説明してください。単語の暗記だけではなく、条件を変えた例を使えると理解が深まります。 このスライドは第十五回の課題や締切を定めるものではありません。
 </aside>
 </section>
 <section>
-<!-- 40: 参考資料と確認範囲の条件と根拠を説明する -->
+<!-- 47: 参考資料と確認範囲の条件と根拠を説明する -->
 <div class="slide-body references-slide">
 <h2>参考資料と確認範囲</h2>
 <ul>
@@ -832,9 +1092,9 @@ NISTは環境への影響もリスクとして整理しています。ただし�
 <li><a href="https://hai.stanford.edu/ai-index/2026-ai-index-report">Stanford AI Index 2026</a></li>
 <li><a href="https://doi.org/10.6028/NIST.AI.600-1">NIST AI 600-1：生成AIプロファイル</a></li>
 </ul>
-<p>確認日2026-10-31。技術の研究例と現在の全製品を同一視しない。A・Bの数値は教材独自の架空データ。</p>
+<p>動向・RAG・ReActの再確認2026-11-12。その他の原出典確認2026-10-31。技術の研究例と現在の全製品を同一視しない。A・Bの数値は教材独自の架空データ。</p>
 </div>
-<audio controls src="./voiceovers/slide_40.mp3">
+<audio controls src="./voiceovers/slide_47.mp3">
 </audio>
 <aside class="notes">
 参考資料は説明の根拠を追う入口です。技術論文の本文で確認した節と、公式解説を参照した範囲は出典対応表に記録しています。 本教材の数値演習は原著の実験結果ではありません。公開情報を読む際も、このように情報の由来と時点を区別してください。

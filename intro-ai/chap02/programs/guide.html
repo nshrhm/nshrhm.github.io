@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第2回 簡易ELIZA：保存と実行">
+<title>第2回 簡易ELIZA：保存と実行</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第2回 簡易ELIZA：保存と実行</h1>
+<p><a href="../index.html">スライド</a> ／ <a href="../interactive.html">操作教材</a> ／ <a href="../interactive-guide.html">操作マニュアル</a></p>
+<p><a href="doctor.py" download="doctor.py">Python</a> ／ <a href="doctor.ipynb" download="doctor.ipynb">Notebook</a> ／ <a href="doctor.zip" download>一式ZIPを保存</a></p>
+<h2 id="保存して実行する">保存して実行する</h2>
+<p>ZIPを保存し、新しいフォルダーへ展開します。授業で使用しているvenvを有効化し、<code>python --version</code> と <code>python -c "import sys; print(sys.executable)"</code> で環境を確認します。コードはPython 3.10以降の標準ライブラリで動きます。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> doctor.py <span class="at">--demo</span></span></code></pre></div>
+<p>固定20入力への応答が表示されます。初回「先生に相談したいです」への応答は「私のことでなくあなたのことを話しましょう」です。対話入力で試す場合は <code>python doctor.py</code>。20応答で終了し、入力終了やCtrl+Cでも終了できます。</p>
+<h2 id="notebook">Notebook</h2>
+<p>既存の授業用venvをVS CodeのNotebook右上のカーネルで選び、カーネル再起動→全セル実行を行います。Notebookは単体で動き、同梱Pythonのimportや外部APIを必要としません。固定20件と変更例が出れば成功です。</p>
+<p>Notebook環境が不足する場合だけ、venv有効化後に <code>python -m pip install -r requirements.txt</code>。導入にはネット接続が必要です。uvを使う制作環境では元のプログラムフォルダーで <code>uv sync --locked</code>、<code>uv run --locked python doctor.py --demo</code> でも実行できます。学生にuvや制作用Python版は要求しません。</p>
+<h2 id="一つ変えて戻す">一つ変えて戻す</h2>
+<p>元データを残し、<code>RULES</code> のコピーで「が心配です」を先頭にすると「母が心配です」への応答が変わります。比較ごとに新しい <code>Doctor()</code> を作り、対話状態をそろえます。規則を人が変えたので、自動学習ではありません。</p>
+<p>周期5なら6・11・16回目がオウム返しです。<code>Doctor(cycle=2)</code> では3・5回目から変わります。ノートブックを最初から実行し直せば基準条件へ戻ります。元のZIPを残しておくと改変前へ復帰できます。</p>
+<h2 id="困ったとき">困ったとき</h2>
+<p><code>python</code> が見つからなければ授業用venvを確認します。Notebookのimportエラーはカーネルの環境を確認します。応答が違う場合は入力文字、規則順、対話回数の順で確認します。空欄を埋める未完成プログラムではありません。受講者の実機や理解度の確認は技術検証とは別です。</p>
+<h2 id="段階表示とコードを対応させる">段階表示とコードを対応させる</h2>
+<p>操作教材の「計算の内訳・確かめること」を開き、入力と同じ順序で途中の値を比較します。説明の前後移動では計算は進みません。プログラム側では同じ固定入力と条件でセルを実行し、表示の丸めによる末尾の差と、計算条件の違いを区別してください。</p>
+<p>ブラウザーの規則順・応答前カウンタ・採用規則・応答後カウンタを、Doctor.respondの分岐と対応付けます。周期5の6・11・16回目を特に確認してください。</p>
+<p>Python／Notebookの計算コード・固定データ・期待値は変更していません。変更実験は元データのコピーで行い、再実行前には説明済みの初期化手順を使います。</p>
+</main></body></html>

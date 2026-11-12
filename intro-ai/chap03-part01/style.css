@@ -612,3 +612,6 @@ body.image-zoom-open {
 .reveal .references-slide { font-size: 0.69em; }
 .reveal .references-slide li { margin-bottom: 0.5em; }
 .reveal .table-slide table { font-size: 0.8em; }
+
+/* Concrete worked examples, one operation per panel. */
+.reveal .worked-flow{display:flex;gap:12px;margin:16px 0;align-items:stretch}.reveal .worked-flow>div{flex:1;border:2px solid #246bce;border-radius:8px;padding:12px;min-width:0}.reveal .worked-flow strong{display:block;border-bottom:1px solid #cfd8e3;padding-bottom:6px}.reveal .worked-flow p{margin:8px 0;font-size:.9em}

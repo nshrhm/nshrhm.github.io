@@ -1,25 +1,25 @@
 {
   "schema_version": 2,
-  "slides": 40,
-  "audio_files": 40,
+  "slides": 47,
+  "audio_files": 47,
   "scope": "intro-ai/chap09/",
   "source": "textbook-ai-2026/chap09",
   "manifest_excludes_itself": true,
   "files": [
     {
       "path": "index.html",
-      "bytes": 40769,
-      "sha256": "c0d3d3d26deee26c39ddf00dc476897280a39e8f8ebca46a3d832b0caf0a5e38"
+      "bytes": 48424,
+      "sha256": "7ffc9098b0f61005e7a4f0625d8a3a654485259114d844fee288db3f65a06699"
     },
     {
       "path": "interactive-guide.html",
-      "bytes": 7972,
-      "sha256": "edbca51d74d5c1bf590220e0a30a945ce26ccbbd15e515beda546feacdd5d940"
+      "bytes": 10838,
+      "sha256": "da1017fe2b08b1261a2e6f5d250351f9759727d420b47077c4613d9e6c9d78fb"
     },
     {
       "path": "interactive.html",
-      "bytes": 23082,
-      "sha256": "54e9324acf63dc22838de99c7e7e918af0baddec65882aa81f6ffd862804d097"
+      "bytes": 38790,
+      "sha256": "55652a30a219ebfb3844437a24a77c4f9a422960e46520016c5fd04ca7f17b66"
     },
     {
       "path": "libs/highlight.js/11.3.1/styles/monokai.min.css",
@@ -368,8 +368,8 @@
     },
     {
       "path": "programs/guide.html",
-      "bytes": 14017,
-      "sha256": "74df53389bc251bc989d01f3e0fa03f975586080c0e0773426950427d65dcdf5"
+      "bytes": 14934,
+      "sha256": "cbd92a17d5eb1836e38286b5647eaf2a5c9d96b411edabbb78b629f2309bafe3"
     },
     {
       "path": "programs/image_recognition.ipynb",
@@ -383,8 +383,8 @@
     },
     {
       "path": "programs/image_recognition.zip",
-      "bytes": 34997,
-      "sha256": "48ea61b7f5cb99c5c628ba211f1f16f0ce7ff593d2f668ec48863f21a113d5f5"
+      "bytes": 35340,
+      "sha256": "24f62cec86493a4cacf116937898bf9eefeb6a7cd73a1a80cecfb68aa9c7cce8"
     },
     {
       "path": "programs/requirements.txt",
@@ -393,8 +393,8 @@
     },
     {
       "path": "style.css",
-      "bytes": 13340,
-      "sha256": "79a650510bbc75144c0efe29972da12d1dafd15e3ca14011b03b42a456a4451b"
+      "bytes": 13720,
+      "sha256": "4ba0d9eeb98f437a768bdd9dded4079084384b900bbe3ad4aa1c8404506c9f33"
     },
     {
       "path": "voiceovers/slide_01.mp3",
@@ -438,174 +438,209 @@
     },
     {
       "path": "voiceovers/slide_09.mp3",
+      "bytes": 104400,
+      "sha256": "bb9f6dbf88bf1c877f0dacca980ef3f951785a7db398984d42b5e48990ed9a30"
+    },
+    {
+      "path": "voiceovers/slide_10.mp3",
       "bytes": 77904,
       "sha256": "0e90fb3cbf960906afd492c97671f0b510107d7b4bf22bc98d5e444747f7d021"
     },
     {
-      "path": "voiceovers/slide_10.mp3",
+      "path": "voiceovers/slide_11.mp3",
       "bytes": 80640,
       "sha256": "83347a7af6a7723b6d454ca3d4b04b370f7d7eab1fdd1353edbf8c416603f289"
     },
     {
-      "path": "voiceovers/slide_11.mp3",
+      "path": "voiceovers/slide_12.mp3",
       "bytes": 80064,
       "sha256": "11dcf5e9bacaa709b7c7c2005ebc6ca83fc1b63a44f5e3f5de7889e3b1a8cf7b"
     },
     {
-      "path": "voiceovers/slide_12.mp3",
+      "path": "voiceovers/slide_13.mp3",
       "bytes": 61344,
       "sha256": "c9403b85d1f400cce4405688e4678bbd88c93d19516c711c423c8a2ebc19e477"
     },
     {
-      "path": "voiceovers/slide_13.mp3",
+      "path": "voiceovers/slide_14.mp3",
       "bytes": 57600,
       "sha256": "9f7ff16ecc97575d7fa9a5e126ff6d7851fe1c92e2831971e2592d176cbb000f"
     },
     {
-      "path": "voiceovers/slide_14.mp3",
+      "path": "voiceovers/slide_15.mp3",
+      "bytes": 111312,
+      "sha256": "fe9b0cbc0a5861da0ae05b1fe193c17510132528e7df02734e5c7d4d399a83a4"
+    },
+    {
+      "path": "voiceovers/slide_16.mp3",
       "bytes": 68688,
       "sha256": "db0085d4185755bf0f22854c3d2c44ba33b43a8ab701af8ac6f05a0f2ada2771"
     },
     {
-      "path": "voiceovers/slide_15.mp3",
+      "path": "voiceovers/slide_17.mp3",
       "bytes": 62208,
       "sha256": "4039a86211dc974d6c45ea19b11baa910449a556782af9bd9926513a12a56e16"
     },
     {
-      "path": "voiceovers/slide_16.mp3",
+      "path": "voiceovers/slide_18.mp3",
       "bytes": 82944,
       "sha256": "83719673904c273ee9d0d87dcb4278e396060f15e979a5f5cc04da3cb1bf4075"
     },
     {
-      "path": "voiceovers/slide_17.mp3",
+      "path": "voiceovers/slide_19.mp3",
+      "bytes": 99936,
+      "sha256": "db46532d8505be2bc12c8fb792f59db8b1c3c2cfb3df7cee1eeddaaa21d40702"
+    },
+    {
+      "path": "voiceovers/slide_20.mp3",
       "bytes": 65808,
       "sha256": "9ca30f3903844a0a3fb4b3b4010872ea312d7c75c9bd85ae2064319130be0d4b"
     },
     {
-      "path": "voiceovers/slide_18.mp3",
+      "path": "voiceovers/slide_21.mp3",
       "bytes": 63504,
       "sha256": "97157c619e86ec8e8f1f17034ac34b7227cd38c54116a1b7a97ac3013ff45ac8"
     },
     {
-      "path": "voiceovers/slide_19.mp3",
+      "path": "voiceovers/slide_22.mp3",
       "bytes": 66960,
       "sha256": "43bc69cf183e8d939026c00699f7880db0e09639b0054c40ce0ee893901b8754"
     },
     {
-      "path": "voiceovers/slide_20.mp3",
+      "path": "voiceovers/slide_23.mp3",
+      "bytes": 107712,
+      "sha256": "5a4e00ff52fbf765dde18c751d5f3f0d123bccae706cbed217e29671b74ac0b9"
+    },
+    {
+      "path": "voiceovers/slide_24.mp3",
       "bytes": 63936,
       "sha256": "a47d591321a455f46bfc45d9bb6a273e651e733a87ae2ad6956f0ef4ad5ba80f"
     },
     {
-      "path": "voiceovers/slide_21.mp3",
+      "path": "voiceovers/slide_25.mp3",
       "bytes": 72288,
       "sha256": "5ceee23ffcbe1bc1b563037b9b4a76192993befa2b469410dfcffd5c1cff73cf"
     },
     {
-      "path": "voiceovers/slide_22.mp3",
+      "path": "voiceovers/slide_26.mp3",
       "bytes": 87264,
       "sha256": "a73f1692f52b52bd2b557e96adb0ecc9d20a631f590d7962fcc9c523f42b2172"
     },
     {
-      "path": "voiceovers/slide_23.mp3",
+      "path": "voiceovers/slide_27.mp3",
       "bytes": 69840,
       "sha256": "0d6661eafac6834880daacd83abc154fd0b1f035fba748ffeaf5652bf2bef1b9"
     },
     {
-      "path": "voiceovers/slide_24.mp3",
+      "path": "voiceovers/slide_28.mp3",
       "bytes": 50256,
       "sha256": "132c1fa79c64408714b1bc1a59a8062bf50e870e8ed86ecfb40e4fa995a0d1e1"
     },
     {
-      "path": "voiceovers/slide_25.mp3",
+      "path": "voiceovers/slide_29.mp3",
+      "bytes": 102096,
+      "sha256": "94387500ca03b049f2d44b34426fc48a07b148ef62702098102d21b0fb8f3ea9"
+    },
+    {
+      "path": "voiceovers/slide_30.mp3",
       "bytes": 77040,
       "sha256": "87cb4dfe4ff0b38052b8c65972e54d886f25a64f1bc69692f5e88de3e3a15ca4"
     },
     {
-      "path": "voiceovers/slide_26.mp3",
+      "path": "voiceovers/slide_31.mp3",
+      "bytes": 95184,
+      "sha256": "07821e1bcce3167af29b2e1f3eca8646e3ecb55fc41e621fcf8ea58dd331af88"
+    },
+    {
+      "path": "voiceovers/slide_32.mp3",
       "bytes": 77472,
       "sha256": "a1b11f0a02d3c09143124c6295156684517889e8f1fa8c981f63026b5c9aa63b"
     },
     {
-      "path": "voiceovers/slide_27.mp3",
+      "path": "voiceovers/slide_33.mp3",
       "bytes": 76464,
       "sha256": "97858b1d7dd2e6d1ae0bbf482dc5c5ee54bb6e35a508d21082a7274d88a70f34"
     },
     {
-      "path": "voiceovers/slide_28.mp3",
+      "path": "voiceovers/slide_34.mp3",
       "bytes": 77472,
       "sha256": "e024afc61402c8c929e3c626dbf204927cbb4e7b2dae18cc8cc700f441271923"
     },
     {
-      "path": "voiceovers/slide_29.mp3",
+      "path": "voiceovers/slide_35.mp3",
       "bytes": 70272,
       "sha256": "26229bd0698039b3b0fa484f00d63e8351635496d00647cb30ccf92bf865b6c6"
     },
     {
-      "path": "voiceovers/slide_30.mp3",
+      "path": "voiceovers/slide_36.mp3",
+      "bytes": 105408,
+      "sha256": "af20288713df4d96618c6a5022fd6aa5cbabc8a8607799bba8a438d9b6d42696"
+    },
+    {
+      "path": "voiceovers/slide_37.mp3",
       "bytes": 74304,
       "sha256": "90508b57458d5d0953441f2c2b1e97ca344e01db578c5a2ace75bc104075f433"
     },
     {
-      "path": "voiceovers/slide_31.mp3",
+      "path": "voiceovers/slide_38.mp3",
       "bytes": 81936,
       "sha256": "6391d3af57afdfaba255296a6d6d23cc657c1b5b0f55448ec37fa46830f89d28"
     },
     {
-      "path": "voiceovers/slide_32.mp3",
+      "path": "voiceovers/slide_39.mp3",
       "bytes": 75888,
       "sha256": "7a1b9690ed283199d8880c6b1b3686548dca8067949fd3756ad6cc5fdb9ed638"
     },
     {
-      "path": "voiceovers/slide_33.mp3",
+      "path": "voiceovers/slide_40.mp3",
       "bytes": 72144,
       "sha256": "c7e48c2e2850c7991846a47dee0ffc3a200840b15983f5b2c4be2e18012d5595"
     },
     {
-      "path": "voiceovers/slide_34.mp3",
+      "path": "voiceovers/slide_41.mp3",
       "bytes": 69264,
       "sha256": "f3effcfe3e3282014aba625a9929aa5eda34858237d85322d7954b18b061c521"
     },
     {
-      "path": "voiceovers/slide_35.mp3",
+      "path": "voiceovers/slide_42.mp3",
       "bytes": 74592,
       "sha256": "12c5da437d0d09820864958a546a62a00b4e33952a529825a1fafcefd0527f68"
     },
     {
-      "path": "voiceovers/slide_36.mp3",
+      "path": "voiceovers/slide_43.mp3",
       "bytes": 75168,
       "sha256": "77c779785d0a02b365ca8cb56cc0c48a3895f563c8e3a324c2b7b27aac14ed94"
     },
     {
-      "path": "voiceovers/slide_37.mp3",
+      "path": "voiceovers/slide_44.mp3",
       "bytes": 70128,
       "sha256": "a6297c45eeaf573453b4ad0cf879fdbe4b83516924475bf27fead9a46d6e5e6a"
     },
     {
-      "path": "voiceovers/slide_38.mp3",
+      "path": "voiceovers/slide_45.mp3",
       "bytes": 74592,
       "sha256": "9f8b3d543f444e611e7a67ec9cf310a33d456663aea20f4fb60bdcadd13a5fae"
     },
     {
-      "path": "voiceovers/slide_39.mp3",
+      "path": "voiceovers/slide_46.mp3",
       "bytes": 67968,
       "sha256": "94f7546f2ff94a9bb3840b0d279ba3b12f170e8b0f4136491ba0e972d629b314"
     },
     {
-      "path": "voiceovers/slide_40.mp3",
+      "path": "voiceovers/slide_47.mp3",
       "bytes": 88992,
       "sha256": "3f2b517994022944f1aa6b0d7a235d6c70a663f118a95f566f2252c4a754c3e7"
     }
   ],
   "source_hashes": {
-    "slide.md": "111120eea2703781e974eed4f506f89ca70a9a743c735587d28c9d7d046bd1a7",
-    "style.css": "79a650510bbc75144c0efe29972da12d1dafd15e3ca14011b03b42a456a4451b",
-    "interactive.html": "54e9324acf63dc22838de99c7e7e918af0baddec65882aa81f6ffd862804d097",
-    "interactive-guide.md": "0fe3de2fee66d9f0bdea7ba11e66da0f8601d6812688a00501e87d47baf60abf",
-    "programs/guide.md": "fe0d42ae268f9f53aa6c55aa8861e9feb23d1b362c5362ff63f20c91b0a24b14",
+    "slide.md": "a7feb2abcbebb2e4637eb889f72ae59428d8bc584505e6ed98fcc9374abf4d0f",
+    "style.css": "4ba0d9eeb98f437a768bdd9dded4079084384b900bbe3ad4aa1c8404506c9f33",
+    "interactive.html": "55652a30a219ebfb3844437a24a77c4f9a422960e46520016c5fd04ca7f17b66",
+    "interactive-guide.md": "6528b64fb861e372c54a67c58f5c91020e11dbf03ed93bc8416208a29ef7c3d0",
     "guide.css": "c2e24df84d99cf32b7762e207a9ff6a1e0a9d7975a99e1b33aaec498cce3a555",
     "reveal-template.html": "0f9dc4e88c833bd98231a0e6427a706742bfe57c3a16a9198081cb9d8393028e",
-    "learning-bundle.json": "84402859d159fa3efef39e2460faf0964bef252d5d766035f21cb529481a55e8",
+    "learning-bundle.json": "ecb57b79943b8a771d3577d9b99ed72e1cf9ce4315c16a2d0d49adb32f58a49f",
+    "programs/guide.md": "faeb6a6ae77f07c6c799c373d75a89a4fed792fa3afa1b95aba0ccbbb8d86255",
     "programs/image_recognition.py": "82f219224316eb70e5c973d5d598a83c5e0f5e98dc0b0b4cd213fa38f860ff89",
     "programs/image_recognition.ipynb": "9a3aefc8fd4aeafe85ead016584e3d286e5bcab17ce695001d3c41f801c03243",
     "programs/requirements.txt": "6f3f67f2166b75f550260357092914162d463a9b8dc688743be7814ad51d3791",
@@ -617,41 +652,48 @@
     "voiceovers/slide_06.mp3": "41cb93b210ea71400240303adea47431db641d93aad4f733e20c0e2b2a5e62a7",
     "voiceovers/slide_07.mp3": "41269c32f5b912319558f95ae9e1085d1aedeb253366b102e833b539656c2e26",
     "voiceovers/slide_08.mp3": "42ff18a19c986b99fc107336946468d1543f955749693a83452d20c1688a5209",
-    "voiceovers/slide_09.mp3": "0e90fb3cbf960906afd492c97671f0b510107d7b4bf22bc98d5e444747f7d021",
-    "voiceovers/slide_10.mp3": "83347a7af6a7723b6d454ca3d4b04b370f7d7eab1fdd1353edbf8c416603f289",
-    "voiceovers/slide_11.mp3": "11dcf5e9bacaa709b7c7c2005ebc6ca83fc1b63a44f5e3f5de7889e3b1a8cf7b",
-    "voiceovers/slide_12.mp3": "c9403b85d1f400cce4405688e4678bbd88c93d19516c711c423c8a2ebc19e477",
-    "voiceovers/slide_13.mp3": "9f7ff16ecc97575d7fa9a5e126ff6d7851fe1c92e2831971e2592d176cbb000f",
-    "voiceovers/slide_14.mp3": "db0085d4185755bf0f22854c3d2c44ba33b43a8ab701af8ac6f05a0f2ada2771",
-    "voiceovers/slide_15.mp3": "4039a86211dc974d6c45ea19b11baa910449a556782af9bd9926513a12a56e16",
-    "voiceovers/slide_16.mp3": "83719673904c273ee9d0d87dcb4278e396060f15e979a5f5cc04da3cb1bf4075",
-    "voiceovers/slide_17.mp3": "9ca30f3903844a0a3fb4b3b4010872ea312d7c75c9bd85ae2064319130be0d4b",
-    "voiceovers/slide_18.mp3": "97157c619e86ec8e8f1f17034ac34b7227cd38c54116a1b7a97ac3013ff45ac8",
-    "voiceovers/slide_19.mp3": "43bc69cf183e8d939026c00699f7880db0e09639b0054c40ce0ee893901b8754",
-    "voiceovers/slide_20.mp3": "a47d591321a455f46bfc45d9bb6a273e651e733a87ae2ad6956f0ef4ad5ba80f",
-    "voiceovers/slide_21.mp3": "5ceee23ffcbe1bc1b563037b9b4a76192993befa2b469410dfcffd5c1cff73cf",
-    "voiceovers/slide_22.mp3": "a73f1692f52b52bd2b557e96adb0ecc9d20a631f590d7962fcc9c523f42b2172",
-    "voiceovers/slide_23.mp3": "0d6661eafac6834880daacd83abc154fd0b1f035fba748ffeaf5652bf2bef1b9",
-    "voiceovers/slide_24.mp3": "132c1fa79c64408714b1bc1a59a8062bf50e870e8ed86ecfb40e4fa995a0d1e1",
-    "voiceovers/slide_25.mp3": "87cb4dfe4ff0b38052b8c65972e54d886f25a64f1bc69692f5e88de3e3a15ca4",
-    "voiceovers/slide_26.mp3": "a1b11f0a02d3c09143124c6295156684517889e8f1fa8c981f63026b5c9aa63b",
-    "voiceovers/slide_27.mp3": "97858b1d7dd2e6d1ae0bbf482dc5c5ee54bb6e35a508d21082a7274d88a70f34",
-    "voiceovers/slide_28.mp3": "e024afc61402c8c929e3c626dbf204927cbb4e7b2dae18cc8cc700f441271923",
-    "voiceovers/slide_29.mp3": "26229bd0698039b3b0fa484f00d63e8351635496d00647cb30ccf92bf865b6c6",
-    "voiceovers/slide_30.mp3": "90508b57458d5d0953441f2c2b1e97ca344e01db578c5a2ace75bc104075f433",
-    "voiceovers/slide_31.mp3": "6391d3af57afdfaba255296a6d6d23cc657c1b5b0f55448ec37fa46830f89d28",
-    "voiceovers/slide_32.mp3": "7a1b9690ed283199d8880c6b1b3686548dca8067949fd3756ad6cc5fdb9ed638",
-    "voiceovers/slide_33.mp3": "c7e48c2e2850c7991846a47dee0ffc3a200840b15983f5b2c4be2e18012d5595",
-    "voiceovers/slide_34.mp3": "f3effcfe3e3282014aba625a9929aa5eda34858237d85322d7954b18b061c521",
-    "voiceovers/slide_35.mp3": "12c5da437d0d09820864958a546a62a00b4e33952a529825a1fafcefd0527f68",
-    "voiceovers/slide_36.mp3": "77c779785d0a02b365ca8cb56cc0c48a3895f563c8e3a324c2b7b27aac14ed94",
-    "voiceovers/slide_37.mp3": "a6297c45eeaf573453b4ad0cf879fdbe4b83516924475bf27fead9a46d6e5e6a",
-    "voiceovers/slide_38.mp3": "9f8b3d543f444e611e7a67ec9cf310a33d456663aea20f4fb60bdcadd13a5fae",
-    "voiceovers/slide_39.mp3": "94f7546f2ff94a9bb3840b0d279ba3b12f170e8b0f4136491ba0e972d629b314",
-    "voiceovers/slide_40.mp3": "3f2b517994022944f1aa6b0d7a235d6c70a663f118a95f566f2252c4a754c3e7"
+    "voiceovers/slide_09.mp3": "bb9f6dbf88bf1c877f0dacca980ef3f951785a7db398984d42b5e48990ed9a30",
+    "voiceovers/slide_10.mp3": "0e90fb3cbf960906afd492c97671f0b510107d7b4bf22bc98d5e444747f7d021",
+    "voiceovers/slide_11.mp3": "83347a7af6a7723b6d454ca3d4b04b370f7d7eab1fdd1353edbf8c416603f289",
+    "voiceovers/slide_12.mp3": "11dcf5e9bacaa709b7c7c2005ebc6ca83fc1b63a44f5e3f5de7889e3b1a8cf7b",
+    "voiceovers/slide_13.mp3": "c9403b85d1f400cce4405688e4678bbd88c93d19516c711c423c8a2ebc19e477",
+    "voiceovers/slide_14.mp3": "9f7ff16ecc97575d7fa9a5e126ff6d7851fe1c92e2831971e2592d176cbb000f",
+    "voiceovers/slide_15.mp3": "fe9b0cbc0a5861da0ae05b1fe193c17510132528e7df02734e5c7d4d399a83a4",
+    "voiceovers/slide_16.mp3": "db0085d4185755bf0f22854c3d2c44ba33b43a8ab701af8ac6f05a0f2ada2771",
+    "voiceovers/slide_17.mp3": "4039a86211dc974d6c45ea19b11baa910449a556782af9bd9926513a12a56e16",
+    "voiceovers/slide_18.mp3": "83719673904c273ee9d0d87dcb4278e396060f15e979a5f5cc04da3cb1bf4075",
+    "voiceovers/slide_19.mp3": "db46532d8505be2bc12c8fb792f59db8b1c3c2cfb3df7cee1eeddaaa21d40702",
+    "voiceovers/slide_20.mp3": "9ca30f3903844a0a3fb4b3b4010872ea312d7c75c9bd85ae2064319130be0d4b",
+    "voiceovers/slide_21.mp3": "97157c619e86ec8e8f1f17034ac34b7227cd38c54116a1b7a97ac3013ff45ac8",
+    "voiceovers/slide_22.mp3": "43bc69cf183e8d939026c00699f7880db0e09639b0054c40ce0ee893901b8754",
+    "voiceovers/slide_23.mp3": "5a4e00ff52fbf765dde18c751d5f3f0d123bccae706cbed217e29671b74ac0b9",
+    "voiceovers/slide_24.mp3": "a47d591321a455f46bfc45d9bb6a273e651e733a87ae2ad6956f0ef4ad5ba80f",
+    "voiceovers/slide_25.mp3": "5ceee23ffcbe1bc1b563037b9b4a76192993befa2b469410dfcffd5c1cff73cf",
+    "voiceovers/slide_26.mp3": "a73f1692f52b52bd2b557e96adb0ecc9d20a631f590d7962fcc9c523f42b2172",
+    "voiceovers/slide_27.mp3": "0d6661eafac6834880daacd83abc154fd0b1f035fba748ffeaf5652bf2bef1b9",
+    "voiceovers/slide_28.mp3": "132c1fa79c64408714b1bc1a59a8062bf50e870e8ed86ecfb40e4fa995a0d1e1",
+    "voiceovers/slide_29.mp3": "94387500ca03b049f2d44b34426fc48a07b148ef62702098102d21b0fb8f3ea9",
+    "voiceovers/slide_30.mp3": "87cb4dfe4ff0b38052b8c65972e54d886f25a64f1bc69692f5e88de3e3a15ca4",
+    "voiceovers/slide_31.mp3": "07821e1bcce3167af29b2e1f3eca8646e3ecb55fc41e621fcf8ea58dd331af88",
+    "voiceovers/slide_32.mp3": "a1b11f0a02d3c09143124c6295156684517889e8f1fa8c981f63026b5c9aa63b",
+    "voiceovers/slide_33.mp3": "97858b1d7dd2e6d1ae0bbf482dc5c5ee54bb6e35a508d21082a7274d88a70f34",
+    "voiceovers/slide_34.mp3": "e024afc61402c8c929e3c626dbf204927cbb4e7b2dae18cc8cc700f441271923",
+    "voiceovers/slide_35.mp3": "26229bd0698039b3b0fa484f00d63e8351635496d00647cb30ccf92bf865b6c6",
+    "voiceovers/slide_36.mp3": "af20288713df4d96618c6a5022fd6aa5cbabc8a8607799bba8a438d9b6d42696",
+    "voiceovers/slide_37.mp3": "90508b57458d5d0953441f2c2b1e97ca344e01db578c5a2ace75bc104075f433",
+    "voiceovers/slide_38.mp3": "6391d3af57afdfaba255296a6d6d23cc657c1b5b0f55448ec37fa46830f89d28",
+    "voiceovers/slide_39.mp3": "7a1b9690ed283199d8880c6b1b3686548dca8067949fd3756ad6cc5fdb9ed638",
+    "voiceovers/slide_40.mp3": "c7e48c2e2850c7991846a47dee0ffc3a200840b15983f5b2c4be2e18012d5595",
+    "voiceovers/slide_41.mp3": "f3effcfe3e3282014aba625a9929aa5eda34858237d85322d7954b18b061c521",
+    "voiceovers/slide_42.mp3": "12c5da437d0d09820864958a546a62a00b4e33952a529825a1fafcefd0527f68",
+    "voiceovers/slide_43.mp3": "77c779785d0a02b365ca8cb56cc0c48a3895f563c8e3a324c2b7b27aac14ed94",
+    "voiceovers/slide_44.mp3": "a6297c45eeaf573453b4ad0cf879fdbe4b83516924475bf27fead9a46d6e5e6a",
+    "voiceovers/slide_45.mp3": "9f8b3d543f444e611e7a67ec9cf310a33d456663aea20f4fb60bdcadd13a5fae",
+    "voiceovers/slide_46.mp3": "94f7546f2ff94a9bb3840b0d279ba3b12f170e8b0f4136491ba0e972d629b314",
+    "voiceovers/slide_47.mp3": "3f2b517994022944f1aa6b0d7a235d6c70a663f118a95f566f2252c4a754c3e7"
   },
   "html": {
-    "after_sha256": "c0d3d3d26deee26c39ddf00dc476897280a39e8f8ebca46a3d832b0caf0a5e38"
+    "after_sha256": "7ffc9098b0f61005e7a4f0625d8a3a654485259114d844fee288db3f65a06699"
   },
   "asset_repairs": [],
   "publication_adjustments": [

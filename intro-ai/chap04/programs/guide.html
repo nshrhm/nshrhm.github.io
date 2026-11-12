@@ -134,4 +134,8 @@ li { margin: .35em 0; }
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> knowledge_reasoning.py <span class="at">--demo</span></span></code></pre></div>
 <p>基準と固定比較をまとめて表示します。照合用JSONを読む場合は <code>--demo --json</code> を指定します。Python版だけなら追加パッケージは不要です。自由な入力変更は、上のNotebookのコピーを使う手順で行います。</p>
 <p>uvを使っている人は <code>uv run --no-project python knowledge_reasoning.py --demo</code> でも実行できます。ZIP内の <code>requirements.txt</code> は既存のNotebook検証環境の依存一覧です。すでに動く授業用カーネルがあれば、環境を入れ替える必要はありません。</p>
+<h2 id="段階表示とコードを対応させる">段階表示とコードを対応させる</h2>
+<p>操作教材の「計算の内訳・確かめること」を開き、入力と同じ順序で途中の値を比較します。説明の前後移動では計算は進みません。プログラム側では同じ固定入力と条件でセルを実行し、表示の丸めによる末尾の差と、計算条件の違いを区別してください。</p>
+<p>初期3事実→R1→利用資格あり→R2→貸出候補をtraceで追います。予約確認済みを加えたコピーではR3が使われることを照合してください。後ろ向き推論と台帳の図はブラウザーでの追加例です。</p>
+<p>Python／Notebookの計算コード・固定データ・期待値は変更していません。変更実験は元データのコピーで行い、再実行前には説明済みの初期化手順を使います。</p>
 </main></body></html>

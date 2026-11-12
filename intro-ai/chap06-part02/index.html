@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>第8回 深層学習2</title>
+        <meta name="description"
+              content="自己符号化器・LSTM・GANを小さな数値例で理解する">
+        <meta name="author" content="白濵 成希">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reset.css">
+        <link rel="stylesheet" href="libs/reveal.js/4.3.1/reveal.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/menu/font-awesome/css/all.css">
+        <!-- highlight Theme -->
+        <link rel="stylesheet"
+              href="libs/highlight.js/11.3.1/styles/monokai.min.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/chalkboard/style.css">
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/plugin/customcontrols/style.css">
+        <!-- Revealjs Theme -->
+        <link rel="stylesheet"
+              href="libs/reveal.js/4.3.1/theme/white.css"
+              id="theme">
+        <link rel="stylesheet" href="libs/styles/tasklist.css">
+        <link rel="stylesheet" href="libs/styles/iota.css">
+        <link rel="stylesheet" href="libs/styles/layout.css">
+        <!-- Revealjs Theme -->
+        <!-- css list -->
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+<section>
+<!-- 1: 第8回 深層学習2を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>第8回 深層学習2</h2>
+<p class="eyebrow">
+人工知能概論 ／ 2026年度 秋学期
+</p>
+<p class="lead">
+再構成する・記憶する・生成する
+</p>
+<p>自己符号化器 ／ LSTM ／ 敵対的生成ネットワーク（GAN）</p>
+<p>白濵 成希 ／ 2026年11月19日（木）</p>
+</div>
+<audio controls src="./voiceovers/slide_01.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今回は三つの仕組みを、小さな数値例で比較します。第7回のCNNと同じく、まず固定した重みで出力を求めることと、重みを更新する学習を分けて考えましょう。
+</aside>
+</section>
+<section>
+<!-- 2: 到達目標と自習の入口を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>到達目標と自習の入口</h2>
+<ul>
+<li>入力・中間状態・出力を追って、三手法の役割を説明する。</li>
+<li>操作前に予想し、数値を根拠に結果を説明する。</li>
+<li>Python／Notebookで基準結果を再現し、一つの条件を変える。</li>
+</ul>
+<p><a href="interactive.html" target="_blank" rel="noopener">操作教材</a> ／ <a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a></p>
+</div>
+<audio controls src="./voiceovers/slide_02.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+まずスライドを読み、関連する操作画面へ進みます。操作教材と解説は別タブで開くため、元のスライドを残して比較できます。プログラムの実行で困った場合は解説の復帰手順を使ってください。
+</aside>
+</section>
+<section>
+<!-- 3: 第6・7回から引き継ぐことを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>第6・7回から引き継ぐこと</h2>
+<table>
+<thead>
+<tr>
+<th>既習事項</th>
+<th>今回の使い方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>重み・バイアス・活性化関数</td>
+<td>入力から中間表現や出力を計算</td>
+</tr>
+<tr>
+<td>損失と勾配更新</td>
+<td>再構成や識別の誤差に合わせて重みを変更</td>
+</tr>
+<tr>
+<td>RNNの状態</td>
+<td>前の時刻の情報を次へ引き継ぐ</td>
+</tr>
+</tbody>
+</table>
+<p><strong>計算すること・学習すること・評価すること</strong>を区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_03.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+第6回のRNNの状態と、第7回の損失・学習を思い出しましょう。今回も小さなデータでの結果を使います。教材内で誤差が減ったことを、実世界の性能が確認できたこととは扱いません。
+</aside>
+</section>
+<section>
+<!-- 4: 三つの問いを持って読むを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>三つの問いを持って読む</h2>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>今回の問い</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自己符号化器</td>
+<td>入力を中間表現に変換し、どこまで戻せるか</td>
+</tr>
+<tr>
+<td>LSTM</td>
+<td>前の情報をどれだけ残し、何を出力するか</td>
+</tr>
+<tr>
+<td>GAN</td>
+<td>生成器と識別器は、それぞれ何を改善するか</td>
+</tr>
+</tbody>
+</table>
+<p>読む → <strong>予想</strong> → 操作 → 実行 → 一つ変更 → 根拠を説明</p>
+</div>
+<audio controls src="./voiceovers/slide_04.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+三手法を同じ用途の競争相手として並べるのではなく、それぞれの問いを意識します。入力、学習目標、出力という観点で比較すると、名称の暗記だけでなく仕組みを説明できます。
+</aside>
+</section>
+<section>
+<!-- 5: 自己符号化器：入力を再構成するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>自己符号化器：入力を再構成する</h2>
+<div class="formula">
+入力 x → 符号化器 → 中間表現 h → 復号器 → 再構成 x̂
+</div>
+<ul>
+<li>学習目標は、再構成を入力に近づけること。</li>
+<li>出力が入力と完全に一致するとは限らない。</li>
+<li>中間表現を特徴として利用することもある。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_05.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+自己符号化器は入力自身を学習の目標に使います。入力をそのまま保存するだけではなく、制約の下で再構成することで表現を学ぶことがねらいです。圧縮だけが自己符号化器の定義ではありません。
+</aside>
+</section>
+<section>
+<!-- 6: 今回の小型ネットワークを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>今回の小型ネットワーク</h2>
+<div class="formula">
+5個の入力 → 3個の中間表現 → 5個の再構成
+</div>
+<ul>
+<li>今回は各層で重みとバイアスを使い、sigmoidを通す。</li>
+<li>中間表現の次元を小さくした一例。</li>
+<li>自己符号化器一般が、常に3層・5→3→5という意味ではない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_06.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今回は計算を追いやすいように小さな構造を固定します。中間表現が三つでも、出力は元の入力と比べる必要があるため五つです。図は構造の概念図で、性能の実測図ではありません。
+</aside>
+</section>
+<section>
+<!-- 7: 5種類の人工データを使うを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>5種類の人工データを使う</h2>
+<pre class="text"><code>[1, 0, 0, 0, 0]   [0, 1, 0, 0, 0]   [0, 0, 1, 0, 0]
+[0, 0, 0, 1, 0]   [0, 0, 0, 0, 1]</code></pre>
+<ul>
+<li>各行の入力と目標は同じ。授業用に作成したデータ。</li>
+<li>別途「猫」「犬」などのカテゴリラベルを用意しない。</li>
+<li>この5行の再構成だけでは、未知データへの性能は分からない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_07.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+これは実際の画像データではなく、五つの位置のうち一つだけが一になる人工データです。各行について同じ行を復元するように学習します。実測データの取得やカテゴリラベルの付与は行っていません。
+</aside>
+</section>
+<section>
+<!-- 8: 符号化と復号を計算するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>符号化と復号を計算する</h2>
+<ul>
+<li>符号化：入力×重み＋バイアスを計算し、sigmoidを通す。</li>
+<li>復号：中間表現×別の重み＋バイアスから、5個の値を求める。</li>
+<li>中間表現の各成分に、人間向けの意味が自動で付くとは限らない。</li>
+</ul>
+<p><strong>全重み・バイアスが0なら、sigmoid(0)=0.5。</strong></p>
+<p>中間表現も再構成も、全成分が0.5になる。</p>
+</div>
+<audio controls src="./voiceovers/slide_08.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+全ての重みとバイアスをゼロにした場合を考えると、順方向の計算を手で確かめられます。これは計算確認のための例です。実際の学習では対称性を避けるため、固定シードで異なる初期値を作ります。
+</aside>
+</section>
+<section>
+<!-- 9: 5個の入力から、中間の1個を計算するを実際の値の対応から説明する -->
+<div class="slide-body">
+<h2>5個の入力から、中間の1個を計算する</h2>
+<p class="eyebrow">
+具体例を一段ずつ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>① 入力 x</strong>
+<p>
+[1, 0, 0, 0, 0]
+</p>
+</div>
+<div>
+<strong>② h1用の重み</strong>
+<p>
+各入力に別の重み
+</p>
+</div>
+<div>
+<strong>③ 中間 h1</strong>
+<p>
+0.7262
+</p>
+</div>
+</div>
+<p>1 × (0.2686) ＋ 0 × 他の4重み ＋ (0.7070)</p>
+<p>この合計を <strong>sigmoid</strong> で0〜1の値に変換する。</p>
+<p>同じ入力から、別の重みで <strong>h2=0.6266、h3=0.3449</strong> も求める。</p>
+</div>
+<audio controls src="./voiceovers/slide_09.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+操作教材の固定初期重みで、最初の入力を計算した例です。入力1番だけが1なので、残り4個との積は0です。バイアスを足した後にシグモイドで変換します。中間表現は3個あり、それぞれ異なる重みを使います。数値は表示時だけ小数4桁に丸めています。
+</aside>
+</section>
+<section>
+<!-- 10: 中間3個から、出力の1個を計算するを実際の値の対応から説明する -->
+<div class="slide-body">
+<h2>中間3個から、出力の1個を計算する</h2>
+<p class="eyebrow">
+具体例を一段ずつ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>使う値</strong>
+<p>
+h1・h2・h3
+</p>
+</div>
+<div>
+<strong>別の重みで復号</strong>
+<p>
+積3個＋バイアス
+</p>
+</div>
+<div>
+<strong>出力 y1</strong>
+<p>
+0.5405
+</p>
+</div>
+</div>
+<p>0.7262×(-0.7992) ＋ 0.6266×(0.6394)</p>
+<p>＋ 0.3449×(0.8208) ＋ (0.0591)</p>
+<p>合計をsigmoidへ。<strong>y1は入力の1番と比較</strong>する。</p>
+</div>
+<audio controls src="./voiceovers/slide_10.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+中間表現の3個を使い、復号用の重みを掛けて足します。符号化の重みと同じではありません。同様にy2からy5を計算して入力と同じ長さに戻します。小さい表現から戻すことと、元どおりに再現できることは別です。
+</aside>
+</section>
+<section>
+<!-- 11: 再構成誤差を一つ計算するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>再構成誤差を一つ計算する</h2>
+<p>入力 <code>[1, 0, 0, 0, 0]</code>、再構成 <code>[0.5, 0.5, 0.5, 0.5, 0.5]</code></p>
+<div class="formula">
+MSE = ((0.5−1)² + 4×(0.5−0)²) ÷ 5 = 0.25
+</div>
+<ul>
+<li>5成分全ての二乗誤差を平均する。</li>
+<li>学習全体では、さらに5行の平均を取る。</li>
+<li>最後の出力成分だけでは、再構成全体を評価できない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_11.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+平均二乗誤差、MSEは対応する入力と出力の差を二乗して平均した値です。ここでは一行が五成分、学習用の入力が五行なので全体では二十五成分を評価します。最後の成分だけを見ないことが重要です。
+</aside>
+</section>
+<section>
+<!-- 12: ずれを5か所で測り、平均するを実際の値の対応から説明する -->
+<div class="slide-body">
+<h2>ずれを5か所で測り、平均する</h2>
+<p class="eyebrow">
+具体例を一段ずつ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>入力1番</strong>
+<p>
+1
+</p>
+</div>
+<div>
+<strong>出力1番</strong>
+<p>
+0.5405
+</p>
+</div>
+<div>
+<strong>二乗したずれ</strong>
+<p>
+0.2111
+</p>
+</div>
+</div>
+<p>他の4か所も、<strong>同じ位置同士</strong>を引いて二乗する。</p>
+<p>5個の二乗誤差の合計 ÷ 5 ＝ <strong>0.3206</strong></p>
+<p>操作教材で入力の1の位置を変え、出力と誤差を比較する。</p>
+</div>
+<audio controls src="./voiceovers/slide_12.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+正解と出力の位置を取り違えないことが大切です。差を二乗するので、正と負が打ち消し合いません。この入力は5成分なので5で割ります。学習用の5入力全体では25成分の平均を取ります。これは正解率ではありません。
+</aside>
+</section>
+<section>
+<!-- 13: 入力を変えて予想するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>入力を変えて予想する</h2>
+<ol type="1">
+<li>最初の入力と、学習前の中間表現・再構成を見る。</li>
+<li>1の位置を変えたら、どの値が変わるか予想する。</li>
+<li>入力を選び直し、再構成とMSEを比べる。</li>
+</ol>
+<p>重みは固定。ここで変えているのは<strong>入力だけ</strong>。</p>
+<p><a href="interactive.html#reconstruction" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_13.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+操作教材の「符号化と再構成」では、入力行を選択できます。中間表現と再構成の五成分を対応させて読みましょう。これは順方向計算であり、選択のたびに学習しているわけではありません。
+</aside>
+</section>
+<section>
+<!-- 14: 重みは誤差を減らす方向へ更新するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>重みは誤差を減らす方向へ更新する</h2>
+<div class="formula">
+新しい重み = 今の重み − 学習率 × 損失の勾配
+</div>
+<ul>
+<li>符号化器と復号器の両方を更新する。</li>
+<li>両方の勾配を、更新前の同じ重みから計算する。</li>
+<li>学習率と回数を決める。今回の上限は4,000回。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_14.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+勾配の詳しい導出を暗記することよりも、どの損失を減らしているかを確認してください。片方の重みだけ先に変えてからもう片方の勾配を計算すると、同じ時点の損失の勾配ではなくなります。今回のコードは一度勾配をそろえてから更新します。
+</aside>
+</section>
+<section>
+<!-- 15: 学習前後の数値を確認するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>学習前後の数値を確認する</h2>
+<p>固定シード65535、学習率4、1,000回、同じ5行。</p>
+<table>
+<thead>
+<tr>
+<th>全25成分のMSE</th>
+<th style="text-align: right;">学習前</th>
+<th style="text-align: right;">学習後</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>今回の基準結果</td>
+<td style="text-align: right;">0.316058</td>
+<td style="text-align: right;">0.004639</td>
+</tr>
+</tbody>
+</table>
+<p>最初の再構成：<code>[0.923913, 0.063290, 0.078707, 0.000197, 0.090264]</code></p>
+<p><strong>この人工データ上の結果</strong>であり、未知データの性能ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_15.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここに示した値は、今回の固定入力と初期値による計算結果です。学習後の一番目の成分は一に近く、残りはゼロに近づきましたが、完全一致ではありません。重みの初期化や回数を変えると値が変わります。
+</aside>
+</section>
+<section>
+<!-- 16: 最初の1回では、重みをどう変える？を実際の値の対応から説明する -->
+<div class="slide-body">
+<h2>最初の1回では、重みをどう変える？</h2>
+<p class="eyebrow">
+具体例を一段ずつ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>更新前の重み</strong>
+<p>
+0.2686
+</p>
+</div>
+<div>
+<strong>勾配×学習率</strong>
+<p>
+0.0057 × 4
+</p>
+</div>
+<div>
+<strong>更新後</strong>
+<p>
+0.2459
+</p>
+</div>
+</div>
+<p><strong>更新後 ＝ 更新前 − 学習率 × 勾配</strong></p>
+<p>全ての勾配を更新前の重みで求めてから、一緒に更新する。</p>
+<p>5入力を再現 → 25成分のずれを測る → 重みを更新 → 繰り返す。</p>
+</div>
+<audio controls src="./voiceovers/slide_16.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+固定初期値の、入力1から中間1への重みを例に、最初の更新を示しています。勾配は既存プログラムの全5入力から求めた値です。表示を進める操作では重みは変えません。操作教材の実行ボタンで更新を繰り返した結果を確認します。
+</aside>
+</section>
+<section>
+<!-- 17: 回数を変える実験を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>回数を変える実験</h2>
+<ol type="1">
+<li>0回・1,000回・2,000回で、誤差はどうなるか予想する。</li>
+<li>同じ初期値からそれぞれ実行する。</li>
+<li>今回の2,000回のMSEは <strong>0.001924</strong>。</li>
+</ol>
+<p>累積で追加学習する操作ではなく、毎回初期値から比較する。</p>
+<p><a href="interactive.html#ae-learning" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_17.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+公平に比較するため、どの回数を選んでも同じ初期値から学習を始めます。今回の例では二千回で誤差がさらに減りますが、どんなデータや条件でも同じ結果になるわけではありません。ゼロ回なら初期状態と同じです。
+</aside>
+</section>
+<section>
+<!-- 18: 再構成と生成を区別するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>再構成と生成を区別する</h2>
+<ul>
+<li>通常の自己符号化器では、入力を符号化して再構成する。</li>
+<li>中間表現に適当な数を入れても、望むデータが出る保証はない。</li>
+<li>小さい誤差だけでは、便利な特徴や高い汎化性能を保証しない。</li>
+</ul>
+<p>「入力に近い出力」と「多様で適切な新しいデータ」は別の確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_18.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+中間表現を経由するという見た目だけで、自由にデータを生成できると考えないようにしましょう。生成のためのモデルには別の工夫があります。今回はその詳説には進まず、後半でGANの異なる学習目標を確認します。
+</aside>
+</section>
+<section>
+<!-- 19: 自己符号化器の理解確認を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>自己符号化器の理解確認</h2>
+<ul>
+<li>目標の出力はどこから用意する？ → 入力自身。</li>
+<li>中間表現が3個、出力が5個なのはなぜ？ → 元の5成分と比較するため。</li>
+<li>MSEが小さければ未知データにも強い？ → 別の確認が必要。</li>
+</ul>
+<p>説明では、<strong>入力・再構成・誤差</strong>の三つを対応させる。</p>
+</div>
+<audio controls src="./voiceovers/slide_19.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ここまでの数値例を使って三つの問いを説明してください。学習データをよく再構成できることと、未知の入力で役立つことは同じではありません。入力自身から目標を作る点も、カテゴリ分類との違いです。
+</aside>
+</section>
+<section>
+<!-- 20: RNNからLSTMへを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>RNNからLSTMへ</h2>
+<ul>
+<li>RNNは前の状態を次の時刻へ渡す。</li>
+<li>多数の時刻を通した学習では、勾配が小さく／大きくなることがある。</li>
+<li>LSTMはセル状態とゲートを使い、情報の保持・更新を調整する。</li>
+</ul>
+<p>長い情報を扱いやすくする工夫であり、無期限の記憶保証ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_20.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+LSTMはリカレントニューラルネットワークの一種です。状態を持つこと自体はRNNにもあります。ゲートとセル状態により、保持や書き込みを調節する構造を追加している点に注目してください。
+</aside>
+</section>
+<section>
+<!-- 21: セル状態と出力は同じではないを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>セル状態と出力は同じではない</h2>
+<div class="formula">
+前のセル状態 → 保持・書き込み → 新しいセル状態 c<br>新しいセル状態 c → tanh → 出力ゲート → 出力 h
+</div>
+<ul>
+<li><strong>c</strong>：時刻をまたいで引き継ぐセル状態。</li>
+<li><strong>h</strong>：その時刻の出力。次の時刻の計算にも使う。</li>
+<li>出力を抑えても、セル状態が消えるとは限らない。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_21.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+セル状態と出力の二本の流れを分けて読みましょう。セルに値が残っていても、出力ゲートが閉じていれば出力は小さくなります。記憶の消去と、出力の抑制は別の操作です。
+</aside>
+</section>
+<section>
+<!-- 22: 三つのゲートと書き込み候補を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>三つのゲートと書き込み候補</h2>
+<table>
+<thead>
+<tr>
+<th>記号</th>
+<th>役割</th>
+<th>今回扱う範囲</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f：忘却ゲート</td>
+<td>前のセル状態をどれだけ残すか</td>
+<td>0〜1</td>
+</tr>
+<tr>
+<td>i：入力ゲート</td>
+<td>候補をどれだけ書き込むか</td>
+<td>0〜1</td>
+</tr>
+<tr>
+<td>o：出力ゲート</td>
+<td>出力をどれだけ通すか</td>
+<td>0〜1</td>
+</tr>
+<tr>
+<td>g：候補値</td>
+<td>新たに書き込む内容</td>
+<td>−1〜1</td>
+</tr>
+</tbody>
+</table>
+<p>0・1は手動実験の理想的な端点。通常はsigmoid等で値を計算。</p>
+</div>
+<audio controls src="./voiceovers/slide_22.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+三つのゲートは通す量を調節し、候補値は書き込む内容を表します。候補値は符号を持ちます。シグモイドの出力は有限の入力では厳密にはゼロと一の間ですが、操作教材では仕組みを確認するため端点も選べます。
+</aside>
+</section>
+<section>
+<!-- 23: セル状態の更新を手計算するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>セル状態の更新を手計算する</h2>
+<div class="formula">
+c = f × 前のc + i × g<br>h = o × tanh(c)
+</div>
+<p>前のc=1、f=0.8、i=0.5、g=0.6、o=0.75なら：</p>
+<ul>
+<li>残す量：0.8×1 = <strong>0.8</strong></li>
+<li>書く量：0.5×0.6 = <strong>0.3</strong></li>
+<li>c=<strong>1.1</strong>、h≈<strong>0.600374</strong></li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_23.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+一つのセルを数値で追います。残す量と書く量を足すため、セル状態は一を超えることもあります。出力はさらに双曲線正接と出力ゲートを通るので、セル状態と同じ値にはなりません。
+</aside>
+</section>
+<section>
+<!-- 24: 残す量と書く量を、別々に作るを実際の値の対応から説明する -->
+<div class="slide-body">
+<h2>残す量と書く量を、別々に作る</h2>
+<p class="eyebrow">
+具体例を一段ずつ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>残す</strong>
+<p>
+0.8 × 前の記憶1 = 0.8
+</p>
+</div>
+<div>
+<strong>書く</strong>
+<p>
+0.5 × 候補0.6 = 0.3
+</p>
+</div>
+<div>
+<strong>足す</strong>
+<p>
+c = 0.8 + 0.3 = 1.1
+</p>
+</div>
+</div>
+<p>外への出力は <strong>h = 0.75 × tanh(1.1) ≈ 0.6004</strong>。</p>
+<p><strong>出力ゲートだけ0</strong>にすると、h=0でも記憶c=1.1は残る。</p>
+</div>
+<audio controls src="./voiceovers/slide_24.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+前のセル状態1をどれだけ残すかと、新しい候補0.6をどれだけ書くかを別々に計算します。記憶cを作ってから、出力ゲートを使います。出力を止めることと記憶を消すことは同じではありません。操作教材で出力ゲートだけ0にして確かめます。
+</aside>
+</section>
+<section>
+<!-- 25: 忘却と書き込みを分けて操作するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>忘却と書き込みを分けて操作する</h2>
+<p>前のc=1のとき：</p>
+<ul>
+<li>f=1、i=0 → 新しいcは1。前の値を保持。</li>
+<li>f=0、i=0 → 新しいcは0。保持も書き込みもしない。</li>
+<li>o=0 → hは0。ただしcを0にする操作ではない。</li>
+</ul>
+<p><a href="interactive.html#gates" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_25.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+まず忘却ゲートだけを変え、次に入力ゲートや出力ゲートを変えてください。結果のどの部分が変わったかを説明します。手動で値を指定する操作なので、学習によってゲートが獲得された実験ではありません。
+</aside>
+</section>
+<section>
+<!-- 26: ゲート値は本来どこから来る？を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>ゲート値は本来どこから来る？</h2>
+<ul>
+<li>通常は、現在の入力xと前の出力hから重み付き和を計算する。</li>
+<li>f・i・oにはsigmoid、候補gにはtanhを使う。</li>
+<li>重みとバイアスは学習で調整できる。</li>
+</ul>
+<p>今回のPythonには<strong>固定重み・未学習</strong>の計算例も収録。</p>
+<p>x=1、前のc=h=0なら、c≈0.556770、h≈0.302683。</p>
+</div>
+<audio controls src="./voiceovers/slide_26.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+手動ゲートの例から一歩進み、重みからゲートを求める計算例も確認できます。ただし今回の固定重みは説明のために設定したもので、文脈や重要度を学習した結果ではありません。具体的な係数はNotebookに示します。
+</aside>
+</section>
+<section>
+<!-- 27: 一度書いた値はどう変わる？を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>一度書いた値はどう変わる？</h2>
+<p>入力・出力ゲートを1、初期cを0とする理想化例。</p>
+<p>候補列 <code>[1, 0, 0, 0]</code>、忘却ゲートf=0.8：</p>
+<table>
+<thead>
+<tr>
+<th>時刻</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>セル状態c</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">0.64</td>
+<td style="text-align: right;">0.512</td>
+</tr>
+</tbody>
+</table>
+<p>候補が0の間も、fが1未満なら保持した値は小さくなる。</p>
+</div>
+<audio controls src="./voiceovers/slide_27.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+候補列は生の入力ではなく、セルへ書く候補の値です。入力ゲートと出力ゲートを一に固定した理想化例として読みましょう。この条件では、後半の値は忘却ゲートを繰り返し掛けることで求まります。
+</aside>
+</section>
+<section>
+<!-- 28: 書いた1は、いつ0.512になる？を実際の値の対応から説明する -->
+<div class="slide-body">
+<h2>書いた1は、いつ0.512になる？</h2>
+<p class="eyebrow">
+具体例を一段ずつ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>時刻1</strong>
+<p>
+0.8×0 + 1 = 1
+</p>
+</div>
+<div>
+<strong>時刻2</strong>
+<p>
+0.8×1 + 0 = 0.8
+</p>
+</div>
+<div>
+<strong>時刻3</strong>
+<p>
+0.8×0.8 + 0 = 0.64
+</p>
+</div>
+<div>
+<strong>時刻4</strong>
+<p>
+0.8×0.64 + 0 = 0.512
+</p>
+</div>
+</div>
+<p>前のcを次へ渡す。候補が0でも、<strong>毎回0.8が掛かる</strong>。</p>
+<p>候補を [0, 0, 0, 1] にすると最後は <strong>0.8×0＋1＝1</strong>。</p>
+</div>
+<audio controls src="./voiceovers/slide_28.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この例は生の入力ではなく書き込み候補の列です。初期の記憶を0とし、入力と出力のゲートは1に固定しています。同じ1でも、早く書くほど忘却ゲートを掛けられる回数が増えます。忘却ゲートを1にすれば両方の最後は1になります。
+</aside>
+</section>
+<section>
+<!-- 29: 順序を変えて比較するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>順序を変えて比較する</h2>
+<ul>
+<li>f=0.8のまま、候補列を <code>[0, 0, 0, 1]</code> にする。</li>
+<li>最後のcは <strong>1</strong>。先ほどの <strong>0.512</strong> と異なる。</li>
+<li>同じ値の集まりでも、順序が状態に影響する。</li>
+</ul>
+<p>どの時刻で書き込んだかを根拠に説明しよう。</p>
+<p><a href="interactive.html#sequence" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_29.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+最初に書いた一と最後に書いた一では、忘却ゲートを通る回数が違います。同じ四つの候補でも、順番が変われば最終状態が変わります。保持した状態の列全体を見比べてください。
+</aside>
+</section>
+<section>
+<!-- 30: LSTMの記憶を過大評価しないを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>LSTMの記憶を過大評価しない</h2>
+<ul>
+<li>f=1、書き込み0の理想化例なら、その経路では値を保持する。</li>
+<li>実際にはゲートが変化し、保持する内容も学習条件に依存する。</li>
+<li>長い系列を扱えることは、文章の意味を必ず正しく理解する保証ではない。</li>
+</ul>
+<p>今回の演習は、<strong>状態更新の仕組み</strong>の確認。</p>
+</div>
+<audio controls src="./voiceovers/slide_30.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+記憶を保持するための構造と、どんな情報を保持すべきか学ぶことは分けて考えます。手動で設定したゲートで値を保持できても、言語理解や予測の性能を確認したことにはなりません。
+</aside>
+</section>
+<section>
+<!-- 31: 系列データへの利用を考えるを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>系列データへの利用を考える</h2>
+<ul>
+<li>音やセンサー値など、順序を持つデータに利用できる。</li>
+<li>各時刻の出力を使うか、最後の出力を使うかは課題による。</li>
+<li>「LSTMだから教師あり」とは決まらない。学習目標を確認する。</li>
+</ul>
+<p>今回の操作では、<strong>入力順序・状態・出力</strong>を記録する。</p>
+</div>
+<audio controls src="./voiceovers/slide_31.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+LSTMという名前は主にネットワークの構造を指しています。どんな目標で学習するかは別に設計します。今回は実データの予測器を作るのではなく、その基礎になる状態の流れを確かめます。
+</aside>
+</section>
+<section>
+<!-- 32: LSTMの理解確認を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>LSTMの理解確認</h2>
+<ul>
+<li>fは大きいほど前の状態を多く残す。</li>
+<li>iは新しい候補を書き込む量を調整する。</li>
+<li>o=0でもセル状態が残る場合がある。</li>
+</ul>
+<p>手動ゲート、固定重みでの計算、学習済みモデルを区別して説明する。</p>
+</div>
+<audio controls src="./voiceovers/slide_32.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+ゲートを一つだけ変えた結果を根拠にして、三つの役割を説明しましょう。名称にある忘却という言葉から、値が大きいほど多く消すと逆に考えないよう注意します。忘却ゲートは残す割合です。
+</aside>
+</section>
+<section>
+<!-- 33: GAN：二つのモデルを学習させるを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>GAN：二つのモデルを学習させる</h2>
+<div class="formula">
+ノイズ z → 生成器G → 生成データ → 識別器D<br>実データ ─────────────────→ 識別器D
+</div>
+<ul>
+<li>G：実データに似た分布のデータを作ることを目指す。</li>
+<li>D：実データ由来か、G由来かを識別する。</li>
+<li>両者の目標と更新を分ける。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_33.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+敵対的生成ネットワーク、GANでは、生成器と識別器を組み合わせます。識別器は真実かどうかを一般的に判定する装置ではなく、学習時の実データと生成データを区別するモデルです。
+</aside>
+</section>
+<section>
+<!-- 34: 今回のGANは1次元の小例を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>今回のGANは1次元の小例</h2>
+<p>実データ <code>[1, 2, 3]</code>、ノイズ <code>[-1, 0, 1]</code>。</p>
+<div class="formula">
+G(z) = a×z + b<br>D(x) = sigmoid(w×x + d)
+</div>
+<p>初期値 a=0.5、b=−1、w=1、d=0。</p>
+<p>Gの生成値は <code>[-1.5, -1, -0.5]</code>。画像を生成する演習ではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_34.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+関係を追いやすくするため、生成器は一次式、識別器はシグモイド一個にします。実データとノイズも授業用の固定値です。この単純な構成では任意の複雑な分布を表せるわけではありません。
+</aside>
+</section>
+<section>
+<!-- 35: 識別器の出力を読むを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>識別器の出力を読む</h2>
+<ul>
+<li>D(x)が1に近い：実データ由来と判定する方向。</li>
+<li>D(x)が0に近い：生成器由来と判定する方向。</li>
+<li>初期Dでは、D(2)≈0.880797、D(−1)≈0.268941。</li>
+</ul>
+<p>出力はモデルの判定値。品質や現実の正しさを保証しない。</p>
+<p><a href="interactive.html#gan-roles" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_35.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+同じ識別器へ実データと生成データを入れ、値を比べます。初期値では正の数を実データ側と判断しやすい設定です。識別器の出力が高いことを、そのデータが多様で高品質である証拠としないでください。
+</aside>
+</section>
+<section>
+<!-- 36: 材料の数と、作った数と、判定値を実際の値の対応から説明する -->
+<div class="slide-body">
+<h2>材料の数と、作った数と、判定値</h2>
+<p class="eyebrow">
+具体例を一段ずつ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>材料 z</strong>
+<p>
+0
+</p>
+</div>
+<div>
+<strong>Gが作る数</strong>
+<p>
+0.5×0−1 = −1
+</p>
+</div>
+<div>
+<strong>Dの判定</strong>
+<p>
+sigmoid(−1) ≈ 0.2689
+</p>
+</div>
+</div>
+<p>bを−1から0へ変えると、生成値は0、Dの出力は0.5へ。</p>
+<p><strong>Gは値を作る。Dはその値を受け取る。</strong></p>
+<p>ここではbを手で変える。損失を使った学習は次の段階。</p>
+</div>
+<audio controls src="./voiceovers/slide_36.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+識別器に渡すのはノイズそのものではなく生成器が作った値です。生成器のバイアスを手で変え、識別器は固定しています。出力0.5が良い作品であることを意味するわけではありません。実データ由来と判定する方向の値です。
+</aside>
+</section>
+<section>
+<!-- 37: 識別器Dを更新するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>識別器Dを更新する</h2>
+<ul>
+<li>実データには目標1、生成データには目標0を与える。</li>
+<li>この目標は、データの由来から作れる。</li>
+<li>Gのa・bを固定し、Dのw・dだけを更新する。</li>
+</ul>
+<p>今回の損失：実データの平均 −log D(x)</p>
+<p>＋生成データの平均 −log(1−D(G(z)))。</p>
+</div>
+<audio controls src="./voiceovers/slide_37.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+GANに外部のカテゴリラベルを用意しない場合でも、識別器の学習には由来を示すラベルを使います。教師なしと紹介されることと、どこにも目標値を使わないことは同じではありません。式の細かな導出よりも、どの出力をどちらへ動かすかを確認します。
+</aside>
+</section>
+<section>
+<!-- 38: 生成器Gを更新するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>生成器Gを更新する</h2>
+<ul>
+<li>Dのw・dを固定し、Gのa・bだけを更新する。</li>
+<li>今回は平均 <strong>−log D(G(z))</strong> を小さくする。</li>
+<li>固定したDを通して、Gの出力を変える勾配を計算する。</li>
+</ul>
+<p>Dを固定しても、Dの計算を飛ばすわけではない。</p>
+</div>
+<audio controls src="./voiceovers/slide_38.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+今回は原論文でも説明される非飽和型の生成器損失を使います。識別器のパラメーターは固定しますが、生成値の変化が識別器の出力にどう影響するかは計算に含めます。実データとの一対一の二乗誤差ではありません。
+</aside>
+</section>
+<section>
+<!-- 39: 交互更新を一巡だけ追うを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>交互更新を一巡だけ追う</h2>
+<p>学習率0.1、まずD、次にGを1回ずつ更新。</p>
+<table>
+<thead>
+<tr>
+<th>時点</th>
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">b</th>
+<th style="text-align: right;">w</th>
+<th style="text-align: right;">d</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初期</td>
+<td style="text-align: right;">0.500000</td>
+<td style="text-align: right;">−1.000000</td>
+<td style="text-align: right;">1.000000</td>
+<td style="text-align: right;">0.000000</td>
+</tr>
+<tr>
+<td>D更新後</td>
+<td style="text-align: right;">0.500000</td>
+<td style="text-align: right;">−1.000000</td>
+<td style="text-align: right;">1.046032</td>
+<td style="text-align: right;">−0.013111</td>
+</tr>
+<tr>
+<td>G更新後</td>
+<td style="text-align: right;">0.493075</td>
+<td style="text-align: right;">−0.923188</td>
+<td style="text-align: right;">1.046032</td>
+<td style="text-align: right;">−0.013111</td>
+</tr>
+</tbody>
+</table>
+<p><a href="interactive.html#gan-update" target="_blank" rel="noopener">操作して確かめる</a></p>
+</div>
+<audio controls src="./voiceovers/slide_39.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+表で変化した列と変化していない列を確認します。Dの更新の後に、更新後のDを固定してGを更新しています。ボタンを順番に押し、それぞれどちらのパラメーターが変わったかを追いましょう。
+</aside>
+</section>
+<section>
+<!-- 40: ① Dの更新中は、Gを動かさないを実際の値の対応から説明する -->
+<div class="slide-body">
+<h2>① Dの更新中は、Gを動かさない</h2>
+<p class="eyebrow">
+具体例を一段ずつ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>G：固定</strong>
+<p>
+a=0.5、b=−1
+</p>
+</div>
+<div>
+<strong>D：更新前</strong>
+<p>
+w=1、d=0
+</p>
+</div>
+<div>
+<strong>D：更新後</strong>
+<p>
+w=1.046032、d=−0.013111
+</p>
+</div>
+</div>
+<p>実データ [1,2,3] と、生成値 [−1.5,−1,−0.5] を使う。</p>
+<p><strong>実か生成かを見分ける損失</strong>からDの勾配を求める。</p>
+<p>学習率0.1。更新後もGのa,bが同じか確認する。</p>
+</div>
+<audio controls src="./voiceovers/slide_40.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+既存の初期値からDだけを1回更新した結果です。生成器の重みは固定するため、生成値はこの更新では変わりません。Dに実データと生成データを渡し、由来のラベルとのずれからDの重みを変えます。
+</aside>
+</section>
+<section>
+<!-- 41: ② 次はGを更新し、Dを固定するを実際の値の対応から説明する -->
+<div class="slide-body">
+<h2>② 次はGを更新し、Dを固定する</h2>
+<p class="eyebrow">
+具体例を一段ずつ ／ 入力 → 操作 → 結果
+</p>
+<div class="worked-flow">
+<div>
+<strong>D：固定</strong>
+<p>
+w=1.046032、d=−0.013111
+</p>
+</div>
+<div>
+<strong>G：更新前</strong>
+<p>
+a=0.5、b=−1
+</p>
+</div>
+<div>
+<strong>G：更新後</strong>
+<p>
+a=0.493075、b=−0.923188
+</p>
+</div>
+</div>
+<p>生成値は [−1.416263, −0.923188, −0.430113] へ。</p>
+<p>Dの計算を通してGの勾配を求める。<strong>Dの重みは変えない</strong>。</p>
+<p>D→Gで1巡。両方の損失が毎回下がる保証はない。</p>
+</div>
+<audio controls src="./voiceovers/slide_41.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+前のスライドのD更新直後から、Gを1回更新します。固定するのはDの重みであり、Dの計算そのものを省略するわけではありません。ノイズから作った値をDがどう判定するかを使ってGの勾配を求めます。
+</aside>
+</section>
+<section>
+<!-- 42: 損失と生成値の両方を見るを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>損失と生成値の両方を見る</h2>
+<p>一巡後の生成値：<code>[-1.416263, -0.923188, -0.430113]</code></p>
+<ul>
+<li>初期値より正の方向へ動いたが、実データ <code>[1, 2, 3]</code> とはまだ異なる。</li>
+<li>一方の更新は、他方の損失を増やす場合がある。</li>
+<li>損失・生成値・分布の広がりを合わせて観察する。</li>
+</ul>
+</div>
+<audio controls src="./voiceovers/slide_42.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+更新後に値が動いたことは、学習が完了したことではありません。また二つの損失は別の目標に対応するため、一つのグラフだけで成功を判断しないでください。今回の演習では分布を再現する性能を保証しません。
+</aside>
+</section>
+<section>
+<!-- 43: 競争すれば必ず成功する？を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>競争すれば必ず成功する？</h2>
+<ul>
+<li>交互更新しても、安定して収束するとは限らない。</li>
+<li>似た生成結果ばかりになる「モード崩壊」が起こることもある。</li>
+<li>Dの出力が0.5でも、Dが未学習・弱い可能性がある。</li>
+</ul>
+<p>理想的な理論上の状態と、有限のモデルで得た結果を区別する。</p>
+</div>
+<audio controls src="./voiceovers/slide_43.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+GANは二つのモデルを同時に改善していく難しさがあります。識別器が区別できない理由は、生成器がよくできた場合だけではありません。今回の小さな演習でモード崩壊の発生を実証したと主張せず、学習上の課題として紹介します。
+</aside>
+</section>
+<section>
+<!-- 44: GANの理解確認を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>GANの理解確認</h2>
+<ul>
+<li>Gが変えるもの：ノイズから生成値への写像。</li>
+<li>Dが学ぶもの：実データと生成データの区別。</li>
+<li>D更新中はGを固定、G更新中はDを固定。</li>
+<li>GANは生成の一方式。生成AI全体と同義ではない。</li>
+</ul>
+<p>更新対象と観察した数値を根拠に説明しよう。</p>
+</div>
+<audio controls src="./voiceovers/slide_44.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+名前と役割を入れ替えてしまわないよう、生成値を作る側と判定する側を図で指し示してください。今回の式、初期値、一巡後の値を使えば、抽象的な説明に具体的な根拠を添えられます。
+</aside>
+</section>
+<section>
+<!-- 45: 保存して、基準結果を再現するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>保存して、基準結果を再現する</h2>
+<p><a href="programs/deep_learning2.ipynb" download>Notebookを保存</a> ／ <a href="programs/deep_learning2.py" download>Pythonを保存</a> ／ <a href="programs/deep_learning2.zip" download>一式ZIPを保存</a></p>
+<ol type="1">
+<li>ZIPを展開し、Notebookを開く。</li>
+<li>既存venvのカーネルを選び、再起動して全セル実行。</li>
+<li>MSE <strong>0.004639</strong>、手動ゲートのc <strong>1.1</strong>、GAN更新表を確認。</li>
+</ol>
+<p><a href="programs/guide.html" target="_blank" rel="noopener">環境選択・結果の読み方・復帰方法</a></p>
+</div>
+<audio controls src="./voiceovers/slide_45.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+Notebookには処理コードも入っているため、Pythonファイルを同じ場所へ置かなくても実行できます。保存した基準版を残してコピーを編集してください。最初から実行できない場合はカーネルやセルの実行順序を解説で確認します。
+</aside>
+</section>
+<section>
+<!-- 46: 一つだけ変更して比較するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>一つだけ変更して比較する</h2>
+<table>
+<thead>
+<tr>
+<th>変更</th>
+<th>今回の予想・確認値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AEを2,000回へ</td>
+<td>MSE≈0.001924。初期値は同じ</td>
+</tr>
+<tr>
+<td>LSTMのoを0へ</td>
+<td>h=0、c=1.1のまま</td>
+</tr>
+<tr>
+<td>候補の1を最後へ</td>
+<td>最後のc=1（f=0.8）</td>
+</tr>
+<tr>
+<td>GANの学習率を0へ</td>
+<td>全パラメーターが変わらない</td>
+</tr>
+</tbody>
+</table>
+<p>変更前の結果を残す → コピーで試す → 理由を説明。</p>
+</div>
+<audio controls src="./voiceovers/slide_46.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+変更例はNotebookの後半に用意しています。一つずつ実行して基準値と比べ、違いが生じた計算箇所を探してください。複数の条件を同時に変えると、どの変更が結果に影響したか判断しにくくなります。
+</aside>
+</section>
+<section>
+<!-- 47: 三手法を比較するを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>三手法を比較する</h2>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>主な観察対象</th>
+<th>今回の学習・計算</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自己符号化器</td>
+<td>入力と再構成の差</td>
+<td>全成分のMSEを減らす学習</td>
+</tr>
+<tr>
+<td>LSTM</td>
+<td>セル状態と出力の時系列</td>
+<td>手動ゲート・固定重みの計算</td>
+</tr>
+<tr>
+<td>GAN</td>
+<td>生成値と識別器の判定</td>
+<td>DとGを交互に更新</td>
+</tr>
+</tbody>
+</table>
+<p>CNNやLSTMは構造、GANは学習の枠組みという違いもある。組み合わせも可能。</p>
+</div>
+<audio controls src="./voiceovers/slide_47.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+この表は今回の教材で行ったことの比較です。LSTM一般が学習しないという意味ではありません。また手法を完全に排他的な分類として扱わず、CNNを生成器などに使う組み合わせもあると理解してください。
+</aside>
+</section>
+<section>
+<!-- 48: 根拠を示して振り返るを数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>根拠を示して振り返る</h2>
+<ul>
+<li>再構成誤差は、どの入力・出力を比較した値か？</li>
+<li>出力が0でもセル状態が残る例を説明できるか？</li>
+<li>GANの一巡で、固定したパラメーターはどれか？</li>
+</ul>
+<p>不明な点は操作画面へ戻り、条件を一つ変えて再確認。</p>
+<p>次回（11月26日）：<strong>進化的計算</strong>。</p>
+</div>
+<audio controls src="./voiceovers/slide_48.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+三つの問いを自分の言葉と数値で説明してください。これは自習の理解確認であり、新しい提出条件を定めるものではありません。次回は今年度の日程に沿って進化的計算へ進みます。
+</aside>
+</section>
+<section>
+<!-- 49: 参考資料と復習先を数値と操作の根拠に結び付ける -->
+<div class="slide-body">
+<h2>参考資料と復習先</h2>
+<ul>
+<li><a href="https://www.deeplearningbook.org/contents/autoencoders.html">Goodfellowほか『Deep Learning』第14章</a>：自己符号化器。</li>
+<li><a href="https://docs.pytorch.org/docs/2.14/generated/torch.nn.LSTM.html">PyTorch LSTM公式資料</a>：セル状態・ゲートの式。</li>
+<li><a href="https://papers.nips.cc/paper/2014/hash/f033ed80deb0234979a61f95710dbe25-Abstract.html">Goodfellowほか「Generative Adversarial Nets」</a>：GANの学習目標。</li>
+</ul>
+<p><a href="interactive-guide.html" target="_blank" rel="noopener">操作マニュアル</a> ／ <a href="programs/guide.html" target="_blank" rel="noopener">プログラム解説</a></p>
+<p>外部参考資料の閲覧にはネット接続が必要。</p>
+</div>
+<audio controls src="./voiceovers/slide_49.mp3" type="audio/mpeg">
+</audio>
+<aside class="notes">
+参考資料は仕組みの確認に使用したものです。今回の人工データや数値実験は授業用に作成したもので、原論文の実験結果の再現ではありません。まず授業の数値例を説明し、その後に必要な参考資料へ進んでください。
+</aside>
+</section>
+</div>
+        </div>
+        <div class="line top"></div>
+        <div class="line bottom"></div>
+        <div class="line left"></div>
+        <div class="line right"></div>
+        <script src="libs/reveal.js/4.3.1/reveal.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/markdown/markdown.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/fullscreen/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/animate/svg.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/Chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/d3.v3.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3.patch.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/queue.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/d3/topojson.v1.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/anything/function-plot.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/customcontrols/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/chart.min.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chart/plugin.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/verticator/verticator.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/zoom/zoom.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/search/search.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/menu/menu.js"></script>
+        <script src="libs/reveal.js/4.3.1/plugin/chalkboard/plugin.js"></script>
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/plugin.js"></script>  -->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/recorder.js"></script>-->
+        <!--    <script src="libs/reveal.js/4.3.1/plugin/audio-slideshow/RecordRTC.js"></script>-->
+        <script>
+  const printPlugins = [
+      RevealNotes,
+      RevealHighlight,
+      RevealAnimate,
+      RevealChalkboard,
+            RevealChart,
+        ];
+
+        const plugins =  [...printPlugins,
+        RevealZoom,
+        RevealSearch,
+                RevealMarkdown,
+                RevealMenu,
+                RevealFullscreen,
+                RevealAnything,
+                //RevealAudioSlideshow,
+                //RevealAudioRecorder,
+                RevealCustomControls,
+                // poll
+                // question
+                // seminar
+                Verticator
+                 ]
+
+
+        // Also available as an ES module, see:
+        // https://revealjs.com/initialization/
+        Reveal.initialize({
+            controls: true,
+      controlsTutorial: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      slideNumber: true,
+      //#showSlideNumber "all" "print" "speaker"
+      hash: true, //# hash: false,
+      //# respondToHashChanges: true,
+      //# history: false,
+      keyboard: true,
+      //#keyboardCondition: null,
+      overview: true,
+      center: true,
+      touch: true,
+      loop: false,
+      rtl: false,
+      //#navigationMode: 'default', linear grid
+      shuffle: false,
+      fragments: true,
+      fragmentInURL: false,
+      embedded: false,
+      help: true,
+      //#pause: true
+      showNotes: false,
+      autoPlayMedia: false, // TODO fix this to a nullable value
+      //#preloadIframes: null. true false
+      //#autoAnimate: true
+      //#autoAnimateMatcher: null,
+      //#autoAnimateEasing: 'ease',
+      //autoAnimateDuration: 1.0,
+      //#autoAnimateUnmatched: true
+      //#autoAnimateStyles: []
+      autoSlide: 0, // TODO fix this to a falseable value
+      autoSlideStoppable: true,
+      autoSlideMethod: '0',
+      defaultTiming: 120,
+      mouseWheel: false,
+      //#previewLinks: false
+      //#postMessage: true, // TODO : this can cause issues with the vscode api ???
+      //#postMessageEvents: false,
+      //#focusBodyOnPageVisibilityChange: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      //#pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+      //#pdfSeparateFragments: true,
+      //#pdfPageHeightOffset: -1,
+      viewDistance: 3,
+      //#mobileViewDistance: 2,
+      display: 'block',
+      //#hideInactiveCursor: true,
+      //#hideCursorTime: 5000
+
+      // Parallax Background
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      parallaxBackgroundHorizontal: 0,
+      parallaxBackgroundVertical: 0,
+
+      //Presentation Size
+      width: 1280,
+            height: 720,
+            margin: 0.06,
+      minScale: 0.2,
+      maxScale: 2,
+      disableLayout: false,
+
+      audio: {
+        prefix: 'audio/', // audio files are stored in the "audio" folder
+        suffix: '.ogg', // audio files have the ".ogg" ending
+        textToSpeechURL: null, // the URL to the text to speech converter
+        defaultNotes: false, // use slide notes as default for the text to speech converter
+        defaultText: false, // use slide text as default for the text to speech converter
+        advance: 0, // advance to next slide after given time in milliseconds after audio has played, use negative value to not advance
+        autoplay: false, // automatically start slideshow
+        defaultDuration: 5, // default duration in seconds if no audio is available
+        defaultAudios: true, // try to play audios with names such as audio/1.2.ogg
+        playerOpacity: 0.05, // opacity value of audio player if unfocused
+        playerStyle: 'position: fixed; bottom: 4px; left: 25%; width: 50%; height:75px; z-index: 33;', // style used for container of audio controls
+        startAtFragment: false, // when moving to a slide, start at the current fragment or at the start of the slide
+      },
+
+      chalkboard: { // font-awesome.min.css must be available
+        //src: "chalkboard/chalkboard.json",
+        storage: "chalkboard-demo",
+      },
+
+            customcontrols: {
+                    controls: [
+                            {
+                          id: 'toggle-overview',
+                          title: 'Toggle overview (O)',
+                          icon: '<i class="fa fa-th"></i>',
+                          action: 'Reveal.toggleOverview();'
+                        }
+                        ,
+      {
+        icon: '<i class="fa fa-pen-square"></i>',
+        title: 'Toggle chalkboard (B)',
+        action: 'RevealChalkboard.toggleChalkboard();'
+      },
+      {
+        icon: '<i class="fa fa-pen"></i>',
+        title: 'Toggle notes canvas (C)',
+        action: 'RevealChalkboard.toggleNotesCanvas();'
+      }
+
+                ]
+            },
+            chart: {
+                    defaults: {
+                        color: 'lightgray', // color of labels
+                        scale: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: "lightgray" } , // color of grid lines
+                        },
+                    },
+                    line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+                    bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+                    pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+                    radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+            },
+                anything: [
+                {
+        className: "plot",
+        defaults: {width:500, height: 500, grid:true},
+        initialize: (function(container, options){ options.target = "#"+container.id; functionPlot(options) })
+     },
+     {
+        className: "chart",
+        initialize: (function(container, options){ container.chart = new Chart(container.getContext("2d"), options);  })
+     },
+     {
+        className: "anything",
+        initialize: (function(container, options){ if (options && options.initialize) { options.initialize(container)} })
+     },
+                    ],
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: (window.location.search.match(/print-pdf/gi) ? printPlugins : plugins )
+        });
+
+
+
+        // Change chalkboard theme :
+        function changeTheme(input) {
+            var config = {};
+            config.theme = input.value;
+            Reveal.getPlugin("RevealChalkboard").configure(config);
+            input.blur();
+        }
+
+        // // Handle the message inside the webview
+        // window.addEventListener('message', event => {
+
+        //     const message = event.data; // The JSON data our extension sent
+
+        //     switch (message.command) {
+        //         case 'refactor':
+        //             Reveal.toggleHelp();
+        //     }
+        // });
+
+        if (window.location.search.match(/print-pdf-now/gi)) {
+            setTimeout(() => {
+                window.print();
+              }, 2500);
+
+    }
+        </script>
+    </body>
+</html>

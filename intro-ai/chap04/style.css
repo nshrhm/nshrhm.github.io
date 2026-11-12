@@ -627,3 +627,6 @@ body.image-zoom-open {
 .reveal .material-links { font-size: 0.78em; line-height: 1.5; margin: 0.55em 0; }
 .reveal .material-links a { text-decoration: underline; text-underline-offset: 0.15em; }
 .reveal .exercise-slide { font-size: 0.72em; }
+
+/* Concrete worked examples, one operation per panel. */
+.reveal .worked-flow{display:flex;gap:12px;margin:16px 0;align-items:stretch}.reveal .worked-flow>div{flex:1;border:2px solid #246bce;border-radius:8px;padding:12px;min-width:0}.reveal .worked-flow strong{display:block;border-bottom:1px solid #cfd8e3;padding-bottom:6px}.reveal .worked-flow p{margin:8px 0;font-size:.9em}

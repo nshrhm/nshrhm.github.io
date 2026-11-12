@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="第8回 深層学習2：操作マニュアル">
+<title>第8回 深層学習2：操作マニュアル</title><style>:root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #16324f; background: #f3f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 18px; line-height: 1.85; }
+main { max-width: 1000px; margin: auto; padding: 32px clamp(18px, 4vw, 56px) 64px; background: white; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.4; }
+h2 { margin-top: 2.4em; padding-bottom: .25em; border-bottom: 3px solid #246bce; line-height: 1.5; }
+h3 { margin-top: 1.8em; }
+a { color: #164fa7; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:focus-visible { outline: 3px solid #b66b00; outline-offset: 4px; }
+nav, .downloads { padding: 14px; background: #eaf1fa; border-radius: 8px; }
+pre { background: #16324f; color: #fff; border-radius: 8px; padding: 18px; overflow-x: auto; font-size: .9rem; line-height: 1.65; }
+pre code span { color: inherit !important; }
+code { font-size: .9em; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: .9em; }
+th, td { padding: 10px; border: 1px solid #cfd8e3; text-align: left; overflow-wrap: anywhere; }
+th { background: #eaf1fa; }
+li { margin: .35em 0; }
+@media (max-width: 600px) { body { font-size: 16px; } table { display: block; overflow-x: auto; } }
+@media print { main { max-width: none; } a { color: inherit; } pre { white-space: pre-wrap; } }
+</style></head>
+<body><main><h1>第8回 深層学習2：操作マニュアル</h1>
+<h2 id="ここから始める">ここから始める</h2>
+<p>第6・7回で扱った「入力×重み＋バイアス」「損失」「RNNの状態」を使います。自己符号化器・LSTM・GANで、何を入力し、何を計算・学習しているかを説明することが目標です。</p>
+<p><a href="interactive.html" target="_blank" rel="noopener">操作教材を開く</a> ／ <a href="index.html">スライドへ戻る</a> ／ <a href="programs/guide.html">Python／Notebook解説</a> ／ <a href="interactive.html" download>操作教材を保存</a></p>
+<p>操作教材は単一HTMLです。保存してブラウザーで開けば、ネット接続なしで計算・操作できます。ほかの教材へ移動するリンクには同梱ファイルが必要です。ダウンロード後にリンクが開けない場合は、元のプレビュー一式に戻ってください。今回はローカル確認版で、第8回の公開URLはまだ案内しません。</p>
+<ol type="1">
+<li>テーマを選ぶ。上のタブは左右矢印・Home・Endでも移動できます。</li>
+<li>問いを読み、操作前の予想欄へ短く書く。予想は保存されないので、残す場合は自分のメモへ転記します。</li>
+<li>一つだけ条件を変えて、図と表の数値を読む。</li>
+<li>予想との違いを計算のどの部分で説明できるか考える。</li>
+<li>各テーマの「リセット」で数値と予想を戻す。ページ更新では全テーマが初期化されます。</li>
+</ol>
+<p>タブを切り替えても、そのページ内の操作状態は残ります。ブラウザーの戻る・進むでもテーマを移動できます。図の棒や矢印は計算値または構造を示すもので、実用モデルの性能を示す図ではありません。</p>
+<h2 id="符号化と再構成">1. 符号化と再構成</h2>
+<p><a href="interactive.html#reconstruction" target="_blank" rel="noopener">対応テーマ</a> ／ スライド5〜13</p>
+<ul>
+<li><strong>問い・予想：</strong> 入力の1を別の位置へ移すと、中間表現3個と再構成5個のどこが変わるでしょう。</li>
+<li><strong>操作：</strong> 最初の入力の表をメモし、入力の1の位置を「2番目」へ変えます。</li>
+<li><strong>結果：</strong> 中間表現・再構成・その行のMSEが再計算されます。重みはシード65535で作った初期値に固定されています。入力の選択は学習ではありません。</li>
+<li><strong>説明：</strong> 入力5個を3個の中間表現へ変換し、元の入力と比較するため5個へ戻しています。MSEは5成分全ての二乗誤差の平均です。</li>
+<li><strong>戻す：</strong> このテーマをリセットすると1番目の入力に戻ります。</li>
+</ul>
+<h2 id="自己符号化器の学習">2. 自己符号化器の学習</h2>
+<p><a href="interactive.html#ae-learning" target="_blank" rel="noopener">対応テーマ</a> ／ スライド14〜19</p>
+<ul>
+<li><strong>問い・予想：</strong> 0回、1,000回、2,000回で誤差はどう変わるでしょう。</li>
+<li><strong>操作：</strong> 1,000回を選び「同じ初期値から実行」を押します。結果を記録してから2,000回で実行します。</li>
+<li><strong>結果：</strong> 全5行×5成分のMSEは、初期0.316058、1,000回0.004639、2,000回0.001924です（小数点以下6桁）。0回なら初期値と同じです。毎回、同じ初期値から実行します。</li>
+<li><strong>説明：</strong> 学習率は4で固定し、回数だけを比較します。小さい人工データへの適合であり、未知データへの性能ではありません。</li>
+<li><strong>戻す：</strong> リセットで未学習状態へ戻ります。回数の初期選択は1,000回です。</li>
+</ul>
+<h2 id="lstmのゲート">3. LSTMのゲート</h2>
+<p><a href="interactive.html#gates" target="_blank" rel="noopener">対応テーマ</a> ／ スライド21〜26</p>
+<ul>
+<li><strong>問い・予想：</strong> 出力ゲートoを0にすると、セル状態cも0になるでしょうか。</li>
+<li><strong>操作：</strong> 初期値の表を読み、oだけを0へ動かします。スライダーは矢印キーでも変更できます。</li>
+<li><strong>結果：</strong> 初期状態は「残す量0.8＋書く量0.3＝c 1.1」、hは0.600374です。o=0ならh=0ですがc=1.1は残ります。</li>
+<li><strong>説明：</strong> c=f×前のc+i×g、h=o×tanh(c)。前のcは1です。f=1・i=0なら前のcを保持し、f=0・i=0ならc=0です。</li>
+<li><strong>戻す：</strong> リセットでf=0.8、i=0.5、g=0.6、o=0.75へ戻ります。</li>
+</ul>
+<p>これは手動ゲートの計算です。0と1は理想的な端点として使います。通常のLSTMでは入力や前の出力と重みからゲート値を求めます。Notebookには固定重みから計算する未学習の例もあります。</p>
+<h2 id="系列と記憶">4. 系列と記憶</h2>
+<p><a href="interactive.html#sequence" target="_blank" rel="noopener">対応テーマ</a> ／ スライド27〜32</p>
+<ul>
+<li><strong>問い・予想：</strong> <code>[1,0,0,0]</code> と <code>[0,0,0,1]</code> は同じ値の集まりです。最後のcも同じでしょうか。</li>
+<li><strong>操作：</strong> f=0.8のまま、候補列を切り替えます。次に元の候補列へ戻し、fだけを1へ変えます。</li>
+<li><strong>結果：</strong> 最初の候補列のcは1→0.8→0.64→0.512です。1を最後に置くと最後のcは1になります。最初の候補列でもf=1ならcは全時刻で1です。</li>
+<li><strong>説明：</strong> 初期c=0、入力・出力ゲート=1の理想化例です。候補は生の入力ではありません。書いた時刻から何回fを掛けたかで説明します。</li>
+<li><strong>戻す：</strong> リセットで最初の候補列とf=0.8へ戻ります。</li>
+</ul>
+<h2 id="ganの二つの役割">5. GANの二つの役割</h2>
+<p><a href="interactive.html#gan-roles" target="_blank" rel="noopener">対応テーマ</a> ／ スライド33〜35</p>
+<ul>
+<li><strong>問い・予想：</strong> Gのバイアスbを増やすと、固定したDの判定はどう変わるでしょう。</li>
+<li><strong>操作：</strong> z=0、b=−1の生成値と判定を読み、bだけを0へ動かします。</li>
+<li><strong>結果：</strong> G(z)=0.5z+bなので生成値は−1から0へ変わります。D(x)=sigmoid(x)の出力は0.268941から0.5になります。実データ1・2・3への判定も表で確認できます。</li>
+<li><strong>説明：</strong> この画面ではGを手で変え、Dは固定しています。1に近い判定は実データ由来と見る方向ですが、生成品質や事実の正しさを保証しません。</li>
+<li><strong>戻す：</strong> リセットでz=0、b=−1へ戻ります。</li>
+</ul>
+<h2 id="ganの交互更新">6. GANの交互更新</h2>
+<p><a href="interactive.html#gan-update" target="_blank" rel="noopener">対応テーマ</a> ／ スライド37〜44</p>
+<ul>
+<li><strong>問い・予想：</strong> Dを更新する時とGを更新する時、表のどの列だけが変わるでしょう。</li>
+<li><strong>操作：</strong> 学習率0.1で①Dを1回更新し、表を読みます。次に②Gを1回更新します。</li>
+<li><strong>結果：</strong> 初期(a,b,w,d)=(0.5,−1,1,0)。D更新後は(0.5,−1,1.046032,−0.013111)、G更新後は(0.493075,−0.923188,1.046032,−0.013111)です。生成値は[−1.416263,−0.923188,−0.430113]になります。</li>
+<li><strong>説明：</strong> D更新ではGのa・b、G更新ではDのw・dを固定します。G更新でもDを通る勾配は計算します。D損失は実データの平均−log D(x)と生成データの平均−log(1−D(G(z)))の和、G損失は平均−log D(G(z))です。</li>
+<li><strong>変更：</strong> リセットして学習率0で一巡すると重みは変わりません。学習率0.2も試せますが、必ず改善するとは限りません。</li>
+<li><strong>戻す：</strong> リセットで初期値・学習率0.1へ戻ります。40巡で停止するので、続ける場合もリセットします。</li>
+</ul>
+<h2 id="困ったとき">困ったとき</h2>
+<ul>
+<li>表が見えない：選択したテーマを確認し、表示倍率を戻します。スマートフォンでは表の領域を横にスクロールできる場合があります。</li>
+<li>計算値が想定と違う：テーマをリセットし、一つの条件だけを変えて再実行します。値は表示桁で丸めています。</li>
+<li>学習ボタンが反応しない：処理が終わるまで待ち、改善しなければページを再読み込みします。外部サーバーへ計算を送っていません。</li>
+<li>GANのボタンが押せない：D→Gの順序と40巡の上限を確認します。</li>
+<li>説明できない：まず「変えたもの」「固定したもの」「変わった数値」を書き出し、対応するスライドへ戻ります。</li>
+</ul>
+<h2 id="一段ずつ説明を追う2026-11-12改訂">一段ずつ説明を追う（2026-11-12改訂）</h2>
+<p>各テーマの操作欄の下に「前の段階」「次の段階」「現在○／○」があります。枠と下線が今の段階です。説明の移動では入力や重みは変わりません。「説明を最初へ」は説明だけを戻し、テーマのリセットは入力・予想・計算結果も戻します。条件変更後も説明は現在の値で更新されます。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>テーマ</th>
+<th>予想してから操作</th>
+<th>確認する結果と説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>符号化と再構成</td>
+<td>1の位置を変え、4段階を読む</td>
+<td>h1に掛かる重みはどれか。y1は入力の何番と比べるか。内訳を開いて全ての積を確認する</td>
+</tr>
+<tr>
+<td>自己符号化器の学習</td>
+<td>0回を実行し、その後1,000回を実行</td>
+<td>5枚×5成分の二乗誤差を平均している。入力1のどの成分が1／0へ近付いたか</td>
+</tr>
+<tr>
+<td>LSTMのゲート</td>
+<td>oだけを0にする</td>
+<td>保持量・書込量・c・hのうち何が変わるか。cは消えるか</td>
+</tr>
+<tr>
+<td>系列と記憶</td>
+<td>各時刻を進め、候補列を逆順にする</td>
+<td>前のcが次へ渡る。0.8を何回掛けたかで最後の状態を説明する</td>
+</tr>
+<tr>
+<td>GANの二つの役割</td>
+<td>z=0でbを−1から0へ</td>
+<td>Gの出力−1→0、Dの出力約0.2689→0.5。手動変更と学習の違いを説明する</td>
+</tr>
+<tr>
+<td>GANの交互更新</td>
+<td>更新前に内訳を読み、D→Gを1回ずつ押す</td>
+<td>次の更新値の予告と実際の値を照合する。固定した側の重みが動かないことを確認する</td>
+</tr>
+</tbody>
+</table>
+<p>数値は小数6桁表示です。途中の丸め値で再計算すると末尾がずれることがあります。内部の計算は丸めません。学習回数を選ぶだけでは実行されません。GANの学習率を比較するときは毎回リセットし、同じ初期値から始めてください。</p>
+</main></body></html>

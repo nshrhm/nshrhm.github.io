@@ -251,5 +251,112 @@ function select(id){if(!ids.includes(id))id='cases';for(const x of ids){$(x).hid
 for(const id of ids){const s=$(id);s.querySelectorAll('input,select').forEach(x=>x.addEventListener('input',()=>render(id)));$(id+'-reset').addEventListener('click',()=>{s.querySelectorAll('input').forEach(x=>x.value=x.defaultValue);s.querySelectorAll('select').forEach(x=>x.value=x.dataset.default);s.querySelectorAll('textarea').forEach(x=>x.value='');render(id);});$('tab-'+id).addEventListener('keydown',e=>{let i=ids.indexOf(id);if(e.key==='ArrowRight')i=(i+1)%6;else if(e.key==='ArrowLeft')i=(i+5)%6;else if(e.key==='Home')i=0;else if(e.key==='End')i=5;else return;e.preventDefault();location.hash=ids[i];$('tab-'+ids[i]).focus();});}
 addEventListener('hashchange',()=>select(location.hash.slice(1)));select(location.hash.slice(1));
                                         </script>
-                                    </body>
+                                <!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+{
+const p=s=>'<p>'+s+'</p',box=xs=>'<div class="ts-flow">'+xs.map(([k,v])=>'<div class="ts-card"><strong>'+k+'</strong>'+v+'</div>').join('<span>→</span>')+'</div>';
+const cards=(m,g='all',threshold=0)=>'<p><strong>方式'+m+'：'+named[g]+'（教材独自の架空ケース）</strong></p><div class="ts-flow">'+EvalModel.records(m,g).map(r=>'<div class="ts-card'+(r.score>=threshold?' ts-mark':'')+'"><strong>'+r.id+'</strong>'+(r.correct?'○ 正解':'× 不正解')+'<br>スコア '+r.score+'<br>'+(r.score>=threshold?'回答する':'保留する')+'</div>').join('')+'</div>';
+const conf=pfx=>({cost_a:number(pfx+'-a'),cost_b:number(pfx+'-b'),review_cost:number(pfx+'-review')});
+installTeachingSteps([
+{id:'cases',title:'正誤のラベルと、判断用のスコアを分ける',steps:()=>{const m=$('cases-method').value,r=EvalModel.inspect_case(m,$('cases-id').value);return [
+{title:'1件を選ぶ',body:box([['方式',m],['ケース',r.id],['条件',named[r.group]]])+p('実在サービスの測定ではなく、評価方法を学ぶための固定12件です。N1〜N6は通常条件、C1〜C6は条件変化です。')},
+{title:'正誤を読む',body:p('選んだケースの固定ラベルは '+(r.correct?'○ 正解':'× 不正解')+'。正解かどうかは別途分かっているものとして集計します。')},
+{title:'スコアを読む',body:p('判定用スコアは '+r.score+'。回答するか保留するかを決めるために使います。正誤ラベルの代わりにはしません。')},
+{title:'高いスコアでも誤る',body:p('方式AのN6を選ぶとスコア90で不正解です。「90だから90%の確率で正しい」とは読めません。方式を切り替えて同じケースを比較し、リセットします。')}
+];},details:()=>cards($('cases-method').value)},
+{id:'groups',title:'カードを数えて、分母と分子を作る',steps:()=>{const g=$('groups-kind').value,a=EvalModel.aggregate('A',0,g),b=EvalModel.aggregate('B',0,g);return [
+{title:'数える範囲',body:p('現在は '+named[g]+'、'+a.total+' 件が分母です。範囲を変えたら分母も変わります。')},
+{title:'Aの正解を数える',body:cards('A',g)+p('○の数 '+a.correct+' ÷ 全'+a.total+'件 = '+pct(a.accuracy)+'。')},
+{title:'Bも同じ範囲で数える',body:cards('B',g)+p('○の数 '+b.correct+' ÷ 全'+b.total+'件 = '+pct(b.accuracy)+'。')},
+{title:'全体と内訳を比較',body:p('全12件ではA7/12・B8/12。通常条件だけではA5/6・B4/6です。条件変化ではA2/6・B4/6。どの範囲で優れているのかを明記します。')}
+];},details:()=>p('通常と条件変化は各6件です。同じ件数なので全体は両群の単純平均になります。実際の利用割合が違う場合は、次のテーマで別の重みを付けて考えます。')},
+{id:'mixture',title:'使われる場面の割合を変えて推定する',steps:()=>{const w=number('mixture-weight'),r=EvalModel.evaluate({normal_percent:w});return [
+{title:'利用比率の仮定',body:box([['通常条件',w+'%'],['条件変化',(100-w)+'%']])+p('ケースを追加・削除したのではありません。今後どちらの場面で使うかの割合を仮定しています。')},
+{title:'Aの寄与を足す',body:p('(5/6 × '+w+'/100) ＋ (2/6 × '+(100-w)+'/100) = '+pct(r.mixture.A)+'。')+box([['通常の寄与',pct(5/6*w/100)],['変化の寄与',pct(2/6*(100-w)/100)]])},
+{title:'Bも同じ仮定',body:p('(4/6 × '+w+'/100) ＋ (4/6 × '+(100-w)+'/100) = '+pct(r.mixture.B)+'。')+p('Bは両群4/6なので、この比率を変えても推定値は変わりません。')},
+{title:'観測と推定を分ける',body:p('通常75%ならAは17/24≈70.83%、Bは66.67%。元の12件の正解数はA7・B8のままです。仮定を変えた順位を、測定結果が変わったと説明しないでください。')}
+];},details:()=>p('この推定は各群の正答率が利用先でも当てはまるという仮定を含みます。割合だけ変えれば将来性能を正確に予測できるわけではありません。50%へ戻して基準と比較します。')},
+{id:'abstain',title:'回答するカードだけで、正答率を計算',steps:()=>{const t=number('abstain-threshold'),r=EvalModel.evaluate({threshold:t}),a=r.answers.A,b=r.answers.B;return [
+{title:'回答と保留へ分ける',body:p('しきい値 '+t+' 以上なら回答、それ未満は保留します。枠付きカードが回答です。正誤を見て分ける操作ではありません。')+cards('A','all',t)},
+{title:'回答率の分母は12',body:box([['A：回答数／全件',a.answered+'/12 = '+pct(a.coverage)],['B：回答数／全件',b.answered+'/12 = '+pct(b.coverage)]])+p('保留したケースも、利用者から来た12件の一部なので分母に含めます。')},
+{title:'正答率の分母は回答数',body:box([['A：正解／回答',a.correct_answered+'/'+a.answered+' = '+(a.accuracy===null?'未定義':pct(a.accuracy))],['B：正解／回答',b.correct_answered+'/'+b.answered+' = '+(b.accuracy===null?'未定義':pct(b.accuracy))]])+p('回答を0件にすると正答率は未定義です。100%ではありません。')},
+{title:'両方の指標で読む',body:p('しきい値80ではAは6/7正解で7/12回答、Bは5/5正解で5/12回答。Bの100%だけを見ず、保留7件も確認します。AのN6は高スコアの誤答として残ります。')}
+];},details:()=>cards('B','all',number('abstain-threshold'))+p('保留は正解にも誤答にも数えません。保留した後の人の確認結果は、このデータにはありません。')},
+{id:'costs',title:'回答を保留しても、処理費用は発生する',steps:()=>{const c={...conf('costs'),threshold:number('costs-threshold')},r=EvalModel.evaluate(c);return [
+{title:'全件を処理',body:box([['Aの処理費用','12 × '+c.cost_a+' = '+12*c.cost_a],['Bの処理費用','12 × '+c.cost_b+' = '+12*c.cost_b]])+p('保留するかどうかを決める前に、全12件を処理しています。')},
+{title:'保留を確認',body:box(['A','B'].map(m=>[m+'の確認費用',r.answers[m].withheld+' × '+c.review_cost+' = '+r.answers[m].withheld*c.review_cost]))+p('確認費用は保留件数にだけ掛けます。単位はこの教材で決めた架空の費用です。')},
+{title:'二つを足す',body:box(['A','B'].map(m=>[m+'の総費用',r.answers[m].cost]))+p('基準しきい値80ではA:12×1＋5×4=32、B:12×3＋7×4=64。')},
+{title:'何を計上していないか',body:p('確認後の正答率、待ち時間、消費電力は計算していません。人が確認すれば必ず正解になるという仮定も置いていません。確認費用だけ増やして総費用を比べ、リセットします。')}
+];},details:()=>p('確認費用4→10なら基準のAは62、Bは106。処理費用と確認費用を同時に変更すると影響を分けにくいので、一項目ずつ比較してください。')},
+{id:'choose',title:'条件を満たす候補だけを残して選ぶ',steps:()=>{const c={...conf('choose'),min_accuracy:number('choose-accuracy'),min_coverage:number('choose-coverage')},r=EvalModel.evaluate(c);return [
+{title:'必要条件を決める',body:box([['必要正答率',c.min_accuracy+'%以上'],['必要回答率',c.min_coverage+'%以上']])+p('方式A/Bとしきい値0/80/100の組合せ、計6候補を比較します。全ての方式やしきい値を探索しているわけではありません。')},
+{title:'分子と分母で判定',body:'<div class="table-wrap">'+table(['候補','正解／回答','回答／12','適合'],r.candidates.map(a=>[a.method+'/'+a.threshold,a.correct_answered+'/'+a.answered,a.answered+'/12',a.eligible?'適合':'不適合']))+'</div>'+p('全件保留は適合から除きます。丸めた表示値ではなく、実際の分子と分母を使って条件を判定します。')},
+{title:'適合候補の費用を比較',body:p('適合：'+(r.candidates.filter(a=>a.eligible).map(a=>a.method+'/'+a.threshold+' 費用'+a.cost).join('、')||'なし')+'。')+p('選択：'+(r.best?'方式'+r.best.method+'、しきい値'+r.best.threshold+'、費用'+r.best.cost:'該当なし')+'。要件に合う候補がなければ無理に選びません。')},
+{title:'選択理由と限界',body:p('基準の必要正答率80%・必要回答率50%ではA/80を選びます。必要正答率を90%へ上げるとA/80は不足し、B/80は回答率不足です。')+p('選択はこの固定データと費用規約の範囲だけです。安全性や公平性まで証明したわけではありません。')}
+];},details:()=>p('同額なら回答率→正答率→方式A→低いしきい値の順で選ぶ固定規約です。候補が存在することと、現場で利用してよいことは別に判断してください。')}
+]);
+}
+
+</script>
+<!-- teaching-steps:end -->
+    </body>
                                 </html>

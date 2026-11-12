@@ -1,11 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="学習の種類、学習と推論、評価の分離、漏洩、汎化、正解率を操作して理解する単一HTML教材">
-<title>学ぶ・選ぶ・確かめる｜人工知能概論 第3回</title>
-<style>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description"
+              content="学習の種類、学習と推論、評価の分離、漏洩、汎化、正解率を操作して理解する単一HTML教材">
+        <title>学ぶ・選ぶ・確かめる｜人工知能概論 第3回</title>
+        <style>
 :root{--ink:#142f45;--muted:#516575;--paper:#f3f6f7;--line:#c9d7df;--zero:#006c78;--one:#af4a0b;--accent:#215ab3;--gold:#ffc85b}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 system-ui,-apple-system,"Segoe UI",sans-serif}h1,h2,h3,p{margin:0}h1{font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.4}h2{font-size:clamp(1.45rem,3vw,2rem);line-height:1.5}h3{font-size:1.08rem}p+p{margin-top:8px}button,input,select{font:inherit;color:inherit}button,select,input[type=number]{border:1px solid #91a7b6;border-radius:8px;background:white;padding:7px 11px}button{font-weight:650;cursor:pointer}button:hover{background:#e8eff8}button:disabled{opacity:.5;cursor:default}button.primary,button[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}input[type=range]{accent-color:var(--accent);width:160px;max-width:100%}input[type=number]{width:85px}input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}a{color:#1b559c}.shell{max-width:1260px;padding:0 28px;margin:auto}.masthead{background:var(--ink);color:white;padding:25px 0}.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.eyebrow{font-size:.8rem;letter-spacing:.12em;font-weight:700}.topline button{font-size:.85rem;flex-shrink:0}.masthead p{margin-top:10px;color:#cbdce7}.nav{display:flex;gap:6px;flex-wrap:wrap;padding:17px 0}.nav button{flex:1;min-width:140px;text-align:left;font-size:.92rem;border-color:var(--line)}.nav b{color:#728ba1;margin-right:8px}.nav [aria-pressed=true] b{color:var(--gold)}.lesson-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:6px 0 12px}.lesson-head button{white-space:nowrap}.intro{max-width:920px;margin-bottom:14px}.question{background:#fff6df;border-left:5px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:19px}.question strong{margin-right:8px}.workspace{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(310px,1fr);gap:20px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:17px;padding:20px;min-width:0}.panel h3{margin-bottom:10px}.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0}.controls label{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.controls .wide{width:100%}.result{padding:15px;background:#eaf3f5;border-radius:12px;margin-top:14px}.result strong{font-size:1.2rem}.small{font-size:.85rem}.muted{color:var(--muted)}.legend{display:flex;gap:15px;flex-wrap:wrap;font-size:.88rem}.zero{color:var(--zero);font-weight:750}.one{color:var(--one);font-weight:750}.badge{display:inline-block;padding:1px 11px;border-radius:20px;background:#e5edef;font-weight:750}.badge.zero{background:#daf2f0}.badge.one{background:#ffeadb}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem}caption{text-align:left;color:var(--muted);margin:6px 0}th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#f1f5f8}tr.chosen{background:#e0f2ef}details{margin-top:17px;padding:12px 17px;background:white;border:1px solid var(--line);border-radius:12px}summary{font-weight:700;cursor:pointer}details[open]>summary{margin-bottom:14px}details p{margin-top:8px}.answer{background:#f7fafc}.step{display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--ink);color:white;margin-right:8px;font-size:.85rem}.mini-flow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}.mini-flow span{padding:7px 10px;background:#eef3f8;border-radius:8px}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fafcfd}.card.active{border:2px solid var(--accent);background:#edf3ff}.card strong{display:block}.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.chip{border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:#f5f8fa;font-size:.85rem}.chip.highlight{background:#fff1cb;border-color:#c18300}.notice{background:#fff6df;border-left:4px solid #b57900;padding:10px 13px;margin-top:10px;font-size:.9rem}.phases{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.phases span{border-radius:6px;padding:5px 10px;background:#edf1f5;font-size:.9rem}.phases .current{background:var(--ink);color:white}.score-row{display:grid;grid-template-columns:95px 1fr 65px;align-items:center;gap:8px;margin:9px 0}.bar{height:18px;background:#e6edf2;border-radius:6px;overflow:hidden}.bar span{height:100%;display:block;background:var(--accent)}.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:15px 0}.tiles button{font-size:.85rem;padding:8px 3px;line-height:1.7;border-width:2px}.tiles .wrong{border-color:#b52e45;background:#fff0f1}.tiles .right{border-color:#31817b;background:#eef8f4}.metric{font-size:2.8rem;line-height:1.3;font-weight:800}.matrix{font-size:1rem}.matrix td{text-align:center;font-size:1.35rem}.field{min-width:0}.split-panels{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cv-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.cv-groups div{padding:9px;border-radius:10px;background:#edf1f5}.cv-groups .held{background:#fff1cb;border:2px solid #b57900}.road{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:20px 0}.road span{padding:15px 3px;text-align:center;border:1px solid var(--line);border-radius:8px;background:#edf2f7}.road .here{border:3px solid var(--accent);background:#dfeaff}.plot{touch-action:none}svg{display:block;width:100%;height:auto;overflow:visible}svg text{font:15px system-ui,sans-serif;fill:var(--ink)}svg .tick{font-size:13px;fill:var(--muted)}svg .label{font-weight:650}svg .tiny{font-size:11px}.footer-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:24px 0}.footer-nav span{font-size:.85rem;color:var(--muted)}footer{border-top:1px solid var(--line);padding:20px 0 30px;color:var(--muted);font-size:.82rem}[hidden]{display:none!important}
 @media(min-width:761px){.projection .masthead{padding:4px 0}.projection .topline{margin:0}.projection .topline button{padding:3px 10px}.projection h1,.projection .masthead p,.projection .intro,.projection .study-only,.projection footer{display:none}.projection .nav{padding:5px 0}.projection .nav button{padding:5px 8px;font-size:.86rem}.projection .lesson-head{margin:3px 0 6px}.projection h2{font-size:1.5rem}.projection .lesson-head button{padding:4px 10px}.projection .question{padding:6px 14px;margin-bottom:10px;font-size:.95rem}.projection .panel{padding:13px}.projection .workspace{gap:14px}.projection .plot svg{height:280px}.projection .result{padding:11px;margin-top:10px}.projection .result p{font-size:.9rem}.projection .controls{margin:8px 0;gap:8px}.projection .cards .card{padding:10px}.projection .footer-nav{margin:12px 0}.projection .score-row{margin:6px 0}.projection #split-result{font-size:.92rem}.projection #flow-detail{display:none}.projection .notice{font-size:.8rem;padding:7px 10px}.projection .small{font-size:.78rem}}
@@ -15,74 +16,330 @@
 </style>
 </head>
 <body>
-<header class="masthead"><div class="shell"><div class="topline"><span class="eyebrow">人工知能概論 2026 ／ 第3回 機械学習1</span><button type="button" id="projection" aria-pressed="false">投影表示にする</button></div><h1>学ぶ・選ぶ・確かめる。</h1>
-<p>「学習では100%」の、その先を。動かして見つける機械学習の基礎。</p></div></header>
-<div class="shell"><nav class="nav" aria-label="学ぶテーマ">
+<header class="masthead">
+<div class="shell">
+<div class="topline">
+<span class="eyebrow">人工知能概論 2026 ／ 第3回 機械学習1</span><button type="button" id="projection" aria-pressed="false">投影表示にする</button>
+</div>
+<h1>学ぶ・選ぶ・確かめる。</h1>
+<p>「学習では100%」の、その先を。動かして見つける機械学習の基礎。</p>
+</div>
+</header>
+<div class="shell">
+<nav class="nav" aria-label="学ぶテーマ">
 <button type="button" data-tab="kinds" aria-controls="kinds" aria-pressed="true"><b>01</b>学ぶ手掛かり</button>
 <button type="button" data-tab="learn" aria-controls="learn" aria-pressed="false"><b>02</b>学習と推論</button>
 <button type="button" data-tab="flow" aria-controls="flow" aria-pressed="false"><b>03</b>評価の順序</button>
 <button type="button" data-tab="split" aria-controls="split" aria-pressed="false"><b>04</b>分割と漏洩</button>
 <button type="button" data-tab="fit" aria-controls="fit" aria-pressed="false"><b>05</b>汎化と過学習</button>
 <button type="button" data-tab="metrics" aria-controls="metrics" aria-pressed="false"><b>06</b>正解率の中身</button>
-</nav><main>
-<noscript><p class="question">操作にはブラウザーのJavaScriptを有効にしてください。ネット接続は不要です。</p></noscript>
-<section id="kinds" aria-labelledby="kinds-title"><div class="lesson-head"><h2 id="kinds-title">01　何を手掛かりに学ぶ？</h2>
-<button type="button" data-reset="kinds">リセット</button></div>
+</nav>
+<main>
+<noscript>
+<p class="question">操作にはブラウザーのJavaScriptを有効にしてください。ネット接続は不要です。</p>
+</noscript>
+<section id="kinds" aria-labelledby="kinds-title">
+<div class="lesson-head">
+<h2 id="kinds-title">01　何を手掛かりに学ぶ？</h2>
+<button type="button" data-reset="kinds">リセット</button>
+</div>
 <p class="intro">教師あり・教師なし・強化学習は、学ぶときに利用する情報で区別します。「分類」と「回帰」は、教師あり学習で出す答えの種類です。</p>
 <p class="question"><strong>まず予想</strong>答えのラベルがないデータからは、何を見つけられるでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="controls"><label for="kind-mode">設定 <select id="kind-mode"><option value="classification">教師あり：分類</option><option value="regression">教師あり：回帰</option><option value="unsupervised">教師なし</option><option value="reinforcement">強化学習</option></select></label></div><div id="kind-visual"></div>
-<div class="controls" id="kind-label-controls"><button type="button" id="kind-labels" aria-pressed="false">答えの情報を見る</button></div>
-<div id="kind-group-controls" class="controls" hidden><label for="kind-group">特徴xで区切る位置 <input id="kind-group" type="range" min="1" max="9" value="5"><output id="kind-group-value">5</output></label></div>
-<div id="kind-action-controls" class="controls" hidden><button type="button" data-action="-1">← 左へ進む</button><button type="button" data-action="1">右へ進む →</button><button type="button" id="kind-episode">もう一度</button></div>
-</div><div class="panel"><h3>入力 → 手掛かり → 目指すこと</h3>
-<div id="kind-cards" class="cards"></div><div id="kind-result" class="result" aria-live="polite"></div></div></div>
-<details class="study-only"><summary>詳しく見る：バッチ・オンライン・ミニバッチは別の軸</summary><p>学習例を何件ずつまとめて更新に使うかを比べます。次は8件を1巡する「更新のまとまり」の図で、モデルの最適化を実行するものではありません。</p><div class="controls"><label for="kind-batch">1回に使う件数 <select id="kind-batch"><option value="8">8件：全件をまとめる</option><option value="1">1件ずつ</option><option value="2">2件ずつ：ミニバッチ</option></select></label><button type="button" id="kind-update">次のまとまり</button></div><div id="kind-updates"></div><p>オンライン学習は新しく来た例で更新を続ける設定。1件ずつに限らず、ミニバッチで更新する場合もあります。</p></details>
-<details class="answer study-only"><summary>確認：教師なし学習のグループに、最初から正しい名前が付いている？</summary><p>いいえ。特徴の構造を探した後、その意味が目的に合うかを人が確認します。この教材の区切り線は人が操作する観察用の図です。クラスタリングの学習器ではありません。強化学習の画面も行動・報酬・経験を観察する導入で、自動で方策を学ぶ処理は含みません。</p></details></section>
-
-<section id="learn" aria-labelledby="learn-title" hidden><div class="lesson-head"><h2 id="learn-title">02　規則を作る。入力に使う。</h2>
-<button type="button" data-reset="learn">リセット</button></div><p class="intro">特徴xがしきい値以上なら1、それより小さければ0。このモデルの形は人が決め、しきい値は学習データから選びます。IDは識別用で、予測の入力ではありません。</p>
+<div class="workspace">
+<div class="panel">
+<div class="controls">
+<label for="kind-mode">
+設定
+<select id="kind-mode">
+<option value="classification">教師あり：分類</option>
+<option value="regression">教師あり：回帰</option>
+<option value="unsupervised">教師なし</option>
+<option value="reinforcement">強化学習</option>
+</select>
+</label>
+</div>
+<div id="kind-visual"></div>
+<div class="controls" id="kind-label-controls">
+<button type="button" id="kind-labels" aria-pressed="false">答えの情報を見る</button>
+</div>
+<div id="kind-group-controls" class="controls" hidden>
+<label for="kind-group">
+特徴xで区切る位置
+<input id="kind-group" type="range" min="1" max="9" value="5"><output id="kind-group-value">5</output>
+</label>
+</div>
+<div id="kind-action-controls" class="controls" hidden>
+<button type="button" data-action="-1">← 左へ進む</button><button type="button" data-action="1">右へ進む →</button><button type="button" id="kind-episode">もう一度</button>
+</div>
+</div>
+<div class="panel">
+<h3>入力 → 手掛かり → 目指すこと</h3>
+<div id="kind-cards" class="cards"></div>
+<div id="kind-result" class="result" aria-live="polite"></div>
+</div>
+</div>
+<details class="study-only">
+<summary>詳しく見る：バッチ・オンライン・ミニバッチは別の軸</summary>
+<p>学習例を何件ずつまとめて更新に使うかを比べます。次は8件を1巡する「更新のまとまり」の図で、モデルの最適化を実行するものではありません。</p>
+<div class="controls">
+<label for="kind-batch">
+1回に使う件数
+<select id="kind-batch">
+<option value="8">8件：全件をまとめる</option>
+<option value="1">1件ずつ</option>
+<option value="2">2件ずつ：ミニバッチ</option>
+</select></label><button type="button" id="kind-update">次のまとまり</button>
+</div>
+<div id="kind-updates"></div>
+<p>オンライン学習は新しく来た例で更新を続ける設定。1件ずつに限らず、ミニバッチで更新する場合もあります。</p>
+</details>
+<details class="answer study-only">
+<summary>確認：教師なし学習のグループに、最初から正しい名前が付いている？</summary>
+<p>いいえ。特徴の構造を探した後、その意味が目的に合うかを人が確認します。この教材の区切り線は人が操作する観察用の図です。クラスタリングの学習器ではありません。強化学習の画面も行動・報酬・経験を観察する導入で、自動で方策を学ぶ処理は含みません。</p>
+</details>
+</section>
+<section id="learn" aria-labelledby="learn-title" hidden>
+<div class="lesson-head">
+<h2 id="learn-title">02　規則を作る。入力に使う。</h2>
+<button type="button" data-reset="learn">リセット</button>
+</div>
+<p class="intro">特徴xがしきい値以上なら1、それより小さければ0。このモデルの形は人が決め、しきい値は学習データから選びます。IDは識別用で、予測の入力ではありません。</p>
 <p class="question"><strong>まず予想</strong>入力を24から25へ変えたら、モデルを学び直さなくても答えは変わるでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="legend"><span class="zero">● 正解ラベル0</span><span class="one">■ 正解ラベル1</span><span>赤枠＝予測が不一致</span></div><div id="learn-plot" class="plot"></div><div class="controls"><label for="learn-x">推論の入力x <input id="learn-x" type="number" min="0" max="100" step="1" value="24"></label><input id="learn-slider" aria-label="推論の入力xを動かす" type="range" min="0" max="100" value="24"></div><p class="small muted">図の横位置をタップ／ドラッグでも入力を変更できます。入力だけを変えても学習済みのしきい値は変わりません。</p></div>
-<div class="panel"><h3><span class="step">1</span>学習側の例を変えてみる</h3>
-<div class="controls"><label for="learn-label">tr03（x=30）のラベル <select id="learn-label"><option value="1">1：元の固定例</option><option value="0">0：変更を試す</option></select></label></div><p class="small">変更はこの章の作業用コピーだけ。元のラベルが誤りだったと決めつける操作ではありません。</p><div class="controls"><button type="button" id="learn-train" class="primary">学習する</button></div><div id="learn-status" class="notice"></div><h3><span class="step">2</span>学習済みモデルで予測</h3>
-<div id="learn-result" class="result" aria-live="polite"></div></div></div>
-<details class="study-only"><summary>詳しく見る：しきい値候補と学習誤り</summary><p>隣り合う特徴値の中点と、最小値−1・最大値＋1を候補にします。学習誤りが最も少ない候補を選び、同点なら小さいしきい値にします。この教材の設計規約です。</p><div id="learn-candidates" class="table-wrap"></div></details>
-<details class="answer study-only"><summary>確認：学習データを書き換えたら、予測も直ちに変わる？</summary><p>この教材では変わりません。「学習する」を押してモデルを作り直す必要があります。元のデータならしきい値25で、24→0、25→1、26→1。tr03を0へ変えて再学習するとしきい値50になります。観測から作った規則が、すべての未知の入力に当てはまる保証はありません。</p></details></section>
-
-<section id="flow" aria-labelledby="flow-title" hidden><div class="lesson-head"><h2 id="flow-title">03　作る・選ぶ・最後に確かめる</h2>
-<button type="button" data-reset="flow">リセット</button></div><p class="intro">同じデータを何に使ったかで、成績の意味が変わります。学習8件・検証4件・テスト4件を分けた既存Python演習の結果を、順番に開きます。</p>
+<div class="workspace">
+<div class="panel">
+<div class="legend"><span class="zero">● 正解ラベル0</span><span class="one">■ 正解ラベル1</span><span>赤枠＝予測が不一致</span></div>
+<div id="learn-plot" class="plot"></div>
+<div class="controls">
+<label for="learn-x">
+推論の入力x
+<input id="learn-x" type="number" min="0" max="100" step="1" value="24"></label><input id="learn-slider" aria-label="推論の入力xを動かす" type="range" min="0" max="100" value="24">
+</div>
+<p class="small muted">図の横位置をタップ／ドラッグでも入力を変更できます。入力だけを変えても学習済みのしきい値は変わりません。</p>
+</div>
+<div class="panel">
+<h3><span class="step">1</span>学習側の例を変えてみる</h3>
+<div class="controls">
+<label for="learn-label">
+tr03（x=30）のラベル
+<select id="learn-label">
+<option value="1">1：元の固定例</option>
+<option value="0">0：変更を試す</option>
+</select>
+</label>
+</div>
+<p class="small">変更はこの章の作業用コピーだけ。元のラベルが誤りだったと決めつける操作ではありません。</p>
+<div class="controls">
+<button type="button" id="learn-train" class="primary">学習する</button>
+</div>
+<div id="learn-status" class="notice"></div>
+<h3><span class="step">2</span>学習済みモデルで予測</h3>
+<div id="learn-result" class="result" aria-live="polite"></div>
+</div>
+</div>
+<details class="study-only">
+<summary>詳しく見る：しきい値候補と学習誤り</summary>
+<p>隣り合う特徴値の中点と、最小値−1・最大値＋1を候補にします。学習誤りが最も少ない候補を選び、同点なら小さいしきい値にします。この教材の設計規約です。</p>
+<div id="learn-candidates" class="table-wrap"></div>
+</details>
+<details class="answer study-only">
+<summary>確認：学習データを書き換えたら、予測も直ちに変わる？</summary>
+<p>この教材では変わりません。「学習する」を押してモデルを作り直す必要があります。元のデータならしきい値25で、24→0、25→1、26→1。tr03を0へ変えて再学習するとしきい値50になります。観測から作った規則が、すべての未知の入力に当てはまる保証はありません。</p>
+</details>
+</section>
+<section id="flow" aria-labelledby="flow-title" hidden>
+<div class="lesson-head">
+<h2 id="flow-title">03　作る・選ぶ・最後に確かめる</h2>
+<button type="button" data-reset="flow">リセット</button>
+</div>
+<p class="intro">同じデータを何に使ったかで、成績の意味が変わります。学習8件・検証4件・テスト4件を分けた既存Python演習の結果を、順番に開きます。</p>
 <p class="question"><strong>まず予想</strong>学習で8件すべて正解したモデルを、そのまま採用してよいでしょうか？</p>
-<div class="phases" id="flow-phases"></div><div class="workspace"><div class="panel"><div id="flow-models" class="cards"></div><div id="flow-detail" class="table-wrap"></div><div id="flow-result" class="result" aria-live="polite"></div></div><div class="panel"><h3>評価の手順を進める</h3>
-<div id="flow-instruction"></div><div class="controls"><button type="button" id="flow-next" class="primary">1. 学習する</button></div><div id="flow-choice" hidden><label for="flow-model">検証を見て選ぶモデル</label><div class="controls"><select id="flow-model"><option value="threshold">しきい値モデル</option><option value="memory">記憶モデル</option></select><button type="button" id="flow-lock" class="primary">選択を固定する</button></div></div><div class="controls"><button type="button" id="flow-test" disabled>固定したモデルをテストする</button></div><div class="notice" id="flow-notice"></div></div></div>
-<details class="study-only"><summary>詳しく見る：二つのモデルと、固定データの使い方</summary><p>しきい値モデルは学習誤りが最少のしきい値を使います。記憶モデルは見た特徴とラベルを保持し、初めて見る特徴には学習多数派を返します。同数なら0。選択を固定した後は変更できません。テスト表示後のリセットは手順の復習であり、新しい独立テストにはなりません。</p><div id="flow-comparison"></div></details>
-<details class="answer study-only"><summary>確認：検証の結果を何度も見て選べば安心？</summary><p>検証の結果を見て多数の候補を試すと、検証用にも合わせ過ぎることがあります。そのため最終テストを別に残します。評価は、何をどの順序で決めたかと一緒に読みます。</p></details></section>
-
-<section id="split" aria-labelledby="split-title" hidden><div class="lesson-head"><h2 id="split-title">04　何を「未知」として分ける？</h2>
-<button type="button" data-reset="split">リセット</button></div><p class="intro">別のファイルや別のIDでも、同じ観測・同じ人・未来の情報が学習側に入っていないかを確認します。分割は実際に使う場面に合わせます。</p>
+<div class="phases" id="flow-phases"></div>
+<div class="workspace">
+<div class="panel">
+<div id="flow-models" class="cards"></div>
+<div id="flow-detail" class="table-wrap"></div>
+<div id="flow-result" class="result" aria-live="polite"></div>
+</div>
+<div class="panel">
+<h3>評価の手順を進める</h3>
+<div id="flow-instruction"></div>
+<div class="controls">
+<button type="button" id="flow-next" class="primary">1. 学習する</button>
+</div>
+<div id="flow-choice" hidden>
+<label for="flow-model">検証を見て選ぶモデル</label>
+<div class="controls">
+<select id="flow-model">
+<option value="threshold">しきい値モデル</option>
+<option value="memory">記憶モデル</option>
+</select><button type="button" id="flow-lock" class="primary">選択を固定する</button>
+</div>
+</div>
+<div class="controls">
+<button type="button" id="flow-test" disabled>固定したモデルをテストする</button>
+</div>
+<div class="notice" id="flow-notice"></div>
+</div>
+</div>
+<details class="study-only">
+<summary>詳しく見る：二つのモデルと、固定データの使い方</summary>
+<p>しきい値モデルは学習誤りが最少のしきい値を使います。記憶モデルは見た特徴とラベルを保持し、初めて見る特徴には学習多数派を返します。同数なら0。選択を固定した後は変更できません。テスト表示後のリセットは手順の復習であり、新しい独立テストにはなりません。</p>
+<div id="flow-comparison"></div>
+</details>
+<details class="answer study-only">
+<summary>確認：検証の結果を何度も見て選べば安心？</summary>
+<p>検証の結果を見て多数の候補を試すと、検証用にも合わせ過ぎることがあります。そのため最終テストを別に残します。評価は、何をどの順序で決めたかと一緒に読みます。</p>
+</details>
+</section>
+<section id="split" aria-labelledby="split-title" hidden>
+<div class="lesson-head">
+<h2 id="split-title">04　何を「未知」として分ける？</h2>
+<button type="button" data-reset="split">リセット</button>
+</div>
+<p class="intro">別のファイルや別のIDでも、同じ観測・同じ人・未来の情報が学習側に入っていないかを確認します。分割は実際に使う場面に合わせます。</p>
 <p class="question"><strong>まず予想</strong>同じ人の別の日の記録を評価側に置けば、「初めて会う人」にも使えることを確かめられるでしょうか？</p>
-<div class="controls"><label for="split-mode">見る例 <select id="split-mode"><option value="group">対象と時間で分ける</option><option value="duplicate">同じ観測を使い回す</option><option value="preprocess">前処理に情報が入る</option></select></label></div>
-<div class="workspace"><div class="panel"><div id="split-controls"></div><div id="split-visual"></div></div><div class="panel"><h3>この分け方で、何を確かめられる？</h3>
-<div id="split-result" class="result" aria-live="polite"></div></div></div>
-<details class="study-only"><summary>詳しく見る：3分割交差検証で役割を交代する</summary><p>ここだけの9件の架空データをA・B・Cに分けます。1組を検証に残し、残り6件でしきい値を毎回学習し直します。最終テストはこの交代に混ぜません。</p><div class="controls"><label for="cv-fold">検証にする組 <select id="cv-fold"><option value="0">A</option><option value="1">B</option><option value="2">C</option></select></label></div><div id="cv-visual"></div><p class="small">この計算は前処理なし。前処理を加える場合も各回の学習側だけで決めます。単純な交差検証が時間や同一対象の依存を自動的に解決するわけではありません。</p></details>
-<details class="answer study-only"><summary>確認：正解ラベルを見なければ、漏洩は起きない？</summary><p>起きる場合があります。全データの平均を引く前処理では、評価側の特徴値も学習側の変換に影響します。先に分割し、平均などを学習側で決め、同じ変換を評価側にも使います。分割比率を一定にするだけでは解決しません。</p></details></section>
-
-<section id="fit" aria-labelledby="fit-title" hidden><div class="lesson-head"><h2 id="fit-title">05　見た例に合う、その先は？</h2>
-<button type="button" data-reset="fit">リセット</button></div><p class="intro">モデルの表現を変えると、学習例への当てはまり方が変わります。学習と検証の両方を見て、未知の入力に役立つかを考えましょう。</p>
+<div class="controls">
+<label for="split-mode">
+見る例
+<select id="split-mode">
+<option value="group">対象と時間で分ける</option>
+<option value="duplicate">同じ観測を使い回す</option>
+<option value="preprocess">前処理に情報が入る</option>
+</select>
+</label>
+</div>
+<div class="workspace">
+<div class="panel">
+<div id="split-controls"></div>
+<div id="split-visual"></div>
+</div>
+<div class="panel">
+<h3>この分け方で、何を確かめられる？</h3>
+<div id="split-result" class="result" aria-live="polite"></div>
+</div>
+</div>
+<details class="study-only">
+<summary>詳しく見る：3分割交差検証で役割を交代する</summary>
+<p>ここだけの9件の架空データをA・B・Cに分けます。1組を検証に残し、残り6件でしきい値を毎回学習し直します。最終テストはこの交代に混ぜません。</p>
+<div class="controls">
+<label for="cv-fold">
+検証にする組
+<select id="cv-fold">
+<option value="0">A</option>
+<option value="1">B</option>
+<option value="2">C</option>
+</select>
+</label>
+</div>
+<div id="cv-visual"></div>
+<p class="small">この計算は前処理なし。前処理を加える場合も各回の学習側だけで決めます。単純な交差検証が時間や同一対象の依存を自動的に解決するわけではありません。</p>
+</details>
+<details class="answer study-only">
+<summary>確認：正解ラベルを見なければ、漏洩は起きない？</summary>
+<p>起きる場合があります。全データの平均を引く前処理では、評価側の特徴値も学習側の変換に影響します。先に分割し、平均などを学習側で決め、同じ変換を評価側にも使います。分割比率を一定にするだけでは解決しません。</p>
+</details>
+</section>
+<section id="fit" aria-labelledby="fit-title" hidden>
+<div class="lesson-head">
+<h2 id="fit-title">05　見た例に合う、その先は？</h2>
+<button type="button" data-reset="fit">リセット</button>
+</div>
+<p class="intro">モデルの表現を変えると、学習例への当てはまり方が変わります。学習と検証の両方を見て、未知の入力に役立つかを考えましょう。</p>
 <p class="question"><strong>まず予想</strong>学習例の細かな違いまで覚えると、検証の正解数も増えるでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="controls"><label for="fit-model">モデル <select id="fit-model"><option value="constant">いつも学習多数派</option><option value="threshold" selected>一つのしきい値</option><option value="memory">見た特徴を記憶</option></select></label><label for="fit-data">図のデータ <select id="fit-data"><option value="training">学習8件</option><option value="validation">検証4件</option></select></label></div><div class="legend"><span class="zero">● ラベル0</span><span class="one">■ ラベル1</span><span>赤枠＝予測が不一致</span></div><div id="fit-plot" class="plot"></div><p class="small muted">下の細い色帯は整数x=0〜100でのモデルの予測。記憶モデルは未観測の整数には学習多数派を返します。</p></div><div class="panel"><h3>同じ条件で、二つの成績を見る</h3>
-<div id="fit-scores"></div><div id="fit-result" class="result" aria-live="polite"></div><div class="controls"><label for="fit-label">学習のtr03ラベル <select id="fit-label"><option value="1">1：元の固定例</option><option value="0">0へ変えて再学習</option></select></label></div><p class="small">変えるのは学習側の1件だけ。検証例は固定です。元のラベルが誤りだったとは断定しません。</p></div></div>
-<details class="study-only"><summary>詳しく見る：3モデルを同じデータで比べる</summary><div id="fit-comparison" class="table-wrap"></div><p>「いつも多数派」はこの例で必要な関係を捉えきれない表現、「記憶」は学習成績の良さが検証に届かない表現です。滑らかな理論曲線ではなく、現在の固定例で実際に計算した正解数を表示しています。</p></details>
-<details class="answer study-only"><summary>確認：単純なモデルなら、いつでもよい？</summary><p>いいえ。単純すぎると必要な関係を捉えられません。同じ目的・評価条件で成績が同程度なら、単純さや説明しやすさも選ぶ理由になります。表現やデータを変えたら検証し直し、テストを見て選び直すことは避けます。</p></details></section>
-
-<section id="metrics" aria-labelledby="metrics-title" hidden><div class="lesson-head"><h2 id="metrics-title">06　90%の正解率を、開いてみる</h2>
-<button type="button" data-reset="metrics">リセット</button></div><p class="intro">正解率は「正解した件数 ÷ 評価した件数」。大きな数字だけでなく、どちらのクラスをどのように間違えているかを見ます。</p>
+<div class="workspace">
+<div class="panel">
+<div class="controls">
+<label for="fit-model">
+モデル
+<select id="fit-model">
+<option value="constant">いつも学習多数派</option>
+<option value="threshold" selected>一つのしきい値</option>
+<option value="memory">見た特徴を記憶</option>
+</select></label><label for="fit-data">図のデータ
+<select id="fit-data">
+<option value="training">学習8件</option>
+<option value="validation">検証4件</option>
+</select>
+</label>
+</div>
+<div class="legend"><span class="zero">● ラベル0</span><span class="one">■ ラベル1</span><span>赤枠＝予測が不一致</span></div>
+<div id="fit-plot" class="plot"></div>
+<p class="small muted">下の細い色帯は整数x=0〜100でのモデルの予測。記憶モデルは未観測の整数には学習多数派を返します。</p>
+</div>
+<div class="panel">
+<h3>同じ条件で、二つの成績を見る</h3>
+<div id="fit-scores"></div>
+<div id="fit-result" class="result" aria-live="polite"></div>
+<div class="controls">
+<label for="fit-label">
+学習のtr03ラベル
+<select id="fit-label">
+<option value="1">1：元の固定例</option>
+<option value="0">0へ変えて再学習</option>
+</select>
+</label>
+</div>
+<p class="small">変えるのは学習側の1件だけ。検証例は固定です。元のラベルが誤りだったとは断定しません。</p>
+</div>
+</div>
+<details class="study-only">
+<summary>詳しく見る：3モデルを同じデータで比べる</summary>
+<div id="fit-comparison" class="table-wrap"></div>
+<p>「いつも多数派」はこの例で必要な関係を捉えきれない表現、「記憶」は学習成績の良さが検証に届かない表現です。滑らかな理論曲線ではなく、現在の固定例で実際に計算した正解数を表示しています。</p>
+</details>
+<details class="answer study-only">
+<summary>確認：単純なモデルなら、いつでもよい？</summary>
+<p>いいえ。単純すぎると必要な関係を捉えられません。同じ目的・評価条件で成績が同程度なら、単純さや説明しやすさも選ぶ理由になります。表現やデータを変えたら検証し直し、テストを見て選び直すことは避けます。</p>
+</details>
+</section>
+<section id="metrics" aria-labelledby="metrics-title" hidden>
+<div class="lesson-head">
+<h2 id="metrics-title">06　90%の正解率を、開いてみる</h2>
+<button type="button" data-reset="metrics">リセット</button>
+</div>
+<p class="intro">正解率は「正解した件数 ÷ 評価した件数」。大きな数字だけでなく、どちらのクラスをどのように間違えているかを見ます。</p>
 <p class="question"><strong>まず予想</strong>0が9件、1が1件。全部0と答えて90%なら、1を見つける目的にも役立つでしょうか？</p>
-<div class="workspace"><div class="panel"><div class="controls"><label for="metrics-ones">10件中、正解が1の件数 <input id="metrics-ones" type="range" min="1" max="9" value="1"><output id="metrics-ones-value">1</output></label><button type="button" id="metrics-zero">全部0と予測</button><button type="button" id="metrics-detect">1を全件発見・0を1件誤る</button></div><p class="small">各カードを押すと、その1件の予測を0／1に切り替えます。</p><div id="metrics-tiles" class="tiles"></div><div id="metrics-matrix" class="table-wrap"></div></div><div class="panel"><h3>正解率</h3>
-<div id="metrics-result" class="result" aria-live="polite"></div><div id="metrics-breakdown"></div><p class="small muted">用途によって、見逃しと誤検出の重要さは異なります。これだけで最適なモデルとは判断できません。</p></div></div>
-<details class="study-only"><summary>詳しく見る：クラスごとの成績を同じ重みで読む</summary><div id="metrics-balanced"></div><p>各クラスの再現率の平均をbalanced accuracyと呼びます。正解率と併せて読む一つの補助指標です。万能な指標ではなく、評価件数と目的も確認します。</p></details>
-<details class="answer study-only"><summary>確認：同じ90%なら、間違い方も同じ？</summary><p>違います。初期状態で「全部0」は1を見逃します。「1を全件発見・0を1件誤る」も9/10ですが、今度は0の1件を1と誤っています。誰に何を使うかによって、この違いが重要になります。</p></details></section>
-<div class="footer-nav"><button type="button" id="prev" disabled>← 前のテーマ</button><span>予想する → 動かす → 理由を言葉にする</span><button type="button" id="next">次のテーマ →</button></div>
-</main><footer><p>すべて教材用の架空例です。操作結果を保存・送信しません。操作は各章で独立しています。実データでの性能や理解度の保証ではありません。</p><details><summary>スライドとの対応・出典・この教材の範囲</summary><p>01：スライド9〜14／02：3・5〜8・30〜31・33／03：15〜17・30〜32／04：18〜20・22／05：23〜29・33／06：21。しきい値と記憶モデルの固定データ・規約は既存のgeneralization.pyと共通。その他の図・表・ゲームは今回作成した架空例です。</p><p>根拠：scikit-learn公式資料の <a href="https://scikit-learn.org/stable/glossary.html">用語集</a>、<a href="https://scikit-learn.org/stable/modules/cross_validation.html">交差検証</a>、<a href="https://scikit-learn.org/stable/common_pitfalls.html">前処理と漏洩</a>、<a href="https://scikit-learn.org/stable/modules/learning_curve.html">学習不足と過学習</a>、<a href="https://scikit-learn.org/stable/modules/model_evaluation.html">評価指標</a>、Sutton &amp; Barto, <a href="https://mitpress.mit.edu/9780262039246/reinforcement-learning/">Reinforcement Learning, 2nd ed.</a> の出版社Description。確認日：2026年10月22日。リンク先だけネット接続が必要です。</p></details></footer></div>
+<div class="workspace">
+<div class="panel">
+<div class="controls">
+<label for="metrics-ones">
+10件中、正解が1の件数
+<input id="metrics-ones" type="range" min="1" max="9" value="1"><output id="metrics-ones-value">1</output></label><button type="button" id="metrics-zero">全部0と予測</button><button type="button" id="metrics-detect">1を全件発見・0を1件誤る</button>
+</div>
+<p class="small">各カードを押すと、その1件の予測を0／1に切り替えます。</p>
+<div id="metrics-tiles" class="tiles"></div>
+<div id="metrics-matrix" class="table-wrap"></div>
+</div>
+<div class="panel">
+<h3>正解率</h3>
+<div id="metrics-result" class="result" aria-live="polite"></div>
+<div id="metrics-breakdown"></div>
+<p class="small muted">用途によって、見逃しと誤検出の重要さは異なります。これだけで最適なモデルとは判断できません。</p>
+</div>
+</div>
+<details class="study-only">
+<summary>詳しく見る：クラスごとの成績を同じ重みで読む</summary>
+<div id="metrics-balanced"></div>
+<p>各クラスの再現率の平均をbalanced accuracyと呼びます。正解率と併せて読む一つの補助指標です。万能な指標ではなく、評価件数と目的も確認します。</p>
+</details>
+<details class="answer study-only">
+<summary>確認：同じ90%なら、間違い方も同じ？</summary>
+<p>違います。初期状態で「全部0」は1を見逃します。「1を全件発見・0を1件誤る」も9/10ですが、今度は0の1件を1と誤っています。誰に何を使うかによって、この違いが重要になります。</p>
+</details>
+</section>
+<div class="footer-nav">
+<button type="button" id="prev" disabled>← 前のテーマ</button><span>予想する → 動かす → 理由を言葉にする</span><button type="button" id="next">次のテーマ →</button>
+</div>
+</main>
+<footer>
+<p>すべて教材用の架空例です。操作結果を保存・送信しません。操作は各章で独立しています。実データでの性能や理解度の保証ではありません。</p>
+<details>
+<summary>スライドとの対応・出典・この教材の範囲</summary>
+<p>01：スライド10〜15／02：3・5〜9・35〜36・38／03：16〜19・35〜37／04：21〜23・26／05：27〜34・38／06：24。しきい値と記憶モデルの固定データ・規約は既存のgeneralization.pyと共通。その他の図・表・ゲームは今回作成した架空例です。</p>
+<p>根拠：scikit-learn公式資料の <a href="https://scikit-learn.org/stable/glossary.html">用語集</a>、<a href="https://scikit-learn.org/stable/modules/cross_validation.html">交差検証</a>、<a href="https://scikit-learn.org/stable/common_pitfalls.html">前処理と漏洩</a>、<a href="https://scikit-learn.org/stable/modules/learning_curve.html">学習不足と過学習</a>、<a href="https://scikit-learn.org/stable/modules/model_evaluation.html">評価指標</a>、Sutton &amp; Barto, <a href="https://mitpress.mit.edu/9780262039246/reinforcement-learning/">Reinforcement Learning, 2nd ed.</a> の出版社Description。確認日：2026年10月22日。リンク先だけネット接続が必要です。</p>
+</details>
+</footer>
+</div>
 <script id="basics-model">
 'use strict';
 globalThis.Basics = (() => {
@@ -203,8 +460,88 @@ $('split-mode').onchange=e=>{state.split.mode=e.target.value;renderSplit();};$('
 ['model','data','label'].forEach(field=>{$(`fit-${field}`).onchange=e=>{state.fit[field]=field==='label'?+e.target.value:e.target.value;renderFit();};});
 $('metrics-ones').oninput=e=>{state.metrics.ones=+e.target.value;state.metrics.predictions=Array(10).fill(0);renderMetrics();};$('metrics-zero').onclick=()=>{state.metrics.predictions=Array(10).fill(0);renderMetrics();};$('metrics-detect').onclick=()=>{state.metrics.predictions=Array.from({length:10},(_,i)=>Number(i===0||i>=10-state.metrics.ones));renderMetrics();};
 document.querySelectorAll('[data-reset]').forEach(b=>b.onclick=()=>{const name=b.dataset.reset;state[name]=defaults()[name];$(name).querySelectorAll('details').forEach(d=>d.open=false);const values={kinds:{'kind-mode':'classification','kind-group':5,'kind-batch':8},learn:{'learn-label':1},flow:{'flow-model':'threshold'},split:{},fit:{'fit-model':'threshold','fit-data':'training','fit-label':1},metrics:{'metrics-ones':1}};Object.entries(values[name]).forEach(([id,value])=>$(id).value=value);renderers[name]();});
-names.forEach(name=>renderers[name]());
+globalThis.BasicsTeaching=()=>structuredClone({state,testSeen});
+function route(){const index=names.indexOf(location.hash.slice(1));if(index>=0)show(index);}
+window.addEventListener('hashchange',route);
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.tab;}));
+['prev','next'].forEach(id=>$(id).addEventListener('click',()=>{location.hash=names[active];}));
+document.querySelectorAll('[data-reset]').forEach(b=>{b.id=b.id||b.dataset.reset+'-reset';});
+names.forEach(name=>renderers[name]());route();
 })();
 </script>
+<!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+(()=>{
+const B=Basics,S=()=>BasicsTeaching().state,table=(rows,m)=>'<div class="ts-scroll"><table><tr><th>ID</th><th>入力x</th><th>正解</th><th>予測</th><th>一致</th></tr>'+rows.map(r=>{const y=B.predict(m,r[1]);return `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${y}</td><td>${y===r[2]?'○':'×'}</td></tr>`;}).join('')+'</table></div>',step=(title,body)=>({title,body:'<p>'+body+'</p>'});
+installTeachingSteps([
+{id:'kinds',title:'入力と、答えの手掛かりを分ける',steps:()=>{const s=S().kinds;return [step('入力を見る','上の図は分類・回帰では特徴xを持つ6件です。答えの情報を見るボタンで、特徴と答えを別々に確認します。'),step('手掛かりを選ぶ',`現在の設定は${{classification:'分類：カテゴリー',regression:'回帰：数値',unsupervised:'教師なし：特徴のまとまり',reinforcement:'強化学習：行動後の報酬'}[s.mode]}。答えの種類が違えば学び方も違います。`),step('一つ変えて比べる','分類から回帰へ変えると、同じxでも答えはカテゴリーから数値になります。図のまとまりや道は概念例で、モデルの訓練結果ではありません。'),step('戻して説明する','テーマをリセットし、入力・手掛かり・欲しい出力の三つを順に説明しましょう。更新単位の図は、この区別とは別の観点です。')];},details:()=>'<p>分類の例：x=1の答え0、x=6の答え1。回帰の例：x=1の答え3、x=6の答え13（2x+1）。値の大小を予測するか、種類を予測するかを区別します。</p>'},
+{id:'learn',title:'入力を変える操作と、学習をやり直す操作',steps:()=>{const s=S().learn;return [step('入力',`現在の入力x=${s.x}。学習した境界は${s.model.threshold}です。推論では正解ラベルを渡しません。`),step('比較',`${s.x} ≥ ${s.model.threshold} を判定します。条件を満たすと1、満たさないと0なので、予測は${B.predict(s.model,s.x)}です。`),step('学習との違い',`tr03のラベルは${s.label}、最後に学習したラベルは${s.trainedLabel}。ラベルを変更しただけでは境界は変わらず、再学習で候補を選び直します。`),step('比較と復帰','xを24→25へ変え、境界がそのままで予測が変わることを確認します。テーマをリセットするとラベル1・境界25・x=24へ戻ります。')];},details:()=>{const rows=B.working(S().learn.label);return '<p>各境界について8件を判定し、誤りが最少の候補を選びます。同点は小さい境界です。</p><table><tr><th>境界</th><th>誤り／8</th></tr>'+B.candidates(rows).map(c=>`<tr><td>${c.threshold}</td><td>${c.errors}/8</td></tr>`).join('')+'</table>'; }},
+{id:'flow',title:'学習・検証・テストを順番に使う',steps:()=>{const s=S().flow;return [step('分ける','tr01〜tr08の8件はモデル作成、va01〜va04の4件はモデル選択、te01〜te04の4件は選択後の最終評価に使います。'),step('作る','学習するボタンで8件から境界と記憶モデルを作ります。学習結果だけで採用せず、次に検証の4件で比較します。'),step('選んで固定する',s.stage>=2?'検証ではしきい値が3/4、記憶が2/4です。採用するモデルを選んで固定します。':'まだ検証前です。「学習する」「検証で比べる」と進めてから、検証結果を確認しましょう。'),step('最後に評価する',s.stage===4?`固定したモデルのテストは${B.evaluate(B.models(B.TRAIN)[s.selected],B.TEST).correct}/4です。見た結果で選び直すと独立した評価になりません。`:'テストはまだ開きません。選択固定→最終テストへ進んだ後に、各例の予測と正解を照合します。')];},details:()=>{const s=S().flow;if(s.stage===4)return table(B.TEST,B.models(B.TRAIN)[s.selected]);if(s.stage>=2)return table(B.VALIDATION,B.models(B.TRAIN).threshold);return '<p>テスト結果は選択固定後に表示します。まず学習用8件で作ったモデルを検証用4件で比較します。説明の前後移動で評価段階を飛ばすことはできません。</p>'; }},
+{id:'split',title:'評価に使う情報を先に混ぜない',steps:()=>[step('使う場面','初めての対象へ使うのか、将来の記録へ使うのかを先に決めます。同じ6記録でも目的に応じて分け方が変わります。'),step('分ける','対象ごとなら同じ人の記録を同じ側へ、将来予測なら過去を学習側へ置きます。上のカードでIDと対象を対応付けます。'),step('比較する','前処理のテーマでは学習2・4・6だけの平均4を使います。評価点を20→60へ動かしても学習側の変換は変わらないか確かめます。'),step('戻す','テーマのリセットで対象の例へ戻します。正解率が高くても、評価の観測を学習に使ったなら未知への成績とは説明できません。')],details:()=>'<p>学習だけ：平均=(2+4+6)÷3=4、変換後−2・0・2。全体を混ぜる例：評価20・22を含む平均=54÷5=10.8。評価情報で学習値まで変わります。3分割の交差検証は最終テストとは別です。</p>'},
+{id:'fit',title:'各事例を当てたか数える',steps:()=>{const s=S().fit,m=B.models(B.working(s.label))[s.model],rows=s.data==='training'?B.working(s.label):B.VALIDATION,q=B.evaluate(m,rows);return [step('入力とモデル',`今は${s.data==='training'?'学習8件':'検証4件'}を${s.model==='memory'?'記憶モデル':s.model==='threshold'?'しきい値モデル':'多数派モデル'}で判定します。入力xを予測へ渡し、正解は照合に使います。`),step('1件ずつ照合する',table(rows,m)),step('数える',`○は${q.correct}件、全体は${q.total}件。正解率は${q.correct}÷${q.total}=${q.correct/q.total*100}%です。どの集合かを必ず添えます。`),step('比較と復帰','学習と検証を切り替え、同じモデルの成績を比べます。記憶モデルの学習8/8だけを見て採用しません。リセットで基準に戻します。')];},details:()=>table(B.VALIDATION,B.models(B.working(S().fit.label))[S().fit.model])},
+{id:'metrics',title:'正解率の分母と、見逃す種類',steps:()=>{const s=S().metrics,ys=Array.from({length:10},(_,i)=>Number(i>=10-s.ones)),m=B.confusion(ys,s.predictions);return [step('10件を判定する',`正解1が${s.ones}件、正解0が${10-s.ones}件です。上の各カードを押すと、その例の予測だけを反転できます。`),step('対応するマスへ数える',`行は正解、列は予測。正解0・予測0が${m.counts[0][0]}件、正解1・予測1が${m.counts[1][1]}件で、この二つが正解です。`),step('分母を区別する',`全体の正解率は${m.correct}/10。正解1を当てた割合は${m.counts[1][1]}/${s.ones}。全体と種類別では分母が違います。`),step('初期例へ戻す','リセットすると0が9件、1が1件、全件を0と予測します。全体90%でも、1を当てる割合は0/1=0%です。')];},details:()=>'<p>全体の分母は全10件。種類別の再現率の分母は、その種類が正解の件数です。異なる分母の割合を、同じ意味の数値として扱わないでください。</p>'}
+]);})();
+
+</script>
+<!-- teaching-steps:end -->
 </body>
 </html>

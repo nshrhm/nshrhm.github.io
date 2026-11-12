@@ -87,7 +87,7 @@
        value="9"
        min="0"
        max="255"
-       step="1"></label><label>フィルタ<select id="smooth-method">
+       step="1"></label><label>窓の左上の行<input id="smooth-row" type="number" min="0" max="2" step="1" value="1"></label><label>窓の左上の列<input id="smooth-col" type="number" min="0" max="2" step="1" value="1"></label><label>フィルタ<select id="smooth-method">
                         <option value="mean">平均</option>
                         <option value="median">メディアン</option>
                         <option value="range">MAX-MIN</option>
@@ -150,7 +150,7 @@
                             左上の行<input id="match-row" type="number" value="1" min="0" max="2" step="1"></label><label>左上の列<input id="match-col" type="number" value="2" min="0" max="3" step="1"></label><label>テンプレート<select id="template-mode">
                             <option value="base">基準</option>
                             <option value="rotated">90度回転</option>
-                            </select></label><button type="button" id="ssd-reset">リセット</button>
+                            </select></label><button type="button" id="ssd-prev">前の窓</button><button type="button" id="ssd-next">次の窓</button><button type="button" id="ssd-reset">リセット</button>
                         </div>
                         <p id="ssd-error" class="error" role="alert"></p>
                         <div id="ssd-result" aria-live="polite"></div>
@@ -204,7 +204,7 @@ function grid(a,title,mark=null){const h=a.length,w=a[0].length,m=Math.max(1,...
 function best(r){return r.best?`最良の左上（行,列）=(${r.best.row},${r.best.col})、値=${fmt(r.best.score)}。同点候補 ${JSON.stringify(r.ties)}`:'有効な候補なし（全位置で未定義）';}
 const defaults=Object.fromEntries(ids.map(id=>[id,[...$(id).querySelectorAll('input,select')].map(e=>({id:e.id,value:e.value,checked:e.checked}))]));
 function render(id){try{let result='';if(id==='pixels'){const a=IR.clone(IR.IMAGE);a[num('pixel-row',0,4,true)][num('pixel-col',0,4,true)]=num('pixel-value',0,255);const t=num('threshold',0,255),b=IR.binary(a,t);result=`<p>条件：画素値 &gt; ${t}。前景画素数 ${IR.features(b).area}</p><div class="grids">${grid(a,'入力画像')}${grid(b,'二値化結果')}</div>`;}
-if(id==='smooth'){const a=IR.clone(IR.IMAGE);a[2][2]=num('spike',0,255);const m=$('smooth-method').value,b=IR.filtering(a,m);result=`<p>入力の中心 (2,2) に対応する出力 (1,1) = ${fmt(b[1][1])}。valid・歩幅1、5×5 → 3×3。</p><div class="grids">${grid(a,'入力画像')}${grid(b,'フィルタ出力')}</div>`;}
+if(id==='smooth'){const a=IR.clone(IR.IMAGE);a[2][2]=num('spike',0,255);const m=$('smooth-method').value,b=IR.filtering(a,m),sr=num('smooth-row',0,2,true),sc=num('smooth-col',0,2,true);result=`<p>入力の窓の中心 (${sr+1},${sc+1}) に対応する出力 (${sr},${sc}) = ${fmt(b[sr][sc])}。valid・歩幅1、5×5 → 3×3。</p><div class="grids">${grid(a,'入力画像')}${grid(b,'フィルタ出力')}</div>`;}
 if(id==='edges'){const a=IR.clone(IR.IMAGE);if($('reverse').checked)for(const row of a)for(let c=0;c<row.length;c++)row[c]=9-row[c];const m=$('edge-method').value,b=IR.filtering(a,m),display=$('absolute').checked?b.map(row=>row.map(Math.abs)):b;result=`<p>符号付き中心応答 = ${fmt(b[1][1])}。表示は${$('absolute').checked?'絶対値':'符号付き'}。計算値の符号は保持。</p><div class="grids">${grid(IR.KERNELS[m],'固定カーネル')}${grid(display,'応答')}</div>`;}
 if(id==='features'){const b=IR.binary(IR.IMAGE,num('feature-threshold',0,255)),f=IR.features(b);result=`<p>面積=${f.area}、重心（行,列）=${f.centroid?f.centroid.map(fmt).join(','):'未定義'}。</p><p>行投影=${f.rows.join(',')} ／ 列投影=${f.columns.join(',')}</p><div class="grids">${grid(b,'前景マスク')}${grid(IR.pool(IR.POOL_IMAGE),'参考：4×4画像の最大値プーリング')}</div><p>参考入力は1〜16を行順に並べた別画像。重心・面積・投影が一致しても同じ画像とは限りません。</p>`;}
 if(id==='ssd'){const t=$('template-mode').value==='rotated'?IR.rotate(IR.TEMPLATE):IR.clone(IR.TEMPLATE),r=num('match-row',0,2,true),c=num('match-col',0,3,true),p=IR.windowAt(IR.SCENE,r,c,2,2),out=IR.match(IR.SCENE,t);result=`<p>選択位置 (${r},${c}) のSSD=${fmt(IR.score(p,t))}。4画素の差の二乗を合計。小さい方を選択。</p><p>${best(out)}。比較位置は3×4=12件。</p><div class="grids">${grid(IR.SCENE,'探索画像')}${grid(t,'テンプレート')}${grid(p,'選択パッチ')}${grid(out.scores,'SSDマップ',[r,c])}</div>`;}
@@ -212,8 +212,118 @@ if(id==='zncc'){const offset=num('brightness',0,20),scene=IR.tone(IR.SCENE,offse
 $(id+'-result').innerHTML=result;$(id+'-error').textContent='';}catch(e){$(id+'-error').textContent=e.message;$(id+'-result').textContent='入力を直すかリセットしてください。古い結果は表示していません。';}}
 function show(){const id=ids.includes(location.hash.slice(1))?location.hash.slice(1):ids[0];for(const x of ids){$(x).hidden=x!==id;$('tab-'+x).setAttribute('aria-selected',String(x===id));$('tab-'+x).tabIndex=x===id?0:-1;}}
 for(const id of ids){$('tab-'+id).addEventListener('click',()=>{location.hash=id;show();});$(id).querySelectorAll('input,select').forEach(e=>e.addEventListener('input',()=>render(id)));$(id+'-reset').addEventListener('click',()=>{defaults[id].forEach(d=>{$(d.id).value=d.value;$(d.id).checked=d.checked;});$(id+'-prediction').value='';$(id+'-explanation').value='';render(id);});$('tab-'+id).addEventListener('keydown',e=>{const k=ids.indexOf(id),target=e.key==='Home'?0:e.key==='End'?5:e.key==='ArrowRight'?(k+1)%6:e.key==='ArrowLeft'?(k+5)%6:null;if(target!==null){e.preventDefault();location.hash=ids[target];show();$('tab-'+ids[target]).focus();}});render(id);}
+for(const [id,delta] of [['ssd-prev',-1],['ssd-next',1]])$(id).addEventListener('click',()=>{try{const i=(num('match-row',0,2,true)*4+num('match-col',0,3,true)+delta+12)%12;$('match-row').value=Math.floor(i/4);$('match-col').value=i%4;render('ssd');}catch(e){$('ssd-error').textContent=e.message;}});
 window.addEventListener('hashchange',show);show();
 
                 </script>
-            </body>
+        <!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+{
+const p=s=>'<p>'+s+'</p',f=fmt;
+const tab=(headers,rows)=>'<div class="table-wrap"><table><thead><tr>'+headers.map(v=>'<th scope="col">'+v+'</th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map(v=>'<td>'+v+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+const wg=(a,title,r,c,h,w)=>grid(a,title).replace('</svg>',`<rect x="${c*68+28}" y="${r*48+28}" width="${w*68}" height="${h*48}" fill="none" stroke="#a43e00" stroke-width="5"/></svg>`);
+const smooth=()=>{const a=IR.clone(IR.IMAGE);a[2][2]=num('spike',0,255);const r=num('smooth-row',0,2,true),c=num('smooth-col',0,2,true),patch=IR.windowAt(a,r,c,3,3),method=$('smooth-method').value;return {a,r,c,patch,method,out:IR.filtering(a,method)};};
+const ss=()=>{const r=num('match-row',0,2,true),c=num('match-col',0,3,true),t=$('template-mode').value==='rotated'?IR.rotate(IR.TEMPLATE):IR.clone(IR.TEMPLATE);return {r,c,t,patch:IR.windowAt(IR.SCENE,r,c,2,2),out:IR.match(IR.SCENE,t)};};
+installTeachingSteps([
+{id:'pixels',title:'画素の値を、同じ場所で0か1にする',steps:()=>{const a=IR.clone(IR.IMAGE),r=num('pixel-row',0,4,true),c=num('pixel-col',0,4,true),v=num('pixel-value',0,255),t=num('threshold',0,255);a[r][c]=v;const b=IR.binary(a,t);return [
+{title:'場所を指定',body:wg(a,'入力：枠は選んだ画素',r,c,1,1)+p('行は上から、列は左から0始まりです。今は行'+r+'・列'+c+'、値'+v+'を見ています。')},
+{title:'しきい値と比較',body:p(v+' > '+t+' は '+(v>t?'成り立つ':'成り立たない')+'。出力は '+b[r][c]+' です。等しい場合は0になります。')},
+{title:'同じ位置に置く',body:grid(b,'0／1の出力',[r,c])+p('出力の行と列は移動しません。値1のマスを数えた面積は '+IR.features(b).area+' です。')},
+{title:'一つだけ変える',body:p('基準画像でしきい値1→2→9と変えると、前景は9画素→中心1画素→0画素。どの値が条件を通ったか説明し、リセットします。')}
+];},details:()=>p('値1を前景と呼ぶのはこの二値化の規約です。対象物を正しく認識した保証ではありません。しきい値と等しい画素を含める規約へ勝手に変えないでください。')},
+{id:'smooth',title:'今の3×3を、出力の1マスへまとめる',steps:()=>{const s=smooth(),v=s.patch.flat(),sorted=[...v].sort((a,b)=>a-b);return [
+{title:'3×3の範囲',body:wg(s.a,'入力：枠の左上 ('+s.r+','+s.c+')',s.r,s.c,3,3)+p('上の窓の行・列で場所を変えられます。左上位置は0〜2なので、縦3×横3か所あります。')},
+{title:'9個を取り出す',body:grid(s.patch,'窓の9値')+p('順に並べると '+v.join(', ')+'。画像のどの場所から取ったかを前の枠と対応させます。')},
+{title:'方法に応じて計算',body:p(s.method==='mean'?'平均：('+v.join('＋')+')÷9 = '+f(s.out[s.r][s.c]):s.method==='median'?'小さい順：'+sorted.join(', ')+'。9個中の5番目 = '+sorted[4]:'最大 '+Math.max(...v)+' − 最小 '+Math.min(...v)+' = '+f(s.out[s.r][s.c]))+p('平均は全値を足す、メディアンは中央を選ぶ、MAX-MINは差を測る。目的も計算も違います。')},
+{title:'出力へ置く',body:grid(s.out,'結果：枠は対応する出力1マス',[s.r,s.c])+p('入力の窓の左上 ('+s.r+','+s.c+') の計算を、出力 ('+s.r+','+s.c+') へ置きます。入力の中心座標とは1ずれます。')}
+];},details:()=>p('基準の中央窓は2が8個、9が1個。平均は25/9≈2.777778、メディアンは2、MAX-MINは7。中心9を変えて、どの方法がどの値に反応するか比較します。')},
+{id:'edges',title:'掛ける符号を残して、明暗の変化を測る',steps:()=>{let a=IR.clone(IR.IMAGE);if($('reverse').checked)a=a.map(row=>row.map(v=>9-v));const patch=IR.windowAt(a,1,1,3,3),k=IR.KERNELS[$('edge-method').value],out=IR.filtering(a,$('edge-method').value);return [
+{title:'同じ場所を対応',body:'<div class="grids">'+grid(patch,'中心の3×3')+grid(k,'掛ける重み')+'</div>'+p('同じ行・列の画素と重みを組にします。重み0の場所の積は0です。')},
+{title:'9組を掛けて足す',body:tab(['場所','画素','重み','積'],patch.flatMap((row,r)=>row.map((v,c)=>['('+r+','+c+')',v,k[r][c],v*k[r][c]])))+p('合計 = '+f(out[1][1])+'。')},
+{title:'正負を読む',body:p('基準ラプラシアンでは2+2+2+2−4×9 = −28。明暗を9−画素値で反転すると＋28へ変わります。負だから計算失敗ではありません。')},
+{title:'表示と計算を分ける',body:p('現在の符号付き応答 '+f(out[1][1])+'、絶対値 '+f(Math.abs(out[1][1]))+'。「絶対値を表示」は見せ方の変更です。絶対値だけでは変化の向きが分からなくなります。')}
+];},details:()=>p('ラプラシアンとSobel xは別の重みです。Sobel xは横方向の変化に反応し、対称な基準中央窓では0になります。値は境界や明暗変化への応答であり、物体名ではありません。')},
+{id:'features',title:'1の場所を数え、座標を平均する',steps:()=>{const b=IR.binary(IR.IMAGE,num('feature-threshold',0,255)),q=IR.features(b),coords=b.flatMap((row,r)=>row.flatMap((v,c)=>v?[[r,c]]:[])),sr=coords.reduce((s,v)=>s+v[0],0),sc=coords.reduce((s,v)=>s+v[1],0);return [
+{title:'数える場所',body:grid(b,'値1の場所が対象')+p('しきい値を通った '+q.area+' マスが対象です。面積はこの個数で、明るさの合計ではありません。')},
+{title:'座標を足す',body:p('対象の(行,列)：'+(coords.map(x=>'('+x.join(',')+')').join('、')||'なし')+'。')+p('行の合計 '+sr+'、列の合計 '+sc+'。')},
+{title:'個数で割る',body:p(q.area?'重心 = ('+sr+'÷'+q.area+', '+sc+'÷'+q.area+') = ('+q.centroid.map(f).join(', ')+')。':'対象0個なので0で割れません。重心は未定義です。')},
+{title:'行・列にまとめる',body:p('行投影 ['+q.rows.join(', ')+']、列投影 ['+q.columns.join(', ')+']。各行・列の1を数えます。')+p('同じ面積や重心でも配置は違う場合があります。まとめた特徴だけから画像全体を復元することはできません。')}
+];},details:()=>p('基準の9画素では行合計18・列合計18、重心(2,2)。しきい値2では中心1画素だけでも重心(2,2)です。面積が違っても重心が一致する具体例です。参考のプーリングは1〜16の別画像を使っています。')},
+{id:'ssd',title:'窓の4画素とテンプレートを対応させる',steps:()=>{const s=ss(),v=IR.score(s.patch,s.t);return [
+{title:'今どこを見ているか',body:wg(IR.SCENE,'入力：2×2枠の左上 ('+s.r+','+s.c+')',s.r,s.c,2,2)+p('「前の窓」「次の窓」で横方向へ進み、行末で次の行へ移ります。今は '+(s.r*4+s.c+1)+'／12。')},
+{title:'4組を比較',body:'<div class="grids">'+grid(s.patch,'切り出した4画素')+grid(s.t,'比較するテンプレート')+'</div>'+tab(['位置','画素','テンプレート','差²'],s.patch.flatMap((row,r)=>row.map((x,c)=>['('+r+','+c+')',x,s.t[r][c],(x-s.t[r][c])**2])))},
+{title:'4個を足す',body:p('SSD = '+s.patch.flatMap((row,r)=>row.map((x,c)=>(x-s.t[r][c])**2)).join(' ＋ ')+' = '+f(v)+'。小さいほど、値が一致する方向です。')+p('4画素の平均ではなく合計です。完全に同じなら0になります。')},
+{title:'対応する1マスへ',body:grid(s.out.scores,'SSDマップ：今の窓の結果',[s.r,s.c])+p(best(s.out))+p('3行×4列の全12位置を比較した結果です。枠の位置と最良位置は同じとは限りません。')}
+];},details:()=>p('基準テンプレート[1,2;3,4]は左上(1,2)のパッチと一致してSSD=0。回転後は別の数の配置になります。同じ4値でも位置が違えばSSDは変わります。リセットは基準位置(1,2)へ戻ります。')},
+{id:'zncc',title:'平均の明るさを引いて、並び方を比べる',steps:()=>{const offset=num('brightness',0,20),t=$('constant').checked?[[2,2],[2,2]]:IR.TEMPLATE,a=IR.windowAt(IR.tone(IR.SCENE,offset),1,2,2,2),ma=a.flat().reduce((s,v)=>s+v,0)/4,mt=t.flat().reduce((s,v)=>s+v,0)/4,aa=a.flat().map(x=>x-ma),bb=t.flat().map(x=>x-mt),dot=aa.reduce((s,v,i)=>s+v*bb[i],0),den=Math.sqrt(aa.reduce((s,v)=>s+v*v,0)*bb.reduce((s,v)=>s+v*v,0));return [
+{title:'明るさを足した入力',body:'<div class="grids">'+grid(a,'元の位置のパッチ')+grid(t,'テンプレート')+'</div>'+p('全画素へ '+offset+' を加えました。SSD='+f(IR.score(a,t))+'。値の差が増えるとSSDも増えます。')},
+{title:'各平均を引く',body:tab(['側','平均','平均を引いた4値'],[['パッチ',f(ma),aa.map(f).join(', ')],['テンプレート',f(mt),bb.map(f).join(', ')]])+p('基準テンプレートの平均は2.5。全画素に同じ数を加えた差は、平均を引くと消えます。')},
+{title:'長さで正規化',body:p('平均を引いた値の積和 '+f(dot)+' を、長さの積 '+f(den)+' で割ります。ZNCC='+f(IR.score(a,t,'zncc'))+'。')+p(den?'大きいほど同じ並び方の方向です。':'分母0なので未定義です。一定値のテンプレートには比較できる明暗の変化がありません。')},
+{title:'変化への限界',body:p('明るさを10足す基準例はSSD=400、ZNCC=1。同じ加算に対応しますが、回転・拡大・遮蔽にも強くなったという意味ではありません。一定テンプレートも試してからリセットします。')}
+];},details:()=>p('ここでは値0〜255で切り詰める前処理があります。今回の明るさ0〜20と基準値では飽和しませんが、飽和すると同じ加算という関係が崩れます。ZNCCは正解確率ではありません。')}
+]);
+}
+
+</script>
+<!-- teaching-steps:end -->
+    </body>
         </html>

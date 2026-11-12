@@ -192,17 +192,124 @@ const $=id=>document.getElementById(id),ids=['morph','bigram','tfidf','vectors',
 const defaults={};for(const id of ids)defaults[id]=Array.from($(id).querySelectorAll('input,select')).map(e=>({id:e.id,value:e.value,checked:e.checked}));
 function corpus(extra){const c=NLP.clone(NLP.CORPUS);if(extra)c.push(['猫','が','眠る']);return c;}
 function chart(values){const lo=Math.min(...values),hi=Math.max(...values),span=hi-lo||1;const points=values.map((v,i)=>`${40+500*i/Math.max(1,values.length-1)},${180-140*(v-lo)/span}`).join(' ');return `<svg viewBox="0 0 600 220" role="img" aria-label="実計算した平均損失の推移"><path d="M40 30V180H550" fill="none" stroke="#7990a0"/><polyline points="${points}" fill="none" stroke="#1777b5" stroke-width="3"/><text x="40" y="210">0 → ${values.length-1}エポック</text><text x="45" y="25">平均損失 ${hi.toFixed(6)} 〜 ${lo.toFixed(6)}</text></svg>`;}
+let teachingSkipgramState=null;
 function render(id,action='baseline'){try{let result='';
 if(id==='morph'){const lex=NLP.clone(NLP.LEXICON);lex[8][2]=num('cost');const r=NLP.analyze($('text').value,lex);result='<p>字種分割：'+NLP.charSplit($('text').value).map(esc).join(' ／ ')+'</p><p>最小コスト分割：'+r.tokens.map(x=>esc(x[0])).join(' ／ ')+`　合計 ${fmt(r.cost)}</p>`+table(['表層形','品詞','コスト'],r.tokens)+table(['開始→終了','候補','品詞','単語コスト'],r.edges.map(e=>[`${e.start}→${e.end}`,e.word,e.pos,e.cost]));}
 if(id==='bigram'){const r=NLP.bigram(corpus($('bg-extra').checked),$('context').value,num('alpha'));result=`<p>文脈の回数 ${r.total} ／ 分母 ${fmt(r.denominator)} ／ 確率合計 ${fmt(r.probabilities.reduce((a,b)=>a+b,0))}</p>`+table(['次の語','回数','確率'],r.vocab.map((w,i)=>[w,r.counts[i],r.probabilities[i]]));}
 if(id==='tfidf'){const r=NLP.tfidf(corpus($('doc-extra').checked));result='<p>先頭文書「猫 が 眠る」を表示。文書数 '+r.tf.length+'</p>'+table(['語','回数','TF','DF','IDF','TF-IDF'],r.vocab.map((w,i)=>[w,r.counts[0][i],r.tf[0][i],r.df[i],r.idf[i],r.scores[0][i]]));}
 if(id==='vectors'){const r=NLP.representations(NLP.CORPUS,num('window')),matrix=r[$('representation').value],c=NLP.cosine(matrix[0],matrix[3]);result='<p>猫と犬：内積 '+fmt(c.dot)+' ／ 長さ '+fmt(c.norm_a)+'・'+fmt(c.norm_b)+' ／ コサイン類似度 '+fmt(c.cosine)+'</p>'+table(['語',...r.vocab],r.vocab.map((w,i)=>[w,...matrix[i]]));}
-if(id==='skipgram'){const rate=num('rate'),epochs=num('epochs');NLP.train(NLP.CORPUS,0,rate);if(!Number.isInteger(epochs)||epochs<0||epochs>200)throw Error('エポック: 0〜200の整数を指定');let [a,b]=NLP.initialVectors(5),before=NLP.objective(a,b,0,1),after=before,history=[],mode='初期状態';if(action==='first'){[a,b]=NLP.update(a,b,0,1,rate);after=NLP.objective(a,b,0,1);mode='最初の1組（猫→が）だけ更新';}if(action==='run'){const t=NLP.train(NLP.CORPUS,epochs,rate);a=t.inputs;b=t.outputs;after=NLP.objective(a,b,0,1);history=t.loss_history;mode=epochs+'エポック実行（1エポック16組）';}result='<p>'+mode+'。猫→がの損失：'+fmt(before.loss)+' → '+fmt(after.loss)+'</p>'+table(['周辺語','初期の確率','現在の確率'],['猫','が','眠る','犬','走る'].map((w,i)=>[w,before.probabilities[i],after.probabilities[i]]))+table(['語','入力1','入力2','出力1','出力2'],['猫','が','眠る','犬','走る'].map((w,i)=>[w,...a[i],...b[i]]))+(history.length?chart(history):'<p>全組の平均損失グラフはエポック実行後に表示します。</p>');}
+if(id==='skipgram'){const rate=num('rate'),epochs=num('epochs');NLP.train(NLP.CORPUS,0,rate);if(!Number.isInteger(epochs)||epochs<0||epochs>200)throw Error('エポック: 0〜200の整数を指定');let [a,b]=NLP.initialVectors(5),before=NLP.objective(a,b,0,1),after=before,history=[],mode='初期状態';if(action==='first'){[a,b]=NLP.update(a,b,0,1,rate);after=NLP.objective(a,b,0,1);mode='最初の1組（猫→が）だけ更新';}if(action==='run'){const t=NLP.train(NLP.CORPUS,epochs,rate);a=t.inputs;b=t.outputs;after=NLP.objective(a,b,0,1);history=t.loss_history;mode=epochs+'エポック実行（1エポック16組）';}teachingSkipgramState={inputs:a,outputs:b,before,after,history,mode};result='<p>'+mode+'。猫→がの損失：'+fmt(before.loss)+' → '+fmt(after.loss)+'</p>'+table(['周辺語','初期の確率','現在の確率'],['猫','が','眠る','犬','走る'].map((w,i)=>[w,before.probabilities[i],after.probabilities[i]]))+table(['語','入力1','入力2','出力1','出力2'],['猫','が','眠る','犬','走る'].map((w,i)=>[w,...a[i],...b[i]]))+(history.length?chart(history):'<p>全組の平均損失グラフはエポック実行後に表示します。</p>');}
 if(id==='speech'){const a=num('acoustic'),p=num('prior'),w=num('weight'),r=NLP.recognize([a,1-a],[p,1-p],w);result='<p>概念図（録音を処理した結果ではありません）</p><div class="flow"><span>音声 → 特徴 → 音響情報</span><span>＋ 言語情報</span><span>→ 候補を比較</span></div><p>人工値による計算：選択候補 '+r.winner+'</p>'+table(['候補','音響尤度','事前確率','log音響＋λ log事前'],r.candidates.map((s,i)=>[s,[a,1-a][i],[p,1-p][i],r.scores[i]]));}
 $(id+'-result').innerHTML=result;$(id+'-error').textContent='';}catch(e){$(id+'-error').textContent=e.message;$(id+'-result').textContent='入力を直すかリセットしてください。古い結果は表示していません。';}}
 function show(){const id=ids.includes(location.hash.slice(1))?location.hash.slice(1):ids[0];for(const x of ids){$(x).hidden=x!==id;$('tab-'+x).setAttribute('aria-selected',String(x===id));$('tab-'+x).tabIndex=x===id?0:-1;}}
 for(const id of ids){$('tab-'+id).addEventListener('click',()=>{location.hash=id;show();});$(id).querySelectorAll('input,select').forEach(e=>e.addEventListener('input',()=>render(id)));$(id+'-reset').addEventListener('click',()=>{defaults[id].forEach(d=>{$(d.id).value=d.value;$(d.id).checked=d.checked;});$(id+'-prediction').value='';$(id+'-explanation').value='';render(id);});$('tab-'+id).addEventListener('keydown',e=>{const k=ids.indexOf(id),target=e.key==='Home'?0:e.key==='End'?5:e.key==='ArrowRight'?(k+1)%6:e.key==='ArrowLeft'?(k+5)%6:null;if(target!==null){e.preventDefault();location.hash=ids[target];show();$('tab-'+ids[target]).focus();}});render(id);}
 $('sg-first').addEventListener('click',()=>render('skipgram','first'));$('sg-run').addEventListener('click',()=>render('skipgram','run'));window.addEventListener('hashchange',show);show();
         </script>
+<!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+{
+const f=n=>n===null?'未定義':Number(n).toFixed(6),p=s=>'<p>'+s+'</p',boxes=xs=>'<div class="ts-flow">'+xs.map(([k,v])=>'<div class="ts-card"><strong>'+esc(k)+'</strong>'+esc(v)+'</div>').join('<span>→</span>')+'</div>';
+const morph=()=>{const lex=NLP.clone(NLP.LEXICON);lex[8][2]=num('cost');return NLP.analyze($('text').value,lex);};
+installTeachingSteps([
+{id:'morph',title:'文字のどこで区切るかを比べる',steps:()=>{const r=morph();return [
+{title:'文字と境界',body:boxes(Array.from($('text').value).map((v,i)=>[i+'→'+(i+1),v]))+p('文字の間に0から順に境界番号を付けます。「研究生活」なら、研究は0→2、研究生は0→3の候補です。')},
+{title:'辞書の候補',body:table(['開始','終了','候補','コスト'],r.edges.filter(e=>e.pos!=='未知').map(e=>[e.start,e.end,e.word,e.cost]))+p('同じ開始位置から複数の候補が出ます。長い語を先に選ぶだけでは、後ろまで含めた最小コストは決まりません。')},
+{title:'最後までつなぐ',body:p('基準例の研究＋生活は1＋1＝2。研究生＋活は1＋活のコストです。上の「活の辞書コスト」を変えて比較します。')+p('選ばれた経路：'+r.tokens.map(t=>esc(t[0])+'('+t[2]+')').join(' → ')+'。合計 '+r.cost+'。')},
+{title:'結果を読む',body:p('低コストの経路を辞書規約に従って選んでいます。人間が理解した意味の正しさを保証する値ではありません。辞書にない文字には1文字ずつ未知語コスト10を使います。')}
+];},details:()=>p('基準の「研究生活」で活のコストを0にすると、研究生＋活の合計は1となり分割が変わります。同点なら辞書順の規約で選びます。字種分割は漢字をひとまとまりにするだけなので、この違いを区別できません。')},
+{id:'bigram',title:'次の語を、実際に数えてから割合にする',steps:()=>{const c=corpus($('bg-extra').checked),r=NLP.bigram(c,$('context').value,num('alpha')),a=num('alpha');return [
+{title:'文を用意',body:boxes(c.map((s,i)=>['文書'+(i+1),s.join(' ')]))+p('数える範囲はこの小さなコーパスです。文書末には文末記号を追加します。')},
+{title:'隣の語を数える',body:p('選択した直前の語は「'+esc(r.context)+'」。その直後の語を全ての文で数えると '+r.total+' 件です。')+table(['次の語','回数'],r.vocab.map((w,i)=>[w,r.counts[i]]))},
+{title:'全候補に同じ数を足す',body:p('候補は文末を含む '+r.vocab.length+' 種類。各回数にα='+a+'を足します。分母も '+r.total+'＋'+a+'×'+r.vocab.length+'＝'+f(r.denominator)+' に増やします。')+p('出現0回にも値を与える操作が加算平滑化です。分子だけ増やしてはいけません。')},
+{title:'確率を比較',body:table(['次の語','(回数＋α)÷分母','確率'],r.vocab.map((w,i)=>[w,'('+r.counts[i]+'+'+a+') / '+r.denominator,r.probabilities[i]]))+p('基準の「が」、α=1では眠ると走るが各3/10。1文を追加し、どの回数と分母が変わるか確認します。')}
+];},details:()=>p('基準の「が」の後は眠る2回・走る2回です。α=0なら各2/4=0.5。α=1では他の4候補にも1/10ずつ割り当てるため、眠ると走るは各0.3になります。')},
+{id:'tfidf',title:'文書内の回数と、現れる文書数を分ける',steps:()=>{const c=corpus($('doc-extra').checked),r=NLP.tfidf(c),i=r.vocab.indexOf('猫');return [
+{title:'対象の文書',body:boxes([['調べる文書',c[0].join(' ')],['全体の文書数',c.length]])+p('先頭文書の各語に点数を付けます。他の文書も、語の珍しさを求めるために使います。')},
+{title:'文書の中の割合 TF',body:p('「猫」は先頭文書で '+r.counts[0][i]+' 回、文書は '+c[0].length+' 語。TF='+r.counts[0][i]+'÷'+c[0].length+'='+f(r.tf[0][i])+'。')},
+{title:'何文書にあるか DF',body:p('「猫」がある文書は '+r.df[i]+' 件です。1文書に何回出ても、DFではその文書を1件と数えます。')+p('IDF = log(全'+c.length+'文書 ÷ '+r.df[i]+'文書) = '+f(r.idf[i])+'。このlogは自然対数です。')},
+{title:'二つを掛ける',body:boxes([['TF',f(r.tf[0][i])],['IDF',f(r.idf[i])],['TF-IDF',f(r.scores[0][i])]])+p('全ての文書にある「が」はIDF=log(1)=0です。文書を追加すると、先頭文書が同じでも珍しさが変わります。')}
+];},details:()=>p('文書内の出現回数と、出現する文書数を混ぜないでください。TF-IDFが高い語はこのコーパスでの文書特徴候補です。文章の意味や重要性を人間のように理解したことは示しません。')},
+{id:'vectors',title:'同じ列同士の数を掛けて比べる',steps:()=>{const r=NLP.representations(NLP.CORPUS,num('window')),m=r[$('representation').value],a=m[0],b=m[3],v=NLP.cosine(a,b);return [
+{title:'列の名前をそろえる',body:boxes([['列の順序',r.vocab.join(' / ')],['猫',a.join(', ')],['犬',b.join(', ')]])+p('同じ列は同じ語を表します。one-hotはその語の列だけ1、共起は周辺に現れた語の回数です。')},
+{title:'同じ列を掛けて足す',body:p(a.map((x,i)=>x+'×'+b[i]).join(' ＋ ')+' = 内積 '+f(v.dot)+'。')+p('共起の窓幅を変えると、どの周辺語を数えるかが変わります。')},
+{title:'長さで割る',body:p('猫の長さ '+f(v.norm_a)+'、犬の長さ '+f(v.norm_b)+'。内積を両方の長さの積で割ると '+f(v.cosine)+'。これがコサイン類似度です。')},
+{title:'何が似ているのか',body:p('基準の窓幅1では猫も犬も「が」の隣に2回現れるため、共起ベクトルが一致します。一方、one-hotでは別の列が1なので内積は0です。')+p('ここで似ているのは表現上の使われ方です。単語の意味が完全に同じとは言えません。')}
+];},details:()=>p('成分が全て0のベクトルでは長さが0になり、コサイン類似度は未定義です。数を数える共起表現と、損失から重みを学習するSkip-gramを区別してください。')},
+{id:'skipgram',title:'猫から、周辺の「が」を予測する',steps:()=>{const state=teachingSkipgramState,[a,b]=NLP.initialVectors(5),r=NLP.objective(a,b,0,1),rate=num('rate');return [
+{title:'教師となる組',body:boxes([['文','猫 が 眠る'],['中心語','猫'],['当てたい周辺語','が']])+p('窓幅1で文の各位置から組を作ると、4文で16組です。猫→がと、が→猫は別の組です。')},
+{title:'2個ずつ掛けてスコアへ',body:p('初期の猫ベクトル ['+a[0].map(f).join(', ')+'] と、がの出力ベクトル ['+b[1].map(f).join(', ')+'] の内積を求めます。')+p(a[0].map((v,i)=>f(v)+'×('+f(b[1][i])+')').join(' ＋ ')+' = '+f(a[0].reduce((s,v,i)=>s+v*b[1][i],0))+'。他の4語にも同じ計算をします。')},
+{title:'正解の確率から損失',body:p('5スコアをsoftmaxで5確率にします。初期の「が」の確率は '+f(r.probabilities[1])+'、損失 −log(その確率) = '+f(r.loss)+'。')+p('現在の計算状態：'+esc(state.mode)+'。「が」の現在確率は '+f(state.after.probabilities[1])+'。')},
+{title:'二種類のベクトルを更新',body:p('最初の1組の更新では、猫の入力ベクトルと全5語の出力ベクトルを変えます。猫の入力成分1：'+f(a[0][0])+' − '+rate+' × '+f(r.grad_in[0])+' = '+f(a[0][0]-rate*r.grad_in[0])+'。')+p('「最初の1組を更新」と「指定エポックを実行」を区別し、下のベクトル表と損失を確認します。説明の移動だけでは学習しません。')}
+];},details:()=>{const s=teachingSkipgramState;return table(['語','現在の入力1','入力2','出力1','出力2'],['猫','が','眠る','犬','走る'].map((w,i)=>[w,...s.inputs[i],...s.outputs[i]]))+p('更新前に全勾配を求めてから更新します。現在の値は既存の学習処理から取得しており、説明用の別学習は行いません。初期計算の式と現在の表を区別してください。');}},
+{id:'speech',title:'音の手掛かりと、言葉の手掛かりを合わせる',steps:()=>{const a=num('acoustic'),b=num('prior'),w=num('weight'),r=NLP.recognize([a,1-a],[b,1-b],w);return [
+{title:'同じ音の候補',body:boxes([['候補1','雨'],['候補2','飴']])+p('この画面は録音を認識していません。人工的に与えた2候補の値を比較する計算例です。')},
+{title:'二つの手掛かり',body:table(['候補','音響尤度','事前確率'],[['雨',a,b],['飴',1-a,1-b]])+p('音響尤度は音の合いやすさ、事前確率は言葉の現れやすさです。異なる情報として入力します。')},
+{title:'logを使って合成',body:table(['候補','log音響','λ×log事前','合計'],r.candidates.map((name,i)=>[name,Math.log([a,1-a][i]),w*Math.log([b,1-b][i]),r.scores[i]]))+p('λ='+w+'。負の数同士でも、大きい方を選びます。0に近い方が大きいことに注意します。')},
+{title:'候補を選ぶ',body:p('選ばれた候補は「'+r.winner+'」。基準では音だけなら雨、言語情報を加えると飴です。λだけを0に変えて比べましょう。')+p('これは候補間の順位です。必ず実際の発話に合う保証ではありません。')}
+];},details:()=>p('基準では雨の音響0.6、事前0.2、飴の音響0.4、事前0.8。λ=1なら積で雨0.12・飴0.32を比べるのと同じ順位になります。logで計算するためスコア自体は確率ではありません。')}
+]);
+}
+
+</script>
+<!-- teaching-steps:end -->
     </body>
 </html>

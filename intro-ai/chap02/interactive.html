@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="第2回 AIの歴史を具体例で確かめる">
+        <title>第2回 AIの歴史：操作教材</title><style>*{box-sizing:border-box}body{margin:0;background:#f2f5fa;color:#192d42;font-family:system-ui,"Noto Sans JP",sans-serif;line-height:1.65;font-size:18px}main{max-width:1180px;margin:auto;padding:24px}h1{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.3}h2{font-size:1.55rem;color:#163b61}a{color:#1558a3}header{border-bottom:4px solid #246bce;padding-bottom:20px}.intro{max-width:58em}nav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}button,select,input,textarea{font:inherit}button,select{padding:10px 14px;min-height:44px;border:1px solid #6783a1;border-radius:6px;background:white;color:#16324f}button{cursor:pointer}button[aria-selected="true"],#ae-train,#d-step,#g-step{background:#164f82;color:white}button:disabled{opacity:.5;cursor:default}:focus-visible{outline:3px solid #ba6400;outline-offset:3px}section{background:white;padding:24px;border-radius:10px;border:1px solid #cedbe9}section[hidden]{display:none}.question{font-weight:700;border-left:5px solid #bb7600;padding:10px 16px;background:#fff8e8}textarea{display:block;width:100%;max-width:100%;margin:6px 0 18px;border:1px solid #90a2b5;border-radius:6px;padding:10px}.controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:16px 0}.controls label{font-weight:600}input[type=range]{width:160px;max-width:100%;min-height:44px;accent-color:#246bce}.result{background:#f4f8fd;padding:18px;border-radius:6px;margin:16px 0;min-height:160px}.metric{font-size:1.35em;font-weight:700}.explain{border-top:1px solid #cbd7e5;padding-top:15px}table{border-collapse:collapse;width:100%;margin:12px 0;font-variant-numeric:tabular-nums}th,td{padding:8px;border-bottom:1px solid #b8cbe1;text-align:right}th:first-child,td:first-child{text-align:left}caption{text-align:left;font-weight:700}figure{margin:16px 0}svg{display:block;width:100%;height:auto;max-height:220px}figcaption{font-size:.9em;color:#415a72}code{overflow-wrap:anywhere}footer{margin-top:25px;font-size:.9em}output{font-variant-numeric:tabular-nums}.flow{display:flex;align-items:center;justify-content:space-around;gap:8px;flex-wrap:wrap}.box{padding:12px;border:2px solid #246bce;border-radius:7px;background:white}.table-wrap{overflow:auto} @media(max-width:600px){body{font-size:16px}main{padding:12px}section{padding:14px}.result{padding:10px}th,td{padding:5px;font-size:.85em}.controls{gap:8px}h2{font-size:1.3rem}}</style>
+    </head>
+    <body>
+        <main>
+            <header>
+                <h1>第2回 AIの歴史を一段ずつ</h1>
+                <p>架空の小さな例で入力・処理・出力を確認します。外部通信は行いません。</p>
+                <p><a href="index.html">スライド</a> ／ <a href="interactive-guide.html">操作マニュアル</a> ／ <a href="interactive.html"
+    download>この教材を保存</a></p>
+            </header>
+            <nav role="tablist" aria-label="テーマ">
+                <button type="button"
+                        id="tab-keywords"
+                        data-tab="keywords"
+                        role="tab"
+                        aria-controls="keywords"
+                        aria-selected="false"
+                        tabindex="-1">文字列と規則</button><button type="button"
+        id="tab-order"
+        data-tab="order"
+        role="tab"
+        aria-controls="order"
+        aria-selected="false"
+        tabindex="-1">規則の優先順</button><button type="button"
+        id="tab-conversation"
+        data-tab="conversation"
+        role="tab"
+        aria-controls="conversation"
+        aria-selected="false"
+        tabindex="-1">対話の状態</button>
+            </nav>
+            <section id="keywords" role="tabpanel" aria-labelledby="tab-keywords" hidden>
+                <h2>文字列と規則</h2>
+                <p>予想してから、一つの条件だけを変え、結果の理由を説明しましょう。</p>
+                <label>
+                    予想<textarea id="keywords-prediction"></textarea>
+                </label>
+                <div class="controls">
+                    <label>
+                        入力<input id="keyword-text"
+       value="母が心配です"
+       maxlength="80"></label><button type="button"
+        id="keywords-reset">このテーマをリセット</button>
+                </div>
+                <p id="keywords-error" role="alert"></p>
+                <div id="keywords-result" class="result" aria-live="polite"></div>
+            </section>
+            <section id="order" role="tabpanel" aria-labelledby="tab-order" hidden>
+                <h2>規則の優先順</h2>
+                <p>予想してから、一つの条件だけを変え、結果の理由を説明しましょう。</p>
+                <label>
+                    予想<textarea id="order-prediction"></textarea>
+                </label>
+                <div class="controls">
+                    <label>
+                        入力<input id="order-text"
+       value="母が心配です"
+       maxlength="80"></label><label>規則順<select id="rule-order">
+                        <option value="base">元の順序</option>
+                        <option value="worry">心配の規則を先頭へ</option>
+                        </select></label><button type="button" id="order-reset">このテーマをリセット</button>
+                    </div>
+                    <p id="order-error" role="alert"></p>
+                    <div id="order-result" class="result" aria-live="polite"></div>
+                </section>
+                <section id="conversation"
+                         role="tabpanel"
+                         aria-labelledby="tab-conversation"
+                         hidden>
+                    <h2>対話の状態</h2>
+                    <p>予想してから、一つの条件だけを変え、結果の理由を説明しましょう。</p>
+                    <label>
+                        予想<textarea id="conversation-prediction"></textarea>
+                    </label>
+                    <div class="controls">
+                        <label>
+                            オウム返し周期<select id="cycle">
+                            <option value="5">5</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select></label><button type="button" id="respond-next">次の固定入力に応答</button><button type="button" id="respond-all">20件を最後まで</button><button type="button" id="conversation-reset">このテーマをリセット</button>
+                    </div>
+                    <p id="conversation-error" role="alert"></p>
+                    <div id="conversation-result" class="result" aria-live="polite"></div>
+                </section>
+                <footer>
+                    入力は保存しません。各テーマのリセットで初期状態へ戻ります。保存したHTML単体で操作できます。スライド・マニュアルは同梱ファイルを使います。
+                </footer>
+            </main>
+            <script id="intro-core">const HistoryAI=(()=>{const RULES=[["先生", "私のことでなくあなたのことを話しましょう"], ["母", "あなたのお母さんについて話してください"], ["父", "あなたのお父さんについて話してください"], ["意見", "私の意見を聞きたいのですか？"], ["が心配です", "{question}"]],INPUTS=["先生に相談したいです", "母が心配です", "父について話します", "あなたの意見を聞きたいです", "試験が心配です", "今日は晴れです", "こんにちは", "先生と母について", "父と母について", "母校の話です", "試験が心配です", "意見と父について", "授業が心配です", "父が心配です", "母が心配です", "先生について", "意見があります", "締切が心配です", "こんにちは", "最後の入力です"];
+class Doctor{constructor(cycle=5,worry=false){if(!Number.isInteger(cycle)||cycle<1||cycle>10)throw Error('周期は1〜10の整数');this.cycle=cycle;this.rules=worry?[RULES[4],...RULES.slice(0,4)]:RULES;this.count=0;this.turns=0;}respond(text){if(this.turns>=20)throw Error('対話は終了しました');const before=this.count,checks=[];let response='続けてください',rule='既定応答';if(this.count>=this.cycle){response=text+' 、ですか・・・';rule='オウム返し';this.count=0;}else{for(const [pattern,template] of this.rules){const matched=text.includes(pattern);checks.push({pattern,matched});if(matched){rule=pattern;response=template==='{question}'?text.split('が心配です').join('は心配ですか？'):template;break;}}}this.count++;this.turns++;return {input:text,response,rule,before_count:before,count:this.count,turn:this.turns,checks};}}
+const once=(text,worry=false)=>new Doctor(5,worry).respond(text);return {RULES,INPUTS,Doctor,once};})();
+            </script>
+            <script>
+const ids=["keywords", "order", "conversation"],$=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let doc=new HistoryAI.Doctor(),conversation=[];
+function resetModel(id){if(id==='conversation'){doc=new HistoryAI.Doctor(Number($('cycle').value));conversation=[];}}
+function currentRule(id){return HistoryAI.once($(id==='keywords'?'keyword-text':'order-text').value,id==='order'&&$('rule-order').value==='worry');}
+function render(id){try{let text;if(id==='conversation'){const last=conversation.at(-1);text=last?'応答'+last.turn+'回目：入力「'+last.input+'」 → '+last.response+'。使った処理：'+last.rule+'。カウンタ '+last.before_count+'→'+last.count:'0回。次の固定入力から応答を作ります。';$('respond-next').disabled=doc.turns>=20;$('respond-all').disabled=doc.turns>=20;}else{const r=currentRule(id);text='使った規則：'+r.rule+'。応答：'+r.response+'。新しい対話の1回目として比較しています。';}$(id+'-result').textContent=text;$(id+'-error').textContent='';}catch(e){$(id+'-error').textContent=e.message;$(id+'-result').textContent='入力を確認してリセットしてください。';}}
+$('respond-next').onclick=()=>{if(doc.turns<20)conversation.push(doc.respond(HistoryAI.INPUTS[doc.turns]));render('conversation');};$('respond-all').onclick=()=>{while(doc.turns<20)conversation.push(doc.respond(HistoryAI.INPUTS[doc.turns]));render('conversation');};
+
+const defaults=Object.fromEntries(ids.map(id=>[id,[...$(id).querySelectorAll('input,select')].map(e=>({id:e.id,value:e.value}))]));
+function activate(){const chosen=location.hash.slice(1),id=ids.includes(chosen)?chosen:ids[0];for(const k of ids){$(k).hidden=k!==id;$('tab-'+k).setAttribute('aria-selected',String(k===id));$('tab-'+k).tabIndex=k===id?0:-1;}}
+for(const [i,id] of ids.entries()){$('tab-'+id).onclick=()=>{location.hash=id;activate();};$('tab-'+id).onkeydown=e=>{const j=e.key==='Home'?0:e.key==='End'?ids.length-1:e.key==='ArrowRight'?(i+1)%ids.length:e.key==='ArrowLeft'?(i+ids.length-1)%ids.length:null;if(j!==null){e.preventDefault();location.hash=ids[j];activate();$('tab-'+ids[j]).focus();}};$(id+'-reset').onclick=()=>{for(const v of defaults[id])$(v.id).value=v.value;$(id+'-prediction').value='';resetModel(id);render(id);};for(const input of $(id).querySelectorAll('input,select'))input.addEventListener('input',()=>{resetModel(id);render(id);});render(id);}
+addEventListener('hashchange',activate);activate();
+
+            </script>
+    <!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+{
+const p=s=>'<p>'+s+'</p',rules=(r,worry=false)=>'<ol>'+ (worry?[HistoryAI.RULES[4],...HistoryAI.RULES.slice(0,4)]:HistoryAI.RULES).map(([pattern])=>{const test=r.checks.find(x=>x.pattern===pattern);return '<li'+(pattern===r.rule?' class="ts-mark"':'')+'>'+esc(pattern)+'：'+(test?(test.matched?'一致 → この規則を使う':'不一致'):'調べていない')+'</li>';}).join('')+'</ol>';
+installTeachingSteps([
+{id:'keywords',title:'自然な返答に見えても、文字列を探している',steps:()=>{const r=currentRule('keywords');return [
+{title:'受け取った文字',body:p('入力：「'+esc(r.input)+'」。この簡易ELIZAは、文字列を上から順に探します。人の相談内容を理解したかどうかとは別です。')},
+{title:'順番に照合',body:rules(r)+p('最初に一致した時点で止まります。後ろの規則は調べません。')},
+{title:'応答を組み立てる',body:p('使った規則：'+esc(r.rule)+'。返す文字列：「'+esc(r.response)+'」。')+p('「が心配です」なら「は心配ですか？」へ置換します。一致しなければ「続けてください」です。')},
+{title:'意味と一致を区別',body:p('「母校の話です」を入力すると「母」が一致し、お母さんへの応答になります。自然な文章が返っても、意味を正しく理解した証拠にはなりません。')}
+];},details:()=>p('既存Python／Notebookの簡易版と同じ規則です。原ELIZA全体の再実装ではありません。この画面は毎回、新しい対話の1回目として比較します。')},
+{id:'order',title:'同じ入力でも、先に調べる規則で変わる',steps:()=>{const r=currentRule('order'),w=$('rule-order').value==='worry';return [
+{title:'同じ文を使う',body:p('入力：「'+esc(r.input)+'」。基準の「母が心配です」は「母」と「が心配です」の両方を含みます。')},
+{title:'優先順を確認',body:rules(r,w)+p('現在は'+(w?'心配の規則を先頭にした順序':'元の順序')+'です。一致したもの全部を適用するわけではありません。')},
+{title:'最初の一致を採用',body:p('選んだ規則：'+esc(r.rule)+' → 「'+esc(r.response)+'」。順序だけ変えると、基準ではお母さんへの応答から「母は心配ですか？」へ変わります。')},
+{title:'人の編集と学習',body:p('今回は人が規則の順序を変更しています。会話の経験から重みを自動学習した結果ではありません。文字の変更と規則順の変更を別々に試し、リセットします。')}
+];},details:()=>p('既存PythonではDoctor(rules=...)で順序を指定できます。条件を比較するたびに新しいDoctorを作ると、対話カウンタの影響を除いて規則の影響を確認できます。')},
+{id:'conversation',title:'今何回目か、という状態も応答を変える',steps:()=>{const r=conversation.at(-1);return [
+{title:'固定入力を順に使う',body:p('既存Python／Notebookと同じ20入力です。現在 '+doc.turns+' 回。'+(doc.turns<20?'次の入力は「'+esc(HistoryAI.INPUTS[doc.turns])+'」。':'20回で対話終了です。'))+p('「次の固定入力に応答」は実際に1回処理します。説明の移動では応答回数を増やしません。')},
+{title:'カウンタを先に確認',body:p(r?'直近の応答前カウンタは'+r.before_count+'、周期は'+doc.cycle+'。'+(r.before_count>=doc.cycle?'周期以上なので、規則より先にオウム返しします。':'周期未満なので、キーワード規則を順に調べます。'):'最初はカウンタ0です。まず1回応答してから内訳を読みます。')},
+{title:'処理と更新後の状態',body:p(r?'処理：'+esc(r.rule)+'。応答：「'+esc(r.response)+'」。応答後カウンタは'+r.count+'、通算'+r.turn+'回です。':'応答を実行すると、使った規則と更新前後のカウンタが表示されます。')},
+{title:'周期を一つ変えて比較',body:p('周期5では6・11・16回目がオウム返し。周期2では3・5・7回目…です。リセット後に比較し、規則が同じでも状態で応答が変わる理由を説明します。')}
+];},details:()=>'<div class="table-wrap"><table><caption>実際に応答した履歴</caption><tr><th>回</th><th>入力</th><th>処理</th><th>応答</th><th>カウンタ</th></tr>'+conversation.map(r=>'<tr><td>'+r.turn+'</td><td>'+esc(r.input)+'</td><td>'+esc(r.rule)+'</td><td>'+esc(r.response)+'</td><td>'+r.before_count+'→'+r.count+'</td></tr>').join('')+'</table></div>'+p('応答はHTML内で処理し、入力や履歴を外部へ送りません。リセットや再読込みで状態は失われます。')}
+]);
+}
+
+</script>
+<!-- teaching-steps:end -->
+    </body>
+    </html>

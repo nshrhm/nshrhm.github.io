@@ -327,7 +327,8 @@ function config(){return AQ.settings(Object.fromEntries(Object.keys(AQ.BASE).map
 function renderTraining(){const r=trainer.result();graph('training-graph',[r.state],r.config.delayed_reward);$('training-table').innerHTML=table(r.q);$('training-result').textContent=`完了 ${r.completed}/${r.config.episodes} エピソード、実行 ${r.history.length} 行動。現在状態 ${r.state}。固定方策の評価経路 ${r.evaluation.path.join('→')}、報酬合計 ${fmt(r.evaluation.sum)}、割引収益 ${fmt(r.evaluation.discounted)}。評価でQ表は更新しません。`;$('training-history').textContent=r.history.slice(-8).map(x=>`回${x.episode}: ${x.state}→${x.next_state} ${x.action==='left'?'左':'右'} / ${x.explore?'探索':'活用'} / r=${fmt(x.reward)} / 目標=${fmt(x.target)} / Q ${fmt(x.old)}→${fmt(x.new)}`).join('\n')||'まだ更新はありません。';$('training-all').textContent=JSON.stringify(AQ.round6(r.history),null,2);for(const k of ['step','episode','finish'])$('training-'+k).disabled=r.completed>=r.config.episodes;}
 function newTraining(){for(const k of ['step','episode','finish'])$('training-'+k).disabled=true;show('training',()=>{trainer=new AQ.Trainer(config());renderTraining();});}
 for(const k of ['step','episode','finish'])$('training-'+k).onclick=()=>show('training',()=>{trainer[k]();renderTraining();});
-function renderCompare(){const k=$('compare-change').value,base=AQ.train(),c={...AQ.BASE,[k]:AQ.CHANGES[k]},trial=AQ.train(c);$('compare-tables').innerHTML='<h3>基準の学習結果</h3>'+table(base.q)+'<h3>一つ変更した学習結果</h3>'+table(trial.q)+'<h3>変更条件の既知環境の参照値（学習には渡さない）</h3>'+table(AQ.optimalQ(c.gamma,c.delayed_reward));const a=base.evaluation,b=trial.evaluation;$('compare-result').textContent=`変更 ${k}: ${AQ.BASE[k]}→${c[k]}。基準：${a.path.join('→')}、報酬合計 ${fmt(a.sum)}、割引収益 ${fmt(a.discounted)}。変更：${b.path.join('→')}、報酬合計 ${fmt(b.sum)}、割引収益 ${fmt(b.discounted)}。学習中の探索と、評価時の貪欲選択を分けて比較します。`;graph('compare-graph',b.path,c.delayed_reward);}
+let teachingCompare=null;
+function renderCompare(){const k=$('compare-change').value,base=AQ.train(),c={...AQ.BASE,[k]:AQ.CHANGES[k]},trial=AQ.train(c);teachingCompare={base,trial,k,c};$('compare-tables').innerHTML='<h3>基準の学習結果</h3>'+table(base.q)+'<h3>一つ変更した学習結果</h3>'+table(trial.q)+'<h3>変更条件の既知環境の参照値（学習には渡さない）</h3>'+table(AQ.optimalQ(c.gamma,c.delayed_reward));const a=base.evaluation,b=trial.evaluation;$('compare-result').textContent=`変更 ${k}: ${AQ.BASE[k]}→${c[k]}。基準：${a.path.join('→')}、報酬合計 ${fmt(a.sum)}、割引収益 ${fmt(a.discounted)}。変更：${b.path.join('→')}、報酬合計 ${fmt(b.sum)}、割引収益 ${fmt(b.discounted)}。学習中の探索と、評価時の貪欲選択を分けて比較します。`;graph('compare-graph',b.path,c.delayed_reward);}
 const renderers={agent:renderAgent,returns:renderReturns,choice:renderChoice,update:renderUpdate,training:newTraining,compare:renderCompare};
 for(const id of ids){const section=$(id);for(const el of section.querySelectorAll('input,select')){el.addEventListener('input',()=>{if(id==='training')newTraining();else show(id,renderers[id]);});}$(id+'-reset').onclick=()=>{for(const el of section.querySelectorAll('input,select,textarea')){if(el.tagName==='SELECT')el.selectedIndex=0;else if(el.type==='checkbox')el.checked=el.defaultChecked;else el.value=el.defaultValue;}if(id==='agent'){agentPath=[0];agentRewards=[];}show(id,renderers[id]);};}
 function navigate(){const id=ids.includes(location.hash.slice(1))?location.hash.slice(1):ids[0];for(const x of ids){$(x).hidden=x!==id;$('tab-'+x).setAttribute('aria-selected',String(x===id));$('tab-'+x).tabIndex=x===id?0:-1;}}
@@ -335,5 +336,112 @@ for(const id of ids){$('tab-'+id).onclick=()=>{if(location.hash==='#'+id)navigat
 window.addEventListener('hashchange',navigate);for(const id of ids)show(id,renderers[id]);navigate();
 
                 </script>
-            </body>
+        <!-- teaching-steps:start -->
+<style>.teaching-steps{min-width:0;border:2px solid #246bce;border-radius:8px;padding:18px;margin:18px 0;background:#fff;overflow-wrap:anywhere}.ts-heading{font-weight:700;margin-top:0}.ts-roadmap{display:flex;flex-wrap:wrap;gap:8px;list-style-position:inside;padding:0}.ts-roadmap li{padding:6px 10px;border:1px solid #8296ad;border-radius:4px}.ts-roadmap [aria-current]{border:3px solid #164f82;font-weight:700;text-decoration:underline}.ts-controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.ts-body{margin:16px 0;padding:12px;border-left:5px solid #246bce;background:#f4f8fd}.ts-body h3{margin:0 0 12px}.ts-flow{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ts-card{padding:12px;border:2px solid #536f8d;background:white;border-radius:6px;min-width:100px}.ts-card strong{display:block}.ts-values{display:flex;gap:6px;flex-wrap:wrap}.ts-values span{border:1px solid #536f8d;padding:8px;min-width:44px;text-align:center}.ts-help{font-size:.9em}.ts-details summary{cursor:pointer;min-height:44px;padding:8px;font-weight:700}.ts-details table{min-width:420px}.ts-details{max-width:100%;min-width:0}.ts-details>div{overflow:auto}.ts-mark{outline:3px solid #b86900;outline-offset:-3px;background:#fff3cf}@media(max-width:600px){.teaching-steps{min-width:0;padding:10px}.ts-body{padding:8px}}
+.ts-body{min-width:0}.ts-body .table-wrap,.ts-body .scroll{max-width:100%;overflow:auto}
+</style>
+<script>
+/* Shared step reader, embedded in each offline HTML by sync_teaching_steps.py. */
+function installTeachingSteps(definitions) {
+  for (const definition of definitions) {
+    const section = document.getElementById(definition.id);
+    if (!section) throw Error('Missing teaching section: ' + definition.id);
+    const result = document.getElementById(definition.id + '-result') || section.querySelector('.result');
+    const panel = document.createElement('div');
+    panel.className = 'teaching-steps';
+    panel.setAttribute('aria-label', definition.title + 'を一段ずつ読む');
+    panel.innerHTML = '<p class="ts-heading"></p><ol class="ts-roadmap"></ol><div class="ts-controls"><button type="button" class="ts-prev">前の段階</button><output class="ts-position"></output><button type="button" class="ts-next">次の段階</button><button type="button" class="ts-start">説明を最初へ</button></div><div class="ts-body" aria-live="polite"></div><details class="ts-details"><summary>計算の内訳・確かめること</summary><div></div></details><p class="ts-help">説明の前後移動では値を変更しません。条件は上の操作欄で変更できます。数値も戻すときは、このテーマのリセットを使います。</p>';
+    const columns = result?.closest('.layout, .workspace');
+    if (columns) columns.after(panel);
+    else (result || section.querySelector('.explain') || section.lastElementChild).before(panel);
+    let index = 0;
+    const draw = () => {
+      try {
+      const problem = document.getElementById(definition.id + '-error')?.textContent.trim();
+      if (problem) throw Error(problem);
+      const steps = definition.steps();
+      index = Math.min(index, steps.length - 1);
+      panel.querySelector('.ts-heading').textContent = definition.title;
+      const roadmap = panel.querySelector('.ts-roadmap');
+      roadmap.replaceChildren(...steps.map((step, i) => {
+        const item = document.createElement('li');
+        item.textContent = step.title;
+        if (i === index) item.setAttribute('aria-current', 'step');
+        return item;
+      }));
+      panel.querySelector('.ts-position').textContent = `現在 ${index + 1}／${steps.length}`;
+      panel.querySelector('.ts-prev').disabled = index === 0;
+      panel.querySelector('.ts-next').disabled = index === steps.length - 1;
+      panel.querySelector('.ts-body').innerHTML = `<h3>${index + 1}. ${steps[index].title}</h3>${steps[index].body}`;
+      panel.querySelector('.ts-details > div').innerHTML = definition.details();
+      } catch (error) {
+        panel.querySelector('.ts-body').textContent = '入力を確認するか、このテーマをリセットしてください。' + error.message;
+        panel.querySelector('.ts-details > div').textContent = '';
+        panel.querySelector('.ts-prev').disabled = true;
+        panel.querySelector('.ts-next').disabled = true;
+      }
+    };
+    panel.querySelector('.ts-prev').onclick = () => { index--; draw(); };
+    panel.querySelector('.ts-next').onclick = () => { index++; draw(); };
+    panel.querySelector('.ts-start').onclick = () => { index = 0; draw(); };
+    section.addEventListener('click', event => {
+      if (event.target.closest('button')?.id.includes('reset')) {
+        index = 0;
+        panel.querySelector('details').open = false;
+        queueMicrotask(draw);
+      }
+    });
+    for (const eventName of ['input', 'change']) section.addEventListener(eventName, () => queueMicrotask(draw));
+    if (result) new MutationObserver(draw).observe(result, {childList:true, subtree:true, characterData:true});
+    draw();
+  }
+}
+
+{
+const p=s=>'<p>'+s+'</p',f=fmt,boxes=xs=>'<div class="ts-flow">'+xs.map(([k,v])=>'<div class="ts-card"><strong>'+k+'</strong>'+v+'</div>').join('<span>→</span>')+'</div>';
+const u=()=>AQ.updateValue(value('update-old'),value('update-reward'),value('update-next'),$('update-terminal').checked,value('update-alpha'),value('update-gamma'));
+installTeachingSteps([
+{id:'agent',title:'行動の後に、環境が何を返すか',steps:()=>{const current=agentPath.at(-1),end=!AQ.STATES.includes(current);return [
+{title:'現在の状態',body:p('現在の状態は '+current+'。下の環境図の太い枠と同じ番号です。状態0と2でだけ左右の行動を選べます。')},
+{title:'行動と次の状態',body:p(end?'状態1・3・4は終端です。ここでさらに行動することはありません。「次のエピソード」で状態0へ戻ります。':'今の状態で左を選ぶと状態'+AQ.transition(current,'left')[0]+'、右を選ぶと状態'+AQ.transition(current,'right')[0]+'へ進みます。上の左右ボタンで実際に動かします。')},
+{title:'報酬を受け取る',body:boxes([['通った状態',agentPath.join('→')],['受け取った報酬','['+agentRewards.join(', ')+']']])+p('状態番号と報酬は別の数です。0→2の報酬は0、2→4は10です。経路の矢印と対応させましょう。')},
+{title:'学習との違い',body:p('ここでは環境を動かしているだけで、Q表は更新しません。経験を使ってQ表を変えるのは「学習」のテーマです。まず右→右と左の報酬列を比較してリセットします。')}
+];},details:()=>p('状態は現在の場面、行動は選択、報酬はその結果として環境から返る値です。行動を決める規則を方策と呼びます。エージェントであることと学習することは同じ意味ではありません。')},
+{id:'returns',title:'今の報酬と、後でもらう報酬を分ける',steps:()=>{const k=$('returns-route').value,rewards={l:[4],rl:[0,0],rr:[0,10]}[k],g=value('returns-gamma'),r=AQ.pathReturn(rewards,g);return [
+{title:'報酬の順序',body:boxes(rewards.map((v,i)=>[(i+1)+'回目の報酬',v]))+p('行動の順序で報酬を並べます。右→右なら[0,10]、左なら[4]です。')},
+{title:'そのまま合計',body:p(rewards.join(' ＋ ')+' = '+f(r.sum)+'。これは受け取る報酬の合計です。')},
+{title:'将来の分を割り引く',body:p(rewards.length===1?'1回で終わるので '+rewards[0]+' だけです。':rewards[0]+' ＋ '+g+' × '+rewards[1]+' = '+f(r.discounted)+'。')+p('γ='+g+'。後でもらう報酬にどれだけ重みを置くかを変えています。実際の報酬額そのものは変更しません。')},
+{title:'選び方が変わる',body:p('γ=0.9なら右→右の収益9が左の4より大きい。γ=0.2なら右→右は2で、左の4が大きい。何を評価するかで望ましい経路が変わります。')}
+];},details:()=>p('2行動の収益はr1＋γr2。この教材は最大2行動で終端です。報酬合計と割引収益を両方示し、どちらで比較しているかを説明してください。')},
+{id:'choice',title:'良い行動を選ぶ割合と、試す割合',steps:()=>{const row=[value('choice-left'),value('choice-right')],e=value('choice-epsilon'),r=AQ.probabilities(row,e),best=AQ.greedy(row);return [
+{title:'今のQ値',body:boxes([['左',row[0]],['右',row[1]],['活用で選ぶ',best===0?'左':'右']])+p('Q値が大きい方を選ぶのが活用です。同じ値ならこの教材では左を選びます。')},
+{title:'探索で両方を試す',body:p('確率ε='+e+'で探索します。探索に入ったら左右を半分ずつ選ぶので、それぞれ '+e+'÷2='+f(e/2)+' です。')},
+{title:'活用の分も足す',body:boxes([['左の理論確率',f(r[0])],['右の理論確率',f(r[1])]])+p('大きいQ値の側には探索のε/2と、活用の1−εの両方を足します。探索でも良い側が選ばれることがあります。')},
+{title:'回数と確率を区別',body:p('下の実選択は固定した乱数列による有限回の結果です。20回で理論確率とぴったり一致する必要はありません。ε=0と1を比べてリセットします。')}
+];},details:()=>p('例えば左4・右9・ε0.3なら左0.15、右0.15+0.7=0.85。これは選択確率であり、報酬が得られる確率や正解率ではありません。')},
+{id:'update',title:'旧Q値を、目標値へ少し近付ける',steps:()=>{const r=u(),a=value('update-alpha'),g=value('update-gamma');return [
+{title:'使う値を分ける',body:boxes([['旧Q',f(r.old)],['今の報酬',f(r.reward)],['次の最大Q',f(r.next_max)]])+p('これは更新式だけを手で確かめる入力例です。下の学習テーマでは、実際の状態遷移からこれらの値を取得します。')},
+{title:'目標値を作る',body:p(r.terminal?'次が終端なので、目標は報酬 '+f(r.reward)+' だけ。次の最大Qは使いません。':'目標 = '+f(r.reward)+' ＋ '+g+' × '+f(r.next_max)+' = '+f(r.target)+'。')},
+{title:'旧Qとの差',body:p('目標 '+f(r.target)+' − 旧Q '+f(r.old)+' = 差 '+f(r.error)+'。差が負ならQを下げる方向です。')},
+{title:'差の一部を足す',body:p(f(r.old)+' ＋ '+a+' × '+f(r.error)+' = 新Q '+f(r.new)+'。')+p('αは近付き方の割合です。α=0なら変えず、α=1なら目標へ移します。γは目標の作り方、εは行動の選び方で役割が違います。')}
+];},details:()=>p('非終端の手計算例：旧Q2、報酬1、次の最大Q6、γ0.9、α0.5なら、目標6.4、差4.4、新Q4.2。終端に切り替えると目標1となります。実環境の報酬列とは区別して式を確認します。')},
+{id:'training',title:'経験した状態と行動の1マスだけを更新',steps:()=>{const r=trainer.result(),h=r.history.at(-1);return [
+{title:'経験を1件得る',body:p(h?'直近の経験：状態'+h.state+'で'+(h.action==='left'?'左':'右')+'を選び、状態'+h.next_state+'へ。報酬'+f(h.reward)+'。':'まだ経験はありません。「1行動」のボタンで状態0から1回行動してください。')+p('説明を進めても学習は進みません。上の学習ボタンで経験を増やします。')},
+{title:'更新するマス',body:'<table><caption>Q表：枠は直近の更新対象</caption><tr><th>状態</th><th>左</th><th>右</th></tr>'+r.q.map((row,i)=>'<tr><th>'+AQ.STATES[i]+'</th>'+row.map((v,j)=>'<td'+(h&&h.state===AQ.STATES[i]&&h.action===AQ.ACTIONS[j]?' class="ts-mark"':'')+'>'+f(v)+'</td>').join('')+'</tr>').join('')+'</table>'+p(h?'更新対象は状態'+h.state+'の行・'+(h.action==='left'?'左':'右')+'の列です。他の3マスはこの経験では変更しません。':'状態0と2、左と右で4マス。初期は全て0です。')},
+{title:'目標と更新',body:p(h?'旧Q '+f(h.old)+'、目標 '+f(h.target)+'、差 '+f(h.error)+'。新Q = '+f(h.old)+'＋'+r.config.alpha+'×'+f(h.error)+' = '+f(h.new)+'。':'初期Qは0です。終端へ進んだ経験なら、目標はその報酬だけになります。')+p('目標を作るときは更新前のQ表を使います。新しい値を同じ更新の途中へ混ぜません。')},
+{title:'終端と次の回',body:p('完了エピソード '+r.completed+'、実行行動 '+r.history.length+'。1行動と1エピソードは同じとは限りません。')+p('終端に着くと1エピソード完了。次は状態0から始め、Q表は引き継ぎます。条件変更やリセットではQ表も初期化します。')},
+{title:'更新を止めて評価',body:p('現在のQ表で良い側だけを選ぶ評価経路：'+r.evaluation.path.join('→')+'。報酬合計 '+f(r.evaluation.sum)+'、割引収益 '+f(r.evaluation.discounted)+'。')+p('この評価では探索せず、Q表も更新しません。学習中にたどった経路と区別しましょう。')}
+];},details:()=>{const r=trainer.result();return p('下の全履歴には既存学習処理から保存した各経験があります。直近の状態・行動・報酬・目標・旧Q・新Qを照合してください。学習したQ表と環境を既知として計算した参照値は別です。')+p('α='+r.config.alpha+'、γ='+r.config.gamma+'、ε='+r.config.epsilon+'。同じ初期値・シードで条件を一つ変えます。');}},
+{id:'compare',title:'同じ初期状態から、一条件だけ比較',steps:()=>{const s=teachingCompare;return [
+{title:'変える条件',body:boxes([['設定名',s.k],['基準',AQ.BASE[s.k]],['変更後',s.c[s.k]]])+p('両方ともQ表0から学び直します。片方の学習済みQ表をもう片方へ持ち込みません。')},
+{title:'Q表を比較',body:table(s.base.q)+table(s.trial.q)+p('上が基準、下が変更後。同じ状態の同じ行動を比べます。')},
+{title:'固定して評価',body:boxes([['基準の経路',s.base.evaluation.path.join('→')],['変更後の経路',s.trial.evaluation.path.join('→')]])+p('基準の割引収益 '+f(s.base.evaluation.discounted)+'、変更後 '+f(s.trial.evaluation.discounted)+'。報酬設定やγを変えた場合は評価尺度そのものも変わります。')},
+{title:'何が言えるか',body:p('一つの環境・初期値・乱数列での結果です。シードを変えると経験の順序が変わるため、いつも同じ学習結果とは限りません。変更条件を明記し、リセットで基準の比較へ戻します。')}
+];},details:()=>p('比較用の参照値は既知の環境から計算し、学習の更新には渡していません。参照値に近いか、固定方策がどの経路を選んだか、両方を確認してください。')}
+]);
+}
+
+</script>
+<!-- teaching-steps:end -->
+    </body>
         </html>
