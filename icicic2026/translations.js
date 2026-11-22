@@ -161,20 +161,20 @@ window.ICICIC_BILINGUAL_DATA = {
   ],
   "broader-check": [
     {
-      "en": "We also used a separate panel of twelve stimuli: sentences, comments, and dialogues from three sources.",
-      "ja": "さらに、3種類の出典から文・コメント・対話を選び、別の12刺激のパネルを使いました。"
+      "en": "We used twelve English stimuli from three sources: sentences, comments, and dialogues.",
+      "ja": "3つの出典から文・コメント・対話を選び、英語で計12件を提示しました。"
     },
     {
-      "en": "All analysis text was English. We fixed the focal persons and provider routes, and planned five repeats per cell.",
-      "ja": "分析に使った文章はすべて英語です。対象人物とプロバイダー経路を固定し、各セルで5回の反復を計画しました。"
+      "en": "For each text, we asked about either the reader after reading it or the person named in the prompt.",
+      "ja": "同じ文面で、読後の読者と、プロンプトで指定した人物の感情を別々に尋ねました。"
     },
     {
-      "en": "There were seven hundred twenty attempts and seven hundred fourteen valid responses. Missing responses were not filled in.",
-      "ja": "試行は720件、有効な応答は714件でした。欠測を補うことはしていません。"
+      "en": "In one KoED dialogue, we named the first speaker, who describes favoritism in the family. Both prompts ask for four scores and brief reasons.",
+      "ja": "KoEDの例では、家族内のえこひいきについて最初に話す人を指定しました。どちらの指示でも、4つの点数と短い理由を求めます。"
     },
     {
-      "en": "This broadens the material, but it remains a selected fixed panel. We do not pool it with the original three texts.",
-      "ja": "素材の幅は広がりますが、選択した固定パネルであることは変わりません。元の3作品とは合算しません。"
+      "en": "We planned five repeats per target. Of seven hundred twenty attempts, seven hundred fourteen were valid. We report this panel separately.",
+      "ja": "各対象で5回の反復を計画し、720試行のうち714件が有効でした。追加実験の結果は別に報告します。"
     }
   ],
   "stable-ambiguous": [
