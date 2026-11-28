@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#113f48">
+  <title>港の自由時間</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon-192.png">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./data.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="topline">
+        <span class="brand"><img src="./icon-192.png" alt="" width="36" height="36"><span data-text="context"></span></span>
+        <select id="language" aria-label="言語 / 언어 / Language">
+          <option lang="ja" value="ja">日本語</option>
+          <option lang="ko" value="ko">한국어</option>
+          <option lang="en" value="en">English</option>
+        </select>
+      </div>
+      <h1 id="title"></h1>
+      <div class="settings">
+        <label><span data-text="meeting"></span><select id="meeting"></select></label>
+        <label><span data-text="buffer"></span><select id="buffer"></select></label>
+      </div>
+    </header>
+    <section>
+      <h2 data-text="choose"></h2>
+      <div id="places"></div>
+    </section>
+    <section id="result" hidden aria-live="polite">
+      <h2 id="result-title"></h2>
+      <div class="ticket">
+        <strong id="verdict"></strong>
+        <p id="deadline"></p>
+        <div class="timeline" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div id="legs"></div>
+        <p class="total" id="total"></p>
+      </div>
+    </section>
+    <footer><span id="offline" role="status"></span></footer>
+  </main>
+</body>
+</html>
